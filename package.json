@@ -10,7 +10,8 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "test": "jest"
+    "test": "jest",
+    "clean-reinstall": "rm -rf node_modules && npm install"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "35.2.1",
