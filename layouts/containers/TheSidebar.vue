@@ -59,15 +59,12 @@
 
 <script>
 import { CSidebarNavItem } from '@coreui/vue'
-import nav from './_nav'
-import MRenderFunction from './MRenderFunction.vue'
 export default {
   name: 'TheSidebar',
-  components: { MRenderFunction, CSidebarNavItem },
+  components: { CSidebarNavItem },
   data() {
     return {
       minimize: false,
-      nav,
       show: 'responsive'
     }
   },
