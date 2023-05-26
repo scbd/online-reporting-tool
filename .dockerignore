@@ -1,0 +1,16 @@
+.git
+node_modules
+app/libs
+.DS_Store
+.dockerignore
+.editorconfig
+.env
+.eslintrc.js
+.git
+.gitignore
+.nuxt
+Dockerfile
+LICENSE
+dist
+yarn-error.log
+*.sh

@@ -1,0 +1,43 @@
+{
+  "name": "online-reporting-tool",
+  "version": "1.0.0",
+  "description": "Online Reporting Tool",
+  "author": "Blaise Fonseca",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "35.2.1",
+    "@ckeditor/ckeditor5-vue2": "^3.0.1",
+    "@coreui/coreui": "3.4.0",
+    "@coreui/icons": "^1.0.0",
+    "@coreui/utils": "^1.0.0",
+    "@coreui/vue": "3.1.6",
+    "@coreui/vue-chartjs": "^1.0.2",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/vue-fontawesome": "2",
+    "@nuxtjs/axios": "^5.3.6",
+    "@scbd/ckeditor5-build-inline-full": "^35.0.0",
+    "node-sass": "8",
+    "nuxt": "^2.11.0",
+    "sass-loader": "10"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config": "^2.0.0",
+    "@nuxtjs/eslint-module": "^1.0.0",
+    "@vue/test-utils": "^1.0.0-beta.27",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.1.0",
+    "eslint": "^6.1.0",
+    "eslint-plugin-nuxt": ">=0.4.2",
+    "jest": "^24.1.0",
+    "vue-jest": "^4.0.0-0"
+  }
+}
