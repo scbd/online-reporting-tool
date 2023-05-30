@@ -52,7 +52,8 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
   /*
   ** Axios module configuration
@@ -68,6 +69,23 @@ export default {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
+    }
+  },
+  router: {
+    middleware: ['auth']
+  },
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: false,
+      home: '/'
+    },
+    strategies: {
+      ScbdIframeAuthStrategy: {
+        scheme: '~/schemes/scbd-iframe-auth-scheme',
+        /* ... */
+      }
     }
   }
 }

@@ -56,39 +56,20 @@
       <TheHeaderDropdownAccnt />
     </CHeaderNav>
     <CSubheader class="px-3">
-      <CBreadcrumb :items="makeCrumbs()" class="border-0 m-0"  />
+      <BreadCrumbs />
     </CSubheader>
   </CHeader>
 </template>
 
 <script>
 import TheHeaderDropdownAccnt from './TheHeaderDropdownAccnt'
+import BreadCrumbs from './BreadCrumbs.vue';
 
 export default {
   name: 'TheHeader',
   components: {
-    TheHeaderDropdownAccnt
+    TheHeaderDropdownAccnt,
+    BreadCrumbs
   },
-  methods   : { makeCrumbs },
 }
-function makeCrumbs (){ //eslint-disable-line
-
-const { path }  = this.$route.matched[0] || { path: '/' };
-const pathSplit = () => path.split('/').splice(1);
-const crumbs    = [];
-if (!path) return [];
-
-for (const [index, routeName] of pathSplit().entries()) { // eslint-disable-line
-  if (!routeName) continue; // eslint-disable-line no-continue
-
-  const text  = capitalCase(routeName);
-  const to    = index ? `/${pathSplit().splice(0, index + 1).join('/')}` : `/${routeName}`;
-  const crumb = { text, to };
-
-  crumbs.push(crumb);
-}
-
-return crumbs;
-}
-const capitalCase = (val)=>val.toUpperCase()
 </script>
