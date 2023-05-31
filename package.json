@@ -25,7 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "2",
     "@nuxtjs/auth-next": "5.0.0-1667386184.dfbbb54",
-    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/axios": "^5.13.6",
     "@scbd/ckeditor5-build-inline-full": "^35.0.0",
     "change-case": "^4.1.2",
     "node-sass": "8",

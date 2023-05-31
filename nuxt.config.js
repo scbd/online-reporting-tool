@@ -1,3 +1,5 @@
+import './configs/default-config';
+import { auth } from './configs/auth';
 
 export default {
   mode: 'spa',
@@ -69,23 +71,29 @@ export default {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
-    }
+    },
+    "babel": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "esmodules": true
+            }
+          }
+        ]
+      ],
+      "plugins": [
+      ]
+    },
   },
   router: {
     middleware: ['auth']
   },
-  auth: {
-    redirect: {
-      login: '/login',
-      logout: '/login',
-      callback: false,
-      home: '/'
-    },
-    strategies: {
-      ScbdIframeAuthStrategy: {
-        scheme: '~/schemes/scbd-iframe-auth-scheme',
-        /* ... */
-      }
-    }
-  }
+  auth,
+  publicRuntimeConfig: {
+    ACCOUNTS_HOST_URL : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
+    API_HOST_URL      : process.env.API_HOST_URL      || 'https://api.cbddev.xyz'
+  },
+  privateRuntimeConfig: {}
 }

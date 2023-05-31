@@ -9,5 +9,6 @@ export default {
   components: {
     Dashboard,
   },
+  auth:false
 }
 </script>

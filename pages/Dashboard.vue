@@ -210,5 +210,12 @@ export default {
       )
     },
   },
+  async mounted(){
+    if(!this.$auth.loggedIn){
+      var t= await this.$auth.loginWith('ScbdIframeAuthStrategy', { data : { email:'blaise.fonseca@un.org', password:'' }})
+      console.log(t)
+    }
+  },
+  auth:false
 }
 </script>
