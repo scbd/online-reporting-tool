@@ -3,17 +3,29 @@ import {  LocalScheme } from '~auth/runtime'
 
 export default class ScbdIframeAuthScheme extends LocalScheme {
 
-  constructor($auth, options) {
-    super( $auth, options )
+  constructor($auth, options, ...defaults) {
 
-    this.$auth = $auth;
-    this.options = options;
+    let authConf = {};
+    if($auth.ctx.$config.auth?.strategies){
+      authConf = $auth.ctx.$config.auth?.strategies[options.name]
+    }
+
+    $auth.options.redirect  = $auth.ctx.$config.auth?.redirect || $auth.options?.redirect;
+    options.accountsHostUrl = options.accountsHostUrl || $auth.ctx.$config.ACCOUNTS_HOST_URL
+
+    // const configOptions = {
+    //   ...options,
+    //   ...authConf
+    // }
+    super( $auth, options,  ...defaults, authConf )
+
     this.userTokenResolved = undefined;
 
     //append current url as return url
     this.$auth.onRedirect((to, from)=>{
-      return `${to}?returnUrl=${window.location.href}`
-    })
+      return `${to}?returnUrl=${window.location.origin}/${from}`
+    });
+
   }
 
   async mounted(options= {}) {
@@ -49,6 +61,7 @@ export default class ScbdIframeAuthScheme extends LocalScheme {
     this.token.set(token);
     return this.fetchUser(this.options.endpoints.user.url);
   }
+
   async login(endpoint, args) {
     const response = await super.login(endpoint, args);
 
@@ -61,6 +74,7 @@ export default class ScbdIframeAuthScheme extends LocalScheme {
     this.userTokenResolved = undefined;
     
     await this.setScbdIframeToken({authenticationToken:null});
+
     return this.$auth.reset()
   }
 
@@ -69,7 +83,7 @@ export default class ScbdIframeAuthScheme extends LocalScheme {
     this.userTokenResolved = undefined;
     if (this.isServer()) return;
 
-    if (!this.options.accountsHostUrl) throw new Error('no accountsHostUrl given to auth store state');
+    if (!this.options.accountsHostUrl) throw new Error('no accountsHostUrl given to SCBD auth scheme');
    
     const token = await this.resolveToken();
 
@@ -81,7 +95,7 @@ export default class ScbdIframeAuthScheme extends LocalScheme {
     //TODO promisify
     if (this.isServer()) return;
 
-    if (!this.options.accountsHostUrl) throw new Error('no accountsHostUrl given to auth store state');
+    if (!this.options.accountsHostUrl) throw new Error('no accountsHostUrl given to SCBD auth scheme');
    
     var msg = {
       type: "setAuthenticationToken",

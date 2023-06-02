@@ -1,8 +1,8 @@
-import './configs/default-config';
+// import './configs/default-config';
 import { auth } from './configs/auth';
 
 export default {
-  mode: 'spa',
+  ssr: false,
   /*
   ** Headers of the page
   */
@@ -93,7 +93,42 @@ export default {
   auth,
   publicRuntimeConfig: {
     ACCOUNTS_HOST_URL : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
-    API_HOST_URL      : process.env.API_HOST_URL      || 'https://api.cbddev.xyz'
+    API_HOST_URL      : process.env.API_HOST_URL      || 'https://api.cbddev.xyz',
+    auth : {
+      redirect: {
+        login:  `${process.env.ACCOUNTS_HOST_URL}/signin`,
+        logout: `${process.env.ACCOUNTS_HOST_URL}/logout`,
+        callback: false,
+        home: '/'
+      },
+      strategies: {
+        ScbdIframeAuthStrategy: {
+          token: {
+            global: true,
+            prefix: '_token.',
+            property: 'authenticationToken',
+            type: 'Bearer',
+            name: 'Authorization',
+            required:true
+          },
+          endpoints: {
+            logout: false,
+            login: {
+              url: `${process.env.API_HOST_URL}/api/v2013/authentication/token`,
+              method: 'post'
+            },
+            user: {
+              url: `${process.env.API_HOST_URL}/api/v2013/authentication/user`,
+              method: 'get'
+            }
+          },
+          user: {
+            property: false,
+            autoFetch: true
+          },
+        }
+      }
+    }
   },
-  privateRuntimeConfig: {}
+  privateRuntimeConfig1: {}
 }
