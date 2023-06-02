@@ -10,20 +10,18 @@ export default class ScbdIframeAuthScheme extends LocalScheme {
       authConf = $auth.ctx.$config.auth?.strategies[options.name]
     }
 
+    // if redirect option are missing auth conf than the module uses its defaults, 
+    // so check if there are any custom redirect in conf else use the option one
     $auth.options.redirect  = $auth.ctx.$config.auth?.redirect || $auth.options?.redirect;
     options.accountsHostUrl = options.accountsHostUrl || $auth.ctx.$config.ACCOUNTS_HOST_URL
 
-    // const configOptions = {
-    //   ...options,
-    //   ...authConf
-    // }
     super( $auth, options,  ...defaults, authConf )
 
     this.userTokenResolved = undefined;
 
     //append current url as return url
     this.$auth.onRedirect((to, from)=>{
-      return `${to}?returnUrl=${window.location.origin}/${from}`
+      return `${to}?returnUrl=${window.location.origin}${from}`
     });
 
   }
