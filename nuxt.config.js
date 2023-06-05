@@ -1,5 +1,5 @@
-// import './configs/default-config';
 import { auth } from './configs/auth';
+import { i18n } from './configs/i18n';
 
 export default {
   ssr: false,
@@ -21,6 +21,11 @@ export default {
   ** Customize the progress-bar color
   */
   loading: { color: '#fff' },
+  loadingIndicator: {
+    name: 'pulse',
+    color: '#3B8070',
+    background: 'white'
+  },
   /*
   ** Global CSS
   */
@@ -41,6 +46,7 @@ export default {
   plugins: [
     { src: '~/plugins/coreui', mode: 'client' },
     { src: '~/plugins/font-awesome', mode: 'client' },
+    { src: '~/plugins/i18n', mode: 'client' },
   ],
   /*
   ** Nuxt.js dev-modules
@@ -55,7 +61,8 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    '@nuxtjs/i18n',
   ],
   /*
   ** Axios module configuration
@@ -91,6 +98,7 @@ export default {
     middleware: ['auth']
   },
   auth,
+  i18n,
   publicRuntimeConfig: {
     ACCOUNTS_HOST_URL : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
     API_HOST_URL      : process.env.API_HOST_URL      || 'https://api.cbddev.xyz',

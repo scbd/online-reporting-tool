@@ -22,32 +22,32 @@
 
 
     <CSidebarNav>
-      <CSidebarNavItem name="Dashboard" icon="cil-speedometer" to="/dashboard"/>
+      <CSidebarNavItem name="Dashboard" icon="cil-speedometer" :to="localePath('/dashboard')"/>
       <span>
         <CSidebarNavTitle> NBSAPS </CSidebarNavTitle>
       </span>
       <span>
-        <CSidebarNavDropdown name="National Targets" route="/nbsaps-targets">  
-          <CSidebarNavItem name="All Targets" icon="cil-list" to="/nbsaps-targets"/>
-          <CSidebarNavItem name="My Country Targets" icon="cil-list" to="/nbsaps-targets/overview"/>
+        <CSidebarNavDropdown name="National Targets" :route="localePath('/nbsaps-targets')">  
+          <CSidebarNavItem name="All Targets" icon="cil-list" :to="localePath('/nbsaps-targets')"/>
+          <CSidebarNavItem name="My Country Targets" icon="cil-list" :to="localePath('/nbsaps-targets/overview')"/>
           <!-- <CSidebarNavDropdown name="My Country" icon="cil-pencil" route="/nbsaps-targets/overview">            
           <CSidebarNavItem name="Overview" icon="cil-list" to="/nbsaps-targets/overview"/>
           <CSidebarNavItem name="New" icon="cil-pencil" to="/nbsaps-targets/new"/>
           </CSidebarNavDropdown> -->
         </CSidebarNavDropdown>
-        <CSidebarNavTitle> National Reports </CSidebarNavTitle>
-        <CSidebarNavItem name="6th National Report" icon="cil-list" href="https://chm.cbd.int/database?schema_s=nationalReport6" />
-        <CSidebarNavDropdown name="7th National Report" route="/national-reports/nr7/edit">
-          <CSidebarNavItem name="Reports" icon="cil-list" to="/national-reports/nr7"/>
-          <CSidebarNavDropdown name="My Country" icon="cil-pencil" route="/national-reports/nr7/edit">            
-            <CSidebarNavItem name="Overview"     icon="cil-pencil" to="/national-reports/nr7/edit"/>
-            <CSidebarNavItem name="Section I"    icon="cil-pencil" to="/national-reports/nr7/edit/section-1"/>
-            <CSidebarNavItem name="Section II"   icon="cil-pencil" to="/national-reports/nr7/edit/section-2"/>
-            <CSidebarNavItem name="Section III"  icon="cil-pencil" to="/national-reports/nr7/edit/section-3"/>
-            <CSidebarNavItem name="Section IV"   icon="cil-pencil" to="/national-reports/nr7/edit/section-4"/>
-            <CSidebarNavItem name="Section V"    icon="cil-pencil" to="/national-reports/nr7/edit/section-5"/>
-            <CSidebarNavItem name="Section VI"   icon="cil-pencil" to="/national-reports/nr7/edit/section-6"/>
-            <CSidebarNavItem name="Annex"        icon="cil-pencil" to="/national-reports/nr7/edit/section-7"/>
+        <CSidebarNavTitle> {{$t('sidebar.nationalReports')}} </CSidebarNavTitle>
+        <CSidebarNavItem        :name="$t('sidebar.6thNationalReport')" icon="cil-list" target="_blank" :href="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport6`" />
+        <CSidebarNavDropdown    :name="$t('sidebar.7thNationalReport')" :route="localePath('/national-reports/nr7/edit')">
+          <CSidebarNavItem      :name="$t('sidebar.Reports')"    icon="cil-list" :to="localePath('/national-reports/nr7')"/>
+          <CSidebarNavDropdown  :name="$t('sidebar.myCountry')"  icon="cil-pencil" :route="localePath('/national-reports/nr7/edit')">            
+            <CSidebarNavItem    :name="$t('sidebar.overview')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit')"/>
+            <CSidebarNavItem    :name="$t('sidebar.sectionI')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-1')"/>
+            <CSidebarNavItem    :name="$t('sidebar.sectionII')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-2')"/>
+            <CSidebarNavItem    :name="$t('sidebar.sectionIII')" icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-3')"/>
+            <CSidebarNavItem    :name="$t('sidebar.sectionIV')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-4')"/>
+            <CSidebarNavItem    :name="$t('sidebar.sectionV')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-5')"/>
+            <CSidebarNavItem    :name="$t('sidebar.sectionVI')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-6')"/>
+            <CSidebarNavItem    :name="$t('sidebar.annex')"      icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-7')"/>
           </CSidebarNavDropdown>          
         </CSidebarNavDropdown>
       </span>
@@ -59,7 +59,11 @@
 
 <script>
 import { CSidebarNavItem } from '@coreui/vue'
-export default {
+export default { 
+  async fetch () { //Nuxt event to load async data at initial step
+    let l = await this.$loadLocaleFile(this.$i18n.locale, `layouts/containers/TheSidebar.json`);  
+    console.log(l)
+  },
   name: 'TheSidebar',
   components: { CSidebarNavItem },
   data() {
@@ -68,7 +72,8 @@ export default {
       show: 'responsive'
     }
   },
-  mounted() {
+  mounted(){
+    
     this.$root.$on('toggle-sidebar', () => {
       const sidebarOpened = this.show === true || this.show === 'responsive'
       this.show = sidebarOpened ? false : 'responsive'

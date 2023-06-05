@@ -15,21 +15,26 @@ export default {
 
 function makeCrumbs (){ //eslint-disable-line
 
-  const { path }  = this.$route.matched[0] || { path: '/' };
-  const pathSplit = () => path.split('/').splice(1);
-  const crumbs    = [];
-  if (!path) return [];
+  const crumbs    = [
+    { text:'CHM', to:'https:chm.cbd.int' },
+    { text:'ORT', to:'/dashboard' }
+  ];
+  if(this.$route){
+    const { path }  = this.$route.matched[0] || { path: '/' };
+    const pathSplit = () => path.split('/').splice(1);
+    if (!path) return [];
 
-  for (const [index, routeName] of pathSplit().entries()) { // eslint-disable-line
-    if (!routeName) continue; // eslint-disable-line no-continue
+    for (const [index, routeName] of pathSplit().entries()) { // eslint-disable-line
+      if (!routeName) continue; // eslint-disable-line no-continue
 
-    const text  = capitalCase(routeName);
-    const to    = index ? `/${pathSplit().splice(0, index + 1).join('/')}` : `/${routeName}`;
-    const crumb = { text, to };
+      const text  = capitalCase(routeName);
+      const to    = index ? `/${pathSplit().splice(0, index + 1).join('/')}` : `/${routeName}`;
+      
+      const crumb = { text, to };
 
-    crumbs.push(crumb);
+      crumbs.push(crumb);
+    }
   }
-
   return crumbs;
 }
 </script>
