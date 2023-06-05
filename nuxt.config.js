@@ -130,5 +130,5 @@ export default {
       }
     }
   },
-  privateRuntimeConfig1: {}
+  privateRuntimeConfig: {}
 }
