@@ -105,7 +105,6 @@ export default class ScbdIframeAuthScheme extends LocalScheme {
     let accountsIframe = this.getScbdIframe();
     if(!accountsIframe){
       const onloadCallback = (newIframe)=> {
-        console.log(newIframe);
         this.postIFrameMessage.bind(this, newIframe, JSON.stringify(msg))
       }
       this.createScbdIframe(onloadCallback)
@@ -133,6 +132,7 @@ export default class ScbdIframeAuthScheme extends LocalScheme {
       
     if(type === 'authenticationToken'){
       this.userTokenResolved = true;
+      this.options.token.maxAge = Date.parse(expiration) /1000
       this.setUserToken(authenticationToken);
     }
     else if(type === 'authenticationTokenUpdated'){
@@ -175,7 +175,6 @@ export default class ScbdIframeAuthScheme extends LocalScheme {
 
   resolveToken(ms = 300) {
     const self = this;
-    console.log(self)
     return new Promise(async function (resolve, reject) {
 
       window.addEventListener('message', self.receivePostMessage.bind(self));
@@ -186,7 +185,6 @@ export default class ScbdIframeAuthScheme extends LocalScheme {
       if(!accountsIframe){
 
         const onloadCallback = (newIframe)=> {
-          console.log(newIframe);
           self.postIFrameMessage(newIframe, JSON.stringify({type}))
         }
 
