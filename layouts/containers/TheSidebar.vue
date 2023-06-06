@@ -96,3 +96,5 @@ export default {
   margin-top: 10px;
 }
 </style>
+
+<i18n src="../../i18n/dist/layouts/containers/TheSidebar.json"></i18n>
