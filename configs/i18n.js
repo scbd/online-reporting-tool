@@ -3,5 +3,6 @@ export const i18n = {
     defaultLocale: 'en',
     detectBrowserLanguage : {
         alwaysRedirect: true,
-    }
+    },
+    vueI18nLoader: true
 }

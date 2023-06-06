@@ -11,5 +11,6 @@
     "sidebar.sectionIV"        : "Section IV",
     "sidebar.sectionV"         : "Section V",
     "sidebar.sectionVI"        : "Section VI",
-    "sidebar.annex"            : "Annex"
+    "sidebar.annex"            : "Annex",
+    "newKey":"update text"
 }

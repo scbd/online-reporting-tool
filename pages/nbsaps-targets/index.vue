@@ -54,3 +54,4 @@
   }
   </script>
   
+<i18n  src="../../i18n/dist/pages/nbsap-targets/index.json"></i18n>

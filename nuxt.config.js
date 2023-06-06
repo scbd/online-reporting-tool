@@ -1,5 +1,6 @@
 import { auth } from './configs/auth';
 import { i18n } from './configs/i18n';
+import i18nFileSync from './plugins/sync-i18n';
 
 export default {
   ssr: false,
@@ -78,6 +79,7 @@ export default {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
+      // console.log(config.module.rules)
     },
     "babel": {
       "presets": [
@@ -93,6 +95,9 @@ export default {
       "plugins": [
       ]
     },
+    plugins:[
+      new i18nFileSync({})
+    ]
   },
   router: {
     middleware: ['auth']

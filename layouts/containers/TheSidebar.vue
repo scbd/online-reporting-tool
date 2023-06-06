@@ -61,8 +61,6 @@
 import { CSidebarNavItem } from '@coreui/vue'
 export default { 
   async fetch () { //Nuxt event to load async data at initial step
-    let l = await this.$loadLocaleFile(this.$i18n.locale, `layouts/containers/TheSidebar.json`);  
-    console.log(l)
   },
   name: 'TheSidebar',
   components: { CSidebarNavItem },
@@ -96,3 +94,5 @@ export default {
   margin-top: 10px;
 }
 </style>
+
+<i18n src="../../i18n/dist/layouts/containers/TheSidebar.json"></i18n>

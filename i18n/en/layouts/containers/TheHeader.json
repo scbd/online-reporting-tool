@@ -1,6 +1,6 @@
 {
-    "header.languages" : "Languages",
-    "header.menuDashboard" : "Dashboard",
-    "header.menuNbsapTargets" : "NBSAP Targets",
-    "header.menu7Nr" : "7th National Report"
+    "languages" : "Languages",
+    "menuDashboard" : "Dashboard",
+    "menuNbsapTargets" : "NBSAP Targets",
+    "menu7Nr" : "7th National Report"
 }

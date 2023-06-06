@@ -54,3 +54,4 @@
   }
   </script>
   
+<!-- <i18n src="../i18n/dist/pages/index.json"></i18n> -->
