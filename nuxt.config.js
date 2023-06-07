@@ -48,6 +48,8 @@ export default {
     { src: '~/plugins/coreui', mode: 'client' },
     { src: '~/plugins/font-awesome', mode: 'client' },
     { src: '~/plugins/i18n', mode: 'client' },
+    { src: '~/plugins/axios.js', mode:'client'},
+    { src: '~/plugins/register-apis.js', mode:'client'}
   ],
   /*
   ** Nuxt.js dev-modules
@@ -100,13 +102,15 @@ export default {
     ]
   },
   router: {
-    middleware: ['auth']
+    linkActiveClass: 'active-link', 
+    middleware: [ 'auth', 'security' ]
   },
   auth,
   i18n,
   publicRuntimeConfig: {
     ACCOUNTS_HOST_URL : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
     API_HOST_URL      : process.env.API_HOST_URL      || 'https://api.cbddev.xyz',
+    REALM_CONF_HOST   : process.env.REALM_CONF_HOST   || 'chm.cbddev.xyz',
     auth : {
       accountsHostUrl : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
       redirect: {

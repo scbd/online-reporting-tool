@@ -247,7 +247,11 @@ export default {
   components: {
     Ckeditor
   },
-  name: 'TargetNew',
+  name: 'TargetNew',meta:{
+    schema:'nationalReport6'
+  },
+  realmSchema:'nbsapNationalTargets',
+  roles:['publishingAuthority', 'nationalAuthorizedUser'],
   data(){
     return {
       document : {}

@@ -20,6 +20,8 @@
   <script>
   export default {
     name: 'Targets',
+    realmSchema:'nbsapNationalTargets',
+    auth:false,
     props: {
       items: Array,
       fields: {
