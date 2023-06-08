@@ -80,6 +80,12 @@ export default {
     /*
     ** You can extend webpack config here
     */
+    hotMiddleware: {
+      client: {
+        noInfo: true,
+        quiet:true
+      },
+    },
     extend (config, ctx) {
       // console.log(config.module.rules)
     },
@@ -110,7 +116,7 @@ export default {
   publicRuntimeConfig: {
     ACCOUNTS_HOST_URL : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
     API_HOST_URL      : process.env.API_HOST_URL      || 'https://api.cbddev.xyz',
-    REALM_CONF_HOST   : process.env.REALM_CONF_HOST   || 'chm.cbddev.xyz',
+    REALM_CONF_HOST   : process.env.REALM_CONF_HOST   || 'ort.cbddev.xyz',
     auth : {
       accountsHostUrl : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
       redirect: {

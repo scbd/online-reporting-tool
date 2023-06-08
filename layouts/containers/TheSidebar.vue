@@ -22,32 +22,28 @@
 
 
     <CSidebarNav>
-      <CSidebarNavItem name="Dashboard" icon="cil-speedometer" :to="localePath('/dashboard')"/>
-      <span>
+      <CSidebarNavItem v-if="$security.canAccessRoute('/dashboard')" name="Dashboard" icon="cil-speedometer" :to="localePath('/dashboard')"/>
+      <span v-if="$security.canAccessRoute('/nbsaps-targets')">
         <CSidebarNavTitle> NBSAPS </CSidebarNavTitle>
       </span>
       <span>
-        <CSidebarNavDropdown name="National Targets" :route="localePath('/nbsaps-targets')">  
-          <CSidebarNavItem name="All Targets" icon="cil-list" :to="localePath('/nbsaps-targets')"/>
-          <CSidebarNavItem name="My Country Targets" icon="cil-list" :to="localePath('/nbsaps-targets/overview')"/>
-          <!-- <CSidebarNavDropdown name="My Country" icon="cil-pencil" route="/nbsaps-targets/overview">            
-          <CSidebarNavItem name="Overview" icon="cil-list" to="/nbsaps-targets/overview"/>
-          <CSidebarNavItem name="New" icon="cil-pencil" to="/nbsaps-targets/new"/>
-          </CSidebarNavDropdown> -->
+        <CSidebarNavDropdown  name="National Targets" :route="localePath('/nbsaps-targets')">  
+          <CSidebarNavItem    name="All Targets" icon="cil-list" :to="localePath('/nbsaps-targets')"/>
+          <CSidebarNavItem    v-if="$security.canAccessRoute('/nbsaps-targets/overview')" name="My Country Targets" icon="cil-list" :to="localePath('/nbsaps-targets/overview')"/>          
         </CSidebarNavDropdown>
         <CSidebarNavTitle> {{$t('sidebar.nationalReports')}} </CSidebarNavTitle>
         <CSidebarNavItem        :name="$t('sidebar.6thNationalReport')" icon="cil-list" target="_blank" :href="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport6`" />
         <CSidebarNavDropdown    :name="$t('sidebar.7thNationalReport')" :route="localePath('/national-reports/nr7/edit')">
-          <CSidebarNavItem      :name="$t('sidebar.Reports')"    icon="cil-list" :to="localePath('/national-reports/nr7')"/>
-          <CSidebarNavDropdown  :name="$t('sidebar.myCountry')"  icon="cil-pencil" :route="localePath('/national-reports/nr7/edit')">            
-            <CSidebarNavItem    :name="$t('sidebar.overview')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit')"/>
-            <CSidebarNavItem    :name="$t('sidebar.sectionI')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-1')"/>
-            <CSidebarNavItem    :name="$t('sidebar.sectionII')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-2')"/>
-            <CSidebarNavItem    :name="$t('sidebar.sectionIII')" icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-3')"/>
-            <CSidebarNavItem    :name="$t('sidebar.sectionIV')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-4')"/>
-            <CSidebarNavItem    :name="$t('sidebar.sectionV')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-5')"/>
-            <CSidebarNavItem    :name="$t('sidebar.sectionVI')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-6')"/>
-            <CSidebarNavItem    :name="$t('sidebar.annex')"      icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-7')"/>
+          <CSidebarNavItem      :name="$t('sidebar.reports')"    icon="cil-list" :to="localePath('/national-reports/nr7')"/>
+          <CSidebarNavDropdown  v-if="$security.canAccessRoute('/national-reports/nr7/edit')" :name="$t('sidebar.myCountry')"  icon="cil-pencil" :route="localePath('/national-reports/nr7/edit')">            
+            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit')" :name="$t('sidebar.overview')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit')"/>
+            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-1')" :name="$t('sidebar.sectionI')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-1')"/>
+            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-2')" :name="$t('sidebar.sectionII')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-2')"/>
+            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-3')" :name="$t('sidebar.sectionIII')" icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-3')"/>
+            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-4')" :name="$t('sidebar.sectionIV')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-4')"/>
+            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-5')" :name="$t('sidebar.sectionV')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-5')"/>
+            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-6')" :name="$t('sidebar.sectionVI')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-6')"/>
+            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-7')" :name="$t('sidebar.annex')"      icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-7')"/>
           </CSidebarNavDropdown>          
         </CSidebarNavDropdown>
       </span>

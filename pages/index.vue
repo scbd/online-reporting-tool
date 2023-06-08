@@ -9,6 +9,9 @@ export default {
   components: {
     Dashboard,
   },
-  auth:false
+  auth:false,
+  mounted(){
+    this.$router.push('/dashboard')
+  }
 }
 </script>

@@ -1,8 +1,6 @@
 
 export default ({ route, $auth, redirect, store }) => {
-  
-  console.log('middleware', store.state.realmConf.realmConf, route)
- 
+   
   const options = getRouteComponentOptions(route, 'auth', 'roles', 'meta');  
   
   if (!checkUserAccess($auth, options, store)) redirect('/forbidden');
@@ -39,10 +37,10 @@ function checkUserAccess(auth, options, store) {
   if(schemaRoles && !auth.user.government)
     return false;
  
-  if (roles.length === 0 && schemaRoles.length === 0) return true;
+  if (roles?.length === 0 && schemaRoles.length === 0) return true;
 
   //if there roles specified on the page verify user has role(s)
-  if (roles.some((r) => auth.hasScope(r))) return true;
+  if (roles?.some((r) => auth.hasScope(r))) return true;
   
   //if there schema roles verify user has role(s)
   if(schemaRoles?.some((r) => auth.hasScope(r))) return true;

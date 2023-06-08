@@ -169,6 +169,9 @@ export default {
     Ckeditor,
   },
   name: 'Nr7Section3',
+  meta:{
+    schema:'nationalReport7'
+  },
   props: {},
   methods: {},
   data() {

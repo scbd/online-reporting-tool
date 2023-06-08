@@ -248,7 +248,7 @@
 export default {
   name: 'TargetOverview',
   meta:{
-    schema:'nationalReport6'
+    schema:'nbsapNationalTarget'
   },
   roles:['publishingAuthority', 'nationalAuthorizedUser'],
   props: {

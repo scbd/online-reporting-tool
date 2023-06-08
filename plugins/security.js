@@ -8,15 +8,9 @@ export default (context, inject) => {
 };
 
 const routeOptions = {};
-
 export class Security {
   constructor(ctx) {
     this.ctx = ctx;
-    
-    // get all routes options at start
-    ctx.app.router.options.routes.forEach((route) => {
-      route.component().then((options) => { routeOptions[route.name] = options; });
-    });
   }
 
   isInRoles(roles) {
@@ -24,21 +18,44 @@ export class Security {
     return roles.some((r) => ctx.$auth.hasScope(r));
   }
 
-  canAccessRoute(routeOrName) {
+  async canAccessRoute(routeOrName) {
     const { ctx } = this;
     try {
-      let options = {};
+      let options = undefined;
 
-      if (typeof (routeOrName) === 'object') options = getRouteComponentOptions(routeOrName, 'auth', 'roles', 'meta');
+      if (typeof (routeOrName) === 'object'){
+        options = getRouteComponentOptions(routeOrName, 'auth', 'roles', 'meta');
+      }
+      else if (typeof (routeOrName) === 'string') {
+        
+        options = routeOptions[routeOrName];
 
-      if (typeof (routeOrName) === 'string') options = routeOptions[routeOrName];
+        if(!options){
+          options = await this.loadRouteOptions(ctx, routeOrName)
+        }
+      }
+      options = options || {};
 
       if (!options || options.length === 0) return false;
 
       return checkUserAccess(ctx.$auth, options, ctx.store);
+
     } catch (e) {
       console.error(e);
       return false;
     }
+  }
+
+  async loadRouteOptions(ctx, routePath){
+    
+    if(routeOptions[routePath])
+      return routeOptions[routePath];
+
+    var route = ctx.app.router.options.routes.find(e=>e.path==routePath);
+    const options = await route.component()
+    routeOptions[routePath] = options; 
+
+    return routeOptions[routePath];
+    
   }
 }

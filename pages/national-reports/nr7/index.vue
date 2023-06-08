@@ -19,6 +19,10 @@
   <script>
   export default {
     name: 'Targets',
+    meta:{
+      schema:'nationalReport7'
+    },
+    auth:false,
     props: {
       items: Array,
       fields: {
