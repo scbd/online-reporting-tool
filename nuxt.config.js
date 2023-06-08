@@ -95,6 +95,7 @@ export default {
     ACCOUNTS_HOST_URL : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
     API_HOST_URL      : process.env.API_HOST_URL      || 'https://api.cbddev.xyz',
     auth : {
+      accountsHostUrl : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
       redirect: {
         login:  `${process.env.ACCOUNTS_HOST_URL}/signin`,
         logout: `${process.env.ACCOUNTS_HOST_URL}/logout`,
@@ -127,7 +128,7 @@ export default {
             autoFetch: true
           },
         }
-      }
+      },
     }
   },
   privateRuntimeConfig: {}
