@@ -18,7 +18,7 @@
   <!-- <i18n src="../i18n/dist/pages/index.json"></i18n> -->
   <script>
   export default {
-    name: 'Targets',
+    name: 'nr7Index',
     meta:{
       schema:'nationalReport7'
     },

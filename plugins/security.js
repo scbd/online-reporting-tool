@@ -1,7 +1,6 @@
 import { checkUserAccess, getRouteComponentOptions } from '~/middleware/security';
 
 export default (context, inject) => {
-  console.log(context);
   const instance = new Security(context);
 
   inject('security', instance);

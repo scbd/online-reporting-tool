@@ -24,7 +24,7 @@ export default {
     })
   },
   async fetch(){
-    await this.initRealmConf();
+    // await this.initRealmConf();
   }
 }
 </script>

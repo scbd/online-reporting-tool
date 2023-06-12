@@ -22,28 +22,28 @@
 
 
     <CSidebarNav>
-      <CSidebarNavItem v-if="$security.canAccessRoute('/dashboard')" name="Dashboard" icon="cil-speedometer" :to="localePath('/dashboard')"/>
-      <span v-if="$security.canAccessRoute('/nbsaps-targets')">
+      <CSidebarNavItem v-if="menuAccess[this.$appRoutes.DASHBOARD]" name="Dashboard" icon="cil-speedometer" :to="localePath('/dashboard')"/>
+      <span v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS]">
         <CSidebarNavTitle> NBSAPS </CSidebarNavTitle>
       </span>
       <span>
-        <CSidebarNavDropdown  name="National Targets" :route="localePath('/nbsaps-targets')">  
-          <CSidebarNavItem    name="All Targets" icon="cil-list" :to="localePath('/nbsaps-targets')"/>
-          <CSidebarNavItem    v-if="$security.canAccessRoute('/nbsaps-targets/overview')" name="My Country Targets" icon="cil-list" :to="localePath('/nbsaps-targets/overview')"/>          
+        <CSidebarNavDropdown  v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS]" name="National Targets" :route="localePath('/nbsaps-targets')">  
+          <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS]" name="All Targets" icon="cil-list" :to="localePath('/nbsaps-targets')"/>
+          <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS_OVERVIEW]" name="My Country Targets" icon="cil-list" :to="localePath('/nbsaps-targets/overview')"/>          
         </CSidebarNavDropdown>
         <CSidebarNavTitle> {{$t('sidebar.nationalReports')}} </CSidebarNavTitle>
-        <CSidebarNavItem        :name="$t('sidebar.6thNationalReport')" icon="cil-list" target="_blank" :href="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport6`" />
-        <CSidebarNavDropdown    :name="$t('sidebar.7thNationalReport')" :route="localePath('/national-reports/nr7/edit')">
-          <CSidebarNavItem      :name="$t('sidebar.reports')"    icon="cil-list" :to="localePath('/national-reports/nr7')"/>
-          <CSidebarNavDropdown  v-if="$security.canAccessRoute('/national-reports/nr7/edit')" :name="$t('sidebar.myCountry')"  icon="cil-pencil" :route="localePath('/national-reports/nr7/edit')">            
-            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit')" :name="$t('sidebar.overview')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit')"/>
-            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-1')" :name="$t('sidebar.sectionI')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-1')"/>
-            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-2')" :name="$t('sidebar.sectionII')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-2')"/>
-            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-3')" :name="$t('sidebar.sectionIII')" icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-3')"/>
-            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-4')" :name="$t('sidebar.sectionIV')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-4')"/>
-            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-5')" :name="$t('sidebar.sectionV')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-5')"/>
-            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-6')" :name="$t('sidebar.sectionVI')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-6')"/>
-            <CSidebarNavItem    v-if="$security.canAccessRoute('/national-reports/nr7/edit/section-7')" :name="$t('sidebar.annex')"      icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-7')"/>
+        <CSidebarNavItem        v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR6]"      :name="$t('sidebar.6thNationalReport')" icon="cil-list" target="_blank" :href="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport6`" />
+        <CSidebarNavDropdown    v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7]"      :name="$t('sidebar.7thNationalReport')" :route="localePath('/national-reports/nr7')">
+          <CSidebarNavItem      v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7]"      :name="$t('sidebar.reports')"    icon="cil-list" :to="localePath('/national-reports/nr7')"/>
+          <CSidebarNavDropdown  v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT]" :name="$t('sidebar.myCountry')"  icon="cil-pencil" :route="localePath('/national-reports/nr7/edit')">            
+            <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT]" :name="$t('sidebar.overview')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit')"/>
+            <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT]" :name="$t('sidebar.sectionI')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-1')"/>
+            <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT]" :name="$t('sidebar.sectionII')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-2')"/>
+            <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT]" :name="$t('sidebar.sectionIII')" icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-3')"/>
+            <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT]" :name="$t('sidebar.sectionIV')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-4')"/>
+            <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT]" :name="$t('sidebar.sectionV')"   icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-5')"/>
+            <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT]" :name="$t('sidebar.sectionVI')"  icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-6')"/>
+            <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT]" :name="$t('sidebar.annex')"      icon="cil-pencil" :to="localePath('/national-reports/nr7/edit/section-7')"/>
           </CSidebarNavDropdown>          
         </CSidebarNavDropdown>
       </span>
@@ -57,15 +57,37 @@
 
 <script>
 import { CSidebarNavItem } from '@coreui/vue'
+import { mapActions } from 'vuex';
 export default { 
   async fetch () { //Nuxt event to load async data at initial step
+    
+    await this.initRealmConf();    
+    
+    this.menuAccess = {
+      [this.$appRoutes.DASHBOARD] : true,
+      [this.$appRoutes.NBSAPS_TARGETS]            : true,
+      [this.$appRoutes.NBSAPS_TARGETS_OVERVIEW]   : false,
+      [this.$appRoutes.NATIONAL_REPORTS_NR6]      : true,
+      [this.$appRoutes.NATIONAL_REPORTS_NR7]      : true,
+      [this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT] : false,     
+      
+      
+    }
+    for (const route in this.menuAccess) {
+      if (Object.hasOwnProperty.call(this.menuAccess, route)) {
+        if(!this.menuAccess[route])
+          this.menuAccess[route] = await this.$security.canAccessRoute(route)
+      }
+    }
+    
   },
   name: 'TheSidebar',
   components: { CSidebarNavItem },
   data() {
     return {
       minimize: false,
-      show: 'responsive'
+      show: 'responsive',
+      menuAccess : {}
     }
   },
   mounted(){
@@ -77,6 +99,11 @@ export default {
     this.$root.$on('toggle-sidebar-mobile', () => {
       const sidebarClosed = this.show === 'responsive' || this.show === false
       this.show = sidebarClosed ? true : 'responsive'
+    })
+  },
+  methods:{
+    ...mapActions({
+      initRealmConf : 'realmConf/initialize'
     })
   }
 }

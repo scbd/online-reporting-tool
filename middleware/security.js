@@ -1,6 +1,10 @@
 
 export default ({ route, $auth, redirect, store }) => {
    
+  const realmConf = store.getters['realmConf/getRealm']
+  if(!realmConf.realm)//realmConf not loaded yet
+    return;
+
   const options = getRouteComponentOptions(route, 'auth', 'roles', 'meta');  
   
   if (!checkUserAccess($auth, options, store)) redirect('/forbidden');
@@ -28,22 +32,32 @@ function checkUserAccess(auth, options, store) {
 
   // get authorized roles from realm
   let schemaRoles = [];
-  if(options?.meta?.schema)
+  if(options?.meta?.schema){
     schemaRoles = store.getters['realmConf/schemaRoles'](options.meta.schema)
+  }
 
-  if (!roles && !schemaRoles) throw new Error(`Role is not configured for ${options.path}.`);
+  if (!roles && !schemaRoles){
+    throw new Error(`Role is not configured for ${options.path}.`);
+  }
   
   // verify user has government
-  if(schemaRoles && !auth.user.government)
+  if(schemaRoles && !auth.user?.government){
     return false;
+  }
  
-  if (roles?.length === 0 && schemaRoles.length === 0) return true;
+  if (roles?.length === 0 && schemaRoles.length === 0){ 
+    return true;
+  }
 
   //if there roles specified on the page verify user has role(s)
-  if (roles?.some((r) => auth.hasScope(r))) return true;
+  if (roles?.some((r) => auth.hasScope(r))){
+    return true;
+  }
   
   //if there schema roles verify user has role(s)
-  if(schemaRoles?.some((r) => auth.hasScope(r))) return true;
+  if(schemaRoles?.some((r) => auth.hasScope(r))){
+    return true;
+  }
 
   return false;
 }
