@@ -132,7 +132,6 @@ const $mutations = {
   [SET_REALM_CONF](state, realmConf = {}) {
     
     state.realmConf = realmConf
-    console.log(state.realmConf, realmConf)
   },
 
   [CLEAR](state) {

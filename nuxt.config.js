@@ -49,7 +49,8 @@ export default {
     { src: '~/plugins/font-awesome', mode: 'client' },
     { src: '~/plugins/i18n', mode: 'client' },
     { src: '~/plugins/axios.js', mode:'client'},
-    { src: '~/plugins/register-apis.js', mode:'client'}
+    { src: '~/plugins/register-apis.js', mode:'client'},
+    { src: '~/plugins/app-routes.js', mode:'client'}
   ],
   /*
   ** Nuxt.js dev-modules

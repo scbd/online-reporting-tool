@@ -254,7 +254,7 @@
   
   <script>
   export default {
-    name: 'Nr7Info',
+    name: 'Nr7View',
     auth:false,
     meta:{
       schema:'nationalReport7'
