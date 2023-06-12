@@ -111,5 +111,3 @@ export default {
   },
 }
 </script>
-
-<i18n src="../../i18n/dist/layouts/containers/TheHeader.json"></i18n>
