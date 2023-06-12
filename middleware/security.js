@@ -45,7 +45,7 @@ function checkUserAccess(auth, options, store) {
     return false;
   }
  
-  if (roles?.length === 0 && schemaRoles.length === 0){ 
+  if ((roles?.length||0) === 0 && (schemaRoles?.length||0) === 0){ 
     return true;
   }
 
