@@ -19,16 +19,16 @@
     />
     <CHeaderNav class="d-md-down-none mr-auto">
       <CHeaderNavItem class="px-3">
-        <CHeaderNavLink to="/dashboard"> Dashboard </CHeaderNavLink>
+        <CHeaderNavLink :to="localePath('/dashboard')"> {{$t('menuDashboard')}} </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="px-3">
-        <CHeaderNavLink to="/nbsaps-targets" exact>
-          NBSAP Targets
+        <CHeaderNavLink :to="localePath('/nbsaps-targets')" exact>
+          {{$t('menuNbsapTargets')}} 
         </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="px-3">
-        <CHeaderNavLink to="/national-reports/nr7/edit">
-          7th National Report
+        <CHeaderNavLink :to="localePath('/national-reports/nr7/edit')">
+          {{$t('menu7Nr')}} 
         </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="px-3">
@@ -62,18 +62,15 @@
       >
         <template #toggler>
           <CHeaderNavLink>
-            <div><CIcon name="cil-globe-alt" /> English</div>
+            <div><CIcon name="cil-globe-alt" /> {{languages[$i18n.locale]}}</div>
           </CHeaderNavLink>
         </template>
         <CDropdownHeader tag="div" class="text-center" color="light">
-          <strong>Languages</strong>
+          <strong>{{$t('languages')}}</strong>
         </CDropdownHeader>
-        <CDropdownItem> Arabic </CDropdownItem>
-        <CDropdownItem> Chinese </CDropdownItem>
-        <CDropdownItem> English </CDropdownItem>
-        <CDropdownItem> French </CDropdownItem>
-        <CDropdownItem> Spanish </CDropdownItem>
-        <CDropdownItem> Russian </CDropdownItem>
+
+        <CDropdownItem v-for="(locale, key) in languages" v-bind:key="key"  @click="switchLocale(key)"> {{locale}} </CDropdownItem>        
+
       </CDropdown>
     </CHeaderNav>
     <CSubheader class="px-3">
@@ -82,15 +79,35 @@
   </CHeader>
 </template>
 
+<i18n src="../../i18n/dist/layouts/containers/TheHeader.json"></i18n>
+
 <script>
 import TheHeaderDropdownAccnt from './TheHeaderDropdownAccnt'
 import BreadCrumbs from './BreadCrumbs.vue';
+import { languages } from '~/app-data/languages'
 
 export default {
   name: 'TheHeader',
   components: {
     TheHeaderDropdownAccnt,
     BreadCrumbs
+  },
+  data(){
+    return {
+      languages : { ...languages  }
+    }
+  },
+  async fetch () { //Nuxt event to load async data at initial step 
+  },
+  mounted(){
+  },
+  methods : {
+    switchLocale(locale){
+      this.$i18n.setLocale(locale);      
+      // Get path to switch current route for selected locale
+      const switchLocalePath = this.switchLocalePath(locale);
+      this.$router.push(switchLocalePath);       
+    }
   },
 }
 </script>

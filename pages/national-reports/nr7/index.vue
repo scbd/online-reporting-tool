@@ -7,7 +7,7 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <NuxtLink to="/nbsaps-targets/new">
             <CButton color="secondary" size="sm">
-              <font-awesome-icon icon="fa-plus" /> Submit new target
+              <font-awesome-icon icon="fa-plus" />NR7 All reports
             </CButton>
           </NuxtLink>
         </div>
@@ -15,8 +15,7 @@
       </CCardBody>
     </CCard>
   </template>
-  
-  <i18n  src="../../i18n/dist/pages/nbsap-targets/index.json"></i18n>
+  <!-- <i18n src="../i18n/dist/pages/index.json"></i18n> -->
   <script>
   export default {
     name: 'Targets',

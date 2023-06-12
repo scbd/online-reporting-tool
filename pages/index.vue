@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Dashboard from './Dashboard'
+import Dashboard from './dashboard'
 
 export default {
   components: {
