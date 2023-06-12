@@ -20,6 +20,10 @@
   <script>
   export default {
     name: 'Targets',
+    meta:{
+      schema:'nbsapNationalTarget'
+    },
+    auth:false,
     props: {
       items: Array,
       fields: {

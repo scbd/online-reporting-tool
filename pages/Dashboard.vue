@@ -217,7 +217,6 @@ export default {
     // }
 
     // console.log(this.globalHelper())
-    console.log(this.$config)
   },
   auth:false
 }

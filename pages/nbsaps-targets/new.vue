@@ -248,6 +248,10 @@ export default {
     Ckeditor
   },
   name: 'TargetNew',
+  meta:{
+    schema:'nbsapNationalTarget'
+  },
+  roles:['publishingAuthority', 'nationalAuthorizedUser'],
   data(){
     return {
       document : {}

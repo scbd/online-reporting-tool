@@ -247,6 +247,9 @@ export default {
     EditTargetReview,
   },
   name: 'Nr7Section5',
+  meta:{
+    schema:'nationalReport7'
+  },
   props: {},
   data() {
     return {

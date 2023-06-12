@@ -246,7 +246,11 @@
 
 <script>
 export default {
-  name: 'Targets',
+  name: 'TargetOverview',
+  meta:{
+    schema:'nbsapNationalTarget'
+  },
+  roles:['publishingAuthority', 'nationalAuthorizedUser'],
   props: {
     items: Array,
     fields: {
@@ -278,6 +282,6 @@ export default {
         ? 'danger'
         : 'primary'
     },
-  },
+  }
 }
 </script>

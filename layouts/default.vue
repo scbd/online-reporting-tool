@@ -4,6 +4,7 @@
 
 <script>
 import TheContainer from './containers/TheContainer'
+import { mapActions } from 'vuex';
 
 export default {
   components: {
@@ -16,6 +17,14 @@ export default {
         dir : this.$i18n.locale == 'ar' ? 'rtl' : 'ltr',
       }
     }
+  },
+  methods:{
+    ...mapActions({
+      initRealmConf : 'realmConf/initialize'
+    })
+  },
+  async fetch(){
+    await this.initRealmConf();
   }
 }
 </script>
