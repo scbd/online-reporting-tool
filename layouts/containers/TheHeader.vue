@@ -38,7 +38,7 @@
       </CHeaderNavItem>
     </CHeaderNav>
     <CHeaderNav class="mr-1">
-      <CHeaderNavItem class="d-md-down-none mx-2">
+      <!-- <CHeaderNavItem class="d-md-down-none mx-2">
         <CHeaderNavLink>
           <CIcon name="cil-bell" />
         </CHeaderNavLink>
@@ -52,8 +52,29 @@
         <CHeaderNavLink>
           <CIcon name="cil-envelope-open" />
         </CHeaderNavLink>
-      </CHeaderNavItem>
+      </CHeaderNavItem> -->
       <TheHeaderDropdownAccnt />
+      <CDropdown
+        in-nav
+        class="c-header-nav-items"
+        placement="bottom-end"
+        add-menu-classes="pt-0"
+      >
+        <template #toggler>
+          <CHeaderNavLink>
+            <div><CIcon name="cil-globe-alt" /> English</div>
+          </CHeaderNavLink>
+        </template>
+        <CDropdownHeader tag="div" class="text-center" color="light">
+          <strong>Languages</strong>
+        </CDropdownHeader>
+        <CDropdownItem> Arabic </CDropdownItem>
+        <CDropdownItem> Chinese </CDropdownItem>
+        <CDropdownItem> English </CDropdownItem>
+        <CDropdownItem> French </CDropdownItem>
+        <CDropdownItem> Spanish </CDropdownItem>
+        <CDropdownItem> Russian </CDropdownItem>
+      </CDropdown>
     </CHeaderNav>
     <CSubheader class="px-3">
       <BreadCrumbs />

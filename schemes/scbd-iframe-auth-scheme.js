@@ -1,120 +1,124 @@
-import {
-  LocalScheme, BaseScheme
-} from '~auth/runtime'
+import {  LocalScheme } from '~auth/runtime'
 
-export default class ScbdIframeAuthScheme extends BaseScheme {
 
-  constructor($auth, options) {
-    super( $auth, options )
-    // console.log(this)
-    this.$auth = $auth
-    this.name = options._name
+export default class ScbdIframeAuthScheme extends LocalScheme {
 
-    // this.options = options
+  constructor($auth, options, ...defaults) {
+
+    let authConf = {};
+    if($auth.ctx.$config.auth?.strategies){
+      authConf = $auth.ctx.$config.auth?.strategies[options.name]
+    }
+
+    // if redirect option are missing auth conf than the module uses its defaults, 
+    // so check if there are any custom redirect in conf else use the option one
+    $auth.options.redirect  = $auth.ctx.$config.auth?.redirect  || $auth.options?.redirect;
+    options.accountsHostUrl = $auth.ctx.$config.auth?.accountsHostUrl || options.accountsHostUrl
+
+    super( $auth, options,  ...defaults, authConf )
+
+    this.userTokenResolved = undefined;
+
+    //append current url as return url
+    this.$auth.onRedirect((to, from)=>{
+      return `${to}?returnUrl=${encodeURIComponent(window.location.origin)}${encodeURIComponent(from)}`
+    });
+
   }
 
-  mounted({
-    tokenCallback = () => this.$auth.reset(),
-    refreshTokenCallback = undefined
-  } = {}) {
+  async mounted(options= {}) {
+
+    const {
+      tokenCallback = () => this.$auth.reset(),
+      refreshTokenCallback = undefined
+    } = options;
+
     const {
       tokenExpired,
       refreshTokenExpired
     } = this.check(true)
 
-    // if (refreshTokenExpired && typeof refreshTokenCallback === 'function') {
-    //   refreshTokenCallback()
-    // } else if (tokenExpired && typeof tokenCallback === 'function') {
-    //   tokenCallback()
-    // }
+    if (refreshTokenExpired && typeof refreshTokenCallback === 'function') {
+      refreshTokenCallback()
+    } else if (tokenExpired && typeof tokenCallback === 'function') {
+      tokenCallback()
+    }
     
-
     // Initialize request interceptor
     this.initializeRequestInterceptor()
 
-    this.getIframeToken().then((token)=>{
-        console.log(token)
-        // Fetch user once
-        return this.$auth.fetchUserOnce()
-    })
+    const token = await this.getScbdIframeToken()
+    
+    // Fetch user once
+    return this.$auth.fetchUserOnce(this.options.endpoints.user.url)
+    
+
+  }
+  setUserToken(token) {
+    //TODO : set token expiry
+    this.token.set(token);
+    return this.fetchUser(this.options.endpoints.user.url);
   }
 
-  async login() {
-    this.fetchUser()
+  async login(endpoint, args) {
+    const response = await super.login(endpoint, args);
+
+    await this.setScbdIframeToken(response.data);
+
+    return response;
   }
 
   async logout() {
+    this.userTokenResolved = undefined;
+    
+    await this.setScbdIframeToken({authenticationToken:null});
+
     return this.$auth.reset()
   }
 
-  // Override `fetchUser` method of `local` scheme
-  async fetchUser(endpoint) {
-    // Token is required but not available
-    if (!this.check().valid) {
-      return
-    }
+  async getScbdIframeToken() {
 
-    // User endpoint is disabled.
-    if (!this.options.endpoints.user) {
-      this.$auth.setUser({})
-      return
-    }
+    this.userTokenResolved = undefined;
+    if (this.isServer()) return;
 
-    // Try to fetch user and then set
-    return this.$auth.requestWith(
-      this.name,
-      endpoint,
-      this.options.endpoints.user
-    ).then((response) => {
-      const user = getProp(response.data, this.options.user.property)
+    if (!this.options.accountsHostUrl) throw new Error('no accountsHostUrl given to SCBD auth scheme');
+   
+    const token = await this.resolveToken();
 
-      // Transform the user object
-      const customUser = {
-        ...user,
-        fullName: user.firstName + ' ' + user.lastName,
-        roles: ['user']
-      }
-
-      // Set the custom user
-      // The `customUser` object will be accessible through `this.$auth.user`
-      // Like `this.$auth.user.fullName` or `this.$auth.user.roles`
-      this.$auth.setUser(customUser)
-
-      return response
-    }).catch((error) => {
-      this.$auth.callOnError(error, {
-        method: 'fetchUser'
-      })
-    })
+    return token;
   }
 
-  async getIframeToken() {
-    
-    if (isServer()) return;
-    if (this.token) return this.token;
+  async setScbdIframeToken({authenticationToken, authenticationEmail, expiration}) {
 
-    if (!this.accountsHostUrl) throw new Error('no accountsHostUrl given to auth store state');
+    //TODO promisify
+    if (this.isServer()) return;
+
+    if (!this.options.accountsHostUrl) throw new Error('no accountsHostUrl given to SCBD auth scheme');
    
-    const accountsIframe = this.getIframe();    
-    const self = this;
+    var msg = {
+      type: "setAuthenticationToken",
+      authenticationToken,
+      authenticationEmail,
+      expiration
+    };
 
-    window.addEventListener('message', this.receivePostMessage);
-
-    accountsIframe.onload = () => {
-      const { contentWindow } = accountsIframe;
-      const type = 'getAuthenticationToken';
-      const msg = JSON.stringify({ type });
-
-      contentWindow.postMessage(msg, this.accountsHostUrl);
-
-      return resolveToken(self);
+    let accountsIframe = this.getScbdIframe();
+    if(!accountsIframe){
+      const onloadCallback = (newIframe)=> {
+        this.postIFrameMessage.bind(this, newIframe, JSON.stringify(msg))
+      }
+      this.createScbdIframe(onloadCallback)
     }
-
-    return this.useIframe(this.iFrameEl);
+    else{
+      this.postIFrameMessage(accountsIframe, JSON.stringify(msg));
+    }
 
   }
 
   receivePostMessage(event) {
+
+    if(!event.data || this.options.accountsHostUrl !== event.origin)
+        return
 
     const {
       type,
@@ -123,49 +127,89 @@ export default class ScbdIframeAuthScheme extends BaseScheme {
       expiration
     } = JSON.parse(event.data);
 
-    if (type !== 'authenticationToken') throw new Error('unsupported authentication message type');
-
-    this.token = {
-      token: authenticationToken,
-      email: authenticationEmail,
-      expiration: expiration
-    };
-
-    return this.token;
+    if (!['authenticationTokenUpdated', 'authenticationToken'].includes(type)) 
+      return;//throw new Error('unsupported authentication message type');
+      
+    if(type === 'authenticationToken'){
+      this.userTokenResolved = true;
+      this.options.token.maxAge = Date.parse(expiration) /1000
+      this.setUserToken(authenticationToken);
+    }
+    else if(type === 'authenticationTokenUpdated'){
+      this.getScbdIframeToken();
+    }
+    //{
+    //   authenticationToken: authenticationToken,
+    //   authenticationEmail: authenticationEmail,
+    //   expiration: expiration
+    // }
   }
 
-  getIframe() {
+  getScbdIframe() {
 
-    if (isServer()) return undefined;
+    if (this.isServer()) return undefined;
 
-    const iFrames = window.document.getElementsByTagName('iframe');
+    const iFrames = [...window.document.getElementsByTagName('iframe')].find(e=>e.name == 'scbdAuthFrame');
+    
+    if(iFrames){
+      const { origin } = new URL(iFrames.getAttribute('src'));
 
-    for (const anIframe of iFrames) {
-      const { origin } = new URL(anIframe.getAttribute('src'));
-
-      if (this.accountsHostUrl === origin)
-        return anIframe;
+      if (this.options.accountsHostUrl === origin)
+        return iFrames;
     }
+  }
+  createScbdIframe(onloadCallback){
 
     //Iframe was not found, embed one
     var sc = document.createElement("iframe");
-    sc.setAttribute("src", `${accountsHostUrl}/app/authorize.html`);
+    sc.setAttribute("src", `${this.options.accountsHostUrl}/app/authorize.html`);
     sc.setAttribute("name", "scbdAuthFrame");
     sc.setAttribute("style", "display:none;");
+    sc.onload = () => onloadCallback(sc);
     document.head.appendChild(sc);
-    
+
+
     return sc;
 
   }
 
-  resolveToken(self, ms = 300) {
-    return new Promise(function (resolve, reject) {
+  resolveToken(ms = 300) {
+    const self = this;
+    return new Promise(async function (resolve, reject) {
+
+      window.addEventListener('message', self.receivePostMessage.bind(self));
+
+      const type = 'getAuthenticationToken';
+      let accountsIframe = self.getScbdIframe();
+
+      if(!accountsIframe){
+
+        const onloadCallback = (newIframe)=> {
+          self.postIFrameMessage(newIframe, JSON.stringify({type}))
+        }
+
+        self.createScbdIframe(onloadCallback)
+      }
+      else{
+        self.postIFrameMessage(accountsIframe, msg);
+      }
+
       const interval = setInterval(function () {
-        if (self.token) {
-          resolve(self.token)
-          clearInterval(interval)
+        if (self.userTokenResolved) {
+          clearInterval(interval);
+          resolve(self.token.get())
+          window.removeEventListener('message', self.receivePostMessage.bind(self));
         }
       }, ms);
     });
+  }
+
+  postIFrameMessage(accountsIframe, message){
+    const { contentWindow } = accountsIframe;    
+    contentWindow.postMessage(message, this.options.accountsHostUrl);
+  }
+
+  isServer(){
+    return false;
   }
 }

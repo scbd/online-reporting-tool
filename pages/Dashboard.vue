@@ -210,5 +210,8 @@ export default {
       )
     },
   },
+  async mounted(){    
+  },
+  auth:false
 }
 </script>
