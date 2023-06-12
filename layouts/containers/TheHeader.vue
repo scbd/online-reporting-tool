@@ -79,9 +79,12 @@
   </CHeader>
 </template>
 
+<i18n src="../../i18n/dist/layouts/containers/TheHeader.json"></i18n>
+
 <script>
 import TheHeaderDropdownAccnt from './TheHeaderDropdownAccnt'
 import BreadCrumbs from './BreadCrumbs.vue';
+import { languages } from '~/app-data/languages'
 
 export default {
   name: 'TheHeader',
@@ -91,14 +94,7 @@ export default {
   },
   data(){
     return {
-      languages : {
-            "ar" : "العربية",
-            "zh" : "中文",
-            "en" : "English",
-            "es" : "Español",
-            "fr" : "Françai",
-            "ru" : "Русский"
-        }
+      languages : { ...languages  }
     }
   },
   async fetch () { //Nuxt event to load async data at initial step 
@@ -115,5 +111,3 @@ export default {
   },
 }
 </script>
-
-<i18n src="../../i18n/dist/layouts/containers/TheHeader.json"></i18n>

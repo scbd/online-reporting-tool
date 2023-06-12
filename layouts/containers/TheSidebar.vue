@@ -57,6 +57,8 @@
   </CSidebar>
 </template>
 
+<i18n src="../../i18n/dist/layouts/containers/TheSidebar.json"></i18n>
+
 <script>
 import { CSidebarNavItem } from '@coreui/vue'
 export default { 
@@ -94,5 +96,3 @@ export default {
   margin-top: 10px;
 }
 </style>
-
-<i18n src="../../i18n/dist/layouts/containers/TheSidebar.json"></i18n>

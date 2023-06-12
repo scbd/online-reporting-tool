@@ -16,6 +16,7 @@
     </CCard>
   </template>
   
+  <i18n  src="../../i18n/dist/pages/nbsap-targets/index.json"></i18n>
   <script>
   export default {
     name: 'Targets',
@@ -53,5 +54,3 @@
     },
   }
   </script>
-  
-<i18n  src="../../i18n/dist/pages/nbsap-targets/index.json"></i18n>

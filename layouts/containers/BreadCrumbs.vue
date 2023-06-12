@@ -7,8 +7,15 @@
 import { CBreadcrumb } from '@coreui/vue';
 import { capitalCase } from 'change-case';
 import { languages } from '~/app-data/languages'
+
+
 export default {
   name      : 'KBreadCrumbs',
+  data(){
+    return { 
+      languages : {...languages}
+    }
+  },
   components: { CBreadcrumb },
   methods   : { makeCrumbs },
 };
@@ -26,7 +33,7 @@ function makeCrumbs (){ //eslint-disable-line
 
     for (const [index, routeName] of pathSplit().entries()) { // eslint-disable-line
       if (!routeName) continue; // eslint-disable-line no-continue
-      if(!Object.keys(languages).includes(routeName)){
+      if(!Object.keys(this.languages).includes(routeName)){
 
         const text  = capitalCase(routeName);
         const to    = index ? `/${pathSplit().splice(0, index + 1).join('/')}` : `/${routeName}`;
