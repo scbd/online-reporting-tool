@@ -79,7 +79,7 @@
   </CHeader>
 </template>
 
-<i18n src="../../i18n/dist/layouts/containers/TheHeader.json"></i18n>
+<i18n src="~/i18n/dist/layouts/containers/TheHeader.json"></i18n>
 
 <script>
 import TheHeaderDropdownAccnt from './TheHeaderDropdownAccnt'
