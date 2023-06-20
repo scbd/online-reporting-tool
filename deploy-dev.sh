@@ -1,2 +1,1 @@
-docker build . -t scbd/online-reporting-tool && docker push scbd/online-reporting-tool && \
-ssh ubuntu@cbddev.xyz 'sudo docker pull scbd/online-reporting-tool && sudo docker service update --force frontend-2_nr7'
+ssh ubuntu@cbddev.xyz 'sudo docker pull scbd/online-reporting-tool:dev && sudo docker service update --force frontend-2_ort'
