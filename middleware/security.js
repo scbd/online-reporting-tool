@@ -30,6 +30,13 @@ function checkUserAccess(auth, options, store) {
 
   const { roles } = options;
 
+  if(!auth.user?.government){
+    const adminRoles = store.getters['realmConf/getRole']('administrator');
+    if (adminRoles?.some((r) => auth.hasScope(r))){
+      return true;
+    }
+  }
+
   // get authorized roles from realm
   let schemaRoles = [];
   if(options?.meta?.schema){
