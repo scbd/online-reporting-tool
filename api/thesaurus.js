@@ -14,7 +14,7 @@ export default class ThesaurusAPI extends ApiBase
   }
 
   async getDomainTerms(termIdentifier, params)  {
-    return this.$axios.get(`api/v2013/thesaurusdomains/${encodeURIComponent(termIdentifier)}/terms'`, { params })
+    return this.$axios.get(`api/v2013/thesaurus/domains/${encodeURIComponent(termIdentifier)}/terms`, { params })
                     .then(res => res.data)
                     .catch(tryCastToApiError);
   }

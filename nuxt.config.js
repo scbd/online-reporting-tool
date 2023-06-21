@@ -56,6 +56,11 @@ export default {
   ** Nuxt.js dev-modules
   */
   buildModules: [
+
+    // Nuxt 2 only:
+    // https://composition-api.nuxtjs.org/getting-started/setup#quick-start
+    '@nuxtjs/composition-api/module',
+    ['@pinia/nuxt', { disableVuex: false }],
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module'
   ],
@@ -67,6 +72,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     '@nuxtjs/i18n',
+    '@pinia/nuxt',
   ],
   /*
   ** Axios module configuration
@@ -88,7 +94,11 @@ export default {
       },
     },
     extend (config, ctx) {
-      // console.log(config.module.rules)
+      config.module.rules.push({
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
+      })
     },
     "babel": {
       "presets": [
@@ -155,5 +165,12 @@ export default {
       },
     }
   },
-  privateRuntimeConfig: {}
+  privateRuntimeConfig: {},
+  pinia: {
+    autoImports: [
+      // automatically imports `defineStore`
+      'defineStore', // import { defineStore } from 'pinia'
+      ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
+    ],
+  },
 }

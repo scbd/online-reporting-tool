@@ -6,6 +6,7 @@ import KmDocumentsApi         from '~/api/km-documents'
 import KmWorkflowsApi         from '~/api/km-workflows'
 import RealmConfigurationApi  from '~/api/realm-configuration'
 import SolrIndexApi           from '~/api/solr-index'
+import ThesaurusApi           from '~/api/thesaurus'
 
 export default (context, inject) => {
 
@@ -15,6 +16,7 @@ export default (context, inject) => {
   const kmWorkflows        = new KmWorkflowsApi       (context);
   const realmConfiguration = new RealmConfigurationApi(context);
   const solrIndex          = new SolrIndexApi         (context);
+  const thesaurus          = new ThesaurusApi         (context);
   
   const api = {
     articles          ,
@@ -23,6 +25,7 @@ export default (context, inject) => {
     kmWorkflows       ,
     realmConfiguration,
     solrIndex         ,
+    thesaurus         ,
   }
   
   inject('api',   api);

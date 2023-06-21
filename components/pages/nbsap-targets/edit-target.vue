@@ -247,7 +247,7 @@
     components: {
       Ckeditor
     },
-    name: 'TargetNew',
+    name: 'EditTarget',
     meta:{
       schema:'nbsapNationalTarget'
     },

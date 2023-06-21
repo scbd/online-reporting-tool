@@ -26,11 +26,14 @@
     "@fortawesome/vue-fontawesome": "2",
     "@nuxtjs/auth-next": "5.0.0-1667386184.dfbbb54",
     "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/composition-api": "^0.33.1",
     "@nuxtjs/i18n": "^7.3.1",
+    "@pinia/nuxt": "0.2.1",
     "@scbd/ckeditor5-build-inline-full": "^35.0.0",
     "change-case": "^4.1.2",
     "node-sass": "8",
     "nuxt": "2.16.3",
+    "pinia": "^2.1.4",
     "sass-loader": "10"
   },
   "devDependencies": {

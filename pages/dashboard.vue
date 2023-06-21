@@ -13,6 +13,7 @@
             <p class="mb-0">
               Are you a country representative responsible for 7NR submission,
               <a href="#">click here</a> to begin
+              {{ gbfTargets }}
             </p>
           </div>
         </CCol>
@@ -138,11 +139,21 @@
 </template>
 
 <script>
+import { mapState } from 'pinia'
+import { useThesaurusStore } from '~/stores/thesaurus';
+import { GBF_GLOBAL_TARGETS } from '~/constants';
+
 export default {
   name: 'Dashboard',
   components: {},
+  async fetch(){
+    const ex = useThesaurusStore(this.$pinia);
+    ex.loadDomainTerms(GBF_GLOBAL_TARGETS)   
+    console.log(ex.domainTerms) 
+  },
   data() {
     return {
+      gbfTargets:null,
       selected: 'Month',
       tableItems: [
         {
@@ -211,6 +222,8 @@ export default {
     },
   },
   async mounted(){
+    const ex = useThesaurusStore(this.$pinia);
+    this.gbfTargets = ex.getDomainTerms(GBF_GLOBAL_TARGETS);
     // if(!this.$auth.loggedIn){
     //   var t= await this.$auth.loginWith('ScbdIframeAuthStrategy', { data : { email:'blaise.fonseca@un.org', password:'' }})
     //   console.log(t)
