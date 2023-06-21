@@ -7,10 +7,21 @@ export default class ThesaurusAPI extends ApiBase
     super(options);
   }
 
-  async getTerm(params)  {
-    return this.$axios.get(`api/v2013/thesaurus`, { params })
+  async getDomains(domainIdentifier, params)  {
+    return this.$axios.get(`api/v2013/thesaurus/domains/${encodeURIComponent(domainIdentifier)}`, { params })
                     .then(res => res.data)
                     .catch(tryCastToApiError);
   }
 
+  async getDomainTerms(termIdentifier, params)  {
+    return this.$axios.get(`api/v2013/thesaurusdomains/${encodeURIComponent(termIdentifier)}/terms'`, { params })
+                    .then(res => res.data)
+                    .catch(tryCastToApiError);
+  }
+
+  async getTerm(termIdentifier, params)  {
+    return this.$axios.get(`api/v2013/thesaurus/terms/${encodeURIComponent(termIdentifier)}`, { params })
+                    .then(res => res.data)
+                    .catch(tryCastToApiError);
+  }
 }
