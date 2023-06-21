@@ -27,9 +27,9 @@
         <CSidebarNavTitle> NBSAPS </CSidebarNavTitle>
       </span>
       <span>
-        <CSidebarNavDropdown  v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS]" name="National Targets" :route="localePath('/nbsaps-targets')">  
-          <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS]" name="All Targets" icon="cil-list" :to="localePath('/nbsaps-targets')"/>
-          <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS_OVERVIEW]" name="My Country Targets" icon="cil-list" :to="localePath('/nbsaps-targets/overview')"/>          
+        <CSidebarNavDropdown  v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS]" name="National Targets" :route="localePath('/nbsap-targets')">  
+          <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS]" name="All Targets" icon="cil-list" :to="localePath('/nbsap-targets')"/>
+          <CSidebarNavItem    v-if="menuAccess[this.$appRoutes.NBSAPS_TARGETS_OVERVIEW]" name="My Country Targets" icon="cil-list" :to="localePath('/nbsap-targets/overview')"/>          
         </CSidebarNavDropdown>
         <CSidebarNavTitle> {{$t('sidebar.nationalReports')}} </CSidebarNavTitle>
         <CSidebarNavItem        v-if="menuAccess[this.$appRoutes.NATIONAL_REPORTS_NR6]"      :name="$t('sidebar.6thNationalReport')" icon="cil-list" target="_blank" :href="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport6`" />

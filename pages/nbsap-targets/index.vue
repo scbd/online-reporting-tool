@@ -5,7 +5,7 @@
       </CCardHeader>
       <CCardBody>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <NuxtLink to="/nbsaps-targets/new">
+          <NuxtLink to="/nbsap-targets/new">
             <CButton color="secondary" size="sm">
               <font-awesome-icon icon="fa-plus" /> Submit new target
             </CButton>
@@ -43,18 +43,7 @@
       fixed: Boolean,
       dark: Boolean,
     },
-    methods: {
-      getBadge(status) {
-        return status === 'Active'
-          ? 'success'
-          : status === 'Inactive'
-          ? 'secondary'
-          : status === 'Pending'
-          ? 'warning'
-          : status === 'Banned'
-          ? 'danger'
-          : 'primary'
-      },
+    methods: {      
     },
   }
   </script>

@@ -1,8 +1,8 @@
 const AppRoutes = {
 
     DASHBOARD                   : '/dashboard',
-    NBSAPS_TARGETS              : '/nbsaps-targets',
-    NBSAPS_TARGETS_OVERVIEW     : '/nbsaps-targets/overview',
+    NBSAPS_TARGETS              : '/nbsap-targets',
+    NBSAPS_TARGETS_OVERVIEW     : '/nbsap-targets/overview',
     
     NATIONAL_REPORTS_NR6        : '/national-reports/nr6',
 

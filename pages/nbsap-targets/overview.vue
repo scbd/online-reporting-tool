@@ -10,7 +10,7 @@
           <div class="card">
             <div class="card-body">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <NuxtLink to="/nbsaps-targets/new">
+                <NuxtLink to="/nbsap-targets/new">
                   <CButton color="secondary  m-1">
                     <font-awesome-icon icon="fa-plus" /> Submit new target
                   </CButton>

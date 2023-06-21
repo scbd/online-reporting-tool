@@ -22,7 +22,7 @@
         <CHeaderNavLink :to="localePath('/dashboard')"> {{$t('menuDashboard')}} </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="px-3">
-        <CHeaderNavLink :to="localePath('/nbsaps-targets')" exact>
+        <CHeaderNavLink :to="localePath('/nbsap-targets')" exact>
           {{$t('menuNbsapTargets')}} 
         </CHeaderNavLink>
       </CHeaderNavItem>

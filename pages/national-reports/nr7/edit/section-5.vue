@@ -10,7 +10,7 @@
     <CCardBody>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <!-- <button @click="submitDocument()" class="btn btn-primary">Save</button>  -->
-        <NuxtLink to="/nbsaps-targets/new">
+        <NuxtLink to="/nbsap-targets/new">
           <CButton color="success ml-1">
             <font-awesome-icon icon="fa-solid fa-plus" /> Add Global Target
           </CButton>
