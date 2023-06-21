@@ -144,8 +144,8 @@ const $actions = {
 
   async initialize({ commit }) {
     commit(CLEAR);
-
-    const realmConf = await this.$gaiaApi.queryRealmConf();
+    
+    const realmConf = await this.$api.realmConfiguration.queryRealmConfigurations();
     commit(SET_REALM_CONF, realmConf[0]);
 
 
