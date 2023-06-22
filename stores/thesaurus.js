@@ -4,14 +4,16 @@ export const useThesaurusStore = defineStore('thesaurus', {
   state: () => {
     return {
       domains: [],
-      domainTerms : {},
+      domainTerms : [],
       terms       : {}
     }
   },
   getters:{
-    getDomainTerms : (state)=> {
-      return (identifier)=>{
-        return state.domainTerms[identifier];
+    getDomainTerms(state){
+      return function (identifier){
+        const domainTerms = this.domainTerms.find(e=>e.identifier == identifier)
+        // console.log(identifier, domainTerms, this.domainTerms.length)
+        return domainTerms?.terms;
       }
     }
   },
@@ -23,18 +25,20 @@ export const useThesaurusStore = defineStore('thesaurus', {
           domain = await this.$api.thesaurs.getDomain(domainName);
           this.domains.push(domain);
         };
-  
     },  
     async loadDomainTerms(identifier){
         if(!identifier)
           return;
 
-        let term = this.domains?.find(e=>e.identifier==identifier)
-        if(!term){
-          term = await this.$nuxt.$api.thesaurus.getDomainTerms(identifier);
-          this.domainTerms[identifier] = term;
+        let terms = this.getDomainTerms(identifier)
+        if(!terms){
+          // console.log('calling await', identifier)
+          terms = await this.$nuxt.$api.thesaurus.getDomainTerms(identifier);
+          // console.log('finished await', identifier)
+          this.domainTerms.push({identifier, terms});
+          // console.log(this.getDomainTerms(identifier))
         }
-
+        return terms;
     },  
     async loadTerm(){
       await this.$api.thesaurs.getDomain(domainName);

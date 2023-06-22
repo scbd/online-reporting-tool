@@ -7,74 +7,124 @@
         <form>
           <div class="card">
             <div class="card-body">
-              <!-- <legend>Section 1</legend>
-            <hr></hr> -->
-              <div class="form-group">
-                <label for="exampleFormControlSelect1">Global Target</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>Global Target 1</option>
-                  <option>Global Target 2</option>
-                  <option>Global Target 3</option>
-                  <option>Global Target 4</option>
-                  <option>Global Target 5</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">National target title</label>
-                <input type="text" class="form-control" id="targetTitle" placeholder="Enter national target title">
-                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-              </div>
-              <div class="form-group">
-                <div class="card">
-                  <div class="card-header bg-secondary">
-                    For Developing countries
-                  </div>
-                  <div class="card-body">
-                    Are there elements of this target that are conditional (dependent on the provision of means of
-                    implementation) versus unconditional (to be implemented with national resources)?
-                    <ckeditor></ckeditor>
-                  </div>
+              {{ document }}
+                <!-- <div class="form-group">
+                    <div class="card">
+                    <div class="card-header bg-secondary">
+                        
+                    </div>
+                    <div class="card-body">
+                        
+                    </div>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header bg-secondary">
+                            General
+                        </div>
+                        <div class="card-body">                            
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Full name/title of national target</label>
+                                <input type="text" class="form-control" v-model="document.title" id="targetTitle" placeholder="Enter national target title">                                
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Alignment with global goals and targets</label>
+                                <multiselect
+                                    v-model="selectedGbfTargets"
+                                    class="validationClass"
+                                    label="name"
+                                    track-by="identifier"
+                                    placeholder="Global Goals and Targets"
+                                    :options="globalGoalsAndTargets"
+                                    :multiple="true"
+                                    :searchable="true"
+                                    :clear-on-select="false"
+                                    :close-on-select="false"
+                                    :disabled="false"
+                                    @input="$emit('change', $event)"
+                                >
+                                    <!-- <template slot="selection" slot-scope="{ values }">
+                                        <span v-if="values && values.length > 1" class="multiselect__single">
+                                            {{ values.length }} targets selected
+                                        </span>
+                                    </template> -->
+                                    <template slot="clear">
+                                        <div v-if="selectedGbfTargets && selectedGbfTargets.length"
+                                            class="multiselect__clear" @mousedown.prevent.stop="selectedGbfTargets = undefined; $emit('change', null)" ></div>
+                                    </template>
+                                </multiselect>
+                                <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Degree of alignment</label>
+                                <multiselect
+                                    v-model="document.degreeOfAlignment"
+                                    class="validationClass"
+                                    label="title"
+                                    track-by="identifier"
+                                    placeholder="Degree of alignment"
+                                    :options="degreeOfAlignments"
+                                    :multiple="false"
+                                    :disabled="false"
+                                    @input="$emit('change', $event)"
+                                >
+                                </multiselect>
+                                <small id="emailHelp" class="form-text text-muted">High = covers all elements of the global target; Medium = covers most elements of the global target; Low = covers at least one element of the global target</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Please explain briefly how this target aligns with and will contribute to
-                  the attainment of the global target(s):</label>
-                <ckeditor></ckeditor>
-              </div>
-  
-              <div class="form-group">
-                <label for="exampleInputEmail1">Headline indicators, and, if applicable, component, complementary and
-                  other national indicators) by which this national target will be monitored. </label>
-                <ckeditor></ckeditor>
-              </div>
-  
-              <div class="form-group">
-                <label for="exampleInputEmail1">Baseline against which progress will be measured</label>
-                <ckeditor></ckeditor>
-              </div>
-  
-              <div class="form-group">
-                <label for="exampleInputEmail1">Please summarize the main policy measures or actions that will be taken in
-                  order to achieve this (optional) </label>
-                <ckeditor></ckeditor>
-              </div>
-              <div class="form-group">
-                <label for="exampleFormControlSelect1">Other global targets to which this national target also
-                  contributes. Please check one or more from the drop-down menu </label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>Global Target 1</option>
-                  <option>Global Target 2</option>
-                  <option>Global Target 3</option>
-                  <option>Global Target 4</option>
-                  <option>Global Target 5</option>
-                </select>
-              </div>
-  
-              <div class="form-group">
-                <label for="exampleInputEmail1">Please indicate whether any other national targets also contribute to this
-                  global target, please provide texts of related national targets here: </label>
-                <ckeditor></ckeditor>
-              </div>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header bg-secondary">
+                            Alignment
+                        </div>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header bg-secondary">
+                            Indicators to be used to monitor this national target
+                        </div>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header bg-secondary">
+                            Non-State actor commitments
+                        </div>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header bg-secondary">
+                            Means of implementation and barriers to implementation
+                        </div>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header bg-secondary">
+                            Elements of the global targets
+                        </div>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
             </div>
           </div>
           <div class="card">
@@ -217,22 +267,7 @@
             </div>
           </div>
   
-          <!-- <div class="form-group">
-            <label for="sdf"></label>
-            <ckeditor></ckeditor>
-          </div>
-          <div class="form-group">
-            <label for="223"></label>
-          </div>
-  
-          <div class="form-group">
-                <label for="sdf"></label>
-                <ckeditor></ckeditor>
-              </div>
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div> -->
+         
         </form>
           <button @click="submitDocument()" class="btn btn-primary">Submit</button>
       </CCardBody>
@@ -242,26 +277,65 @@
   
   <script>
   
-  import Ckeditor from "@/components/controls/ck-editor";
+import Ckeditor from "@/components/controls/ck-editor";
+import Multiselect from 'vue-multiselect';
+import { degreeOfAlignments } from '~/app-data/degreeOfAlignments';
+import { useThesaurusStore } from '~/stores/thesaurus';
+import { GBF_GLOBAL_GOALS, GBF_GLOBAL_TARGETS, GBF_TARGETS_CONSIDERATIONS } from '~/constants';
+
   export default {
     components: {
-      Ckeditor
+      Ckeditor,
+      Multiselect
     },
     name: 'EditTarget',
     meta:{
       schema:'nbsapNationalTarget'
     },
     roles:['publishingAuthority', 'nationalAuthorizedUser'],
+    async fetch(){
+        const thesaurusStore = useThesaurusStore(this.$pinia);
+        //   console.log('calling actions')
+        const response = await Promise.all([
+            thesaurusStore.loadDomainTerms(GBF_GLOBAL_TARGETS),
+            thesaurusStore.loadDomainTerms(GBF_GLOBAL_GOALS),
+            thesaurusStore.loadDomainTerms(GBF_TARGETS_CONSIDERATIONS)
+        ]);
+        this.gbfTargets             = response[0]
+        this.gbfGoals               = response[1]
+        this.gbfTargetConsideration = response[2]
+        // console.log('finished actions')
+    },
+    fetchOnServer: false,
     data(){
       return {
-        document : {}
+        document : {},
+        selectedGbfTargets : [],
+        gbfTargets : null,
+        gbfGoals : null,
+        gbfTargetConsideration : null,
+        degreeOfAlignments:degreeOfAlignments
       }
+    },
+    computed:{
+        globalGoalsAndTargets(){
+            const goalsAndTargets = [...(this.gbfGoals||[]), ...(this.gbfTargets||[])]
+            return goalsAndTargets;
+        }
     },
     methods :{
       submitDocument (){
         this.$router.push('/nbsap-targets')
       }
-    }
+    },
+    async mounted(){
+
+        const ex = useThesaurusStore(this.$pinia);
+        this.gbfTargets             = this.gbfTargets             || ex.getDomainTerms(GBF_GLOBAL_TARGETS);
+        this.gbfGoals               = this.gbfGoals               || ex.getDomainTerms(GBF_GLOBAL_GOALS)
+        this.gbfTargetConsideration = this.gbfTargetConsideration || ex.getDomainTerms(GBF_TARGETS_CONSIDERATIONS)
+
+    },
   }
   </script>
   
