@@ -31,6 +31,7 @@ export default {
   ** Global CSS
   */
   css: [
+    { src: '~/node_modules/bootstrap/dist/css/bootstrap.css' },
     { src: '~/assets/scss/style.scss', lang: 'scss' },
     { src: '@fortawesome/fontawesome-svg-core/styles.css' }
   ],
@@ -45,6 +46,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: "~/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", mode: "client" },
     { src: '~/plugins/coreui', mode: 'client' },
     { src: '~/plugins/font-awesome', mode: 'client' },
     { src: '~/plugins/i18n', mode: 'client' },

@@ -23,11 +23,51 @@
                         <div class="card-header bg-secondary">
                             General
                         </div>
-                        <div class="card-body">                            
+                        <div class="card-body"> 
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Please select in which language(s) you wish to submit this record</label>
+                                <km-select
+                                    v-model="document.header.languages"
+                                    class="validationClass"
+                                    label="title"
+                                    track-by="code"
+                                    value-key="code"
+                                    placeholder="Language of record"
+                                    :options="options.languages"
+                                    @input="$emit('change', $event)"
+                                    :multiple="true"
+                                >
+                                    <!-- <template slot="selection" slot-scope="{ values }">
+                                        <span v-if="values && values.length > 1" class="multiselect__single">
+                                            {{ values.length }} targets selected
+                                        </span>
+                                    </template> -->
+                                    <template slot="clear">
+                                        <div v-if="selectedGbfTargets && selectedGbfTargets.length"
+                                            class="multiselect__clear" @mousedown.prevent.stop="selectedGbfTargets = undefined; $emit('change', null)" ></div>
+                                    </template>
+                                </km-select>
+                                <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
+                            </div>                           
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Full name/title of national target</label>
                                 <input type="text" class="form-control" v-model="document.title" id="targetTitle" placeholder="Enter national target title">                                
                             </div>
+                            
+
+                            <div class="form-group">
+                                <label for="enablingConditionsInfo">Please outline the main policy measures or actions that will be taken to achieve this national target. </label>
+                                <KmRichLstring v-model="document.mainPolicyOfMeasureOrActionInfo" :locales="document.header.languages"></KmRichLstring>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header bg-secondary">
+                            Alignment
+                        </div>
+                        <div class="card-body">
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Alignment with global goals and targets</label>
                                 <multiselect
@@ -57,6 +97,55 @@
                                 <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
                             </div>
                             <div class="form-group">
+                                <!-- <div class="form-check"> -->
+                                    <!-- <input type="checkbox" class="form-check-input" id="hasEnablingConditions" :value="true" v-model="document.hasEnablingConditions"> -->
+                                    <label class="form-check-label" for="hasEnablingConditions">Enabling conditions and/or other non-target elements of the KunmingMontreal Global Biodiversity Framework</label>
+                                    <br/>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="hasEnablingConditions" :value="true" v-model="document.hasEnablingConditions">
+                                        <label class="form-check-label" for="hasEnablingConditions">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="hasEnablingConditions" :value="false" v-model="document.hasEnablingConditions">
+                                        <label class="form-check-label" for="hasEnablingConditions">No</label>
+                                    </div>
+                                <!-- </div>   -->
+                            </div> 
+                            <div class="form-group" v-if="document.hasEnablingConditions">
+                                <div class="card">
+                                    <div class="card-body">                                                
+                                        <div class="form-group" >
+                                            <label for="relatedOtherProcesses">Enabling conditions </label>
+                                            <multiselect
+                                                v-model="document.enablingConditions"
+                                                class="validationClass"
+                                                label="name"
+                                                track-by="identifier"
+                                                placeholder="Enabling conditions"
+                                                :options="gbfTargetConsideration"
+                                                :multiple="true"
+                                                :searchable="true"
+                                                :clear-on-select="false"
+                                                :close-on-select="false"
+                                                :disabled="false"
+                                                @input="$emit('change', $event)"
+                                            >
+                                                <template slot="clear">
+                                                    <div v-if="document.enablingConditions && document.enablingConditions.length"
+                                                        class="multiselect__clear" @mousedown.prevent.stop="document.enablingConditions = undefined; $emit('change', null)" ></div>
+                                                </template>
+                                            </multiselect>
+                                            <small id="emailHelp" class="form-text text-muted">Please check all relevant enabling conditions.</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="enablingConditionsInfo">Please provide any information if available</label>
+                                            <!-- <ckeditor v-model="document.enablingConditionsInfo"></ckeditor> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="exampleFormControlSelect1">Degree of alignment</label>
                                 <multiselect
                                     v-model="document.degreeOfAlignment"
@@ -72,16 +161,10 @@
                                 </multiselect>
                                 <small id="emailHelp" class="form-text text-muted">High = covers all elements of the global target; Medium = covers most elements of the global target; Low = covers at least one element of the global target</small>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="card">
-                        <div class="card-header bg-secondary">
-                            Alignment
-                        </div>
-                        <div class="card-body">
-                            
+                            <div class="form-group">
+                                <label for="enablingConditionsInfo">Explanation, including which aspects of the goal or target are covered</label>
+                                <!-- <ckeditor v-model="document.degreeOfAlignmentInfo"></ckeditor> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -91,7 +174,59 @@
                             Indicators to be used to monitor this national target
                         </div>
                         <div class="card-body">
-                            
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Headline indicators</label>
+                                <multiselect
+                                    v-model="document.headlineIndicators"
+                                    class="validationClass"
+                                    label="title"
+                                    track-by="identifier"
+                                    placeholder="Headline indicators"
+                                    :options="headlineIndicators"
+                                    :multiple="false"
+                                    :disabled="false"
+                                    @input="$emit('change', $event)"
+                                >
+                                </multiselect>
+                                <small id="emailHelp" class="form-text text-muted">help!!!!</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="componentIndicators">Component indicators</label>
+                                <multiselect
+                                    v-model="document.componentIndicators"
+                                    class="validationClass"
+                                    label="title"
+                                    track-by="identifier"
+                                    placeholder="Component indicators"
+                                    :options="componentIndicators"
+                                    :multiple="false"
+                                    :disabled="false"
+                                    @input="$emit('change', $event)"
+                                >
+                                </multiselect>
+                                <small id="emailHelp" class="form-text text-muted">help!!!!</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="complementaryIndicators">Complementary indicators</label>
+                                <multiselect
+                                    v-model="document.complementaryIndicators"
+                                    class="validationClass"
+                                    label="title"
+                                    track-by="identifier"
+                                    placeholder="Complementary indicators"
+                                    :options="complementaryIndicators"
+                                    :multiple="false"
+                                    :disabled="false"
+                                    @input="$emit('change', $event)"
+                                >
+                                </multiselect>
+                                <small id="emailHelp" class="form-text text-muted">help!!!!</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="otherNationalIndicators">Other national indicators</label>
+                                
+                                <small id="emailHelp" class="form-text text-muted">Add your own indicators</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -222,7 +357,7 @@
                 </div>
                 <div class="form-group" v-if="document.hasOverlaps=='true'">
                   <label for="exampleInputEmail1">Full text of /target commitment submitted by other actor(s) (if different to national biodiversity target):</label>
-                  <ckeditor></ckeditor>
+                  <!-- <ckeditor></ckeditor> -->
                 </div>
                 <div class="form-group" v-if="document.hasOverlaps=='true'">
                   <label for="exampleInputEmail1">Actor(s) which submitted it</label>
@@ -239,11 +374,11 @@
               <h5 class="card-title">National Biodiversity Targets - beyond GBF alignment</h5>
               <div class="form-group">
                 <label for="sdf">Please indicate any national biodiversity target which is not already reflected in the table above</label>
-                <ckeditor></ckeditor>
+                <!-- <ckeditor></ckeditor> -->
               </div>
               <div class="form-group">
                 <label for="sdf">Please indicate which indicators will be used to measure progress towards its achievement.</label>
-                <ckeditor></ckeditor>
+                <!-- <ckeditor></ckeditor> -->
               </div>
             </div>
           </div>
@@ -254,15 +389,15 @@
             <div class="card-body">
                 <div class="form-group">
                   <label for="sdf">Please indicate the targets and/or actions that your country is taking to put in place the enabling conditions and/or other cross-cutting elements not in the targets of the GBF (Human rights based approach, respect for human rights, IPLC rights, gender equality, intergenerational equity, etc. Please also include here any national targets/actions directly related to the post 2020 Gender Plan of Action)</label>
-                  <ckeditor></ckeditor>
+                  <!-- <ckeditor></ckeditor> -->
                 </div>
                 <div class="form-group">
                   <label for="sdf">Please indicate which non-target element of the GBF or of the post 2020 Gender Plan of Action this national target or action aims to fulfil. </label>
-                  <ckeditor></ckeditor>
+                  <!-- <ckeditor></ckeditor> -->
                 </div>
                 <div class="form-group">
                   <label for="sdf">Please indicate which indicators will be used to measure progress towards the achievement or implementation of these targets/actions.</label>
-                  <ckeditor></ckeditor>
+                  <!-- <ckeditor></ckeditor> -->
                 </div>
             </div>
           </div>
@@ -278,15 +413,18 @@
   <script>
   
 import Ckeditor from "@/components/controls/ck-editor";
+import { KmRichLstring, KmSelect } from "~/components/controls";
 import Multiselect from 'vue-multiselect';
 import { degreeOfAlignments } from '~/app-data/degreeOfAlignments';
 import { useThesaurusStore } from '~/stores/thesaurus';
 import { GBF_GLOBAL_GOALS, GBF_GLOBAL_TARGETS, GBF_TARGETS_CONSIDERATIONS } from '~/constants';
+import { languages } from '@/app-data/languages'
 
+console.log(KmSelect)
   export default {
     components: {
-      Ckeditor,
-      Multiselect
+      Ckeditor,KmRichLstring,
+      Multiselect, KmSelect
     },
     name: 'EditTarget',
     meta:{
@@ -309,12 +447,25 @@ import { GBF_GLOBAL_GOALS, GBF_GLOBAL_TARGETS, GBF_TARGETS_CONSIDERATIONS } from
     fetchOnServer: false,
     data(){
       return {
-        document : {},
+        document : {
+            header : {
+                languages : ['en', 'ar', 'zh']
+            },
+            mainPolicyOfMeasureOrActionInfo : {
+                zh : 'Chine'
+            }
+        },
         selectedGbfTargets : [],
         gbfTargets : null,
         gbfGoals : null,
         gbfTargetConsideration : null,
-        degreeOfAlignments:degreeOfAlignments
+        degreeOfAlignments:degreeOfAlignments,
+        headlineIndicators:[],
+        componentIndicators:[],
+        complementaryIndicators:[],
+        options : {
+            languages :  Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}) 
+        }
       }
     },
     computed:{
@@ -324,18 +475,23 @@ import { GBF_GLOBAL_GOALS, GBF_GLOBAL_TARGETS, GBF_TARGETS_CONSIDERATIONS } from
         }
     },
     methods :{
-      submitDocument (){
-        this.$router.push('/nbsap-targets')
-      }
+        submitDocument (){
+            this.$router.push('/nbsap-targets')
+        },
+        
     },
     async mounted(){
 
-        const ex = useThesaurusStore(this.$pinia);
-        this.gbfTargets             = this.gbfTargets             || ex.getDomainTerms(GBF_GLOBAL_TARGETS);
-        this.gbfGoals               = this.gbfGoals               || ex.getDomainTerms(GBF_GLOBAL_GOALS)
-        this.gbfTargetConsideration = this.gbfTargetConsideration || ex.getDomainTerms(GBF_TARGETS_CONSIDERATIONS)
+        const thesaurusStore = useThesaurusStore(this.$pinia);
+        this.gbfTargets             = this.gbfTargets             || thesaurusStore.getDomainTerms(GBF_GLOBAL_TARGETS);
+        this.gbfGoals               = this.gbfGoals               || thesaurusStore.getDomainTerms(GBF_GLOBAL_GOALS)
+        this.gbfTargetConsideration = this.gbfTargetConsideration || thesaurusStore.getDomainTerms(GBF_TARGETS_CONSIDERATIONS)
 
     },
   }
-  </script>
-  
+</script>
+ <style>
+    .form-group label{
+        font-weight: 700;
+    }    
+</style>

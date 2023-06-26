@@ -15,7 +15,7 @@ export default class RealmConfigurationAPI extends ApiBase
 
   async getRealmConfigurationByHost(host)  {
 
-    return this.$axios.get(`api/v2017/articles/${host||this.$config.REALM_CONF_HOST||''}`)
+    return this.$axios.get(`api/v2018/realm-configurations/${host||this.$config.REALM_CONF_HOST||''}`)
                     .then(res => res.data)
                     .catch(tryCastToApiError);
   }

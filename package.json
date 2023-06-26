@@ -14,7 +14,7 @@
     "clean-reinstall": "rm -rf node_modules && yarn install"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "35.2.1",
+    "@ckeditor/ckeditor5-build-classic": "^38.0.1",
     "@ckeditor/ckeditor5-vue2": "^3.0.1",
     "@coreui/coreui": "3.4.0",
     "@coreui/icons": "^1.0.0",
@@ -30,7 +30,10 @@
     "@nuxtjs/i18n": "^7.3.1",
     "@pinia/nuxt": "0.2.1",
     "@scbd/ckeditor5-build-inline-full": "^35.0.0",
+    "bootstrap": "^5.3.0",
     "change-case": "^4.1.2",
+    "jquery": "^3.7.0",
+    "lodash": "^4.17.21",
     "node-sass": "8",
     "nuxt": "2.16.3",
     "pinia": "^2.1.4",

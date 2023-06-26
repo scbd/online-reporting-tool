@@ -1,7 +1,7 @@
 
 import ArticlesApi            from '~/api/articles'
 import CountriesApi           from '~/api/countries'
-import KmDocumentsApi         from '~/api/km-documents'
+import KmDocumentsApi         from '~/api/km-storage'
 import KmWorkflowsApi         from '~/api/km-workflows'
 import RealmConfigurationApi  from '~/api/realm-configuration'
 import SolrIndexApi           from '~/api/solr-index'

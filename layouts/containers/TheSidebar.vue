@@ -66,10 +66,10 @@ export default {
     this.menuAccess = {
       [this.$appRoutes.DASHBOARD] : true,
       [this.$appRoutes.NBSAPS_TARGETS]            : true,
-      [this.$appRoutes.NBSAPS_TARGETS_OVERVIEW]   : false,
+      [this.$appRoutes.NBSAPS_TARGETS_OVERVIEW]   : true,//false,
       [this.$appRoutes.NATIONAL_REPORTS_NR6]      : true,
       [this.$appRoutes.NATIONAL_REPORTS_NR7]      : true,
-      [this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT] : false,     
+      [this.$appRoutes.NATIONAL_REPORTS_NR7_EDIT] : true,//false,     
       
       
     }

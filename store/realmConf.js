@@ -145,7 +145,7 @@ const $actions = {
   async initialize({ commit }) {
     commit(CLEAR);
     
-    const realmConf = await this.$api.realmConfiguration.queryRealmConfigurations();
+    const realmConf = await this.$api.realmConfiguration.getRealmConfigurationByHost(this.$config.REALM_CONF_HOST);
     commit(SET_REALM_CONF, realmConf[0]);
 
 

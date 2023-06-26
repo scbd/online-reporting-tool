@@ -21,7 +21,7 @@
   export default {
     name: 'Targets',
     meta:{
-      schema:'nbsapNationalTarget'
+      schema:'nationalTarget7'
     },
     auth:false,
     props: {

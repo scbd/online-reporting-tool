@@ -1,15 +1,20 @@
 <template>
   <div>
     <div style="border: 1px solid #eee">
-      <!-- <ckeditor
-        :editor="editor"
-        :value="value"
-        :config="config"
-        :tagName="tagName"
-        :disabled="disabled"
-        @ready="onEditorReady"
-        @input="(event) => $emit('input', event)"
-      /> -->
+      <ckeditor
+          editor="classic"
+          tag-name="textarea"
+          v-model="binding"
+          :editor="editor"
+          :config="config"
+          :tagName="tagName"
+          :disabled="disabled"        
+          @ready="onEditorReady"
+          @focus="onEditorFocus"
+          @blur="onEditorBlur"
+          @input="onEditorInput"
+          @destroy="onEditorDestroy"
+        ></ckeditor>
     </div>
     <p style="border: 1px solid #eee; border-top: none">
       Attach files by dragging & dropping or pasting from clipboard
@@ -19,56 +24,31 @@
     </p>
   </div>
 </template>
+
 <script>
-let InlineEditor
-let CKEditor
+
+import { removeEmpty } from '@/util';
+let InlineEditor;
+let CKEditor;
 
 if (process.client) {
-  InlineEditor = require('@scbd/ckeditor5-build-inline-full/build/ckeditor.js')
-  //   InlineEditor = require('@ckeditor/ckeditor5-build-classic')
-  CKEditor = require('@ckeditor/ckeditor5-vue2')
+  // InlineEditor = require("@scbd/ckeditor5-build-inline-full/build/ckeditor.js");
+  InlineEditor = require('@ckeditor/ckeditor5-build-classic')
+  CKEditor = require("@ckeditor/ckeditor5-vue2");
 } else {
-  CKEditor = { component: { template: '<div></div>' } }
+  CKEditor = { component: { template: "<div></div>" } };
 }
 
-// class UploadAdapter {
-// 	constructor(loader) {
-// 		this.loader = loader;
-// 	}
-// 	upload() {
-// 		var loader = this.loader;
-// 		return this.loader.file.then(function(file){
-
-// 			var data = new FormData();
-// 			data.append('file', file);
-
-// 			return $http.post('/api/v2015/temporary-files', data, {
-// 				headers: {'Content-Type': undefined}
-// 			})
-// 			.then(function(success) {
-// 				loader.uploaded = success.data;
-// 				return success.data;
-// 			})
-// 			.catch(function(error) {
-// 				console.log(error);
-// 				throw error;
-// 			});
-
-// 		})
-// 	}
-// 	abort() {
-// 	}
-// }
-
 export default {
-  name: 'VCKEditor',
+  name: 'KmEditor',
   components: {
     ckeditor: CKEditor.component,
   },
   props: {
     value: {
       type: String,
-      required: false,
+      required: true,
+      default:''
     },
     tagName: {
       type: String,
@@ -86,323 +66,381 @@ export default {
     config: {
       type: Object,
       required: false,
-      // default: function () {
-      //   const self = this
-      //   return {
-      //     toolbar: [
-      //       'heading',
-      //       'fontSize',
-      //       'fontColor',
-      //       '|',
-      //       'bold',
-      //       'italic',
-      //       'link',
-      //       '|',
-      //       'indent',
-      //       'outdent',
-      //       'alignment',
-      //       '|',
-      //       'bulletedList',
-      //       'numberedList',
-      //       'blockQuote',
-      //       '|',
-      //       'highlight',
-      //       'insertTable',
-      //       '|',
-      //       'imageInsert',
-      //       'mediaEmbed',
-      //       '|',
-      //       'horizontalLine',
-      //       '|',
-      //       'removeFormat',
-      //       'undo',
-      //       'redo',
-      //       '|',
-      //       'pageBreak',
-      //       'brBreak',
-      //     ],
-      //     alignment: {
-      //       options: ['left', 'right', 'center', 'justify'],
-      //     },
-      //     highlight: {
-      //       options: [
-      //         {
-      //           model: 'greenMarker',
-      //           class: 'marker-green',
-      //           title: 'Green marker',
-      //           color: 'var(--ck-highlight-marker-green)',
-      //           type: 'marker',
-      //         },
-      //         {
-      //           model: 'redPen',
-      //           class: 'pen-red',
-      //           title: 'Red pen',
-      //           color: 'var(--ck-highlight-pen-red)',
-      //           type: 'pen',
-      //         },
-      //       ],
-      //     },
-      //     fontColor: {
-      //       colors: [
-      //         {
-      //           color: 'hsl(0, 0%, 0%)',
-      //           label: 'Black',
-      //         },
-      //         {
-      //           color: 'hsl(0, 0%, 30%)',
-      //           label: 'Dim grey',
-      //         },
-      //         {
-      //           color: 'hsl(0, 0%, 60%)',
-      //           label: 'Grey',
-      //         },
-      //         {
-      //           color: 'hsl(0, 0%, 90%)',
-      //           label: 'Light grey',
-      //         },
-      //         {
-      //           color: 'hsl(0, 0%, 100%)',
-      //           label: 'White',
-      //           hasBorder: true,
-      //         },
-      //       ],
-      //     },
-      //     list: {
-      //       properties: {
-      //         styles: true,
-      //         startIndex: true,
-      //         reversed: true,
-      //       },
-      //     },
-      //     image: {
-      //       styles: ['alignCenter', 'alignLeft', 'alignRight'],
-      //       resizeOptions: [
-      //         { name: 'imageResize:original', label: 'Original', value: null },
-      //         { name: 'imageResize:25', label: '25%', value: '25' },
-      //         { name: 'imageResize:50', label: '50%', value: '50' },
-      //         { name: 'imageResize:75', label: '75%', value: '75' },
-      //       ],
-      //       toolbar: [
-      //         'imageTextAlternative',
-      //         'toggleImageCaption',
-      //         '|',
-      //         'imageStyle:inline',
-      //         'imageStyle:wrapText',
-      //         'imageStyle:breakText',
-      //         'imageStyle:side',
-      //         '|',
-      //         'resizeImage',
-      //       ],
-      //       insert: {
-      //         integrations: ['insertImageViaUrl'],
-      //       },
-      //     },
-      //     heading: {
-      //       options: [
-      //         {
-      //           model: 'paragraph',
-      //           title: 'Paragraph',
-      //           class: 'ck-heading_paragraph',
-      //         },
-      //         {
-      //           model: 'heading1',
-      //           view: 'h1',
-      //           title: 'Heading 1',
-      //           class: 'ck-heading_heading1',
-      //         },
-      //         {
-      //           model: 'heading2',
-      //           view: 'h2',
-      //           title: 'Heading 2',
-      //           class: 'ck-heading_heading2',
-      //         },
-      //         {
-      //           model: 'heading3',
-      //           view: 'h3',
-      //           title: 'Heading 3',
-      //           class: 'ck-heading_heading3',
-      //         },
-      //       ],
-      //     },
-      //     fontSize: {
-      //       options: [8, 10, 12, 14, 'default', 18, 20, 22],
-      //       supportAllValues: true,
-      //     },
-      //     table: {
-      //       contentToolbar: [
-      //         'tableColumn',
-      //         'tableRow',
-      //         'mergeTableCells',
-      //         'tableProperties',
-      //         'tableCellProperties',
-      //         'toggleTableCaption',
-      //       ],
-      //     },
-      //     link: {
-      //       addTargetToExternalLinks: false,
-      //       defaultProtocol: 'https://',
-      //       decorators: [
-      //         {
-      //           mode: 'manual',
-      //           label: 'Downloadable',
-      //           attributes: {
-      //             download: 'download',
-      //           },
-      //         },
-      //         {
-      //           mode: 'manual',
-      //           label: 'Open in a new tab',
-      //           attributes: {
-      //             target: '_blank',
-      //             rel: 'noopener noreferrer',
-      //           },
-      //         },
-      //       ],
-      //     },
-      //     wordCount: {
-      //       onUpdate: function (stats) {
-      //         self.wordCount = stats.words
-      //       },
-      //     },
-      //     mediaEmbed: {
-      //       previewsInData: false,
-      //       removeProviders: ['youtube'],
-      //       extraProviders: [
-      //         {
-      //           name: 'youtubePlaylist',
-      //           url: [/^youtube\.com\/embed\/videoseries\?list=([\w-]+)/],
-      //           html: (match) => {
-      //             const id = match[1]
+      default: function () {
+        const self = this
+        return {
+          toolbar: [
+            'heading',
+            'fontSize',
+            'fontColor',
+            '|',
+            'bold',
+            'italic',
+            'link',
+            '|',
+            'indent',
+            'outdent',
+            'alignment',
+            '|',
+            'bulletedList',
+            'numberedList',
+            'blockQuote',
+            '|',
+            'highlight',
+            'insertTable',
+            '|',
+            'imageInsert',
+            'mediaEmbed',
+            '|',
+            'horizontalLine',
+            '|',
+            'removeFormat',
+            'undo',
+            'redo',
+            '|',
+            'pageBreak',
+            'brBreak',
+          ],
+          alignment: {
+            options: ['left', 'right', 'center', 'justify'],
+          },
+          highlight: {
+            options: [
+              {
+                model: 'greenMarker',
+                class: 'marker-green',
+                title: 'Green marker',
+                color: 'var(--ck-highlight-marker-green)',
+                type: 'marker',
+              },
+              {
+                model: 'redPen',
+                class: 'pen-red',
+                title: 'Red pen',
+                color: 'var(--ck-highlight-pen-red)',
+                type: 'pen',
+              },
+            ],
+          },
+          fontColor: {
+            colors: [
+              {
+                color: 'hsl(0, 0%, 0%)',
+                label: 'Black',
+              },
+              {
+                color: 'hsl(0, 0%, 30%)',
+                label: 'Dim grey',
+              },
+              {
+                color: 'hsl(0, 0%, 60%)',
+                label: 'Grey',
+              },
+              {
+                color: 'hsl(0, 0%, 90%)',
+                label: 'Light grey',
+              },
+              {
+                color: 'hsl(0, 0%, 100%)',
+                label: 'White',
+                hasBorder: true,
+              },
+            ],
+          },
+          list: {
+            properties: {
+              styles: true,
+              startIndex: true,
+              reversed: true,
+            },
+          },
+          image: {
+            styles: ['alignCenter', 'alignLeft', 'alignRight'],
+            resizeOptions: [
+              { name: 'imageResize:original', label: 'Original', value: null },
+              { name: 'imageResize:25', label: '25%', value: '25' },
+              { name: 'imageResize:50', label: '50%', value: '50' },
+              { name: 'imageResize:75', label: '75%', value: '75' },
+            ],
+            toolbar: [
+              'imageTextAlternative',
+              'toggleImageCaption',
+              '|',
+              'imageStyle:inline',
+              'imageStyle:wrapText',
+              'imageStyle:breakText',
+              'imageStyle:side',
+              '|',
+              'resizeImage',
+            ],
+            insert: {
+              integrations: ['insertImageViaUrl'],
+            },
+          },
+          heading: {
+            options: [
+              {
+                model: 'paragraph',
+                title: 'Paragraph',
+                class: 'ck-heading_paragraph',
+              },
+              {
+                model: 'heading1',
+                view: 'h1',
+                title: 'Heading 1',
+                class: 'ck-heading_heading1',
+              },
+              {
+                model: 'heading2',
+                view: 'h2',
+                title: 'Heading 2',
+                class: 'ck-heading_heading2',
+              },
+              {
+                model: 'heading3',
+                view: 'h3',
+                title: 'Heading 3',
+                class: 'ck-heading_heading3',
+              },
+            ],
+          },
+          fontSize: {
+            options: [8, 10, 12, 14, 'default', 18, 20, 22],
+            supportAllValues: true,
+          },
+          table: {
+            contentToolbar: [
+              'tableColumn',
+              'tableRow',
+              'mergeTableCells',
+              'tableProperties',
+              'tableCellProperties',
+              'toggleTableCaption',
+            ],
+          },
+          link: {
+            addTargetToExternalLinks: false,
+            defaultProtocol: 'https://',
+            decorators: [
+              {
+                mode: 'manual',
+                label: 'Downloadable',
+                attributes: {
+                  download: 'download',
+                },
+              },
+              {
+                mode: 'manual',
+                label: 'Open in a new tab',
+                attributes: {
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                },
+              },
+            ],
+          },
+          wordCount: {
+            onUpdate: function (stats) {
+              self.wordCount = stats.words
+            },
+          },
+          mediaEmbed: {
+            previewsInData: false,
+            removeProviders: ['youtube'],
+            extraProviders: [
+              {
+                name: 'youtubePlaylist',
+                url: [/^youtube\.com\/embed\/videoseries\?list=([\w-]+)/],
+                html: (match) => {
+                  const id = match[1]
 
-      //             return (
-      //               '<div style="position: relative; padding-bottom: 100%; height: 0; padding-bottom: 56.2493%;">' +
-      //               `<iframe src="https://www.youtube.com/embed/videoseries?list=${id}" ` +
-      //               'style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" ' +
-      //               'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>' +
-      //               '</iframe>' +
-      //               '</div>'
-      //             )
-      //           },
-      //         },
-      //         {
-      //           name: 'youtube',
-      //           url: [
-      //             /^(?:m\.)?youtube\.com\/watch\?v=([\w-]+)/,
-      //             /^(?:m\.)?youtube\.com\/v\/([\w-]+)/,
-      //             /^youtube\.com\/embed\/([\w-]+)/,
-      //             /^youtu\.be\/([\w-]+)/,
-      //           ],
-      //           html: (match) => {
-      //             const id = match[1]
+                  return (
+                    '<div style="position: relative; padding-bottom: 100%; height: 0; padding-bottom: 56.2493%;">' +
+                    `<iframe src="https://www.youtube.com/embed/videoseries?list=${id}" ` +
+                    'style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" ' +
+                    'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>' +
+                    '</iframe>' +
+                    '</div>'
+                  )
+                },
+              },
+              {
+                name: 'youtube',
+                url: [
+                  /^(?:m\.)?youtube\.com\/watch\?v=([\w-]+)/,
+                  /^(?:m\.)?youtube\.com\/v\/([\w-]+)/,
+                  /^youtube\.com\/embed\/([\w-]+)/,
+                  /^youtu\.be\/([\w-]+)/,
+                ],
+                html: (match) => {
+                  const id = match[1]
 
-      //             return (
-      //               '<div style="position: relative; padding-bottom: 100%; height: 0; padding-bottom: 56.2493%;">' +
-      //               `<iframe src="https://www.youtube.com/embed/${id}" ` +
-      //               'style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" ' +
-      //               'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>' +
-      //               '</iframe>' +
-      //               '</div>'
-      //             )
-      //           },
-      //         },
-      //         {
-      //           name: 'customEmbed',
-      //           url: [
-      //             /cdn\.knightlab\.com\/libs\/timeline3\/.*/,
-      //             /uploads\.knightlab\.com\/storymapjs\/.*/,
-      //             /cdn\.knightlab\.com\/libs\/juxtapose\/.*/,
-      //             /uploads\.knightlab\.com\/scenevr\/.*/,
-      //             /cdn\.knightlab\.com\/libs\/storyline\/.*/,
-      //             /theydrawit\.mucollective\.co\/vis\/.*/,
-      //             /youtube\.com\/embed\/videoseries.*/,
-      //           ],
-      //           html: function (id) {
-      //             return (
-      //               '<figure class="media">' +
-      //               '	<oembed url="' +
-      //               id.input +
-      //               '">' +
-      //               '<a href="' +
-      //               id.input +
-      //               '">' +
-      //               id.input +
-      //               '</a>' +
-      //               '	</oembed>' +
-      //               '</figure>'
-      //             )
-      //           },
-      //         },
-      //       ],
-      //     },
-      //   }
-      // },
+                  return (
+                    '<div style="position: relative; padding-bottom: 100%; height: 0; padding-bottom: 56.2493%;">' +
+                    `<iframe src="https://www.youtube.com/embed/${id}" ` +
+                    'style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" ' +
+                    'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>' +
+                    '</iframe>' +
+                    '</div>'
+                  )
+                },
+              },
+              {
+                name: 'customEmbed',
+                url: [
+                  /cdn\.knightlab\.com\/libs\/timeline3\/.*/,
+                  /uploads\.knightlab\.com\/storymapjs\/.*/,
+                  /cdn\.knightlab\.com\/libs\/juxtapose\/.*/,
+                  /uploads\.knightlab\.com\/scenevr\/.*/,
+                  /cdn\.knightlab\.com\/libs\/storyline\/.*/,
+                  /theydrawit\.mucollective\.co\/vis\/.*/,
+                  /youtube\.com\/embed\/videoseries.*/,
+                ],
+                html: function (id) {
+                  return (
+                    '<figure class="media">' +
+                    '	<oembed url="' +
+                    id.input +
+                    '">' +
+                    '<a href="' +
+                    id.input +
+                    '">' +
+                    id.input +
+                    '</a>' +
+                    '	</oembed>' +
+                    '</figure>'
+                  )
+                },
+              },
+            ],
+          },
+        }
+      },
     },
   },
   data() {
     return {
       wordCount: 0,
       editor: InlineEditor,
+      isUploadingFile:false
     }
-  },
+  },  
   methods: {
     onEditorReady(ed) {
-      // const self = this;
+      const self = this;
 
-      // ed.plugins.get('FileRepository').createUploadAdapter = function(loader){
-      // 	// var uploadAdapter = new UploadAdapter(loader);
-      // 	// uploadAdapter.loader.on('change:uploaded' , onEditorImageUploaded);
-      // 	// return uploadAdapter;
-      // };
+
+      class UploadAdapter {
+        constructor(loader) {
+          this.loader = loader;
+        }
+        upload() {
+          var loader = this.loader;
+          return this.loader.file.then(function(file){
+
+            var data = new FormData();
+            data.append('file', file);
+
+            return self.$api.kmStorage.attachments.uploadTempFile(data, { headers: {'Content-Type': undefined}})
+            .then(function(success) {
+              loader.uploaded = success.data;
+              return success.data;
+            })
+            .catch(function(error) {
+              console.debug(error);
+              throw error;
+            });
+
+          })
+        }
+        abort() {
+        }
+      }
+      ed.plugins.get('FileRepository').createUploadAdapter = function(loader){
+      	var uploadAdapter = new UploadAdapter(loader);
+      	uploadAdapter.loader.on('change:uploaded' , onEditorImageUploaded);
+      	return uploadAdapter;
+      };
 
       ed.editing.view.document.on('paste', function (eventInfo, data) {
-        // console.log('paste', eventInfo, data)
+        console.debug('paste', eventInfo, data)
       })
 
-      ed.editing.view.document.on('drop', function (eventInfo, data) {
-        // if(data.dataTransfer){
-        // 	self.isUploadingFile[lang] = true;
-        // 	var fileUploads = _.map(data.dataTransfer.files, function(file, i){
-        // 		var formData = new FormData();
-        // 		var file = data.dataTransfer.files[i];
-        // 		var fileType = file.type.substring( 0, 5 );
-        // 		var mimeType = storage.attachments.getMimeType(file);
-        // 		if(fileType == "image")
-        // 			return;
-        // 		if (storage.attachments.mimeTypeWhitelist.indexOf(mimeType) < 0) {
-        // 			alert("File type not supported: " + mimeType + "(" + file.name + ")");
-        // 			return;
-        // 		}
-        // 		formData.append('file', file);
-        // 		return $http.post('/api/v2015/temporary-files', formData, {
-        // 			headers: {'Content-Type': undefined}
-        // 		})
-        // 		.then(function(success) {
-        // 			var viewFragment = ed.data.processor.toView('&nbsp;<a target="_blank" href="'+success.data.url+'">'+success.data.metadata.fileName+ '</a>' );
-        // 			var modelFragment = ed.data.toModel(viewFragment);
-        // 			ed.model.insertContent( modelFragment);
-        // 			self.onFileUpload({data:success.data});
-        // 		})
-        // 	});
-        // 	$q.all(fileUploads)
-        // 	.finally(function(){
-        // 		self.isUploadingFile[lang] = false
-        // 	});
-        // }
+      ed.editing.view.document.on('drop', async function (eventInfo, data) {
+        console.debug('drop', eventInfo, data)
+        if(data.dataTransfer){
+        	self.isUploadingFile = true;
+        	var fileUploads = _.map(data.dataTransfer.files, function(file, i){
+        		var formData = new FormData();
+        		var file = data.dataTransfer.files[i];
+        		var fileType = file.type.substring( 0, 5 );
+        		var mimeType = self.$api.kmStorage.attachments.getMimeType(file);
+
+        		if(fileType == "image")
+        			return;
+        		if (self.$api.kmStorage.attachments.mimeTypeWhitelist().indexOf(mimeType) < 0) {
+        			alert("File type not supported: " + mimeType + "(" + file.name + ")");
+        			return;
+        		}
+
+        		formData.append('file', file);
+
+        		self.$api.kmStorage.attachments.uploadTempFile(formData, { headers: {'Content-Type': undefined}})
+        		.then(function(success) {
+        			var viewFragment = ed.data.processor.toView('&nbsp;<a rel="noopener noreferrer" target="_blank" href="'+success.data.url+'">'+success.data.metadata.fileName+ '</a>' );
+        			var modelFragment = ed.data.toModel(viewFragment);
+        			ed.model.insertContent( modelFragment);
+        			self.onFileUpload({data:success.data});
+        		})
+        	});
+
+          try{
+        	  await Promise.all(fileUploads)
+          }
+          catch(e){
+            console.debug(e)
+          }
+        	finally{
+        		self.isUploadingFile = false
+        	};
+        }
       })
 
       ed.model.document.on('change:data', function (eventInfo, data) {
-        // var binding = angular.copy(self.binding||{});
-        // binding[lang] = ed.getData();
-        // self.binding = binding;
+        // console.debug('change', eventInfo, data)
       })
 
-      // function onEditorImageUploaded(eventInfo, name, value, oldValue){
-      // 	if(value.url){
-      // 		self.onFileUpload({data:value})
-      // 	}
-      // }
+      function onEditorImageUploaded(eventInfo, name, value, oldValue){
+      	if(value.url){
+      		self.onFileUpload({data:value})
+      	}
+      }
     },
+    onEditorFocus( event, editor ) {
+      // console.debug( 'Editor focused.', { event, editor } );
+    },
+    onEditorBlur( event, editor ) {
+      // console.debug( 'Editor blurred.', { event, editor } );
+    },
+    onEditorInput( data, event, editor ) {            
+    },
+    onEditorDestroy( editor ) {
+      // console.debug( 'Editor destroyed.', { editor } );
+    },
+    onFileUpload(params){
+      console.debug('file uploaded', params)
+    }
   },
+  computed:{
+    binding: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit('input', value);
+      }
+    }
+  }
 }
 </script>
 <style>

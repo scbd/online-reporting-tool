@@ -11,7 +11,7 @@
     },
     name: 'TargetEditNew',
     meta:{
-      schema:'nbsapNationalTarget'
+      schema:'nationalTarget7'
     },
     roles:['publishingAuthority', 'nationalAuthorizedUser'],
     data(){
