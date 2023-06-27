@@ -57,11 +57,13 @@
 
 <script>
 import { CSidebarNavItem } from '@coreui/vue'
-import { mapActions } from 'vuex';
+import { mapStores }            from 'pinia'
+import { useRealmConfStore }    from '@/stores/realmConf';
+
 export default { 
   async fetch () { //Nuxt event to load async data at initial step
     
-    await this.initRealmConf();    
+    await this.realmConfStore.loadRealmConf();    
     
     this.menuAccess = {
       [this.$appRoutes.DASHBOARD] : true,
@@ -101,10 +103,8 @@ export default {
       this.show = sidebarClosed ? true : 'responsive'
     })
   },
-  methods:{
-    ...mapActions({
-      initRealmConf : 'realmConf/initialize'
-    })
+  computed:{
+    ...mapStores(useRealmConfStore)
   }
 }
 </script>

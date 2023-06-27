@@ -1,8 +1,15 @@
 
-export default ({ route, $auth, redirect, store }) => {
+
+import { mapStores }            from 'pinia'
+import { useRealmConfStore }    from '@/stores/realmConf';
+import { ROLES }                from '@/constants';
+
+let realmConfStore;
+
+export default ({ route, $auth, redirect, store, $pinia }) => {
    
-  const realmConf = store.getters['realmConf/getRealm']
-  if(!realmConf.realm)//realmConf not loaded yet
+  realmConfStore = mapStores(useRealmConfStore).realmConfStore();
+  if(!realmConfStore.realmConf?.realm)//realmConf not loaded yet
     return;
 
   const options = getRouteComponentOptions(route, 'auth', 'roles', 'meta');  
@@ -31,7 +38,7 @@ function checkUserAccess(auth, options, store) {
   const { roles } = options;
 
   if(!auth.user?.government){
-    const adminRoles = store.getters['realmConf/getRole']('administrator');
+    const adminRoles = realmConfStore.getRole(ROLES.ADMINSTRATOR);
     if (adminRoles?.some((r) => auth.hasScope(r))){
       return true;
     }
@@ -40,7 +47,7 @@ function checkUserAccess(auth, options, store) {
   // get authorized roles from realm
   let schemaRoles = [];
   if(options?.meta?.schema){
-    schemaRoles = store.getters['realmConf/schemaRoles'](options.meta.schema)
+    schemaRoles = realmConfStore.schemaRoles(options.meta.schema)
   }
 
   if (!roles && !schemaRoles){

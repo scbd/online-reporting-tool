@@ -4,7 +4,6 @@
 
 <script>
 import TheContainer from './containers/TheContainer'
-import { mapActions } from 'vuex';
 
 export default {
   components: {
@@ -19,9 +18,9 @@ export default {
     }
   },
   methods:{
-    ...mapActions({
-      initRealmConf : 'realmConf/initialize'
-    })
+    // ...mapActions({
+    //   initRealmConf : 'realmConf/initialize'
+    // })
   },
   async fetch(){
     // await this.initRealmConf();
