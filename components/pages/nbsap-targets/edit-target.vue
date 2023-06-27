@@ -25,7 +25,7 @@
                         </div>
                         <div class="card-body"> 
                             <div class="form-group">
-                                <label for="exampleFormControlSelect1">Government</label>{{ isAdmin }}
+                                <label for="exampleFormControlSelect1">Government</label>
                                 <km-select
                                     v-model="document.government.identifier"
                                     class="validationClass"
@@ -36,8 +36,7 @@
                                     :options="countryList"
                                     :disabled="!isAdmin"
                                     @input="$emit('change', $event)">
-                                </km-select>
-                                
+                                </km-select>                                
                             </div>   
 
                             <div class="form-group">
@@ -53,23 +52,12 @@
                                     @input="$emit('change', $event)"
                                     :multiple="true"
                                 >
-                                    <!-- <template slot="selection" slot-scope="{ values }">
-                                        <span v-if="values && values.length > 1" class="multiselect__single">
-                                            {{ values.length }} targets selected
-                                        </span>
-                                    </template> -->
-                                    <template slot="clear">
-                                        <div v-if="selectedGbfTargets && selectedGbfTargets.length"
-                                            class="multiselect__clear" @mousedown.prevent.stop="selectedGbfTargets = undefined; $emit('change', null)" ></div>
-                                    </template>
                                 </km-select>
-                                <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
                             </div>                           
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Full name/title of national target</label>
                                 <input type="text" class="form-control" v-model="document.title" id="targetTitle" placeholder="Enter national target title">                                
-                            </div>
-                            
+                            </div>                            
 
                             <div class="form-group">
                                 <label for="enablingConditionsInfo">Please outline the main policy measures or actions that will be taken to achieve this national target. </label>
@@ -95,6 +83,8 @@
                                     placeholder="Global Goals and Targets"
                                     :options="globalGoalsAndTargets"
                                     @input="$emit('change', $event)"
+                                    :multiple="true"
+                                    :close-on-select="false"
                                 >
                                 </km-select>
                                 <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
@@ -119,30 +109,28 @@
                                     <div class="card-body">                                                
                                         <div class="form-group" >
                                             <label for="relatedOtherProcesses">Enabling conditions </label>
-                                            <!-- <multiselect
+                                            <km-select
                                                 v-model="document.enablingConditions"
                                                 class="validationClass"
                                                 label="name"
                                                 track-by="identifier"
+                                                value-key="identifier"
                                                 placeholder="Enabling conditions"
                                                 :options="gbfTargetConsideration"
                                                 :multiple="true"
-                                                :searchable="true"
-                                                :clear-on-select="false"
                                                 :close-on-select="false"
-                                                :disabled="false"
                                                 @input="$emit('change', $event)"
                                             >
                                                 <template slot="clear">
                                                     <div v-if="document.enablingConditions && document.enablingConditions.length"
-                                                        class="multiselect__clear" @mousedown.prevent.stop="document.enablingConditions = undefined; $emit('change', null)" ></div>
+                                                        class="km-select__clear" @mousedown.prevent.stop="document.enablingConditions = undefined; $emit('change', null)" ></div>
                                                 </template>
-                                            </multiselect> -->
+                                            </km-select>
                                             <small id="emailHelp" class="form-text text-muted">Please check all relevant enabling conditions.</small>
                                         </div>
                                         <div class="form-group">
                                             <label for="enablingConditionsInfo">Please provide any information if available</label>
-                                            <!-- <ckeditor v-model="document.enablingConditionsInfo"></ckeditor> -->
+                                            <KmRichLstring v-model="document.enablingConditionsInfo" :locales="document.header.languages"></KmRichLstring>
                                         </div>
                                     </div>
                                 </div>
@@ -150,23 +138,24 @@
 
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Degree of alignment</label>
-                                <!-- <multiselect
+                                <km-select
                                     v-model="document.degreeOfAlignment"
                                     class="validationClass"
                                     label="title"
                                     track-by="identifier"
+                                    value-key="identifier"
                                     placeholder="Degree of alignment"
                                     :options="degreeOfAlignments"
                                     :multiple="false"
                                     :disabled="false"
                                     @input="$emit('change', $event)"
                                 >
-                                </multiselect> -->
+                                </km-select>
                                 <small id="emailHelp" class="form-text text-muted">High = covers all elements of the global target; Medium = covers most elements of the global target; Low = covers at least one element of the global target</small>
                             </div>
                             <div class="form-group">
                                 <label for="enablingConditionsInfo">Explanation, including which aspects of the goal or target are covered</label>
-                                <!-- <ckeditor v-model="document.degreeOfAlignmentInfo"></ckeditor> -->
+                                <KmRichLstring v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></KmRichLstring>
                             </div>
                         </div>
                     </div>
@@ -179,50 +168,53 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Headline indicators</label>
-                                <multiselect
+                                <km-select
                                     v-model="document.headlineIndicators"
                                     class="validationClass"
                                     label="title"
                                     track-by="identifier"
+                                    value-key="identifier"
                                     placeholder="Headline indicators"
                                     :options="headlineIndicators"
                                     :multiple="false"
                                     :disabled="false"
                                     @input="$emit('change', $event)"
                                 >
-                                </multiselect>
+                                </km-select>
                                 <small id="emailHelp" class="form-text text-muted">help!!!!</small>
                             </div>
                             <div class="form-group">
                                 <label for="componentIndicators">Component indicators</label>
-                                <multiselect
+                                <km-select
                                     v-model="document.componentIndicators"
                                     class="validationClass"
                                     label="title"
                                     track-by="identifier"
+                                    value-key="identifier"
                                     placeholder="Component indicators"
                                     :options="componentIndicators"
                                     :multiple="false"
                                     :disabled="false"
                                     @input="$emit('change', $event)"
                                 >
-                                </multiselect>
+                                </km-select>
                                 <small id="emailHelp" class="form-text text-muted">help!!!!</small>
                             </div>
                             <div class="form-group">
                                 <label for="complementaryIndicators">Complementary indicators</label>
-                                <multiselect
+                                <km-select
                                     v-model="document.complementaryIndicators"
                                     class="validationClass"
                                     label="title"
                                     track-by="identifier"
+                                    value-key="identifier"
                                     placeholder="Complementary indicators"
                                     :options="complementaryIndicators"
                                     :multiple="false"
                                     :disabled="false"
                                     @input="$emit('change', $event)"
                                 >
-                                </multiselect>
+                                </km-select>
                                 <small id="emailHelp" class="form-text text-muted">help!!!!</small>
                             </div>
                             <div class="form-group">
@@ -416,7 +408,6 @@
   <script>
   
 import { KmRichLstring, KmSelect } from "~/components/controls";
-import Multiselect from 'vue-multiselect';
 import { mapStores }            from 'pinia'
 import Ckeditor from "@/components/controls/ck-editor";
 import { THEASURUS, ROLES } from '~/constants';
@@ -428,8 +419,9 @@ import { useRealmConfStore }    from '@/stores/realmConf';
 
 export default {
     components: {
-      Ckeditor,KmRichLstring,
-      Multiselect, KmSelect
+      Ckeditor,
+      KmRichLstring,
+      KmSelect
     },
     name: 'EditTarget',
     meta:{
@@ -472,10 +464,13 @@ export default {
     computed:{
         globalGoalsAndTargets(){
             const goalsAndTargets = [
-                ...(this.thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS)||[]), 
-                ...(this.thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS)||[])
+                ...((this.thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
+                ...((this.thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))), 
             ]
             return goalsAndTargets;
+        },
+        gbfTargetConsideration(){
+            return (this.thesaurusStore.getDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
         },
         degreeOfAlignments(){
             return degreeOfAlignments

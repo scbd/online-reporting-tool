@@ -1,15 +1,16 @@
 <template>
-  <div>    
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <div :id="`km-rich-lstring-${uid}`">    
+    <ul class="nav nav-tabs" :id="`lstringTab-${uid}`" role="tablist">
       <li class="nav-item" role="presentation" v-for="locale in locales" :key="locale">
-        <button class="nav-link" :id="`${locale}-tab`" :class="{'active': locale == activeLocale}" 
-        data-bs-toggle="tab" :data-bs-target="`#tabContent_${locale}`" type="button" @click="onTabActivate(locale)"
+        <button class="nav-link" :id="`${locale}-tab-${uid}`" :class="{'active': locale == activeLocale}" 
+        data-bs-toggle="tab" :data-bs-target="`#tabContent-${locale}-${uid}`" type="button" @click="onTabActivate(locale)"
           role="tab" :aria-controls="`${locale}`" aria-selected="true">{{ locale.toUpperCase() }}</button>
       </li>
     </ul>
-    <div class="tab-content" id="myTabContent">
+    <div class="tab-content" :id="`lstringTabContent-${uid}`">
       <div class="tab-pane fade" :class="{'active': locale == activeLocale}" 
-        v-for="locale in locales" :key="locale" :id="`tabContent_${locale}`" role="tabpanel" :aria-labelledby="`${locale}-tab`">   
+        v-for="locale in locales" :key="locale" :id="`tabContent-${locale}-${uid}`" role="tabpanel" 
+          :aria-labelledby="`${locale}-tab-${uid}`">   
           <km-editor v-if="activeLocale==locale" v-model="binding[activeLocale]" :locale="activeLocale"></km-editor>         
       </div>  
     </div>
@@ -19,6 +20,7 @@
 <script>
 import { removeEmpty } from '@/util';
 import $ from 'jquery';
+import { makeUid } from '@coreui/utils/src'
 // import { Tab } from 'bootstrap'
 import KmEditor from './ck-editor.vue'
 
@@ -46,17 +48,15 @@ export default {
   },
   data() {
     return {
-      activeLocale : ''
+      activeLocale : '',
+      uid : makeUid()
     };
   },
   watch:{
     locales : function(newVal){
-      if(!newVal.includes(this.activeLocale)){
-        console.log(newVal)
+      if(!newVal.includes(this.activeLocale)){        
         this.activeLocale = newVal[0];
-        setTimeout(()=>{
-          $('#tabContent_'+this.activeLocale).addClass('show')
-        }, 100);
+        this.showTab();
       }
     }
   },
@@ -79,17 +79,20 @@ export default {
     onTabActivate(locale){      
         this.activeLocale = locale;
     },
+    showTab(){
+      setTimeout(()=>{
+        $(this.$el.querySelector(`#tabContent-${this.activeLocale}-${this.uid}`)).addClass('show')
+      }, 200)
+    }
   },
   mounted(){
     
     this.activeLocale = this.locales[0];
-    //TODO : revisit, using jqyery because below code is not working
-    setTimeout(()=>{
+    //TODO : revisit, using jquery because below code is not working
     //   var someTabTriggerEl = document.querySelector('#tabContent_'+this.activeLocale)
     //   var tab = new Tab(someTabTriggerEl)
     //   tab.show()
-      $('#tabContent_'+this.activeLocale).addClass('show')
-    }, 200)
+    this.showTab();
 
     if(this.value){
       this.binding = {...this.value||{}};
