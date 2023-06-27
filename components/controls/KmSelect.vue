@@ -13,13 +13,14 @@
       :clear-on-select="clearOnSelect"
       :close-on-select="closeOnSelect"      
       :searchable="searchable"
+      :disabled="disabled"
       @search-change="onEventTextChange"
       @input="$emit('change', $event)"
     > 
       <slot name="clear">
         <template slot="clear">
           <div
-            v-if="selectItems.length"
+            v-if="selectItems.length && !disabled"
             class="multiselect__clear"
             @mousedown.prevent.stop="selectItems = null; $emit('change', null)"
           />
@@ -69,7 +70,7 @@ export default {
       type   : [ Boolean, Function ],
       default: null,
     },
-
+    disabled  : {  type: Boolean, default: false },
   },
   data(){
     return {

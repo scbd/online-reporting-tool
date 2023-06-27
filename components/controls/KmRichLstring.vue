@@ -10,7 +10,7 @@
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade" :class="{'active': locale == activeLocale}" 
         v-for="locale in locales" :key="locale" :id="`tabContent_${locale}`" role="tabpanel" :aria-labelledby="`${locale}-tab`">   
-          <km-editor v-if="activeLocale==locale" v-model="binding[activeLocale]"></km-editor>         
+          <km-editor v-if="activeLocale==locale" v-model="binding[activeLocale]" :locale="activeLocale"></km-editor>         
       </div>  
     </div>
   </div>
@@ -52,8 +52,11 @@ export default {
   watch:{
     locales : function(newVal){
       if(!newVal.includes(this.activeLocale)){
+        console.log(newVal)
         this.activeLocale = newVal[0];
-        this.$el.querySelector(`#lstringTab_${this.activeLocale}`)?.click()
+        setTimeout(()=>{
+          $('#tabContent_'+this.activeLocale).addClass('show')
+        }, 100);
       }
     }
   },

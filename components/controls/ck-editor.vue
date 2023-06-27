@@ -6,7 +6,7 @@
           tag-name="textarea"
           v-model="binding"
           :editor="editor"
-          :config="config"
+          :config="editorConfig"
           :tagName="tagName"
           :disabled="disabled"        
           @ready="onEditorReady"
@@ -63,12 +63,21 @@ export default {
       type: String,
       required: false,
     },
+    locale: {
+      type: String,
+      required: false,
+      default: 'en',
+    },
     config: {
       type: Object,
       required: false,
       default: function () {
         const self = this
         return {
+          language: {
+            ui: this.locale,
+            content: this.locale
+          },
           toolbar: [
             'heading',
             'fontSize',
@@ -241,6 +250,7 @@ export default {
           },
           wordCount: {
             onUpdate: function (stats) {
+              console.log(stats)
               self.wordCount = stats.words
             },
           },
@@ -438,6 +448,14 @@ export default {
       },
       set(value) {
         this.$emit('input', value);
+      }
+    },
+    editorConfig:{
+      get(){
+        if(this.rtl){
+          this.config
+        }
+        return this.config;
       }
     }
   }

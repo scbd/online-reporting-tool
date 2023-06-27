@@ -25,6 +25,22 @@
                         </div>
                         <div class="card-body"> 
                             <div class="form-group">
+                                <label for="exampleFormControlSelect1">Government</label>{{ isAdmin }}
+                                <km-select
+                                    v-model="document.government.identifier"
+                                    class="validationClass"
+                                    label="name"
+                                    track-by="code"
+                                    value-key="code"
+                                    placeholder="Government"
+                                    :options="countryList"
+                                    :disabled="!isAdmin"
+                                    @input="$emit('change', $event)">
+                                </km-select>
+                                
+                            </div>   
+
+                            <div class="form-group">
                                 <label for="exampleFormControlSelect1">Please select in which language(s) you wish to submit this record</label>
                                 <km-select
                                     v-model="document.header.languages"
@@ -70,30 +86,17 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Alignment with global goals and targets</label>
-                                <multiselect
+                                <km-select
                                     v-model="selectedGbfTargets"
                                     class="validationClass"
                                     label="name"
                                     track-by="identifier"
+                                    value-key="identifier"
                                     placeholder="Global Goals and Targets"
                                     :options="globalGoalsAndTargets"
-                                    :multiple="true"
-                                    :searchable="true"
-                                    :clear-on-select="false"
-                                    :close-on-select="false"
-                                    :disabled="false"
                                     @input="$emit('change', $event)"
                                 >
-                                    <!-- <template slot="selection" slot-scope="{ values }">
-                                        <span v-if="values && values.length > 1" class="multiselect__single">
-                                            {{ values.length }} targets selected
-                                        </span>
-                                    </template> -->
-                                    <template slot="clear">
-                                        <div v-if="selectedGbfTargets && selectedGbfTargets.length"
-                                            class="multiselect__clear" @mousedown.prevent.stop="selectedGbfTargets = undefined; $emit('change', null)" ></div>
-                                    </template>
-                                </multiselect>
+                                </km-select>
                                 <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
                             </div>
                             <div class="form-group">
@@ -116,7 +119,7 @@
                                     <div class="card-body">                                                
                                         <div class="form-group" >
                                             <label for="relatedOtherProcesses">Enabling conditions </label>
-                                            <multiselect
+                                            <!-- <multiselect
                                                 v-model="document.enablingConditions"
                                                 class="validationClass"
                                                 label="name"
@@ -134,7 +137,7 @@
                                                     <div v-if="document.enablingConditions && document.enablingConditions.length"
                                                         class="multiselect__clear" @mousedown.prevent.stop="document.enablingConditions = undefined; $emit('change', null)" ></div>
                                                 </template>
-                                            </multiselect>
+                                            </multiselect> -->
                                             <small id="emailHelp" class="form-text text-muted">Please check all relevant enabling conditions.</small>
                                         </div>
                                         <div class="form-group">
@@ -147,7 +150,7 @@
 
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Degree of alignment</label>
-                                <multiselect
+                                <!-- <multiselect
                                     v-model="document.degreeOfAlignment"
                                     class="validationClass"
                                     label="title"
@@ -158,7 +161,7 @@
                                     :disabled="false"
                                     @input="$emit('change', $event)"
                                 >
-                                </multiselect>
+                                </multiselect> -->
                                 <small id="emailHelp" class="form-text text-muted">High = covers all elements of the global target; Medium = covers most elements of the global target; Low = covers at least one element of the global target</small>
                             </div>
                             <div class="form-group">
@@ -412,16 +415,18 @@
   
   <script>
   
-import Ckeditor from "@/components/controls/ck-editor";
 import { KmRichLstring, KmSelect } from "~/components/controls";
 import Multiselect from 'vue-multiselect';
-import { degreeOfAlignments } from '~/app-data/degreeOfAlignments';
-import { useThesaurusStore } from '~/stores/thesaurus';
-import { GBF_GLOBAL_GOALS, GBF_GLOBAL_TARGETS, GBF_TARGETS_CONSIDERATIONS } from '~/constants';
-import { languages } from '@/app-data/languages'
+import { mapStores }            from 'pinia'
+import Ckeditor from "@/components/controls/ck-editor";
+import { THEASURUS, ROLES } from '~/constants';
+import { languages }            from '@/app-data/languages'
+import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
+import { useThesaurusStore }    from '@/stores/thesaurus';
+import { useCountriesStore }    from '@/stores/countries';
+import { useRealmConfStore }    from '@/stores/realmConf';
 
-console.log(KmSelect)
-  export default {
+export default {
     components: {
       Ckeditor,KmRichLstring,
       Multiselect, KmSelect
@@ -430,19 +435,14 @@ console.log(KmSelect)
     meta:{
       schema:'nbsapNationalTarget'
     },
-    roles:['publishingAuthority', 'nationalAuthorizedUser'],
+    roles:[...ROLES.ALL_NATIONAL_USERS],
     async fetch(){
-        const thesaurusStore = useThesaurusStore(this.$pinia);
-        //   console.log('calling actions')
-        const response = await Promise.all([
-            thesaurusStore.loadDomainTerms(GBF_GLOBAL_TARGETS),
-            thesaurusStore.loadDomainTerms(GBF_GLOBAL_GOALS),
-            thesaurusStore.loadDomainTerms(GBF_TARGETS_CONSIDERATIONS)
+        await Promise.all([
+            this.thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
+            this.thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
+            this.thesaurusStore.loadDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS),
+            this.countriesStore.loadCountries()
         ]);
-        this.gbfTargets             = response[0]
-        this.gbfGoals               = response[1]
-        this.gbfTargetConsideration = response[2]
-        // console.log('finished actions')
     },
     fetchOnServer: false,
     data(){
@@ -453,26 +453,44 @@ console.log(KmSelect)
             },
             mainPolicyOfMeasureOrActionInfo : {
                 zh : 'Chine'
+            },
+            government : {
+                identifier : undefined
             }
         },
-        selectedGbfTargets : [],
-        gbfTargets : null,
-        gbfGoals : null,
-        gbfTargetConsideration : null,
-        degreeOfAlignments:degreeOfAlignments,
+        selectedGbfTargets : [],        
+        // degreeOfAlignments:degreeOfAlignments,
         headlineIndicators:[],
         componentIndicators:[],
         complementaryIndicators:[],
         options : {
             languages :  Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}) 
-        }
+        },
+        isAdmin : false
       }
     },
     computed:{
         globalGoalsAndTargets(){
-            const goalsAndTargets = [...(this.gbfGoals||[]), ...(this.gbfTargets||[])]
+            const goalsAndTargets = [
+                ...(this.thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS)||[]), 
+                ...(this.thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS)||[])
+            ]
             return goalsAndTargets;
-        }
+        },
+        degreeOfAlignments(){
+            return degreeOfAlignments
+        },
+        countryList(){
+            if(!this.countriesStore?.countries?.length)
+                return [];
+
+            const mapCountries = this.countriesStore.countries.map(e=>{
+                return { name : e.name[this.$i18n.locale], code : e.code?.toLowerCase()}
+            })
+
+            return mapCountries;
+        },
+        ...mapStores(useThesaurusStore, useCountriesStore, useRealmConfStore)
     },
     methods :{
         submitDocument (){
@@ -482,11 +500,20 @@ console.log(KmSelect)
     },
     async mounted(){
 
-        const thesaurusStore = useThesaurusStore(this.$pinia);
-        this.gbfTargets             = this.gbfTargets             || thesaurusStore.getDomainTerms(GBF_GLOBAL_TARGETS);
-        this.gbfGoals               = this.gbfGoals               || thesaurusStore.getDomainTerms(GBF_GLOBAL_GOALS)
-        this.gbfTargetConsideration = this.gbfTargetConsideration || thesaurusStore.getDomainTerms(GBF_TARGETS_CONSIDERATIONS)
+        if(this.$auth?.user?.isAuthenticated){
+            console.log(this.$auth.user)
+            if(!this.$auth.user.government){
+                const adminRoles = this.realmConfStore.getRole(ROLES.ADMINSTARATOR)
+                if(this.$security.isInRoles(adminRoles)){
+                    this.isAdmin = true
+                }
+            }
+            else{
+                this.document.government.identifier = this.$auth.user.government
+            }
+        }
 
+        //redirect forbidden
     },
   }
 </script>
