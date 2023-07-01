@@ -337,8 +337,6 @@ export default {
     onEditorReady(ed) {
       const self = this;
 
-      console.log(ed)
-
       class UploadAdapter {
         constructor(loader) {
           this.loader = loader;

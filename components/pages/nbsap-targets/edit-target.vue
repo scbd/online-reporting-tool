@@ -34,8 +34,7 @@
                                     value-key="code"
                                     placeholder="Government"
                                     :options="countryList"
-                                    :disabled="!isAdmin"
-                                    @input="$emit('change', $event)">
+                                    :disabled="!isAdmin">
                                 </km-select>                                
                             </div>   
 
@@ -49,7 +48,6 @@
                                     value-key="code"
                                     placeholder="Language of record"
                                     :options="options.languages"
-                                    @input="$emit('change', $event)"
                                     :multiple="true"
                                 >
                                 </km-select>
@@ -82,7 +80,6 @@
                                     value-key="identifier"
                                     placeholder="Global Goals and Targets"
                                     :options="globalGoalsAndTargets"
-                                    @input="$emit('change', $event)"
                                     :multiple="true"
                                     :close-on-select="false"
                                 >
@@ -119,7 +116,6 @@
                                                 :options="gbfTargetConsideration"
                                                 :multiple="true"
                                                 :close-on-select="false"
-                                                @input="$emit('change', $event)"
                                             >
                                                 <template slot="clear">
                                                     <div v-if="document.enablingConditions && document.enablingConditions.length"
@@ -148,10 +144,13 @@
                                     :options="degreeOfAlignments"
                                     :multiple="false"
                                     :disabled="false"
-                                    @input="$emit('change', $event)"
                                 >
                                 </km-select>
-                                <small id="emailHelp" class="form-text text-muted">High = covers all elements of the global target; Medium = covers most elements of the global target; Low = covers at least one element of the global target</small>
+                                <small id="emailHelp" class="form-text text-muted">
+                                    <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[0].identifier}">High = covers all elements of the global target; </span>
+                                    <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[1].identifier}">Medium = covers most elements of the global target; </span>
+                                    <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[2].identifier}">Low = covers at least one element of the global target</span>
+                                </small>
                             </div>
                             <div class="form-group">
                                 <label for="enablingConditionsInfo">Explanation, including which aspects of the goal or target are covered</label>
@@ -178,7 +177,6 @@
                                     :options="headlineIndicators"
                                     :multiple="false"
                                     :disabled="false"
-                                    @input="$emit('change', $event)"
                                 >
                                 </km-select>
                                 <small id="emailHelp" class="form-text text-muted">help!!!!</small>
@@ -195,7 +193,6 @@
                                     :options="componentIndicators"
                                     :multiple="false"
                                     :disabled="false"
-                                    @input="$emit('change', $event)"
                                 >
                                 </km-select>
                                 <small id="emailHelp" class="form-text text-muted">help!!!!</small>
@@ -212,7 +209,6 @@
                                     :options="complementaryIndicators"
                                     :multiple="false"
                                     :disabled="false"
-                                    @input="$emit('change', $event)"
                                 >
                                 </km-select>
                                 <small id="emailHelp" class="form-text text-muted">help!!!!</small>
@@ -231,7 +227,29 @@
                             Non-State actor commitments
                         </div>
                         <div class="card-body">
-                            
+                            <div class="form-group">
+                                <label for="nonStateActorCommitmentInfo">List the non-state commitments towards this national Target</label>
+                                <KmRichLstring v-model="document.nonStateActorCommitmentInfo" :locales="document.header.languages"></KmRichLstring>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-check-label" for="hasNonStateActors">
+                                    Are there any overlaps or links between this national target and targets or commitments submitted as non-State actor commitments to the Kunming-Montreal Global Biodiversity Framework?</label>
+                                <br/>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="hasNonStateActors" 
+                                    :value="true" v-model="document.hasNonStateActors">
+                                    <label class="form-check-label" for="hasNonStateActors">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="hasNonStateActors" 
+                                    :value="false" v-model="document.hasNonStateActors">
+                                    <label class="form-check-label" for="hasNonStateActors">No</label>
+                                </div>
+                            </div> 
+                            <div class="form-group" v-if="document.hasNonStateActors">
+                                <label for="nonStateActorsInfo"> please indicate which commitment(s) and which actor(s)</label>
+                                <KmRichLstring v-model="document.nonStateActorsInfo" :locales="document.header.languages"></KmRichLstring>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -241,7 +259,36 @@
                             Means of implementation and barriers to implementation
                         </div>
                         <div class="card-body">
-                            
+                            <div class="form-group">
+                                <label class="form-check-label" for="additionalImplementation">
+                                   Please indicate if additional means of implementation are needed for the attainment of this national target.</label>
+                                <br/>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="additionalImplementation" id="additionalImplementation" 
+                                    value="additionalImplementationRequired" v-model="document.additionalImplementation.identifier">
+                                    <label class="form-check-label" for="additionalImplementation">
+                                        Additional means of implementation are needed for the attainment of this national target</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="additionalImplementation" id="additionalImplementation" 
+                                    value="additionalImplementationAvailable" v-model="document.additionalImplementation.identifier">
+                                    <label class="form-check-label" for="additionalImplementation">Means of implementation availabl</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="additionalImplementation" id="additionalImplementation" 
+                                    value="otherImplementation" v-model="document.additionalImplementation.identifier">
+                                    <label class="form-check-label" for="additionalImplementation">Other</label>
+                                </div>
+                            </div> 
+                            <div class="form-group" 
+                            v-if="document.additionalImplementation.identifier=='additionalImplementationRequired' || document.additionalImplementation.identifier=='otherImplementation'">
+                                <label for="additionalImplementationCustomValue"> Please explain</label>
+                                <KmRichLstring v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></KmRichLstring>
+                            </div>
+                            <div class="form-group">
+                                <label for="additionalImplementationInfo">Additional explanation</label>
+                                <KmRichLstring v-model="document.additionalImplementationInfo" :locales="document.header.languages"></KmRichLstring>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -252,154 +299,34 @@
                         </div>
                         <div class="card-body">
                             
+                            <div class="form-group">
+                                <label for="elementOfGlobalTargetsinfo">Elements of the global targets addressed by national targets</label>
+                                <KmRichLstring v-model="document.elementOfGlobalTargetsinfo" :locales="document.header.languages"></KmRichLstring>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-check-label" for="hasReferncePeriod">Is there a reference period and national target which relates to the headline indicator?</label>
+                                <br/>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="hasReferncePeriod" :value="true" v-model="document.hasReferncePeriod">
+                                    <label class="form-check-label" for="hasReferncePeriod">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="hasReferncePeriod" :value="false" v-model="document.hasReferncePeriod">
+                                    <label class="form-check-label" for="hasReferncePeriod">No</label>
+                                </div>
+                            </div> 
+
+                            <div class="form-group" v-if="document.hasReferncePeriod">
+                                <label for="referencePeriodInfo">Please explain</label>
+                                <KmRichLstring v-model="document.referencePeriodInfo" :locales="document.header.languages"></KmRichLstring>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <div class="form-group">
-                <label for="exampleInputEmail1">Does the national target meet the global target?</label>                            
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">My country’s national target exceeds the ambition of this global target</label>
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck2">
-                    <label class="form-check-label" for="exampleCheck2">My country can provide implementation support to other Parties for this global target</label>
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck3">
-                    <label class="form-check-label" for="exampleCheck3">My country requires international support to achieve this global target nationally. </label>
-                  </div>          
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-                <div class="form-group">
-                  <label for="223">Is this target (or a part thereof) directly related to a national target or other national commitment already made by your national government in the context of another process?</label>
-                  </br>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="isRelatedToOtherProcess1" value="true" v-model="document.isRelatedToOtherProcess">
-                    <label class="form-check-label" for="isRelatedToOtherProcess1">Yes</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="isRelatedToOtherProcess2" value="false" v-model="document.isRelatedToOtherProcess">
-                    <label class="form-check-label" for="isRelatedToOtherProcess2">No</label>
-                  </div>
-                </div>
-                <div class="form-group" v-if="document.isRelatedToOtherProcess=='true'">
-                  <label for="relatedOtherProcesses">Names of other processes including other environmental conventions (MEAs),  </label>
-                  <select class="form-control" id="relatedOtherProcesses" v-model="document.relatedOtherProcesses">                  
-                    <option>The Rio conventions </option>
-                    <option>The SDGs</option>
-                    <option>Nationally Determined Contribution under the Paris Agreement </option>
-                    <option>One or more Land Degradation Neutrality targets </option>
-                    <option>One or more national ecosystem restoration targets </option>
-                    <option>The Leaders’ Pledge for Nature </option>
-                    <option>The Action Agenda for Nature and People </option>
-                    <option>Regions/Cities with Nature Commitment Platforms </option>
-                    <option>Other</option>
-                  </select>
-              </div>
-              <div class="form-group" v-if="document.isRelatedToOtherProcess=='true' && document.relatedOtherProcesses=='Other'">
-                <label for="exampleInputEmail1">Specify the other process</label>
-                <input type="text" class="form-control" id="targetTitle" placeholder="Enter the other process">
-              </div>
-              <div class="form-group" >
-                <label for="exampleInputEmail1">Name(s)/Number(s)/Ref.(s) of existing commitment(s):</label>
-                <input type="text" class="form-control" id="targetTitle" placeholder="Name(s)/Number(s)/Ref.(s) of existing commitment(s)">
-              </div>
-            </div>
-          </div>
-          
-          <div class="card">
-            <div class="card-body">
-                <div class="form-group">
-                  <label for="223">Is this national target also contributing to an international commitment relevant at the transboundary/region level?</label>
-                  <div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="hasInternationalCommitment1" id="hasInternationalCommitment1" value="true" v-model="document.hasInternationalCommitment">
-                    <label class="form-check-label" for="hasInternationalCommitment1">Yes</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="hasInternationalCommitment1" id="hasInternationalCommitment2" value="false" v-model="document.hasInternationalCommitment">
-                    <label class="form-check-label" for="hasInternationalCommitment2">No</label>
-                  </div></div>
-                </div>
-              <div class="form-group" v-if="document.hasInternationalCommitment=='true'">
-                <label for="exampleInputEmail1">Indicate which commitment that is</label>
-                <input type="text" class="form-control" id="targetTitle" placeholder="Indicate which commitment that is">
-              </div>
-            </div>
-          </div>
-         
-          <div class="card">
-            <div class="card-body">
-                <div class="form-group">
-                  <label for="223">Are there any overlaps or links with targets or commitments submitted separately by subnational governments, or other actors beyond national governments?</label>
-                  <br/>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="hasOverlaps" id="hasOverlaps1" value="true" v-model="document.hasOverlaps">
-                    <label class="form-check-label" for="hasOverlaps1">Yes</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="hasOverlaps" id="hasOverlaps2" value="false" v-model="document.hasOverlaps">
-                    <label class="form-check-label" for="hasOverlaps2">No</label>
-                  </div>
-                </div>
-                <div class="form-group" v-if="document.hasOverlaps=='true'">
-                  <label for="exampleInputEmail1">Full text of /target commitment submitted by other actor(s) (if different to national biodiversity target):</label>
-                  <!-- <ckeditor></ckeditor> -->
-                </div>
-                <div class="form-group" v-if="document.hasOverlaps=='true'">
-                  <label for="exampleInputEmail1">Actor(s) which submitted it</label>
-                  <input type="text" class="form-control" id="targetTitle">
-                </div>
-                <div class="form-group" v-if="document.hasOverlaps=='true'">
-                  <label for="exampleInputEmail1">Context in which it has been submitted:</label>
-                  <input type="text" class="form-control" id="targetTitle">
-                </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">National Biodiversity Targets - beyond GBF alignment</h5>
-              <div class="form-group">
-                <label for="sdf">Please indicate any national biodiversity target which is not already reflected in the table above</label>
-                <!-- <ckeditor></ckeditor> -->
-              </div>
-              <div class="form-group">
-                <label for="sdf">Please indicate which indicators will be used to measure progress towards its achievement.</label>
-                <!-- <ckeditor></ckeditor> -->
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              Targets and actions for achieving enabling conditions and other non-target elements of the GBF
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                  <label for="sdf">Please indicate the targets and/or actions that your country is taking to put in place the enabling conditions and/or other cross-cutting elements not in the targets of the GBF (Human rights based approach, respect for human rights, IPLC rights, gender equality, intergenerational equity, etc. Please also include here any national targets/actions directly related to the post 2020 Gender Plan of Action)</label>
-                  <!-- <ckeditor></ckeditor> -->
-                </div>
-                <div class="form-group">
-                  <label for="sdf">Please indicate which non-target element of the GBF or of the post 2020 Gender Plan of Action this national target or action aims to fulfil. </label>
-                  <!-- <ckeditor></ckeditor> -->
-                </div>
-                <div class="form-group">
-                  <label for="sdf">Please indicate which indicators will be used to measure progress towards the achievement or implementation of these targets/actions.</label>
-                  <!-- <ckeditor></ckeditor> -->
-                </div>
-            </div>
-          </div>
-  
-         
+          </div>          
         </form>
-          <button @click="submitDocument()" class="btn btn-primary">Submit</button>
+        <button @click="submitDocument()" class="btn btn-primary">Save</button>
       </CCardBody>
     </CCard>
   
@@ -448,7 +375,8 @@ export default {
             },
             government : {
                 identifier : undefined
-            }
+            },
+            additionalImplementation : {}
         },
         selectedGbfTargets : [],        
         // degreeOfAlignments:degreeOfAlignments,
