@@ -1,0 +1,19 @@
+{
+    "overview" : "Overview",
+    "menuDashboard" : "Dashboard",
+    "nationalReports"  : "National Reports",
+    "menuNationalTargets":"National targets",
+    "menuAllTargets":"All National targets",
+    "menuMyCountryTargets":"My country targets",
+    "6thNationalReport": "6th National report",
+    "7thNationalReport": "7th National report",
+    "reports"          : "All reports",
+    "myCountry"        : "My country",
+    "sectionI"         : "Section I",
+    "sectionII"        : "Section II",
+    "sectionIII"       : "Section III",
+    "sectionIV"        : "Section IV",
+    "sectionV"         : "Section V",
+    "sectionVI"        : "Section VI",
+    "annex"            : "Annex"
+}

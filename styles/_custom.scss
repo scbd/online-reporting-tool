@@ -1,0 +1,10 @@
+// Here you can add other styles
+
+ul.header-nav li.nav-item:hover{
+    background-color: #eee;
+    border-radius: 5%;
+}
+
+.km-input-ar input, .km-input-ar textarea{
+    direction: rtl;
+}
