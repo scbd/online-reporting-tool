@@ -293,6 +293,20 @@
                             </div>
                         </div>
                     </km-form-group>
+
+                    <km-form-group>
+                        <div class="card">
+                            <div class="card-header bg-secondary">
+                                Additional infromation
+                            </div>
+                            <div class="card-body">
+                                <km-form-group>
+                                    <label class="form-label" for="referencePeriodInfo">Any other relevant infromation</label>
+                                    <km-input-rich-lstring v-model="document.additionalInfromation" :locales="document.header.languages"></km-input-rich-lstring>
+                                </km-form-group>
+                            </div>
+                        </div>
+                    </km-form-group>
                 </CCardBody>
             </CCard>
         </form>
@@ -322,14 +336,15 @@
     const countriesStore  = useCountriesStore ();
     const realmConfStore  = useRealmConfStore();
 
-        const data = await Promise.all([
+    const data = await Promise.all([
             thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
             thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
-            thesaurusStore.loadDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS),
+            thesaurusStore.loadDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS),
+            thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS    ),
+            thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS),
+            thesaurusStore.loadDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS  ),
             countriesStore.loadCountries()
         ]);
-
-    console.log('finished async', data);
 
     const document = ref({
         header : {
@@ -345,8 +360,7 @@
     })
     const selectedGbfTargets = ref([]);
 
-    const formatedLanguages = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
-
+    const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
     const globalGoalsAndTargets = computed(()=>{
         const goalsAndTargets = [
             ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
@@ -357,10 +371,8 @@
     const gbfTargetConsideration = computed(()=>{
         return (thesaurusStore.getDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
     })
-    const formatedDegreeOfAlignments = computed(()=>{
-        return degreeOfAlignments
-    })
-    const countryList = computed(()=>{
+    const formatedDegreeOfAlignments = computed(()=>{return degreeOfAlignments })
+    const countryList                = computed(()=>{
         if(!countriesStore?.countries?.length)
             return [];
 
@@ -370,9 +382,9 @@
 
         return mapCountries;
     })
-    const headlineIndicators = computed(()=>{ return [] });
-    const componentIndicators = computed(()=>{ return [] });
-    const complementaryIndicators = computed(()=>{ return [] });
+    const headlineIndicators      = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
+    const componentIndicators     = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
+    const complementaryIndicators = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
     
 
     onMounted(() => {
