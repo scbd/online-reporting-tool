@@ -242,7 +242,6 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api'
-import Ckeditor from "@/components/controls/kmCkEditor";
 
 export default defineComponent({
   components:{
@@ -255,7 +254,6 @@ export default defineComponent({
 </script>
 
 <!-- <script>
-import Ckeditor from '@/components/controls/kmCkEditor'
 import EditTargetReview from '~/components/pages/nr7/edit-target-review.vue'
 export default {
   components: {
