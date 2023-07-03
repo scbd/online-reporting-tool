@@ -128,7 +128,6 @@ export const useRealmConfStore = defineStore('realmConf', {
         const { $api } = useNuxtApp();
         const nuxtapp = useNuxtApp();
         const realHost = useRuntimeConfig().public.REALM_CONF_HOST;
-        console.log('h', this, $api, realHost)
         if(!this.realmConf?.realm){
           const realmConf = await $api.realmConfiguration.getRealmConfigurationByHost(realHost);
           this.realmConf = realmConf[0];

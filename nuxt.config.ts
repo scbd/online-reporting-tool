@@ -3,17 +3,20 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+process.env.ACCOUNTS_HOST_URL = process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz';
+process.env.API_URL           = process.env.API_URL           || 'https://api.cbddev.xyz';
+process.env.REALM_CONF_HOST   = process.env.REALM_CONF_HOST   || 'ort.cbddev.xyz';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },  
   ssr:false,
   runtimeConfig: {
     public:{
-      ACCOUNTS_HOST_URL : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
-      API_URL           : process.env.API_URL           || 'https://api.cbddev.xyz',
-      REALM_CONF_HOST   : process.env.REALM_CONF_HOST   || 'ort.cbddev.xyz',
+      ACCOUNTS_HOST_URL : process.env.ACCOUNTS_HOST_URL,
+      API_URL           : process.env.API_URL          ,
+      REALM_CONF_HOST   : process.env.REALM_CONF_HOST  ,
       auth : {
-        accountsHostUrl : process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
+        accountsHostUrl : process.env.ACCOUNTS_HOST_URL,
         redirect: {
           login:  `${process.env.ACCOUNTS_HOST_URL}/signin`,
           logout: `${process.env.ACCOUNTS_HOST_URL}/logout`,
@@ -68,7 +71,14 @@ export default defineNuxtConfig({
     // 'bootstrap/dist/css/bootstrap.css'
   ],
   i18n: {
-    locales: ['ar','en', 'fr', 'es', 'ru', 'zh'],
+    locales: [
+      { code: 'ar', iso: 'ar-EG',  dir: 'rtl' },
+      { code: 'en', iso: 'en-US',             },
+      { code: 'fr', iso: 'fr-FR',             },
+      { code: 'es', iso: 'es-ES',             },
+      { code: 'ru', iso: 'ru-RU',             },
+      { code: 'zh', iso: 'zh-CN',             },
+    ],
     defaultLocale: 'en',
     fallbackLocale: 'en',
     locale: 'en',

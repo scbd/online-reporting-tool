@@ -12,21 +12,21 @@
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <NuxtLink to="/nbsap-targets/new">
                   <CButton class="secondary  m-1">
-                    <font-awesome-icon icon="fa-plus" /> Submit new target
+                    <CIcon icon="addthis"/> Submit new target
                   </CButton>
                 </NuxtLink>
                 <!-- <CButton color="secondary m-1">
-                  <font-awesome-icon icon="fa-save" /> Save
+                  <CIcon icon="cil-save"/> Save
                 </CButton> -->
                 <CButton color="success m-1">
-                  <font-awesome-icon icon="fa-save" /> Publish
+                  <CIcon icon="cil-save"/> Publish
                 </CButton>
                 <CButton color="warning m-1">
-                  <font-awesome-icon icon="fa-share" /> Share
+                  <CIcon icon="cil-share"/> Share
                 </CButton>
 
                 <CButton color="danger m-1">
-                  <font-awesome-icon icon="fa-file-pdf" /> PDF
+                  <CIcon icon="cil-file-pdf"/> PDF
                 </CButton>
               </div>
             </div>
@@ -61,7 +61,7 @@
                   <font-awesome-icon icon="fa-search" /> View target
                 </CButton>
                 <CButton color="secondary" size="sm">
-                  <font-awesome-icon icon="fa-edit" /> Edit target
+                  <CIcon icon="cil-comment-square-edit"/> Edit target
                 </CButton>
               </div>
             </td>
@@ -81,7 +81,7 @@
                   <font-awesome-icon icon="fa-search" /> View target
                 </CButton>
                 <CButton color="secondary" size="sm">
-                  <font-awesome-icon icon="fa-edit" /> Edit target
+                  <CIcon icon="cil-comment-square-edit"/> Edit target
                 </CButton>
               </div>
             </td>
@@ -101,7 +101,7 @@
                   <font-awesome-icon icon="fa-search" /> View target
                 </CButton>
                 <CButton color="secondary" size="sm">
-                  <font-awesome-icon icon="fa-edit" /> Edit target
+                  <CIcon icon="cil-comment-square-edit"/> Edit target
                 </CButton>
               </div>
             </td>
@@ -124,7 +124,7 @@
                   <font-awesome-icon icon="fa-search" /> View target
                 </CButton>
                 <CButton color="secondary" size="sm">
-                  <font-awesome-icon icon="fa-edit" /> Edit target
+                  <CIcon icon="cil-comment-square-edit"/> Edit target
                 </CButton>
               </div>
             </td>
@@ -144,7 +144,7 @@
                   <font-awesome-icon icon="fa-search" /> View target
                 </CButton>
                 <CButton color="secondary" size="sm">
-                  <font-awesome-icon icon="fa-edit" /> Edit target
+                  <CIcon icon="cil-comment-square-edit"/> Edit target
                 </CButton>
               </div>
             </td>
@@ -167,7 +167,7 @@
                   <font-awesome-icon icon="fa-search" /> View target
                 </CButton>
                 <CButton color="secondary" size="sm">
-                  <font-awesome-icon icon="fa-edit" /> Edit target
+                  <CIcon icon="cil-comment-square-edit"/> Edit target
                 </CButton>
               </div>
             </td>
@@ -190,7 +190,7 @@
                   <font-awesome-icon icon="fa-search" /> View target
                 </CButton>
                 <CButton color="secondary" size="sm">
-                  <font-awesome-icon icon="fa-edit" /> Edit target
+                  <CIcon icon="cil-comment-square-edit"/> Edit target
                 </CButton>
               </div>
             </td>
@@ -213,7 +213,7 @@
                   <font-awesome-icon icon="fa-search" /> View target
                 </CButton>
                 <CButton color="secondary" size="sm">
-                  <font-awesome-icon icon="fa-edit" /> Edit target
+                  <CIcon icon="cil-comment-square-edit"/> Edit target
                 </CButton>
               </div>
             </td>
@@ -233,7 +233,7 @@
                   <font-awesome-icon icon="fa-search" /> View target
                 </CButton>
                 <CButton color="secondary" size="sm">
-                  <font-awesome-icon icon="fa-edit" /> Edit target
+                  <CIcon icon="cil-comment-square-edit"/> Edit target
                 </CButton>
               </div>
             </td>

@@ -19,6 +19,9 @@ export default {
     const breadcrumbs = ref()
     const localePath  = useLocalePath();
     const $route = useRoute();
+    const $router = useRouter();
+
+    console.log($route, $router)
     
     function makeCrumbs (){ //eslint-disable-line
       const crumbs    = [
@@ -53,16 +56,26 @@ export default {
     watch($route, ()=>{
       console.log('route change')
       breadcrumbs.value = makeCrumbs()
+    }, {deep:true})
+    watch($router, (a,v)=>{
+      console.log(a,v, 'router change')
     })
-    onBeforeRouteLeave ((to, from)=> {
-      const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-      if (!answer) return false
-    })
+    // onBeforeRouteLeave ((to, from)=> {
+    //   const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+    //   if (!answer) return false
+    // })
+
+    // onBeforeRouteUpdate((to, from) => {
+    //   console.log('onBeforeRouteUpdate', to, from)
+    // })
 
     return {
       breadcrumbs,
       languages : {...languages}
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('Route Leave')
   },
   onBeforeRouteLeave(to, from){
       console.log('onBeforeRouteLeave', to, from)
@@ -75,7 +88,13 @@ export default {
   onBeforeRouteUpdate(to, from) {
     console.log('onBeforeRouteUpdate', to, from)
   },
-  beforeRouteEnter: function (to) {
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      console.log(vm.validateRoute()) // works: '/search'
+      vm.validateRoute()              // does not work: does nothing
+    })
+  },
+  beforeEnter: function (to) {
     console.log('onBeforeRouteUpdate', to)
   }
 }

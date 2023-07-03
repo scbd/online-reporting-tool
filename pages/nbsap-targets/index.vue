@@ -7,7 +7,7 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <NuxtLink to="/nbsap-targets/new">
             <CButton color="secondary" size="sm">
-              <font-awesome-icon icon="fa-plus" /> Submit new target
+              <CIcon icon="addthis"/> Submit new target
             </CButton>
           </NuxtLink>
         </div>

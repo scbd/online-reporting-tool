@@ -7,7 +7,7 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <NuxtLink to="/nbsap-targets/new">
             <CButton color="secondary" size="sm">
-              <font-awesome-icon icon="fa-plus" />NR7 All reports
+              <CIcon icon="addthis"/>NR7 All reports
             </CButton>
           </NuxtLink>
         </div>
