@@ -1,5 +1,5 @@
 import { viteSyncI18nFiles } from './i18n/sync-i18n';
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite';
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -64,7 +64,7 @@ export default defineNuxtConfig({
     './auth/scbdIframe'
   ],
   modules: [
-    '@nuxtjs/i18n',
+    '@nuxtjs/i18n-edge',
     '@pinia/nuxt'
   ],
   css:[
@@ -89,11 +89,18 @@ export default defineNuxtConfig({
     vueI18n: './i18n.config.ts' // if you are using custom path, default 
   },
   vite: {
+    resolve: {
+      alias: {
+        'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
+      }
+    },
     plugins: [
-      // VueI18nPlugin({
-      //   include: resolve(dirname(fileURLToPath(import.meta.url)), './i18n-dist/**'),        
+      // viteSyncI18nFiles(),
+      // VueI18nVitePlugin({
+      //   include: [
+      //     resolve(dirname(fileURLToPath(import.meta.url)), './i18n/dist/*.json')
+      //   ]
       // }),
-      viteSyncI18nFiles()
     ]
   }
 

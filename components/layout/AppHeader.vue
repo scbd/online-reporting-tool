@@ -67,7 +67,7 @@
   </CHeader>
 </template>
 
-<i18n src="@/i18n-dist/layouts/containers/AppHeader.json"></i18n>
+<i18n src="@/i18n/dist/layouts/containers/AppHeader.json"></i18n>
 <script>
 import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt'

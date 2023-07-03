@@ -95,3 +95,4 @@ yarn.lock
 
 #IDE
 .vscode/
+.output

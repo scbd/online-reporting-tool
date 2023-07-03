@@ -51,7 +51,7 @@
   </CSidebar>
 </template>
 
-<i18n src="@/i18n-dist/layouts/containers/AppSidebar.json"></i18n>
+<i18n src="@/i18n/dist/layouts/containers/AppSidebar.json"></i18n>
 <script>
 
 import { useRealmConfStore }    from '@/stores/realmConf';

@@ -406,9 +406,3 @@
         await navigateTo('/nbsap-targets')
     }
 </script>
-
- <style>
-    .form-group label{
-        font-weight: 700;
-    }    
-</style>

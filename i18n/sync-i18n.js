@@ -55,7 +55,7 @@ async function createLocaleFile(enFile){
   const localeData = await Promise.all(localeFilePromises);
   localeData.unshift({en:enData});
 
-  const distFilePath = enFile.replace(/\/en\//, `-dist/`); //path is i18n-dist/
+  const distFilePath = enFile.replace(/\/en\//, `/dist/`); //path is i18n/dist/
   const flatData = localeData.reduce((a,b)=>{return { ...(a), ...(b||{})}});
 
   try{
