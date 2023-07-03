@@ -1,7 +1,7 @@
 <template>
   <CHeader position="sticky" class="mb-4">
     <CContainer fluid>
-      <CHeaderToggler class="ps-1" @click="$store.commit('toggleSidebar')">
+      <CHeaderToggler class="ps-1" @click="">
         <CIcon icon="cil-menu" size="lg" />
       </CHeaderToggler>
       <CHeaderBrand class="mx-auto d-lg-none" to="/">

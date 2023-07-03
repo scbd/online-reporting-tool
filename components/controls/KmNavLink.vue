@@ -8,6 +8,7 @@
     </CNavItem>
 </template>
 <script lang="ts">
+import {useRoute } from 'vue-router';
 
 export default defineComponent({
     props: {

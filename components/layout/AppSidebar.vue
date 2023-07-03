@@ -14,24 +14,24 @@
       <li class="nav-title" v-if="menuAccess[appRoutes.NBSAPS_TARGETS]">
         {{t('menuDashboardNbsaps')}}
       </li>
-      <CNavGroup>
+      <CNavGroup :visible="isChildRouteActive(appRoutes.NBSAPS_TARGETS)">
         <template #togglerContent>
           {{ t('menuNationalTargets') }}
         </template>
         <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
-        <KmNavLink    v-if="menuAccess[appRoutes.NBSAPS_TARGETS_OVERVIEW]" :to="localePath('/nbsap-targets/overview')" icon="cil-list" :title="t('menuMyCountryTargets')"></KmNavLink>
+        <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_OVERVIEW]" :to="localePath('/nbsap-targets/overview')" icon="cil-list" :title="t('menuMyCountryTargets')"></KmNavLink>
       </CNavGroup>
       
       <li class="nav-title"> {{t('nationalReports')}} </li>      
       <KmNavLink  target="_blank" :to="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport6`" :title="t('6thNationalReport')"></KmNavLink>
-      <CNavGroup>  
+      <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_REPORTS)">  
         <template #togglerContent>
           {{t('7thNationalReport')}}
         </template>      
         <KmNavLink :to="localePath('/national-reports/nr7')" icon="cil-list" :title="t('reports')"></KmNavLink>
-        <CNavGroup>
+        <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_REPORTS_NR7)">
           <template #togglerContent>
-            <CIcon customClassName="nav-icon" icon="cil-list"/> {{t('myCountry')}}
+            <CIcon customClassName="nav-icon" icon="cil-document"/> {{t('myCountry')}}
           </template>                 
           <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('overview')"    :to="localePath('/national-reports/nr7/edit')"           ></KmNavLink>
           <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionI')"    :to="localePath('/national-reports/nr7/edit/section-1')" ></KmNavLink>
@@ -48,7 +48,6 @@
     <CSidebarToggler
       class="d-none d-lg-flex"
     />
-    <span>Blaise Fonseca</span>
   </CSidebar>
 </template>
 
@@ -57,6 +56,7 @@
 
 import { useRealmConfStore }    from '@/stores/realmConf';
 import { KmNavLink } from '@/components/controls';
+import { useRoute } from 'vue-router';
 
 
 export default {
@@ -70,8 +70,10 @@ export default {
     const localePath  = useLocalePath()
     const { loadRealmConf } = useRealmConfStore();
     const { t } = useI18n()
+    const route = useRoute();
     
     await loadRealmConf();
+
     const menuAccess = {
       [appRoutes.DASHBOARD] : true,
       [appRoutes.NBSAPS_TARGETS]            : true,
@@ -88,6 +90,10 @@ export default {
     //       menuAccess[route] = await $security.canAccessRoute(route)
     //   }
     // }
+
+    const isChildRouteActive = (path)=>{
+      return route.fullPath.indexOf(path)>=0
+    }
     
     return {
       sidebarUnfoldable: false,
@@ -95,7 +101,8 @@ export default {
       appRoutes,
       menuAccess,
       localePath,
-      t
+      t,
+      isChildRouteActive
     }
   },
 }

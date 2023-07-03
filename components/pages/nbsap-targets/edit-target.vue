@@ -322,17 +322,12 @@
     const countriesStore  = useCountriesStore ();
     const realmConfStore  = useRealmConfStore();
 
-console.log('hello')
-    // const { data, error } = await useAsyncData('pageInit', async ()=>{
         const data = await Promise.all([
             thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
             thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
             thesaurusStore.loadDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS),
             countriesStore.loadCountries()
         ]);
-        console.log('inside pageint', data)
-        // return data;
-    // })
 
     console.log('finished async', data);
 
@@ -353,7 +348,6 @@ console.log('hello')
     const formatedLanguages = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
 
     const globalGoalsAndTargets = computed(()=>{
-        console.log(thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS))
         const goalsAndTargets = [
             ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
             ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))), 
@@ -361,7 +355,7 @@ console.log('hello')
         return goalsAndTargets;
     })
     const gbfTargetConsideration = computed(()=>{
-        return [];//(thesaurusStore.getDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
+        return (thesaurusStore.getDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
     })
     const formatedDegreeOfAlignments = computed(()=>{
         return degreeOfAlignments
@@ -380,10 +374,6 @@ console.log('hello')
     const componentIndicators = computed(()=>{ return [] });
     const complementaryIndicators = computed(()=>{ return [] });
     
-    definePageMeta({
-        schema:'nbsapNationalTarget',
-        roles:[...ROLES.ALL_NATIONAL_USERS],
-    })
 
     onMounted(() => {
         if($auth?.user?.isAuthenticated){

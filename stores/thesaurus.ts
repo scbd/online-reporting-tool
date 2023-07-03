@@ -33,13 +33,10 @@ export const useThesaurusStore = defineStore('thesaurus', {
 
         let terms = this.getDomainTerms(identifier)
         if(!terms){
-          console.log('calling await', identifier)
 
           const { $api } = useNuxtApp();
           ({ data:terms } = await $api.thesaurus.getDomainTerms(identifier));
-          console.log('finished await', identifier)
           this.domainTerms.push({identifier, terms});
-          console.log(this.getDomainTerms(identifier))
         }
         return terms;
     },  

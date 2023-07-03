@@ -37,14 +37,18 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     "auth",
     async (to) => {
         console.log('auth middleware', to)
-        const { checkUserAccess } = useSecurity()
       if (to.meta.auth){
-        if(!loggedIn.value) {
-            return authRedirectToLogin(to.path)
+        console.log(loggedIn.value)
+        if(loggedIn.value == false) {
+            await authRedirectToLogin(to.path)
+            return;
         }
-        const userCanAccess = await checkUserAccess({...to.meta, path:to.path});
-        if(!userCanAccess){
-            return navigateTo('/page403');
+        else{
+          const { checkUserAccess } = useSecurity()
+          const userCanAccess = await checkUserAccess({...to.meta, path:to.path});
+          if(!userCanAccess){
+              return navigateTo('/page403');
+          }
         }
       }
     },

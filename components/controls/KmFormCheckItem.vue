@@ -19,7 +19,6 @@ const onCheck = ($evt:any)=>{
     if(isBoolean(value)){
         value = value == 'true' ? true : false
     }
-    console.log(value)
     emit('update:modelValue', value)
 }
 

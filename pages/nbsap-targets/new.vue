@@ -11,10 +11,6 @@ import { ROLES } from '~/constants';
       EditTarget
     },
     name: 'TargetEditNew',
-    meta:{
-      schema:'nationalTarget7'
-    },
-    roles:[ROLES.PUBLISHING_AUTHORITIES, ROLES.NATIONAL_AUTHORIZED_USER, ROLES.NATIONAL_FOCALPOINT],
     data(){
       return {
         document : {}
@@ -24,6 +20,14 @@ import { ROLES } from '~/constants';
       submitDocument (){
         this.$router.push('/nbsap-targets')
       }
+    },
+    setup(){
+
+      definePageMeta({
+          auth:true,
+          schema:'nationalTarget7',
+          roles:[...ROLES.ALL_NATIONAL_USERS],
+      })
     }
   }
   </script>

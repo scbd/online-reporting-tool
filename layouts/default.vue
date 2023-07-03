@@ -31,11 +31,11 @@ export default {
       addDirAttribute: true,      // Adds dir
       addSeoAttributes: true,     // Adds lang
     })
-    const { locale } = useI18n();
+    const { locale } = useI18n()
     useHead({
       htmlAttrs: {
-        lang : locale.value,
-        dir  : locale.value === 'ar' ? 'rtl' : 'ltr',
+        lang : ()=>locale.value,
+        dir  : ()=>locale.value === 'ar' ? 'rtl' : 'ltr',
       }
     })
   }
