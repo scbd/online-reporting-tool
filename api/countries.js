@@ -15,7 +15,7 @@ export default class CountriesAPI extends ApiBase
 
   async getCountry(code)  {
 
-    const { data, pending, error, refresh } =  await useAPIFetch(`/api/v2013/countries/${code}`)
+    const { data, pending, error, refresh } =  await useAPIFetch(`/api/v2013/countries/${encodeURIComponent(code)}`)
   
     return { data : data?.value, pending, error, refresh };
   }
