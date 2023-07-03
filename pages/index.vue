@@ -1,19 +1,8 @@
 <template>
-    <div>
-     Welcome to ORT
-    </div>
+    <dashboard></dashboard>
   </template>
   
-  <script>
-  
-  export default {
-    name: 'Home',
-    components: {
-    },
-    async setup() {
-      const localePath = useLocalePath()
-      await navigateTo(localePath('/dashboard'))
-    },
-  }
+  <script setup>
+  import dashboard from './dashboard.vue';  
   </script>
   
