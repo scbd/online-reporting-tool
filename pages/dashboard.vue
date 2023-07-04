@@ -137,19 +137,19 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Dashboard',
-  components: {},
-  data() {
-    return {
-      selected: 'Month',
-      tableItems: [
+<script setup>
+
+      definePageMeta({
+        auth:false
+      })
+      const gbfTargets=null
+      const selected = 'Month'
+      const tableItems = [
         {
           country: 'Canada',
           type: '7th National Report',
           title: 'Canada : 7th National Report',
-          publishedOn: this.randomDate(
+          publishedOn: randomDate(
             new Date(2022, 0, 10),
             new Date()
           ).toLocaleString(),
@@ -158,7 +158,7 @@ export default {
           country: 'Canada',
           type: 'NBSAP Target',
           title: 'National Target 1',
-          publishedOn: this.randomDate(
+          publishedOn: randomDate(
             new Date(2022, 0, 10),
             new Date()
           ).toLocaleString(),
@@ -167,7 +167,7 @@ export default {
           country: 'Germany',
           type: 'NBSAP Target',
           title: 'National Target 1',
-          publishedOn: this.randomDate(
+          publishedOn: randomDate(
             new Date(2022, 0, 10),
             new Date()
           ).toLocaleString(),
@@ -176,22 +176,20 @@ export default {
           country: 'Ghana',
           type: 'NBSAP Target',
           title: 'National Target 1',
-          publishedOn: this.randomDate(
+          publishedOn: randomDate(
             new Date(2022, 0, 10),
             new Date()
           ).toLocaleString(),
-        },
-      ],
-      tableFields: [
+        }
+      ]
+      const tableFields = [
         { key: 'country', label: 'Country', _classes: '' },
         { key: 'type', label: 'Record Type', _classes: '' },
         { key: 'title', label: 'Title', _classes: '' },
         { key: 'publishedOn', label: 'Published on' },
-      ],
-    }
-  },
-  methods: {
-    color(value) {
+      ]
+
+    function color(value) {
       let $color
       if (value <= 25) {
         $color = 'info'
@@ -203,21 +201,10 @@ export default {
         $color = 'danger'
       }
       return $color
-    },
-    randomDate(start, end) {
+    }
+    function randomDate(start, end) {
       return new Date(
         start.getTime() + Math.random() * (end.getTime() - start.getTime())
       )
-    },
-  },
-  async mounted(){
-    // if(!this.$auth.loggedIn){
-    //   var t= await this.$auth.loginWith('ScbdIframeAuthStrategy', { data : { email:'blaise.fonseca@un.org', password:'' }})
-    //   console.log(t)
-    // }
-
-    // console.log(this.globalHelper())
-  },
-  auth:false
-}
+    }
 </script>

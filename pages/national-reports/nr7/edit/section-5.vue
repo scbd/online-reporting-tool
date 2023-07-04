@@ -1,5 +1,7 @@
 <template>
-  <CCard>
+  <span>Test section</span>
+  
+  <!-- <CCard>
     <CCardHeader>
       <slot name="header">
         <CIcon name="cil-grid" /> Section V : Assessment of progress towards
@@ -9,8 +11,8 @@
     </CCardHeader>
     <CCardBody>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <!-- <button @click="submitDocument()" class="btn btn-primary">Save</button>  -->
-        <NuxtLink to="/nbsaps-targets/new">
+        <button @click="submitDocument()" class="btn btn-primary">Save</button> 
+        <NuxtLink to="/nbsap-targets/new">
           <CButton color="success ml-1">
             <font-awesome-icon icon="fa-solid fa-plus" /> Add Global Target
           </CButton>
@@ -80,7 +82,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <font-awesome-icon icon="fa-edit" /> Edit Review
+                    <CIcon icon="cil-comment-square-edit"/> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -103,7 +105,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <font-awesome-icon icon="fa-edit" /> Edit Review
+                    <CIcon icon="cil-comment-square-edit"/> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -129,7 +131,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <font-awesome-icon icon="fa-edit" /> Edit Review
+                    <CIcon icon="cil-comment-square-edit"/> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -155,7 +157,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <font-awesome-icon icon="fa-edit" /> Edit Review
+                    <CIcon icon="cil-comment-square-edit"/> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -178,7 +180,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <font-awesome-icon icon="fa-edit" /> Edit Review
+                    <CIcon icon="cil-comment-square-edit"/> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -204,7 +206,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <font-awesome-icon icon="fa-edit" /> Edit Review
+                    <CIcon icon="cil-comment-square-edit"/> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -212,10 +214,10 @@
           </tbody>
         </table>
       </div>
-      <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end"> -->
-      <!-- <button @click="submitDocument()" class="btn btn-primary">Save</button> -->
-      <!-- <button @click="submitDocument()" class="btn btn-primary">Cancel</button> -->
-      <!-- </div> -->
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button @click="submitDocument()" class="btn btn-primary">Save</button>
+      <button @click="submitDocument()" class="btn btn-primary">Cancel</button>
+      </div>
       <CModal
         :show.sync="showTargetReviewDialog"
         :no-close-on-backdrop="true"
@@ -235,11 +237,23 @@
         </template>
       </CModal>
     </CCardBody>
-  </CCard>
+  </CCard> -->
 </template>
 
 <script>
-import Ckeditor from '@/components/controls/ck-editor'
+import { defineComponent } from '@vue/composition-api'
+
+export default defineComponent({
+  components:{
+    Ckeditor
+  },
+  setup() {
+    
+  },
+})
+</script>
+
+<!-- <script>
 import EditTargetReview from '~/components/pages/nr7/edit-target-review.vue'
 export default {
   components: {
@@ -262,4 +276,4 @@ export default {
     },
   },
 }
-</script>
+</script> -->

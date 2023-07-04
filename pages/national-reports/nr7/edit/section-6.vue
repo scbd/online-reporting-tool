@@ -1,5 +1,7 @@
 <template>
-  <CCard>
+  <span>Test section</span>
+  
+  <!-- <CCard>
     <CCardHeader>
       <slot name="header">
         <CIcon name="cil-grid" /> Section VI : Conclusions on the implementation
@@ -63,14 +65,25 @@
       </form>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button @click="submitDocument()" class="btn btn-primary">Save</button>
-        <!-- <button @click="submitDocument()" class="btn btn-primary">Cancel</button> -->
+        <button @click="submitDocument()" class="btn btn-primary">Cancel</button>
       </div>
     </CCardBody>
-  </CCard>
+  </CCard> -->
 </template>
 
 <script>
-import Ckeditor from '@/components/controls/ck-editor'
+import { defineComponent } from '@vue/composition-api'
+
+export default defineComponent({
+  components:{
+    Ckeditor
+  },
+  setup() {
+    
+  },
+})
+</script>
+<!-- <script>
 export default {
   components: {
     Ckeditor,
@@ -82,4 +95,4 @@ export default {
   props: {},
   methods: {},
 }
-</script>
+</script> -->

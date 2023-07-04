@@ -224,7 +224,6 @@
 </template>
 
 <script>
-import Ckeditor from '@/components/controls/ck-editor'
 export default {
   components: {
     Ckeditor,

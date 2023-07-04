@@ -19,17 +19,17 @@
             <div class="card-body">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <CButton color="secondary m-1">
-                  <font-awesome-icon icon="fa-save" /> Save
+                  <CIcon icon="cil-save"/> Save
                 </CButton>
                 <CButton color="success m-1">
-                  <font-awesome-icon icon="fa-save" /> Publish
+                  <CIcon icon="cil-save"/> Publish
                 </CButton>
                 <CButton color="warning m-1">
-                  <font-awesome-icon icon="fa-share" /> Share
+                  <CIcon icon="cil-share"/> Share
                 </CButton>
 
                 <CButton color="danger m-1">
-                  <font-awesome-icon icon="fa-file-pdf" /> PDF
+                  <CIcon icon="cil-file-pdf"/> PDF
                 </CButton>
               </div>
             </div>
@@ -56,7 +56,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-1">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <CIcon icon="cil-comment-square-edit"/> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -85,7 +85,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-2">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <CIcon icon="cil-comment-square-edit"/> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -116,7 +116,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-3">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <CIcon icon="cil-comment-square-edit"/> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -143,7 +143,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-4">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <CIcon icon="cil-comment-square-edit"/> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -173,7 +173,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-5">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <CIcon icon="cil-comment-square-edit"/> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -203,7 +203,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-6">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <CIcon icon="cil-comment-square-edit"/> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -233,7 +233,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-7">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <CIcon icon="cil-comment-square-edit"/> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -244,7 +244,7 @@
       <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <NuxtLink to="/national-reports/nr7/edit/section-1">
                     <CButton color="secondary" size="sm">
-                        <font-awesome-icon icon="fa-plus" /> Add new
+                        <CIcon icon="addthis"/> Add new
                     </CButton>
                 </NuxtLink>
             </div> -->
@@ -253,6 +253,18 @@
 </template>
 
 <script>
+import { defineComponent } from '@vue/composition-api'
+
+export default defineComponent({
+  components:{
+    Ckeditor
+  },
+  setup() {
+    
+  },
+})
+</script>
+<!-- <script>
 export default {
   name: 'Nr7Edit',
   meta:{
@@ -261,4 +273,4 @@ export default {
   props: {},
   methods: {},
 }
-</script>
+</script> -->

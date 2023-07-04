@@ -1,46 +1,63 @@
-# Nuxt + CoreUI Free Vue Bootstrap Admin Template
+# Nuxt 3 Minimal Starter
 
-![Template](https://coreui.io/images/github/vue-free-template-3.gif)
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-> Nuxt + CoreUI Free Vue Bootstrap Admin Template
+## Setup
 
-## Description
+Make sure to install the dependencies:
 
-Nuxt + CoreUI Free Vue Bootstrap Admin Template project, free to use boilerplate for every need. For more information about [CoreUI Free Vue Bootstrap Admin Template](https://github.com/coreui/coreui-free-vue-admin-template)
+```bash
+# npm
+npm install
 
-This source use version Nuxt 2.11.0 and  CoreUI Free Vue Bootstrap Admin Template 3.0 beta.
+# pnpm
+pnpm install
 
-## Build Setup
-
-``` bash
-# clone the repo
-$ git clone https://gitlab.com/kim-digi-dinos/nuxt-and-coreui-free-vue-bootstrap-admin-template.git     Nuxt-CoreUI-Vue
-
-# go into app's directory
-$ cd Nuxt-CoreUI-Vue
-
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
-$ yarn dev
-
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
+# yarn
+yarn install
 ```
 
-Go to [http://localhost:3000](http://localhost:3000)
+## Development Server
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+Start the development server on `http://localhost:3000`:
 
-## License
+```bash
+# npm
+npm run dev
 
-This project under [NuxtJS License](https://github.com/nuxt/nuxt.js/blob/dev/LICENSE) and [CoreUI License](https://github.com/coreui/coreui-free-vue-admin-template/blob/master/LICENSE)
+# pnpm
+pnpm run dev
 
-## Support
+# yarn
+yarn dev
+```
 
-If you need support plse contact kim.nm@digidinos.com or tech@digidinos.com.
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm run build
+
+# yarn
+yarn build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm run preview
+
+# yarn
+yarn preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
