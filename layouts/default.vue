@@ -8,7 +8,7 @@
           <router-view />
         </CContainer>
       </div>
-      <AppFooter />      
+      <AppFooter class="mt-5"/>      
     </div>
   </div>
 </template>
@@ -41,3 +41,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  AppFooter{
+    
+  }
+</style>

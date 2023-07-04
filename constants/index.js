@@ -11,10 +11,15 @@ export const THEASURUS = {
 }
 
 export const ROLES = {
-    ADMINSTARATOR           : 'administrator',
+    ADMINISTARATOR           : 'administrator',
     NATIONAL_FOCALPOINT     : 'nationalFocalPoint',
     NATIONAL_AUTHORIZED_USER: 'nationalAuthorizedUser',
     PUBLISHING_AUTHORITIES  : 'publishingAuthorities',
     ALL_NATIONAL_USERS      : ['nationalFocalPoint', 'nationalAuthorizedUser', 'publishingAuthorities']
 }
 // ROLES["ALL_NATIONAL_USERS"] = [ROLES.NATIONAL_FOCALPOINT]
+
+export const SCHEMAS = {
+    NATIONAL_TARGET_7 : 'nationalTarget7',
+    NATIONAL_REPORT_7 : 'nationalReport7'
+}

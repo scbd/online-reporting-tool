@@ -18,23 +18,22 @@ export const useRealmConfStore = defineStore('realmConf', {
     },
     getRole(state) {
 
-      return (roleName:string, schema:string, schemaType:string)=> {
+      return (roleName:string, schema:string = '', schemaType:string='')=> {
         if(!state.realmConf?.schemas)
           return;
           
-        var patchedRoleName = this.patchRoleName(roleName);
         var roles;
         if(schema){
             var schemaDetails = state.realmConf?.schemas[schema];
-            roles = schemaDetails[patchedRoleName]; //get specific role [PA, NAU, NFP]
+            roles = schemaDetails[roleName]; //get specific role [PA, NAU, NFP]
             
             // if roles are not overridden then apply fallback roles National/Reference
-            roles = roles || this.fallbackRoles(schemaDetails.type, patchedRoleName);
+            roles = roles || this.fallbackRoles(schemaDetails.type, roleName);
         }
         else if(schemaType)
-            roles = this.fallbackRoles(schemaType, patchedRoleName);
+            roles = this.fallbackRoles(schemaType, roleName);
         else 
-            roles = state.realmConf?.roles[patchedRoleName];
+            roles = state.realmConf?.roles[roleName];
         
         if(!roles)
             console.warn(roleName + ' role is not configured for realm ' + state.realmConf?.realm + ', please update realm-configuration');

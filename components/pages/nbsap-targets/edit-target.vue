@@ -4,11 +4,11 @@
         <slot name="header"> NBSAP Target New</slot>
       </CCardHeader>
       <CCardBody>
+       
         <form>
             <CCard>
                 <CCardBody>
                 {{ document }}
-                {{ selectedGbfTargets }}
                     <!-- <div>
                         <div class="card">
                         <div class="card-header bg-secondary">
@@ -35,7 +35,7 @@
                                         value-key="code"
                                         placeholder="Government"
                                         :options="countryList"
-                                        :disabled="!isAdmin">
+                                        :disabled="!security.role.isAdministrator">
                                     </km-select>                                
                                 </km-form-group>   
 
@@ -78,45 +78,48 @@
                                     <km-select
                                         v-model="selectedGbfTargets"
                                         class="validationClass"
-                                        label="name"
+                                        label="title"
                                         track-by="identifier"
                                         value-key="identifier"
                                         placeholder="Global Goals and Targets"
                                         :options="globalGoalsAndTargets"
                                         :multiple="true"
                                         :close-on-select="false"
+                                        @change="onGoalsAndTargetSelected"
+                                        :custom-label="customLabel"
                                     >
                                     </km-select>
                                     <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
                                 </km-form-group>
                                 <km-form-group>
-                                    <label  class="form-check-label" for="hasEnablingConditions">Enabling conditions and/or other non-target elements of the KunmingMontreal Global Biodiversity Framework</label>
+                                    <label  class="form-check-label" for="hasEnablingConditions">Considerations for implementation of other non-target elements of the Kunming Montreal Global Biodiversity Framework</label>
                                     <km-form-check-group>
                                         <km-form-check-item inline type="radio" name="hasEnablingConditions"  for="hasEnablingConditions" id="hasEnablingConditionsYes" :value="true"  v-model="document.hasEnablingConditions" label="Yes"/>
                                         <km-form-check-item inline type="radio" name="hasEnablingConditions"  for="hasEnablingConditions" id="hasEnablingConditionsNo"  :value="false" v-model="document.hasEnablingConditions" label="No"/>
                                     </km-form-check-group>
-                                </km-form-group> 
+                                </km-form-group>
                                 <km-form-group v-if="document.hasEnablingConditions==true">
                                     <div class="card">
                                         <div class="card-body">                                                
                                             <km-form-group >
-                                                <label class="form-label" for="relatedOtherProcesses">Enabling conditions </label>
+                                                <label class="form-label" for="relatedOtherProcesses">Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it </label>
                                                 <km-select
                                                     v-model="document.enablingConditions"
                                                     class="validationClass"
-                                                    label="name"
+                                                    label="title"
                                                     track-by="identifier"
                                                     value-key="identifier"
-                                                    placeholder="Enabling conditions"
+                                                    placeholder="Considerations for implementation"
                                                     :options="gbfTargetConsideration"
                                                     :multiple="true"
                                                     :close-on-select="false"
+                                                    :custom-label="customLabel"
                                                 >
                                                 </km-select>
-                                                <small id="emailHelp" class="form-text text-muted">Please check all relevant enabling conditions.</small>
+                                                <small id="emailHelp" class="form-text text-muted">Please check all relevant considerations for implementation.</small>
                                             </km-form-group>
                                             <km-form-group>
-                                                <label class="form-label" for="enablingConditionsInfo">Please provide any information if available</label>
+                                                <label class="form-label" for="enablingConditionsInfo">Please explain how these considerations have been taken into account</label>
                                                 <km-input-rich-lstring v-model="document.enablingConditionsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
                                         </div>
@@ -166,8 +169,10 @@
                                         value-key="identifier"
                                         placeholder="Headline indicators"
                                         :options="headlineIndicators"
-                                        :multiple="false"
+                                        :multiple="true"
                                         :disabled="false"
+                                        :custom-label="customLabel"
+                                        :custom-selected-item="customSelectedItem"
                                     >
                                     </km-select>
                                     <small id="emailHelp" class="form-text text-muted">help!!!!</small>
@@ -182,8 +187,9 @@
                                         value-key="identifier"
                                         placeholder="Component indicators"
                                         :options="componentIndicators"
-                                        :multiple="false"
+                                        :multiple="true"
                                         :disabled="false"
+                                        :custom-label="customLabel"
                                     >
                                     </km-select>
                                     <small id="emailHelp" class="form-text text-muted">help!!!!</small>
@@ -198,8 +204,9 @@
                                         value-key="identifier"
                                         placeholder="Complementary indicators"
                                         :options="complementaryIndicators"
-                                        :multiple="false"
+                                        :multiple="true"
                                         :disabled="false"
+                                        :custom-label="customLabel"
                                     >
                                     </km-select>
                                     <small id="emailHelp" class="form-text text-muted">help!!!!</small>
@@ -309,8 +316,17 @@
                     </km-form-group>
                 </CCardBody>
             </CCard>
+
+            <div class="d-grid d-md-flex justify-content-md-end mt-5">
+                <CButton @click="onSubmitDocument()" color="primary" class="me-md-2">Save</CButton> 
+                <CButton @click="previewDocument()" color="primary" class="me-md-2">Preview</CButton> 
+                <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton> 
+                <CButton @click="printDocument()" color="dark" class="me-md-2">Print</CButton> 
+                <CButton @click="close()" color="danger" class="me-md-2">Close</CButton>
+            </div>
+            <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
         </form>
-        <button @click="submitDocument()" class="btn btn-primary">Save</button>
+
       </CCardBody>
     </CCard>
   
@@ -319,46 +335,51 @@
 <script setup>
   
     import { KmInputRichLstring, KmSelect, KmFormGroup,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring
+        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner
     } from "~/components/controls";
     import { mapStores }            from 'pinia'
-    import { THEASURUS, ROLES } from '~/constants';
+    import { THEASURUS, ROLES, SCHEMAS } from '~/constants';
     import { languages }            from '@/app-data/languages'
     import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
     import { useThesaurusStore }    from '@/stores/thesaurus';
     import { useCountriesStore }    from '@/stores/countries';
     import { useRealmConfStore }    from '@/stores/realmConf';
+    import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
+import appRoutes from "~/plugins/app-routes";
 
-    const $auth = useAuth();
+    const { user } = useAuth();
     const security = useSecurity();
+    const route    = useRoute();
 
     const thesaurusStore  = useThesaurusStore ();
     const countriesStore  = useCountriesStore ();
     const realmConfStore  = useRealmConfStore();
+    const kmDocumentDraftStore  = useKmDocumentDraftsStore();
 
-    const data = await Promise.all([
-            thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
-            thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
-            thesaurusStore.loadDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS),
-            thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS    ),
-            thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS),
-            thesaurusStore.loadDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS  ),
-            countriesStore.loadCountries()
-        ]);
+    await Promise.all([
+        thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
+        thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
+        thesaurusStore.loadDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS),
+        thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS    ),
+        thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS),
+        thesaurusStore.loadDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS  ),
+        countriesStore.loadCountries()
+    ]);
 
-    const document = ref({
-        header : {
-            languages : ['en', 'ar', 'zh']
-        },
-        mainPolicyOfMeasureOrActionInfo : {
-            zh : 'Chine'
-        },
-        government : {
-            identifier : undefined
-        },
-        additionalImplementation : {}
-    })
+    if(route?.params?.identifier){
+        await kmDocumentDraftStore.loadDraftDocument(route.params.identifier);
+        if(!kmDocumentDraftStore.draftRecord){
+            //TODO: show error that the record does not exists.
+            await navigateTo(appRoutes.NBSAPS_TARGETS_NEW);
+            // return;
+        }
+    }
+
+    const showSpinnerModal = ref(false);
     const selectedGbfTargets = ref([]);
+    const document =  ref(route?.params?.identifier ? kmDocumentDraftStore.draftRecord.body : emptyDocument() );
+    //initilize for local use
+    document.value.additionalImplementation = document.value.additionalImplementation || {};
 
     const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
     const globalGoalsAndTargets = computed(()=>{
@@ -377,7 +398,7 @@
             return [];
 
         const mapCountries = countriesStore.countries.map(e=>{
-            return { name : e.name[useI18n().locale], code : e.code?.toLowerCase()}
+            return { name : e.name[useI18n().locale.value], code : e.code?.toLowerCase()}
         })
 
         return mapCountries;
@@ -388,21 +409,52 @@
     
 
     onMounted(() => {
-        if($auth?.user?.isAuthenticated){
-            console.log($auth.user)
-            if(!$auth.user.government){
-                const adminRoles = realmConfStore.getRole(ROLES.ADMINSTARATOR)
-                if($security.isInRoles(adminRoles)){
-                    isAdmin = true
-                }
-            }
-            else{
-                document.government.identifier = $auth.user.government
-            }
+        if(user?.value?.isAuthenticated){
+            document.value.government.identifier = document.value?.government?.identifier || user.value.government
         }
-    }),
+    })
 
-    async function submitDocument(){
-        await navigateTo('/nbsap-targets')
+    const onSubmitDocument = async ()=>{
+        try{
+            showSpinnerModal.value = true;            
+            // await navigateTo('/nbsap-targets')
+
+            const lDocument = useStorage().cleanDocument({...document.value})
+
+            await kmDocumentDraftStore.saveDraft(lDocument.header.identifier, lDocument);
+
+        }
+        catch(e){
+            console.error(e);
+        }
+        finally{
+            showSpinnerModal.value = false;
+        }
+    }    
+
+    const onGoalsAndTargetSelected = (selected)=>{
+        document.value.gbfGolas = selected?.filter(e=>e.identifier.startsWith('GBF-GOAL')).map(e=>e.identifier)
+        document.value.gbfTargets = selected?.filter(e=>e.identifier.startsWith('GBF-TARGET')).map(e=>e.identifier)
     }
+    const customLabel = ({title})=>{
+        return title[useI18n().locale.value];
+    }
+    const customSelectedItem = (item)=>{
+        return { identifier : item };
+    }
+    function emptyDocument(){
+        return {
+            header : {
+                schema : SCHEMAS.NATIONAL_TARGET_7,
+                identifier : useGenerateUUID(),
+                languages  : ['en']
+            },        
+            government : {
+                identifier : undefined
+            },
+            additionalImplementation : {}
+        }
+    }
+
+
 </script>

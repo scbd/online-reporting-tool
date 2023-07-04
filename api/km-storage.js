@@ -3,14 +3,14 @@ import ApiBase, { tryCastToApiError } from './api-base';
 
 const  serviceUrls = { 
   documentQueryUrl  (){ return "/api/v2013/documents/" },
-  documentUrl       (identifier){ return `/api/v2013/documents/${encodeUriComponent(identifier)}` },
+  documentUrl       (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}` },
   validateUrl       (){ return "/api/v2013/documents/x/validate" },
-  draftUrl          (identifier){ return `/api/v2013/documents/${encodeUriComponent(identifier)}/versions/draft` },
-  attachmentUrl     (identifier, filename){ return `/api/v2013/documents/${encodeUriComponent(identifier)}/attachments/${encodeUriComponent(filename)}` },
-  securityUrl       (identifier, operation){ return `/api/v2013/documents/${encodeUriComponent(identifier)}/securities/${encodeUriComponent(operation)}` },
-  draftSecurityUrl  (identifier, operation){ return `/api/v2013/documents/${encodeUriComponent(identifier)}/versions/draft/securities/${encodeUriComponent(operation)}` },
-  draftLockUrl      (identifier, lockID){ return `/api/v2013/documents/${encodeUriComponent(identifier)}/versions/draft/locks/${encodeUriComponent(lockID)}` },
-  documentVersionUrl(identifier){ return `/api/v2013/documents/${encodeUriComponent(identifier)}/versions` },
+  draftUrl          (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft` },
+  attachmentUrl     (identifier, filename){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/${encodeURIComponent(filename)}` },
+  securityUrl       (identifier, operation){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/securities/${encodeURIComponent(operation)}` },
+  draftSecurityUrl  (identifier, operation){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/securities/${encodeURIComponent(operation)}` },
+  draftLockUrl      (identifier, lockID){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/locks/${encodeURIComponent(lockID)}` },
+  documentVersionUrl(identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions` },
 }
 export default class KmStorageApi extends ApiBase
 {
@@ -21,6 +21,7 @@ export default class KmStorageApi extends ApiBase
     this.drafts       = new KmDraftsApi(options);
     this.locks        = new KmLocksApi(options);
     this.attachments  = new KmAttachmentsApi(options);
+
   }
 
 
@@ -33,47 +34,47 @@ class KmDocumentsApi extends ApiBase
     this.self = this;
   }
   async query(params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.documentQueryUrl(), { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.documentQueryUrl(), { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async get(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.documentUrl(identifier), { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.documentUrl(identifier), { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async exists(identifier,params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.documentUrl(identifier), { method:'head', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.documentUrl(identifier), { method:'head', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async put(identifier, body, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.documentUrl(identifier), { method:'put', body, params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.documentUrl(identifier), { method:'put', body, params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async delete(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.documentUrl(identifier), { method:'delete', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.documentUrl(identifier), { method:'delete', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async validate(body, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.validateUrl(), { method:'put', body, params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.validateUrl(), { method:'put', body, params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async canCreate(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.securityUrl(identifier, 'create'), { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.securityUrl(identifier, 'create'), { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async canUpdate(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.securityUrl(identifier, 'update'), { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.securityUrl(identifier, 'update'), { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async canDelete(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.securityUrl(identifier, 'delete'), { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.securityUrl(identifier, 'delete'), { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
@@ -82,53 +83,57 @@ class KmDraftsApi extends ApiBase
 {
   constructor(options) {
     super(options);
+    console.log(serviceUrls)
   }
 
   async query(params){
     params.collection = "mydraft";
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.documentDraftQueryUrl(),  { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.documentDraftQueryUrl(),  { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
 
   async get(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftUrl(identifier),  { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftUrl(identifier),  { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
 
   async exists(identifier,params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftUrl(identifier),  { method:'head', params })
+
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftUrl(identifier),  { method:'head', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async put(identifier, body, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftUrl(identifier), data,  { method:'put', body, params })
+    console.log(identifier)
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftUrl(identifier), 
+      { body, method:'put', body, params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async delete(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftUrl(identifier),  { method:'delete', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftUrl(identifier),  { method:'delete', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async validate(body, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.validateUrl(), data,  { method:'put', body, params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.validateUrl(), { body, method:'put', body, params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async canCreate(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftSecurityUrl(identifier, 'create'),  { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftSecurityUrl(identifier, 'create'),  { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async canUpdate(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftSecurityUrl(identifier, 'update'),  { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftSecurityUrl(identifier, 'update'),  { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async canDelete(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftSecurityUrl(identifier, 'delete'),  { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftSecurityUrl(identifier, 'delete'),  { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
@@ -140,22 +145,22 @@ class KmLocksApi extends ApiBase
   }
 
   async get(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftLockUrl(identifier),  { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftLockUrl(identifier),  { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async exists(identifier,params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftLockUrl(identifier),  { method:'head', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftLockUrl(identifier),  { method:'head', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async put(identifier, body, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftLockUrl(identifier), data,  { method:'put', body, params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftLockUrl(identifier), { body, method:'put', body, params })
                   
     return { data : data?.value, pending, error, refresh };
   }
   async delete(identifier, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrl.draftLockUrl(identifier),  { method:'delete', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftLockUrl(identifier),  { method:'delete', params })
                   
     return { data : data?.value, pending, error, refresh };
   }

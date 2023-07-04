@@ -2,7 +2,7 @@
   <div :id="`${useAttrs().id || 'km-input-lstring-'+uid}`" class="km-input mb-2">   
     <slot></slot>    
     <CInputGroup class="mb-1" v-for="locale in locales" :key="locale" :class="`km-input-${locale}`" >
-      <CFormInput v-bind="useAttrs()" aria-describedby="basic-addon2"/>
+      <CFormInput aria-describedby="basic-addon2" v-model="binding[locale]"/>
       <CInputGroupText id="basic-addon2">{{locale.toUpperCase()}}</CInputGroupText>
     </CInputGroup>    
   </div>
@@ -36,17 +36,8 @@ export default {
   },
   data() {
     return {
-      activeLocale : '',
-      uid : makeUid(),
-      tabPaneActiveKey:1
+      uid : makeUid()
     };
-  },
-  watch:{
-    locales : function(newVal){
-      if(!newVal.includes(this.activeLocale)){        
-        this.activeLocale = newVal[0];
-      }
-    }
   },
   computed:{
     userLocales : {
@@ -58,19 +49,14 @@ export default {
       get() {
         return this.modelValue||{};
       },
-      set(value) {    
+      set(value) {
         this.$emit('update:modelValue', value);
       }
     }
   },
   methods: {  },
-  mounted(){
-    
-    this.activeLocale = this.locales[0];
-
-    if(this.modelValue){
-      this.binding = {...this.modelValue||{}};
-    }
+  mounted(){        
+    this.binding = {...this.modelValue||{}};
   }
 };
 </script>

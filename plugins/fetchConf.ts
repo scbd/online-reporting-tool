@@ -1,5 +1,6 @@
 import { ofetch } from 'ofetch'
-// import { useAuthStore } from '~/store/auth'
+import { useRealmConfStore } from '@/stores/realmConf'
+import { useAuthStore } from '~/store/auth'
 
 export default defineNuxtPlugin((nuxtApp) => {
   
@@ -7,8 +8,12 @@ export default defineNuxtPlugin((nuxtApp) => {
     onRequest ({ _request, options }) {
       const auth = useAuth()
       const config = useRuntimeConfig()
+      const realmConfStore = useRealmConfStore()
+      
+      const realmConf = realmConfStore.realmConf;
 
       options.baseURL = options.baseURL || config.public.API_URL;
+      options.headers = options.headers || {};
 
       if (auth?.token) {
         const authConf = useAuthConf();
@@ -16,12 +21,15 @@ export default defineNuxtPlugin((nuxtApp) => {
         const authHeaderName = authConf?.token?.name||'Authorization';
         const authTokenType  = authConf?.token?.type||'Bearer';
 
-        options.headers = { [authHeaderName]: `${authTokenType} ${auth.token}` }
+        options.headers[authHeaderName] = `${authTokenType} ${auth.token}`;
 
       } 
       // else {
       //   console.log('Not authenticated')
       // }
+
+      if(realmConf.realm)
+        options.headers['realm'] = realmConf.realm
     },
     onRequestError ({ error }) {
       console.error(error)

@@ -4,10 +4,23 @@ import { ROLES }                from '@/constants';
 
 export const useSecurity = ()=>{
     return {
-        checkUserAccess
+        checkUserAccess,
+        isInRoles,
+        role : {
+            isAdministrator : isAdministrator()
+        }
     }
 }
 
+function isAdministrator(){
+    const $auth = useAuth();
+    const realmConfStore  = useRealmConfStore();
+
+    if(!$auth.user.government){
+        const adminRoles = realmConfStore.getRole(ROLES.ADMINISTARATOR)
+        return isInRoles(adminRoles);
+    }
+}
 
 async function checkUserAccess(options:any) {
     options = options ||{};
@@ -23,7 +36,7 @@ async function checkUserAccess(options:any) {
     const { roles, schema } = options;
 
     if(!authUser?.government){
-        const adminRoles = realmConfStore.getRole(ROLES.ADMINSTRATOR);
+        const adminRoles = realmConfStore.getRole(ROLES.ADMINISTARATOR);
         if (adminRoles?.some((r) => auth.hasScope(r))){
         return true;
         }
@@ -59,5 +72,10 @@ async function checkUserAccess(options:any) {
     }
 
     return false;
+}
+
+function isInRoles(roles:Array<string>){
+    const $auth = useAuth();
+    return roles?.some((r) =>$auth.hasScope(r));
 }
   
