@@ -20,8 +20,8 @@ _run:
   testImage: &testImage
     name: Test docker image 
     command:  |
-      docker run --name ort -e "REALM_CONF_HOST=ort" -d -p 8000:8000 output;sleep 10;
-      docker exec ort curl --retry 10 --retry-delay 5 -v http://localhost:8000/en
+      docker run --name ort -e "REALM_CONF_HOST=ort.cbddev.xyz" -d -p 8000:8000 output;sleep 10;
+      docker exec ort curl --retry 10 --retry-delay 5 -v http://localhost:8000
 
 jobs:
   build:
