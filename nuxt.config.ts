@@ -95,7 +95,7 @@ export default defineNuxtConfig({
       }
     },
     plugins: [
-      // viteSyncI18nFiles(),
+      viteSyncI18nFiles(),
       // VueI18nVitePlugin({
       //   include: [
       //     resolve(dirname(fileURLToPath(import.meta.url)), './i18n/dist/*.json')
