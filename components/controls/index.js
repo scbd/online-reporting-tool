@@ -10,6 +10,5 @@ export {default as KmLocales            }  from './view/KmLocales';
 export {default as KmTerm               }  from './view/KmTerm';
 
 export {default as KmNavLink            }  from './KmNavLink';
-
 export {default as KmFormGroup          }  from './KmFormGroup';
 export {default as KmModalSpinner       }  from './KmModalSpinner';

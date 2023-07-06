@@ -11,8 +11,7 @@
         @complete:wizard="wizardCompleted"
         :startIndex="currentTab"
     >
-        <!-- TODO : find why onfirst load its not working without .value -->
-        <div v-if="(currentTab.value || currentTab) == 0" class="m-1">
+        <div v-if="currentTab == 0" class="m-1">
             <slot name="introduction" >
                 <CAlert color="success" v-bind:visible="true">
                     <CAlertHeading>Introduction!</CAlertHeading>
@@ -21,9 +20,9 @@
                 </CAlert>
             </slot>
         </div>
-        <div v-if="(currentTab.value || currentTab) == 1" class="m-1"><slot name="submission"></slot></div>
-        <div v-if="(currentTab.value || currentTab) == 2" class="m-1"><slot name="review"></slot></div>
-        <div v-if="(currentTab.value || currentTab) == 3" class="m-1"><slot name="publish"></slot></div>
+        <div v-if="currentTab == 1" class="m-1"><slot name="submission"></slot></div>
+        <div v-if="currentTab == 2" class="m-1"><slot name="review"></slot></div>
+        <div v-if="currentTab == 3" class="m-1"><slot name="publish"></slot></div>
     </Wizard>
     <Wizard
         squared-tabs
@@ -43,6 +42,11 @@
     import 'form-wizard-vue3/dist/form-wizard-vue3.css';
     import Wizard from 'form-wizard-vue3';
     
+    const props = defineProps({
+        currentTab : { type:Number, default:0 }
+    })
+    let { currentTab } = toRefs(props);
+
     const tabs = [
         {
             title: 'Introduction',
@@ -58,26 +62,15 @@
         // },
     ];
 
-    const currentTabIndex = ref(0)
-    currentTabIndex.value = 1;
-
     const onChangeCurrentTab = (index, oldIndex)=>{
-        console.log(index, oldIndex);
-        currentTabIndex.value = index;
+        currentTab = index;
     }
     const onTabBeforeChange = ()=> {
-        if (currentTabIndex.value === 0) {
-            console.log('First Tab');
-        }
-        console.log('All Tabs');
+        // console.log('All Tabs');
     }
     const wizardCompleted = ()=> {
-        console.log('Wizard Completed');
+        // console.log('Wizard Completed');
     }
-
-const currentTab = computed(()=>{
-    return currentTabIndex.value
-})
 </script>
 
 <style>
