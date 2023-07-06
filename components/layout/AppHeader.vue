@@ -72,7 +72,7 @@
 import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt'
 import { logo } from '@/assets/brand/logo'
-import { languages } from '~/app-data/languages'
+import { languages } from '@/app-data/languages'
 
 export default {
   name: 'AppHeader',

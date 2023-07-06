@@ -1,6 +1,6 @@
 import { ofetch } from 'ofetch'
 import { useRealmConfStore } from '@/stores/realmConf'
-import { useAuthStore } from '~/store/auth'
+import { useAuthStore } from '@/store/auth'
 
 export default defineNuxtPlugin((nuxtApp) => {
   

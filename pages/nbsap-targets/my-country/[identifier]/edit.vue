@@ -5,7 +5,7 @@
 <script setup lang="ts">
 
 import EditTarget from "@/components/pages/nbsap-targets/edit-target.vue";
-import { ROLES } from '~/constants';
+import { ROLES } from '@/constants';
 
   definePageMeta({
     auth:true,

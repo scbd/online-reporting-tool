@@ -171,7 +171,7 @@
              KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner
            } from "~/components/controls";
     import { mapStores }            from 'pinia'
-    import { UTILS, ROLES, SCHEMAS } from '~/constants';
+    import { UTILS, ROLES, SCHEMAS } from '@/constants';
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import {getTargetNumber} from '@/util';

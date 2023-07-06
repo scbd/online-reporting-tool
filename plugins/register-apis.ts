@@ -1,12 +1,12 @@
-// import GaiaApi from '~/api/gaia';
+// import GaiaApi from '@/api/gaia';
 
-import ArticlesApi            from '~/api/articles'
-import CountriesApi           from '~/api/countries'
-import KmStorageApi           from '~/api/km-storage'
-import KmWorkflowsApi         from '~/api/km-workflows'
-import RealmConfigurationApi  from '~/api/realm-configuration'
-import SolrIndexApi           from '~/api/solr-index'
-import ThesaurusApi           from '~/api/thesaurus'
+import ArticlesApi            from '@/api/articles'
+import CountriesApi           from '@/api/countries'
+import KmStorageApi           from '@/api/km-storage'
+import KmWorkflowsApi         from '@/api/km-workflows'
+import RealmConfigurationApi  from '@/api/realm-configuration'
+import SolrIndexApi           from '@/api/solr-index'
+import ThesaurusApi           from '@/api/thesaurus'
 
 
 export default defineNuxtPlugin((nuxtApp) => {

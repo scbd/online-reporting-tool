@@ -10,7 +10,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { capitalCase } from 'change-case';
-import { languages } from '~/app-data/languages'
+import { languages } from '@/app-data/languages'
 import { useRoute } from 'vue-router' 
 //TODO: verify when nuxt issue is fixed, temp use useRoute directly from vue instead of nuxt
 
