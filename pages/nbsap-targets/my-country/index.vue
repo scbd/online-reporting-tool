@@ -34,7 +34,7 @@
             National targets 
         </div>
         <div class="card-body">            
-          <table class="table">
+          <table class="table" v-if="kmDocumentDraftStore.documentDrafts">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -177,6 +177,13 @@
     import {getTargetNumber} from '@/util';
     import {sortBy} from 'lodash';
 
+
+    definePageMeta({
+        auth:true,
+        schema:SCHEMAS.NATIONAL_TARGET_7,
+        roles:[...ROLES.ALL_NATIONAL_USERS],
+    })
+
     const { user } = useAuth();
     const security = useSecurity();
     const route    = useRoute();
@@ -217,9 +224,9 @@
     }
 
     const navigateToPage = async (route:string, draft:any)=>{
-      console .log(draft)
       const { $appRoutes } = useNuxtApp();
       const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
+      await navigateTo(url);
       await navigateTo(url);
     }
 </script>

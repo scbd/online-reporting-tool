@@ -5,7 +5,7 @@ export const useKmDocumentDraftsStore = defineStore('kmDocumentDrafts', {
     return {
       documentDrafts: [],
 
-      errors : {},
+      errors : [],
 
       draftRecord : {},
       isBusy:false,
@@ -27,11 +27,12 @@ export const useKmDocumentDraftsStore = defineStore('kmDocumentDrafts', {
             $orderby: sort||'updatedOn desc',
             body:body
         };
-
+        this.errors = []
         this.isBusy = true;
         const { $api } = useNuxtApp();
-        const { data:documentDrafts } = await $api.kmStorage.drafts.query(queryParams);
+        const { data:documentDrafts, error } = await $api.kmStorage.drafts.query(queryParams);
 
+        this.errors.push(error)
         this.documentDrafts = documentDrafts;
         this.isBusy = false;
     },

@@ -359,6 +359,7 @@
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
+    import {useToast} from 'vue-toast-notification';
 
     const { user }        = useAuth();
     const security        = useSecurity();
@@ -369,7 +370,8 @@
     const countriesStore  = useCountriesStore ();
     const realmConfStore  = useRealmConfStore();
     const kmDocumentDraftStore  = useKmDocumentDraftsStore();
-
+    const $toast                = useToast();
+        
     const showSpinnerModal = ref(false);
     const selectedGbfTargets = ref([]);
 
@@ -442,7 +444,10 @@
             const lDocument = useStorage().cleanDocument({...document.value})
 
             await kmDocumentDraftStore.saveDraft(lDocument.header.identifier, lDocument);
-
+            if(kmDocumentDraftStore.error?.length)
+                $toast.error('Error saving draft record', {position:'top-right'});                
+            else
+                $toast.success('Draft record saved successfully', {position:'top-right'});
         }
         catch(e){
             console.error(e);

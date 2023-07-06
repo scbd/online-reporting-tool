@@ -19,9 +19,17 @@
   <i18n  src="~/i18n/dist/pages/nbsap-targets/index.json"></i18n>
   <script setup lang="ts">
   
+    import { UTILS, ROLES, SCHEMAS } from '@/constants';
     const { $appRoutes } = useNuxtApp();
 
+    definePageMeta({
+        auth:true,
+        schema:SCHEMAS.NATIONAL_TARGET_7,
+        roles:[...ROLES.ALL_NATIONAL_USERS],
+    })
     const navigateToPage = async (url:string)=>{
+      console.log(url)
+      await navigateTo(url);
       await navigateTo(url);
     }
     
