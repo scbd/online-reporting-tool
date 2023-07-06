@@ -11,36 +11,36 @@
     </CSidebarBrand>     
     <CSidebarNav>
       <KmNavLink :to="localePath('/dashboard')" icon="cil-speedometer" :title="t('menuDashboard')"></KmNavLink>      
-      <li class="nav-title" v-if="menuAccess[appRoutes.NBSAPS_TARGETS]">
+      <li class="nav-title" v-if="menuAccess[$appRoutes.NBSAPS_TARGETS]">
         {{t('menuDashboardNbsaps')}}
       </li>
-      <CNavGroup :visible="isChildRouteActive(appRoutes.NBSAPS_TARGETS)">
+      <CNavGroup :visible="isChildRouteActive($appRoutes.NBSAPS_TARGETS)">
         <template #togglerContent>
           {{ t('menuNationalTargets') }}
         </template>
-        <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
-        <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_OVERVIEW]" :to="localePath(appRoutes.NBSAPS_TARGETS_OVERVIEW)" icon="cil-list" :title="t('menuMyCountryTargets')"></KmNavLink>
+        <KmNavLink v-if="menuAccess[$appRoutes.NBSAPS_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
+        <KmNavLink v-if="menuAccess[$appRoutes.NBSAPS_TARGETS_OVERVIEW]" :to="localePath($appRoutes.NBSAPS_TARGETS_OVERVIEW)" icon="cil-list" :title="t('menuMyCountryTargets')"></KmNavLink>
       </CNavGroup>
       
       <li class="nav-title"> {{t('nationalReports')}} </li>      
       <KmNavLink  target="_blank" :to="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport6`" :title="t('6thNationalReport')"></KmNavLink>
-      <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_REPORTS)">  
+      <CNavGroup :visible="isChildRouteActive($appRoutes.NATIONAL_REPORTS)">  
         <template #togglerContent>
           {{t('7thNationalReport')}}
         </template>      
         <KmNavLink :to="localePath('/national-reports/nr7')" icon="cil-list" :title="t('reports')"></KmNavLink>
-        <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_REPORTS_NR7)">
+        <CNavGroup :visible="isChildRouteActive($appRoutes.NATIONAL_REPORTS_NR7)">
           <template #togglerContent>
             <CIcon customClassName="nav-icon" icon="cil-document"/> {{t('myCountry')}}
           </template>                 
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('overview')"    :to="localePath('/national-reports/nr7/edit')"           ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionI')"    :to="localePath('/national-reports/nr7/edit/section-1')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionII')"   :to="localePath('/national-reports/nr7/edit/section-2')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionIII')"  :to="localePath('/national-reports/nr7/edit/section-3')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionIV')"   :to="localePath('/national-reports/nr7/edit/section-4')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionV')"    :to="localePath('/national-reports/nr7/edit/section-5')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionVI')"   :to="localePath('/national-reports/nr7/edit/section-6')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('annex')"       :to="localePath('/national-reports/nr7/edit/section-7')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[$appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('overview')"    :to="localePath('/national-reports/nr7/edit')"           ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[$appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionI')"    :to="localePath('/national-reports/nr7/edit/section-1')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[$appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionII')"   :to="localePath('/national-reports/nr7/edit/section-2')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[$appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionIII')"  :to="localePath('/national-reports/nr7/edit/section-3')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[$appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionIV')"   :to="localePath('/national-reports/nr7/edit/section-4')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[$appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionV')"    :to="localePath('/national-reports/nr7/edit/section-5')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[$appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionVI')"   :to="localePath('/national-reports/nr7/edit/section-6')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[$appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('annex')"       :to="localePath('/national-reports/nr7/edit/section-7')" ></KmNavLink>
         </CNavGroup>          
         
       </CNavGroup>
@@ -65,7 +65,7 @@ export default {
     KmNavLink
 },
   async setup() {
-    const appRoutes = inject('appRoutes')
+    const {$appRoutes }   = useNuxtApp();
     const {locale} = useI18n()
     const localePath  = useLocalePath()
     const { loadRealmConf } = useRealmConfStore();
@@ -75,12 +75,12 @@ export default {
     await loadRealmConf();
 
     const menuAccess = {
-      [appRoutes.DASHBOARD] : true,
-      [appRoutes.NBSAPS_TARGETS]            : true,
-      [appRoutes.NBSAPS_TARGETS_OVERVIEW]   : true,//false,
-      [appRoutes.NATIONAL_REPORTS_NR6]      : true,
-      [appRoutes.NATIONAL_REPORTS_NR7]      : true,
-      [appRoutes.NATIONAL_REPORTS_NR7_EDIT] : true,//false,     
+      [$appRoutes.DASHBOARD] : true,
+      [$appRoutes.NBSAPS_TARGETS]            : true,
+      [$appRoutes.NBSAPS_TARGETS_OVERVIEW]   : true,//false,
+      [$appRoutes.NATIONAL_REPORTS_NR6]      : true,
+      [$appRoutes.NATIONAL_REPORTS_NR7]      : true,
+      [$appRoutes.NATIONAL_REPORTS_NR7_EDIT] : true,//false,     
       
       
     }
@@ -98,7 +98,7 @@ export default {
     return {
       sidebarUnfoldable: false,
       sidebarVisible: true,
-      appRoutes,
+      $appRoutes,
       menuAccess,
       localePath,
       t,
