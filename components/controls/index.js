@@ -3,6 +3,7 @@ export {default as KmInputRichLstring   }  from './edit/KmInputRichLstring';
 export {default as KmInputLstring       }  from './edit/KmInputLstring';
 export {default as KmFormCheckGroup     }  from './edit/KmFormCheckGroup';
 export {default as KmFormCheckItem      }  from './edit/KmFormCheckItem'
+export {default as KmFormWorkflow       }  from './edit/KmFormWorkflow'
 
 export {default as KmLstringValue       }  from './view/KmLstringValue';
 export {default as KmLocales            }  from './view/KmLocales';
