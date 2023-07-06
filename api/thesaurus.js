@@ -3,6 +3,7 @@ import ApiBase, { tryCastToApiError } from './api-base';
 
 export default class ThesaurusAPI extends ApiBase
 {
+  
   constructor(options) {
     super(options);
   }

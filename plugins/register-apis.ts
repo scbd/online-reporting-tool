@@ -28,11 +28,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     solrIndex         ,
     thesaurus         ,
   }
-  console.log(api)
   
   return {
     provide: {
-      hello: (msg: string) => `Hello ${msg}!`,
       api
     }
   }

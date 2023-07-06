@@ -1,5 +1,5 @@
 <template>
-    <CAlert color="danger" v-bind:visible="true">
+    <CAlert color="danger" v-if="error">
         <CAlertHeading>
             <CIcon icon="cil-check-circle" class="flex-shrink-0 me-2" width="24" height="24" />Error!
         </CAlertHeading>
@@ -29,17 +29,18 @@
                 Message: {{ error.message }}
             </div>
         </div>
-
-
-
-    </div>
     </CAlert>
 </template>
 
 <script setup lang="ts">
+
+    const props = defineProps({
+        error : { type:Object, required:true}
+    })
+    
     const showMoreInfo = ref(false) 
     const moreInfo = ()=>{
-        showMoreInfo.value = true
+        showMoreInfo.value = true;
     }
 </script>
 

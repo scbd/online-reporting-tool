@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> NBSAP Target New</slot>
+        <slot name="header"> NBSAP Target</slot>
       </CCardHeader>
       <CCardBody>
        
@@ -9,16 +9,7 @@
             <CCard>
                 <CCardBody>
                 {{ document }}
-                    <!-- <div>
-                        <div class="card">
-                        <div class="card-header bg-secondary">
-                            
-                        </div>
-                        <div class="card-body">
-                            
-                        </div>
-                        </div>
-                    </div> -->
+                    
                     <km-form-group>
                         <div class="card">
                             <div class="card-header bg-secondary">
@@ -91,8 +82,6 @@
                                     >
                                     </km-select>
                                     <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
-
-                                    <km-term v-model="document.gbfGoalsAlignment[0]" :locale="document.header.languages[0]"></km-term>
                                 </km-form-group>
                                 <km-form-group>
                                     <label  class="form-check-label" for="hasImplementingConsiderations">Considerations for implementation of other non-target elements of the Kunming Montreal Global Biodiversity Framework</label>
@@ -324,13 +313,13 @@
                 </CCardBody>
             </CCard>
 
-            <div class="d-grid d-md-flex justify-content-md-end mt-5">
+            <!-- <div class="d-grid d-md-flex justify-content-md-end mt-5">
                 <CButton @click="onSubmitDocument()" color="primary" class="me-md-2">Save</CButton> 
                 <CButton @click="previewDocument()" color="primary" class="me-md-2">Preview</CButton> 
                 <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton> 
                 <CButton @click="printDocument()" color="dark" class="me-md-2">Print</CButton> 
                 <CButton @click="onClose()" color="danger" class="me-md-2">Close</CButton>
-            </div>
+            </div> -->
             <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
         </form>
 
@@ -343,7 +332,7 @@
   
     import { KmInputRichLstring, KmSelect, KmFormGroup,
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmLstringValue,
-        KmLocales, KmTerm
+        KmLocales
     } from "~/components/controls";
     import { mapStores }            from 'pinia'
     import { THEASURUS, ROLES, SCHEMAS } from '~/constants';
@@ -368,16 +357,6 @@
     const showSpinnerModal = ref(false);
     const selectedGbfTargets = ref([]);
 
-    await Promise.all([
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS    ),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS  ),
-        countriesStore.loadCountries()
-    ]);
-
     if(route?.params?.identifier){
         await kmDocumentDraftStore.loadDraftDocument(route.params.identifier);
         if(!kmDocumentDraftStore.draftRecord){
@@ -387,7 +366,7 @@
         }        
     }
 
-    const document =  ref(route?.params?.identifier ? kmDocumentDraftStore.draftRecord.body : emptyDocument() );
+    const document =  ref(kmDocumentDraftStore.draftRecord.body);
     //initilize for local use
     document.value.additionalImplementation = document.value.additionalImplementation || {};
 
@@ -428,49 +407,9 @@
             document.value.government.identifier = document.value?.government?.identifier || user.value.government
         }
     })
-
-    const onSubmitDocument = async ()=>{
-        try{
-            showSpinnerModal.value = true;            
-            // await navigateTo('/nbsap-targets')
-
-            const lDocument = useStorage().cleanDocument({...document.value})
-
-            await kmDocumentDraftStore.saveDraft(lDocument.header.identifier, lDocument);
-
-        }
-        catch(e){
-            console.error(e);
-        }
-        finally{
-            showSpinnerModal.value = false;
-        }
-    }    
+ 
     const onClose = async ()=>{
         await navigateTo($appRoutes.NBSAPS_TARGETS_OVERVIEW)
-    }
-    const onGoalsAndTargetSelected = (selected)=>{
-        document.value.gbfGoalsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-GOAL')).map(e=>customSelectedItem(e.identifier))
-        document.value.gbfTargetsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-TARGET')).map(e=>customSelectedItem(e.identifier))
-    }
-    const customLabel = ({title})=>{
-        return title[useI18n().locale.value];
-    }
-    const customSelectedItem = (item)=>{
-        return { identifier : item };
-    }
-    function emptyDocument(){
-        return {
-            header : {
-                schema : SCHEMAS.NATIONAL_TARGET_7,
-                identifier : useGenerateUUID(),
-                languages  : ['en']
-            },        
-            government : {
-                identifier : undefined
-            },
-            additionalImplementation : {}
-        }
     }
 
 

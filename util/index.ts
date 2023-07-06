@@ -31,3 +31,10 @@ export function asArray(data) {
       .value();
 }
   
+export function getTargetNumber(target:String){
+
+  return target
+        .replace(/GBF\-TARGET\-/, '')
+        .replace(/^0/, '')
+  
+}

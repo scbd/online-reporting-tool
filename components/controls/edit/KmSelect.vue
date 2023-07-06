@@ -89,7 +89,6 @@ export default {
         return asArray(this.modelValue).map((value) => {
           return this.options?.find((option) => {
             const customSelectedItem = this.customSelectedItem(option[this.valueKey], option);
-            console.log(isEqual(customSelectedItem, value))
             
             return isEqual(customSelectedItem, value);
           })
@@ -108,7 +107,6 @@ export default {
     },
     fetchOptions(){
       this.options = this.optionsFn();
-      console.log(this.options)
     }    
   },
   mounted(){

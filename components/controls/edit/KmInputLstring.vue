@@ -2,7 +2,7 @@
   <div :id="`${useAttrs().id || 'km-input-lstring-'+uid}`" class="km-input mb-2">   
     <slot></slot>    
     <CInputGroup class="mb-1" v-for="locale in locales" :key="locale" :class="`km-input-${locale}`" >
-      <CFormInput aria-describedby="basic-addon2" v-model="binding[locale]"/>
+      <CFormInput aria-describedby="basic-addon2" v-model="binding[locale]" :dir="locale=='ar' ? 'rtl' : 'ltr'" />
       <CInputGroupText id="basic-addon2">{{locale.toUpperCase()}}</CInputGroupText>
     </CInputGroup>    
   </div>
@@ -11,7 +11,7 @@
 <script>
 import { removeEmpty } from '@/util';
 import { makeUid } from '@coreui/utils/src'
-
+import {without} from 'lodash';
 
 export default {
   name: "KmInputLstring",
@@ -39,11 +39,20 @@ export default {
       uid : makeUid()
     };
   },
+  watch:{
+    locales : function(newVal, oldVal){
+      console.log(newVal, oldVal)
+      const deleted = without(oldVal, ...newVal)
+      console.log(deleted, this.binding)
+      if(deleted?.length)      
+      delete this.binding[deleted[0]];
+    }
+  },
   computed:{
     userLocales : {
       get(){
         return this.locales
-      },
+      }
     },
     binding: {
       get() {

@@ -31,6 +31,7 @@
     "change-case": "^4.1.2",
     "jquery": "^3.7.0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "pinia": "^2.1.4",
     "vue-multiselect": "^3.0.0-beta.2"
   }

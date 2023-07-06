@@ -16,19 +16,30 @@ export const useKmDocumentDraftsStore = defineStore('kmDocumentDrafts', {
     
   },
   actions:{
-    async loadDraftDocuments(query:any){
-        if(!this.documentDrafts?.length){
-
-          const { $api } = useNuxtApp();
-          const { data:documentDrafts } = await $api.kmStorage.drafts.query();
-          this.documentDrafts = documentDrafts;
+    async loadDraftDocuments(query:string, rowsPerPage:number, 
+      sort:String, pageNumebr:number, body:boolean){
+                    
+        const queryParams = {
+            $filter : query,
+            collection : "mydraft",
+            $top    : rowsPerPage,
+            $skip   : (rowsPerPage*pageNumebr),
+            $orderby: sort||'updatedOn desc',
+            body:body
         };
+
+        this.isBusy = true;
+        const { $api } = useNuxtApp();
+        const { data:documentDrafts } = await $api.kmStorage.drafts.query(queryParams);
+
+        this.documentDrafts = documentDrafts;
+        this.isBusy = false;
     },
 
     async loadDraftDocument(identifier:String){
       if(identifier){
 
-        this.isBusy = true
+        this.isBusy = true;
         const { $api } = useNuxtApp();
         const { data:draftRecord } = await $api.kmStorage.drafts.get(identifier, {info:true, body:true});
         

@@ -23,3 +23,7 @@ export const SCHEMAS = {
     NATIONAL_TARGET_7 : 'nationalTarget7',
     NATIONAL_REPORT_7 : 'nationalReport7'
 }
+
+export const UTILS = {
+    ROWS_PER_PAGE : 25,
+}

@@ -19,7 +19,7 @@
           {{ t('menuNationalTargets') }}
         </template>
         <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
-        <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_OVERVIEW]" :to="localePath('/nbsap-targets/overview')" icon="cil-list" :title="t('menuMyCountryTargets')"></KmNavLink>
+        <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_OVERVIEW]" :to="localePath(appRoutes.NBSAPS_TARGETS_OVERVIEW)" icon="cil-list" :title="t('menuMyCountryTargets')"></KmNavLink>
       </CNavGroup>
       
       <li class="nav-title"> {{t('nationalReports')}} </li>      

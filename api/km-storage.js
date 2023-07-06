@@ -88,7 +88,7 @@ class KmDraftsApi extends ApiBase
 
   async query(params){
     params.collection = "mydraft";
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.documentDraftQueryUrl(),  { method:'get', params })
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.documentQueryUrl(),  { method:'get', params })
                   
     return { data : data?.value, pending, error, refresh };
   }
