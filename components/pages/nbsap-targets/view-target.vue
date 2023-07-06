@@ -1,64 +1,47 @@
 <template>
     <CCard>
-      <CCardHeader>
-        <slot name="header"> NBSAP Target</slot>
+      <CCardHeader v-if="identifier">
+        <slot name="header"> NBSAP Target view</slot>
       </CCardHeader>
       <CCardBody>
        
         <form>
             <CCard>
-                <CCardBody>
+                <CCardBody v-if="document">
                 {{ document }}
-                    
-                    <km-form-group>
+                <!-- {{ document.header }} -->
+                    <div v-if="document.header.languages && document.header.languages.length > 1" 
+                        class="d-grid d-md-flex justify-content-md-end mb-2">
+                        <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
+                    </div>
+                     <km-form-group>
                         <div class="card">
                             <div class="card-header bg-secondary">
                                 General
                             </div>
                             <div class="card-body">  
-                                <km-form-group>
+                                <km-form-group v-if="document.government && document.government.identifier">
                                     <label class="form-label" for="government">Government</label>
-                                    <km-select
-                                        v-model="document.government.identifier"
-                                        class="validationClass"
-                                        label="name"
-                                        track-by="code"
-                                        value-key="code"
-                                        placeholder="Government"
-                                        :options="countryList"
-                                        :disabled="!security.role.isAdministrator">
-                                    </km-select>                                
+                                        <km-term v-model="document.government" :locale="selectedLocale"></km-term>
+                                    
                                 </km-form-group>   
 
-                                <km-form-group>
-                                    <label class="form-label" for="languages">Please select in which language(s) you wish to submit this record</label>
-                                    <km-select
-                                        v-model="document.header.languages"
-                                        class="validationClass"
-                                        label="title"
-                                        track-by="code"
-                                        value-key="code"
-                                        placeholder="Language of record"
-                                        :options="formatedLanguages"
-                                        :multiple="true"
-                                    >
-                                    </km-select>
-                                </km-form-group>                           
+                                <!--                          
                                 <km-form-group>
                                     <label class="form-label" for="targetTitle">Full name/title of national target</label>                           
                                     <km-form-group> 
                                         <km-input-lstring  id="targetTitle" placeholder="Enter national target title" v-model="document.title" :locales="document.header.languages"></km-input-lstring>
                                     </km-form-group>                                    
-                                </km-form-group>                            
+                                </km-form-group>                             -->
 
-                                <km-form-group>
+                                <km-form-group v-if="document.mainPolicyOfMeasureOrActionInfo">
                                     <label class="form-label" for="mainPolicyOfMeasureOrActionInfo">Please outline the main policy measures or actions that will be taken to achieve this national target. </label>
-                                    <km-input-rich-lstring v-model="document.mainPolicyOfMeasureOrActionInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-lstring-value type="html"  v-model="document.mainPolicyOfMeasureOrActionInfo" :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
                             </div>
                         </div>
                     </km-form-group>
-                    <km-form-group>
+                    <!--<km-form-group>
                         <div class="card">
                             <div class="card-header bg-secondary">
                                 Alignment
@@ -113,7 +96,7 @@
                                             </km-form-group>
                                             <km-form-group>
                                                 <label class="form-label" for="implementingConsiderationsInfo">Please explain how these considerations have been taken into account</label>
-                                                <km-input-rich-lstring v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                                <km-lstring-value html  v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-lstring-value>
                                             </km-form-group>
                                         </div>
                                     </div>
@@ -142,7 +125,7 @@
                                 </km-form-group>
                                 <km-form-group>
                                     <label class="form-label" for="implementingConsiderationsInfo">Explanation, including which aspects of the goal or target are covered</label>
-                                    <km-input-rich-lstring v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-lstring-value html  v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-lstring-value>
                                 </km-form-group>
                             </div>
                         </div>
@@ -223,7 +206,7 @@
                             <div class="card-body">
                                 <km-form-group>
                                     <label class="form-label" for="nonStateActorCommitmentInfo">List the non-state commitments towards this national Target</label>
-                                    <km-input-rich-lstring v-model="document.nonStateActorCommitmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-lstring-value html  v-model="document.nonStateActorCommitmentInfo" :locales="document.header.languages"></km-lstring-value>
                                 </km-form-group>
                                 <km-form-group>
                                     
@@ -236,7 +219,7 @@
                                 </km-form-group> 
                                 <km-form-group v-if="document.hasNonStateActors==true">
                                     <label class="form-label" for="nonStateActorsInfo"> please indicate which commitment(s) and which actor(s)</label>
-                                    <km-input-rich-lstring v-model="document.nonStateActorsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-lstring-value html  v-model="document.nonStateActorsInfo" :locales="document.header.languages"></km-lstring-value>
                                 </km-form-group>
                             </div>
                         </div>
@@ -261,11 +244,11 @@
                                     <label class="form-label" for="additionalImplementationCustomValue"> 
                                         Please explain (Additional means of implementation are needed for the attainment of this national target)
                                     </label>
-                                    <km-input-rich-lstring v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-lstring-value html  v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-lstring-value>
                                 </km-form-group>
                                 <km-form-group>
                                     <label class="form-label" for="additionalImplementationInfo">Additional explanation</label>
-                                    <km-input-rich-lstring v-model="document.additionalImplementationInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-lstring-value html  v-model="document.additionalImplementationInfo" :locales="document.header.languages"></km-lstring-value>
                                 </km-form-group>
                             </div>
                         </div>
@@ -279,7 +262,7 @@
                                 
                                 <km-form-group>
                                     <label class="form-label" for="elementOfGlobalTargetsinfo">Elements of the global targets addressed by national targets</label>
-                                    <km-input-rich-lstring v-model="document.elementOfGlobalTargetsinfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-lstring-value html  v-model="document.elementOfGlobalTargetsinfo" :locales="document.header.languages"></km-lstring-value>
                                 </km-form-group>
                                 <km-form-group>
                                     <label class="form-check-label" for="hasReferncePeriod">Is there a reference period and national target which relates to the headline indicator?</label>
@@ -291,7 +274,7 @@
 
                                 <km-form-group v-if="document.hasReferncePeriod">
                                     <label class="form-label" for="referencePeriodInfo">Please explain</label>
-                                    <km-input-rich-lstring v-model="document.referencePeriodInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-lstring-value html  v-model="document.referencePeriodInfo" :locales="document.header.languages"></km-lstring-value>
                                 </km-form-group>
                             </div>
                         </div>
@@ -305,11 +288,11 @@
                             <div class="card-body">
                                 <km-form-group>
                                     <label class="form-label" for="referencePeriodInfo">Any other relevant infromation</label>
-                                    <km-input-rich-lstring v-model="document.additionalInfromation" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-lstring-value html  v-model="document.additionalInfromation" :locales="document.header.languages"></km-lstring-value>
                                 </km-form-group>
                             </div>
                         </div>
-                    </km-form-group>
+                    </km-form-group> -->
                 </CCardBody>
             </CCard>
 
@@ -330,9 +313,8 @@
 
 <script setup>
   
-    import { KmInputRichLstring, KmSelect, KmFormGroup,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmLstringValue,
-        KmLocales
+    import { KmFormGroup, KmModalSpinner, KmLstringValue,
+        KmLocales, KmTerm
     } from "~/components/controls";
     import { mapStores }            from 'pinia'
     import { THEASURUS, ROLES, SCHEMAS } from '@/constants';
@@ -354,62 +336,46 @@
     const realmConfStore  = useRealmConfStore();
     const kmDocumentDraftStore  = useKmDocumentDraftsStore();
 
+    const props = defineProps({
+        document    : { type:Object, default : undefined},
+        identifier  : { type:String, required:true}
+    })
+
+    let { document, identifier } = toRefs(props)
+
     const showSpinnerModal = ref(false);
-    const selectedGbfTargets = ref([]);
-
-    if(route?.params?.identifier){
-        await kmDocumentDraftStore.loadDraftDocument(route.params.identifier);
-        if(!kmDocumentDraftStore.draftRecord){
-            //TODO: show error that the record does not exists.
-            await navigateTo($appRoutes.NBSAPS_TARGETS_NEW);
-            // return;
-        }        
-    }
-
-    const document =  ref(kmDocumentDraftStore.draftRecord.body);
-    //initilize for local use
-    document.value.additionalImplementation = document.value.additionalImplementation || {};
-
-    selectedGbfTargets.value =  [   ...(document.value?.gbfGoalsAlignment||[]),
-                                    ...(document.value?.gbfTargetsAlignment||[])
-                                ]; 
-
-    const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
-    const globalGoalsAndTargets = computed(()=>{
-        const goalsAndTargets = [
-            ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
-            ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))), 
-        ]
-        return goalsAndTargets;
-    })
-    const gbfTargetConsideration = computed(()=>{
-        return (thesaurusStore.getDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
-    })
-    const formatedDegreeOfAlignments = computed(()=>{return degreeOfAlignments })
-    const countryList                = computed(()=>{
-        if(!countriesStore?.countries?.length)
-            return [];
-
-        const mapCountries = countriesStore.countries.map(e=>{
-            return { name : e.name[useI18n().locale.value], code : e.code?.toLowerCase()}
-        })
-
-        return mapCountries;
-    })
-    const headlineIndicators      = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
-    const componentIndicators     = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
-    const complementaryIndicators = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
-
     const selectedLocale = ref(locale.value);
 
     onMounted(() => {
-        if(user?.value?.isAuthenticated){
-            document.value.government.identifier = document.value?.government?.identifier || user.value.government
+        console.log(document)
+        if(props.identifier && !props.document){
+            loadDocument(props.identifier)       
+        }
+        else {
+            setSelectedLocale();
         }
     })
  
     const onClose = async ()=>{
         await navigateTo($appRoutes.NBSAPS_TARGETS_OVERVIEW)
+    }
+
+    async function loadDocument(identifier){
+
+        document = await kmDocumentDraftStore.loadDraftDocument(route.params.identifier);     
+        setSelectedLocale();
+    }
+
+    function setSelectedLocale(){
+        if(document?.header?.languages?.length){
+            if(document.header.languages.length == 1)
+                selectedLocale.value = document.header.languages[0];
+            else if(document.header.languages.includes(locale.value))
+                selectedLocale.value = locale.value;
+            else 
+                selectedLocale.value = document.header.languages[0]
+        }
+        
     }
 
 

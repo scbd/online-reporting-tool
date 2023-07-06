@@ -1,12 +1,22 @@
 <template>
+    <div id="km-term"> 
+        <div :class="`input-group input-lang-${locale}`">
+    
+            <CAlert color="danger" v-if="error">Error loading term {{ modelValue.identifier }}</CAlert>
+            <div class="form-control km-value" 
+                :dir="direction(lstringTerm, locale)" aria-describedby="basic-addon1">
+                {{ lstringTerm }}
+            </div>
+        </div>
+    </div>
     <div class="km-term">
-        <CAlert color="danger" v-if="error">Error loading term {{ modelValue.identifier }}</CAlert>
-        {{ lstringTerm }}
+        
     </div>
 </template>
 
 <script setup lang="ts">
     import { direction, lstringLocale, lstring } from '@/util/filter';
+import { log } from 'console';
 
     const props = defineProps({
         modelValue  : {type:Object, required:true },
@@ -16,13 +26,19 @@
 
     const { $api } = useNuxtApp();
 
-    const { data:term, error } = await $api.thesaurus.getTerm(modelValue.value.identifier)
-    if(error)
-        console.error(`Error loading term ${modelValue.value}`, error);
+    // if(modelValue.value.identifier){
 
-    const lstringTerm = computed(()=>{
-        return lstring(term?.title, locale)
+        const { data:term, error } = await $api.thesaurus.getTerm(modelValue.value.identifier)
+        
+        if(error.value)
+            console.error(`Error loading term ${modelValue.value}`, error);
+
+    // }
+
+    const lstringTerm = computed(()=>{        
+        return lstring(term?.title, locale.value)
     })
+
 
 </script>
 

@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> NBSAP Target New</slot>
+        <slot name="header"> NBSAP Target</slot>
       </CCardHeader>
       <CCardBody>
        
@@ -10,7 +10,7 @@
                 <CCardBody>
                 {{ document }}
 
-                    <km-form-workflow>
+                    <km-form-workflow :current-tab="1">
                         <template #submission>
                         <!-- <div>
                             <div class="card">
@@ -325,6 +325,9 @@
                                 </div>
                             </km-form-group>
                         </template>
+                        <template #review>
+                            <view-target :identifier="document.header.identifier" :document="cleanDocument"></view-target>
+                        </template>
                     </km-form-workflow>
                 </CCardBody>
             </CCard>
@@ -350,6 +353,7 @@
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmLstringValue,
         KmLocales, KmTerm, KmFormWorkflow
     } from "~/components/controls";
+    import viewTarget from "./view-target.vue";
     import { mapStores }            from 'pinia'
     import { THEASURUS, ROLES, SCHEMAS } from '@/constants';
     import { languages }            from '@/app-data/languages'
@@ -429,7 +433,11 @@
     const complementaryIndicators = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
 
     const selectedLocale = ref(locale.value);
-
+    const cleanDocument = computed(()=>{
+        const clean = useStorage().cleanDocument({...document.value});
+        console.log(clean)
+        return clean
+    })
     onMounted(() => {
         if(user?.value?.isAuthenticated){
             document.value.government.identifier = document.value?.government?.identifier || user.value.government

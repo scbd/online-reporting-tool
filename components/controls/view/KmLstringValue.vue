@@ -32,10 +32,5 @@
 </script>
 
 <style scoped>
-    .km-value{
-        background-color: #f5f5f5!important;
-        border: 1px solid #ccc!important;
-        border: 1px solid rgba(0, 0, 0, 0.15)!important;
-        color:#333;
-    }
+   
 </style>

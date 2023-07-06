@@ -31,7 +31,7 @@ export const useKmDocumentDraftsStore = defineStore('kmDocumentDrafts', {
         this.isBusy = true;
         const { $api } = useNuxtApp();
         const { data:documentDrafts, error } = await $api.kmStorage.drafts.query(queryParams);
-
+console.log(error)
         this.errors.push(error)
         this.documentDrafts = documentDrafts;
         this.isBusy = false;
