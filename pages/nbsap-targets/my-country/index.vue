@@ -9,7 +9,7 @@
         <div class="card-body">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <NuxtLink to="/nbsap-targets/new">
-              <CButton class="dark  m-1">
+              <CButton color="secondary" size="sm" @click="navigateToPage($appRoutes.NBSAPS_TARGETS_NEW, {})">
                 <CIcon icon="addthis"/> Submit new target
               </CButton>
             </NuxtLink>
@@ -219,7 +219,7 @@
     const navigateToPage = async (route:string, draft:any)=>{
       console .log(draft)
       const { $appRoutes } = useNuxtApp();
-      const url = route.replace(':identifier', draft.identifier||draft.header.identifier)
+      const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
       await navigateTo(url);
     }
 </script>
