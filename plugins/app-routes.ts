@@ -16,7 +16,6 @@ const appRoutes = {
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
-    nuxtApp.vueApp.provide('appRoutes', appRoutes);
     return {
         provide : {
             appRoutes
