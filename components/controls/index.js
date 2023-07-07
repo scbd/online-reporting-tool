@@ -5,9 +5,12 @@ export {default as KmFormCheckGroup     }  from './edit/KmFormCheckGroup';
 export {default as KmFormCheckItem      }  from './edit/KmFormCheckItem'
 export {default as KmFormWorkflow       }  from './edit/KmFormWorkflow'
 
-export {default as KmLstringValue       }  from './view/KmLstringValue';
 export {default as KmLocales            }  from './view/KmLocales';
-export {default as KmTerm               }  from './view/KmTerm';
+export {default as KmValue              }  from './view/KmValue';
+export {default as KmLstringValue       }  from './view/KmLstringValue';
+export {default as KmValueTerm          }  from './view/KmValueTerm';
+export {default as KmValueTerms         }  from './view/KmValueTerms';
+export {default as KmValueBool          }  from './view/KmValueBool';
 
 export {default as KmNavLink            }  from './KmNavLink';
 export {default as KmFormGroup          }  from './KmFormGroup';

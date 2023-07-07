@@ -1,7 +1,6 @@
 import { getUserToken } from "../utils";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-        console.log('auth define')
     // Skip plugin when rendering error page
     if (nuxtApp.payload.error) {
         return {};
@@ -13,16 +12,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         user.value  = await authUser(token);
     }
     const loggedIn: any = computed(() =>{
-        console.log('loggedin', user.value)
         return !!user.value?.isAuthenticated
     });
     const reset = ()=>{
-        console.log('auth reset')
         user.value = undefined;
         useAuth().user = undefined;
         useAuth().expiration = undefined;
         useAuth().token = undefined;
-        console.log(useAuth())
     }
   /**
    * Add global route middleware to protect pages using:
@@ -36,9 +32,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   addRouteMiddleware(
     "auth",
     async (to) => {
-        console.log('auth middleware', to)
       if (to.meta.auth){
-        console.log(loggedIn.value)
         if(loggedIn.value == false) {
             await authRedirectToLogin(to.path)
             return;
@@ -59,7 +53,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
   if (process.client) {
     watch(loggedIn, async (loggedIn) => {
-        console.log(loggedIn)
       if (!loggedIn && currentRoute.meta.auth) {
         await authRedirectToLogin(currentRoute.path);
       }
@@ -67,7 +60,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
   
   if (loggedIn.value) {
-    console.log(currentRoute.path, 'currentpath')
     await navigateTo(currentRoute.path  || "/");
   }
 

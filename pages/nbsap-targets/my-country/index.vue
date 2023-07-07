@@ -9,7 +9,7 @@
         <div class="card-body">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <NuxtLink to="/nbsap-targets/new">
-              <CButton color="secondary" size="sm" @click="navigateToPage($appRoutes.NBSAPS_TARGETS_NEW, {})">
+              <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_NEW, {})">
                 <CIcon icon="addthis"/> Submit new target
               </CButton>
             </NuxtLink>
@@ -69,10 +69,10 @@
                 </td>
                 <td>
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <CButton color="secondary" size="sm"  @click="navigateToPage($appRoutes.NBSAPS_TARGETS_VIEW, draft)">
+                    <CButton color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_VIEW, draft)">
                       <font-awesome-icon icon="fa-search" /> View target
                     </CButton>
-                    <CButton color="secondary" size="sm" @click="navigateToPage($appRoutes.NBSAPS_TARGETS_EDIT, draft)">
+                    <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_EDIT, draft)">
                       <CIcon icon="cil-comment-square-edit"/> Edit target
                     </CButton>
                   </div>
@@ -143,10 +143,10 @@
                             </td>
                             <td>
                               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <CButton color="secondary" size="sm"  @click="navigateToPage($appRoutes.NBSAPS_TARGETS_VIEW, nationalTarget)">
+                                <CButton color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_VIEW, nationalTarget)">
                                   <font-awesome-icon icon="fa-search" /> View target
                                 </CButton>
-                                <CButton color="secondary" size="sm" @click="navigateToPage($appRoutes.NBSAPS_TARGETS_EDIT, nationalTarget)">
+                                <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_EDIT, nationalTarget)">
                                   <CIcon icon="cil-comment-square-edit"/> Edit target
                                 </CButton>
                               </div>
@@ -224,7 +224,7 @@
     }
 
     const navigateToPage = async (route:string, draft:any)=>{
-      const { $appRoutes } = useNuxtApp();
+      const { appRoutes } = useNuxtApp();
       const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
       await navigateTo(url);
       await navigateTo(url);

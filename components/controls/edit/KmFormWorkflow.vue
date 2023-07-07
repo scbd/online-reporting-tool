@@ -64,6 +64,8 @@
 
     const onChangeCurrentTab = (index, oldIndex)=>{
         currentTab = index;
+        
+
     }
     const onTabBeforeChange = ()=> {
         // console.log('All Tabs');

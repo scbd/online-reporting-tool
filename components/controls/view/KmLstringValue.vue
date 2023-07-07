@@ -3,11 +3,11 @@
         <div :class="`input-group input-lang-${locale}`">
     
             <div v-if="type=='string'" class="form-control km-value km-value-ml-div" 
-                :dir="direction(modelValue, locale)" aria-describedby="basic-addon1">
-                {{ value }}
+                :dir="direction(valueLstring, locale)" aria-describedby="basic-addon1">
+                {{ valueLstring }}
             </div>
             <div v-if="type=='html'" class="form-control km-value km-value-ml-div" 
-                :dir="direction(modelValue, locale)" aria-describedby="basic-addon1" v-html="value">                
+                :dir="direction(valueLstring, locale)" aria-describedby="basic-addon1" v-html="valueLstring">                
             </div>
             <span class="input-group-text" id="basic-addon1" style="cursor:default">
                 {{ valueLocale.toUpperCase() }}
@@ -20,14 +20,14 @@
     import { direction, lstringLocale, lstring } from '@/util/filter';
 
     const props = defineProps({
-        modelValue  : {type:Object, required:true },
+        value  : {type:Object, required:true },
         locale      : {type:String, required:true },
         type        : {type:String, default:'string' },
     })
-    const { modelValue, locale, type } = toRefs(props);
+    const { value, locale, type } = toRefs(props);
 
-    const valueLocale = computed(()=>lstringLocale(modelValue.value, locale.value));
-    const value   = computed(()=>lstring(modelValue.value, locale.value));
+    const valueLocale   = computed(()=>lstringLocale(value.value, locale.value));
+    const valueLstring  = computed(()=>lstring(value.value, locale.value));
     
 </script>
 

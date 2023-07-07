@@ -41,7 +41,7 @@ export default {
   components: { VueMultiselect },
   props     : {
     modelValue: {
-      type    : [ String, Array ],
+      type    : [ String, Array, Object ],
       required: true,
       default() {
         return [];

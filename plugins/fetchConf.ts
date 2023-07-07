@@ -24,9 +24,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         options.headers[authHeaderName] = `${authTokenType} ${auth.token}`;
 
       } 
-      // else {
-      //   console.log('Not authenticated')
-      // }
 
       if(realmConf.realm)
         options.headers['realm'] = realmConf.realm

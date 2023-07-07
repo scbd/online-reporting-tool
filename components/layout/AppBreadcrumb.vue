@@ -19,7 +19,6 @@ import { useRoute } from 'vue-router'
 
     function makeCrumbs (){ //eslint-disable-line
 
-      console.log(useRoute())
       const crumbs    = [
         { text:'CHM', to:'https:chm.cbd.int' },
         { text:'ORT', to: localePath('/dashboard'), active: '/dashboard' === route.fullPath }

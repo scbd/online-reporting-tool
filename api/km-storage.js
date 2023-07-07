@@ -83,7 +83,7 @@ class KmDraftsApi extends ApiBase
 {
   constructor(options) {
     super(options);
-    console.log(serviceUrls)
+    
   }
 
   async query(params){
@@ -106,7 +106,6 @@ class KmDraftsApi extends ApiBase
     return { data : data?.value, pending, error, refresh };
   }
   async put(identifier, body, params){
-    console.log(identifier)
     const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftUrl(identifier), 
       { body, method:'put', body, params })
                   

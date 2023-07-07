@@ -6,7 +6,7 @@
       <CCardBody>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <NuxtLink to="/nbsap-targets/new">
-            <CButton color="secondary" size="sm" @click="navigateToPage($appRoutes.NBSAPS_TARGETS_NEW)">
+            <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_NEW)">
               <CIcon icon="addthis"/> Submit new target
             </CButton>
           </NuxtLink>
@@ -20,7 +20,7 @@
   <script setup lang="ts">
   
     import { UTILS, ROLES, SCHEMAS } from '@/constants';
-    const { $appRoutes } = useNuxtApp();
+    const { appRoutes } = useNuxtApp();
 
     definePageMeta({
         auth:true,
@@ -28,7 +28,6 @@
         roles:[...ROLES.ALL_NATIONAL_USERS],
     })
     const navigateToPage = async (url:string)=>{
-      console.log(url)
       await navigateTo(url);
       await navigateTo(url);
     }

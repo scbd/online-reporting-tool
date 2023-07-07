@@ -41,11 +41,9 @@ export default {
   },
   watch:{
     locales : function(newVal, oldVal){
-      console.log(newVal, oldVal)
       const deleted = without(oldVal, ...newVal)
-      console.log(deleted, this.binding)
       if(deleted?.length)      
-      delete this.binding[deleted[0]];
+        delete this.binding[deleted[0]];
     }
   },
   computed:{
