@@ -17,6 +17,8 @@
       @search-change="onEventTextChange"
       @update:model-value="$emit('change', $event)"
       :custom-label="customLabel"
+      :allow-empty="allowEmpty"
+      deselect-label="Can't remove this value"
     > 
       <slot name="clear">
         <template slot="clear">
@@ -77,7 +79,8 @@ export default {
       type   : [ Boolean, Function ],
       default: null,
     },
-    disabled  : {  type: Boolean, default: false },
+    disabled    : { type: Boolean, default: false },
+    allowEmpty  : { type: Boolean, default: true },
   },
   data(){
     return {

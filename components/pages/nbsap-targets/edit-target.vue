@@ -6,7 +6,7 @@
       <CCardBody>
        
         <form>
-                <!-- {{ document }} -->
+                {{ document }}
 
             <km-form-workflow :current-tab="1">
                 <template #submission>
@@ -26,8 +26,7 @@
                                 General
                             </div>
                             <div class="card-body">  
-                                <km-form-group>
-                                    <label class="form-label" for="government">Government</label>
+                                <km-form-group name="government" caption="Government" required>
                                     <km-select
                                         v-model="document.government.identifier"
                                         class="validationClass"
@@ -40,8 +39,7 @@
                                     </km-select>                                
                                 </km-form-group>   
 
-                                <km-form-group>
-                                    <label class="form-label" for="languages">Please select in which language(s) you wish to submit this record</label>
+                                <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
                                     <km-select
                                         v-model="document.header.languages"
                                         class="validationClass"
@@ -51,11 +49,14 @@
                                         placeholder="Language of record"
                                         :options="formatedLanguages"
                                         :multiple="true"
+                                        :allow-empty="false"
                                     >
                                     </km-select>
+                                    <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
+                                        Minimum of one language is mandatory, please select another language to remove the last language.
+                                    </small>
                                 </km-form-group>                           
-                                <km-form-group>
-                                    <label class="form-label" for="targetTitle">Full name/title of national target</label>                           
+                                <km-form-group name="targetTitle" caption="Full name/title of national target" required>
                                     <km-form-group> 
                                         <km-input-lstring  id="targetTitle" placeholder="Enter national target title" v-model="document.title" :locales="document.header.languages"></km-input-lstring>
                                     </km-form-group>                                    

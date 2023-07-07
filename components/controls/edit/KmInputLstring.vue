@@ -41,9 +41,12 @@ export default {
   },
   watch:{
     locales : function(newVal, oldVal){
+      console.log(newVal)
       const deleted = without(oldVal, ...newVal)
-      if(deleted?.length)      
-        delete this.binding[deleted[0]];
+      if(deleted?.length){      
+        this.binding[deleted[0]] = undefined;
+        this.$emit('update:modelValue', this.binding);
+      }
     }
   },
   computed:{
@@ -57,6 +60,7 @@ export default {
         return this.modelValue||{};
       },
       set(value) {
+        console.log(value)
         this.$emit('update:modelValue', value);
       }
     }

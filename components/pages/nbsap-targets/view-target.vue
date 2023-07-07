@@ -5,11 +5,11 @@
       </CCardHeader>
       <CCardBody>
        
-        <div v-if="document">
+        <div v-if="viewDocument">
         
-            <div v-if="document.header.languages && document.header.languages.length > 1" 
+            <div v-if="viewDocument.header.languages && viewDocument.header.languages.length > 1" 
                 class="d-grid d-md-flex justify-content-md-end mb-2">
-                <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
+                <km-locales v-model="selectedLocale" :locales="viewDocument.header.languages"></km-locales>
             </div>
             <km-form-group>
                 <div class="card">
@@ -17,19 +17,19 @@
                         General
                     </div>
                     <div class="card-body">  
-                        <km-form-group v-if="document.government && document.government.identifier">
+                        <km-form-group v-if="viewDocument.government && viewDocument.government.identifier">
                             <label class="form-label" for="government">Government</label>
-                            <km-value-term :value="document.government" :locale="selectedLocale"></km-value-term>                                    
+                            <km-value-term :value="viewDocument.government" :locale="selectedLocale"></km-value-term>                                    
                         </km-form-group>
 
                         <km-form-group>
                             <label class="form-label" for="targetTitle">Full name/title of national target</label>                           
-                            <km-lstring-value :value="document.title" :locale="selectedLocale"></km-lstring-value>                                    
+                            <km-lstring-value :value="viewDocument.title" :locale="selectedLocale"></km-lstring-value>                                    
                         </km-form-group>
 
-                        <km-form-group v-if="document.mainPolicyOfMeasureOrActionInfo">
+                        <km-form-group v-if="viewDocument.mainPolicyOfMeasureOrActionInfo">
                             <label class="form-label" for="mainPolicyOfMeasureOrActionInfo">Please outline the main policy measures or actions that will be taken to achieve this national target. </label>
-                            <km-lstring-value type="html" :value="document.mainPolicyOfMeasureOrActionInfo" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.mainPolicyOfMeasureOrActionInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                     </div>
                 </div>
@@ -44,38 +44,38 @@
 
                         <km-form-group>
                             <label class="form-label" for="exampleFormControlSelect1">Alignment with global goals and targets</label>
-                            <km-value-terms :value="document.gbfGoalsAlignment" :locale="selectedLocale"></km-value-terms>
-                            <km-value-terms :value="document.gbfTargetsAlignment" :locale="selectedLocale"></km-value-terms>
+                            <km-value-terms :value="viewDocument.gbfGoalsAlignment" :locale="selectedLocale"></km-value-terms>
+                            <km-value-terms :value="viewDocument.gbfTargetsAlignment" :locale="selectedLocale"></km-value-terms>
                         </km-form-group>
 
-                        <km-form-group v-if="document.hasImplementingConsiderations!=undefined">                                    
+                        <km-form-group v-if="viewDocument.hasImplementingConsiderations!=undefined">                                    
                             <label  class="form-check-label" for="hasImplementingConsiderations">Considerations for implementation of other non-target elements of the Kunming Montreal Global Biodiversity Framework</label>
                             <km-form-check-group>
-                                <km-value-bool :value="document.hasImplementingConsiderations" :locale="selectedLocale"></km-value-bool>
+                                <km-value-bool :value="viewDocument.hasImplementingConsiderations" :locale="selectedLocale"></km-value-bool>
                             </km-form-check-group>
                         </km-form-group>
 
-                        <km-form-group v-if="document.hasImplementingConsiderations==true">                                                                               
-                            <km-form-group v-if="document.implementingConsiderations">
+                        <km-form-group v-if="viewDocument.hasImplementingConsiderations==true">                                                                               
+                            <km-form-group v-if="viewDocument.implementingConsiderations">
                                 <label class="form-label" for="relatedOtherProcesses">Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it </label>
-                                <km-value-terms :value="document.implementingConsiderations" :locale="selectedLocale"></km-value-terms>
+                                <km-value-terms :value="viewDocument.implementingConsiderations" :locale="selectedLocale"></km-value-terms>
                             </km-form-group>
-                            <km-form-group v-if="document.implementingConsiderationsInfo">
+                            <km-form-group v-if="viewDocument.implementingConsiderationsInfo">
                                 <label class="form-label" for="implementingConsiderationsInfo">Please explain how these considerations have been taken into account</label>
-                                <km-lstring-value type="html" :value="document.implementingConsiderationsInfo" :locale="selectedLocale"></km-lstring-value>
+                                <km-lstring-value type="html" :value="viewDocument.implementingConsiderationsInfo" :locale="selectedLocale"></km-lstring-value>
                             </km-form-group>
                         </km-form-group>
 
-                        <km-form-group v-if="document.degreeOfAlignment && degreeOfAlignment">
+                        <km-form-group v-if="viewDocument.degreeOfAlignment && degreeOfAlignment">
                             <label class="form-label" for="exampleFormControlSelect1">Degree of alignment</label>
-                            <!-- <km-value-terms :value="document.degreeOfAlignment" :locale="selectedLocale"></km-value-terms>
+                            <!-- <km-value-terms :value="viewDocument.degreeOfAlignment" :locale="selectedLocale"></km-value-terms>
                             TODO move to thesaurus -->
-                            <km-value>{{ degreeOfAlignment(document.degreeOfAlignment.identifier)?.title }}</km-value>
+                            <km-value>{{ degreeOfAlignment(viewDocument.degreeOfAlignment.identifier)?.title }}</km-value>
                         </km-form-group>
 
-                        <km-form-group v-if="document.degreeOfAlignmentInfo">
+                        <km-form-group v-if="viewDocument.degreeOfAlignmentInfo">
                             <label class="form-label" for="implementingConsiderationsInfo">Explanation, including which aspects of the goal or target are covered</label>
-                            <km-lstring-value type="html" :value="document.degreeOfAlignmentInfo" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.degreeOfAlignmentInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                     </div>
                 </div>
@@ -87,19 +87,19 @@
                         Indicators to be used to monitor this national target
                     </div>
                     <div class="card-body">
-                        <km-form-group v-if="document.headlineIndicators">
+                        <km-form-group v-if="viewDocument.headlineIndicators">
                             <label class="form-label" for="exampleFormControlSelect1">Headline indicators</label>
-                            <km-value-terms :value="document.headlineIndicators" :locale="selectedLocale"></km-value-terms>                                    
+                            <km-value-terms :value="viewDocument.headlineIndicators" :locale="selectedLocale"></km-value-terms>                                    
                         </km-form-group>
-                        <km-form-group v-if="document.componentIndicators">
+                        <km-form-group v-if="viewDocument.componentIndicators">
                             <label class="form-label" for="componentIndicators">Component indicators</label>
-                            <km-value-terms :value="document.componentIndicators" :locale="selectedLocale"></km-value-terms>
+                            <km-value-terms :value="viewDocument.componentIndicators" :locale="selectedLocale"></km-value-terms>
                         </km-form-group>
-                        <km-form-group v-if="document.complementaryIndicators">
+                        <km-form-group v-if="viewDocument.complementaryIndicators">
                             <label class="form-label" for="complementaryIndicators">Complementary indicators</label>
-                            <km-value-terms :value="document.complementaryIndicators" :locale="selectedLocale"></km-value-terms>
+                            <km-value-terms :value="viewDocument.complementaryIndicators" :locale="selectedLocale"></km-value-terms>
                         </km-form-group>
-                        <km-form-group v-if="document.otherNationalIndicators">
+                        <km-form-group v-if="viewDocument.otherNationalIndicators">
                             <label class="form-label" for="otherNationalIndicators">Other national indicators</label>                                    
                             <!-- <small id="emailHelp" class="form-text text-muted">Add your own indicators</small> -->
                         </km-form-group>
@@ -107,56 +107,56 @@
                 </div>
             </km-form-group>
 
-            <km-form-group  v-if="document.nonStateActorCommitmentInfo || document.hasNonStateActors || document.nonStateActorsInfo">
+            <km-form-group  v-if="viewDocument.nonStateActorCommitmentInfo || viewDocument.hasNonStateActors || viewDocument.nonStateActorsInfo">
                 <div class="card">
                     <div class="card-header bg-secondary">
                         Non-State actor commitments
                     </div>
                     <div class="card-body">
-                        <km-form-group v-if="document.nonStateActorCommitmentInfo">
+                        <km-form-group v-if="viewDocument.nonStateActorCommitmentInfo">
                             <label class="form-label" for="nonStateActorCommitmentInfo">List the non-state commitments towards this national Target</label>
-                            <km-lstring-value type="html" :value="document.nonStateActorCommitmentInfo" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.nonStateActorCommitmentInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
 
-                        <km-form-group v-if="document.hasNonStateActors">                                    
+                        <km-form-group v-if="viewDocument.hasNonStateActors">                                    
                             <label class="form-check-label" for="hasNonStateActors">
                                 Are there any overlaps or links between this national target and targets or commitments submitted as non-State actor commitments to the Kunming-Montreal Global Biodiversity Framework?</label>
                             <km-form-check-group>
-                                <km-value-bool :value="document.hasNonStateActors" :locale="selectedLocale"></km-value-bool>
+                                <km-value-bool :value="viewDocument.hasNonStateActors" :locale="selectedLocale"></km-value-bool>
                             </km-form-check-group>
                         </km-form-group> 
 
-                        <km-form-group v-if="document.hasNonStateActors && document.nonStateActorsInfo">
+                        <km-form-group v-if="viewDocument.hasNonStateActors && viewDocument.nonStateActorsInfo">
                             <label class="form-label" for="nonStateActorsInfo"> please indicate which commitment(s) and which actor(s)</label>
-                            <km-lstring-value type="html" :value="document.nonStateActorsInfo" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.nonStateActorsInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                     </div>
                 </div>
             </km-form-group>
 
-            <km-form-group v-if="document.additionalImplementationInfo || document.additionalImplementation">
+            <km-form-group v-if="viewDocument.additionalImplementationInfo || viewDocument.additionalImplementation">
                 <div class="card">
                     <div class="card-header bg-secondary">
                         Means of implementation and barriers to implementation
                     </div>
                     <div class="card-body">
-                        <km-form-group v-if="document.additionalImplementation">
+                        <km-form-group v-if="viewDocument.additionalImplementation">
                             <label class="form-check-label" for="additionalImplementation">
                             Please indicate if additional means of implementation are needed for the attainment of this national target.</label>                                    
                             <!-- TODO move to thesaurus -->
-                            <km-value>{{ t(`${document.additionalImplementation.identifier}`) }}</km-value>                                    
+                            <km-value>{{ t(`${viewDocument.additionalImplementation.identifier}`) }}</km-value>                                    
                         </km-form-group> 
 
-                        <km-form-group v-if="(document.additionalImplementation||{}).customValue">
+                        <km-form-group v-if="(viewDocument.additionalImplementation||{}).customValue">
                             <label class="form-label" for="additionalImplementationCustomValue"> 
                                 Please explain (Additional means of implementation are needed for the attainment of this national target)
                             </label>
-                            <km-lstring-value type="html" :value="document.additionalImplementation.customValue" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.additionalImplementation.customValue" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
 
-                        <km-form-group v-if="document.additionalImplementationInfo">
+                        <km-form-group v-if="viewDocument.additionalImplementationInfo">
                             <label class="form-label" for="additionalImplementationInfo">Additional explanation</label>
-                            <km-lstring-value type="html" :value="document.additionalImplementationInfo" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.additionalImplementationInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                     </div>
                 </div>
@@ -168,24 +168,24 @@
                         Elements of the global targets
                     </div>
                     <div class="card-body">                                
-                        <km-form-group v-if="document.elementOfGlobalTargetsinfo || document.hasReferncePeriod || document.hasReferncePeriod">
+                        <km-form-group v-if="viewDocument.elementOfGlobalTargetsinfo || viewDocument.hasReferncePeriod || viewDocument.hasReferncePeriod">
                             <label class="form-label" for="elementOfGlobalTargetsinfo">Elements of the global targets addressed by national targets</label>
-                            <km-lstring-value type="html" :value="document.elementOfGlobalTargetsinfo" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.elementOfGlobalTargetsinfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                         <km-form-group>
                             <label class="form-check-label" for="hasReferncePeriod">Is there a reference period and national target which relates to the headline indicator?</label>
-                            <km-value-bool :value="document.hasReferncePeriod" :locale="selectedLocale"></km-value-bool>
+                            <km-value-bool :value="viewDocument.hasReferncePeriod" :locale="selectedLocale"></km-value-bool>
                         </km-form-group> 
 
-                        <km-form-group v-if="document.hasReferncePeriod">
+                        <km-form-group v-if="viewDocument.hasReferncePeriod">
                             <label class="form-label" for="referencePeriodInfo">Please explain</label>
-                            <km-lstring-value type="html" :value="document.referencePeriodInfo" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.referencePeriodInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                     </div>
                 </div>
             </km-form-group>
 
-            <km-form-group v-if="document.additionalInfromation">
+            <km-form-group v-if="viewDocument.additionalInfromation">
                 <div class="card">
                     <div class="card-header bg-secondary">
                         Additional infromation
@@ -193,12 +193,13 @@
                     <div class="card-body">
                         <km-form-group>
                             <label class="form-label" for="referencePeriodInfo">Any other relevant infromation</label>
-                            <km-lstring-value type="html" :value="document.additionalInfromation" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.additionalInfromation" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                     </div>
                 </div>
             </km-form-group> 
         </div>
+
         <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
        
       </CCardBody>
@@ -240,21 +241,23 @@
     })
 
     let { document, identifier } = toRefs(props)
+    let ldocument = ref(undefined);
 
     const showSpinnerModal = ref(false);
     const selectedLocale = ref(locale.value);
 
+    const viewDocument = computed(()=>{
+        return document?.value||ldocument?.value;
+    })
 
     const degreeOfAlignment = function(identifier){
         return degreeOfAlignments.find(e=>e.identifier == identifier) 
     }
 
     onMounted(() => {
+        console.log('mounted')
         if(props.identifier && !props.document){
             loadDocument(props.identifier)       
-        }
-        else {
-            setSelectedLocale();
         }
     })
  
@@ -264,21 +267,12 @@
 
     async function loadDocument(identifier){
 
-        document = await kmDocumentDraftStore.loadDraftDocument(route.params.identifier);     
-        setSelectedLocale();
-    }
-
-    function setSelectedLocale(){
-        if(document?.header?.languages?.length){
-            if(document.header.languages.length == 1)
-                selectedLocale.value = document.header.languages[0];
-            else if(document.header.languages.includes(locale.value))
-                selectedLocale.value = locale.value;
-            else 
-                selectedLocale.value = document.header.languages[0]
-        }
+        await kmDocumentDraftStore.loadDraftDocument(route.params.identifier);
+        // console.log(kmDocumentDraftStore.draftRecord.body)
+        // document.value = kmDocumentDraftStore.draftRecord.body;
+        ldocument.value = kmDocumentDraftStore.draftRecord.body;
+        // console.log(document)
         
     }
-
 
 </script>
