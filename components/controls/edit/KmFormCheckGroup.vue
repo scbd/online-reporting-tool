@@ -6,7 +6,7 @@
 </template>
 <script lang="ts" setup>
 import { makeUid }         from '@coreui/utils/src'
-import { default as KmFormGroup } from './KmFormGroup.vue';
+import { default as KmFormGroup } from '../KmFormGroup.vue';
 const attrs = useAttrs()
 
 const props = defineProps({

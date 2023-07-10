@@ -89,6 +89,11 @@ export default defineNuxtConfig({
     vueI18n: './i18n.config.ts' // if you are using custom path, default 
   },
   vite: {
+    vue: {  
+      compilerOptions: {
+        isCustomElement: (tag) => tag.startsWith('km-'),
+      },
+    },
     resolve: {
       alias: {
         'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'

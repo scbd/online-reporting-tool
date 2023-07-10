@@ -10,7 +10,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { capitalCase } from 'change-case';
-import { languages } from '~/app-data/languages'
+import { languages } from '@/app-data/languages'
 import { useRoute } from 'vue-router' 
 //TODO: verify when nuxt issue is fixed, temp use useRoute directly from vue instead of nuxt
 
@@ -19,7 +19,6 @@ import { useRoute } from 'vue-router'
 
     function makeCrumbs (){ //eslint-disable-line
 
-      console.log(useRoute())
       const crumbs    = [
         { text:'CHM', to:'https:chm.cbd.int' },
         { text:'ORT', to: localePath('/dashboard'), active: '/dashboard' === route.fullPath }

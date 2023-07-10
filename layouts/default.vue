@@ -8,15 +8,15 @@
           <router-view />
         </CContainer>
       </div>
-      <AppFooter />      
+      <AppFooter class="mt-5"/>      
     </div>
   </div>
 </template>
 <script>
 import { CContainer } from '@coreui/vue'
-import AppFooter from '~/components/layout/AppFooter.vue'
-import AppHeader from '~/components/layout/AppHeader.vue'
-import AppSidebar from '~/components/layout/AppSidebar.vue'
+import AppFooter from '@/components/layout/AppFooter.vue'
+import AppHeader from '@/components/layout/AppHeader.vue'
+import AppSidebar from '@/components/layout/AppSidebar.vue'
 
 export default {
   name: 'DefaultLayout',
@@ -41,3 +41,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  AppFooter{
+    
+  }
+</style>

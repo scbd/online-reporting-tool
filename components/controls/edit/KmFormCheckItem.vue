@@ -4,8 +4,6 @@
 </template>
 <script lang="ts" setup>
 
-import { isBoolean } from 'lodash';
-
 const attrs = useAttrs()
 const emit = defineEmits(['update:modelValue',])
 const props = defineProps({
@@ -16,7 +14,7 @@ const props = defineProps({
 const onCheck = ($evt:any)=>{
     //TODO: convert true/false number to native types
     let value = $evt.target.value;
-    if(isBoolean(value)){
+    if(['true', 'false'].includes(value)){
         value = value == 'true' ? true : false
     }
     emit('update:modelValue', value)

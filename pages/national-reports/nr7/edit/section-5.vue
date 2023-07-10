@@ -254,7 +254,7 @@ export default defineComponent({
 </script>
 
 <!-- <script>
-import EditTargetReview from '~/components/pages/nr7/edit-target-review.vue'
+import EditTargetReview from '@/components/pages/nr7/edit-target-review.vue'
 export default {
   components: {
     Ckeditor,

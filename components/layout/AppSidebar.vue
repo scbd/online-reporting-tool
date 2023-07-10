@@ -19,7 +19,7 @@
           {{ t('menuNationalTargets') }}
         </template>
         <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
-        <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_OVERVIEW]" :to="localePath('/nbsap-targets/overview')" icon="cil-list" :title="t('menuMyCountryTargets')"></KmNavLink>
+        <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_OVERVIEW]" :to="localePath(appRoutes.NBSAPS_TARGETS_OVERVIEW)" icon="cil-list" :title="t('menuMyCountryTargets')"></KmNavLink>
       </CNavGroup>
       
       <li class="nav-title"> {{t('nationalReports')}} </li>      
@@ -65,7 +65,7 @@ export default {
     KmNavLink
 },
   async setup() {
-    const appRoutes = inject('appRoutes')
+    const {$appRoutes:appRoutes }   = useNuxtApp();
     const {locale} = useI18n()
     const localePath  = useLocalePath()
     const { loadRealmConf } = useRealmConfStore();

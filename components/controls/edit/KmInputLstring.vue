@@ -2,7 +2,7 @@
   <div :id="`${useAttrs().id || 'km-input-lstring-'+uid}`" class="km-input mb-2">   
     <slot></slot>    
     <CInputGroup class="mb-1" v-for="locale in locales" :key="locale" :class="`km-input-${locale}`" >
-      <CFormInput v-bind="useAttrs()" aria-describedby="basic-addon2"/>
+      <CFormInput aria-describedby="basic-addon2" v-model="binding[locale]" :dir="locale=='ar' ? 'rtl' : 'ltr'" />
       <CInputGroupText id="basic-addon2">{{locale.toUpperCase()}}</CInputGroupText>
     </CInputGroup>    
   </div>
@@ -11,7 +11,7 @@
 <script>
 import { removeEmpty } from '@/util';
 import { makeUid } from '@coreui/utils/src'
-
+import {without} from 'lodash';
 
 export default {
   name: "KmInputLstring",
@@ -36,15 +36,16 @@ export default {
   },
   data() {
     return {
-      activeLocale : '',
-      uid : makeUid(),
-      tabPaneActiveKey:1
+      uid : makeUid()
     };
   },
   watch:{
-    locales : function(newVal){
-      if(!newVal.includes(this.activeLocale)){        
-        this.activeLocale = newVal[0];
+    locales : function(newVal, oldVal){
+      console.log(newVal)
+      const deleted = without(oldVal, ...newVal)
+      if(deleted?.length){      
+        this.binding[deleted[0]] = undefined;
+        this.$emit('update:modelValue', this.binding);
       }
     }
   },
@@ -52,25 +53,21 @@ export default {
     userLocales : {
       get(){
         return this.locales
-      },
+      }
     },
     binding: {
       get() {
         return this.modelValue||{};
       },
-      set(value) {    
+      set(value) {
+        console.log(value)
         this.$emit('update:modelValue', value);
       }
     }
   },
   methods: {  },
-  mounted(){
-    
-    this.activeLocale = this.locales[0];
-
-    if(this.modelValue){
-      this.binding = {...this.modelValue||{}};
-    }
+  mounted(){        
+    this.binding = {...this.modelValue||{}};
   }
 };
 </script>

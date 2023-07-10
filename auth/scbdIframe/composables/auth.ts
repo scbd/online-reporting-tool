@@ -17,8 +17,7 @@ export const useAuthConf = () => {
 }
 
 export const authRedirectToLogin = async (from:string) => {
-    console.log('authRedirectToLogin')
-
+   
     const authConf = useAuthConf();
     const redirectTo = `${authConf.redirect.login}?returnUrl=${encodeURIComponent(window.location.origin)}${encodeURIComponent(from)}`
 
@@ -28,18 +27,14 @@ export const authRedirectToLogin = async (from:string) => {
 };
 
 export const authLogin = async () => {
-    console.log('auth login')
 
     authRedirectToLogin(window.location.pathname)
 };
 
 export const authLogout = async () => {
   
-    console.log(useAuth().user)
     setUserToken(null)
     // useAuth().user = undefined;
-    console.log(useAuth().user)
-    authUser(null).then(user=>console.log(user))
 };
 
 export const authUser = async (token = null) => {
@@ -78,7 +73,6 @@ export const authUser = async (token = null) => {
 export const authHeader = (token)=>{
     const auth = useAuth()
       
-    console.log(auth)
     token = auth?.token || token;
     if (token) {
         const authConf = useAuthConf();
