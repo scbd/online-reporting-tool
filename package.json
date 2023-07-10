@@ -15,7 +15,7 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/i18n-edge": "^8.0.0-beta.12-28139269.7c20648",
     "@types/node": "^18",
-    "nuxt": "^3.5.2",
+    "nuxt": "^3.6.2",
     "sass": "^1.63.6"
   },
   "dependencies": {

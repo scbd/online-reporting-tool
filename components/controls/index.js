@@ -14,4 +14,8 @@ export {default as KmValueBool          }  from './view/KmValueBool';
 
 export {default as KmNavLink            }  from './KmNavLink';
 export {default as KmFormGroup          }  from './KmFormGroup';
+export {default as KmSpinner       }  from './KmSpinner';
+export {default as KmSpinnerSuspense       }  from './KmSpinnerSuspense';
+
 export {default as KmModalSpinner       }  from './KmModalSpinner';
+export {default as KmSuspense      }  from './KmSuspense';

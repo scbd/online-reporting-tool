@@ -1,10 +1,12 @@
 <template>
-  <edit-target></edit-target>
+    <km-suspense>
+      <edit-target></edit-target>
+    </km-suspense>
 </template>
   
 <script setup lang="ts">
-
-import EditTarget from "@/components/pages/nbsap-targets/edit-target.vue";
+import { KmSuspense } from "@/components/controls";
+import EditTarget from "@/components/pages/nbsap-targets/my-country/edit-target.vue";
 import { ROLES } from '@/constants';
 
   definePageMeta({

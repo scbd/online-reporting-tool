@@ -1,8 +1,8 @@
 <template>
   <NuxtLayout>
-    <Suspense>
+      <!-- <NuxtLoadingIndicator/> -->
+      <NuxtLoadingIndicator color="rgb(96 165 250)" />
       <NuxtPage/>
-    </Suspense>
   </NuxtLayout>
 </template>
 <style lang="scss">

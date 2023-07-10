@@ -224,7 +224,6 @@
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
 
-
     const { user }                = useAuth();
     const security                = useSecurity();
     const route                   = useRoute();
@@ -240,6 +239,7 @@
         identifier  : { type:String, required:true}
     })
 
+    console.log(props)
     let { document, identifier } = toRefs(props)
     let ldocument = ref(undefined);
 

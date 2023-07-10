@@ -1,25 +1,17 @@
 <template>
-  <EditTarget></EditTarget>
+  <km-suspense>
+    <edit-target></edit-target>
+  </km-suspense>
 </template>
   
   <script>
   
-  import EditTarget from "@/components/pages/nbsap-targets/edit-target.vue";
-import { ROLES } from '@/constants';
+  import { KmSuspense } from "@/components/controls";
+  import EditTarget from "@/components/pages/nbsap-targets/my-country/edit-target.vue";
+  import { ROLES } from '@/constants';
   export default {
     components: {
       EditTarget
-    },
-    name: 'TargetEditNew',
-    data(){
-      return {
-        document : {}
-      }
-    },
-    methods :{
-      submitDocument (){
-        this.$router.push('/nbsap-targets')
-      }
     },
     setup(){
 

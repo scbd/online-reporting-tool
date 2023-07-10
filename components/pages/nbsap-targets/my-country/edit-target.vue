@@ -6,7 +6,7 @@
       <CCardBody>
        
         <form>
-                {{ document }}
+                <!-- {{ document }} -->
 
             <km-form-workflow :current-tab="1">
                 <template #submission>
@@ -75,8 +75,8 @@
                                 Alignment
                             </div>
                             <div class="card-body">
-                                <km-form-group>
-                                    <label class="form-label" for="exampleFormControlSelect1">Alignment with global goals and targets</label>
+                                <km-form-group caption="Alignment with global goals and targets" required>
+                                    <!-- <label class="form-label" for="exampleFormControlSelect1"></label> -->
                                     <km-select
                                         v-model="selectedGbfTargets"
                                         class="validationClass"
@@ -132,8 +132,8 @@
                                     </div>
                                 </km-form-group>
 
-                                <km-form-group>
-                                    <label class="form-label" for="exampleFormControlSelect1">Degree of alignment</label>
+                                <km-form-group required caption="Degree of alignment">
+                                    <label class="form-label" for="exampleFormControlSelect1" ></label>
                                     <km-select
                                         v-model="document.degreeOfAlignment"
                                         class="validationClass"
@@ -166,8 +166,8 @@
                                 Indicators to be used to monitor this national target
                             </div>
                             <div class="card-body">
-                                <km-form-group>
-                                    <label class="form-label" for="exampleFormControlSelect1">Headline indicators</label>
+                                <km-form-group caption="Headline indicators" required>
+                                    <label class="form-label" for="exampleFormControlSelect1"></label>
                                     <km-select
                                         v-model="document.headlineIndicators"
                                         class="validationClass"
@@ -269,11 +269,9 @@
                                         <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationOther"      value="other"                             v-model="document.additionalImplementation.identifier" label="Other"/>
                                     </km-form-check-group>                                    
                                 </km-form-group> 
-                                <km-form-group 
-                                v-if="document.additionalImplementation.identifier=='additionalImplementationRequired' || document.additionalImplementation.identifier=='otherImplementation'">
-                                    <label class="form-label" for="additionalImplementationCustomValue"> 
-                                        Please explain (Additional means of implementation are needed for the attainment of this national target)
-                                    </label>
+                                <km-form-group for="additionalImplementationCustomValue"
+                                    caption="Please explain (Additional means of implementation are needed for the attainment of this national target)" required
+                                    v-if="document.additionalImplementation.identifier=='additionalImplementationRequired' || document.additionalImplementation.identifier=='otherImplementation'">
                                     <km-input-rich-lstring v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-input-rich-lstring>
                                 </km-form-group>
                                 <km-form-group>
@@ -294,16 +292,15 @@
                                     <label class="form-label" for="elementOfGlobalTargetsinfo">Elements of the global targets addressed by national targets</label>
                                     <km-input-rich-lstring v-model="document.elementOfGlobalTargetsinfo" :locales="document.header.languages"></km-input-rich-lstring>
                                 </km-form-group>
-                                <km-form-group>
-                                    <label class="form-check-label" for="hasReferncePeriod">Is there a reference period and national target which relates to the headline indicator?</label>
+                                <km-form-group name="hasReferncePeriod" caption="Is there a reference period and national target which relates to the headline indicator?">
                                     <km-form-check-group>
                                         <km-form-check-item inline type="radio" name="hasReferncePeriod"  for="hasReferncePeriod" id="hasReferncePeriodYes" :value="true"  v-model="document.hasReferncePeriod" label="Yes"/>
                                         <km-form-check-item inline type="radio" name="hasReferncePeriod"  for="hasReferncePeriod" id="hasReferncePeriodNo"  :value="false" v-model="document.hasReferncePeriod" label="No"/>
                                     </km-form-check-group>
                                 </km-form-group> 
 
-                                <km-form-group v-if="document.hasReferncePeriod">
-                                    <label class="form-label" for="referencePeriodInfo">Please explain</label>
+                                <km-form-group v-if="document.hasReferncePeriod" name="referencePeriodInfo" caption="Please explain">
+                                    <!-- <label class="form-label" ></label> -->
                                     <km-input-rich-lstring v-model="document.referencePeriodInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                 </km-form-group>
                             </div>

@@ -43,7 +43,7 @@ export function lstring(ltext, locale) {
 
 export const lstringLocale = (ltext, locale)=> {
 
-    const defaultLocale = useI18n().locale;
+    const { locale:defaultLocale } = useI18n();
 
     if(locale && Array.isArray(locale))
     locale = defaultLocale;
@@ -87,7 +87,7 @@ export const direction = (text, locale)=>{
 };
 
 export const localeDirection = (locale)=> {
-    const defaultLocale = useI18n().locale;
+    const {locale : defaultLocale}  = useI18n();
 
     return (locale||defaultLocale) == 'ar' ? 'rtl' : 'ltr';
 };
