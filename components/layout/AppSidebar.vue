@@ -19,7 +19,13 @@
           {{ t('menuNationalTargets') }}
         </template>
         <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
-        <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_OVERVIEW]" :to="localePath(appRoutes.NBSAPS_TARGETS_OVERVIEW)" icon="cil-list" :title="t('menuMyCountryTargets')"></KmNavLink>
+        <CNavGroup :visible="isChildRouteActive(appRoutes.NBSAPS_TARGETS_MY_COUNTRY)">
+          <template #togglerContent>
+            {{ t('menuMyCountryTargets') }}
+          </template>
+          <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_MY_COUNTRY]"  :to="localePath(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I)"  icon="cil-list" :title="t('menuMyCountryTargetsPart1')"></KmNavLink>
+          <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_MY_COUNTRY]" :to="localePath(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II)" icon="cil-list" :title="t('menuMyCountryTargetsPart2')"></KmNavLink>
+        </CNavGroup>
       </CNavGroup>
       
       <li class="nav-title"> {{t('nationalReports')}} </li>      
@@ -77,7 +83,7 @@ export default {
     const menuAccess = {
       [appRoutes.DASHBOARD] : true,
       [appRoutes.NBSAPS_TARGETS]            : true,
-      [appRoutes.NBSAPS_TARGETS_OVERVIEW]   : true,//false,
+      [appRoutes.NBSAPS_TARGETS_MY_COUNTRY]   : true,//false,
       [appRoutes.NATIONAL_REPORTS_NR6]      : true,
       [appRoutes.NATIONAL_REPORTS_NR7]      : true,
       [appRoutes.NATIONAL_REPORTS_NR7_EDIT] : true,//false,     

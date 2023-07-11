@@ -281,32 +281,7 @@
                             </div>
                         </div>
                     </km-form-group>
-                    <km-form-group>
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                Elements of the global targets
-                            </div>
-                            <div class="card-body">
-                                
-                                <km-form-group>
-                                    <label class="form-label" for="elementOfGlobalTargetsinfo">Elements of the global targets addressed by national targets</label>
-                                    <km-input-rich-lstring v-model="document.elementOfGlobalTargetsinfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
-                                <km-form-group name="hasReferncePeriod" caption="Is there a reference period and national target which relates to the headline indicator?">
-                                    <km-form-check-group>
-                                        <km-form-check-item inline type="radio" name="hasReferncePeriod"  for="hasReferncePeriod" id="hasReferncePeriodYes" :value="true"  v-model="document.hasReferncePeriod" label="Yes"/>
-                                        <km-form-check-item inline type="radio" name="hasReferncePeriod"  for="hasReferncePeriod" id="hasReferncePeriodNo"  :value="false" v-model="document.hasReferncePeriod" label="No"/>
-                                    </km-form-check-group>
-                                </km-form-group> 
-
-                                <km-form-group v-if="document.hasReferncePeriod" name="referencePeriodInfo" caption="Please explain">
-                                    <!-- <label class="form-label" ></label> -->
-                                    <km-input-rich-lstring v-model="document.referencePeriodInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
-                            </div>
-                        </div>
-                    </km-form-group>
-
+                    
                     <km-form-group>
                         <div class="card">
                             <div class="card-header bg-secondary">
@@ -346,7 +321,7 @@
     import { KmInputRichLstring, KmSelect, KmFormGroup,
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmFormWorkflow
     } from "~/components/controls";
-    import viewTarget from "./view-target.vue";
+    import viewTarget               from  "./view-target-part-1.vue";
     import { mapStores }            from 'pinia'
     import { THEASURUS, ROLES, SCHEMAS } from '@/constants';
     import { languages }            from '@/app-data/languages'
@@ -459,7 +434,7 @@
         }
     }    
     const onClose = async ()=>{
-        await navigateTo(appRoutes.NBSAPS_TARGETS_OVERVIEW)
+        await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I)
     }
     const onGoalsAndTargetSelected = (selected)=>{
         document.value.gbfGoalsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-GOAL')).map(e=>customSelectedItem(e.identifier))

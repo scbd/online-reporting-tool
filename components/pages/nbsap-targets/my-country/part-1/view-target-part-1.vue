@@ -162,29 +162,6 @@
                 </div>
             </km-form-group>
 
-            <km-form-group>
-                <div class="card">
-                    <div class="card-header bg-secondary">
-                        Elements of the global targets
-                    </div>
-                    <div class="card-body">                                
-                        <km-form-group v-if="viewDocument.elementOfGlobalTargetsinfo || viewDocument.hasReferncePeriod || viewDocument.hasReferncePeriod">
-                            <label class="form-label" for="elementOfGlobalTargetsinfo">Elements of the global targets addressed by national targets</label>
-                            <km-lstring-value type="html" :value="viewDocument.elementOfGlobalTargetsinfo" :locale="selectedLocale"></km-lstring-value>
-                        </km-form-group>
-                        <km-form-group>
-                            <label class="form-check-label" for="hasReferncePeriod">Is there a reference period and national target which relates to the headline indicator?</label>
-                            <km-value-bool :value="viewDocument.hasReferncePeriod" :locale="selectedLocale"></km-value-bool>
-                        </km-form-group> 
-
-                        <km-form-group v-if="viewDocument.hasReferncePeriod">
-                            <label class="form-label" for="referencePeriodInfo">Please explain</label>
-                            <km-lstring-value type="html" :value="viewDocument.referencePeriodInfo" :locale="selectedLocale"></km-lstring-value>
-                        </km-form-group>
-                    </div>
-                </div>
-            </km-form-group>
-
             <km-form-group v-if="viewDocument.additionalInfromation">
                 <div class="card">
                     <div class="card-header bg-secondary">
@@ -262,7 +239,7 @@
     })
  
     const onClose = async ()=>{
-        await navigateTo(appRoutes.NBSAPS_TARGETS_OVERVIEW)
+        await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I)
     }
 
     async function loadDocument(identifier){

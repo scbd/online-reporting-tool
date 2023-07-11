@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 
+    const nuxtApp = useNuxtApp();
     const { locale } = useI18n();
     const props = defineProps({
         modelValue  : {type:String, required:true },

@@ -1,5 +1,5 @@
 <template>
-    <target-view></target-view>
+    redirect to view
 </template>
   
   <script setup lang="ts">

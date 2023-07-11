@@ -1,13 +1,13 @@
 <template>
     <km-suspense>
-      <view-target v-if="identifier" :identifier="identifier"></view-target>
+      <view-target-part-2 v-if="identifier" :identifier="identifier"></view-target-part-2>
     </km-suspense>
 
 </template>
 
 <script setup lang="ts">
   import { KmSuspense } from "@/components/controls";
-  import viewTarget from '@/components/pages/nbsap-targets/my-country/view-target.vue';
+  import viewTargetPart2 from 'components/pages/nbsap-targets/my-country/part-2/view-target-part-2.vue';
   import { useRoute } from 'vue-router';
 
   const route           = useRoute();

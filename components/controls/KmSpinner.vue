@@ -13,6 +13,7 @@
     const props = defineProps({
         message : { type:String}
     })
+    const nuxtApp = useNuxtApp();
     const { t } = useI18n();
     const  attrs  = useAttrs()
     const { message } = toRefs(props);
