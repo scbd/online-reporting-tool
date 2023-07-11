@@ -445,14 +445,13 @@
         document.value.gbfGoalsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-GOAL')).map(e=>customSelectedItem(e.identifier))
         document.value.gbfTargetsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-TARGET')).map(e=>customSelectedItem(e.identifier))
         
-        const headlinePromise       = selected.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)});
-        const componentPromise      = selected.map(e=>{return GbfGoalsAndTargets.loadGbfComponentIndicator(e.identifier)});
-        const complementaryPromise  = selected.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)});
-        
-        const response                         = await Promise.all(headlinePromise, componentPromise, complementaryPromise);
-              headlineIndicatorsRef.value      = sortBy([...(response[0]?.flat()||[])], 'title')
-              componentIndicatorsRef.value     = sortBy([...(response[1]?.flat()||[])], 'title')
-              complementaryIndicatorsRef.value = sortBy([...(response[2]?.flat()||[])], 'title')
+        const headlineRes       = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
+        const componentRes      = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComponentIndicator(e.identifier)}));
+        const complementaryRes  = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)}));
+
+        headlineIndicatorsRef.value      = sortBy([...(headlineRes?.flat()||[])], 'title')
+        componentIndicatorsRef.value     = sortBy([...(componentRes?.flat()||[])], 'title')
+        complementaryIndicatorsRef.value = sortBy([...(complementaryRes?.flat()||[])], 'title')
 
         if(document.value?.headlineIndicators?.length){
             document.value.headlineIndicators = document.value?.headlineIndicators.filter(selected=>{
