@@ -20,8 +20,10 @@ export const ROLES = {
 // ROLES["ALL_NATIONAL_USERS"] = [ROLES.NATIONAL_FOCALPOINT]
 
 export const SCHEMAS = {
-    NATIONAL_TARGET_7 : 'nationalTarget7',
-    NATIONAL_REPORT_7 : 'nationalReport7'
+    NATIONAL_TARGET_7         : 'nationalTarget7',
+    NATIONAL_TARGET_7_MAPPING : 'nationalTarget7Mapping',
+    
+    NATIONAL_REPORT_7         : 'nationalReport7'
 }
 
 export const UTILS = {

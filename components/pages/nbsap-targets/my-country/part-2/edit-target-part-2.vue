@@ -104,7 +104,6 @@
     } from "~/components/controls";
     import viewTarget               from "./view-target-part-2.vue";
     import { mapStores }            from 'pinia'
-    import { THEASURUS, ROLES, SCHEMAS } from '@/constants';
     import { languages }            from '@/app-data/languages'
     import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
     import { useThesaurusStore }    from '@/stores/thesaurus';
@@ -113,7 +112,7 @@
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
     import {useToast} from 'vue-toast-notification';
-    import {lstring } from '@/util/filter'
+    // import {lstring } from '@/util/filter'
 
     const { user }        = useAuth();
     const security        = useSecurity();
@@ -127,7 +126,7 @@
     const $toast                = useToast();
         
     const showSpinnerModal = ref(false);
-    const selectedGbfTargets = ref([]);
+    const selectedLocale = ref(locale.value);
 
     await Promise.all([
         thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
@@ -149,26 +148,8 @@
     }
 
     const document =  ref(route?.params?.identifier ? kmDocumentDraftStore.draftRecord.body : emptyDocument() );
-    //initilize for local use
-    document.value.additionalImplementation = document.value.additionalImplementation || {};
-
-    selectedGbfTargets.value =  [   ...(document.value?.gbfGoalsAlignment||[]),
-                                    ...(document.value?.gbfTargetsAlignment||[])
-                                ]; 
-
-    const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
-    const globalGoalsAndTargets = computed(()=>{
-        const goalsAndTargets = [
-            ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
-            ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))), 
-        ]
-        console.log(goalsAndTargets);
-        return goalsAndTargets;
-    })
-    const gbfTargetConsideration = computed(()=>{
-        return (thesaurusStore.getDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
-    })
-    const formatedDegreeOfAlignments = computed(()=>{return degreeOfAlignments })
+    
+    const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));    
     const countryList                = computed(()=>{
         if(!countriesStore?.countries?.length)
             return [];
@@ -179,15 +160,12 @@
 
         return mapCountries;
     })
-    const headlineIndicators      = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
-    const componentIndicators     = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
-    const complementaryIndicators = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
-
-    const selectedLocale = ref(locale.value);
+    
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
         return clean
     })
+
     onMounted(() => {
         if(user?.value?.isAuthenticated){
             document.value.government.identifier = document.value?.government?.identifier || user.value.government
@@ -197,8 +175,6 @@
     const onSubmitDocument = async ()=>{
         try{
             showSpinnerModal.value = true;            
-            // await navigateTo('/nbsap-targets')
-
             const lDocument = useStorage().cleanDocument({...document.value})
 
             await kmDocumentDraftStore.saveDraft(lDocument.header.identifier, lDocument);
@@ -217,27 +193,17 @@
     const onClose = async ()=>{
         await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II)
     }
-    const onGoalsAndTargetSelected = (selected)=>{
-        document.value.gbfGoalsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-GOAL')).map(e=>customSelectedItem(e.identifier))
-        document.value.gbfTargetsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-TARGET')).map(e=>customSelectedItem(e.identifier))
-    }
-    const customLabel = ({title})=>{        
-        return lstring(title, useI18n().locale.value);
-    }
-    const customSelectedItem = (item)=>{
-        return { identifier : item };
-    }
+    
     function emptyDocument(){
         return {
             header : {
                 schema : SCHEMAS.NATIONAL_TARGET_7,
                 identifier : useGenerateUUID(),
-                languages  : ['en']
+                languages  : [locale.value]
             },        
             government : {
                 identifier : undefined
-            },
-            additionalImplementation : {}
+            }
         }
     }
 

@@ -38,3 +38,26 @@ export function getTargetNumber(target:String){
         .replace(/^0/, '')
   
 }
+
+export function isLString(element){
+    return  element.hasOwnProperty('ar') || element.hasOwnProperty('en') ||
+            element.hasOwnProperty('fr') || element.hasOwnProperty('es') || 
+            element.hasOwnProperty('ru') || element.hasOwnProperty('zh');
+}
+
+export function sortBy(list:Array, property){
+    
+    const { locale } = useNuxtApp().$i18n;
+    return list.sort((a:any ,b:any )=>{
+        let valueA = a[property];
+        let valueB = b[property];
+
+        if(isLString(valueA)){
+            valueA = lstring(valueA, locale.value)
+            valueB = lstring(valueB, locale.value)
+        }
+
+        return valueA.localeCompare(valueB);
+
+    })
+}
