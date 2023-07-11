@@ -15,7 +15,7 @@
 <i18n src="@/i18n/dist/components/controls/view/kmValueTerm.json"></i18n>
 
 <script setup lang="ts">
-    import { direction, lstringLocale, lstring } from '@/util/filter';
+    // import { direction, lstringLocale, lstring } from '@/util/filter';
     const { t } = useI18n({useScope: 'local'})
     const props = defineProps({
         value   : {type:Boolean, required:true },

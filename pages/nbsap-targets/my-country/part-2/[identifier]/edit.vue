@@ -7,7 +7,6 @@
 <script setup lang="ts">
 import { KmSuspense } from "@/components/controls";
 import EditTargetPart2 from "@/components/pages/nbsap-targets/my-country/part-2/edit-target-part-2.vue";
-import { ROLES } from '@/constants';
 
   definePageMeta({
     auth:true,

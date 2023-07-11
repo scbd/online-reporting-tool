@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { removeEmpty } from '@/util';
 import { makeUid } from '@coreui/utils/src'
 import {without} from 'lodash';
 

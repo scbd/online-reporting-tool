@@ -65,7 +65,6 @@
         KmLocales, KmValueTerm, KmValueBool, KmValueTerms, KmValue
     } from "~/components/controls";
     import { mapStores }            from 'pinia'
-    import { THEASURUS, ROLES, SCHEMAS } from '@/constants';
     import { languages }            from '@/app-data/languages'
     import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
     import { useThesaurusStore }    from '@/stores/thesaurus';

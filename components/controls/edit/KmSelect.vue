@@ -35,7 +35,6 @@
 <script>  
 
 import VueMultiselect from 'vue-multiselect';
-import { asArray } from '@/util';
 import { isEqual } from 'lodash'
 
 export default {
@@ -105,7 +104,7 @@ export default {
     }
   },
   methods: {
-    onEventTextChange: (...args)=>{
+    onEventTextChange(...args){
       this.$emit('search-change', ...args)
     },
     fetchOptions(){

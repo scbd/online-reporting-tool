@@ -50,6 +50,7 @@
                                         :options="formatedLanguages"
                                         :multiple="true"
                                         :allow-empty="false"
+                                        
                                     >
                                     </km-select>
                                     <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
@@ -182,7 +183,7 @@
                                         :custom-selected-item="customSelectedItem"
                                     >
                                     </km-select>
-                                    <small id="emailHelp" class="form-text text-muted">help!!!!</small>
+                                    <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
                                 </km-form-group>
                                 <km-form-group>
                                     <label class="form-label" for="componentIndicators">Component indicators</label>
@@ -200,7 +201,7 @@
                                         :custom-selected-item="customSelectedItem"
                                     >
                                     </km-select>
-                                    <small id="emailHelp" class="form-text text-muted">help!!!!</small>
+                                    <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
                                 </km-form-group>
                                 <km-form-group>
                                     <label class="form-label" for="complementaryIndicators">Complementary indicators</label>
@@ -218,7 +219,7 @@
                                         :custom-selected-item="customSelectedItem"
                                     >
                                     </km-select>
-                                    <small id="emailHelp" class="form-text text-muted">help!!!!</small>
+                                    <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
                                 </km-form-group>
                                 <km-form-group>
                                     <label class="form-label" for="otherNationalIndicators">Other national indicators</label>
@@ -323,7 +324,6 @@
     } from "~/components/controls";
     import viewTarget               from  "./view-target-part-1.vue";
     import { mapStores }            from 'pinia'
-    import { THEASURUS, ROLES, SCHEMAS } from '@/constants';
     import { languages }            from '@/app-data/languages'
     import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
     import { useThesaurusStore }    from '@/stores/thesaurus';
@@ -332,7 +332,7 @@
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
     import {useToast} from 'vue-toast-notification';
-    import {lstring } from '@/util/filter'
+    import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
 
     const { user }        = useAuth();
     const security        = useSecurity();
@@ -344,13 +344,18 @@
     const realmConfStore  = useRealmConfStore();
     const kmDocumentDraftStore  = useKmDocumentDraftsStore();
     const $toast                = useToast();
+
+    const headlineIndicatorsRef      = ref(null);
+    const componentIndicatorsRef     = ref(null);
+    const complementaryIndicatorsRef = ref(null);
         
     const showSpinnerModal = ref(false);
     const selectedGbfTargets = ref([]);
 
     await Promise.all([
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
+        // thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
+        // thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
+        GbfGoalsAndTargets.loadGbfGoalsAndTargets(),
         thesaurusStore.loadDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS),
         thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS    ),
         thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS),
@@ -393,14 +398,14 @@
             return [];
 
         const mapCountries = countriesStore.countries.map(e=>{
-            return { name : e.name[useI18n().locale.value], code : e.code?.toLowerCase()}
+            return { name : e.name[locale.value], code : e.code?.toLowerCase()}
         })
 
         return mapCountries;
     })
-    const headlineIndicators      = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
-    const componentIndicators     = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
-    const complementaryIndicators = computed(()=>{ return (thesaurusStore.getDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS)||[]).sort((a,b)=>a.name.localeCompare(b.name)) });
+    const headlineIndicators      = computed(()=>headlineIndicatorsRef.value||[]);
+    const componentIndicators     = computed(()=>componentIndicatorsRef.value||[]);
+    const complementaryIndicators = computed(()=>complementaryIndicatorsRef.value||[]);
 
     const selectedLocale = ref(locale.value);
     const cleanDocument = computed(()=>{
@@ -436,12 +441,38 @@
     const onClose = async ()=>{
         await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I)
     }
-    const onGoalsAndTargetSelected = (selected)=>{
+    const onGoalsAndTargetSelected = async (selected)=>{
         document.value.gbfGoalsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-GOAL')).map(e=>customSelectedItem(e.identifier))
         document.value.gbfTargetsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-TARGET')).map(e=>customSelectedItem(e.identifier))
+        
+        const headlinePromise       = selected.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)});
+        const componentPromise      = selected.map(e=>{return GbfGoalsAndTargets.loadGbfComponentIndicator(e.identifier)});
+        const complementaryPromise  = selected.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)});
+        
+        const response                         = await Promise.all(headlinePromise, componentPromise, complementaryPromise);
+              headlineIndicatorsRef.value      = sortBy([...(response[0]?.flat()||[])], 'title')
+              componentIndicatorsRef.value     = sortBy([...(response[1]?.flat()||[])], 'title')
+              complementaryIndicatorsRef.value = sortBy([...(response[2]?.flat()||[])], 'title')
+
+        if(document.value?.headlineIndicators?.length){
+            document.value.headlineIndicators = document.value?.headlineIndicators.filter(selected=>{
+                return headlineIndicatorsRef.value.find(e=>e.identifier == selected.identifier)
+            })
+        }
+        if(document.value?.componentIndicators?.length){
+            document.value.componentIndicators = document.value?.componentIndicators.filter(selected=>{
+                return componentIndicatorsRef.value.find(e=>e.identifier == selected.identifier)
+            })
+        }
+        if(document.value?.complementaryIndicators?.length){
+            document.value.complementaryIndicators = document.value?.complementaryIndicators.filter(selected=>{
+                return complementaryIndicatorsRef.value.find(e=>e.identifier == selected.identifier)
+            })
+        }
+
     }
     const customLabel = ({title})=>{        
-        return lstring(title, useI18n().locale.value);
+        return lstring(title, locale.value);
     }
     const customSelectedItem = (item)=>{
         return { identifier : item };
@@ -459,6 +490,5 @@
             additionalImplementation : {}
         }
     }
-
 
 </script>

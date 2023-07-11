@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-    import { direction, lstringLocale, lstring } from '@/util/filter';
+    import { direction, lstringLocale, lstring } from '@/utils';
 
     const props = defineProps({
         value  : {type:Object, required:true },

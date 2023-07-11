@@ -7,13 +7,19 @@
 
 <script setup lang="ts">
   import MyCountryTargetsMapping from "@/components/pages/nbsap-targets/my-country/part-2/index.vue";
-  import { ROLES, SCHEMAS } from '@/constants'
   import { KmSuspense } from '@/components/controls'
+  import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
 
     definePageMeta({
         auth:true,
         schema:SCHEMAS.NATIONAL_TARGET_7,
         roles:[...ROLES.ALL_NATIONAL_USERS],
+    })
+
+    onMounted(async()=>{
+      const res = await GbfGoalsAndTargets.loadGbfHeadlineIndicator('GBF-GOAL-A')
+
+      console.log(res)
     })
 
 </script>

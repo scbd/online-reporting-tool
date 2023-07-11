@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-    import { direction, lstringLocale, lstring } from '@/util/filter';
+    // import { direction, lstringLocale, lstring } from '@/util/filter';
     import KmValueTerm from './KmValueTerm.vue';
 
     const props = defineProps({
