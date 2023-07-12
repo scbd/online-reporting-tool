@@ -20,6 +20,8 @@
     const props = defineProps({
         errors : { type:Array, required:true}
     })
+    const nuxtApp = useNuxtApp();
+    const { t } = nuxtApp.$i18n;
     
 </script>
 

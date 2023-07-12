@@ -79,7 +79,7 @@
                                 <km-form-group caption="Alignment with global goals and targets" required>
                                     <!-- <label class="form-label" for="exampleFormControlSelect1"></label> -->
                                     <km-select
-                                        v-model="selectedGbfTargets"
+                                        v-model="document.gbfGoalsAndTargetAlignment"
                                         class="validationClass"
                                         label="title"
                                         track-by="identifier"
@@ -95,7 +95,6 @@
                                     </km-select>
                                     <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
 
-                                    <!-- <km-term v-model="document.gbfGoalsAlignment[0]" :locale="document.header.languages[0]"></km-term> -->
                                 </km-form-group>
                                 <km-form-group>
                                     <label  class="form-check-label" for="hasImplementingConsiderations">Considerations for implementation of other non-target elements of the Kunming Montreal Global Biodiversity Framework</label>
@@ -350,7 +349,6 @@
     const complementaryIndicatorsRef = ref(null);
         
     const showSpinnerModal = ref(false);
-    const selectedGbfTargets = ref([]);
 
     await Promise.all([
         // thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
@@ -375,10 +373,6 @@
     const document =  ref(route?.params?.identifier ? kmDocumentDraftStore.draftRecord.body : emptyDocument() );
     //initilize for local use
     document.value.additionalImplementation = document.value.additionalImplementation || {};
-
-    selectedGbfTargets.value =  [   ...(document.value?.gbfGoalsAlignment||[]),
-                                    ...(document.value?.gbfTargetsAlignment||[])
-                                ]; 
 
     const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
     const globalGoalsAndTargets = computed(()=>{
@@ -415,6 +409,8 @@
     onMounted(() => {
         if(user?.value?.isAuthenticated){
             document.value.government.identifier = document.value?.government?.identifier || user.value.government
+            if(document.value?.gbfGoalsAndTargetAlignment)
+                onGoalsAndTargetSelected(document.value?.gbfGoalsAndTargetAlignment);
         }
     })
 
@@ -442,8 +438,6 @@
         await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I)
     }
     const onGoalsAndTargetSelected = async (selected)=>{
-        document.value.gbfGoalsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-GOAL')).map(e=>customSelectedItem(e.identifier))
-        document.value.gbfTargetsAlignment = selected?.filter(e=>e.identifier.startsWith('GBF-TARGET')).map(e=>customSelectedItem(e.identifier))
         
         const headlineRes       = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
         const componentRes      = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComponentIndicator(e.identifier)}));

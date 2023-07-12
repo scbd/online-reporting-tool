@@ -35,6 +35,8 @@ export const useKmDocumentDraftsStore = defineStore('kmDocumentDrafts', {
         this.errors.push(error)
         this.documentDrafts = documentDrafts;
         this.isBusy = false;
+
+        return documentDrafts;
     },
 
     async loadDraftDocument(identifier:String){
@@ -59,7 +61,8 @@ export const useKmDocumentDraftsStore = defineStore('kmDocumentDrafts', {
             const { data:draftRecord, error } = await $api.kmStorage.drafts.put(identifier, draft, {schema:draft.header.schema});
 
             this.draftRecord = draftRecord;
-            this.errors = error
+            if(error?.value)
+                this.errors = Array.isArray(error.value) ? error : [error]
             this.isBusy = false;
           // }
           

@@ -50,12 +50,10 @@
                     <th scope="row">{{ index+1 }}</th>
                     <td>{{(draft.workingDocumentTitle||draft.title).en}}</td>
                     <td>
-                      <ul v-if="draft.body.gbfGoalsAlignment || draft.body.gbfTargetsAlignment">
-                        <li v-for="target in draft.body.gbfGoalsAlignment" :key="target.identifier">
-                          <a href="https://www.cbd.int/gbf/goals/" target="_blank">{{ target.identifier }}</a> 
-                        </li>
-                        <li v-for="target in draft.body.gbfTargetsAlignment" :key="target.identifier">
-                          <a :href="`https://www.cbd.int/gbf/targets/${getTargetNumber(target.identifier)}`" target="_blank">{{ target.identifier }}</a> 
+                      <ul v-if="draft.body.gbfGoalsAndTargetAlignment">
+                        <li v-for="target in draft.body.gbfGoalsAndTargetAlignment" :key="target.identifier">
+                          <a v-if="target.identifier.startsWith('GBF-GOAL')" href="https://www.cbd.int/gbf/goals/" target="_blank">{{ target.identifier }}</a> 
+                          <a v-if="target.identifier.startsWith('GBF-TARGET')" :href="`https://www.cbd.int/gbf/targets/${getTargetNumber(target.identifier)}`" target="_blank">{{ target.identifier }}</a> 
                         </li>
                       </ul>
                     </td>
@@ -103,7 +101,6 @@
     const security = useSecurity();
     const route    = useRoute();
     const localePath  = useLocalePath()
-    const nationalTargetMatrix = ref([]);
 
     const rowsPerPage = UTILS.ROWS_PER_PAGE;
 
@@ -114,29 +111,6 @@
 
     await kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true);
     if(!kmDocumentDraftStore.documentDrafts){
-    }
-    const matrixRecords = [...(kmDocumentDraftStore.documentDrafts?.Items||[])]
-    const martrix = []
-    for (let i = 0; i < matrixRecords.length; i++) {
-      const element = matrixRecords[i].body;
-      element.gbfGoalsAlignment?.forEach(target => addDraftToTargetGroup(target, element));
-      element.gbfTargetsAlignment?.forEach(target => addDraftToTargetGroup(target, element));
-    }
-
-    nationalTargetMatrix.value = sortBy(martrix, 'identifier');
-
-    function addDraftToTargetGroup(target, record){
-      const existingTarget = martrix.find(e=>e.identifier == target.identifier)
-
-      if(!existingTarget){
-        martrix.push({
-          identifier:target.identifier,
-          nationalTargets : [record]
-        });
-      }
-      else{
-        existingTarget.nationalTargets.push(record)
-      }
     }
 
     const navigateToPage = async (route:string, draft:any)=>{

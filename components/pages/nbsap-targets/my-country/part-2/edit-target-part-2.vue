@@ -105,21 +105,17 @@
     import viewTarget               from "./view-target-part-2.vue";
     import { mapStores }            from 'pinia'
     import { languages }            from '@/app-data/languages'
-    import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
-    import { useThesaurusStore }    from '@/stores/thesaurus';
     import { useCountriesStore }    from '@/stores/countries';
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
     import {useToast} from 'vue-toast-notification';
-    // import {lstring } from '@/util/filter'
 
     const { user }        = useAuth();
     const security        = useSecurity();
     const route           = useRoute();
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const locale          = useI18n().locale
-    const thesaurusStore  = useThesaurusStore ();
     const countriesStore  = useCountriesStore ();
     const realmConfStore  = useRealmConfStore();
     const kmDocumentDraftStore  = useKmDocumentDraftsStore();
@@ -128,13 +124,11 @@
     const showSpinnerModal = ref(false);
     const selectedLocale = ref(locale.value);
 
+    const props = defineProps({
+        globalGoalOrTarget : {type:String, required:true}
+    })
+
     await Promise.all([
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS    ),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS  ),
         countriesStore.loadCountries()
     ]);
 
@@ -146,9 +140,12 @@
             // return;
         }        
     }
+    else{
+        //validate if there is a mapping record for the given target and load it instead
+    }
 
     const document =  ref(route?.params?.identifier ? kmDocumentDraftStore.draftRecord.body : emptyDocument() );
-    
+    console.log(document)
     const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));    
     const countryList                = computed(()=>{
         if(!countriesStore?.countries?.length)
@@ -178,7 +175,7 @@
             const lDocument = useStorage().cleanDocument({...document.value})
 
             await kmDocumentDraftStore.saveDraft(lDocument.header.identifier, lDocument);
-            if(kmDocumentDraftStore.error?.length)
+            if(kmDocumentDraftStore.errors?.length)
                 $toast.error('Error saving draft record', {position:'top-right'});                
             else
                 $toast.success('Draft record saved successfully', {position:'top-right'});
@@ -189,7 +186,8 @@
         finally{
             showSpinnerModal.value = false;
         }
-    }    
+    }   
+
     const onClose = async ()=>{
         await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II)
     }
@@ -197,12 +195,15 @@
     function emptyDocument(){
         return {
             header : {
-                schema : SCHEMAS.NATIONAL_TARGET_7,
+                schema : SCHEMAS.NATIONAL_TARGET_7_MAPPING,
                 identifier : useGenerateUUID(),
                 languages  : [locale.value]
             },        
             government : {
                 identifier : undefined
+            },
+            globalGoalOrTarget : {
+                identifier: props.globalGoalOrTarget
             }
         }
     }

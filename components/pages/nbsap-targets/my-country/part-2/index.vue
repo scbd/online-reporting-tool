@@ -8,7 +8,7 @@
             <div class="card-body">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <!-- <NuxtLink to="/nbsap-targets/new"> -->
-                  <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_NEW, {})">
+                  <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
                     <CIcon icon="addthis"/> Submit new target
                   </CButton>
                 <!-- </NuxtLink> -->
@@ -34,71 +34,97 @@
                 Global Goals/Targets
               </div>
               <div class="card-body">
-                <table class="table table-hover">
-                  <!-- <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">GBF goals and targets</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead> -->
+                <km-spinner-suspense v-if="isBusy"></km-spinner-suspense>
+
+                <table class="table table-hover table-bordered">
+                  
                   <tbody>
-                    <template v-for="(target, index) in nationalTargetMatrix" :key="target">
+                    <template v-for="(target, index) in gbfGoalAndTargetList" :key="target">                        
                       <tr class="bg-secondary">
-                        <th scope="row">{{ index+1 }}</th>
-                        <td>{{target.identifier}}</td> 
-                        <!-- <td></td>                   -->
+                        <td>
+                            {{lstring(target.title)}}
+                            <div class="d-grid justify-content-end" v-if="target.nationalTargets?.length">
+                                <CButton color="primary" size="sm" @click="showEditMapping(target)">
+                                    Edit mapping
+                                </CButton>
+                            </div>
+                        </td> 
                       </tr>
                       <tr>
-                        <td></td>
-                        <!-- <td></td> -->
                         <td>
-                          <table class="table table-bordered">
-                            <thead>
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">National Target(s)</th>
-                                <th scope="col">Element of targets</th>
-                                <th scope="col">Indicators</th>
-                                <th scope="col">Reference period</th>
-                                <th></th>
-                              </tr>
-                            </thead>
+                          <table class="table table-bordered">                            
                             <tbody>
-                              <tr v-for="(nationalTarget, index) in target.nationalTargets" :key="nationalTarget.identifier">
-                                <td>{{ index+1 }}</td>
-                                <td>{{(nationalTarget.title).en}}</td>
-                                <td>
-                                  <div v-html="(nationalTarget.elementOfGlobalTargetsinfo||{}).en"></div>
-                                </td>
-                                <td>
-                                  <ul v-if="nationalTarget.headlineIndicators||nationalTarget.componentIndicators||nationalTarget.complementaryIndicators">
-                                    <li v-for="indicator in nationalTarget.headlineIndicators" :key="indicator.identifier">
-                                      {{ indicator.identifier }}
-                                    </li>
-                                    <li v-for="indicator in nationalTarget.componentIndicators" :key="indicator.identifier">
-                                      {{ indicator.identifier }}
-                                    </li>
-                                    <li v-for="indicator in nationalTarget.complementaryIndicators" :key="indicator.identifier">
-                                      {{ indicator.identifier }}
-                                    </li>
-                                  </ul>
-                                </td>
-                                <td>
-                                  <CBadge v-if="nationalTarget.hasReferncePeriod" color="info" shape="rounded-pill">Has reference period</CBadge>
-                                  <div v-html="(nationalTarget.referencePeriodInfo||{}).en"></div>
-                                </td>
-                                <td>
-                                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <CButton color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_VIEW, nationalTarget)">
-                                      <font-awesome-icon icon="fa-search" /> View target
-                                    </CButton>
-                                    <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_EDIT, nationalTarget)">
-                                      <CIcon icon="cil-comment-square-edit"/> Edit target
-                                    </CButton>
-                                  </div>
-                                </td>
-                              </tr>
+                                <tr>
+                                    <!-- <td></td> -->
+                                    <td colspan="2">
+                                        <strong> <span class="text">National target(s) linked to this global Goal/Target </span></strong>
+                                        <!-- for <strong>{{lstring(target.title)}}</strong> -->
+                                    </td>
+                                    <td>
+                                        <strong>Element Of Global Targets infromation</strong>
+                                    </td>
+                                </tr>
+                                <tr v-for="(nationalTarget, index) in target.nationalTargets" :key="nationalTarget.identifier">
+                                    <!-- <td></td> -->
+                                    <td colspan="2">{{lstring(nationalTarget.title)}}</td>
+                                    <td :rowspan="target.nationalTargets.length" v-if="index==0">
+                                        <label></label>
+                                        <div v-html="lstring(target.elementOfGlobalTargetsinfo)"></div>
+                                    </td>                                
+                                </tr>
+                                <tr v-if="!target.nationalTargets?.length">
+                                    <td colspan="3">
+                                        <CAlert color="danger" class="d-flex align-items-center">
+                                            <CIcon icon="cil-burn" class="flex-shrink-0 me-2" width="24" height="24" />
+                                            <div>
+                                                Your country has not submitted any national targets for this Global Goal/Target.
+                                                <CButton color="secondary" size="sm" @click="showEditMapping(target)">
+                                                    Submit new target here
+                                                </CButton>
+                                            </div>
+                                        </CAlert>
+                                    </td>
+                                </tr>
+                                <tr v-if="target.headlineIndicators.length">
+                                    <td colspan="3">
+                                        &nbsp;                                       
+                                    </td>
+                                </tr>
+                                <tr v-if="target.headlineIndicators.length">
+                                    <td style="width: 20%;">
+                                        <strong>Headline Indicators</strong>
+                                    </td>
+                                    <td>
+                                        <strong>National target(s) linked to headline indicator</strong>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr v-for="(indicator, index) in target.headlineIndicators" :key="indicator.identifier">
+                                    <td style="width: 20%;">
+                                        {{lstring(indicator.title)}}
+                                    </td>
+                                    <td>
+                                        <div v-for="target in indicator.nationalTargets">
+                                            {{lstring(target.title)}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <CBadge v-if="indicator.hasReferncePeriod" color="info" shape="rounded-pill">Has reference period</CBadge>
+                                        <CBadge v-if="!!target.hasReferncePeriod" color="info" shape="rounded-pill">No reference period</CBadge>
+                                        <div v-html="lstring(target.referencePeriodInfoinfo)"></div>
+                                    </td>                                    
+                                </tr>
+                                <tr v-if="target.otherIndicators.length">
+                                    <td colspan="3">
+                                        <strong>Other indicators linked in the national target(s) for this global Goal/Target</strong>
+                                    </td>                             
+                                </tr>
+                                <tr v-for="(indicator, index) in target.otherIndicators" :key="indicator.identifier">
+                                    <td>
+                                        {{lstring(indicator.title)}}
+                                    </td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                           </table>
                         </td> 
@@ -112,45 +138,88 @@
         </CCardBody>
       
       </CCard> 
-  </template>
+      <CModal class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showEditMappingModal" >
+        <CModalHeader close-button="false">
+            <CModalTitle>{{lstring(editMappingTarget.title)}}</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            <edit-target-part-2 :global-goal-or-target="editMappingTarget.identifier"></edit-target-part-2>
+        </CModalBody>     
+        <CModalFooter>
+            <CButton color="secondary" size="sm" @click="closeEditMappingDialog">
+                Close
+            </CButton>
+        </CModalFooter>      
+    </CModal>
+
+</template>
   
 <!-- <i18n  src="~/i18n/dist/pages/nbsap-targets/index.json"></i18n> -->
 
 <script setup lang="ts">
-  import { KmSuspense, KmInputRichLstring, KmSelect, KmFormGroup,
+  import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup,
              KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink
            } from "@/components/controls";
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
-    import {sortBy} from 'lodash';
+    import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
+    import { CModalFooter } from "@coreui/vue";
 
 
+    const rowsPerPage = UTILS.ROWS_PER_PAGE;
     const { $appRoutes:appRoutes } = useNuxtApp();
     const { user } = useAuth();
     const security = useSecurity();
     const route    = useRoute();
     const localePath  = useLocalePath()
-    const nationalTargetMatrix = ref([]);
-
-    const rowsPerPage = UTILS.ROWS_PER_PAGE;
 
     const realmConfStore  = useRealmConfStore();
     const kmDocumentDraftStore  = useKmDocumentDraftsStore();
 
-    const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+    const isBusy = ref(false);
+    const gbfGoalAndTargetList = ref(null);
+    const showEditMappingModal = ref(false);
+    const editMappingTarget    = ref(null);
 
-    await kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true);
-    if(!kmDocumentDraftStore.documentDrafts){
-    }
-    const matrixRecords = [...(kmDocumentDraftStore.documentDrafts?.Items||[])]
-    const martrix = []
-    for (let i = 0; i < matrixRecords.length; i++) {
-      const element = matrixRecords[i].body;
-      element.gbfGoalsAlignment?.forEach(target => addDraftToTargetGroup(target, element));
-      element.gbfTargetsAlignment?.forEach(target => addDraftToTargetGroup(target, element));
+    const EditTargetPart2 = defineAsyncComponent(() =>
+        import('./edit-target-part-2.vue')
+    )
+
+    onMounted(async() => {
+        await init();
+    })
+    
+
+    const navigateToPage = async (route:string, draft:any)=>{
+      const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
+      await navigateTo(url);
+      await navigateTo(url);
     }
 
-    nationalTargetMatrix.value = sortBy(martrix, 'identifier');
+    const customUrl = (route:string, draft:any)=>{
+      const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
+      return localePath(url);
+    }
+
+    async function loadNationalTargets(){
+
+      const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+
+      const response = await kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true);
+
+      return response.Items;
+
+    }
+
+    async function loadTargetMappings(){
+
+        const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}')`;
+
+        const response = await kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true);
+
+        return response.Items;
+
+    }
 
     function addDraftToTargetGroup(target, record){
       const existingTarget = martrix.find(e=>e.identifier == target.identifier)
@@ -166,14 +235,68 @@
       }
     }
 
-    const navigateToPage = async (route:string, draft:any)=>{
-      const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
-      await navigateTo(url);
-      await navigateTo(url);
+    function showEditMapping(target){
+        console.log(target);
+        editMappingTarget.value = target
+        showEditMappingModal.value = true
     }
 
-    const customUrl = (route:string, draft:any)=>{
-      const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
-      return localePath(url);
+    function closeEditMappingDialog(){
+
+        showEditMappingModal.value = false;
+        editMappingTarget.value = null
+    }
+
+    async function init(){
+        try{
+            isBusy.value = true;
+            let targets = [...(await GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators())];
+
+            const nationalTargets  = await loadNationalTargets();
+            const nationalMappings = await loadTargetMappings();
+        
+            
+            const martrix = []
+            for (let i = 0; i < targets.length; i++) {
+                const target = targets[i];
+
+                target.nationalMapping = []
+                target.nationalTargets = []
+
+                const lNationalTargets  = nationalTargets.filter (e=>e.body?.gbfGoalsAndTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier));
+                const lNationalMappings = nationalMappings.find(e=>e.body?.globalGoalOrTarget?.identifier  == target.identifier);
+
+                target.elementOfGlobalTargetsinfo = lNationalMappings?.body.elementOfGlobalTargetsinfo;
+                target.nationalTargets = lNationalTargets.map(e=>{
+                    return { identifier : e.identifier, title : e.body?.title}
+                });
+
+                target.headlineIndicators.forEach(indicator => {
+                    indicator.nationalTargets = lNationalTargets.filter(e=>e.body.headlineIndicators?.find(e=>e.identifier == indicator.identifier));
+                });
+                const otherIndicators = [...target.componentIndicators, ...target.complementaryIndicators];
+
+                target.otherIndicators = otherIndicators.filter(indicator=>{
+                    
+                    const found = lNationalTargets.find(nationalTarget=>{
+                        return  nationalTarget.body.componentIndicators?.find(e=>e.identifier == indicator.identifier)||
+                                nationalTarget.body.complementaryIndicators?.find(e=>e.identifier == indicator.identifier)
+                    });
+                    return found;
+                })
+
+                console.log(target.otherIndicators)
+            }
+
+            // nationalTargetMatrix.value = sortBy(martrix, 'identifier');
+            gbfGoalAndTargetList.value = sortBy(targets, 'identifier');
+        }
+        catch(e){
+            console.error(e)
+        }
+        finally{
+            isBusy.value = false;
+        }
+        
     }
 </script>

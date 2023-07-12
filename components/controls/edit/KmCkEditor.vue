@@ -344,7 +344,7 @@ export default {
               return success.data;
             })
             .catch(function(error) {
-              console.debug(error);
+              console.error(error);
               throw error;
             });
 

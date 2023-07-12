@@ -44,8 +44,7 @@
 
                         <km-form-group>
                             <label class="form-label" for="exampleFormControlSelect1">Alignment with global goals and targets</label>
-                            <km-value-terms :value="viewDocument.gbfGoalsAlignment" :locale="selectedLocale"></km-value-terms>
-                            <km-value-terms :value="viewDocument.gbfTargetsAlignment" :locale="selectedLocale"></km-value-terms>
+                            <km-value-terms :value="viewDocument.gbfGoalsAndTargetAlignment" :locale="selectedLocale"></km-value-terms>
                         </km-form-group>
 
                         <km-form-group v-if="viewDocument.hasImplementingConsiderations!=undefined">                                    

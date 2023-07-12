@@ -107,7 +107,7 @@ class KmDraftsApi extends ApiBase
   }
   async put(identifier, body, params){
     const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftUrl(identifier), 
-      { body, method:'put', body, params })
+      { body, method:'put', params, baseURL:'http://fonseca.biodiv.org' })
                   
     return { data : data?.value, pending, error, refresh };
   }
