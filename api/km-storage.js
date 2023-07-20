@@ -59,10 +59,16 @@ class KmDocumentsApi extends ApiBase
     return { data : data?.value, pending, error, refresh };
   }
   async validate(body, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.validateUrl(), { method:'put', body, params })
+    params = params || {};
+
+    if (!params?.schema && body?.header?.schema)
+        params.schema = body.header.schema;
+        
+    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.validateUrl(), { body, method:'put', body, params, baseURL })
                   
     return { data : data?.value, pending, error, refresh };
   }
+
   async canCreate(identifier, params){
     const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.securityUrl(identifier, 'create'), { method:'get', params })
                   
@@ -107,7 +113,7 @@ class KmDraftsApi extends ApiBase
   }
   async put(identifier, body, params){
     const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftUrl(identifier), 
-      { body, method:'put', params, baseURL:'http://fonseca.biodiv.org' })
+      { body, method:'put', params, baseURL })
                   
     return { data : data?.value, pending, error, refresh };
   }
@@ -116,11 +122,7 @@ class KmDraftsApi extends ApiBase
                   
     return { data : data?.value, pending, error, refresh };
   }
-  async validate(body, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.validateUrl(), { body, method:'put', body, params })
-                  
-    return { data : data?.value, pending, error, refresh };
-  }
+  
   async canCreate(identifier, params){
     const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftSecurityUrl(identifier, 'create'),  { method:'get', params })
                   

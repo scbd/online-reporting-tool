@@ -44,8 +44,11 @@
                         <td>
                             {{lstring(target.title)}}
                             <div class="d-grid justify-content-end" v-if="target.nationalTargets?.length">
-                                <CButton color="primary" size="sm" @click="showEditMapping(target)">
+                                <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping">
                                     Edit mapping
+                                </CButton>
+                                <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="!target.nationalMapping && target.nationalTargets">
+                                    Add mapping
                                 </CButton>
                             </div>
                         </td> 
@@ -61,7 +64,7 @@
                                         <!-- for <strong>{{lstring(target.title)}}</strong> -->
                                     </td>
                                     <td>
-                                        <strong>Element Of Global Targets infromation</strong>
+                                        <strong>Element of Global Targets infromation</strong>
                                     </td>
                                 </tr>
                                 <tr v-for="(nationalTarget, index) in target.nationalTargets" :key="nationalTarget.identifier">
@@ -78,6 +81,7 @@
                                             <CIcon icon="cil-burn" class="flex-shrink-0 me-2" width="24" height="24" />
                                             <div>
                                                 Your country has not submitted any national targets for this Global Goal/Target.
+                                                <br/>
                                                 <CButton color="secondary" size="sm" @click="showEditMapping(target)">
                                                     Submit new target here
                                                 </CButton>
@@ -97,7 +101,7 @@
                                     <td>
                                         <strong>National target(s) linked to headline indicator</strong>
                                     </td>
-                                    <td></td>
+                                    <td><strong>Reference period</strong></td>
                                 </tr>
                                 <tr v-for="(indicator, index) in target.headlineIndicators" :key="indicator.identifier">
                                     <td style="width: 20%;">
@@ -109,9 +113,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <CBadge v-if="indicator.hasReferncePeriod" color="info" shape="rounded-pill">Has reference period</CBadge>
-                                        <CBadge v-if="!!target.hasReferncePeriod" color="info" shape="rounded-pill">No reference period</CBadge>
-                                        <div v-html="lstring(target.referencePeriodInfoinfo)"></div>
+                                        <div v-if="indicator.referecncePeriod">
+                                            <CBadge v-if="indicator.referecncePeriod.hasReferncePeriod" color="info" shape="rounded-pill">Has reference period</CBadge>
+                                            <CBadge v-if="indicator.referecncePeriod.hasReferncePeriod===false" color="info" shape="rounded-pill">No reference period</CBadge>
+                                            <div v-html="lstring(indicator.referecncePeriod.referencePeriodInfo)"></div>
+                                        </div>
                                     </td>                                    
                                 </tr>
                                 <tr v-if="target.otherIndicators.length">
@@ -138,12 +144,16 @@
         </CCardBody>
       
       </CCard> 
-      <CModal class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showEditMappingModal" >
-        <CModalHeader close-button="false">
+      <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showEditMappingModal" >
+        <CModalHeader :close-button="false">
             <CModalTitle>{{lstring(editMappingTarget.title)}}</CModalTitle>
         </CModalHeader>
         <CModalBody>
-            <edit-target-part-2 :global-goal-or-target="editMappingTarget.identifier"></edit-target-part-2>
+            <div id="nbsapTargetsPart2Edit">
+                <edit-target-part-2 :global-goal-or-target="editMappingTarget.identifier" 
+                :identifier="editMappingTarget.nationalMapping ? editMappingTarget.nationalMapping.header.identifier : undefined"
+                :headline-indicators="editMappingTarget.headlineIndicators" container="#nbsapTargetsPart2Edit"></edit-target-part-2>
+            </div>
         </CModalBody>     
         <CModalFooter>
             <CButton color="secondary" size="sm" @click="closeEditMappingDialog">
@@ -236,44 +246,52 @@
     }
 
     function showEditMapping(target){
-        console.log(target);
+        
         editMappingTarget.value = target
         showEditMappingModal.value = true
     }
 
-    function closeEditMappingDialog(){
+    async function closeEditMappingDialog(){
 
         showEditMappingModal.value = false;
         editMappingTarget.value = null
+        init();
     }
 
     async function init(){
         try{
-            isBusy.value = true;
-            let targets = [...(await GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators())];
+            isBusy.value = true;            
 
-            const nationalTargets  = await loadNationalTargets();
-            const nationalMappings = await loadTargetMappings();
+            const response = await Promise.all([
+                GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators(), 
+                loadNationalTargets(), loadTargetMappings()
+            ]);
+
+            let targets            = [...response[0]];
+            const nationalTargets  = response[1]
+            const nationalMappings = response[2];
         
             
             const martrix = []
             for (let i = 0; i < targets.length; i++) {
                 const target = targets[i];
 
-                target.nationalMapping = []
                 target.nationalTargets = []
 
                 const lNationalTargets  = nationalTargets.filter (e=>e.body?.gbfGoalsAndTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier));
                 const lNationalMappings = nationalMappings.find(e=>e.body?.globalGoalOrTarget?.identifier  == target.identifier);
 
                 target.elementOfGlobalTargetsinfo = lNationalMappings?.body.elementOfGlobalTargetsinfo;
+                target.nationalMapping            = lNationalMappings?.body;
                 target.nationalTargets = lNationalTargets.map(e=>{
                     return { identifier : e.identifier, title : e.body?.title}
                 });
 
                 target.headlineIndicators.forEach(indicator => {
                     indicator.nationalTargets = lNationalTargets.filter(e=>e.body.headlineIndicators?.find(e=>e.identifier == indicator.identifier));
+                    indicator.referecncePeriod = target.nationalMapping?.referecncePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
                 });
+
                 const otherIndicators = [...target.componentIndicators, ...target.complementaryIndicators];
 
                 target.otherIndicators = otherIndicators.filter(indicator=>{
@@ -285,7 +303,6 @@
                     return found;
                 })
 
-                console.log(target.otherIndicators)
             }
 
             // nationalTargetMatrix.value = sortBy(martrix, 'identifier');

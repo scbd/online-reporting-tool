@@ -16,7 +16,8 @@
     "@nuxtjs/i18n-edge": "^8.0.0-beta.12-28139269.7c20648",
     "@types/node": "^18",
     "nuxt": "^3.6.2",
-    "sass": "^1.63.6"
+    "sass": "^1.63.6",
+    "fs-extra": "^11.1.1"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^38.1.0",
@@ -27,6 +28,7 @@
     "@coreui/utils": "^2.0.2",
     "@coreui/vue": "^4.8.1",
     "@pinia/nuxt": "^0.4.11",
+    "@vueuse/core": "^10.2.1",
     "bootstrap": "^5.3.0",
     "change-case": "^4.1.2",
     "form-wizard-vue3": "^1.1.0",

@@ -2,6 +2,8 @@ import { copyFile, mkdir, readFile, readdir, stat, writeFile } from 'fs/promises
 import path from 'path';
 import assert, { match } from 'assert';
 import * as url from 'url';
+import {readJson} from 'fs-extra';
+
 const __dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
 const __rootDirname =  url.fileURLToPath(new url.URL('../', import.meta.url));
 
@@ -75,16 +77,19 @@ async function readJsonFile(filePath){
   try{
     const fileStat = await stat(filePath);
     if(fileStat && fileStat.size > 0){
-
-      const fileData = await readFile(`${__rootDirname}${filePath}`, {encoding:"utf8"})
-      return JSON.parse(fileData);
+        const parsedData = await readJson(`${__rootDirname}${filePath}`, {encoding:"utf8"})
+        return parsedData;
     }
   }
   catch(e){
-    // console.warn('error reading json file', e)
+    // if(e?.message?.indexOf('ENOENT')>=0)
+    //     console.warn('error reading json file', e)
     //locale file does not exists, ignore 
   }
 
+}
+function remove_linebreaks(str) {
+    return str.replace(/[\r\n]+/gm, " ");
 }
 
 
