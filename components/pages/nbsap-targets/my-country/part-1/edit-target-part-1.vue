@@ -96,14 +96,34 @@
                                     <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
 
                                 </km-form-group>
-                                <km-form-group>
-                                    <label  class="form-check-label" for="hasImplementingConsiderations">Considerations for implementation of other non-target elements of the Kunming Montreal Global Biodiversity Framework</label>
-                                    <km-form-check-group>
-                                        <km-form-check-item inline type="radio" name="hasImplementingConsiderations"  for="hasImplementingConsiderations" id="hasImplementingConsiderationsYes" :value="true"  v-model="document.hasImplementingConsiderations" label="Yes"/>
-                                        <km-form-check-item inline type="radio" name="hasImplementingConsiderations"  for="hasImplementingConsiderations" id="hasImplementingConsiderationsNo"  :value="false" v-model="document.hasImplementingConsiderations" label="No"/>
-                                    </km-form-check-group>
+                                
+                                <km-form-group required caption="Degree of alignment">
+                                    <label class="form-label" for="exampleFormControlSelect1" ></label>
+                                    <km-select
+                                        v-model="document.degreeOfAlignment"
+                                        class="validationClass"
+                                        label="title"
+                                        track-by="identifier"
+                                        value-key="identifier"
+                                        placeholder="Degree of alignment"
+                                        :options="formatedDegreeOfAlignments"
+                                        :multiple="false"
+                                        :disabled="false"
+                                        :custom-selected-item="customSelectedItem"
+                                    >
+                                    </km-select>
+                                    <small id="emailHelp" class="form-text text-muted">
+                                        <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[0].identifier}">High = covers all elements of the global target; </span>
+                                        <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[1].identifier}">Medium = covers most elements of the global target; </span>
+                                        <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[2].identifier}">Low = covers at least one element of the global target</span>
+                                    </small>
                                 </km-form-group>
-                                <km-form-group v-if="document.hasImplementingConsiderations==true">
+                                <km-form-group>
+                                    <label class="form-label" for="implementingConsiderationsInfo">Explanation, including which aspects of the goal or target are covered</label>
+                                    <km-input-rich-lstring v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                </km-form-group>
+
+                                <km-form-group>
                                     <div class="card">
                                         <div class="card-body">                                                
                                             <km-form-group >
@@ -131,32 +151,6 @@
                                         </div>
                                     </div>
                                 </km-form-group>
-
-                                <km-form-group required caption="Degree of alignment">
-                                    <label class="form-label" for="exampleFormControlSelect1" ></label>
-                                    <km-select
-                                        v-model="document.degreeOfAlignment"
-                                        class="validationClass"
-                                        label="title"
-                                        track-by="identifier"
-                                        value-key="identifier"
-                                        placeholder="Degree of alignment"
-                                        :options="formatedDegreeOfAlignments"
-                                        :multiple="false"
-                                        :disabled="false"
-                                        :custom-selected-item="customSelectedItem"
-                                    >
-                                    </km-select>
-                                    <small id="emailHelp" class="form-text text-muted">
-                                        <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[0].identifier}">High = covers all elements of the global target; </span>
-                                        <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[1].identifier}">Medium = covers most elements of the global target; </span>
-                                        <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[2].identifier}">Low = covers at least one element of the global target</span>
-                                    </small>
-                                </km-form-group>
-                                <km-form-group>
-                                    <label class="form-label" for="implementingConsiderationsInfo">Explanation, including which aspects of the goal or target are covered</label>
-                                    <km-input-rich-lstring v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
                             </div>
                         </div>
                     </km-form-group>
@@ -166,7 +160,7 @@
                                 Indicators to be used to monitor this national target
                             </div>
                             <div class="card-body">
-                                <km-form-group caption="Headline indicators" required>
+                                <km-form-group caption="Headline and Binary indicators" required>
                                     <label class="form-label" for="exampleFormControlSelect1"></label>
                                     <km-select
                                         v-model="document.headlineIndicators"
@@ -174,7 +168,7 @@
                                         label="title"
                                         track-by="identifier"
                                         value-key="identifier"
-                                        placeholder="Headline indicators"
+                                        placeholder="Headline and Binary indicators"
                                         :options="headlineIndicators"
                                         :multiple="true"
                                         :disabled="false"
@@ -264,14 +258,14 @@
                                     <label class="form-check-label" for="additionalImplementation">
                                     Please indicate if additional means of implementation are needed for the attainment of this national target.</label>
                                     <km-form-check-group>
-                                        <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationRequire"    value="additionalImplementationRequired"  v-model="document.additionalImplementation.identifier" label="Additional means of implementation are needed for the attainment of this national target"/>
-                                        <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationAvailable"  value="additionalImplementationAvailable" v-model="document.additionalImplementation.identifier" label="Means of implementation available"/>
-                                        <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationOther"      value="other"                             v-model="document.additionalImplementation.identifier" label="Other"/>
+                                        <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationRequire"    value="additionalImplementationRequired"  v-model="document.additionalImplementation.identifier" label="Yes (Additional means of implementation are needed for the attainment of this national target)"/>
+                                        <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationAvailable"  value="additionalImplementationAvailable" v-model="document.additionalImplementation.identifier" label="No (Means of implementation available)"/>
+                                        <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationOther"      value="additionalImplementationOther"                             v-model="document.additionalImplementation.identifier" label="Other"/>
                                     </km-form-check-group>                                    
                                 </km-form-group> 
                                 <km-form-group for="additionalImplementationCustomValue"
                                     caption="Please explain (Additional means of implementation are needed for the attainment of this national target)" required
-                                    v-if="document.additionalImplementation.identifier=='additionalImplementationRequired' || document.additionalImplementation.identifier=='otherImplementation'">
+                                    v-if="document.additionalImplementation.identifier=='additionalImplementationRequired' || document.additionalImplementation.identifier=='additionalImplementationOther'">
                                     <km-input-rich-lstring v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-input-rich-lstring>
                                 </km-form-group>
                                 <km-form-group>
