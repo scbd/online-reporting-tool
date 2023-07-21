@@ -1,6 +1,6 @@
 <template>   
-    <CButton color="secondary" size="sm" @click="addEditTarget()">
-        Submit new target here
+    <CButton color="secondary" size="sm" @click="addEditTarget()">       
+        <font-awesome-icon icon="fa-solid fa-pen-to-square"/> Submit new target here
     </CButton>
 </template>
 

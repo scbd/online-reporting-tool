@@ -1,11 +1,9 @@
 <template>
     <CAlert color="danger" class="d-flex align-items-center">
-        <CIcon icon="cil-burn" class="flex-shrink-0 me-2" width="24" height="24" />
-        <div>
-            Your country has not submitted any national targets for this Global Goal/Target.
-            <br/>
-            <btn-new-target :global-target="globalTarget" :identifier="identifier"></btn-new-target>
-        </div>
+        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
+        <span class="p-2">Your country has not submitted any national targets for this Global Goal/Target.</span>
+        <br/>
+        <btn-new-target :global-target="globalTarget" :identifier="identifier"></btn-new-target>        
     </CAlert>
 </template>
 

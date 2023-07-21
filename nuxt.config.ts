@@ -69,6 +69,7 @@ export default defineNuxtConfig({
   ],
   css:[
     // 'bootstrap/dist/css/bootstrap.css'
+    '@fortawesome/fontawesome-svg-core/styles.css'
   ],
   i18n: {
     locales: [
