@@ -8,7 +8,7 @@
         <form>
                 <!-- {{ document }} -->
 
-            <km-form-workflow :current-tab="1">
+            <km-form-workflow :current-tab="1" :get-document="onGetDocment" >
                 <template #submission>
                 <!-- <div>
                     <div class="card">
@@ -279,12 +279,12 @@
                     <km-form-group>
                         <div class="card">
                             <div class="card-header bg-secondary">
-                                Additional infromation
+                                Additional information
                             </div>
                             <div class="card-body">
                                 <km-form-group>
-                                    <label class="form-label" for="referencePeriodInfo">Any other relevant infromation</label>
-                                    <km-input-rich-lstring v-model="document.additionalInfromation" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <label class="form-label" for="referencePeriodInfo">Any other relevant information</label>
+                                    <km-input-rich-lstring v-model="document.additionalinformation" :locales="document.header.languages"></km-input-rich-lstring>
                                 </km-form-group>
                             </div>
                         </div>
@@ -374,7 +374,6 @@
             ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
             ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))), 
         ]
-        console.log(goalsAndTargets);
         return goalsAndTargets;
     })
     const gbfTargetConsideration = computed(()=>{
@@ -400,6 +399,7 @@
         const clean = useStorage().cleanDocument({...document.value});
         return clean
     })
+    
     onMounted(() => {
         if(user?.value?.isAuthenticated){
             document.value.government.identifier = document.value?.government?.identifier || user.value.government
@@ -428,6 +428,7 @@
             showSpinnerModal.value = false;
         }
     }    
+
     const onClose = async ()=>{
         await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I)
     }
@@ -458,14 +459,20 @@
         }
 
     }
+
+    function onGetDocment(){
+        return cleanDocument;
+    }
+
     const customLabel = ({title})=>{        
         return lstring(title, locale.value);
     }
     const customSelectedItem = (item)=>{
         return { identifier : item };
     }
+
     function emptyDocument(){
-        return {
+        const emptyDoc = {
             header : {
                 schema : SCHEMAS.NATIONAL_TARGET_7,
                 identifier : useGenerateUUID(),
@@ -475,7 +482,13 @@
                 identifier : undefined
             },
             additionalImplementation : {}
+            
         }
+        console.log(route?.query?.globalTarget)
+        if(route?.query?.globalTarget){
+           emptyDoc.gbfGoalsAndTargetAlignment = [{ identifier : route.query.globalTarget }];
+        }
+        return emptyDoc
     }
 
 </script>

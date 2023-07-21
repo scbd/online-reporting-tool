@@ -64,7 +64,7 @@
                                         <!-- for <strong>{{lstring(target.title)}}</strong> -->
                                     </td>
                                     <td>
-                                        <strong>Element of Global Targets infromation</strong>
+                                        <strong>Element of Global Targets information</strong>
                                     </td>
                                 </tr>
                                 <tr v-for="(nationalTarget, index) in target.nationalTargets" :key="nationalTarget.identifier">
@@ -77,16 +77,7 @@
                                 </tr>
                                 <tr v-if="!target.nationalTargets?.length">
                                     <td colspan="3">
-                                        <CAlert color="danger" class="d-flex align-items-center">
-                                            <CIcon icon="cil-burn" class="flex-shrink-0 me-2" width="24" height="24" />
-                                            <div>
-                                                Your country has not submitted any national targets for this Global Goal/Target.
-                                                <br/>
-                                                <CButton color="secondary" size="sm" @click="showEditMapping(target)">
-                                                    Submit new target here
-                                                </CButton>
-                                            </div>
-                                        </CAlert>
+                                        <missing-target-error :global-target="target.identifier"></missing-target-error>                                        
                                     </td>
                                 </tr>
                                 <tr v-if="target.headlineIndicators.length">
@@ -170,6 +161,7 @@
   import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup,
              KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink
            } from "@/components/controls";
+    import missingTargetError from '../missing-target-error.vue';
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
