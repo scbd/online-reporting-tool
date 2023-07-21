@@ -16,7 +16,7 @@
                 <CAlert color="success" v-bind:visible="true">
                     <CAlertHeading>Introduction!</CAlertHeading>
                     <hr />
-                    <p class="mb-0">This section will have a brief description to help users submit infromation</p>
+                    <p class="mb-0">This section will have a brief description to help users submit information</p>
                 </CAlert>
             </slot>
         </div>

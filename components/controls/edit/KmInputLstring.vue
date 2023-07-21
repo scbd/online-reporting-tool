@@ -59,7 +59,6 @@ export default {
         return this.modelValue||{};
       },
       set(value) {
-        console.log(value)
         this.$emit('update:modelValue', value);
       }
     }
