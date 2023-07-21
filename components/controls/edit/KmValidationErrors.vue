@@ -12,9 +12,9 @@
                  {{t('valid')}}
              </div>
 
-             <div v-if="show && report && report.errors && report.errors.length" class="alert alert-warning">
+             <div v-if="!report.hideErrors && report && report.errors && report.errors.length" class="alert alert-warning">
                  <button type="button" class="position-absolute top-0 end-0 m-2 bg-transparent border-0 fs-5 text-secondary" 
-                    @click="show=!show" aria-label="Close">
+                    @click="report.hideErrors=!report.hideErrors" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                  </button>
                  <strong>{{t('contains')}} <span v-bind="report && report.errors.length"></span> {{t('errors')}}</strong>
@@ -44,7 +44,7 @@
  <i18n src="@/i18n/dist/components/controls/edit/kmValidationErrors.json"></i18n>
  
  <script setup lang="ts">
-    
+    import { useI18n } from 'vue-i18n'
     import $ from 'jquery';
     
 
@@ -52,7 +52,6 @@
                         report : { type:Object, required:true},                        
                     });
     const $emits = defineEmits(['onJumpTo'])
-    const show       = ref(true)
     const { report } = toRefs(props);
     const { t }      = useI18n();
     const container = useAttrs().container ?? 'body,html';
@@ -73,25 +72,7 @@
     }
 
     function jumpTo(field:string) {
-console.log(field)
         $emits('onJumpTo', field);
-
-        // const qLabel = $('body').find("form[name='editForm'] label[for='" + field + "']:first");
-        // const qBody  = $(container);
-
-        // var scrollNum = qLabel.offset().top
-        
-        // if(container!= 'body,html'){
-        //     //its a dialog calculate scrollTop
-        //     var dialogContainer = $(container)
-        //     scrollNum = scrollNum - dialogContainer.offset().top + dialogContainer.scrollTop();
-        // }
-        // else
-        //     scrollNum -= 10; //forms 
-
-        // qBody.stop().animate({
-        //     scrollTop: scrollNum
-        // }, 100);
     }
 
     function getLabel(field) {

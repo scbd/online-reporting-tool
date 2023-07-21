@@ -5,292 +5,270 @@
       </CCardHeader>
       <CCardBody>
        
-        <form>
+        
                 <!-- {{ document }} -->
 
-            <km-form-workflow :current-tab="1" :get-document="onGetDocment" >
-                <template #submission>
-                <!-- <div>
-                    <div class="card">
-                    <div class="card-header bg-secondary">
-                        
-                    </div>
-                    <div class="card-body">
-                        
-                    </div>
-                    </div>
-                </div> -->
-                    <km-form-group>
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                General
+            <km-form-workflow :focused-tab="1" :get-document="onGetDocment" >
+                <template v-slot:submission>   
+                    <form name="editForm">             
+                        <km-form-group>
+                            <div class="card">
+                                <div class="card-header bg-secondary">
+                                    General
+                                </div>
+                                <div class="card-body">  
+                                    <km-form-group name="government" caption="Government" required>
+                                        <km-select
+                                            v-model="document.government.identifier"
+                                            class="validationClass"
+                                            label="name"
+                                            track-by="code"
+                                            value-key="code"
+                                            placeholder="Government"
+                                            :options="countryList"
+                                            :disabled="!security.role.isAdministrator">
+                                        </km-select>                                
+                                    </km-form-group>   
+
+                                    <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
+                                        <km-select
+                                            v-model="document.header.languages"
+                                            class="validationClass"
+                                            label="title"
+                                            track-by="code"
+                                            value-key="code"
+                                            placeholder="Language of record"
+                                            :options="formatedLanguages"
+                                            :multiple="true"
+                                            :allow-empty="false"
+                                            
+                                        >
+                                        </km-select>
+                                        <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
+                                            Minimum of one language is mandatory, please select another language to remove the last language.
+                                        </small>
+                                    </km-form-group>   
+
+                                    <km-form-group name="title" caption="Full name/title of national target" required>
+                                        <km-input-lstring  id="title" placeholder="Enter national target title" v-model="document.title" :locales="document.header.languages"></km-input-lstring>
+                                    </km-form-group>
+
+                                    <km-form-group name="mainPolicyOfMeasureOrActionInfo" 
+                                        caption="Please outline the main policy measures or actions that will be taken to achieve this national target.">
+                                        <km-input-rich-lstring v-model="document.mainPolicyOfMeasureOrActionInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    </km-form-group>
+                                </div>
                             </div>
-                            <div class="card-body">  
-                                <km-form-group name="government" caption="Government" required>
-                                    <km-select
-                                        v-model="document.government.identifier"
-                                        class="validationClass"
-                                        label="name"
-                                        track-by="code"
-                                        value-key="code"
-                                        placeholder="Government"
-                                        :options="countryList"
-                                        :disabled="!security.role.isAdministrator">
-                                    </km-select>                                
-                                </km-form-group>   
+                        </km-form-group>
+                        <km-form-group>
+                            <div class="card">
+                                <div class="card-header bg-secondary">
+                                    Alignment
+                                </div>
+                                <div class="card-body">
+                                    <km-form-group caption="Alignment with global goals and targets" required name="gbfGoalsAndTargetAlignment">
+                                        <km-select
+                                            v-model="document.gbfGoalsAndTargetAlignment"
+                                            class="validationClass"
+                                            label="title"
+                                            track-by="identifier"
+                                            value-key="identifier"
+                                            placeholder="Global Goals and Targets"
+                                            :options="globalGoalsAndTargets"
+                                            :multiple="true"
+                                            :close-on-select="false"
+                                            @change="onGoalsAndTargetSelected"
+                                            :custom-label="customLabel"
+                                            :custom-selected-item="customSelectedItem"
+                                        >
+                                        </km-select>
+                                        <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
 
-                                <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
-                                    <km-select
-                                        v-model="document.header.languages"
-                                        class="validationClass"
-                                        label="title"
-                                        track-by="code"
-                                        value-key="code"
-                                        placeholder="Language of record"
-                                        :options="formatedLanguages"
-                                        :multiple="true"
-                                        :allow-empty="false"
-                                        
-                                    >
-                                    </km-select>
-                                    <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
-                                        Minimum of one language is mandatory, please select another language to remove the last language.
-                                    </small>
-                                </km-form-group>                           
-                                <km-form-group name="targetTitle" caption="Full name/title of national target" required>
-                                    <km-form-group> 
-                                        <km-input-lstring  id="targetTitle" placeholder="Enter national target title" v-model="document.title" :locales="document.header.languages"></km-input-lstring>
-                                    </km-form-group>                                    
-                                </km-form-group>                            
+                                    </km-form-group>
+                                    
+                                    <km-form-group required caption="Degree of alignment" name="degreeOfAlignment">                                        
+                                        <km-select
+                                            v-model="document.degreeOfAlignment"
+                                            class="validationClass"
+                                            label="title"
+                                            track-by="identifier"
+                                            value-key="identifier"
+                                            placeholder="Degree of alignment"
+                                            :options="formatedDegreeOfAlignments"
+                                            :multiple="false"
+                                            :disabled="false"
+                                            :custom-selected-item="customSelectedItem"
+                                        >
+                                        </km-select>
+                                        <small id="emailHelp" class="form-text text-muted">
+                                            <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[0].identifier}">High = covers all elements of the global target; </span>
+                                            <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[1].identifier}">Medium = covers most elements of the global target; </span>
+                                            <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[2].identifier}">Low = covers at least one element of the global target</span>
+                                        </small>
+                                    </km-form-group>
+                                    <km-form-group name="implementingConsiderationsInfo" 
+                                        caption="Explanation, including which aspects of the goal or target are covered">
+                                        <km-input-rich-lstring v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    </km-form-group>
 
-                                <km-form-group>
-                                    <label class="form-label" for="mainPolicyOfMeasureOrActionInfo">Please outline the main policy measures or actions that will be taken to achieve this national target. </label>
-                                    <km-input-rich-lstring v-model="document.mainPolicyOfMeasureOrActionInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
-                            </div>
-                        </div>
-                    </km-form-group>
-                    <km-form-group>
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                Alignment
-                            </div>
-                            <div class="card-body">
-                                <km-form-group caption="Alignment with global goals and targets" required>
-                                    <!-- <label class="form-label" for="exampleFormControlSelect1"></label> -->
-                                    <km-select
-                                        v-model="document.gbfGoalsAndTargetAlignment"
-                                        class="validationClass"
-                                        label="title"
-                                        track-by="identifier"
-                                        value-key="identifier"
-                                        placeholder="Global Goals and Targets"
-                                        :options="globalGoalsAndTargets"
-                                        :multiple="true"
-                                        :close-on-select="false"
-                                        @change="onGoalsAndTargetSelected"
-                                        :custom-label="customLabel"
-                                        :custom-selected-item="customSelectedItem"
-                                    >
-                                    </km-select>
-                                    <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
-
-                                </km-form-group>
-                                
-                                <km-form-group required caption="Degree of alignment">
-                                    <label class="form-label" for="exampleFormControlSelect1" ></label>
-                                    <km-select
-                                        v-model="document.degreeOfAlignment"
-                                        class="validationClass"
-                                        label="title"
-                                        track-by="identifier"
-                                        value-key="identifier"
-                                        placeholder="Degree of alignment"
-                                        :options="formatedDegreeOfAlignments"
-                                        :multiple="false"
-                                        :disabled="false"
-                                        :custom-selected-item="customSelectedItem"
-                                    >
-                                    </km-select>
-                                    <small id="emailHelp" class="form-text text-muted">
-                                        <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[0].identifier}">High = covers all elements of the global target; </span>
-                                        <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[1].identifier}">Medium = covers most elements of the global target; </span>
-                                        <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[2].identifier}">Low = covers at least one element of the global target</span>
-                                    </small>
-                                </km-form-group>
-                                <km-form-group>
-                                    <label class="form-label" for="implementingConsiderationsInfo">Explanation, including which aspects of the goal or target are covered</label>
-                                    <km-input-rich-lstring v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
-
-                                <km-form-group>
-                                    <div class="card">
-                                        <div class="card-body">                                                
-                                            <km-form-group >
-                                                <label class="form-label" for="relatedOtherProcesses">Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it </label>
-                                                <km-select
-                                                    v-model="document.implementingConsiderations"
-                                                    class="validationClass"
-                                                    label="title"
-                                                    track-by="identifier"
-                                                    value-key="identifier"
-                                                    placeholder="Considerations for implementation"
-                                                    :options="gbfTargetConsideration"
-                                                    :multiple="true"
-                                                    :close-on-select="false"
-                                                    :custom-label="customLabel"
-                                                    :custom-selected-item="customSelectedItem"
-                                                >
-                                                </km-select>
-                                                <small id="emailHelp" class="form-text text-muted">Please check all relevant considerations for implementation.</small>
-                                            </km-form-group>
-                                            <km-form-group>
-                                                <label class="form-label" for="implementingConsiderationsInfo">Please explain how these considerations have been taken into account</label>
-                                                <km-input-rich-lstring v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                            </km-form-group>
+                                    <km-form-group>
+                                        <div class="card">
+                                            <div class="card-body">                                                
+                                                <km-form-group name="relatedOtherProcesses" caption="Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it">
+                                                    <km-select
+                                                        v-model="document.implementingConsiderations"
+                                                        class="validationClass"
+                                                        label="title"
+                                                        track-by="identifier"
+                                                        value-key="identifier"
+                                                        placeholder="Considerations for implementation"
+                                                        :options="gbfTargetConsideration"
+                                                        :multiple="true"
+                                                        :close-on-select="false"
+                                                        :custom-label="customLabel"
+                                                        :custom-selected-item="customSelectedItem"
+                                                    >
+                                                    </km-select>
+                                                    <small id="emailHelp" class="form-text text-muted">Please check all relevant considerations for implementation.</small>
+                                                </km-form-group>
+                                                <km-form-group name="implementingConsiderationsInfo" caption="Please explain how these considerations have been taken into account">
+                                                    <km-input-rich-lstring v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                                </km-form-group>
+                                            </div>
                                         </div>
-                                    </div>
-                                </km-form-group>
+                                    </km-form-group>
+                                </div>
                             </div>
-                        </div>
-                    </km-form-group>
-                    <km-form-group>
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                Indicators to be used to monitor this national target
+                        </km-form-group>
+                        <km-form-group>
+                            <div class="card">
+                                <div class="card-header bg-secondary">
+                                    Indicators to be used to monitor this national target
+                                </div>
+                                <div class="card-body">
+                                    <km-form-group caption="Headline and Binary indicators" required name="headlineIndicators">
+                                        <km-select
+                                            v-model="document.headlineIndicators"
+                                            class="validationClass"
+                                            label="title"
+                                            track-by="identifier"
+                                            value-key="identifier"
+                                            placeholder="Headline and Binary indicators"
+                                            :options="headlineIndicators"
+                                            :multiple="true"
+                                            :disabled="false"
+                                            :custom-label="customLabel"
+                                            :custom-selected-item="customSelectedItem"
+                                        >
+                                        </km-select>
+                                        <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
+                                    </km-form-group>
+                                    <km-form-group name="componentIndicators" caption="Component indicators">
+                                        <km-select
+                                            v-model="document.componentIndicators"
+                                            class="validationClass"
+                                            label="title"
+                                            track-by="identifier"
+                                            value-key="identifier"
+                                            placeholder="Component indicators"
+                                            :options="componentIndicators"
+                                            :multiple="true"
+                                            :disabled="false"
+                                            :custom-label="customLabel"
+                                            :custom-selected-item="customSelectedItem"
+                                        >
+                                        </km-select>
+                                        <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
+                                    </km-form-group>
+                                    <km-form-group name="complementaryIndicators" caption="Complementary indicators">
+                                        <km-select
+                                            v-model="document.complementaryIndicators"
+                                            class="validationClass"
+                                            label="title"
+                                            track-by="identifier"
+                                            value-key="identifier"
+                                            placeholder="Complementary indicators"
+                                            :options="complementaryIndicators"
+                                            :multiple="true"
+                                            :disabled="false"
+                                            :custom-label="customLabel"
+                                            :custom-selected-item="customSelectedItem"
+                                        >
+                                        </km-select>
+                                        <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
+                                    </km-form-group>
+                                    <km-form-group name="otherNationalIndicators"  caption="Other national indicators">
+                                        
+                                        <small id="emailHelp" class="form-text text-muted">Add your own indicators</small>
+                                    </km-form-group>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <km-form-group caption="Headline and Binary indicators" required>
-                                    <label class="form-label" for="exampleFormControlSelect1"></label>
-                                    <km-select
-                                        v-model="document.headlineIndicators"
-                                        class="validationClass"
-                                        label="title"
-                                        track-by="identifier"
-                                        value-key="identifier"
-                                        placeholder="Headline and Binary indicators"
-                                        :options="headlineIndicators"
-                                        :multiple="true"
-                                        :disabled="false"
-                                        :custom-label="customLabel"
-                                        :custom-selected-item="customSelectedItem"
-                                    >
-                                    </km-select>
-                                    <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
-                                </km-form-group>
-                                <km-form-group>
-                                    <label class="form-label" for="componentIndicators">Component indicators</label>
-                                    <km-select
-                                        v-model="document.componentIndicators"
-                                        class="validationClass"
-                                        label="title"
-                                        track-by="identifier"
-                                        value-key="identifier"
-                                        placeholder="Component indicators"
-                                        :options="componentIndicators"
-                                        :multiple="true"
-                                        :disabled="false"
-                                        :custom-label="customLabel"
-                                        :custom-selected-item="customSelectedItem"
-                                    >
-                                    </km-select>
-                                    <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
-                                </km-form-group>
-                                <km-form-group>
-                                    <label class="form-label" for="complementaryIndicators">Complementary indicators</label>
-                                    <km-select
-                                        v-model="document.complementaryIndicators"
-                                        class="validationClass"
-                                        label="title"
-                                        track-by="identifier"
-                                        value-key="identifier"
-                                        placeholder="Complementary indicators"
-                                        :options="complementaryIndicators"
-                                        :multiple="true"
-                                        :disabled="false"
-                                        :custom-label="customLabel"
-                                        :custom-selected-item="customSelectedItem"
-                                    >
-                                    </km-select>
-                                    <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
-                                </km-form-group>
-                                <km-form-group>
-                                    <label class="form-label" for="otherNationalIndicators">Other national indicators</label>
-                                    
-                                    <small id="emailHelp" class="form-text text-muted">Add your own indicators</small>
-                                </km-form-group>
+                        </km-form-group>
+                        <km-form-group>
+                            <div class="card">
+                                <div class="card-header bg-secondary">
+                                    Non-State actor commitments
+                                </div>
+                                <div class="card-body">
+                                    <km-form-group name="nonStateActorCommitmentInfo" caption="List the non-state commitments towards this national Target">
+                                        <km-input-rich-lstring v-model="document.nonStateActorCommitmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    </km-form-group>
+                                    <km-form-group name="hasNonStateActors"  caption="Are there any overlaps or links between this national target and targets or commitments submitted as non-State actor commitments to the Kunming-Montreal Global Biodiversity Framework?">
+                                        
+                                        <km-form-check-group>
+                                            <km-form-check-item inline type="radio" name="hasNonStateActors"  for="hasNonStateActors" id="hasNonStateActorsYes" :value="true"  v-model="document.hasNonStateActors" label="Yes"/>
+                                            <km-form-check-item inline type="radio" name="hasNonStateActors"  for="hasNonStateActors" id="hasNonStateActorsNo"  :value="false" v-model="document.hasNonStateActors" label="No"/>
+                                        </km-form-check-group>
+                                    </km-form-group> 
+                                    <km-form-group v-if="document.hasNonStateActors==true" 
+                                    name="nonStateActorsInfo" caption="please indicate which commitment(s) and which actor(s)">
+                                        <km-input-rich-lstring v-model="document.nonStateActorsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    </km-form-group>
+                                </div>
                             </div>
-                        </div>
-                    </km-form-group>
-                    <km-form-group>
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                Non-State actor commitments
+                        </km-form-group>
+                        <km-form-group>
+                            <div class="card">
+                                <div class="card-header bg-secondary">
+                                    Means of implementation and barriers to implementation
+                                </div>
+                                <div class="card-body">
+                                    <km-form-group name="additionalImplementation" 
+                                        caption="Please indicate if additional means of implementation are needed for the attainment of this national target.">
+                                       
+                                        <km-form-check-group>
+                                            <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationRequire"    value="additionalImplementationRequired"  v-model="document.additionalImplementation.identifier" label="Yes (Additional means of implementation are needed for the attainment of this national target)"/>
+                                            <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationAvailable"  value="additionalImplementationAvailable" v-model="document.additionalImplementation.identifier" label="No (Means of implementation available)"/>
+                                            <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationOther"      value="additionalImplementationOther"                             v-model="document.additionalImplementation.identifier" label="Other"/>
+                                        </km-form-check-group>                                    
+                                    </km-form-group> 
+                                    <km-form-group for="additionalImplementationCustomValue"
+                                        caption="Please explain (Additional means of implementation are needed for the attainment of this national target)" required
+                                        v-if="document.additionalImplementation.identifier=='additionalImplementationRequired' || document.additionalImplementation.identifier=='additionalImplementationOther'">
+                                        <km-input-rich-lstring v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-input-rich-lstring>
+                                    </km-form-group>
+                                    <km-form-group name="additionalImplementationInfo" caption="Additional explanation">
+                                        <km-input-rich-lstring v-model="document.additionalImplementationInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    </km-form-group>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <km-form-group>
-                                    <label class="form-label" for="nonStateActorCommitmentInfo">List the non-state commitments towards this national Target</label>
-                                    <km-input-rich-lstring v-model="document.nonStateActorCommitmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
-                                <km-form-group>
-                                    
-                                    <label class="form-check-label" for="hasNonStateActors">
-                                        Are there any overlaps or links between this national target and targets or commitments submitted as non-State actor commitments to the Kunming-Montreal Global Biodiversity Framework?</label>
-                                    <km-form-check-group>
-                                        <km-form-check-item inline type="radio" name="hasNonStateActors"  for="hasNonStateActors" id="hasNonStateActorsYes" :value="true"  v-model="document.hasNonStateActors" label="Yes"/>
-                                        <km-form-check-item inline type="radio" name="hasNonStateActors"  for="hasNonStateActors" id="hasNonStateActorsNo"  :value="false" v-model="document.hasNonStateActors" label="No"/>
-                                    </km-form-check-group>
-                                </km-form-group> 
-                                <km-form-group v-if="document.hasNonStateActors==true">
-                                    <label class="form-label" for="nonStateActorsInfo"> please indicate which commitment(s) and which actor(s)</label>
-                                    <km-input-rich-lstring v-model="document.nonStateActorsInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
+                        </km-form-group>
+                        
+                        <km-form-group>
+                            <div class="card">
+                                <div class="card-header bg-secondary">
+                                    Additional information
+                                </div>
+                                <div class="card-body">
+                                    <km-form-group name="referencePeriodInfo" caption="Any other relevant information">
+                                        <km-input-rich-lstring v-model="document.additionalinformation" :locales="document.header.languages"></km-input-rich-lstring>
+                                    </km-form-group>
+                                </div>
                             </div>
-                        </div>
-                    </km-form-group>
-                    <km-form-group>
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                Means of implementation and barriers to implementation
-                            </div>
-                            <div class="card-body">
-                                <km-form-group>
-                                    <label class="form-check-label" for="additionalImplementation">
-                                    Please indicate if additional means of implementation are needed for the attainment of this national target.</label>
-                                    <km-form-check-group>
-                                        <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationRequire"    value="additionalImplementationRequired"  v-model="document.additionalImplementation.identifier" label="Yes (Additional means of implementation are needed for the attainment of this national target)"/>
-                                        <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationAvailable"  value="additionalImplementationAvailable" v-model="document.additionalImplementation.identifier" label="No (Means of implementation available)"/>
-                                        <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationOther"      value="additionalImplementationOther"                             v-model="document.additionalImplementation.identifier" label="Other"/>
-                                    </km-form-check-group>                                    
-                                </km-form-group> 
-                                <km-form-group for="additionalImplementationCustomValue"
-                                    caption="Please explain (Additional means of implementation are needed for the attainment of this national target)" required
-                                    v-if="document.additionalImplementation.identifier=='additionalImplementationRequired' || document.additionalImplementation.identifier=='additionalImplementationOther'">
-                                    <km-input-rich-lstring v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
-                                <km-form-group>
-                                    <label class="form-label" for="additionalImplementationInfo">Additional explanation</label>
-                                    <km-input-rich-lstring v-model="document.additionalImplementationInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
-                            </div>
-                        </div>
-                    </km-form-group>
-                    
-                    <km-form-group>
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                Additional information
-                            </div>
-                            <div class="card-body">
-                                <km-form-group>
-                                    <label class="form-label" for="referencePeriodInfo">Any other relevant information</label>
-                                    <km-input-rich-lstring v-model="document.additionalinformation" :locales="document.header.languages"></km-input-rich-lstring>
-                                </km-form-group>
-                            </div>
-                        </div>
-                    </km-form-group>
+                        </km-form-group>
+                    </form>
                 </template>
-                <template #review>
+                <template v-slot:review>
                     <view-target :identifier="document.header.identifier" :document="cleanDocument"></view-target>
                 </template>
             </km-form-workflow>
@@ -303,7 +281,7 @@
                 <CButton @click="onClose()" color="danger" class="me-md-2">Close</CButton>
             </div>
             <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
-        </form>
+ 
 
       </CCardBody>
     </CCard>
@@ -327,16 +305,16 @@
     import {useToast} from 'vue-toast-notification';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
 
-    const { user }        = useAuth();
-    const security        = useSecurity();
-    const route           = useRoute();
     const {$appRoutes:appRoutes }   = useNuxtApp();
-    const locale          = useI18n().locale
-    const thesaurusStore  = useThesaurusStore ();
-    const countriesStore  = useCountriesStore ();
-    const realmConfStore  = useRealmConfStore();
-    const kmDocumentDraftStore  = useKmDocumentDraftsStore();
-    const $toast                = useToast();
+    const { user }                  = useAuth();
+    const security                  = useSecurity();
+    const route                     = useRoute();    
+    const {t, locale }              = useI18n();
+    const thesaurusStore            = useThesaurusStore ();
+    const countriesStore            = useCountriesStore ();
+    const realmConfStore            = useRealmConfStore();
+    const kmDocumentDraftStore      = useKmDocumentDraftsStore();
+    const $toast                    = useToast();
 
     const headlineIndicatorsRef      = ref(null);
     const componentIndicatorsRef     = ref(null);

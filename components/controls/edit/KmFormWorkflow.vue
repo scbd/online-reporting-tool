@@ -9,9 +9,10 @@
         :beforeChange="onTabBeforeChange"
         @change="onChangeCurrentTab"
         @complete:wizard="wizardCompleted"
-        :startIndex="currentTab"
+        :startIndex="activeTab"
+        ref="wizardRef"
     >
-        <div v-if="currentTab == 0" class="m-1">
+        <div v-if="activeTab == tabName.introduction" class="m-1">
             <slot name="introduction" >
                 <CAlert color="success" v-bind:visible="true">
                     <CAlertHeading>Introduction!</CAlertHeading>
@@ -21,7 +22,7 @@
             </slot>
         </div>
 
-        <CRow v-if="(currentTab == 1 || currentTab == 2 || currentTab == 3)">
+        <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
             <CCol>
                 <div class="action-buttons float-end">
                     <CButton @click="onReviewDocument()" color="primary" class="me-md-2" :disabled="showSpinnerModal">Review</CButton>
@@ -30,9 +31,9 @@
 
             <km-validation-errors :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
         </CRow>
-        <div v-show="currentTab == 1" class="m-1"><slot name="submission"></slot></div>
-        <div v-if="currentTab == 2" class="m-1"><slot name="review"></slot></div>
-        <div v-if="currentTab == 3" class="m-1"><slot name="publish"></slot></div>
+        <div v-show="activeTab == tabName.submission" class="m-1"><slot name="submission"></slot></div>
+        <div v-if="activeTab == tabName.review" class="m-1"><slot name="review"></slot></div>
+        <div v-if="activeTab == tabName.publish" class="m-1"><slot name="publish"></slot></div>
     </Wizard>
     <!-- <Wizard
         squared-tabs
@@ -44,7 +45,7 @@
         :beforeChange="onTabBeforeChange"
         @change="onChangeCurrentTab"
         @complete:wizard="wizardCompleted"
-        :startIndex="currentTab"
+        :startIndex="activeTab"
     ></Wizard> -->
   </template>
   
@@ -54,9 +55,16 @@
     import { KmValidationErrors, KmSpinner } from "~/components/controls";
     import { CButton, CRow } from '@coreui/vue';
     import $ from 'jquery';
-    
+
+    const tabName = {
+        introduction : 0,
+        submission : 1,
+        review : 2,
+        publish: 3
+        
+    }
     const definedProps = defineProps({
-        currentTab                  : { type:Number, default:0 },
+        focusedTab                  : { type:Number, default:0 },
         tab                         : { type:String },
         // validationReport            : { type:Object,   required:true  },
     	getDocument                 : { type:Function, required:true  },
@@ -76,11 +84,15 @@
         onPreSaveDraftVersion	    : { type:Function, required:false },
     });
     
-    const container = useAttrs().container;
-
+    const container = useAttrs().container ?? 'body,html';
+    const { $eventBus } = useNuxtApp();
+    
     let validationReport = ref({});
-    let { currentTab, tab, ...props } = toRefs(definedProps);
+    const wizardRef      = ref(null);
+    const activeTab      = ref(null);
 
+    let { focusedTab, tab, ...props } = toRefs(definedProps);
+    
     const tabs = [
         {
             title: 'Introduction',
@@ -97,7 +109,10 @@
     ];
 
     const onChangeCurrentTab = (index, oldIndex)=>{
-        currentTab = index;     
+        activeTab.value = index;
+        if(activeTab.value == tabName.review){
+            onReviewDocument();
+        }
     }
     const onTabBeforeChange = ()=> {
         // console.log('All Tabs');
@@ -112,8 +127,9 @@
         if(validationResponse && validationResponse?.errors?.length) {
             validationReport.value = {...validationResponse};
             // $scope.tab = "review";
+            $eventBus.emit('onReviewError', validationResponse)
         }
-        console.log(validationReport)
+        
     }
 
     const wizardCompleted = ()=> {
@@ -134,29 +150,41 @@
         return data;
     }
 
-    function onJumpTo(field) {
+    async function onJumpTo(field) {
 
         //change tab to review
-        onChangeCurrentTab(1)
-        const qLabel = $(container).find("form[name='editForm'] label[for='" + field + "']:first");
-        const qBody  = $(container);
-
-        var scrollNum = qLabel.offset().top
-
-        if(container!= 'body,html'){
-            //its a dialog calculate scrollTop
-            var dialogContainer = $(container)
-            scrollNum = scrollNum - dialogContainer.offset().top + dialogContainer.scrollTop();
+        if(activeTab.value != tabName.submission){
+            await wizardRef.value.changeTab(tabName.submission)
+            onChangeCurrentTab(tabName.submission)
         }
-        else
-            scrollNum -= 10; //forms 
-console.log(scrollNum)
-        qBody.stop().animate({
-            scrollTop: scrollNum-300
-        }, 100);
+        
+        setTimeout(() => {
+            
+            const qLabel = $(container).find("form[name='editForm'] label[for='" + field + "']:first");
+            const qBody  = $(container);
+
+            var scrollNum = qLabel.offset().top
+
+            if(container!= 'body,html'){
+                //its a dialog calculate scrollTop
+                var dialogContainer = $(container)
+                scrollNum = scrollNum - dialogContainer.offset().top + dialogContainer.scrollTop();
+            }
+            else
+                scrollNum -= 130; //forms 
+
+            qBody.stop().animate({
+                scrollTop: scrollNum
+            }, 100);
+
+        }, 200);
 
     }
 
+    onMounted(() => {
+        wizardRef.value.changeTab(focusedTab.value ?? 0)
+        onChangeCurrentTab(focusedTab.value ?? 0)
+    })
 </script>
 
 <style>

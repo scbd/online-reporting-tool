@@ -37,6 +37,7 @@
     "form-wizard-vue3": "^1.1.0",
     "jquery": "^3.7.0",
     "lodash": "^4.17.21",
+    "mitt": "^3.0.1",
     "moment": "^2.29.4",
     "pinia": "^2.1.4",
     "vue-multiselect": "^3.0.0-beta.2",

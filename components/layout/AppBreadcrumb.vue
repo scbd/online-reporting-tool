@@ -20,7 +20,6 @@ import { useRoute } from 'vue-router'
     function makeCrumbs (){ //eslint-disable-line
 
       const route = useRoute();
-      console.log(route.meta, 'breadcrumbs')
       const {breadcrumbs : pageBreadcrumbsConf } = route.meta;
 
       const crumbs    = [
