@@ -73,6 +73,22 @@ async function createLocaleFile(enFile){
   return JSON.parse(JSON.stringify(flatData));
 }
 
+async function createLocaleEnFile(enVueFile){
+    const jsonFileName = `${__rootDirname}${enFolder}/${enVueFile.replace(/\.vue$/, '.json')}`
+    try{
+        const fileStat = await stat(jsonFileName);
+    }
+    catch(e){
+        try{
+            await  mkdir(path.dirname(jsonFileName), { recursive: true });
+            await writeFile(jsonFileName, JSON.stringify({}))
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+}
+
 async function readJsonFile(filePath){
   try{
     const fileStat = await stat(filePath);
@@ -136,6 +152,11 @@ export function viteSyncI18nFiles(options) {
       //   return;
       var file = _ref.file.replace(__rootDirname, ''),
       server = _ref.server;
+      if(file.split(".").pop() === "vue"){
+        console.log(`********** VUE file touched ${file}`)
+        await createLocaleEnFile(file);
+      };
+
       if (!file.includes(enFolder) || file.split(".").pop() !== "json") return;
 
       const messages = await syncLocaleFiles([file]);      
