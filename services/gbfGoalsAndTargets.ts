@@ -11,9 +11,9 @@ class GBFGoalsAndTargets{
 
     async loadGbfGoals(fields:Array<string> = this.defaultFields){
         const thesaurusStore  = useThesaurusStore();
-        await thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS, {relations:true})
+        await thesaurusStore.loadDomainTerms(THESAURUS.GBF_GLOBAL_GOALS, {relations:true})
 
-        const terms = thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS);
+        const terms = thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS);
 
         if(fields?.length){
             return mapFields(terms, fields);
@@ -24,9 +24,9 @@ class GBFGoalsAndTargets{
 
     async loadGbfTargets(fields:Array<string> = this.defaultFields){
         const thesaurusStore  = useThesaurusStore();
-        await thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS, {relations:true})
+        await thesaurusStore.loadDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS, {relations:true})
 
-        const terms = thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS);
+        const terms = thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS);
 
         if(fields?.length){
             return mapFields(terms, fields);
@@ -64,7 +64,7 @@ class GBFGoalsAndTargets{
 
     async loadGbfHeadlineIndicator(goalOrTarget:string, fields:Array<string> = this.defaultFields){
 
-        const indicators = await loadIndicators(THEASURUS.GBF_HEADLINE_INDICATORS, goalOrTarget)
+        const indicators = await loadIndicators(THESAURUS.GBF_HEADLINE_INDICATORS, goalOrTarget)
         if(fields?.length){
             return mapFields(indicators, fields);
         }
@@ -75,7 +75,7 @@ class GBFGoalsAndTargets{
 
     async loadGbfComponentIndicator(goalOrTarget:string, fields:Array<string> = this.defaultFields){
         
-        const indicators = await loadIndicators(THEASURUS.GBF_COMPONENT_INDICATORS, goalOrTarget)
+        const indicators = await loadIndicators(THESAURUS.GBF_COMPONENT_INDICATORS, goalOrTarget)
         if(fields?.length){
             return mapFields(indicators, fields);
         }
@@ -85,7 +85,7 @@ class GBFGoalsAndTargets{
 
     async loadGbfComplementaryIndicator(goalOrTarget:string, fields:Array<string> = this.defaultFields){
 
-        const indicators = await loadIndicators(THEASURUS.GBF_COMPLEMENTARY_INDICATORS, goalOrTarget)
+        const indicators = await loadIndicators(THESAURUS.GBF_COMPLEMENTARY_INDICATORS, goalOrTarget)
         if(fields?.length){
             return mapFields(indicators, fields);
         }

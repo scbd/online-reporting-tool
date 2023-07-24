@@ -1,6 +1,6 @@
 // export * from './thesaurus.js'
 
-export const THEASURUS = {
+export const THESAURUS = {
     GBF_GLOBAL_GOALS            : 'GBF-GOALS',
     GBF_GLOBAL_TARGETS          : 'GBF-TARGETS',
     GBF_GLOBAL_GOALS_TARGETS    : 'GBF-GOALS-TARGETS',
@@ -11,7 +11,7 @@ export const THEASURUS = {
 }
 
 export const ROLES = {
-    ADMINISTARATOR           : 'administrator',
+    ADMINISTRATOR           : 'administrator',
     NATIONAL_FOCALPOINT     : 'nationalFocalPoint',
     NATIONAL_AUTHORIZED_USER: 'nationalAuthorizedUser',
     PUBLISHING_AUTHORITIES  : 'publishingAuthorities',

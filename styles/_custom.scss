@@ -46,3 +46,8 @@ ul.header-nav li.nav-item:hover{
     background-color: #f2dede;
     border-color: #a94442;
 }
+
+.dim-section{
+    pointer-events: none;
+    opacity: 0.4;
+}

@@ -34,20 +34,6 @@ class kmDocumentDrafts {
 
       };
     }
-    async saveDraft(identifier:string, draft:any){
-        if(draft){
-
-            const { $api } = useNuxtApp();
-            const { data, error } = await $api.kmStorage.drafts.put(identifier, draft, {schema:draft.header.schema});
-
-            if(error?.value)
-                throw error;
-            
-            return data;
-            // this.errors = Array.isArray(error.value) ? error : [error]            
-          
-        };
-    }
 }
 
 export const KmDocumentDraftsService = new kmDocumentDrafts();
