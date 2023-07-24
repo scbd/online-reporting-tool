@@ -112,7 +112,7 @@ class KmDraftsApi extends ApiBase
     return { data : data?.value, pending, error, refresh };
   }
   async put(identifier, body, params){
-    const { data, pending, error, refresh } =  await useAPIFetch(serviceUrls.draftUrl(identifier), 
+    const { data, pending, error, refresh } =  await useAPIFetchWithCache(serviceUrls.draftUrl(identifier), 
       { body, method:'put', params, baseURL })
                   
     return { data : data?.value, pending, error, refresh };

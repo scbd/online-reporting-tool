@@ -77,7 +77,7 @@
                                 </tr>
                                 <tr v-if="!target.nationalTargets?.length">
                                     <td colspan="3">
-                                        <missing-target-error :global-target="target.identifier"></missing-target-error>                                        
+                                        <missing-target-error :query="{'globalTarget' : target.identifier}"></missing-target-error>                                        
                                     </td>
                                 </tr>
                                 <tr v-if="target.headlineIndicators.length">
@@ -98,18 +98,25 @@
                                     <td style="width: 20%;">
                                         {{lstring(indicator.title)}}
                                     </td>
-                                    <td>
+                                    <td :colspan="indicator.nationalTargets.length ? 1 : 2">
                                         <div v-for="target in indicator.nationalTargets">
                                             {{lstring(target.title)}}
                                         </div>
+
+                                        <missing-target-error  v-if="!indicator.nationalTargets.length"
+                                            :query="{'globalTarget' : target.identifier, headlineIndicator:indicator.identifier}">
+                                            <template #message>
+                                                <span v-html="t('indicatorMissingTarget')"></span>
+                                            </template>
+                                        </missing-target-error>   
                                     </td>
-                                    <td>
-                                        <div v-if="indicator.referecncePeriod">
-                                            <CBadge v-if="indicator.referecncePeriod.hasReferncePeriod" color="info" shape="rounded-pill">Has reference period</CBadge>
-                                            <CBadge v-if="indicator.referecncePeriod.hasReferncePeriod===false" color="info" shape="rounded-pill">No reference period</CBadge>
-                                            <div v-html="lstring(indicator.referecncePeriod.referencePeriodInfo)"></div>
+                                    <td v-if="indicator.nationalTargets.length">
+                                        <div v-if="indicator.referencePeriod">
+                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod" color="info" shape="rounded-pill">Has reference period</CBadge>
+                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod===false" color="info" shape="rounded-pill">No reference period</CBadge>
+                                            <div v-html="lstring(indicator.referencePeriod.referencePeriodInfo)"></div>
                                         </div>
-                                    </td>                                    
+                                    </td> 
                                 </tr>
                                 <tr v-if="target.otherIndicators.length">
                                     <td colspan="3">
@@ -155,7 +162,7 @@
 
 </template>
   
-<!-- <i18n  src="~/i18n/dist/pages/nbsap-targets/index.json"></i18n> -->
+<i18n  src="@/i18n/dist/pages/national-reports/index.json"></i18n>
 
 <script setup lang="ts">
   import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup,
@@ -174,6 +181,7 @@
     const security = useSecurity();
     const route    = useRoute();
     const localePath  = useLocalePath()
+    const { t }       = useI18n(); 
 
     const realmConfStore  = useRealmConfStore();
     const kmDocumentDraftStore  = useKmDocumentDraftsStore();
@@ -281,7 +289,7 @@
 
                 target.headlineIndicators.forEach(indicator => {
                     indicator.nationalTargets = lNationalTargets.filter(e=>e.body.headlineIndicators?.find(e=>e.identifier == indicator.identifier));
-                    indicator.referecncePeriod = target.nationalMapping?.referecncePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
+                    indicator.referencePeriod = target.nationalMapping?.referencePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
                 });
 
                 const otherIndicators = [...target.componentIndicators, ...target.complementaryIndicators];

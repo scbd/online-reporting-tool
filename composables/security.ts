@@ -16,7 +16,7 @@ function isAdministrator(){
     const realmConfStore  = useRealmConfStore();
 
     if(!$auth?.user?.government){
-        const adminRoles = realmConfStore.getRole(ROLES.ADMINISTARATOR)
+        const adminRoles = realmConfStore.getRole(ROLES.ADMINISTRATOR)
         return isInRoles(adminRoles);
     }
 }
@@ -36,7 +36,7 @@ async function checkUserAccess(options:any) {
     const { roles, schema } = options;
 
     if(!authUser?.government){
-        const adminRoles = realmConfStore.getRole(ROLES.ADMINISTARATOR);
+        const adminRoles = realmConfStore.getRole(ROLES.ADMINISTRATOR);
         if (adminRoles?.some((r) => auth?.hasScope(r))){
             return true;
         }

@@ -273,13 +273,6 @@
                 </template>
             </km-form-workflow>
 
-            <div class="d-grid d-md-flex justify-content-md-end mt-5">
-                <CButton @click="onSubmitDocument()" color="primary" class="me-md-2">Save</CButton> 
-                <CButton @click="previewDocument()" color="primary" class="me-md-2">Preview</CButton> 
-                <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton> 
-                <CButton @click="printDocument()" color="dark" class="me-md-2">Print</CButton> 
-                <CButton @click="onClose()" color="danger" class="me-md-2">Close</CButton>
-            </div>
             <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
  
 
@@ -323,13 +316,13 @@
     const showSpinnerModal = ref(false);
 
     await Promise.all([
-        // thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS),
-        // thesaurusStore.loadDomainTerms(THEASURUS.GBF_GLOBAL_GOALS),
+        // thesaurusStore.loadDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS),
+        // thesaurusStore.loadDomainTerms(THESAURUS.GBF_GLOBAL_GOALS),
         GbfGoalsAndTargets.loadGbfGoalsAndTargets(),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_HEADLINE_INDICATORS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPONENT_INDICATORS    ),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_COMPLEMENTARY_INDICATORS),
-        thesaurusStore.loadDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS  ),
+        thesaurusStore.loadDomainTerms(THESAURUS.GBF_HEADLINE_INDICATORS),
+        thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPONENT_INDICATORS    ),
+        thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPLEMENTARY_INDICATORS),
+        thesaurusStore.loadDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS  ),
         countriesStore.loadCountries()
     ]);
 
@@ -349,13 +342,13 @@
     const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
     const globalGoalsAndTargets = computed(()=>{
         const goalsAndTargets = [
-            ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
-            ...((thesaurusStore.getDomainTerms(THEASURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))), 
+            ...((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
+            ...((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))), 
         ]
         return goalsAndTargets;
     })
     const gbfTargetConsideration = computed(()=>{
-        return (thesaurusStore.getDomainTerms(THEASURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
+        return (thesaurusStore.getDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
     })
     const formatedDegreeOfAlignments = computed(()=>{return degreeOfAlignments })
     const countryList                = computed(()=>{
@@ -462,9 +455,11 @@
             additionalImplementation : {}
             
         }
-        console.log(route?.query?.globalTarget)
         if(route?.query?.globalTarget){
            emptyDoc.gbfGoalsAndTargetAlignment = [{ identifier : route.query.globalTarget }];
+        }
+        if(route?.query?.headlineIndicator){
+           emptyDoc.headlineIndicators = [{ identifier : route.query.headlineIndicator }];
         }
         return emptyDoc
     }

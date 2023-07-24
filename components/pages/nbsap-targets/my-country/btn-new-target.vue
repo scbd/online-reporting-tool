@@ -9,13 +9,13 @@
     const { $appRoutes }   = useNuxtApp();
     const props = defineProps({
         identifier   : { type:String, required:false},
-        globalTarget : { type:String, required:false}
+        query : { type:Object, required:false}
     })
-    const { globalTarget, identifier } = toRefs(props);
+    const { query, identifier } = toRefs(props);
     
     async function addEditTarget(){
 
-        let query;
+        let routeQuery;
         let path = $appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_NEW;
 
         if(identifier?.value){
@@ -23,15 +23,15 @@
             path = path.replace(':identifier', identifier.value)
         }
 
-        if(globalTarget?.value){
-            query = {
-                globalTarget : globalTarget.value
+        if(query?.value){
+            routeQuery = {
+                ...query.value
             } 
         }
 
         await navigateTo({ 
             path,
-            query
+            query:routeQuery
         });
     }
 

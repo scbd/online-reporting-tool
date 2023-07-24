@@ -5,6 +5,7 @@ export const useStorage = ()=>{
     return {
         cleanDocument
     }
+    
 }
 
 const cleanDocument = (document:any)=>{

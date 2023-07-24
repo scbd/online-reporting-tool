@@ -68,7 +68,7 @@
                         <km-form-group>
                             <div class="card">
                                 <div class="card-header bg-secondary">
-                                    Refernce Period
+                                    Reference Period
                                 </div>
                                 <div class="card-body">
                                     <!-- <legend>Headline Indicators</legend> -->
@@ -85,14 +85,14 @@
                                                                     {{index+1}}. {{lstring(target.title)}}
                                                                 </div>
                                                             </km-form-group>
-                                                            <km-form-group name="hasReferncePeriod" required caption="Is there a reference period for above national target(s) which relates to the headline indicator? (rephrase?)">
+                                                            <km-form-group name="hasReferencePeriod" required caption="Is there a reference period for above national target(s) which relates to the headline indicator? (rephrase?)">
                                                                 <km-form-check-group>
-                                                                    <km-form-check-item inline type="radio" :name="'hasReferncePeriod' + indicator.identifier"  for="hasReferncePeriod" :id="'hasReferncePeriodYes'+ indicator.identifier" :value="true"  v-model="indicator.hasReferncePeriod" label="Yes"/>
-                                                                    <km-form-check-item inline type="radio" :name="'hasReferncePeriod' + indicator.identifier"  for="hasReferncePeriod" :id="'hasReferncePeriodNo' + indicator.identifier"  :value="false" v-model="indicator.hasReferncePeriod" label="No"/>
+                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodYes'+ indicator.identifier" :value="true"  v-model="indicator.hasReferencePeriod" label="Yes"/>
+                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodNo' + indicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" label="No"/>
                                                                 </km-form-check-group>
                                                             </km-form-group> 
 
-                                                            <km-form-group v-if="indicator.hasReferncePeriod" name="referencePeriodInfo" caption="Please explain" required>
+                                                            <km-form-group v-if="indicator.hasReferencePeriod" name="referencePeriodInfo" caption="Please explain" required>
                                                                 <km-input-rich-lstring v-model="indicator.referencePeriodInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                                             </km-form-group>                                     
                                                         </td>
@@ -214,18 +214,18 @@
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
         // clean.globalGoalOrTarget= undefined;
-        // clean.referecncePeriod  = undefined;
+        // clean.referencePeriod  = undefined;
         // clean.referencePeriodInfo= undefined;
         
         if(headlineIndicators.value?.length){
             
-            clean.referecncePeriod = clean.referecncePeriod || [];
+            clean.referencePeriod = clean.referencePeriod || [];
 
             headlineIndicators.value.forEach(indicator => {
-                clean.referecncePeriod.push({
+                clean.referencePeriod.push({
                     headlineIndicator   : { identifier : indicator.identifier},
                     // nationalTargets     : indicator?.nationalTargets?.map(e=>{return {identifier : e.identifier}}),
-                    hasReferncePeriod   : indicator.hasReferncePeriod  ,
+                    hasReferencePeriod   : indicator.hasReferencePeriod  ,
                     referencePeriodInfo : indicator.referencePeriodInfo,
                 })
             });            
