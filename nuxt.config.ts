@@ -73,12 +73,12 @@ export default defineNuxtConfig({
     ],
     i18n: {
         locales: [
-        { code: 'ar', iso: 'ar-EG',  dir: 'rtl' },
-        { code: 'en', iso: 'en-US',             },
-        { code: 'fr', iso: 'fr-FR',             },
-        { code: 'es', iso: 'es-ES',             },
-        { code: 'ru', iso: 'ru-RU',             },
-        { code: 'zh', iso: 'zh-CN',             },
+            { code: 'ar', iso: 'ar-EG',  dir: 'rtl' },
+            { code: 'en', iso: 'en-US',             },
+            { code: 'fr', iso: 'fr-FR',             },
+            { code: 'es', iso: 'es-ES',             },
+            { code: 'ru', iso: 'ru-RU',             },
+            { code: 'zh', iso: 'zh-CN',             },
         ],
         defaultLocale: 'en',
         fallbackLocale: 'en',
@@ -86,6 +86,11 @@ export default defineNuxtConfig({
         detectBrowserLanguage : {
             alwaysRedirect: true,
         },
+        // precompile: {
+        //     strictMessage: false,
+        // },
+        // strictMessage: false,
+        // escapeHtml:true,
         // strategy: "prefix",
         vueI18n: './i18n.config.ts' // if you are using custom path, default 
     },
