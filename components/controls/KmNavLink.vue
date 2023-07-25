@@ -2,7 +2,8 @@
     <CNavItem >
         <!-- isActve{{ route.path }} {{ to }} @click="navigateTo(to)" href="#" -->
         <NuxtLink class="nav-link" :to="to" :class="{'active' : route.path === to}" :target="target">
-            <CIcon v-if="icon" customClassName="nav-icon" :icon="icon" /> 
+            <CIcon v-if="icon && ~icon.indexOf('cil-')" customClassName="nav-icon" :icon="icon" /> 
+            <font-awesome-icon  v-if="icon && ~icon.indexOf('fa-')" class="nav-icon" :icon="'fa-solid ' + icon" />
             {{title}}
         </NuxtLink> 
     </CNavItem>

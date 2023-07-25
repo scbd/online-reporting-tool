@@ -113,6 +113,7 @@
         onPreSaveDraftVersion	    : { type:Function, required:false },
     });
     
+    let originalDocument = null
     const container     = useAttrs().container ?? 'body,html';
     const { $eventBus } = useNuxtApp();
     const {t }          = useI18n();
@@ -156,7 +157,7 @@
     async function onReviewDocument(tabCanged){
         if(!tabCanged && activeTab.value == tabName.review)
             return;
-            
+            console.log('review')
         await wizardRef.value.changeTab(tabName.review)
         activeTab.value = tabName.review;
 
@@ -169,7 +170,7 @@
             // $scope.tab = "review";
             $eventBus.emit('onReviewError', validationResponse)
         }
-        
+        validationReport.value = {}
     }
 
     async function onSaveDraft(){
@@ -178,17 +179,16 @@
             const document = props.getDocument.value();
 
             // onPreSaveDraft
-            if(props.onPreSaveDraft.value)
-                document = props.onPreSaveDraft.value(document);
+            if(definedProps.onPreSaveDraft)
+                document = definedProps.onPreSaveDraft(document);
             
-            console.log(document);
-
             // save document
             const documentSaveResponse = await EditFormUtility.saveDraft(document.value);
+            originalDocument = { ...document }
 
             // onPostSaveDraft
-            if(props.onPostSaveDraft.value)
-                props.onPostSaveDraft.value(documentSaveResponse);
+            if(definedProps.onPostSaveDraft)
+                definedProps.onPostSaveDraft(documentSaveResponse);
 
             $toast.success(t('toastDraftSaveMessage'), {position:'top-right'});  
         }
@@ -197,6 +197,17 @@
             console.error(e)
         }
         validationReport.value = { };
+    }
+
+    async function onClose(){
+        
+        let redirectTo = undefined;
+
+        if(definedProps.onPreClose)
+            redirectTo = definedProps.onPreClose(originalDocument);
+            
+        if(redirectTo.value)
+            await navigateTo(redirectTo.value)
     }
 
     async function validate(document) {
