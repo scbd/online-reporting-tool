@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-    import { direction, lstringLocale, lstring } from '@/util/filter';
+    // import { direction, lstringLocale, lstring } from '@/util/filter';
 
     const props = defineProps({
         value  : {type:Object, required:true },
@@ -32,7 +32,7 @@
         ({ data:term, error:error } = await $api.thesaurus.getTerm(value.value?.identifier||value.value))
         
 
-        if(error.value)
+        if(error?.value)
             console.error(`Error loading term ${value.value}`, error);
 
     }

@@ -18,16 +18,16 @@ export const useThesaurusStore = defineStore('thesaurus', {
     }
   },
   actions:{
-    async loadDomain(domainName){
+    async loadDomain(domainName:string, params:any){
       
         const { $api } = useNuxtApp();
         let domain = this.domains?.find(e=>e.identifier==domainName)
         if(!domain){
-          domain = await $api.thesaurs.getDomain(domainName);
+          domain = await $api.thesaurs.getDomain(domainName, params);
           this.domains.push(domain);
         };
     },  
-    async loadDomainTerms(identifier){
+    async loadDomainTerms(identifier:string, params:any){
         if(!identifier)
           return;
 
@@ -35,7 +35,7 @@ export const useThesaurusStore = defineStore('thesaurus', {
         if(!terms){
 
           const { $api } = useNuxtApp();
-          ({ data:terms } = await $api.thesaurus.getDomainTerms(identifier));
+          ({ data:terms } = await $api.thesaurus.getDomainTerms(identifier, params));
           this.domainTerms.push({identifier, terms});
         }
         return terms;

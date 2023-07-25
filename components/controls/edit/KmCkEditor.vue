@@ -26,7 +26,6 @@
 
 <script>
 
-import { removeEmpty } from '@/util';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import CKEditor     from '@ckeditor/ckeditor5-vue';
 
@@ -345,7 +344,7 @@ export default {
               return success.data;
             })
             .catch(function(error) {
-              console.debug(error);
+              console.error(error);
               throw error;
             });
 

@@ -1,4 +1,5 @@
 import { getUserToken } from "../utils";
+import EUser from '@/types/EUser';
 
 export default defineNuxtPlugin(async (nuxtApp) => {
     // Skip plugin when rendering error page
@@ -6,7 +7,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         return {};
     }
     
-    let user = ref(null);
+    let user = ref<EUser>(null);
     const { authenticationToken:token, expiration } =  await getUserToken();  
     if(token){
         user.value  = await authUser(token);

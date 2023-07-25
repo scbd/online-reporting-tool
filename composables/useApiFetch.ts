@@ -1,6 +1,46 @@
 type useFetchType = typeof useFetch
 
+export default class ApiError extends Error {
+    constructor({status, error, message})  {
+        super(message);
+
+        this.status = status;
+        this.error  = error;
+    }
+}
+
+
 // wrap useFetch with configuration needed to talk to our API
-export const useAPIFetch: useFetchType = (path, options = {}) => {
-  return useFetch(path, options)
+export const useAPIFetch: useFetchType = async (path, options = {}) => {
+
+    const { data, error, execute, pending, refresh, status } = await useFetch(path, options)
+
+    const newError = ref(null);
+
+    if(error?.value){
+        newError.value = {
+            ...(error.value?.data||error.value),
+            statusCode : error.value?.statusCode
+        }
+    }
+    return {
+        data, execute, pending, refresh, status,
+        error : newError
+    }
+}
+
+// wrap useFetch with configuration needed to talk to our API
+export const useAPIFetchWithCache: useFetchType = async (path, options = {}) => {
+
+    const { data, error, execute, pending, refresh, status } = await useFetch(path, options)
+
+    if(error?.value){
+        throw new ApiError({
+            status : error.value?.statusCode,
+            error  : error.value?.data||error.value,
+            message : `Error occurred executing ${options.method} request for url ${path}`
+        })
+    }
+
+    return data.value;
 }

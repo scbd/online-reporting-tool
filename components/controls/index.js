@@ -4,6 +4,7 @@ export {default as KmInputLstring       }  from './edit/KmInputLstring';
 export {default as KmFormCheckGroup     }  from './edit/KmFormCheckGroup';
 export {default as KmFormCheckItem      }  from './edit/KmFormCheckItem'
 export {default as KmFormWorkflow       }  from './edit/KmFormWorkflow'
+export {default as KmValidationErrors   }  from './edit/KmValidationErrors'
 
 export {default as KmLocales            }  from './view/KmLocales';
 export {default as KmValue              }  from './view/KmValue';

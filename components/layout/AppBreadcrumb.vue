@@ -19,6 +19,9 @@ import { useRoute } from 'vue-router'
 
     function makeCrumbs (){ //eslint-disable-line
 
+      const route = useRoute();
+      const {breadcrumbs : pageBreadcrumbsConf } = route.meta;
+
       const crumbs    = [
         { text:'CHM', to:'https:chm.cbd.int' },
         { text:'ORT', to: localePath('/dashboard'), active: '/dashboard' === route.fullPath }
@@ -28,14 +31,24 @@ import { useRoute } from 'vue-router'
         const pathSplit = () => path.split('/').splice(1);
         if (!path) return [];
 
+        const skipParams = pageBreadcrumbsConf?.skip?.map(e=>`:${e}()`)
         for (const [index, routeName] of pathSplit().entries()) { // eslint-disable-line
           if (!routeName) continue; // eslint-disable-line no-continue
           if(!Object.keys(languages).includes(routeName)){
 
-            const text  = capitalCase(routeName);
-            const to    = index ? `/${pathSplit().splice(0, index + 1).join('/')}` : `/${routeName}`;
+            if(skipParams?.includes(routeName))
+              continue;
+
+            const paths = pathSplit().filter(e=>!skipParams?.includes(e))
+            let fullPath = route.fullPath;
             
-            const crumb = { text, to, active: to === route.fullPath, };
+            pageBreadcrumbsConf?.skip?.forEach(element => {
+              fullPath = fullPath.replace(`/${route.params[element]}`, '');
+            });
+            const text  = capitalCase(routeName);
+            const to    = index ? `/${paths.splice(0, index + 1).join('/')}` : `/${routeName}`;
+            
+            const crumb = { text, to, active: to === fullPath, };
 
             crumbs.push(crumb);
           }

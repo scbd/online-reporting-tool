@@ -19,7 +19,6 @@
   <i18n  src="~/i18n/dist/pages/nbsap-targets/index.json"></i18n>
   <script setup lang="ts">
   
-    import { UTILS, ROLES, SCHEMAS } from '@/constants';
     const { appRoutes } = useNuxtApp();
 
     definePageMeta({

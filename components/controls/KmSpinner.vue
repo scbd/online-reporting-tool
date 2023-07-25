@@ -1,7 +1,7 @@
 <template>
     <div class="km-spinner">
         <slot>
-            <CSpinner v-bind="attrs"/> 
+            <CSpinner  size="sm" variant="grow" v-bind="attrs"/> 
             <span v-if="message">{{ message }}</span>
             <span v-if="!message">{{t('loading')}}...</span>
         </slot>
@@ -13,7 +13,8 @@
     const props = defineProps({
         message : { type:String}
     })
-    const { t } = useI18n();
+    const nuxtApp = useNuxtApp();
+    const { t } = nuxtApp.$i18n;
     const  attrs  = useAttrs()
     const { message } = toRefs(props);
     

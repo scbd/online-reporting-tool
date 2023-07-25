@@ -1,16 +1,49 @@
 <template>
-  <km-suspense>
-      <my-country-targets></my-country-targets>
-  </km-suspense>
+    <CCard>
+      <CCardHeader>
+        <slot name="header"> Global Goals/Target Mapping view</slot>
+      </CCardHeader>
+      <CCardBody>
+        <div class="justify-content-center">
+            <div class="mb-5">
+              <strong>Welcome to your countries National Targets submission section. please select option to proceed.</strong>
+            </div>  
+
+            <CRow>
+              <CCol :sm="6">
+                <CCard>
+                  <CCardBody>
+                    <CCardTitle>Part I</CCardTitle>
+                    <CCardText>Submit your national targets here</CCardText>
+                    <CButton color="primary" href="#">Proceed</CButton>
+                  </CCardBody>
+                </CCard>
+              </CCol>
+              <CCol :sm="6">
+                <CCard>
+                  <CCardBody>
+                    <CCardTitle>Part II</CCardTitle>
+                    <CCardText>Submit your global golas/targets mapping information </CCardText>
+                    <CButton color="primary" href="#">Proceed</CButton>
+                  </CCardBody>
+                </CCard>
+              </CCol>
+            </CRow>
+            <CRow>
+                <CCol>
+                    <validation></validation>
+                </CCol>
+            </CRow>
+        </div>
+      </CCardBody>
+    </CCard>
 </template>
 
 <script setup lang="ts">
-  import MyCountryTargets from "@/components/pages/nbsap-targets/my-country/index.vue";
-  import { ROLES, SCHEMAS } from '@/constants'
-  import { KmSuspense } from '@/components/controls'
 
-    await new Promise(r => setTimeout(r, 1200))
-
+    import { KmSuspense } from '@/components/controls'
+    import validation from '@/components/pages/nbsap-targets/my-country/validation.vue';
+    
     definePageMeta({
         auth:true,
         schema:SCHEMAS.NATIONAL_TARGET_7,

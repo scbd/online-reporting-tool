@@ -2,6 +2,8 @@ import { copyFile, mkdir, readFile, readdir, stat, writeFile } from 'fs/promises
 import path from 'path';
 import assert, { match } from 'assert';
 import * as url from 'url';
+import {readJson} from 'fs-extra';
+
 const __dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
 const __rootDirname =  url.fileURLToPath(new url.URL('../', import.meta.url));
 
@@ -71,20 +73,40 @@ async function createLocaleFile(enFile){
   return JSON.parse(JSON.stringify(flatData));
 }
 
+async function createLocaleEnFile(enVueFile){
+    const jsonFileName = `${__rootDirname}${enFolder}/${enVueFile.replace(/\.vue$/, '.json')}`
+    try{
+        const fileStat = await stat(jsonFileName);
+    }
+    catch(e){
+        try{
+            console.log(`********** Creating locale file for vue file ${enVueFile} ***********`)
+            await  mkdir(path.dirname(jsonFileName), { recursive: true });
+            await writeFile(jsonFileName, JSON.stringify({}))
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+}
+
 async function readJsonFile(filePath){
   try{
     const fileStat = await stat(filePath);
     if(fileStat && fileStat.size > 0){
-
-      const fileData = await readFile(`${__rootDirname}${filePath}`, {encoding:"utf8"})
-      return JSON.parse(fileData);
+        const parsedData = await readJson(`${__rootDirname}${filePath}`, {encoding:"utf8"})
+        return parsedData;
     }
   }
   catch(e){
-    // console.warn('error reading json file', e)
+    // if(e?.message?.indexOf('ENOENT')>=0)
+    //     console.warn('error reading json file', e)
     //locale file does not exists, ignore 
   }
 
+}
+function remove_linebreaks(str) {
+    return str.replace(/[\r\n]+/gm, " ");
 }
 
 
@@ -131,6 +153,10 @@ export function viteSyncI18nFiles(options) {
       //   return;
       var file = _ref.file.replace(__rootDirname, ''),
       server = _ref.server;
+      if(file.split(".").pop() === "vue"){
+        await createLocaleEnFile(file);
+      };
+
       if (!file.includes(enFolder) || file.split(".").pop() !== "json") return;
 
       const messages = await syncLocaleFiles([file]);      

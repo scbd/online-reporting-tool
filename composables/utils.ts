@@ -1,6 +1,7 @@
 export const useGenerateUUID = ()=> {
-    return new Array(4)
-        .fill(0)
-        .map(() => Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16))
-        .join("-");
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()).toUpperCase();
+}
+
+export function S4() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }

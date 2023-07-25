@@ -1,0 +1,17 @@
+<template>
+    <km-suspense>
+      <edit-target-part-2></edit-target-part-2>
+    </km-suspense>
+</template>
+  
+<script setup lang="ts">
+import { KmSuspense } from "@/components/controls";
+import EditTargetPart2 from "@/components/pages/nbsap-targets/my-country/part-2/edit-target-part-2.vue";
+
+  definePageMeta({
+    auth:true,
+    schema:'nationalTarget7',
+    roles:[...ROLES.ALL_NATIONAL_USERS],
+  })
+
+</script>

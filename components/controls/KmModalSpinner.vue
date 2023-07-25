@@ -20,7 +20,9 @@
         title   : { type:String},
         message : { type:String}
     })
-    const { t } = useI18n();
+
+    const nuxtApp = useNuxtApp();
+    const { t } = nuxtApp.$i18n;
 
     const modalProps  = ref(props)
     

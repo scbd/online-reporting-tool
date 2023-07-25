@@ -9,7 +9,8 @@
 
 <script setup lang="ts">
 
-    const { locale } = useI18n();
+    const nuxtApp = useNuxtApp();
+    const { t, locale } = nuxtApp.$i18n;
     const props = defineProps({
         modelValue  : {type:String, required:true },
         locales     : {type:Array, required:true },
@@ -22,13 +23,12 @@
        $emit('update:modelValue', locale);
     }
     
-    onMounted(()=>setDefaultLcoale(locales.value))
+    onMounted(()=>setDefaultLocale(locales.value))
     watch(locales, (languages)=>{
-        setDefaultLcoale(languages)
+        setDefaultLocale(languages)
     })
 
-    function setDefaultLcoale(languages){
-        console.log(languages)
+    function setDefaultLocale(languages){
         if(languages?.length){
             if(languages.length == 1)
                 onLocaleSelected(languages[0]);

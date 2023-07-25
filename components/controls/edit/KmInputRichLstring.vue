@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import { removeEmpty } from '@/util';
 import $ from 'jquery';
 import { makeUid } from '@coreui/utils/src'
 // import { Tab } from 'bootstrap'
