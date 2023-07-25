@@ -80,6 +80,7 @@ async function createLocaleEnFile(enVueFile){
     }
     catch(e){
         try{
+            console.log(`********** Creating locale file for vue file ${enVueFile} ***********`)
             await  mkdir(path.dirname(jsonFileName), { recursive: true });
             await writeFile(jsonFileName, JSON.stringify({}))
         }
@@ -153,7 +154,6 @@ export function viteSyncI18nFiles(options) {
       var file = _ref.file.replace(__rootDirname, ''),
       server = _ref.server;
       if(file.split(".").pop() === "vue"){
-        console.log(`********** VUE file touched ${file}`)
         await createLocaleEnFile(file);
       };
 

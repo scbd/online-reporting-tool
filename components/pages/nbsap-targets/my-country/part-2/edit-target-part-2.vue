@@ -10,7 +10,8 @@
         </div>
         <form v-if="!isLoading && document" name="editForm">
            
-            <km-form-workflow :current-tab="1" :get-document="onGetDocment" :validation-report="validationReport" :container="container">
+            <km-form-workflow :current-tab="1" :get-document="onGetDocument" :validation-report="validationReport" 
+                :container="container" :on-pre-close="onClose">
                 <template #submission>
                      <div  >
                        <km-form-group>
@@ -40,7 +41,7 @@
                                             track-by="code"
                                             value-key="code"
                                             placeholder="Language of record"
-                                            :options="formatedLanguages"
+                                            :options="formattedLanguages"
                                             :multiple="true"
                                             :allow-empty="false"
                                         >
@@ -123,17 +124,6 @@
                     <view-target :identifier="document.header.identifier" :document="cleanDocument"></view-target>
                 </template>
             </km-form-workflow>
-
-            <div class="d-grid d-md-flex justify-content-md-end mt-5">
-                <CButton @click="onSubmitDocument()" color="primary" class="me-md-2" :disabled="showSpinnerModal">
-                    <span v-if="showSpinnerModal"><c-spinner component="span" size="sm" variant="grow" aria-hidden="true"></c-spinner> Saving</span>
-                    <span v-if="!showSpinnerModal">Save</span>
-                </CButton> 
-                <!-- <CButton @click="previewDocument()" color="primary" class="me-md-2">Preview</CButton> 
-                <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton> 
-                <CButton @click="printDocument()" color="dark" class="me-md-2">Print</CButton> 
-                <CButton @click="onClose()" color="danger" class="me-md-2">Close</CButton> -->
-            </div>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
         </form>
 
@@ -161,7 +151,8 @@
     const props = defineProps({
         identifier         : {type:String, required:false},
         globalGoalOrTarget : {type:String, required:true},
-        headlineIndicators : {type:Array, required:true}
+        headlineIndicators : {type:Array, required:true},
+        onClose            : {type:Function, required:false},
     }) 
 
     const { user }        = useAuth();
@@ -199,7 +190,7 @@
 
     
     // const document =  computed(()=>state ?? emptyDocument());
-    const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));    
+    const formattedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));    
     const countryList           = computed(()=>{
         if(!countriesStore?.countries?.length)
             return [];
@@ -258,12 +249,14 @@
         }
     }   
 
-    function onGetDocment(){
+    function onGetDocument(){
         return cleanDocument;
     }
-    // const onClose = async ()=>{
-    //     await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II)
-    // }
+
+    const onClose = async (document)=>{
+        if(props.onClose)
+            props.onClose.value(document)
+    }
     
     function emptyDocument(){
         return {
@@ -277,7 +270,8 @@
             },
             globalGoalOrTarget : {
                 identifier: props.globalGoalOrTarget
-            }
+            },
+            hasReferencePeriod : false
         }
     }
 

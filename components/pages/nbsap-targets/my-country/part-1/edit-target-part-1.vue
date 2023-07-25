@@ -5,10 +5,7 @@
       </CCardHeader>
       <CCardBody>
        
-        
-                <!-- {{ document }} -->
-
-            <km-form-workflow :focused-tab="1" :get-document="onGetDocment" >
+            <km-form-workflow :focused-tab="1" :get-document="onGetDocument"  :on-pre-close="onClose">
                 <template v-slot:submission>   
                     <form name="editForm">             
                         <km-form-group>
@@ -38,10 +35,9 @@
                                             track-by="code"
                                             value-key="code"
                                             placeholder="Language of record"
-                                            :options="formatedLanguages"
+                                            :options="formattedLanguages"
                                             :multiple="true"
-                                            :allow-empty="false"
-                                            
+                                            :allow-empty="false"                                            
                                         >
                                         </km-select>
                                         <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
@@ -94,16 +90,17 @@
                                             track-by="identifier"
                                             value-key="identifier"
                                             placeholder="Degree of alignment"
-                                            :options="formatedDegreeOfAlignments"
+                                            :options="formattedDegreeOfAlignments"
                                             :multiple="false"
                                             :disabled="false"
+                                            :custom-label="customLabel"
                                             :custom-selected-item="customSelectedItem"
                                         >
                                         </km-select>
                                         <small id="emailHelp" class="form-text text-muted">
-                                            <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[0].identifier}">High = covers all elements of the global target; </span>
-                                            <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[1].identifier}">Medium = covers most elements of the global target; </span>
-                                            <span :class="{'text-success font-weight-bold': document.degreeOfAlignment==degreeOfAlignments[2].identifier}">Low = covers at least one element of the global target</span>
+                                            <span :class="{'text-success font-weight-bold': (document.degreeOfAlignment||{}).identifier=='AABF237C-F906-40D2-9595-5226C8B18A58'}">High = covers all elements of the global target; </span>
+                                            <span :class="{'text-warning font-weight-bold': (document.degreeOfAlignment||{}).identifier=='68197B76-67B4-40AD-BB14-A8C340E1320B'}">Medium = covers most elements of the global target; </span>
+                                            <span :class="{'text-danger font-weight-bold': (document.degreeOfAlignment||{}).identifier=='9668759B-3653-4994-A917-3F039B0BAA5C'}">Low = covers at least one element of the global target</span>
                                         </small>
                                     </km-form-group>
                                     <km-form-group name="implementingConsiderationsInfo" 
@@ -275,7 +272,6 @@
 
             <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
  
-
       </CCardBody>
     </CCard>
   
@@ -289,7 +285,6 @@
     import viewTarget               from  "./view-target-part-1.vue";
     import { mapStores }            from 'pinia'
     import { languages }            from '@/app-data/languages'
-    import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
     import { useThesaurusStore }    from '@/stores/thesaurus';
     import { useCountriesStore }    from '@/stores/countries';
     import { useRealmConfStore }    from '@/stores/realmConf';
@@ -298,6 +293,12 @@
     import {useToast} from 'vue-toast-notification';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
 
+    const props = defineProps({
+        identifier  : {type: String },
+        rawDocument : {type: Object },
+        onClose            : {type:Function, required:false},
+    })
+    const refProps                  = toRefs(props);
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const { user }                  = useAuth();
     const security                  = useSecurity();
@@ -323,23 +324,31 @@
         thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPONENT_INDICATORS    ),
         thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPLEMENTARY_INDICATORS),
         thesaurusStore.loadDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS  ),
-        countriesStore.loadCountries()
+        countriesStore.loadCountries(),
+        thesaurusStore.loadDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT  ),
     ]);
+    
+    const document =  ref(emptyDocument());
 
-    if(route?.params?.identifier){
-        await kmDocumentDraftStore.loadDraftDocument(route.params.identifier);
-        if(!kmDocumentDraftStore.draftRecord){
-            //TODO: show error that the record does not exists.
-            await navigateTo(appRoutes.NBSAPS_TARGETS_NEW);
-            // return;
-        }        
+    
+    if(refProps.rawDocument.value){
+        document.value = {...refProps.rawDocument.value};
     }
+    else if(refProps.identifier.value || route?.params?.identifier){
+        await kmDocumentDraftStore.loadDraftDocument(refProps.identifier.value||route.params.identifier);
+        document.value = kmDocumentDraftStore.draftRecord?.body;
 
-    const document =  ref(route?.params?.identifier ? kmDocumentDraftStore.draftRecord.body : emptyDocument() );
-    //initilize for local use
-    document.value.additionalImplementation = document.value.additionalImplementation || {};
+        // if(!kmDocumentDraftStore.draftRecord){
+        //     //TODO: show error that the record does not exists.
+        //     await navigateTo(appRoutes.NBSAPS_TARGETS_NEW);
+        //     // return;
+        // }        
+    }
+    
+    //initialize for local use
+    document.value.additionalImplementation = document.value?.additionalImplementation || {};
 
-    const formatedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
+    const formattedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
     const globalGoalsAndTargets = computed(()=>{
         const goalsAndTargets = [
             ...((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
@@ -350,7 +359,9 @@
     const gbfTargetConsideration = computed(()=>{
         return (thesaurusStore.getDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
     })
-    const formatedDegreeOfAlignments = computed(()=>{return degreeOfAlignments })
+    const formattedDegreeOfAlignments = computed(()=>{
+        return thesaurusStore.getDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT)||[]
+    })
     const countryList                = computed(()=>{
         if(!countriesStore?.countries?.length)
             return [];
@@ -400,9 +411,11 @@
         }
     }    
 
-    const onClose = async ()=>{
-        await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I)
+    const onClose = async (document)=>{
+        if(props.onClose)
+            return props.onClose(document)
     }
+
     const onGoalsAndTargetSelected = async (selected)=>{
         
         const headlineRes       = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
@@ -431,7 +444,7 @@
 
     }
 
-    function onGetDocment(){
+    function onGetDocument(){
         return cleanDocument;
     }
 

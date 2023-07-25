@@ -10,7 +10,7 @@
             </div>  
 
             <CRow>
-              <CCol :sm="3">
+              <CCol :sm="6">
                 <CCard>
                   <CCardBody>
                     <CCardTitle>Part I</CCardTitle>
@@ -19,7 +19,7 @@
                   </CCardBody>
                 </CCard>
               </CCol>
-              <CCol :sm="3">
+              <CCol :sm="6">
                 <CCard>
                   <CCardBody>
                     <CCardTitle>Part II</CCardTitle>
@@ -29,16 +29,21 @@
                 </CCard>
               </CCol>
             </CRow>
-
+            <CRow>
+                <CCol>
+                    <validation></validation>
+                </CCol>
+            </CRow>
         </div>
       </CCardBody>
     </CCard>
 </template>
 
 <script setup lang="ts">
-  // import MyCountryTargets from "@/components/pages/nbsap-targets/my-country/part-2/index.vue";
-  // import { KmSuspense } from '@/components/controls'
 
+    import { KmSuspense } from '@/components/controls'
+    import validation from '@/components/pages/nbsap-targets/my-country/validation.vue';
+    
     definePageMeta({
         auth:true,
         schema:SCHEMAS.NATIONAL_TARGET_7,
