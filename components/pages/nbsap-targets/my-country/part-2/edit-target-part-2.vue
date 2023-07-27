@@ -227,18 +227,6 @@
 
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
-        // const referencePeriod = [];
-        // if(headlineIndicators.value?.length){            
-
-        //     headlineIndicators.value.forEach(indicator => {
-        //         referencePeriod.push({
-        //             headlineIndicator   : { identifier : indicator.identifier},
-        //             hasReferencePeriod : false
-        //         })
-        //     });            
-        // }
-        // clean.referencePeriod = referencePeriod
-        clean.referecncePeriod = undefined;
         
         return clean
     })

@@ -5,7 +5,8 @@
       </CCardHeader>
       <CCardBody>
        
-            <km-form-workflow :focused-tab="1" :get-document="onGetDocument"  :on-pre-close="onClose">
+            <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"  
+            :container="container"  :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template v-slot:submission>   
                     <form name="editForm">             
                         <km-form-group>
@@ -158,7 +159,6 @@
                                             :custom-selected-item="customSelectedItem"
                                         >
                                         </km-select>
-                                        <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
                                     </km-form-group>
                                     <km-form-group name="componentIndicators" caption="Component indicators">
                                         <km-select
@@ -175,7 +175,6 @@
                                             :custom-selected-item="customSelectedItem"
                                         >
                                         </km-select>
-                                        <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
                                     </km-form-group>
                                     <km-form-group name="complementaryIndicators" caption="Complementary indicators">
                                         <km-select
@@ -192,7 +191,6 @@
                                             :custom-selected-item="customSelectedItem"
                                         >
                                         </km-select>
-                                        <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
                                     </km-form-group>
                                     <km-form-group name="otherNationalIndicators"  caption="Other national indicators">
                                         
@@ -257,8 +255,8 @@
                                     Additional information
                                 </div>
                                 <div class="card-body">
-                                    <km-form-group name="referencePeriodInfo" caption="Any other relevant information">
-                                        <km-input-rich-lstring v-model="document.additionalinformation" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-form-group name="additionalInformation" caption="Any other relevant information">
+                                        <km-input-rich-lstring v-model="document.additionalInformation" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -296,7 +294,9 @@
     const props = defineProps({
         identifier  : {type: String },
         rawDocument : {type: Object },
+        workflowActiveTab  : {type:Number, default:1 },
         onClose            : {type:Function, required:false},
+        onPostSaveDraft    : {type:Function, required:false},
     })
     const refProps                  = toRefs(props);
     const {$appRoutes:appRoutes }   = useNuxtApp();
@@ -308,7 +308,8 @@
     const countriesStore            = useCountriesStore ();
     const realmConfStore            = useRealmConfStore();
     const kmDocumentDraftStore      = useKmDocumentDraftsStore();
-    const $toast                    = useToast();
+    const $toast                    = useToast();      
+    const container                 = useAttrs().container;
 
     const headlineIndicatorsRef      = ref(null);
     const componentIndicatorsRef     = ref(null);
@@ -344,7 +345,11 @@
         // }        
     }
     
-    console.log(document);
+    // if(document.value?.degreeOfAlignment){
+    //     console.log(document);
+    //     if(['high', 'medium', 'low'].includes(document.value.degreeOfAlignment.identifier))
+    //         document.value.degreeOfAlignment = undefined
+    // }
     //initialize for local use
     document.value.additionalImplementation = document.value?.additionalImplementation || {};
 
@@ -379,6 +384,13 @@
     const selectedLocale = ref(locale.value);
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
+        clean.gbfGoalsAlignment = undefined
+        clean.gbfGoalsAlignment = undefined
+        clean.gbfGolas = undefined
+        clean.gbfTargets = undefined
+        clean.gbfTargetsAlignment = undefined
+        clean.hasReferncePeriod = undefined
+        clean.referencePeriodInfo = undefined;
         return clean
     })
     
@@ -392,7 +404,11 @@
 
     const onClose = async (document)=>{
         if(props.onClose)
-            return props.onClose(document)
+            props.onClose(document)
+    }
+    const onPostSaveDraft = async (document)=>{
+        if(props.onPostSaveDraft)
+            props.onPostSaveDraft(document)
     }
 
     const onGoalsAndTargetSelected = async (selected)=>{

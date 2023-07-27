@@ -79,7 +79,7 @@
                   <tr v-for="(document,  index) in nationalMappings" :key="document.identifier">
                     <th scope="row">{{ index+1 }}</th>
                     <td>
-                        <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>
+                        <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>                        
                     </td>                    
                     <td>
                         <CBadge color="info" v-if="document.isValidating">
@@ -114,21 +114,27 @@
 
         <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showEditDocumentModal" >
             <CModalHeader :close-button="false">
-                <CModalTitle>{{lstring(editDocument.title||getGlobalTarget(editDocument.globalGoalOrTarget.identifier).title)}}</CModalTitle>
+                <CModalTitle>
+                    <span v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7">{{lstring(editDocument.title)}}</span>
+                    <span v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING">{{lstring(getGlobalTarget(editDocument.globalGoalOrTarget.identifier).title)}}</span>
+                </CModalTitle>
             </CModalHeader>
             <CModalBody>
                 <div id="nationalTargetsValidationEdit">
                     <div v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7">
                         <edit-target-part-1 :raw-document="editDocument" :workflow-active-tab="2"
-                        :identifier="editDocument.header.identifier" :on-close="onEditTargetClose"
-                        container="#nationalTargetsValidationEdit"></edit-target-part-1>
+                            :identifier="editDocument.header.identifier"
+                            :on-close="onEditTargetClose"  :on-post-save-draft="onPostSaveDraft"
+                            container="#nationalTargetsValidationEdit">
+                        </edit-target-part-1>
                     </div>
                     <div v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING">
                         <edit-target-part-2 :raw-document="editDocument" :workflow-active-tab="2"
-                        :global-goal-or-target="editDocument.globalGoalOrTarget.identifier" 
-                        :headline-indicators="getGlobalTarget(editDocument.globalGoalOrTarget.identifier).headlineIndicators"
-                        :identifier="editDocument.header.identifier" :on-close="onEditTargetClose"  :on-post-save-draft="onPostSaveDraft"
-                        container="#nationalTargetsValidationEdit"></edit-target-part-2>
+                            :global-goal-or-target="editDocument.globalGoalOrTarget.identifier" 
+                            :headline-indicators="getGlobalTarget(editDocument.globalGoalOrTarget.identifier).headlineIndicators"
+                            :identifier="editDocument.header.identifier" :on-close="onEditTargetClose"  :on-post-save-draft="onPostSaveDraft"
+                            container="#nationalTargetsValidationEdit">
+                        </edit-target-part-2>
                     </div>
                 </div>
             </CModalBody>
@@ -244,8 +250,7 @@
         validateDocuments(nationalMappings.value);
     }
 
-    async function validationDocument(document:any){
-
+    async function validateDocument(document:any){
         
         const { $api } = useNuxtApp();
         const data     = await $api.kmStorage.documents.validate(document);
@@ -260,7 +265,9 @@
         documents.forEach(async document=>{
             try{
                 document.isValidating = true
-                const validationErrors = await validationDocument(document.body)
+                document.validated    = false;
+                document.validationErrors = undefined;
+                const validationErrors = await validateDocument(document.body)
                 if(validationErrors)
                     document.validationErrors = [...validationErrors];
                 
@@ -288,24 +295,22 @@
         showEditDocumentModal.value = false;
 
         if(newDocument){
-            validationDocument(newDocument)
+            const list:Array<Object> =  newDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7 ? nationalTargets :  nationalMappings;
+            const existingDocument   = list.value.find(e=>e.identifier == newDocument.header.identifier);
+            validateDocuments([existingDocument])
         }
     }
 
     function onPostSaveDraft(newDocument:Object){
-        console.log(newDocument)
-        
-        let existingDocument = undefined;
-        if(newDocument.type == SCHEMAS.NATIONAL_TARGET_7){
-            existingDocument = nationalTargets.value.find(e=>e.identifier == newDocument.identifier);
-        }
-        else if(newDocument.type == SCHEMAS.NATIONAL_TARGET_7_MAPPING){
-            existingDocument = nationalMappings.value.find(e=>e.identifier == newDocument.identifier);
-        }
-        
+
+        const list:Array<Object> =  newDocument.type == SCHEMAS.NATIONAL_TARGET_7 ? nationalTargets :  nationalMappings;
+
+        const index            = list.value.findIndex(e=>e.identifier == newDocument.identifier);
+        const existingDocument = list.value.find     (e=>e.identifier == newDocument.identifier);
         if(existingDocument){
             Object.assign(existingDocument, newDocument);
-        }
+            list[index] = existingDocument;
+        }      
     }
 
 </script>

@@ -79,7 +79,7 @@ class editFormUtility{
     //==================================
     //
     //==================================
-    saveDraft(document) {
+    saveDraft(document:Object) {
 
         const { $api } = useNuxtApp();
         const $kmStorageApi = $api.kmStorage

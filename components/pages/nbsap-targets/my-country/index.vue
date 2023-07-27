@@ -1,8 +1,9 @@
 <template>
     <div>
         <div class="justify-content-center">
-            <div class="mb-5">
-                <CAlert color="primary">Welcome to your country's National Targets submission section. please select option to proceed.</CAlert>
+            <div >
+                <legend>Welcome to your country's National Targets submission section. please select option to proceed.</legend>
+                <hr/>
             </div>  
 
             <CRow>
@@ -12,7 +13,7 @@
                     <CCardTitle>Part I</CCardTitle>
                     <CCardText>Submit your national targets here</CCardText>
                     <div class="d-grid gap-1 d-flex">
-                        <km-link :to="appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I" title="Proceed" 
+                        <km-link :to="appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I" title="Go to Part I" 
                             role="button" class="btn btn-primary"></km-link>
                         <CButton @click="onValidatePartI()" color="secondary">Validate Part I</CButton>
                     </div>
@@ -25,7 +26,7 @@
                     <CCardTitle>Part II</CCardTitle>
                     <CCardText>Submit your global golas/targets mapping information </CCardText>
                     <div class="d-grid gap-1 d-flex">
-                        <km-link :to="appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II" title="Proceed" 
+                        <km-link :to="appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II" title="Go to Part II" 
                             role="button" class="btn btn-primary"></km-link>
                         <CButton @click="onValidatePartII()" color="secondary">Validate Part II</CButton>
                     </div>
