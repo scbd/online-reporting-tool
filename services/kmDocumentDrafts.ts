@@ -15,10 +15,8 @@ class kmDocumentDrafts {
         };
         
         const { $api } = useNuxtApp();
-        const { data, error } = await $api.kmStorage.drafts.query(queryParams);
-        if(error?.value)
-            throw error;
-            
+        const  data = await $api.kmStorage.drafts.query(queryParams);
+                    
         return data;
     }
 
@@ -26,10 +24,8 @@ class kmDocumentDrafts {
       if(identifier){
 
         const { $api } = useNuxtApp();
-        const { data, error } = await $api.kmStorage.drafts.get(identifier, {info:true, body:true});
-        if(error?.value)
-            throw error;
-
+        const data = await $api.kmStorage.drafts.get(identifier, {info:true, body:true});
+        
         return data;
 
       };
