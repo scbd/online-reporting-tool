@@ -70,7 +70,7 @@
                           <font-awesome-icon icon="fa-search" /> View target
                         </CButton>
                         <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
-                          <CIcon icon="cil-comment-square-edit"/> Edit target
+                          <font-awesome-icon icon="fa-edit" /> Edit target
                         </CButton>
                       </div>
                     </td>

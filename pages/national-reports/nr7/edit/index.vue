@@ -56,7 +56,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-1">
                   <CButton color="secondary" size="sm">
-                    <CIcon icon="cil-comment-square-edit"/> Update
+                    <font-awesome-icon icon="fa-edit" /> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -85,7 +85,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-2">
                   <CButton color="secondary" size="sm">
-                    <CIcon icon="cil-comment-square-edit"/> Update
+                    <font-awesome-icon icon="fa-edit" /> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -116,7 +116,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-3">
                   <CButton color="secondary" size="sm">
-                    <CIcon icon="cil-comment-square-edit"/> Update
+                    <font-awesome-icon icon="fa-edit" /> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -143,7 +143,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-4">
                   <CButton color="secondary" size="sm">
-                    <CIcon icon="cil-comment-square-edit"/> Update
+                    <font-awesome-icon icon="fa-edit" /> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -173,7 +173,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-5">
                   <CButton color="secondary" size="sm">
-                    <CIcon icon="cil-comment-square-edit"/> Update
+                    <font-awesome-icon icon="fa-edit" /> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -203,7 +203,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-6">
                   <CButton color="secondary" size="sm">
-                    <CIcon icon="cil-comment-square-edit"/> Update
+                    <font-awesome-icon icon="fa-edit" /> Update
                   </CButton>
                 </NuxtLink>
               </small>
@@ -233,7 +233,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-7">
                   <CButton color="secondary" size="sm">
-                    <CIcon icon="cil-comment-square-edit"/> Update
+                    <font-awesome-icon icon="fa-edit" /> Update
                   </CButton>
                 </NuxtLink>
               </small>

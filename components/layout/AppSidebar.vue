@@ -16,12 +16,12 @@
       </li>
       <CNavGroup :visible="isChildRouteActive(appRoutes.NBSAPS_TARGETS)">
         <template #togglerContent>
-            <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
             {{ t('menuNationalTargets') }}
         </template>
         <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
         <CNavGroup :visible="isChildRouteActive(appRoutes.NBSAPS_TARGETS_MY_COUNTRY)">
           <template #togglerContent>
+            <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
             {{ t('menuMyCountryTargets') }}
           </template>
           <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_MY_COUNTRY]"  :to="localePath(appRoutes.NBSAPS_TARGETS_MY_COUNTRY)"         icon="fa-wand-magic-sparkles" :title="t('overview')"></KmNavLink>
