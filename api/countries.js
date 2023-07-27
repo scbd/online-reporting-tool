@@ -8,16 +8,16 @@ export default class CountriesAPI extends ApiBase
   }
 
   async queryCountries(params)  {
-    const { data, pending, error, refresh } =  await useAPIFetch(`/api/v2013/countries`,  { method:'get', params })
+    const data =  await useAPIFetch(`/api/v2013/countries`,  { method:'get', params })
                   
-    return { data : data?.value, pending, error, refresh };
+    return data;
   }
 
   async getCountry(code)  {
 
-    const { data, pending, error, refresh } =  await useAPIFetch(`/api/v2013/countries/${encodeURIComponent(code)}`)
+    const data =  await useAPIFetch(`/api/v2013/countries/${encodeURIComponent(code)}`)
   
-    return { data : data?.value, pending, error, refresh };
+    return data;
   }
 
 }
