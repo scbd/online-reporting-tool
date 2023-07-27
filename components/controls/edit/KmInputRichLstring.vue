@@ -70,7 +70,8 @@ export default {
         return this.modelValue||{};
       },
       set(value) {
-        this.$emit('update:modelValue', value);
+        const clean = useStorage().cleanDocument({...value});
+        this.$emit('update:modelValue', clean);
       }
     }
   },

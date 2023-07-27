@@ -5,10 +5,8 @@
       </CCardHeader>
       <CCardBody>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <NuxtLink to="/nbsap-targets/new">
-            <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_NEW)">
+          <NuxtLink :to="appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary">
               <CIcon icon="addthis"/> Submit new target
-            </CButton>
           </NuxtLink>
         </div>
         List of reports
@@ -19,7 +17,7 @@
   <i18n  src="~/i18n/dist/pages/nbsap-targets/index.json"></i18n>
   <script setup lang="ts">
   
-    const { appRoutes } = useNuxtApp();
+    const { $appRoutes:appRoutes } = useNuxtApp();
 
     definePageMeta({
         auth:true,

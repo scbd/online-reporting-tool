@@ -330,7 +330,6 @@
     
     const document =  ref(emptyDocument());
 
-    
     if(refProps.rawDocument.value){
         document.value = {...refProps.rawDocument.value};
     }
@@ -345,6 +344,7 @@
         // }        
     }
     
+    console.log(document);
     //initialize for local use
     document.value.additionalImplementation = document.value?.additionalImplementation || {};
 
@@ -388,28 +388,7 @@
             if(document.value?.gbfGoalsAndTargetAlignment)
                 onGoalsAndTargetSelected(document.value?.gbfGoalsAndTargetAlignment);
         }
-    })
-
-    const onSubmitDocument = async ()=>{
-        try{
-            showSpinnerModal.value = true;            
-            // await navigateTo('/nbsap-targets')
-
-            const lDocument = useStorage().cleanDocument({...document.value})
-
-            await kmDocumentDraftStore.saveDraft(lDocument.header.identifier, lDocument);
-            if(kmDocumentDraftStore.error?.length)
-                $toast.error('Error saving draft record', {position:'top-right'});                
-            else
-                $toast.success('Draft record saved successfully', {position:'top-right'});
-        }
-        catch(e){
-            console.error(e);
-        }
-        finally{
-            showSpinnerModal.value = false;
-        }
-    }    
+    })  
 
     const onClose = async (document)=>{
         if(props.onClose)

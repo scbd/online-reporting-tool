@@ -6,12 +6,11 @@
          <div v-if="report && report.isSaving" class="alert alert-info">
              <i class="fa fa-cog fa-spin"></i> {{t('savingDocument')}}
          </div>
-         <div v-if="report && !report.isAnalyzing">
+         <div v-if="report && report.schema && !report.isAnalyzing && !report.isSaving && !report.errors" class="alert alert-success">
+			{{t('valid')}}
+		</div>
+         <div v-if="report && !report.isAnalyzing && !report.isSaving">
  
-             <div v-if="report && report.schema && !report.errors" class="alert alert-success">
-                 {{t('valid')}}
-             </div>
-
              <div v-if="!report.hideErrors && report && report.errors && report.errors.length" class="alert alert-warning">
                  <button type="button" class="position-absolute top-0 end-0 m-2 bg-transparent border-0 fs-5 text-secondary" 
                     @click="report.hideErrors=!report.hideErrors" aria-label="Close">

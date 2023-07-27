@@ -2,8 +2,8 @@
     <CNavItem >
         <!-- isActve{{ route.path }} {{ to }} @click="navigateTo(to)" href="#" -->
         <NuxtLink class="nav-link" :to="to" :class="{'active' : route.path === to}" :target="target">
-            <CIcon v-if="icon && ~icon.indexOf('cil-')" customClassName="nav-icon" :icon="icon" /> 
-            <font-awesome-icon  v-if="icon && ~icon.indexOf('fa-')" class="nav-icon" :icon="'fa-solid ' + icon" />
+            <CIcon v-if="icon && ~icon.indexOf('cil-')" :icon="icon" class="nav-icon" /> 
+            <font-awesome-icon  v-if="icon && ~icon.indexOf('fa-')" class="menu-icon" :icon="'fa-solid ' + icon" />
             {{title}}
         </NuxtLink> 
     </CNavItem>
@@ -20,7 +20,9 @@ export default defineComponent({
     },
     setup(props) {
         const route = useRoute();
-        const to = computed(()=>props.to);
+        const to = computed(()=>{
+            return props.to
+        });
         const title = computed(()=>props.title);
         const icon = computed(()=>props.icon);
         const isRouteActive = ()=>route.path === props.to;
@@ -36,3 +38,8 @@ export default defineComponent({
     },
 })
 </script>
+<style scoped>
+    .menu-icon{
+        margin-right: 5px;
+    }
+</style>
