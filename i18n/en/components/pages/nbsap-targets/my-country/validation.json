@@ -1,3 +1,5 @@
 {
-    "validating" : "Validating"
+  "validating": "Validating",
+  "passedValidation": "Mandatory check passed",
+  "hasErrors": "Mandatory information missing"
 }
