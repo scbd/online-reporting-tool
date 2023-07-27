@@ -51,3 +51,6 @@ ul.header-nav li.nav-item:hover{
     pointer-events: none;
     opacity: 0.4;
 }
+.v-toast.v-toast--top {
+    z-index: 1000000;
+}
