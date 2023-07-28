@@ -143,7 +143,7 @@
     </div>
 </template>
 
-<i18n src="@/i18n/dist/components/pages/nbsap-targets/my-country/validation.json"></i18n>
+<i18n src="@/i18n/dist/pages/national-reports/nbsap-targets/my-country/validation.json"></i18n>
 
 <script setup lang="ts">
     import  { KmSpinnerSuspense, KmSpinner, KmModalSpinner, KmNavLink, KmTerm
