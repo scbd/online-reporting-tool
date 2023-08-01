@@ -66,7 +66,7 @@ class KmDocumentsApi extends ApiBase
         
     params.identifier = body.header.identifier;
 
-    const data =  await useAPIFetch(serviceUrls.validateUrl(), { body, method:'put', body, params, baseURL })
+    const data =  await useAPIFetch(serviceUrls.validateUrl(), { body, method:'put', body, params })
                   
     return data;
   }
@@ -114,9 +114,7 @@ class KmDraftsApi extends ApiBase
     return data;
   }
   async put(identifier, body, params){
-    const data = await useAPIFetchWithCache( serviceUrls.draftUrl(identifier), 
-                                                { body, method:'put', params, baseURL }
-                                                )
+    const data = await useAPIFetchWithCache( serviceUrls.draftUrl(identifier), { body, method:'put', params });
     return data;
   }
   async delete(identifier, params){
