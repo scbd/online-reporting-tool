@@ -11,7 +11,7 @@
     "confirmationMessage"    : "Are you sure you wan to proceed with publishing your countries National Targets and Mapping?",
     "confirmationTitle"      : "Confirmation",
     "nationalTarget"         : "National Target",
-    "nationalMapping"          : "Global goal/target mapping",
+    "nationalMapping"        : "Global goal/target mapping",
     "proceedAnyway"          : "I still want to proceed",
     "missingNationalTargets" : "Your country has not submitted any national targets for these Global Goal/Target",
     "missingNationalMappings": "Your country has not submitted mapping information for these Global Goal/Target",

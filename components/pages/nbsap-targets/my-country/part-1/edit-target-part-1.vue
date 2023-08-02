@@ -144,7 +144,7 @@
                                     Indicators to be used to monitor this national target
                                 </div>
                                 <div class="card-body">
-                                    <km-form-group caption="Headline and Binary indicators" required name="headlineIndicators">
+                                    <km-form-group caption="Headline indicators" required name="headlineIndicators">
                                         <km-select
                                             v-model="document.headlineIndicators"
                                             class="validationClass"
@@ -160,6 +160,21 @@
                                         >
                                         </km-select>
                                     </km-form-group>
+                                    <km-form-group caption="Binary indicators" name="binaryIndicators" v-if="binaryIndicatorsRef && binaryIndicatorsRef.length">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>This National Target will be linked to the following Binary Indicators</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="indicator in binaryIndicatorsRef" :key="indicator.identifier">
+                                                    <td>{{ lstring(indicator.title) }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </km-form-group>
+                                    
                                     <km-form-group name="componentIndicators" caption="Component indicators">
                                         <km-select
                                             v-model="document.componentIndicators"
@@ -314,6 +329,7 @@
     const headlineIndicatorsRef      = ref(null);
     const componentIndicatorsRef     = ref(null);
     const complementaryIndicatorsRef = ref(null);
+    const binaryIndicatorsRef        = ref(null);
         
     const showSpinnerModal = ref(false);
 
@@ -384,13 +400,7 @@
     const selectedLocale = ref(locale.value);
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
-        clean.gbfGoalsAlignment = undefined
-        clean.gbfGoalsAlignment = undefined
-        clean.gbfGolas = undefined
-        clean.gbfTargets = undefined
-        clean.gbfTargetsAlignment = undefined
-        clean.hasReferncePeriod = undefined
-        clean.referencePeriodInfo = undefined;
+        
         return clean
     })
     
@@ -416,11 +426,13 @@
         const headlineRes       = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
         const componentRes      = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComponentIndicator(e.identifier)}));
         const complementaryRes  = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)}));
+        const binaryRes         = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
 
         headlineIndicatorsRef.value      = sortBy([...(headlineRes?.flat()||[])], 'title')
         componentIndicatorsRef.value     = sortBy([...(componentRes?.flat()||[])], 'title')
         complementaryIndicatorsRef.value = sortBy([...(complementaryRes?.flat()||[])], 'title')
-
+        binaryIndicatorsRef.value        = sortBy([...(binaryRes?.flat()||[])], 'title')
+        
         if(document.value?.headlineIndicators?.length){
             document.value.headlineIndicators = document.value?.headlineIndicators.filter(selected=>{
                 return headlineIndicatorsRef.value.find(e=>e.identifier == selected.identifier)
