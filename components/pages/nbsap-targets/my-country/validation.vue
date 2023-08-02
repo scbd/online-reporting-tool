@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                   
-                  <tr v-for="(document,  index) in nationalTargets" :key="document.identifier">
+                  <tr v-for="(document,  index) in nationalTargets" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
                     <th scope="row">{{ index+1 }}</th>
                     <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
                     <td>
@@ -46,10 +46,10 @@
                     </td>
                     <td>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <CButton color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
+                        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
                           <font-awesome-icon icon="fa-search" /> View
                         </CButton>
-                        <CButton color="secondary" size="sm" @click="onEditTarget(document)">
+                        <CButton :disabled="isBusy" color="secondary" size="sm" @click="onEditTarget(document)">
                           <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
                       </div>
@@ -76,7 +76,7 @@
                 </thead>
                 <tbody>
                   
-                  <tr v-for="(document,  index) in nationalMappings" :key="document.identifier">
+                  <tr v-for="(document,  index) in nationalMappings" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
                     <th scope="row">{{ index+1 }}</th>
                     <td>
                         <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>                        
@@ -94,10 +94,10 @@
                     </td>
                     <td>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <CButton color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
+                        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
                             <font-awesome-icon icon="fa-search" /> View
                         </CButton>
-                        <CButton color="secondary" size="sm" @click="onEditTarget(document)">
+                        <CButton :disabled="isBusy" color="secondary" size="sm" @click="onEditTarget(document)">
                             <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
                       </div>
@@ -158,9 +158,9 @@
     import { buildTargetMatrix } from "./part-2/util";
 
     defineExpose({
-        validatePartI,
-        validatePartII
+        validate
     });
+    const $emits = defineEmits(['onRecordsLoad', 'onValidationFinished']);
 
     const EditTargetPart1 = defineAsyncComponent(()=>import("./part-1/edit-target-part-1.vue"));
     const EditTargetPart2 = defineAsyncComponent(()=>import('./part-2/edit-target-part-2.vue'));
@@ -231,7 +231,7 @@
                 loadTargetMappings()
             ]);
             targetMapping = buildTargetMatrix(response[0], nationalTargets.value, nationalMappings.value)
-            
+            $emits('onRecordsLoad', {nationalTargets : nationalTargets.value, nationalMappings : nationalMappings.value})
         }
         catch(e){
             console.error(e)
@@ -242,12 +242,30 @@
         
     }
 
-    async function validatePartI(){
-        validateDocuments(nationalTargets.value);
-    }
+    async function validate(type:string){
+        try{
 
-    async function validatePartII(){
-        validateDocuments(nationalMappings.value);
+            isBusy.value = true;  
+            if(!type){
+                await Promise.all([
+                    validateDocuments(nationalTargets.value), 
+                    validateDocuments(nationalMappings.value)
+                ]);
+            }
+            else if(type == 'partI'){
+                await validateDocuments(nationalTargets.value);
+            }
+            else if(type == 'partII'){
+                await validateDocuments(nationalMappings.value)
+            }
+
+            $emits('onValidationFinished', {type, nationalTargets : nationalTargets.value, nationalMappings : nationalMappings.value})
+        }
+        catch(e){
+            console.error(e)
+        }
+
+        isBusy.value = false;  
     }
 
     async function validateDocument(document:any){
@@ -262,7 +280,7 @@
     async function validateDocuments(documents){
 
         //use foreach so that everything is validated together
-        documents.forEach(async document=>{
+        const promises = documents.map(async document=>{
             try{
                 document.isValidating = true
                 document.validated    = false;
@@ -279,6 +297,8 @@
             document.validated = true;
             document.isValidating = false
         });
+
+        return await Promise.all(promises);
     }
 
     function getGlobalTarget(identifier: string){

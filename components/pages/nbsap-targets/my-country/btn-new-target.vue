@@ -9,7 +9,7 @@
     const { $appRoutes }   = useNuxtApp();
     const props = defineProps({
         identifier   : { type:String, required:false},
-        query : { type:Object, required:false}
+        query : { type:Object, required:false},
     })
     const { query, identifier } = toRefs(props);
     
@@ -31,7 +31,8 @@
 
         await navigateTo({ 
             path,
-            query:routeQuery
+            query:routeQuery,
+            
         });
     }
 
