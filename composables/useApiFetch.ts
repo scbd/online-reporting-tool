@@ -2,7 +2,7 @@ type useFetchType = typeof useFetch
 
 export default class ApiError extends Error {
     constructor({status, error, message})  {
-        super(message);
+        super(message, { cause : {...error, status} });
 
         this.status = status;
         this.error  = error;

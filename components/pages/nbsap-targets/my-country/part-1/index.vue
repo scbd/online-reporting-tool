@@ -8,7 +8,7 @@
             <div class="card-body">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <!-- <NuxtLink to="/nbsap-targets/new"> -->
-                  <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
+                  <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
                     <CIcon icon="addthis"/> Submit new target
                   </CButton>
                 <!-- </NuxtLink> -->
@@ -66,10 +66,10 @@
                     </td>
                     <td>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <CButton color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_VIEW, draft)">
+                        <CButton color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, draft)">
                           <font-awesome-icon icon="fa-search" /> View target
                         </CButton>
-                        <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
+                        <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
                           <font-awesome-icon icon="fa-edit" /> Edit target
                         </CButton>
                       </div>

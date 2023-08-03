@@ -26,7 +26,7 @@ class editFormUtility{
                 return success;
             },
             function(error) {
-                if (error.status == 404)
+                if (error?.cause?.status == 404)
                     return $kmStorageApi.documents.get(identifier, { info: "" });
                 throw error;
             }).then(
@@ -68,7 +68,7 @@ class editFormUtility{
         }
         catch(error){
 
-            if (error.statusCode == 404)
+            if (error?.cause?.status == 404)
                     return false;
 
             throw error;
@@ -115,7 +115,7 @@ class editFormUtility{
         return $kmStorageApi.documents.get(identifier, { info: "" }).then(function() {
             return true;
         },function(error) {
-            if (error.status == 404)
+            if (error?.cause?.status == 404)
                 return false;
             throw error;
         });

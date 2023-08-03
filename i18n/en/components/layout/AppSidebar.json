@@ -1,6 +1,9 @@
 {
     "overview": "Overview",
     "menuDashboard": "Dashboard",
+    "menuNbsaps": "NBSAPS",
+    "menuNbsapsAll": "All NBSAPS",
+    "menuNbsapsMyCountry": "My Country NBSAPS",
     "nationalReports": "National Reports",
     "menuNationalTargets": "National targets",
     "menuAllTargets": "All National targets",

@@ -12,7 +12,7 @@
     "confirmationTitle"      : "Confirmation",
     "nationalTarget"         : "National Target",
     "nationalMapping"        : "Global goal/target mapping",
-    "proceedAnyway"          : "I still want to proceed",
+    "proceedAnyways"         : "I still want to proceed",
     "missingNationalTargets" : "Your country has not submitted any national targets for these Global Goal/Target",
     "missingNationalMappings": "Your country has not submitted mapping information for these Global Goal/Target",
     "validatePartI"          : "Validate Part I",

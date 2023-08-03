@@ -5,7 +5,7 @@
       </CCardHeader>
       <CCardBody>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <NuxtLink :to="appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary">
+          <NuxtLink :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary">
               <CIcon icon="addthis"/> Submit new target
           </NuxtLink>
         </div>

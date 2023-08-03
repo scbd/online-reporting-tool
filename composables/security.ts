@@ -7,8 +7,8 @@ export const useSecurity = ()=>{
         isInRoles,
         role : {
             isAdministrator : isAdministrator(),
-            isNAU           : isNAU(),
-            isPA            : isPA()
+            isNAU           : isNAU,
+            isPA            : isPA
         }
     }
 }
@@ -23,11 +23,11 @@ function isAdministrator(){
     }
 }
 
-function isNAU(){
+function isNAU(schema){
     return false;
 }
 
-function isPA(){
+function isPA(schema){
     return false;
 }
 

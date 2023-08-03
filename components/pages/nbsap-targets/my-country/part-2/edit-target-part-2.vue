@@ -47,7 +47,7 @@
                                         >
                                         </km-select>
                                         <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
-                                            Minimum of one language is mandatory, please select another language to remove the last language.
+                                            Minimum of one language is mandatory, please select another language to remove the default language.
                                         </small>
                                     </km-form-group>  
                                 </div>
@@ -78,7 +78,7 @@
                                             <CCardTitle>{{lstring(getIndicator(indicator.headlineIndicator).title)}}</CCardTitle>
                                             <hr/>
                                             <CCardText>
-                                                <table class="table" v-if="getIndicator(indicator.headlineIndicator).nationalTargets.length">
+                                                <table class="table" v-if="(getIndicator(indicator.headlineIndicator).nationalTargets||[]).length">
                                                     <tr>
                                                         <td>   
                                                             <km-form-group caption="National target(s) linked to headline indicator">
@@ -99,7 +99,7 @@
                                                         </td>
                                                     </tr> 
                                                 </table>
-                                                <CAlert color="danger" class="d-flex align-items-center"  v-if="!getIndicator(indicator.headlineIndicator).nationalTargets.length">
+                                                <CAlert color="danger" class="d-flex align-items-center"  v-if="!(getIndicator(indicator.headlineIndicator).nationalTargets||[]).length">
                                                     <CIcon icon="cil-burn" class="flex-shrink-0 me-2" width="24" height="24" />
                                                     <div>
                                                         Your country has not submitted any national target(s) linked to this headline indicator. (rephrase?)
@@ -227,7 +227,24 @@
 
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
-        
+
+        // incase if national target record was modified and global target was removed after 
+        // the mapping was submitted then filter such reference period
+        if(clean.referencePeriod && headlineIndicators.value?.length){            
+            const referencePeriod = clean.referencePeriod.filter(e=>{
+                return headlineIndicators.value.find(indicator=>indicator.identifier == e.headlineIndicator.identifier);
+            })
+            clean.referencePeriod = referencePeriod.length ? referencePeriod : undefined;
+        }
+        else{
+            clean.referencePeriod = []
+            headlineIndicators.value.forEach(indicator => {
+                clean.referencePeriod.push({
+                    headlineIndicator   : { identifier : indicator.identifier},
+                    hasReferencePeriod : false
+                })
+            });  
+        }
         return clean
     })
 

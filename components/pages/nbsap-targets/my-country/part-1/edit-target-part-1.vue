@@ -42,7 +42,7 @@
                                         >
                                         </km-select>
                                         <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
-                                            Minimum of one language is mandatory, please select another language to remove the last language.
+                                            Minimum of one language is mandatory, please select another language to remove the default language.
                                         </small>
                                     </km-form-group>   
 
@@ -207,8 +207,8 @@
                                         >
                                         </km-select>
                                     </km-form-group>
-                                    <km-form-group name="otherNationalIndicators"  caption="Other national indicators">
-                                        
+                                    <km-form-group name="otherNationalIndicators"  caption="Other national indicators">{{ document.otherNationalIndicators }}
+                                        <km-input-lstring-ml v-model="document.otherNationalIndicators" :locales="document.header.languages"></km-input-lstring-ml>
                                         <small id="emailHelp" class="form-text text-muted">Add your own indicators</small>
                                     </km-form-group>
                                 </div>
@@ -292,7 +292,7 @@
 
 <script setup>
   
-    import { KmInputRichLstring, KmSelect, KmFormGroup,
+    import { KmInputRichLstring, KmSelect, KmFormGroup, KmInputLstringMl,
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmFormWorkflow
     } from "~/components/controls";
     import viewTarget               from  "./view-target-part-1.vue";
@@ -356,7 +356,7 @@
 
         // if(!kmDocumentDraftStore.draftRecord){
         //     //TODO: show error that the record does not exists.
-        //     await navigateTo(appRoutes.NBSAPS_TARGETS_NEW);
+        //     await navigateTo(appRoutes.NATIONAL_TARGETS_NEW);
         //     // return;
         // }        
     }
@@ -400,7 +400,9 @@
     const selectedLocale = ref(locale.value);
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
-        
+        clean.elementOfGlobalTargetsinfo = undefined;
+        clean.hasReferncePeriod = undefined;
+        clean.referencePeriodInfo = undefined;
         return clean
     })
     

@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="justify-content-center">
-            <div >
+            <!-- <div >
                 <legend>{{t('welcome')}}</legend>
                 <hr/>
-            </div>  
+            </div>   -->
 
             <CRow>
               <CCol :sm="6">
@@ -13,8 +13,10 @@
                     <CCardTitle>{{t('partI')}}</CCardTitle>
                     <CCardText>{{t('nationalTarget')}}</CCardText>
                     <div class="d-grid gap-1 d-flex">
-                        <km-link :to="appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I" title="Go to Part I" 
-                            role="button" class="btn btn-primary"></km-link>
+                        <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I" title="Go to Part I" 
+                            role="button" class="btn btn-secondary"></km-link>
+                        <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" title="Submit new target" 
+                            role="button" class="btn btn-secondary"></km-link>
                         <CButton :disabled="disableActions"  @click="onValidate('partI')" color="secondary">
                             <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             {{t('validatePartI')}}
@@ -29,9 +31,8 @@
                     <CCardTitle>{{t('partII')}}</CCardTitle>
                     <CCardText>{{t('nationalMapping')}} </CCardText>
                     <div class="d-grid gap-1 d-flex">
-                        <km-link :to="appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II" title="Go to Part II" 
-                            role="button" class="btn btn-primary"></km-link>
-                            
+                        <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II" title="Go to Part II" 
+                            role="button" class="btn btn-secondary"></km-link>  
                         <CButton :disabled="disableActions" @click="onValidate('partII')" color="secondary">
                             <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             {{t('validatePartII')}}
@@ -44,7 +45,7 @@
                 <CCard>
                   <CCardBody>
                     <div class=" float-end d-grid gap-1 d-flex">
-                        <CButton :disabled="disableActions" @click="onPublish()" color="primary" v-if="showPublishBtn">
+                        <CButton :disabled="disableActions" @click="onPublish()" color="secondary" v-if="showPublishBtn">
                             <c-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             {{t('publish')}}
                         </CButton>
@@ -66,15 +67,11 @@
 
         <CModal scrollable class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showTargetsDialog" >
             <CModalHeader :close-button="false">
-                <CModalTitle>
+                <CModalTitle style="width:100%">
                     <span v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7">{{t('nationalTarget')}}</span>
-                    <span v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING">{{t('targetMapping')}}</span>
-                </CModalTitle>
-            </CModalHeader>
-            <CModalBody>
-                <div id="nationalTargetsValidationEdit">
-                    <div >
-                        <CAlert color="danger" class="d-flex align-items-center">
+                    <span v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING">{{t('nationalMapping')}}</span>
+                    <hr/>
+                    <CAlert color="danger" class="d-flex align-items-center">
                             <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
                             <span class="p-2">
                                 <slot name="message">
@@ -87,6 +84,12 @@
                                 </slot>
                             </span>                            
                         </CAlert>
+                </CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+                <div id="nationalTargetsValidationEdit">
+                    <div >
+                       
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -100,7 +103,13 @@
                                         {{ lstring(target.title) }}
                                     </td>
                                     <td>
-                                        <btn-new-target :query="{'globalTarget' : target.identifier}" :identifier="identifier"></btn-new-target>        
+                                        <btn-new-target v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7" 
+                                            :query="{'globalTarget' : target.identifier}" :identifier="identifier"></btn-new-target>        
+                                        <CButton  v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING" 
+                                            color="secondary" size="sm" 
+                                            @click="navigateTo({path: useLocalePath()($appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II), query:{'globalTarget' : target.identifier}})" >
+                                            <font-awesome-icon icon="fa-solid fa-pen-to-square"/> Edit mapping
+                                        </CButton>
                                     </td>
                                 </tr>
                             </tbody>                           
@@ -112,7 +121,12 @@
             </CModalBody>
             <CModalFooter>
                 <CButton @click="missingTargetDialogClose(missingTargets.schema)" color="success">{{t('close')}}</CButton>
-                <CButton @click="missingTargetDialogProceed(missingTargets.schema)" color="danger">{{t('proceedAnyways')}}</CButton>
+                <CPopover content="It is important that you submit information for all Global Goals and Targets." placement="bottom" trigger="hover">
+                    <template #toggler="{ on }">
+                        <CButton v-on="on" @click="missingTargetDialogProceed(missingTargets.schema)" color="danger">{{t('proceedAnyways')}}</CButton>
+                    </template>
+                </CPopover>
+                
             </CModalFooter>
         </CModal>
 
@@ -144,10 +158,10 @@
                     <span class="p-2">                             
                         {{t('successfulMessage')}}
                     </span>
-                    <div v-if="security.role.isNAU()">               
+                    <div v-if="security.role.isNAU(SCHEMAS.NATIONAL_TARGET_7)">               
                         {{t('successMessageNau')}}
                     </div>
-                    <div v-if="security.role.isPA()">               
+                    <div v-if="security.role.isPA(SCHEMAS.NATIONAL_TARGET_7)">               
                         {{t('successMessagePa')}}
                     </div>
                 </CAlert>
@@ -205,10 +219,11 @@
     const showValidationErrorDialog = ref(false);
     const missingTargets            = ref({});
 
+    const security                  = useSecurity();
     const { t }                     = useI18n();
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
 
-    const disableActions = computed(()=>isValidating.value || isPublishing.value)
+    const disableActions = computed(()=>isValidating.value || isPublishing.value || !!stateTargetWorkflow.value.batchId)
     // const disableActions            = computed(()=>isValidating || isPublishing)
     async function onValidate(type:string = undefined){
 
@@ -333,17 +348,18 @@
             const { user }        = useAuth();
             const realmConfStore  = useRealmConfStore();
             const realmConf = realmConfStore.realmConf;
-            const res = await useAPIFetch(`http://localhost:8000/api/v2023/national-reports/7/national-targets/${user.government||'scbd'}/publish`,{
+            const res = await useAPIFetch(`/api/v2023/national-reports/7/national-targets/${user.government||'scbd'}/publish`,{
                                             method: 'POST',
                                             query : {
                                                 realm : realmConf.realm
                                             }
                                         });
-
+            
             stateTargetWorkflow.value.batchId = res.batchId
         }
         catch(e){
-            console.error(e);
+            useLogger().error(e);
+            isPublishing.value = false;
         }
         showSpinnerDialog.value = false;
 

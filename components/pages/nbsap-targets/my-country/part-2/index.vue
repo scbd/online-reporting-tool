@@ -8,9 +8,9 @@
             <div class="card-body">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <!-- <NuxtLink to="/nbsap-targets/new"> -->
-                  <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
+                  <!-- <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
                     <CIcon icon="addthis"/> Submit new target
-                  </CButton>
+                  </CButton> -->
                 <!-- </NuxtLink> -->
                 <!-- <CButton color="secondary m-1">
                   <CIcon icon="cil-save"/> Save
@@ -40,7 +40,7 @@
                   
                   <tbody>
                     <template v-for="(target, index) in gbfGoalAndTargetList" :key="target">                        
-                      <tr class="bg-secondary">
+                      <tr class="bg-secondary" :id="'gbTraget_'+target.identifier">
                         <td>
                             {{lstring(target.title)}}
                             <div class="d-grid justify-content-end" v-if="target.nationalTargets?.length">
@@ -150,14 +150,10 @@
             <div id="nbsapTargetsPart2Edit">
                 <edit-target-part-2 :global-goal-or-target="editMappingTarget.identifier" 
                 :identifier="editMappingTarget.nationalMapping ? editMappingTarget.nationalMapping.header.identifier : undefined"
-                :headline-indicators="editMappingTarget.headlineIndicators" container="#nbsapTargetsPart2Edit"></edit-target-part-2>
+                :headline-indicators="editMappingTarget.headlineIndicators" container="#nbsapTargetsPart2Edit"
+                :on-close="closeEditMappingDialog"></edit-target-part-2>
             </div>
-        </CModalBody>     
-        <CModalFooter>
-            <CButton color="secondary" size="sm" @click="closeEditMappingDialog">
-                Close
-            </CButton>
-        </CModalFooter>      
+        </CModalBody>   
     </CModal>
 
 </template>
@@ -173,6 +169,9 @@
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { CModalFooter } from "@coreui/vue";
+    import { scrollToElement } from '@/utils';
+    import { useRoute } from 'vue-router' 
+    import { buildTargetMatrix } from "./util";
 
 
     const rowsPerPage = UTILS.ROWS_PER_PAGE;
@@ -197,6 +196,15 @@
 
     onMounted(async() => {
         await init();
+
+        if(route?.query?.globalTarget){
+            setTimeout(() => {
+                scrollToElement(`#gbTraget_${route.query.globalTarget}`);
+            }, 200);
+            const target = gbfGoalAndTargetList.value?.find(e=>e.identifier == route.query.globalTarget);
+            if(target?.nationalTargets?.length)
+                showEditMapping(target)
+        }
     })
     
 
@@ -271,41 +279,7 @@
             const nationalTargets  = response[1]
             const nationalMappings = response[2];
         
-            
-            const martrix = []
-            for (let i = 0; i < targets.length; i++) {
-                const target = targets[i];
-
-                target.nationalTargets = []
-
-                const lNationalTargets  = nationalTargets.filter (e=>e.body?.gbfGoalsAndTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier));
-                const lNationalMappings = nationalMappings.find(e=>e.body?.globalGoalOrTarget?.identifier  == target.identifier);
-
-                target.elementOfGlobalTargetsinfo = lNationalMappings?.body.elementOfGlobalTargetsinfo;
-                target.nationalMapping            = lNationalMappings?.body;
-                target.nationalTargets = lNationalTargets.map(e=>{
-                    return { identifier : e.identifier, title : e.body?.title}
-                });
-
-                target.headlineIndicators.forEach(indicator => {
-                    indicator.nationalTargets = lNationalTargets.filter(e=>e.body.headlineIndicators?.find(e=>e.identifier == indicator.identifier));
-                    indicator.referencePeriod = target.nationalMapping?.referencePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
-                });
-
-                const otherIndicators = [...target.componentIndicators, ...target.complementaryIndicators];
-
-                target.otherIndicators = otherIndicators.filter(indicator=>{
-                    
-                    const found = lNationalTargets.find(nationalTarget=>{
-                        return  nationalTarget.body.componentIndicators?.find(e=>e.identifier == indicator.identifier)||
-                                nationalTarget.body.complementaryIndicators?.find(e=>e.identifier == indicator.identifier)
-                    });
-                    return found;
-                })
-
-            }
-
-            // nationalTargetMatrix.value = sortBy(martrix, 'identifier');
+            targets = buildTargetMatrix(targets, nationalTargets, nationalMappings);
             gbfGoalAndTargetList.value = sortBy(targets, 'identifier');
         }
         catch(e){

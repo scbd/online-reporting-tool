@@ -5,7 +5,7 @@
 <script setup lang="ts">
   
   const { $appRoutes } = useNuxtApp();
-  await navigateTo($appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I)
+  await navigateTo($appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I)
 
 </script>
 

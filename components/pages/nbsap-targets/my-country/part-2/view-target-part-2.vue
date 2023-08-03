@@ -43,14 +43,14 @@
                     </div>
                 </div>
             </km-form-group>
-            <km-form-group>
+            <km-form-group v-if="viewDocument.referencePeriod">
                 <div class="card">
                     <div class="card-header bg-secondary">
                         Reference Period
                     </div>
                     <div class="card-body">
                         
-                        <CCard class="mb-2" v-for="(indicator) in document.referencePeriod" :key="indicator.identifier">
+                        <CCard class="mb-2" v-for="(indicator) in viewDocument.referencePeriod" :key="indicator.identifier">
                             <CCardBody>
                                 <CCardTitle>
                                     <km-term :value="indicator.headlineIndicator" :locale="selectedLocale"></km-term>
@@ -122,7 +122,6 @@
         identifier  : { type:String, required:true}
     })
 
-    console.log(props)
     let { document, identifier } = toRefs(props)
     let ldocument = ref(undefined);
 
@@ -138,14 +137,13 @@
     }
 
     onMounted(() => {
-        console.log('mounted')
         if(props.identifier && !props.document){
             loadDocument(props.identifier)       
         }
     })
  
     const onClose = async ()=>{
-        await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II)
+        await navigateTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II)
     }
 
     async function loadDocument(identifier){

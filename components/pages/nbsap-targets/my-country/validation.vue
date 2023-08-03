@@ -1,19 +1,6 @@
 <template>
     <div class="mt-3">      
-        <!-- <CCard>
-        <CCardHeader>
-          <slot name="header"> <CIcon name="cil-grid" /> National records </slot>
-        </CCardHeader>
-        <CCardBody> -->
-          <!-- <div class="card">
-            <div class="card-body">
-              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                  <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
-                    <CIcon icon="addthis"/> Submit new target
-                  </CButton>
-              </div>
-            </div>
-          </div> -->
+        
           <div class="card mt-3">
             <div class="card-header bg-secondary">
                 National targets 
@@ -46,10 +33,10 @@
                     </td>
                     <td>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
+                        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
                           <font-awesome-icon icon="fa-search" /> View
                         </CButton>
-                        <CButton :disabled="isBusy" color="secondary" size="sm" @click="onEditTarget(document)">
+                        <CButton :disabled="isBusy || disableActions" color="secondary" size="sm" @click="onEditTarget(document)">
                           <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
                       </div>
@@ -94,10 +81,10 @@
                     </td>
                     <td>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
+                        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW, document)">
                             <font-awesome-icon icon="fa-search" /> View
                         </CButton>
-                        <CButton :disabled="isBusy" color="secondary" size="sm" @click="onEditTarget(document)">
+                        <CButton :disabled="isBusy || disableActions" color="secondary" size="sm" @click="onEditTarget(document)">
                             <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
                       </div>
@@ -107,10 +94,6 @@
               </table>
             </div>
           </div>
-
-        <!-- </CCardBody>
-        
-      </CCard>  -->
 
         <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showEditDocumentModal" >
             <CModalHeader :close-button="false">
@@ -148,20 +131,19 @@
 <script setup lang="ts">
     import  { KmSpinnerSuspense, KmSpinner, KmModalSpinner, KmNavLink, KmTerm
             } from "@/components/controls";
-    import missingTargetError from '../missing-target-error.vue';
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
-    import { CModalFooter } from "@coreui/vue";
-    import { computedAsync } from '@vueuse/core'
     import { useThesaurusStore } from "@/stores/thesaurus";
     import { buildTargetMatrix } from "./part-2/util";
+    import { useStorage } from '@vueuse/core'
 
     defineExpose({
         validate
     });
     const $emits = defineEmits(['onRecordsLoad', 'onValidationFinished']);
 
+    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
     const EditTargetPart1 = defineAsyncComponent(()=>import("./part-1/edit-target-part-1.vue"));
     const EditTargetPart2 = defineAsyncComponent(()=>import('./part-2/edit-target-part-2.vue'));
 
@@ -184,6 +166,8 @@
     const editDocument = ref(null);
     const editTargetMapping  = ref(null);
     const showEditDocumentModal= ref(false);
+
+    const disableActions = computed(()=>!!stateTargetWorkflow.value.batchId)
 
     onMounted(async() => {
         await init();
