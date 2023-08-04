@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> NBSAP Target</slot>
+        <slot name="header"> National Target</slot>
       </CCardHeader>
       <CCardBody>
        
@@ -63,9 +63,9 @@
                                     Alignment
                                 </div>
                                 <div class="card-body">
-                                    <km-form-group caption="Alignment with global goals and targets" required name="gbfGoalsAndTargetAlignment">
+                                    <km-form-group caption="Alignment with global goals and targets" required name="globalTargetAlignment">
                                         <km-select
-                                            v-model="document.gbfGoalsAndTargetAlignment"
+                                            v-model="selectedGlobalTargets"
                                             class="validationClass"
                                             label="title"
                                             track-by="identifier"
@@ -83,58 +83,53 @@
 
                                     </km-form-group>
                                     
-                                    <km-form-group required caption="Degree of alignment" name="degreeOfAlignment">                                        
-                                        <km-select
-                                            v-model="document.degreeOfAlignment"
-                                            class="validationClass"
-                                            label="title"
-                                            track-by="identifier"
-                                            value-key="identifier"
-                                            placeholder="Degree of alignment"
-                                            :options="formattedDegreeOfAlignments"
-                                            :multiple="false"
-                                            :disabled="false"
-                                            :custom-label="customLabel"
-                                            :custom-selected-item="customSelectedItem"
-                                        >
-                                        </km-select>
+                                    <km-form-group required caption="Degree of alignment" name="degreeOfAlignment" v-if="document.globalTargetAlignment">                                        
+                                        
+                                        <table class="table table-bordered">                                            
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td class="w-25 fw-bold">Degree of Alignment</td>
+                                                </tr>
+                                                <tr v-for="target in document.globalTargetAlignment" :key="target.identifier">
+                                                    <td>
+                                                        <km-form-group required :name="target.identifier+'_degreeOfAlignment'">
+                                                            <label class="control-label" :for="target.identifier+'_degreeOfAlignment'">
+                                                                <span class="visually-hidden">{{ t('degreeOfAlignment') }} - </span>
+                                                                {{ lstring(globalGoalsAndTargets.find(e=>e.identifier == target.identifier).title) }}
+                                                            </label>
+                                                        </km-form-group>
+                                                    </td>
+                                                    <td>
+                                                        <km-form-check-group v-if="target.degreeOfAlignment" class="mb-0">
+                                                            <km-form-check-item v-for="degree in formattedDegreeOfAlignments" :key="degree" inline type="radio" 
+                                                            :name="target.identifier+'_degreeOfAlignment'"  :for="target.identifier+'_degreeOfAlignment'" 
+                                                            :id="target.identifier+'_degreeOfAlignment'+degree.identifier" :value="degree.identifier"  
+                                                            v-model="target.degreeOfAlignment.identifier" :label="lstring(degree.title)" />
+                                                        </km-form-check-group>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                         <small id="emailHelp" class="form-text text-muted">
                                             <span :class="{'text-success font-weight-bold': (document.degreeOfAlignment||{}).identifier=='AABF237C-F906-40D2-9595-5226C8B18A58'}">High = covers all elements of the global target; </span>
                                             <span :class="{'text-warning font-weight-bold': (document.degreeOfAlignment||{}).identifier=='68197B76-67B4-40AD-BB14-A8C340E1320B'}">Medium = covers most elements of the global target; </span>
                                             <span :class="{'text-danger font-weight-bold': (document.degreeOfAlignment||{}).identifier=='9668759B-3653-4994-A917-3F039B0BAA5C'}">Low = covers at least one element of the global target</span>
                                         </small>
+                                    </km-form-group>                                              
+                                    <km-form-group name="relatedOtherProcesses" caption="Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it">
+                                        <km-multi-checkbox v-model="document.implementingConsiderations" :options="gbfTargetConsideration">
+                                        </km-multi-checkbox>
+                                        <small id="emailHelp" class="form-text text-muted">Please check all relevant considerations for implementation.</small>
+                                    </km-form-group>
+                                    <km-form-group name="implementingConsiderationsInfo" caption="Please explain how these considerations have been taken into account">
+                                        <km-input-rich-lstring v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     <km-form-group name="implementingConsiderationsInfo" 
                                         caption="Explanation, including which aspects of the goal or target are covered">
                                         <km-input-rich-lstring v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
 
-                                    <km-form-group>
-                                        <div class="card">
-                                            <div class="card-body">                                                
-                                                <km-form-group name="relatedOtherProcesses" caption="Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it">
-                                                    <km-select
-                                                        v-model="document.implementingConsiderations"
-                                                        class="validationClass"
-                                                        label="title"
-                                                        track-by="identifier"
-                                                        value-key="identifier"
-                                                        placeholder="Considerations for implementation"
-                                                        :options="gbfTargetConsideration"
-                                                        :multiple="true"
-                                                        :close-on-select="false"
-                                                        :custom-label="customLabel"
-                                                        :custom-selected-item="customSelectedItem"
-                                                    >
-                                                    </km-select>
-                                                    <small id="emailHelp" class="form-text text-muted">Please check all relevant considerations for implementation.</small>
-                                                </km-form-group>
-                                                <km-form-group name="implementingConsiderationsInfo" caption="Please explain how these considerations have been taken into account">
-                                                    <km-input-rich-lstring v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                                </km-form-group>
-                                            </div>
-                                        </div>
-                                    </km-form-group>
                                 </div>
                             </div>
                         </km-form-group>
@@ -144,21 +139,19 @@
                                     Indicators to be used to monitor this national target
                                 </div>
                                 <div class="card-body">
-                                    <km-form-group caption="Headline indicators" required name="headlineIndicators">
-                                        <km-select
-                                            v-model="document.headlineIndicators"
-                                            class="validationClass"
-                                            label="title"
-                                            track-by="identifier"
-                                            value-key="identifier"
-                                            placeholder="Headline and Binary indicators"
-                                            :options="headlineIndicators"
-                                            :multiple="true"
-                                            :disabled="false"
-                                            :custom-label="customLabel"
-                                            :custom-selected-item="customSelectedItem"
-                                        >
-                                        </km-select>
+                                    <km-form-group caption="Headline indicators" name="headlineIndicators">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>This National Target will be linked to the following Headline Indicators</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="indicator in headlineIndicators" :key="indicator.identifier">
+                                                    <td>{{ lstring(indicator.title) }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </km-form-group>
                                     <km-form-group caption="Binary indicators" name="binaryIndicators" v-if="binaryIndicatorsRef && binaryIndicatorsRef.length">
                                         <table class="table table-bordered">
@@ -207,7 +200,7 @@
                                         >
                                         </km-select>
                                     </km-form-group>
-                                    <km-form-group name="otherNationalIndicators"  caption="Other national indicators">{{ document.otherNationalIndicators }}
+                                    <km-form-group name="otherNationalIndicators"  caption="Other national indicators">
                                         <km-input-lstring-ml v-model="document.otherNationalIndicators" :locales="document.header.languages"></km-input-lstring-ml>
                                         <small id="emailHelp" class="form-text text-muted">Add your own indicators</small>
                                     </km-form-group>
@@ -289,11 +282,12 @@
     </CCard>
   
 </template>
-
+<i18n src="@/i18n/dist/components/pages/nbsap-targets/my-country/part-1/edit-target-part-1.json"></i18n>
 <script setup>
   
-    import { KmInputRichLstring, KmSelect, KmFormGroup, KmInputLstringMl,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmFormWorkflow
+    import { KmInputRichLstring, KmSelect, KmFormGroup, KmInputLstringMl, KmMultiCheckbox,
+        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmFormWorkflow,
+        KmValueTerm
     } from "~/components/controls";
     import viewTarget               from  "./view-target-part-1.vue";
     import { mapStores }            from 'pinia'
@@ -330,12 +324,11 @@
     const componentIndicatorsRef     = ref(null);
     const complementaryIndicatorsRef = ref(null);
     const binaryIndicatorsRef        = ref(null);
+    const selectedGlobalTargets      = ref([]);
         
     const showSpinnerModal = ref(false);
 
     await Promise.all([
-        // thesaurusStore.loadDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS),
-        // thesaurusStore.loadDomainTerms(THESAURUS.GBF_GLOBAL_GOALS),
         GbfGoalsAndTargets.loadGbfGoalsAndTargets(),
         thesaurusStore.loadDomainTerms(THESAURUS.GBF_HEADLINE_INDICATORS),
         thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPONENT_INDICATORS    ),
@@ -353,20 +346,11 @@
     else if(refProps.identifier.value || route?.params?.identifier){
         await kmDocumentDraftStore.loadDraftDocument(refProps.identifier.value||route.params.identifier);
         document.value = kmDocumentDraftStore.draftRecord?.body;
-
-        // if(!kmDocumentDraftStore.draftRecord){
-        //     //TODO: show error that the record does not exists.
-        //     await navigateTo(appRoutes.NATIONAL_TARGETS_NEW);
-        //     // return;
-        // }        
+        selectedGlobalTargets.value = document.value.globalTargetAlignment?.map(e=>{return { identifier : e.identifier }})
     }
     
-    // if(document.value?.degreeOfAlignment){
-    //     console.log(document);
-    //     if(['high', 'medium', 'low'].includes(document.value.degreeOfAlignment.identifier))
-    //         document.value.degreeOfAlignment = undefined
-    // }
     //initialize for local use
+    document.value.government = document.value?.government || {};
     document.value.additionalImplementation = document.value?.additionalImplementation || {};
 
     const formattedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
@@ -409,8 +393,8 @@
     onMounted(() => {
         if(user?.value?.isAuthenticated){
             document.value.government.identifier = document.value?.government?.identifier || user.value.government
-            if(document.value?.gbfGoalsAndTargetAlignment)
-                onGoalsAndTargetSelected(document.value?.gbfGoalsAndTargetAlignment);
+            if(document.value?.globalTargetAlignment)
+                onGoalsAndTargetSelected(document.value?.globalTargetAlignment);
         }
     })  
 
@@ -424,7 +408,13 @@
     }
 
     const onGoalsAndTargetSelected = async (selected)=>{
+
+        document.value.globalTargetAlignment = selected.map(e=>{
+            const existing = document.value.globalTargetAlignment?.find(target=>target.identifier == e.identifier)
+            return { identifier : e.identifier, degreeOfAlignment:{}, ...(existing||{}) }
+        });
         
+
         const headlineRes       = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
         const componentRes      = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComponentIndicator(e.identifier)}));
         const complementaryRes  = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)}));
@@ -435,11 +425,6 @@
         complementaryIndicatorsRef.value = sortBy([...(complementaryRes?.flat()||[])], 'title')
         binaryIndicatorsRef.value        = sortBy([...(binaryRes?.flat()||[])], 'title')
         
-        if(document.value?.headlineIndicators?.length){
-            document.value.headlineIndicators = document.value?.headlineIndicators.filter(selected=>{
-                return headlineIndicatorsRef.value.find(e=>e.identifier == selected.identifier)
-            })
-        }
         if(document.value?.componentIndicators?.length){
             document.value.componentIndicators = document.value?.componentIndicators.filter(selected=>{
                 return componentIndicatorsRef.value.find(e=>e.identifier == selected.identifier)
@@ -478,11 +463,9 @@
             
         }
         if(route?.query?.globalTarget){
-           emptyDoc.gbfGoalsAndTargetAlignment = [{ identifier : route.query.globalTarget }];
+           emptyDoc.globalTargetAlignment = [{ identifier : route.query.globalTarget }];
         }
-        if(route?.query?.headlineIndicator){
-           emptyDoc.headlineIndicators = [{ identifier : route.query.headlineIndicator }];
-        }
+
         return emptyDoc
     }
 
