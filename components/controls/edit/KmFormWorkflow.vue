@@ -38,7 +38,6 @@
                         <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                     </div>
                 </CCol>
-
                 <km-validation-errors :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
             </CRow>
             <div v-show="activeTab == tabName.submission" class="m-1"><slot name="submission"></slot></div>
@@ -154,8 +153,8 @@
         // console.log('Wizard Completed');
     }
 
-    async function onReviewDocument(tabCanged){
-        if(!tabCanged && activeTab.value == tabName.review)
+    async function onReviewDocument(tabChanged){
+        if(!tabChanged && activeTab.value == tabName.review)
             return;
             console.log('review')
         await wizardRef.value.changeTab(tabName.review)
@@ -168,9 +167,10 @@
         if(validationResponse && validationResponse?.errors?.length) {
             validationReport.value = {...validationResponse};
             // $scope.tab = "review";
-            $eventBus.emit('onReviewError', validationResponse)
         }
-        validationReport.value = {}
+        else 
+            validationReport.value = {}
+        $eventBus.emit('onReviewError', validationResponse)
     }
 
     async function onSaveDraft(){
@@ -184,11 +184,11 @@
             
             // save document
             const documentSaveResponse = await EditFormUtility.saveDraft(document.value);
-            originalDocument = { ...document }
+            originalDocument = { ...(document.value) }
 
             // onPostSaveDraft
             if(definedProps.onPostSaveDraft)
-                definedProps.onPostSaveDraft(documentSaveResponse);
+                definedProps.onPostSaveDraft({...documentSaveResponse, body:{...originalDocument}});
 
             $toast.success(t('toastDraftSaveMessage'), {position:'top-right'});  
         }
@@ -216,11 +216,8 @@
             throw "Invalid document";
 
         const { $api } = useNuxtApp();
-        const { data, error } = await $api.kmStorage.documents.validate(document);
+        const data     = await $api.kmStorage.documents.validate(document);
 
-        if(error?.value)
-                throw error;
-            
         return data;
     }
 

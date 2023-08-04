@@ -6,7 +6,9 @@ export const useSecurity = ()=>{
         checkUserAccess,
         isInRoles,
         role : {
-            isAdministrator : isAdministrator()
+            isAdministrator : isAdministrator(),
+            isNAU           : isNAU,
+            isPA            : isPA
         }
     }
 }
@@ -19,6 +21,14 @@ function isAdministrator(){
         const adminRoles = realmConfStore.getRole(ROLES.ADMINISTRATOR)
         return isInRoles(adminRoles);
     }
+}
+
+function isNAU(schema){
+    return false;
+}
+
+function isPA(schema){
+    return false;
 }
 
 async function checkUserAccess(options:any) {

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import $ from 'jquery';
 
 //TODO revisit logic
 export const removeEmpty = function(obj){
@@ -60,4 +61,27 @@ export function sortBy(list:Array, property){
         return valueA.localeCompare(valueB);
 
     })
+}
+
+
+export const sleep = (ms)=> new Promise(resolve=> setTimeout(resolve, ms));
+
+export const scrollToElement = (querySelector, container)=>{
+    container = container || 'body,html'
+    const qLabel = $(container).find(querySelector);
+    const qBody  = $(container);
+
+    var scrollNum = qLabel.offset().top
+
+    if(container!= 'body,html'){
+        //its a dialog calculate scrollTop
+        var dialogContainer = $(container)
+        scrollNum = scrollNum - dialogContainer.offset().top + dialogContainer.scrollTop();
+    }
+    else
+        scrollNum -= 130; //forms 
+
+    qBody.stop().animate({
+        scrollTop: scrollNum
+    }, 100);
 }

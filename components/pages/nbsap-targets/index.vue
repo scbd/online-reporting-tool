@@ -1,6 +1,6 @@
 <template>
     <div>
-        redirect user to part I
+
     </div>
 </template>
 

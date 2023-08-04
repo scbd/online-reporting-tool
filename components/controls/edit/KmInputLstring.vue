@@ -2,7 +2,8 @@
   <div :id="`${useAttrs().id || 'km-input-lstring-'+uid}`" class="km-input mb-2">   
     <slot></slot>    
     <CInputGroup class="mb-1" v-for="locale in locales" :key="locale" :class="`km-input-${locale}`" >
-      <CFormInput aria-describedby="basic-addon2" v-model="binding[locale]" :dir="locale=='ar' ? 'rtl' : 'ltr'" />
+      <CFormInput aria-describedby="basic-addon2" v-model="binding[locale]" :dir="locale=='ar' ? 'rtl' : 'ltr'" 
+      @update:modelValue="emitChange" />
       <CInputGroupText id="basic-addon2">{{locale.toUpperCase()}}</CInputGroupText>
     </CInputGroup>    
   </div>
@@ -40,11 +41,10 @@ export default {
   },
   watch:{
     locales : function(newVal, oldVal){
-      console.log(newVal)
       const deleted = without(oldVal, ...newVal)
       if(deleted?.length){      
         this.binding[deleted[0]] = undefined;
-        this.$emit('update:modelValue', this.binding);
+        this.emitChange();
       }
     }
   },
@@ -59,11 +59,17 @@ export default {
         return this.modelValue||{};
       },
       set(value) {
-        this.$emit('update:modelValue', value);
+        this.emitChange();
       }
     }
   },
-  methods: {  },
+  methods: { 
+
+    emitChange(value){
+        this.$emit('update:modelValue', this.binding);
+    }
+
+   },
   mounted(){        
     this.binding = {...this.modelValue||{}};
   }

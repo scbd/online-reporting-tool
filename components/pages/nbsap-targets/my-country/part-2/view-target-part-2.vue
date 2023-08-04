@@ -31,19 +31,53 @@
                         Elements of the global targets
                     </div>
                     <div class="card-body">                                
-                        <km-form-group v-if="viewDocument.elementOfGlobalTargetsinfo || viewDocument.hasReferncePeriod || viewDocument.hasReferncePeriod">
+                        <km-form-group v-if="viewDocument.elementOfGlobalTargetsinfo || viewDocument.hasReferencePeriod || viewDocument.hasReferencePeriod">
                             <label class="form-label" for="elementOfGlobalTargetsinfo">Elements of the global targets addressed by national targets</label>
                             <km-lstring-value type="html" :value="viewDocument.elementOfGlobalTargetsinfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
-                        <km-form-group>
-                            <label class="form-check-label" for="hasReferncePeriod">Is there a reference period and national target which relates to the headline indicator?</label>
-                            <km-value-bool :value="viewDocument.hasReferncePeriod" :locale="selectedLocale"></km-value-bool>
-                        </km-form-group> 
 
-                        <km-form-group v-if="viewDocument.hasReferncePeriod">
-                            <label class="form-label" for="referencePeriodInfo">Please explain</label>
-                            <km-lstring-value type="html" :value="viewDocument.referencePeriodInfo" :locale="selectedLocale"></km-lstring-value>
-                        </km-form-group>
+                        <div>
+                            
+
+                        </div>
+                    </div>
+                </div>
+            </km-form-group>
+            <km-form-group v-if="viewDocument.referencePeriod">
+                <div class="card">
+                    <div class="card-header bg-secondary">
+                        Reference Period
+                    </div>
+                    <div class="card-body">
+                        
+                        <CCard class="mb-2" v-for="(indicator) in viewDocument.referencePeriod" :key="indicator.identifier">
+                            <CCardBody>
+                                <CCardTitle>
+                                    <km-term :value="indicator.headlineIndicator" :locale="selectedLocale"></km-term>
+                                </CCardTitle>
+                                <hr/>
+                                <CCardText >
+                                        <!-- v-if="getIndicator(indicator.headlineIndicator).nationalTargets.length" -->
+                                    <!-- <km-form-group caption="National target(s) linked to headline indicator">
+                                        <div  class="ps-2" v-for="(target, index) in getIndicator(indicator.headlineIndicator).nationalTargets" :key="target.identifier">
+                                            {{index+1}}. {{lstring(target.title)}}
+                                        </div>
+                                    </km-form-group> -->
+                                    <km-form-group>
+                                        <label class="form-check-label" for="hasReferencePeriod">Is there a reference period and national target which relates to the headline indicator?</label>
+                                        <km-value-bool :value="indicator.hasReferencePeriod" :locale="selectedLocale"></km-value-bool>
+                                    </km-form-group> 
+
+                                    
+                                    <km-form-group v-if="indicator.hasReferencePeriod">
+                                        <label class="form-label" for="referencePeriodInfo">Please explain</label>
+                                        <km-lstring-value type="html" :value="indicator.referencePeriodInfo" :locale="selectedLocale"></km-lstring-value>
+                                    </km-form-group> 
+                                </CCardText>
+
+                            </CCardBody>
+                        </CCard>
+                        
                     </div>
                 </div>
             </km-form-group>
@@ -62,7 +96,7 @@
 <script setup>
   
     import { KmFormGroup, KmModalSpinner, KmLstringValue,
-        KmLocales, KmValueTerm, KmValueBool, KmValueTerms, KmValue
+        KmLocales, KmValueTerm, KmValueBool, KmValueTerms, KmTerm, KmValue
     } from "~/components/controls";
     import { mapStores }            from 'pinia'
     import { languages }            from '@/app-data/languages'
@@ -88,7 +122,6 @@
         identifier  : { type:String, required:true}
     })
 
-    console.log(props)
     let { document, identifier } = toRefs(props)
     let ldocument = ref(undefined);
 
@@ -104,14 +137,13 @@
     }
 
     onMounted(() => {
-        console.log('mounted')
         if(props.identifier && !props.document){
             loadDocument(props.identifier)       
         }
     })
  
     const onClose = async ()=>{
-        await navigateTo(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II)
+        await navigateTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II)
     }
 
     async function loadDocument(identifier){

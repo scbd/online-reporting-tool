@@ -11,7 +11,8 @@
     <CTabContent>
       <CTabPane role="tabpanel" :aria-labelledby="`tabContent-${locale}-${uid}`" v-for="locale in locales" :key="locale" 
         :visible="activeLocale === locale" :id="`lstringTabContent-${uid}`">       
-        <km-ck-editor v-if="activeLocale==locale" v-model="binding[activeLocale]" :locale="activeLocale"></km-ck-editor>     
+        <km-ck-editor v-if="activeLocale==locale" v-model="binding[activeLocale]" 
+            :locale="activeLocale" @onChange="onChange"></km-ck-editor>     
       </CTabPane>
     </CTabContent>
   </div>
@@ -69,12 +70,19 @@ export default {
       get() {
         return this.modelValue||{};
       },
-      set(value) {
-        this.$emit('update:modelValue', value);
-      }
+    //   set(value) {
+    //     console.log(value)
+    //     const clean = useStorage().cleanDocument({...value});
+    //     this.$emit('update:modelValue', clean);
+    //   }
     }
   },
-  methods: {  },
+  methods: { 
+    onChange(value){
+        const clean = useStorage().cleanDocument({...this.binding});
+        this.$emit('update:modelValue', clean);
+    }
+  },
   mounted(){
     
     this.activeLocale = this.locales[0];

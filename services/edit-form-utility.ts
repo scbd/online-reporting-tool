@@ -26,7 +26,7 @@ class editFormUtility{
                 return success;
             },
             function(error) {
-                if (error.status == 404)
+                if (error?.cause?.status == 404)
                     return $kmStorageApi.documents.get(identifier, { info: "" });
                 throw error;
             }).then(
@@ -60,22 +60,26 @@ class editFormUtility{
 
         const { $api } = useNuxtApp();
         const $kmStorageApi = $api.kmStorage
-        
-        const { data, error} = await $kmStorageApi.drafts.get(identifier, { info: "" })
-        if(!error.value)
-            return true;
-        
-        if (error.value?.statusCode == 404)
-                return false;
+        try {
+            const data = await $kmStorageApi.drafts.get(identifier, { info: "" })
+            if(data)
+                return true;
+            
+        }
+        catch(error){
 
-        throw error;
+            if (error?.cause?.status == 404)
+                    return false;
+
+            throw error;
+        }
         
     }
 
     //==================================
     //
     //==================================
-    saveDraft(document) {
+    saveDraft(document:Object) {
 
         const { $api } = useNuxtApp();
         const $kmStorageApi = $api.kmStorage
@@ -90,9 +94,7 @@ class editFormUtility{
                                                : $kmStorageApi.drafts.canCreate(identifier, { metadata });
 
                 return securityPromise.then(
-                    function({data, error}) {
-                        if(error.value)
-                            throw error;
+                    function(data) {
 
                         if (!data?.isAllowed)
                             throw { error: "Not authorized to save draft" };
@@ -113,7 +115,7 @@ class editFormUtility{
         return $kmStorageApi.documents.get(identifier, { info: "" }).then(function() {
             return true;
         },function(error) {
-            if (error.status == 404)
+            if (error?.cause?.status == 404)
                 return false;
             throw error;
         });

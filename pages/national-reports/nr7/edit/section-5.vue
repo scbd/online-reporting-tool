@@ -82,7 +82,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <CIcon icon="cil-comment-square-edit"/> Edit Review
+                    <font-awesome-icon icon="fa-edit" /> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -105,7 +105,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <CIcon icon="cil-comment-square-edit"/> Edit Review
+                    <font-awesome-icon icon="fa-edit" /> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -131,7 +131,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <CIcon icon="cil-comment-square-edit"/> Edit Review
+                    <font-awesome-icon icon="fa-edit" /> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -157,7 +157,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <CIcon icon="cil-comment-square-edit"/> Edit Review
+                    <font-awesome-icon icon="fa-edit" /> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -180,7 +180,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <CIcon icon="cil-comment-square-edit"/> Edit Review
+                    <font-awesome-icon icon="fa-edit" /> Edit Review
                   </CButton>
                 </div>
               </td>
@@ -206,7 +206,7 @@
                     size="sm"
                     @click="onReviewTarget()"
                   >
-                    <CIcon icon="cil-comment-square-edit"/> Edit Review
+                    <font-awesome-icon icon="fa-edit" /> Edit Review
                   </CButton>
                 </div>
               </td>

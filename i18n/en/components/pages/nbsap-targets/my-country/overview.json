@@ -1,0 +1,28 @@
+{
+    "validationErrorsTitle"  : "Validation errors",
+    "validationErrorsMessage": "There is still mandatory information missing in some of your record(s), please make sure that all records marked in red are completed.",
+    "close"                  : "Close",
+    "successfulMessage"      : "You request to publish your countries National Targets and Mapping has been received.",
+    "successMessageNau"      : "Your request to publish will be sent to your country's NFP who has rights to publish.",
+    "successMessagePA"       : "Since there are number of records it will take few minutes to published them all.",
+    "successfulTitle"        : "Success",
+    "yes"                    : "Yes",
+    "no"                     : "No",
+    "confirmationMessage"    : "Are you sure you wan to proceed with publishing your countries National Targets and Mapping?",
+    "confirmationTitle"      : "Confirmation",
+    "nationalTarget"         : "National Target",
+    "nationalMapping"        : "Global goal/target mapping",
+    "proceedAnyways"         : "I still want to proceed",
+    "missingNationalTargets" : "Your country has not submitted any national targets for these Global Goal/Target",
+    "missingNationalMappings": "Your country has not submitted mapping information for these Global Goal/Target",
+    "validatePartI"          : "Validate Part I",
+    "validatePartII"         : "Validate Part II",
+    "validatePartIAndPartII" : "Validate Part I and Part II",
+    "publish"                : "Publish Part I and Part II",
+    "submitMapping"          : "Submit your global goals/targets mapping information",
+    "submitTargets"          : "Submit your national targets here",
+    "partI"                  : "Part I",
+    "partII"                 : "Part II",
+    "welcome"                : "Welcome to your country's National Targets submission section. please select option to proceed."
+
+}

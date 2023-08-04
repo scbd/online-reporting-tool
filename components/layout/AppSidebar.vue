@@ -6,27 +6,39 @@
     @visible-change="(event) =>{}"
   >
     <CSidebarBrand>
-      <img src="https://chm.cbd.int/app/img/cbd-logo-en.svg" role="img" custom-class-name="sidebar-brand-full" height="35">
-      <span class="brand-name">CHM - ORT</span>
+        <img src="https://chm.cbd.int/app/img/cbd-logo-en.svg" role="img" custom-class-name="sidebar-brand-full" height="35">
+        <CPopover content="On-line Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
+            <template #toggler="{ on }">
+                <span class="brand-name" v-on="on">CHM - ORT</span>
+            </template>
+        </CPopover>
+     
     </CSidebarBrand>     
     <CSidebarNav>
       <KmNavLink :to="localePath('/dashboard')" icon="cil-speedometer" :title="t('menuDashboard')"></KmNavLink>      
-      <li class="nav-title" v-if="menuAccess[appRoutes.NBSAPS_TARGETS]">
-        {{t('menuDashboardNbsaps')}}
-      </li>
-      <CNavGroup :visible="isChildRouteActive(appRoutes.NBSAPS_TARGETS)">
+      <!-- <li class="nav-title" v-if="menuAccess[appRoutes.NATIONAL_TARGETS]">
+        {{t('menuNbsaps')}}
+      </li> -->
+      <CNavGroup :visible="isChildRouteActive(appRoutes.NBSAPS)">
         <template #togglerContent>
-            <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
+            {{ t('menuNbsaps') }}
+        </template>
+        <KmNavLink  icon="fa-solid fa-list"         target="_blank" :to="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport`" :title="t('menuNbsapsAll')"></KmNavLink>
+        <KmNavLink  icon="fa-solid fa-flag" target="_blank" :to="`https://chm.cbd.int/${$i18n.locale}/submit/nationalReport?type=nbsap`" :title="t('menuNbsapsMyCountry')"></KmNavLink>
+      </CNavGroup>
+      <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_TARGETS)">
+        <template #togglerContent>
             {{ t('menuNationalTargets') }}
         </template>
-        <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
-        <CNavGroup :visible="isChildRouteActive(appRoutes.NBSAPS_TARGETS_MY_COUNTRY)">
+        <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
+        <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)">
           <template #togglerContent>
+            <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
             {{ t('menuMyCountryTargets') }}
           </template>
-          <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_MY_COUNTRY]"  :to="localePath(appRoutes.NBSAPS_TARGETS_MY_COUNTRY)"         icon="fa-wand-magic-sparkles" :title="t('overview')"></KmNavLink>
-          <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_MY_COUNTRY]"  :to="localePath(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_I)"  icon="fa-arrows-down-to-people" :title="t('menuMyCountryTargetsPart1')"></KmNavLink>
-          <KmNavLink v-if="menuAccess[appRoutes.NBSAPS_TARGETS_MY_COUNTRY]" :to="localePath(appRoutes.NBSAPS_TARGETS_MY_COUNTRY_PART_II)"  icon="fa-layer-group" :title="t('menuMyCountryTargetsPart2')"></KmNavLink>
+          <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_MY_COUNTRY]"  :to="localePath(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)"         icon="fa-wand-magic-sparkles" :title="t('overview')"></KmNavLink>
+          <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_MY_COUNTRY]"  :to="localePath(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I)"  icon="fa-arrows-down-to-people" :title="t('menuMyCountryTargetsPart1')"></KmNavLink>
+          <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_MY_COUNTRY]" :to="localePath(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II)"  icon="fa-layer-group" :title="t('menuMyCountryTargetsPart2')"></KmNavLink>
         </CNavGroup>
       </CNavGroup>
       
@@ -59,7 +71,7 @@
   </CSidebar>
 </template>
 
-<i18n src="@/i18n/dist/layouts/containers/AppSidebar.json"></i18n>
+<i18n src="@/i18n/dist/components/layout/AppSidebar.json"></i18n>
 <script>
 
 import { useRealmConfStore }    from '@/stores/realmConf';
@@ -84,8 +96,8 @@ export default {
 
     const menuAccess = {
       [appRoutes.DASHBOARD] : true,
-      [appRoutes.NBSAPS_TARGETS]            : true,
-      [appRoutes.NBSAPS_TARGETS_MY_COUNTRY]   : true,//false,
+      [appRoutes.NATIONAL_TARGETS]            : true,
+      [appRoutes.NATIONAL_TARGETS_MY_COUNTRY]   : true,//false,
       [appRoutes.NATIONAL_REPORTS_NR6]      : true,
       [appRoutes.NATIONAL_REPORTS_NR7]      : true,
       [appRoutes.NATIONAL_REPORTS_NR7_EDIT] : true,//false,     

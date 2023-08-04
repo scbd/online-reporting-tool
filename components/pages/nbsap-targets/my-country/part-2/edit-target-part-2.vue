@@ -10,8 +10,8 @@
         </div>
         <form v-if="!isLoading && document" name="editForm">
            
-            <km-form-workflow :current-tab="1" :get-document="onGetDocument" :validation-report="validationReport" 
-                :container="container" :on-pre-close="onClose">
+            <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
+                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template #submission>
                      <div  >
                        <km-form-group>
@@ -47,7 +47,7 @@
                                         >
                                         </km-select>
                                         <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
-                                            Minimum of one language is mandatory, please select another language to remove the last language.
+                                            Minimum of one language is mandatory, please select another language to remove the default language.
                                         </small>
                                     </km-form-group>  
                                 </div>
@@ -73,23 +73,23 @@
                                 </div>
                                 <div class="card-body">
                                     <!-- <legend>Headline Indicators</legend> -->
-                                    <CCard class="mb-2" v-for="(indicator, index) in headlineIndicators" :key="indicator.identifier">
+                                    <CCard class="mb-2" v-for="(indicator, index) in document.referencePeriod" :key="indicator.identifier">
                                         <CCardBody>
-                                            <CCardTitle>{{lstring(indicator.title)}}</CCardTitle>
+                                            <CCardTitle>{{lstring(getIndicator(indicator.headlineIndicator).title)}}</CCardTitle>
                                             <hr/>
                                             <CCardText>
-                                                <table class="table" v-if="indicator.nationalTargets.length">
+                                                <table class="table" v-if="(getIndicator(indicator.headlineIndicator).nationalTargets||[]).length">
                                                     <tr>
                                                         <td>   
                                                             <km-form-group caption="National target(s) linked to headline indicator">
-                                                                <div  class="ps-2" v-for="(target, index) in indicator.nationalTargets" :key="target.identifier">
+                                                                <div  class="ps-2" v-for="(target, index) in getIndicator(indicator.headlineIndicator).nationalTargets" :key="target.identifier">
                                                                     {{index+1}}. {{lstring(target.title)}}
                                                                 </div>
                                                             </km-form-group>
                                                             <km-form-group name="hasReferencePeriod" required caption="Is there a reference period for above national target(s) which relates to the headline indicator? (rephrase?)">
                                                                 <km-form-check-group>
-                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodYes'+ indicator.identifier" :value="true"  v-model="indicator.hasReferencePeriod" label="Yes"/>
-                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodNo' + indicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" label="No"/>
+                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodYes'+ indicator.headlineIndicator.identifier"  :value="true"  v-model="indicator.hasReferencePeriod" label="Yes"/>
+                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodNo' + indicator.headlineIndicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" label="No"/>
                                                                 </km-form-check-group>
                                                             </km-form-group> 
 
@@ -99,7 +99,7 @@
                                                         </td>
                                                     </tr> 
                                                 </table>
-                                                <CAlert color="danger" class="d-flex align-items-center"  v-if="!indicator.nationalTargets.length">
+                                                <CAlert color="danger" class="d-flex align-items-center"  v-if="!(getIndicator(indicator.headlineIndicator).nationalTargets||[]).length">
                                                     <CIcon icon="cil-burn" class="flex-shrink-0 me-2" width="24" height="24" />
                                                     <div>
                                                         Your country has not submitted any national target(s) linked to this headline indicator. (rephrase?)
@@ -147,12 +147,16 @@
     import { useRoute } from 'vue-router' 
     import { useToast } from 'vue-toast-notification';
     import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
+    import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
 
     const props = defineProps({
         identifier         : {type:String, required:false},
+        rawDocument        : {type: Object },
         globalGoalOrTarget : {type:String, required:true},
         headlineIndicators : {type:Array, required:true},
+        workflowActiveTab  : {type:Number, default:1 },
         onClose            : {type:Function, required:false},
+        onPostSaveDraft    : {type:Function, required:false},
     }) 
 
     const { user }        = useAuth();
@@ -171,25 +175,44 @@
     const headlineIndicators = ref(null) 
     const validationReport = ref(null);
   
-    watchEffect(()=>headlineIndicators.value = [...props.headlineIndicators])
+    watchEffect(()=>{
+
+        if(props.headlineIndicators?.length){
+            return headlineIndicators.value = [...props.headlineIndicators].map(e=>{
+                e.hasReferencePeriod = false;
+                return e;
+            })
+        }
+        else{
+            loadHeadlineIndicators(props.globalGoalOrTarget)
+        }
+    })
 
     await Promise.all([
         countriesStore.loadCountries()
     ]);
 
-    let document, state, isReady, isLoading;
+    let document = ref({});
+    let isLoading = ref(false);
 
-    if(props?.identifier){
-        ({ state:document, isReady, isLoading } = useAsyncState(KmDocumentDraftsService.loadDraftDocument(props.identifier)
-                                                                .then(e=>e?.body?? emptyDocument())));        
+    if(props.rawDocument){
+        document.value = {...props.rawDocument};
+    }
+    else if(props.identifier || route?.params?.identifier){
+        const req = useAsyncState(KmDocumentDraftsService.loadDraftDocument(props.identifier || route?.params?.identifier)
+                                                                .then(e=>e?.body?? emptyDocument()));        
+        if(req.error?.value)
+            throw new Error(req.error.value);
+
+        document = req.state
+        isLoading = req.isLoading;
     }
     else{
-        document = toRef(emptyDocument())
+        document.value = emptyDocument();
         //validate if there is a mapping record for the given target and load it instead
     }
 
     
-    // const document =  computed(()=>state ?? emptyDocument());
     const formattedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));    
     const countryList           = computed(()=>{
         if(!countriesStore?.countries?.length)
@@ -204,50 +227,30 @@
 
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
-        // clean.globalGoalOrTarget= undefined;
-        // clean.referencePeriod  = undefined;
-        // clean.referencePeriodInfo= undefined;
-        
-        if(headlineIndicators.value?.length){
-            
-            clean.referencePeriod = clean.referencePeriod || [];
 
+        // incase if national target record was modified and global target was removed after 
+        // the mapping was submitted then filter such reference period
+        if(clean.referencePeriod && headlineIndicators.value?.length){            
+            const referencePeriod = clean.referencePeriod.filter(e=>{
+                return headlineIndicators.value.find(indicator=>indicator.identifier == e.headlineIndicator.identifier);
+            })
+            clean.referencePeriod = referencePeriod.length ? referencePeriod : undefined;
+        }
+        else{
+            clean.referencePeriod = []
             headlineIndicators.value.forEach(indicator => {
                 clean.referencePeriod.push({
                     headlineIndicator   : { identifier : indicator.identifier},
-                    // nationalTargets     : indicator?.nationalTargets?.map(e=>{return {identifier : e.identifier}}),
-                    hasReferencePeriod   : indicator.hasReferencePeriod  ,
-                    referencePeriodInfo : indicator.referencePeriodInfo,
+                    hasReferencePeriod : false
                 })
-            });            
+            });  
         }
         return clean
     })
 
     onMounted(() => {
-        // if(user?.value?.isAuthenticated && document.value){
-        //     document.value.government.identifier = document.value?.government?.identifier || user.value.government
-        // }
+        
     })
-
-    const onSubmitDocument = async ()=>{
-        try{
-            showSpinnerModal.value = true;            
-            const lDocument = {...cleanDocument.value}
-
-            await kmDocumentDraftStore.saveDraft(lDocument.header.identifier, lDocument);
-            if(kmDocumentDraftStore.errors?.length)
-                $toast.error('Error saving draft record', {position:'top-right'});                
-            else
-                $toast.success('Draft record saved successfully', {position:'top-right'});
-        }
-        catch(e){
-            console.error(e);
-        }
-        finally{
-            showSpinnerModal.value = false;
-        }
-    }   
 
     function onGetDocument(){
         return cleanDocument;
@@ -255,10 +258,24 @@
 
     const onClose = async (document)=>{
         if(props.onClose)
-            props.onClose.value(document)
+            props.onClose(document)
     }
-    
+    const onPostSaveDraft = async (document)=>{
+        if(props.onPostSaveDraft)
+            props.onPostSaveDraft(document)
+    }
     function emptyDocument(){
+        const referencePeriod = [];
+        if(headlineIndicators.value?.length){            
+
+            headlineIndicators.value.forEach(indicator => {
+                referencePeriod.push({
+                    headlineIndicator   : { identifier : indicator.identifier},
+                    hasReferencePeriod : false
+                })
+            });            
+        }
+
         return {
             header : {
                 schema : SCHEMAS.NATIONAL_TARGET_7_MAPPING,
@@ -271,9 +288,17 @@
             globalGoalOrTarget : {
                 identifier: props.globalGoalOrTarget
             },
-            hasReferencePeriod : false
+            referencePeriod
         }
     }
 
+    async function loadHeadlineIndicators(globalTarget){
 
+        const indicators = await GbfGoalsAndTargets.loadGbfHeadlineIndicator(globalTarget.identifier);
+        headlineIndicators.value = sortBy([...(indicators?.flat()||[])], 'title')
+    }
+
+    function getIndicator(indicator){
+        return headlineIndicators.value?.find(e=>e.identifier == indicator?.identifier)
+    }
 </script>

@@ -5,7 +5,8 @@
       </CCardHeader>
       <CCardBody>
        
-            <km-form-workflow :focused-tab="1" :get-document="onGetDocument"  :on-pre-close="onClose">
+            <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"  
+            :container="container"  :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template v-slot:submission>   
                     <form name="editForm">             
                         <km-form-group>
@@ -41,7 +42,7 @@
                                         >
                                         </km-select>
                                         <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
-                                            Minimum of one language is mandatory, please select another language to remove the last language.
+                                            Minimum of one language is mandatory, please select another language to remove the default language.
                                         </small>
                                     </km-form-group>   
 
@@ -143,7 +144,7 @@
                                     Indicators to be used to monitor this national target
                                 </div>
                                 <div class="card-body">
-                                    <km-form-group caption="Headline and Binary indicators" required name="headlineIndicators">
+                                    <km-form-group caption="Headline indicators" required name="headlineIndicators">
                                         <km-select
                                             v-model="document.headlineIndicators"
                                             class="validationClass"
@@ -158,8 +159,22 @@
                                             :custom-selected-item="customSelectedItem"
                                         >
                                         </km-select>
-                                        <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
                                     </km-form-group>
+                                    <km-form-group caption="Binary indicators" name="binaryIndicators" v-if="binaryIndicatorsRef && binaryIndicatorsRef.length">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>This National Target will be linked to the following Binary Indicators</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="indicator in binaryIndicatorsRef" :key="indicator.identifier">
+                                                    <td>{{ lstring(indicator.title) }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </km-form-group>
+                                    
                                     <km-form-group name="componentIndicators" caption="Component indicators">
                                         <km-select
                                             v-model="document.componentIndicators"
@@ -175,7 +190,6 @@
                                             :custom-selected-item="customSelectedItem"
                                         >
                                         </km-select>
-                                        <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
                                     </km-form-group>
                                     <km-form-group name="complementaryIndicators" caption="Complementary indicators">
                                         <km-select
@@ -192,10 +206,9 @@
                                             :custom-selected-item="customSelectedItem"
                                         >
                                         </km-select>
-                                        <!-- <small id="emailHelp" class="form-text text-muted">help!!!!</small> -->
                                     </km-form-group>
-                                    <km-form-group name="otherNationalIndicators"  caption="Other national indicators">
-                                        
+                                    <km-form-group name="otherNationalIndicators"  caption="Other national indicators">{{ document.otherNationalIndicators }}
+                                        <km-input-lstring-ml v-model="document.otherNationalIndicators" :locales="document.header.languages"></km-input-lstring-ml>
                                         <small id="emailHelp" class="form-text text-muted">Add your own indicators</small>
                                     </km-form-group>
                                 </div>
@@ -257,8 +270,8 @@
                                     Additional information
                                 </div>
                                 <div class="card-body">
-                                    <km-form-group name="referencePeriodInfo" caption="Any other relevant information">
-                                        <km-input-rich-lstring v-model="document.additionalinformation" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-form-group name="additionalInformation" caption="Any other relevant information">
+                                        <km-input-rich-lstring v-model="document.additionalInformation" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -279,7 +292,7 @@
 
 <script setup>
   
-    import { KmInputRichLstring, KmSelect, KmFormGroup,
+    import { KmInputRichLstring, KmSelect, KmFormGroup, KmInputLstringMl,
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmFormWorkflow
     } from "~/components/controls";
     import viewTarget               from  "./view-target-part-1.vue";
@@ -296,7 +309,9 @@
     const props = defineProps({
         identifier  : {type: String },
         rawDocument : {type: Object },
+        workflowActiveTab  : {type:Number, default:1 },
         onClose            : {type:Function, required:false},
+        onPostSaveDraft    : {type:Function, required:false},
     })
     const refProps                  = toRefs(props);
     const {$appRoutes:appRoutes }   = useNuxtApp();
@@ -308,11 +323,13 @@
     const countriesStore            = useCountriesStore ();
     const realmConfStore            = useRealmConfStore();
     const kmDocumentDraftStore      = useKmDocumentDraftsStore();
-    const $toast                    = useToast();
+    const $toast                    = useToast();      
+    const container                 = useAttrs().container;
 
     const headlineIndicatorsRef      = ref(null);
     const componentIndicatorsRef     = ref(null);
     const complementaryIndicatorsRef = ref(null);
+    const binaryIndicatorsRef        = ref(null);
         
     const showSpinnerModal = ref(false);
 
@@ -330,7 +347,6 @@
     
     const document =  ref(emptyDocument());
 
-    
     if(refProps.rawDocument.value){
         document.value = {...refProps.rawDocument.value};
     }
@@ -340,11 +356,16 @@
 
         // if(!kmDocumentDraftStore.draftRecord){
         //     //TODO: show error that the record does not exists.
-        //     await navigateTo(appRoutes.NBSAPS_TARGETS_NEW);
+        //     await navigateTo(appRoutes.NATIONAL_TARGETS_NEW);
         //     // return;
         // }        
     }
     
+    // if(document.value?.degreeOfAlignment){
+    //     console.log(document);
+    //     if(['high', 'medium', 'low'].includes(document.value.degreeOfAlignment.identifier))
+    //         document.value.degreeOfAlignment = undefined
+    // }
     //initialize for local use
     document.value.additionalImplementation = document.value?.additionalImplementation || {};
 
@@ -379,6 +400,9 @@
     const selectedLocale = ref(locale.value);
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
+        clean.elementOfGlobalTargetsinfo = undefined;
+        clean.hasReferncePeriod = undefined;
+        clean.referencePeriodInfo = undefined;
         return clean
     })
     
@@ -388,32 +412,15 @@
             if(document.value?.gbfGoalsAndTargetAlignment)
                 onGoalsAndTargetSelected(document.value?.gbfGoalsAndTargetAlignment);
         }
-    })
-
-    const onSubmitDocument = async ()=>{
-        try{
-            showSpinnerModal.value = true;            
-            // await navigateTo('/nbsap-targets')
-
-            const lDocument = useStorage().cleanDocument({...document.value})
-
-            await kmDocumentDraftStore.saveDraft(lDocument.header.identifier, lDocument);
-            if(kmDocumentDraftStore.error?.length)
-                $toast.error('Error saving draft record', {position:'top-right'});                
-            else
-                $toast.success('Draft record saved successfully', {position:'top-right'});
-        }
-        catch(e){
-            console.error(e);
-        }
-        finally{
-            showSpinnerModal.value = false;
-        }
-    }    
+    })  
 
     const onClose = async (document)=>{
         if(props.onClose)
-            return props.onClose(document)
+            props.onClose(document)
+    }
+    const onPostSaveDraft = async (document)=>{
+        if(props.onPostSaveDraft)
+            props.onPostSaveDraft(document)
     }
 
     const onGoalsAndTargetSelected = async (selected)=>{
@@ -421,11 +428,13 @@
         const headlineRes       = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
         const componentRes      = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComponentIndicator(e.identifier)}));
         const complementaryRes  = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)}));
+        const binaryRes         = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
 
         headlineIndicatorsRef.value      = sortBy([...(headlineRes?.flat()||[])], 'title')
         componentIndicatorsRef.value     = sortBy([...(componentRes?.flat()||[])], 'title')
         complementaryIndicatorsRef.value = sortBy([...(complementaryRes?.flat()||[])], 'title')
-
+        binaryIndicatorsRef.value        = sortBy([...(binaryRes?.flat()||[])], 'title')
+        
         if(document.value?.headlineIndicators?.length){
             document.value.headlineIndicators = document.value?.headlineIndicators.filter(selected=>{
                 return headlineIndicatorsRef.value.find(e=>e.identifier == selected.identifier)

@@ -1,42 +1,30 @@
 <template>
     <div id="km-term"> 
-        <div :class="`input-group input-lang-${locale}`">
-    
-            <CAlert color="danger" v-if="error">Error loading term {{ value.identifier }}</CAlert>
+        <div :class="`input-group input-lang-${locale}`">    
             <div class="form-control km-value" 
-                :dir="direction(term.title, locale)" aria-describedby="basic-addon1">
-                {{ lstring(term.title, locale) }}
+                :dir="direction(term && term.title, locale)" aria-describedby="basic-addon1">
+                <km-term :value="value" :locale="locale" @on-term-load="onTermLoad(term)"></km-term>
             </div>
             <span class="input-group-text" id="basic-addon1" style="cursor:default">
-                {{ lstringLocale(term.title, locale).toUpperCase() }}
+                {{ lstringLocale(term && term.title, locale).toUpperCase() }}
             </span>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    // import { direction, lstringLocale, lstring } from '@/util/filter';
-
+    import KmTerm from './KmTerm.vue';
+    
     const props = defineProps({
         value  : {type:Object, required:true },
-        locale      : {type:String, required:true },
+        locale : {type:String, required:true },
     })
     const { value, locale } = toRefs(props);
+    const term = ref({});
 
-    const { $api } = useNuxtApp();
-
-    let term:any;
-    let error:any
-    if(!value.value?.identifier || value.value){
-
-        ({ data:term, error:error } = await $api.thesaurus.getTerm(value.value?.identifier||value.value))
-        
-
-        if(error?.value)
-            console.error(`Error loading term ${value.value}`, error);
-
+    const onTermLoad = function(term){
+        term.value = term
     }
-
 </script>
 
 <style scoped>

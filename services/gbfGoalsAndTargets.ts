@@ -54,6 +54,7 @@ class GBFGoalsAndTargets{
             target.headlineIndicators       = await this.loadGbfHeadlineIndicator(target.identifier)
             target.componentIndicators      = await this.loadGbfComponentIndicator(target.identifier)
             target.complementaryIndicators  = await this.loadGbfComplementaryIndicator(target.identifier)
+            target.binaryIndicators         = await this.loadGbfBinaryIndicator(target.identifier)
         }
 
         if(fields?.length){
@@ -65,6 +66,16 @@ class GBFGoalsAndTargets{
     async loadGbfHeadlineIndicator(goalOrTarget:string, fields:Array<string> = this.defaultFields){
 
         const indicators = await loadIndicators(THESAURUS.GBF_HEADLINE_INDICATORS, goalOrTarget)
+        if(fields?.length){
+            return mapFields(indicators, fields);
+        }
+
+        return indicators;
+       
+    }
+    async loadGbfBinaryIndicator(goalOrTarget:string, fields:Array<string> = this.defaultFields){
+
+        const indicators = await loadIndicators(THESAURUS.GBF_BINARY_INDICATORS, goalOrTarget)
         if(fields?.length){
             return mapFields(indicators, fields);
         }

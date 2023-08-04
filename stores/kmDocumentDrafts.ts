@@ -30,13 +30,11 @@ export const useKmDocumentDraftsStore = defineStore('kmDocumentDrafts', {
         this.errors = []
         this.isBusy = true;
         const { $api } = useNuxtApp();
-        const { data:documentDrafts, error } = await $api.kmStorage.drafts.query(queryParams);
+        this.documentDrafts = await $api.kmStorage.drafts.query(queryParams);
         
-        this.errors.push(error)
-        this.documentDrafts = documentDrafts;
         this.isBusy = false;
 
-        return documentDrafts;
+        return this.documentDrafts;
     },
 
     async loadDraftDocument(identifier:String){
@@ -44,9 +42,8 @@ export const useKmDocumentDraftsStore = defineStore('kmDocumentDrafts', {
 
         this.isBusy = true;
         const { $api } = useNuxtApp();
-        const { data:draftRecord } = await $api.kmStorage.drafts.get(identifier, {info:true, body:true});
+        this.draftRecord  = await $api.kmStorage.drafts.get(identifier, {info:true, body:true});
         
-        this.draftRecord = draftRecord;
         this.isBusy = false;
       };
   },
@@ -58,11 +55,8 @@ export const useKmDocumentDraftsStore = defineStore('kmDocumentDrafts', {
             this.errors = [];
 
             const { $api } = useNuxtApp();
-            const { data:draftRecord, error } = await $api.kmStorage.drafts.put(identifier, draft, {schema:draft.header.schema});
+            const draftRecord = await $api.kmStorage.drafts.put(identifier, draft, {schema:draft.header.schema});
 
-            this.draftRecord = draftRecord;
-            if(error?.value)
-                this.errors = Array.isArray(error.value) ? error : [error]
             this.isBusy = false;
           // }
           
