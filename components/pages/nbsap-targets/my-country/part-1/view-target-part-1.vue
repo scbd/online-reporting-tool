@@ -44,7 +44,7 @@
 
                         <km-form-group>
                             <label class="form-label" for="exampleFormControlSelect1">Alignment with global goals and targets</label>
-                            <km-value-terms :value="viewDocument.gbfGoalsAndTargetAlignment" :locale="selectedLocale"></km-value-terms>
+                            <km-value-terms :value="viewDocument.globalTargetAlignment" :locale="selectedLocale"></km-value-terms>
                         </km-form-group>
 
                         <km-form-group v-if="viewDocument.hasImplementingConsiderations!=undefined">                                    
@@ -53,16 +53,14 @@
                                 <km-value-bool :value="viewDocument.hasImplementingConsiderations" :locale="selectedLocale"></km-value-bool>
                             </km-form-check-group>
                         </km-form-group>
-
-                        <km-form-group v-if="viewDocument.hasImplementingConsiderations==true">                                                                               
-                            <km-form-group v-if="viewDocument.implementingConsiderations">
-                                <label class="form-label" for="relatedOtherProcesses">Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it </label>
-                                <km-value-terms :value="viewDocument.implementingConsiderations" :locale="selectedLocale"></km-value-terms>
-                            </km-form-group>
-                            <km-form-group v-if="viewDocument.implementingConsiderationsInfo">
-                                <label class="form-label" for="implementingConsiderationsInfo">Please explain how these considerations have been taken into account</label>
-                                <km-lstring-value type="html" :value="viewDocument.implementingConsiderationsInfo" :locale="selectedLocale"></km-lstring-value>
-                            </km-form-group>
+                                                                        
+                        <km-form-group v-if="viewDocument.implementingConsiderations">
+                            <label class="form-label" for="relatedOtherProcesses">Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it </label>
+                            <km-value-terms :value="viewDocument.implementingConsiderations" :locale="selectedLocale"></km-value-terms>
+                        </km-form-group>
+                        <km-form-group v-if="viewDocument.implementingConsiderationsInfo">
+                            <label class="form-label" for="implementingConsiderationsInfo">Please explain how these considerations have been taken into account</label>
+                            <km-lstring-value type="html" :value="viewDocument.implementingConsiderationsInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
 
                         <km-form-group v-if="viewDocument.degreeOfAlignment && degreeOfAlignment">

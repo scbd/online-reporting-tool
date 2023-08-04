@@ -50,8 +50,8 @@
                     <th scope="row">{{ index+1 }}</th>
                     <td>{{(draft.workingDocumentTitle||draft.title).en}}</td>
                     <td>
-                      <ul v-if="draft.body.gbfGoalsAndTargetAlignment">
-                        <li v-for="target in draft.body.gbfGoalsAndTargetAlignment" :key="target.identifier">
+                      <ul v-if="draft.body.globalTargetAlignment">
+                        <li v-for="target in draft.body.globalTargetAlignment" :key="target.identifier">
                           <a v-if="target.identifier.startsWith('GBF-GOAL')" href="https://www.cbd.int/gbf/goals/" target="_blank">{{ target.identifier }}</a> 
                           <a v-if="target.identifier.startsWith('GBF-TARGET')" :href="`https://www.cbd.int/gbf/targets/${getTargetNumber(target.identifier)}`" target="_blank">{{ target.identifier }}</a> 
                         </li>

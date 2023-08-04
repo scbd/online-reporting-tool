@@ -1,1 +1,5 @@
-{}
+{
+    "general":"General",
+    "government": "Government",
+    "degreeOfAlignment": "Degree of Alignment"
+}

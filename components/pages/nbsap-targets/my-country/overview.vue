@@ -254,7 +254,7 @@
 
             //verify user has submitted national targets for all Global Indicators
             //and show dialog and move next step if he still wants to proceed
-            const missingTargets = await findMissingGlobalTargets(userRecords.nationalTargets, 'gbfGoalsAndTargetAlignment' );
+            const missingTargets = await findMissingGlobalTargets(userRecords.nationalTargets, 'globalTargetAlignment' );
             if(missingTargets?.length){
                 const userResponse = await showMissingTargetsDialog(SCHEMAS.NATIONAL_TARGET_7, missingTargets);
                 if(userResponse == 'close'){
@@ -319,7 +319,7 @@
     async function findMissingGlobalTargets(nationalTargets, field){
         
         const targets = _(nationalTargets).map(e=>{
-            if(field == 'gbfGoalsAndTargetAlignment')
+            if(field == 'globalTargetAlignment')
                 return e.body[field]?.map(t=>t.identifier)
             
             return e.body[field]?.identifier;

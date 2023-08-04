@@ -8,7 +8,7 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
         
         target.nationalTargets = []
 
-        const lNationalTargets  = [...nationalTargets.filter (e=>e.body?.gbfGoalsAndTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier))];
+        const lNationalTargets  = [...nationalTargets.filter (e=>e.body?.globalTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier))];
         const lNationalMappings = {...nationalMappings.find(e=>e.body?.globalGoalOrTarget?.identifier  == target.identifier)};
 
         target.elementOfGlobalTargetsinfo = lNationalMappings?.body?.elementOfGlobalTargetsinfo;
