@@ -4,6 +4,8 @@ export {default as KmInputLstring       }  from './edit/KmInputLstring';
 export {default as KmInputLstringMl     }  from './edit/KmInputLstringMl';
 export {default as KmFormCheckGroup     }  from './edit/KmFormCheckGroup';
 export {default as KmFormCheckItem      }  from './edit/KmFormCheckItem'
+export {default as KmCheckbox           }  from './edit/KmCheckbox.vue';
+export {default as KmMultiCheckbox      }  from './edit/KmMultiCheckbox.vue'
 export {default as KmFormWorkflow       }  from './edit/KmFormWorkflow'
 export {default as KmValidationErrors   }  from './edit/KmValidationErrors'
 
