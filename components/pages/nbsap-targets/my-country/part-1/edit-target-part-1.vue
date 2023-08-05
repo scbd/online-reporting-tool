@@ -16,16 +16,7 @@
                                 </div>
                                 <div class="card-body">  
                                     <km-form-group name="government" caption="Government" required>
-                                        <km-select
-                                            v-model="document.government.identifier"
-                                            class="validationClass"
-                                            label="name"
-                                            track-by="code"
-                                            value-key="code"
-                                            placeholder="Government"
-                                            :options="countryList"
-                                            :disabled="!security.role.isAdministrator">
-                                        </km-select>                                
+                                        <km-government v-model="document.government"></km-government>                           
                                     </km-form-group>   
 
                                     <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
@@ -287,13 +278,12 @@
   
     import { KmInputRichLstring, KmSelect, KmFormGroup, KmInputLstringMl, KmMultiCheckbox,
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmFormWorkflow,
-        KmValueTerm
+        KmValueTerm, KmGovernment
     } from "~/components/controls";
     import viewTarget               from  "./view-target-part-1.vue";
     import { mapStores }            from 'pinia'
     import { languages }            from '@/app-data/languages'
     import { useThesaurusStore }    from '@/stores/thesaurus';
-    import { useCountriesStore }    from '@/stores/countries';
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
@@ -314,7 +304,6 @@
     const route                     = useRoute();    
     const {t, locale }              = useI18n();
     const thesaurusStore            = useThesaurusStore ();
-    const countriesStore            = useCountriesStore ();
     const realmConfStore            = useRealmConfStore();
     const kmDocumentDraftStore      = useKmDocumentDraftsStore();
     const $toast                    = useToast();      
@@ -334,7 +323,6 @@
         thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPONENT_INDICATORS    ),
         thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPLEMENTARY_INDICATORS),
         thesaurusStore.loadDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS  ),
-        countriesStore.loadCountries(),
         thesaurusStore.loadDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT  ),
     ]);
     
@@ -366,16 +354,6 @@
     })
     const formattedDegreeOfAlignments = computed(()=>{
         return thesaurusStore.getDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT)||[]
-    })
-    const countryList                = computed(()=>{
-        if(!countriesStore?.countries?.length)
-            return [];
-
-        const mapCountries = countriesStore.countries.map(e=>{
-            return { name : e.name[locale.value], code : e.code?.toLowerCase()}
-        })
-
-        return mapCountries;
     })
     const headlineIndicators      = computed(()=>headlineIndicatorsRef.value||[]);
     const componentIndicators     = computed(()=>componentIndicatorsRef.value||[]);
