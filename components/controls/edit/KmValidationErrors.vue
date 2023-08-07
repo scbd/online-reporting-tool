@@ -6,7 +6,7 @@
          <div v-if="report && report.isSaving" class="alert alert-info">
              <i class="fa fa-cog fa-spin"></i> {{t('savingDocument')}}
          </div>
-         <div v-if="report && report.schema && !report.isAnalyzing && !report.isSaving && !report.errors" class="alert alert-success">
+         <div v-if="report && !report.isAnalyzing && !report.isSaving && !report.errors" class="alert alert-success">
 			{{t('valid')}}
 		</div>
          <div v-if="report && !report.isAnalyzing && !report.isSaving">

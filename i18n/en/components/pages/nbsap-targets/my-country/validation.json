@@ -1,1 +1,9 @@
-{}
+{
+
+    "publishedState"    : "Published",
+    "draftState"    : "Draft",
+    "lockedState"    : "Draft locked",
+    "passedValidation"  : "Validation successful",    
+    "hasErrors" : "Failed Validations",
+    "validating"    : "Validating"
+}

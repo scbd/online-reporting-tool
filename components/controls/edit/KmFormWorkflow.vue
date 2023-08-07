@@ -38,14 +38,18 @@
                         <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                     </div>
                 </CCol>
-                <km-validation-errors :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
+                <km-validation-errors  v-if="(activeTab == tabName.submission && validationReport.validationErrors) || 
+                                             (activeTab == tabName.review || activeTab == tabName.publish)"
+                    :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
             </CRow>
             <div v-show="activeTab == tabName.submission" class="m-1"><slot name="submission"></slot></div>
             <div v-if="activeTab == tabName.review" class="m-1"><slot name="review"></slot></div>
             <div v-if="activeTab == tabName.publish" class="m-1"><slot name="publish"></slot></div>
 
             <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
-                <km-validation-errors :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>  
+                    <km-validation-errors v-if="(activeTab == tabName.submission && validationReport.validationErrors) || 
+                                            (activeTab == tabName.review || activeTab == tabName.publish)"
+                    :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>  
                 <CCol>
                     <div class="action-buttons float-end">
                         <CButton @click="onSaveDraft()" color="primary" class="me-md-2">{{t('saveDraft')}}</CButton> 
@@ -82,6 +86,7 @@
     import { useI18n } from 'vue-i18n';
     import { EditFormUtility }  from '@/services/edit-form-utility';
     import {useToast} from 'vue-toast-notification';
+    import {isEmpty} from 'lodash'
 
 
     const tabName = {

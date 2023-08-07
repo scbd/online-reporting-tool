@@ -13,7 +13,7 @@
 
     import { KmSuspense, KmLink, KmNavLink } from '@/components/controls'
     import nationalTargetsOverview from '@/components/pages/nbsap-targets/my-country/overview.vue';
-    import { SCHEMAS } from '@/utils';
+      import { SCHEMAS, ROLES } from '@/utils';
     
     definePageMeta({
         auth:true,
