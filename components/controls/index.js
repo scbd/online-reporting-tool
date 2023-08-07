@@ -9,6 +9,7 @@ export {default as KmMultiCheckbox      }  from './edit/KmMultiCheckbox.vue'
 export {default as KmFormWorkflow       }  from './edit/KmFormWorkflow'
 export {default as KmValidationErrors   }  from './edit/KmValidationErrors.vue'
 export {default as KmGovernment         }  from './edit/KmGovernment.vue'
+export {default as KmLanguages          }  from './edit/KmLanguages.vue'
 
 
 export {default as KmLocales            }  from './view/KmLocales';
