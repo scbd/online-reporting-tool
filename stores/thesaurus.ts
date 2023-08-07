@@ -15,6 +15,11 @@ export const useThesaurusStore = defineStore('thesaurus', {
         // console.log(identifier, domainTerms, this.domainTerms.length)
         return domainTerms?.terms;
       }
+    },
+    getTerm(state){
+        return function (term){
+            return this.terms[term]
+        }
     }
   },
   actions:{

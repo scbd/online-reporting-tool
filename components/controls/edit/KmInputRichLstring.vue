@@ -4,7 +4,12 @@
       <CNavItem v-for="locale in locales" :key="locale" :id="`lstringTab-${uid}`">
         <CNavLink
           href="javascript:void(0);" :active="activeLocale === locale" @click="() => {activeLocale = locale}">
-          {{ locale.toUpperCase() }}
+          <!-- <CTooltip :content="lstring(getTerm(locale).title)" trigger="hover">
+                <template #toggler="{ on }">
+                    <span v-on="on">{{locale.toUpperCase()}}</span>
+                </template>
+            </CTooltip> -->
+            {{lstring(getTerm(locale).title||locale)}}
         </CNavLink>
       </CNavItem>
     </CNav>
@@ -23,6 +28,7 @@ import $ from 'jquery';
 import { makeUid } from '@coreui/utils/src'
 // import { Tab } from 'bootstrap'
 import KmCkEditor from './KmCkEditor.vue'
+import { useThesaurusStore }    from '@/stores/thesaurus';
 
 export default {
   name: "KmRichLstring",
@@ -55,9 +61,10 @@ export default {
   },
   watch:{
     locales : function(newVal){
-      if(!newVal.includes(this.activeLocale)){        
-        this.activeLocale = newVal[0];
-      }
+        if(!newVal.includes(this.activeLocale)){        
+            this.activeLocale = newVal[0];
+        }
+        this.loadLanguages()
     }
   },
   computed:{
@@ -81,6 +88,18 @@ export default {
     onChange(value){
         const clean = useStorage().cleanDocument({...this.binding});
         this.$emit('update:modelValue', clean);
+    },
+    loadLanguages(){
+        const thesaurusStore    = useThesaurusStore ();
+        this.locales?.forEach(e=>{
+            thesaurusStore.loadTerm(`lang-${e}`);
+        });            
+    },
+
+    getTerm(term){
+
+        const thesaurusStore    = useThesaurusStore ();
+        return thesaurusStore.getTerm(`lang-${term}`)||{};
     }
   },
   mounted(){
@@ -88,8 +107,9 @@ export default {
     this.activeLocale = this.locales[0];
 
     if(this.modelValue){
-      this.binding = {...this.modelValue||{}};
+        this.binding = {...this.modelValue||{}};
     }
+    this.loadLanguages();
   }
 };
 </script>
