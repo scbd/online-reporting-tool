@@ -4,9 +4,9 @@
           <slot name="header"> <CIcon name="cil-grid" /> Global Goals/Targets mapping </slot>
         </CCardHeader>
         <CCardBody>
-          <div class="card">
+          <!-- <div class="card">
             <div class="card-body">
-              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end"> -->
                 <!-- <NuxtLink to="/nbsap-targets/new"> -->
                   <!-- <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
                     <CIcon icon="addthis"/> Submit new target
@@ -25,15 +25,15 @@
                 <CButton color="danger m-1">
                   <CIcon icon="cil-file-pdf"/> PDF
                 </CButton> -->
-              </div>
+              <!-- </div>
             </div>
-          </div>
+          </div> -->
          
-          <div class="card mt-3">
-              <div class="card-header bg-secondary">
+          <div class="mt-3">
+              <!-- <div class="card-header bg-secondary">
                 Global Goals/Targets
               </div>
-              <div class="card-body">
+              <div class="card-body"> -->
                 <km-spinner-suspense v-if="isBusy"></km-spinner-suspense>
 
                 <table class="table table-hover table-bordered">
@@ -72,7 +72,7 @@
                                     <td colspan="2">{{lstring(nationalTarget.title)}}</td>
                                     <td :rowspan="target.nationalTargets.length" v-if="index==0">
                                         <label></label>
-                                        <div v-html="lstring(target.elementOfGlobalTargetsinfo)"></div>
+                                        <div v-html="lstring(target.elementOfGlobalTargetsInfo)"></div>
                                     </td>                                
                                 </tr>
                                 <tr v-if="!target.nationalTargets?.length">
@@ -103,12 +103,12 @@
                                             {{lstring(target.title)}}
                                         </div>
 
-                                        <missing-target-error  v-if="!indicator.nationalTargets.length"
+                                        <!-- <missing-target-error  v-if="!indicator.nationalTargets.length"
                                             :query="{'globalTarget' : target.identifier, headlineIndicator:indicator.identifier}">
                                             <template #message>
                                                 <span v-html="t('indicatorMissingTarget')"></span>
                                             </template>
-                                        </missing-target-error>   
+                                        </missing-target-error>    -->
                                     </td>
                                     <td v-if="indicator.nationalTargets.length">
                                         <div v-if="indicator.referencePeriod">
@@ -137,7 +137,7 @@
                     </template>
                   </tbody>
                 </table>
-              </div>
+              <!-- </div> -->
           </div>
         </CCardBody>
       

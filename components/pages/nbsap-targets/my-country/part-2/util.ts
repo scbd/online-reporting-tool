@@ -11,7 +11,7 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
         const lNationalTargets  = [...nationalTargets.filter (e=>e.body?.globalTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier))];
         const lNationalMappings = {...nationalMappings.find(e=>e.body?.globalGoalOrTarget?.identifier  == target.identifier)};
 
-        target.elementOfGlobalTargetsinfo = lNationalMappings?.body?.elementOfGlobalTargetsinfo;
+        target.elementOfGlobalTargetsInfo = lNationalMappings?.body?.elementOfGlobalTargetsInfo;
         target.nationalMapping            = lNationalMappings?.body;
         target.nationalTargets = lNationalTargets.map(e=>{
             return { identifier : e.identifier, title : e.body?.title}

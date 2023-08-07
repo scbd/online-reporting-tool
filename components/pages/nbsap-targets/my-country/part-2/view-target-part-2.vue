@@ -31,9 +31,9 @@
                         Elements of the global targets
                     </div>
                     <div class="card-body">                                
-                        <km-form-group v-if="viewDocument.elementOfGlobalTargetsinfo || viewDocument.hasReferencePeriod || viewDocument.hasReferencePeriod">
-                            <label class="form-label" for="elementOfGlobalTargetsinfo">Elements of the global targets addressed by national targets</label>
-                            <km-lstring-value type="html" :value="viewDocument.elementOfGlobalTargetsinfo" :locale="selectedLocale"></km-lstring-value>
+                        <km-form-group v-if="viewDocument.elementOfGlobalTargetsInfo || viewDocument.hasReferencePeriod || viewDocument.hasReferencePeriod">
+                            <label class="form-label" for="elementOfGlobalTargetsInfo">Elements of the global targets addressed by national targets</label>
+                            <km-lstring-value type="html" :value="viewDocument.elementOfGlobalTargetsInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
 
                         <div>

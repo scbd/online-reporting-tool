@@ -60,8 +60,8 @@
                                     Elements of the global targets
                                 </div>
                                 <div class="card-body">                                    
-                                    <km-form-group required caption="Elements of the global targets addressed by national targets" name="elementOfGlobalTargetsinfo">
-                                        <km-input-rich-lstring v-model="document.elementOfGlobalTargetsinfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-form-group required caption="Elements of the global targets addressed by national targets" name="elementOfGlobalTargetsInfo">
+                                        <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>                                    
                                 </div>
                             </div>
@@ -227,7 +227,11 @@
 
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
-
+        
+        if(clean.elementOfGlobalTargetsinfo){
+            clean.elementOfGlobalTargetsInfo = { ...clean.elementOfGlobalTargetsinfo }
+            clean.elementOfGlobalTargetsinfo = undefined
+        }
         // incase if national target record was modified and global target was removed after 
         // the mapping was submitted then filter such reference period
         if(clean.referencePeriod && headlineIndicators.value?.length){            

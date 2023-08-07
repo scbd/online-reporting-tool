@@ -4,7 +4,6 @@
         <slot name="header"> National Target</slot>
       </CCardHeader>
       <CCardBody>
-       
             <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"  
             :container="container"  :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template v-slot:submission>   
@@ -20,21 +19,7 @@
                                     </km-form-group>   
 
                                     <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
-                                        <km-select
-                                            v-model="document.header.languages"
-                                            class="validationClass"
-                                            label="title"
-                                            track-by="code"
-                                            value-key="code"
-                                            placeholder="Language of record"
-                                            :options="formattedLanguages"
-                                            :multiple="true"
-                                            :allow-empty="false"                                            
-                                        >
-                                        </km-select>
-                                        <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
-                                            Minimum of one language is mandatory, please select another language to remove the default language.
-                                        </small>
+                                        <km-languages v-model="document.header.languages"></km-languages>
                                     </km-form-group>   
 
                                     <km-form-group name="title" caption="Full name/title of national target" required>
@@ -124,7 +109,7 @@
                                 </div>
                             </div>
                         </km-form-group>
-                        <km-form-group>
+                        <km-form-group v-if="headlineIndicators.length">
                             <div class="card">
                                 <div class="card-header bg-secondary">
                                     Indicators to be used to monitor this national target
@@ -266,7 +251,6 @@
                     <view-target :identifier="document.header.identifier" :document="cleanDocument"></view-target>
                 </template>
             </km-form-workflow>
-
             <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
  
       </CCardBody>
@@ -278,11 +262,10 @@
   
     import { KmInputRichLstring, KmSelect, KmFormGroup, KmInputLstringMl, KmMultiCheckbox,
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmFormWorkflow,
-        KmValueTerm, KmGovernment
+        KmValueTerm, KmGovernment, KmLanguages
     } from "~/components/controls";
     import viewTarget               from  "./view-target-part-1.vue";
     import { mapStores }            from 'pinia'
-    import { languages }            from '@/app-data/languages'
     import { useThesaurusStore }    from '@/stores/thesaurus';
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
@@ -334,6 +317,9 @@
     else if(refProps.identifier.value || route?.params?.identifier){
         await kmDocumentDraftStore.loadDraftDocument(refProps.identifier.value||route.params.identifier);
         document.value = kmDocumentDraftStore.draftRecord?.body;
+    }
+
+    if(document.value.globalTargetAlignment?.length){
         selectedGlobalTargets.value = document.value.globalTargetAlignment?.map(e=>{return { identifier : e.identifier }})
     }
     
@@ -341,7 +327,6 @@
     document.value.government = document.value?.government || {};
     document.value.additionalImplementation = document.value?.additionalImplementation || {};
 
-    const formattedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
     const globalGoalsAndTargets = computed(()=>{
         const goalsAndTargets = [
             ...((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
@@ -362,9 +347,11 @@
     const selectedLocale = ref(locale.value);
     const cleanDocument = computed(()=>{
         const clean = useStorage().cleanDocument({...document.value});
-        clean.elementOfGlobalTargetsinfo = undefined;
-        clean.hasReferncePeriod = undefined;
-        clean.referencePeriodInfo = undefined;
+       
+        clean.gbfGoalsAndTargetAlignment = undefined;
+        clean.headlineIndicators =undefined
+        clean.degreeOfAlignment=undefined
+
         return clean
     })
     
