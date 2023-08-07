@@ -156,7 +156,7 @@
     async function onReviewDocument(tabChanged){
         if(!tabChanged && activeTab.value == tabName.review)
             return;
-            console.log('review')
+            
         await wizardRef.value.changeTab(tabName.review)
         activeTab.value = tabName.review;
 
@@ -212,13 +212,19 @@
 
     async function validate(document) {
                     
-        if(!document)
-            throw "Invalid document";
+        try{
+            if(!document)
+                throw "Invalid document";
 
-        const { $api } = useNuxtApp();
-        const data     = await $api.kmStorage.documents.validate(document);
+            const { $api } = useNuxtApp();
+            const data     = await $api.kmStorage.documents.validate(document);
 
-        return data;
+            return data;
+        }
+        catch(e){
+            useLogger().error(e);
+            $toast.error('Error occurred while validating your record, please save your data and try again.')
+        }
     }
 
     async function onJumpTo(field) {

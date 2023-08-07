@@ -7,11 +7,11 @@
   >
     <CSidebarBrand>
         <img src="https://chm.cbd.int/app/img/cbd-logo-en.svg" role="img" custom-class-name="sidebar-brand-full" height="35">
-        <CPopover content="On-line Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
+        <CTooltip content="On-line Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
             <template #toggler="{ on }">
                 <span class="brand-name" v-on="on">CHM - ORT</span>
             </template>
-        </CPopover>
+        </CTooltip>
      
     </CSidebarBrand>     
     <CSidebarNav>

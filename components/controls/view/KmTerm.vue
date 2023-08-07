@@ -6,6 +6,9 @@
 </template>
 
 <script setup lang="ts">
+
+    import { useThesaurusStore }    from '@/stores/thesaurus';
+
     const emit = defineEmits(['onTermLoad'])
     const props = defineProps({
         value   : {type:Object, required:true },
@@ -13,14 +16,16 @@
     })
     const { value, locale } = toRefs(props);
 
-    const { $api } = useNuxtApp();
+    const { $api }          = useNuxtApp();
+    const thesaurusStore    = useThesaurusStore ();
 
     let term:any;
     let error:any
     if(!value.value?.identifier || value.value){
 
         try{
-            term = await $api.thesaurus.getTerm(value.value?.identifier||value.value);
+            
+            term = await  thesaurusStore.loadTerm(value.value?.identifier||value.value);
 
             if(term){
                 emit('onTermLoad', term);

@@ -121,11 +121,11 @@
             </CModalBody>
             <CModalFooter>
                 <CButton @click="missingTargetDialogClose(missingTargets.schema)" color="success">{{t('close')}}</CButton>
-                <CPopover content="It is important that you submit information for all Global Goals and Targets." placement="bottom" trigger="hover">
+                <CTooltip content="It is important that you submit information for all Global Goals and Targets." placement="bottom" trigger="hover">
                     <template #toggler="{ on }">
                         <CButton v-on="on" @click="missingTargetDialogProceed(missingTargets.schema)" color="danger">{{t('proceedAnyways')}}</CButton>
                     </template>
-                </CPopover>
+                </CTooltip>
                 
             </CModalFooter>
         </CModal>
@@ -306,7 +306,7 @@
 
     function onRecordsLoad(records:object){
         
-        if(!records.nationalRecords?.length && !records.nationalMappings?.length){
+        if(!records.draftNationalTargets?.length && !records.draftNationalMappings?.length){
             showPublishBtn.value = false;
         }
     }
