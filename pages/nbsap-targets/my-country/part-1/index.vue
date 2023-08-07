@@ -8,6 +8,7 @@
 <script setup lang="ts">
   import MyCountryTargets from "@/components/pages/nbsap-targets/my-country/part-1/index.vue";
 
+  import { SCHEMAS } from '@/utils';
   import { KmSuspense } from '@/components/controls'
 
     definePageMeta({

@@ -14,6 +14,7 @@ export const useLogger = ()=>{
     }
 }
 
+
 function error(error, userMessage){
     console.error(error);
     

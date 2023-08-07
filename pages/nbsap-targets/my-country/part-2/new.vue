@@ -8,6 +8,7 @@
   
   import { KmSuspense } from "@/components/controls";
   import EditTargetPart2 from "@/components/pages/nbsap-targets/my-country/part-2/edit-target-part-2.vue";
+    import { SCHEMAS } from '@/utils';
   
   export default {
     components: {

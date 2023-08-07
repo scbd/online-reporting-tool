@@ -6,6 +6,7 @@
   
   <script>
   
+  import { SCHEMAS } from '@/utils';
   import { KmSuspense } from "@/components/controls";
   import EditTargetPart1 from "@/components/pages/nbsap-targets/my-country/part-1/edit-target-part-1.vue";
   export default {

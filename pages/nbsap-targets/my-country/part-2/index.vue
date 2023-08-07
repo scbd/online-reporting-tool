@@ -9,6 +9,7 @@
   import MyCountryTargetsMapping from "@/components/pages/nbsap-targets/my-country/part-2/index.vue";
   import { KmSuspense } from '@/components/controls'
   import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
+    import { SCHEMAS } from '@/utils';
 
     definePageMeta({
         auth:true,

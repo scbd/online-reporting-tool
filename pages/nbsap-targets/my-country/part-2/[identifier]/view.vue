@@ -9,6 +9,7 @@
   import { KmSuspense } from "@/components/controls";
   import viewTargetPart2 from '@/components/pages/nbsap-targets/my-country/part-2/view-target-part-2.vue';
   import { useRoute } from 'vue-router';
+    import { SCHEMAS } from '@/utils';
 
   const route           = useRoute();
   const identifier = ref(route.params.identifier);
