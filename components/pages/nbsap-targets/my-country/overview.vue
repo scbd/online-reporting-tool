@@ -244,7 +244,7 @@
         
         try{
             await onValidate();
-            const hasValidationErrors = [...(userRecords.nationalTargets||[]), ...(userRecords.nationalMappings||[])].some(e=>e.validationErrors);
+            const hasValidationErrors = [...(userRecords.draftNationalTargets||[]), ...(userRecords.draftNationalMappings||[])].some(e=>e.validationErrors);
             
             if(hasValidationErrors){
                 showValidationErrorDialog.value = true;
@@ -254,7 +254,9 @@
 
             //verify user has submitted national targets for all Global Indicators
             //and show dialog and move next step if he still wants to proceed
-            const missingTargets = await findMissingGlobalTargets(userRecords.nationalTargets, 'globalTargetAlignment' );
+            const userNationalTargets = [...(userRecords.draftNationalTargets||[]), ...(userRecords.publishedNationalTargets||[])]
+            console.log(userNationalTargets)
+            const missingTargets = await findMissingGlobalTargets(userNationalTargets, 'globalTargetAlignment' );
             if(missingTargets?.length){
                 const userResponse = await showMissingTargetsDialog(SCHEMAS.NATIONAL_TARGET_7, missingTargets);
                 if(userResponse == 'close'){
@@ -267,7 +269,8 @@
 
             //verify user has submitted extra info (part II) for all  Global Indicators
             //and show dialog and move next step if he still wants to proceed
-            const missingMappings = await findMissingGlobalTargets(userRecords.nationalMappings, 'globalGoalOrTarget' );
+            const userNationalMappings = [...(userRecords.draftNationalMappings||[]), ...(userRecords.publishedNationalMappings||[])]
+            const missingMappings = await findMissingGlobalTargets(userNationalMappings, 'globalGoalOrTarget' );
             if(missingMappings?.length){
                 const userResponse = await showMissingTargetsDialog(SCHEMAS.NATIONAL_TARGET_7_MAPPING, missingMappings);
                 if(userResponse == 'close'){
@@ -313,7 +316,6 @@
 
     function onValidationFinished(records:object){
         userRecords = records;
-        console.log(records)
     }
 
     async function findMissingGlobalTargets(nationalTargets, field){

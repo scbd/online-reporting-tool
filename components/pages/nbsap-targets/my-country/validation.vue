@@ -6,7 +6,7 @@
                 National targets 
             </div>
             <div class="card-body">            
-              <table class="table" v-if="nationalTargets">
+              <table class="table" v-if="draftNationalTargets">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                   
-                  <tr v-for="(document,  index) in nationalTargets" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
+                  <tr v-for="(document,  index) in draftNationalTargets" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
                     <th scope="row">{{ index+1 }}</th>
                     <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
                     <td>
@@ -30,13 +30,39 @@
                         <CBadge color="success" v-if="document.validated && !document.isValidating && !document.validationErrors">
                             {{t('passedValidation')}}
                         </CBadge>
+                        <CBadge color="dark" v-if="!document.workingDocumentLock">
+                            {{t('draftState')}}
+                        </CBadge>
+                        <CBadge color="danger" v-if="document.workingDocumentLock">
+                            {{t('lockedState')}}
+                        </CBadge>
                     </td>
                     <td>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
                           <font-awesome-icon icon="fa-search" /> View
                         </CButton>
-                        <CButton :disabled="isBusy || disableActions" color="secondary" size="sm" @click="onEditTarget(document)">
+                        <CButton :disabled="isBusy || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
+                          <font-awesome-icon icon="fa-edit" /> Edit
+                        </CButton>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr v-for="(document,  index) in publishedNationalTargets" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
+                    <th scope="row">{{ index+1 + (draftNationalTargets?.length||0) }}</th>
+                    <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
+                    <td>                        
+                        <CBadge color="success">
+                            {{t('publishedState')}}
+                        </CBadge>
+                    </td>
+                    <td>
+                      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
+                          <font-awesome-icon icon="fa-search" /> View
+                        </CButton>
+                        <CButton :disabled="isBusy || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
                           <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
                       </div>
@@ -52,7 +78,7 @@
                 Global Goal/Targets mapping
             </div>
             <div class="card-body">            
-              <table class="table" v-if="nationalMappings">
+              <table class="table" v-if="draftNationalMappings">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -63,7 +89,7 @@
                 </thead>
                 <tbody>
                   
-                  <tr v-for="(document,  index) in nationalMappings" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
+                  <tr v-for="(document,  index) in draftNationalMappings" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
                     <th scope="row">{{ index+1 }}</th>
                     <td>
                         <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>                        
@@ -78,14 +104,40 @@
                         <CBadge color="success" v-if="document.validated && !document.isValidating && !document.validationErrors">
                             {{t('passedValidation')}}
                         </CBadge>
+                        <CBadge color="dark" v-if="!document.workingDocumentLock">
+                            {{t('draftState')}}
+                        </CBadge>
+                        <CBadge color="danger" v-if="document.workingDocumentLock">
+                            {{t('lockedState')}}
+                        </CBadge>
                     </td>
                     <td>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW, document)">
                             <font-awesome-icon icon="fa-search" /> View
                         </CButton>
-                        <CButton :disabled="isBusy || disableActions" color="secondary" size="sm" @click="onEditTarget(document)">
+                        <CButton :disabled="isBusy || disableActions|| isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
                             <font-awesome-icon icon="fa-edit" /> Edit
+                        </CButton>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr v-for="(document,  index) in publishedNationalMappings" :key="document.identifier">
+                    <th scope="row">{{ index+1 + (draftNationalMappings?.length||0) }}</th>
+                    <td>{{lstring(document.title)}}</td>                    
+                    <td>                        
+                        <CBadge color="success">
+                            {{t('publishedState')}}
+                        </CBadge>
+                    </td>
+                    <td>
+                      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW, document)">
+                          <font-awesome-icon icon="fa-search" /> View
+                        </CButton>
+                        <CButton :disabled="isBusy || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
+                          <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
                       </div>
                     </td>
@@ -126,14 +178,14 @@
     </div>
 </template>
 
-<i18n src="@/i18n/dist/pages/national-reports/nbsap-targets/my-country/validation.json"></i18n>
-
+<i18n src="@/i18n/dist/components/pages/nbsap-targets/my-country/validation.json"></i18n>
 <script setup lang="ts">
     import  { KmSpinnerSuspense, KmSpinner, KmModalSpinner, KmNavLink, KmTerm
             } from "@/components/controls";
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
+    import { KmDocumentsService } from '@/services/kmDocuments';
     import { useThesaurusStore } from "@/stores/thesaurus";
     import { buildTargetMatrix } from "./part-2/util";
     import { useStorage } from '@vueuse/core'
@@ -160,12 +212,14 @@
     const kmDocumentDraftStore  = useKmDocumentDraftsStore();
     const thesaurusStore  = useThesaurusStore();
 
-    const isBusy = ref(false);
-    const nationalTargets = ref([]);
-    const nationalMappings = ref([]);
-    const editDocument = ref(null);
-    const editTargetMapping  = ref(null);
-    const showEditDocumentModal= ref(false);
+    const isBusy                    = ref(false);
+    const draftNationalTargets      = ref([]);
+    const publishedNationalTargets  = ref([]);
+    const draftNationalMappings     = ref([]);
+    const publishedNationalMappings = ref([]);
+    const editDocument              = ref(null);
+    const editTargetMapping         = ref(null);
+    const showEditDocumentModal     = ref(false);
 
     const disableActions = computed(()=>!!stateTargetWorkflow.value.batchId)
 
@@ -187,12 +241,15 @@
 
     async function loadNationalTargets(){
 
-      const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+        const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
 
-      const response = await kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true);
+        const response = await Promise.all([
+            kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
+            KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)
+        ]) 
 
-      nationalTargets.value = response.Items;
-    //   validateDocuments(response.Items);
+        draftNationalTargets.value = response[0].Items;
+        publishedNationalTargets.value = response[1].Items;
 
     }
 
@@ -200,9 +257,13 @@
 
         const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}')`;
 
-        const response = await kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true);
+        const response = await Promise.all([
+            kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
+            KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)
+        ]) 
 
-        nationalMappings.value = response.Items;
+        draftNationalMappings.value = response[0].Items;
+        publishedNationalMappings.value = response[1].Items;
 
     }
 
@@ -214,8 +275,8 @@
                 loadNationalTargets(), 
                 loadTargetMappings()
             ]);
-            targetMapping = buildTargetMatrix(response[0], nationalTargets.value, nationalMappings.value)
-            $emits('onRecordsLoad', {nationalTargets : nationalTargets.value, nationalMappings : nationalMappings.value})
+            targetMapping = buildTargetMatrix(response[0], draftNationalTargets.value, draftNationalMappings.value)
+            $emits('onRecordsLoad', {draftNationalTargets : draftNationalTargets.value, draftNationalMappings : draftNationalMappings.value})
         }
         catch(e){
             console.error(e)
@@ -232,18 +293,24 @@
             isBusy.value = true;  
             if(!type){
                 await Promise.all([
-                    validateDocuments(nationalTargets.value), 
-                    validateDocuments(nationalMappings.value)
+                    validateDocuments(draftNationalTargets.value), 
+                    validateDocuments(draftNationalMappings.value)
                 ]);
             }
             else if(type == 'partI'){
-                await validateDocuments(nationalTargets.value);
+                await validateDocuments(draftNationalTargets.value);
             }
             else if(type == 'partII'){
-                await validateDocuments(nationalMappings.value)
+                await validateDocuments(draftNationalMappings.value)
             }
 
-            $emits('onValidationFinished', {type, nationalTargets : nationalTargets.value, nationalMappings : nationalMappings.value})
+            $emits('onValidationFinished', {
+                type, 
+                draftNationalTargets : draftNationalTargets.value, 
+                draftNationalMappings : draftNationalMappings.value,
+                publishedNationalTargets : publishedNationalTargets.value, 
+                publishedNationalMappings : publishedNationalMappings.value
+            })
         }
         catch(e){
             console.error(e)
@@ -299,7 +366,7 @@
         showEditDocumentModal.value = false;
 
         if(newDocument){
-            const list:Array<Object> =  newDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7 ? nationalTargets :  nationalMappings;
+            const list:Array<Object> =  newDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7 ? draftNationalTargets :  draftNationalMappings;
             const existingDocument   = list.value.find(e=>e.identifier == newDocument.header.identifier);
             validateDocuments([existingDocument])
         }
@@ -307,7 +374,7 @@
 
     function onPostSaveDraft(newDocument:Object){
 
-        const list:Array<Object> =  newDocument.type == SCHEMAS.NATIONAL_TARGET_7 ? nationalTargets :  nationalMappings;
+        const list:Array<Object> =  newDocument.type == SCHEMAS.NATIONAL_TARGET_7 ? draftNationalTargets :  draftNationalMappings;
 
         const index            = list.value.findIndex(e=>e.identifier == newDocument.identifier);
         const existingDocument = list.value.find     (e=>e.identifier == newDocument.identifier);
@@ -317,6 +384,9 @@
         }      
     }
 
+    function isEditAllowed(document){
+        return !!document?.workingDocumentLock
+    }
 </script>
 
 <style scoped>
