@@ -239,32 +239,18 @@
       return localePath(url);
     }
 
-    async function loadNationalTargets(){
-
-        const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+    async function loadNationalRecords(query, draftList, publishedList){
 
         const response = await Promise.all([
             kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
             KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)
         ]) 
 
-        draftNationalTargets.value = response[0].Items;
-        publishedNationalTargets.value = response[1].Items;
-
-    }
-
-    async function loadTargetMappings(){
-
-        const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}')`;
-
-        const response = await Promise.all([
-            kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
-            KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)
-        ]) 
-
-        draftNationalMappings.value = response[0].Items;
-        publishedNationalMappings.value = response[1].Items;
-
+        draftList.value = response[0].Items;
+        publishedList.value = response[1].Items;
+        response[0].Items.forEach(e=>{
+            removeDraftFromPublished(e, publishedList);
+        })
     }
 
     async function init(){
@@ -272,11 +258,16 @@
             isBusy.value = true;        
             const response = await Promise.all([
                 GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators(), 
-                loadNationalTargets(), 
-                loadTargetMappings()
+                loadNationalRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`, draftNationalTargets, publishedNationalTargets), 
+                loadNationalRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}')`, draftNationalMappings, publishedNationalMappings)
             ]);
             targetMapping = buildTargetMatrix(response[0], draftNationalTargets.value, draftNationalMappings.value)
-            $emits('onRecordsLoad', {draftNationalTargets : draftNationalTargets.value, draftNationalMappings : draftNationalMappings.value})
+            $emits('onRecordsLoad', {
+                draftNationalTargets : draftNationalTargets.value, 
+                draftNationalMappings : draftNationalMappings.value,
+                publishedNationalTargets : publishedNationalTargets.value, 
+                publishedNationalMappings : publishedNationalMappings.value
+            })
         }
         catch(e){
             console.error(e)
@@ -366,8 +357,33 @@
         showEditDocumentModal.value = false;
 
         if(newDocument){
-            const list:Array<Object> =  newDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7 ? draftNationalTargets :  draftNationalMappings;
-            const existingDocument   = list.value.find(e=>e.identifier == newDocument.header.identifier);
+            let list:Array<Object> =  newDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7 ? draftNationalTargets :  draftNationalMappings;
+            let existingDocument   = list.value.find(e=>e.identifier == newDocument.header.identifier);
+            if(!existingDocument){ // the record was in publishedList
+                if(newDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7){
+                    existingDocument   = publishedNationalTargets.value?.find(e=>e.identifier == newDocument.header.identifier);
+                    if(existingDocument){
+                        draftNationalTargets.value.push({...existingDocument});
+                        
+                        removeDraftFromPublished(existingDocument, publishedNationalTargets);
+                    }
+                }
+                else{
+                    existingDocument   = publishedNationalMappings.value.find(e=>e.identifier == newDocument.header.identifier);
+                    
+                    if(existingDocument){
+                        draftNationalMappings.value.push({...existingDocument});
+                        removeDraftFromPublished(existingDocument, publishedNationalMappings);
+                    }
+                }
+                
+                $emits('onRecordsLoad', {
+                    draftNationalTargets : draftNationalTargets.value, 
+                    draftNationalMappings : draftNationalMappings.value,
+                    publishedNationalTargets : publishedNationalTargets.value, 
+                    publishedNationalMappings : publishedNationalMappings.value
+                })
+            }
             validateDocuments([existingDocument])
         }
     }
@@ -386,6 +402,13 @@
 
     function isEditAllowed(document){
         return !!document?.workingDocumentLock
+    }
+
+    function removeDraftFromPublished(draftRecord, publishedList){
+        const existing = publishedList.value.find(e=>e.identifier == draftRecord.identifier)
+        const index = publishedList.value.indexOf(existing);
+        if(index>=0)
+            publishedList.value.splice(index, 1)
     }
 </script>
 

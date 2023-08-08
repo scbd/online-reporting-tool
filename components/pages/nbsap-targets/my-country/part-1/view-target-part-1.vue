@@ -97,8 +97,10 @@
                             <km-value-terms :value="viewDocument.complementaryIndicators" :locale="selectedLocale"></km-value-terms>
                         </km-form-group>
                         <km-form-group v-if="viewDocument.otherNationalIndicators">
-                            <label class="form-label" for="otherNationalIndicators">Other national indicators</label>                                    
-                            <!-- <small id="emailHelp" class="form-text text-muted">Add your own indicators</small> -->
+                            <label class="form-label" for="otherNationalIndicators">Other national indicators</label>       
+                            <div v-for="otherIndicator in viewDocument.otherNationalIndicators" :key="otherIndicator" class="mb-1">
+                                <km-lstring-value type="html" :value="otherIndicator" :locale="selectedLocale"></km-lstring-value>
+                            </div>
                         </km-form-group>
                     </div>
                 </div>

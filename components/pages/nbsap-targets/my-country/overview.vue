@@ -153,17 +153,25 @@
                 </CModalTitle>
             </CModalHeader>
             <CModalBody>
-                <CAlert color="success" class="d-flex align-items-center">
+                <CAlert color="success" class="d-flex">
                     <font-awesome-icon icon="fa-solid fa-check" size="2x"/>
-                    <span class="p-2">                             
+                    <div class="p-2">                             
                         {{t('successfulMessage')}}
+                        <strong>
+                            <div v-if="security.role.isNationalAuthorizedUser(SCHEMAS.NATIONAL_TARGET_7)">               
+                                {{t('successMessageNau')}}
+                            </div>
+                            <div v-if="security.role.isPublishingAuthority(SCHEMAS.NATIONAL_TARGET_7)">               
+                                {{t('successMessagePA')}}
+                            </div>
+                        </strong>
+                    </div>
+                </CAlert>
+                <CAlert color="info" class="d-flex mt-2">
+                    <font-awesome-icon icon="fa-solid fa-exclamation" size="2x"/>
+                    <span class="p-2">                             
+                        {{t('nbsapMessage')}}
                     </span>
-                    <div v-if="security.role.isNAU(SCHEMAS.NATIONAL_TARGET_7)">               
-                        {{t('successMessageNau')}}
-                    </div>
-                    <div v-if="security.role.isPA(SCHEMAS.NATIONAL_TARGET_7)">               
-                        {{t('successMessagePa')}}
-                    </div>
                 </CAlert>
             </CModalBody>
             <CModalFooter>
