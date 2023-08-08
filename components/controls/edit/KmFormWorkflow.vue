@@ -195,7 +195,7 @@
             if(definedProps.onPostSaveDraft)
                 definedProps.onPostSaveDraft({...documentSaveResponse, body:{...originalDocument}});
 
-            $toast.success(t('toastDraftSaveMessage'), {position:'top-right'});  
+            $toast.success(t('draftSaveMessage'), {position:'top-right'});  
         }
         catch(e){
             $toast.error('Error saving draft record', {position:'top-right'}); 
