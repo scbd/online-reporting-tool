@@ -7,7 +7,7 @@
         value-key="code"
         :placeholder="useAttrs().placeholder || t('government')"
         :options="countryList"
-        :disabled="!countryList || !security.role.isAdministrator"
+        :disabled="!countryList || !security.role.isAdministrator()"
         @update:modelValue="onChange" >
     </km-select>      
 </template>

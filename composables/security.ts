@@ -1,34 +1,95 @@
 
 import { useRealmConfStore }    from '@/stores/realmConf';
+import { intersection }         from 'lodash';
 
 export const useSecurity = ()=>{
     return {
         checkUserAccess,
         isInRoles,
         role : {
-            isAdministrator : isAdministrator(),
-            isNAU           : isNAU,
-            isPA            : isPA
+            isUserInRole             : isUserInRole,
+            isUserInRoles            : isUserInRoles,
+            is                       : is,
+            isAdministrator          : isAdministrator,
+            isPublishingAuthority    : isPublishingAuthority,
+            isNationalAuthorizedUser : isNationalAuthorizedUser,
+            isNationalFocalPoint     : isNationalFocalPoint,
+            isUser                   : isUser,
+            isNationalSchemaUser     : isNationalSchemaUser,
+            isNationalUser           : isNationalUser,
+            isSchemaUser             : isSchemaUser,
         }
     }
 }
 
-function isAdministrator(){
-    const $auth = useAuth();
-    const realmConfStore  = useRealmConfStore();
-
-    if(!$auth?.user?.government){
-        const adminRoles = realmConfStore.getRole(ROLES.ADMINISTRATOR)
-        return isInRoles(adminRoles);
+const quickObjs = {
+    get user(){
+        const $auth = useAuth();
+        return $auth?.user?.value
+    },
+    get realmConfStore(){
+        const lRealmConfStore  = useRealmConfStore();
+        return lRealmConfStore;
     }
 }
 
-function isNAU(schema){
-    return false;
+function isUserInRole(role:string) {				
+    return isUserInRoles([role]);
+};
+
+function isUserInRoles(roles) {
+
+    if (!quickObjs.user)
+        return false;
+
+    return intersection(quickObjs.user.roles, roles).length > 0;
+};
+
+function is(role, schema, schemaType) {
+    return isUserInRoles(quickObjs.realmConfStore.getRole(role, schema, schemaType));
 }
 
-function isPA(schema){
-    return false;
+function isAdministrator() {
+    return isUserInRoles(quickObjs.realmConfStore.getRole(ROLES.ADMINISTRATOR));
+}
+
+function isPublishingAuthority(schema, schemaType) {
+    return isUserInRoles(quickObjs.realmConfStore.getRole('publishingAuthorities', schema, schemaType));
+}
+
+function isNationalAuthorizedUser(schema, schemaType) {
+    return isUserInRoles(quickObjs.realmConfStore.getRole('nationalAuthorizedUser', schema, schemaType));
+}
+
+function isNationalFocalPoint() {
+    return isUserInRoles(quickObjs.realmConfStore.getRole('nationalFocalPoint', undefined, 'national'));
+}
+
+function isUser() {
+    return isUserInRoles(['User']);
+}
+
+// verifies if the user has roles at schema level, fallback to govt level otherwise
+function isNationalSchemaUser(schema) {				
+    return isPublishingAuthority(schema, 'national') || isNationalAuthorizedUser(schema, 'national') || isNationalFocalPoint();
+}
+
+// verifies if the user is in any roles object or roles overwritten at schema 
+function isNationalUser(skipSchemaRoles) {
+    var hasNationalRole = isPublishingAuthority(undefined, 'national') || isNationalAuthorizedUser(undefined, 'national') || isNationalFocalPoint();
+    
+    if(!skipSchemaRoles && !hasNationalRole){//check if the user has roles at schema level 
+        // var schemaNationalRoles = quickObjs.realmConfStore.nationalRoles();
+        // hasNationalRole = isUserInRoles(schemaNationalRoles)
+    }
+    
+    return hasNationalRole;
+}
+
+function isSchemaUser(schema, schemaType){
+    return 	isPublishingAuthority(schema, schemaType) || 
+            isNationalAuthorizedUser(schema, schemaType) || 
+            (isNationalFocalPoint() && quickObjs.realmConfStore.realmConf.schemas[schema]?.type=='national');
 }
 
 async function checkUserAccess(options:any) {

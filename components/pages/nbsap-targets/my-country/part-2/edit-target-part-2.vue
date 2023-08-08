@@ -29,7 +29,7 @@
                                             value-key="code"
                                             placeholder="Government"
                                             :options="countryList"
-                                            :disabled="!security.role.isAdministrator">
+                                            :disabled="!security.role.isAdministrator()">
                                         </km-select>                                
                                     </km-form-group>   
 
