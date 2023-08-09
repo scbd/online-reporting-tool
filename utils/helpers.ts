@@ -59,7 +59,6 @@ export function sortBy(list:Array, property){
     })
 }
 
-
 export const sleep = (ms)=> new Promise(resolve=> setTimeout(resolve, ms));
 
 export const scrollToElement = (querySelector, container)=>{
@@ -80,4 +79,14 @@ export const scrollToElement = (querySelector, container)=>{
     qBody.stop().animate({
         scrollTop: scrollNum
     }, 100);
+}
+
+export const isWorkflowAssignedToMe = function (activity:object) {
+    const { user } = useAuth();
+    return activity && _.includes(activity.assignedTo || [], user.value.userID || -1);
+};
+
+export const isWorkFlowCreatedByMe = function(workflow){
+    const { user } = useAuth();   
+    return workflow && workflow.createdBy == user.value.userID;
 }

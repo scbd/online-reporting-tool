@@ -54,6 +54,7 @@
                             {{t('validatePartIAndPartII')}}
                         </CButton>
                     </div>
+                    <workflow-actions v-if="openWorkflow" :workflow="openWorkflow"></workflow-actions>
                   </CCardBody>
                 </CCard>
               </CCol>
@@ -205,6 +206,7 @@
 
     import _ from 'lodash';
     import { KmSuspense, KmLink, KmNavLink, KmModalSpinner } from '@/components/controls'
+    import WorkflowActions from '@/components/actions/workflow-actions.vue';
     import validation from '@/components/pages/nbsap-targets/my-country/validation.vue';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import btnNewTarget from './btn-new-target.vue';
@@ -214,7 +216,7 @@
 
     let globalTargets               = undefined;
     let userRecords                 = {}
-    const {$appRoutes:appRoutes}    = useNuxtApp();
+    const { $appRoutes:appRoutes, $api } = useNuxtApp();
     const validationRef             = ref(null);
     const showPublishBtn            = ref(true);
     const isValidating              = ref(false);
@@ -226,6 +228,7 @@
     const confirmationPromise       = ref(null);
     const showValidationErrorDialog = ref(false);
     const missingTargets            = ref({});
+    const openWorkflow              = ref(null);
 
     const security                  = useSecurity();
     const { t }                     = useI18n();
@@ -315,10 +318,21 @@
         isPublishing.value = false;
     }
 
-    function onRecordsLoad(records:object){
+    async function onRecordsLoad(records:object){
         
         if(!records.draftNationalTargets?.length && !records.draftNationalMappings?.length){
             showPublishBtn.value = false;
+        }
+
+
+        // verify if there any lock records
+        const lockedRecord = [...records.draftNationalTargets, ...records.draftNationalMappings].find(e=>e.workingDocumentLock);
+
+        if(lockedRecord){
+            const workflowId = lockedRecord.workingDocumentLock.lockID.replace('workflow-', '');
+            const workflow =  await $api.kmWorkflows.getWorkflow(workflowId);
+            console.log(workflow);
+            openWorkflow.value = workflow;
         }
     }
 

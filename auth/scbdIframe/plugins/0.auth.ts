@@ -66,7 +66,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
   const hasScope = (scope:string)=>{
     if(user.value?.isAuthenticated){
-        return user.value.roles.includes(scope)
+        return user.value.roles.map(e=>e.toLowerCase()).includes(scope.toLowerCase())
     }
     return false;
   }

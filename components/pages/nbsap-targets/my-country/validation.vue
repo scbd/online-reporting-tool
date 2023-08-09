@@ -125,7 +125,9 @@
 
                   <tr v-for="(document,  index) in publishedNationalMappings" :key="document.identifier">
                     <th scope="row">{{ index+1 + (draftNationalMappings?.length||0) }}</th>
-                    <td>{{lstring(document.title)}}</td>                    
+                    <td>
+                        <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>      
+                    </td>                    
                     <td>                        
                         <CBadge color="success">
                             {{t('publishedState')}}
@@ -188,7 +190,7 @@
     import { KmDocumentsService } from '@/services/kmDocuments';
     import { useThesaurusStore } from "@/stores/thesaurus";
     import { buildTargetMatrix } from "./part-2/util";
-    import { useStorage } from '@vueuse/core'
+    import { useStorage } from '@vueuse/core';
 
     defineExpose({
         validate
@@ -201,7 +203,7 @@
 
     let   targetMapping = undefined;
     const rowsPerPage = 300;
-    const { $appRoutes:appRoutes } = useNuxtApp();
+    const { $appRoutes:appRoutes, $api } = useNuxtApp();
     const { user } = useAuth();
     const security = useSecurity();
     const route    = useRoute();
@@ -267,7 +269,8 @@
                 draftNationalMappings : draftNationalMappings.value,
                 publishedNationalTargets : publishedNationalTargets.value, 
                 publishedNationalMappings : publishedNationalMappings.value
-            })
+            });
+
         }
         catch(e){
             console.error(e)

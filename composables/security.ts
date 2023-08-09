@@ -42,7 +42,7 @@ function isUserInRoles(roles) {
     if (!quickObjs.user)
         return false;
 
-    return intersection(quickObjs.user.roles, roles).length > 0;
+    return intersection(quickObjs.user.roles?.map(e=>e.toLowerCase()), roles?.map(e=>e.toLowerCase())).length > 0;
 };
 
 function is(role, schema, schemaType) {
