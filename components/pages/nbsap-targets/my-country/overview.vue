@@ -331,7 +331,6 @@
         if(lockedRecord){
             const workflowId = lockedRecord.workingDocumentLock.lockID.replace('workflow-', '');
             const workflow =  await $api.kmWorkflows.getWorkflow(workflowId);
-            console.log(workflow);
             openWorkflow.value = workflow;
         }
     }
@@ -372,6 +371,7 @@
             const { user }        = useAuth();
             const realmConfStore  = useRealmConfStore();
             const realmConf = realmConfStore.realmConf;
+            
             const res = await useAPIFetch(`/api/v2023/national-reports/7/national-targets/${user.government||'scbd'}/publish`,{
                                             method: 'POST',
                                             query : {

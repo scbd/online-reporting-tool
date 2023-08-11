@@ -8,7 +8,7 @@ export const useStorage = ()=>{
     
 }
 
-const cleanDocument = (document:any)=>{
+const cleanDocument = (document:Object)=>{
 
     return removeEmpty(document);    
 

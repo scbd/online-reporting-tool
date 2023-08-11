@@ -2,7 +2,7 @@
     "validationErrorsTitle"  : "Validation errors",
     "validationErrorsMessage": "There is still mandatory information missing in some of your record(s), please make sure that all records marked in red are completed.",
     "close"                  : "Close",
-    "successfulMessage"      : "You request to publish your countries National Targets and Mapping has been received.",
+    "successfulMessage"      : "Your request to publish your countries National Targets and Mapping has been received.",
     "successMessageNau"      : "Your request to publish will be sent to your country's NFP who has rights to publish.",
     "successMessagePA"       : "Since there are number of records it will take few minutes to published them all.",
     "nbsapMessage"           : "This is a reminder if your country has not yet submitted NBSAPs, you can do it on CHM.",

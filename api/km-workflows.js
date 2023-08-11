@@ -9,13 +9,14 @@ export default class KmWorkflowsApi extends ApiBase
     
     
     async getWorkflowHistory(params)  {
-        const data =  useAPIFetch(`/api/v2013/workflows`, { method:'get', params })                
+        
+        const data =  await useAPIFetch(`/api/v2013/workflows`, { method:'get', params })                
         return data;
     }
 
     async getWorkflow(workflowId)  {
 
-        const data =  useAPIFetch(`/api/v2013/workflows/${encodeURIComponent(workflowId)}`,  { method:'get' })                
+        const data =  await useAPIFetch(`/api/v2013/workflows/${encodeURIComponent(workflowId)}`,  { method:'get' })                
         return data;
     }
 
@@ -27,11 +28,11 @@ export default class KmWorkflowsApi extends ApiBase
 
     }
 
-    async updateActivity(id, activityName, data) {
-        return useAPIFetch("/api/v2013/workflows/" + id + "/activities/" + activityName, {method:'PUT', data})
+    async updateActivity(id, activityName, body) {
+        return useAPIFetch("/api/v2013/workflows/" + id + "/activities/" + activityName, {method:'PUT', body})
     }
 
-    async updateBatchActivity(id, activityName, data) {
-        return useAPIFetch("/api/v2013/workflows/batches/" + id + "/activities/" + activityName, {method:'PUT', data})
+    async updateBatchActivity(id, activityName, body) {
+        return useAPIFetch("/api/v2013/workflows/batches/" + id + "/activities/" + activityName, {method:'PUT', body})
     }
 }

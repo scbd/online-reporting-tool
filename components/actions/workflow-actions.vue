@@ -107,6 +107,8 @@
                 result = await $api.kmWorkflows.updateBatchActivity(props.workflow.data.batchId, props.workflow.activities[0].name, actionData)
             else
                 result = await $api.kmWorkflows.updateActivity(props.workflow._id, props.workflow.activities[0].name, actionData)
+            
+            
         }
         catch(error) {
             useLogger().error(error, 'There was an error processing your request, please try again.');

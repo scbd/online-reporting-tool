@@ -13,7 +13,7 @@
         </CNavItem>
         <CNavItem>
           <NuxtLink class="nav-link" :to="localePath('/nbsap-targets')" exact>
-            {{t('menuNbsapTargets')}} 
+            {{t('menuNationalTargets')}} 
           </NuxtLink>
         </CNavItem>
         <CNavItem>
@@ -42,7 +42,7 @@
           <span class="nav-link">
             <CDropdown variant="nav-item">
               <CDropdownToggle placement="bottom-end" class="py-0" :caret="true">
-                <CIcon name="cil-globe-alt" /> {{languages[$i18n.locale]}}
+                <font-awesome-icon icon="fa-solid fa-language" /> {{languages[$i18n.locale]}} 
               </CDropdownToggle>
               <CDropdownMenu class="pt-0">
                 <CDropdownHeader component="h6" class="bg-light fw-semibold py-2">
