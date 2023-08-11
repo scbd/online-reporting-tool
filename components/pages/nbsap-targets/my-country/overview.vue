@@ -331,7 +331,18 @@
         if(lockedRecord){
             const workflowId = lockedRecord.workingDocumentLock.lockID.replace('workflow-', '');
             const workflow =  await $api.kmWorkflows.getWorkflow(workflowId);
-            openWorkflow.value = workflow;
+            if(workflow){
+                openWorkflow.value = workflow;
+                stateTargetWorkflow.value.batchId = undefined;
+            }
+        }
+        else if (stateTargetWorkflow.value.batchId){
+            const batchWorkflow =  await $api.kmWorkflows.getBatchWorkflowDetails(stateTargetWorkflow.value.batchId);
+            if(batchWorkflow){                
+                if(['workflowActivityInitiated', 'workflowActivityUpdated',].includes(batchWorkflow.status)){
+                    stateTargetWorkflow.value.batchId = undefined;
+                }
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 
 import ApiBase, { tryCastToApiError } from './api-base';
+import { EKmDocumentsBatchWorkflow } from '@/types/EKmDocumentsBatchWorkflow.js';
 
 export default class KmWorkflowsApi extends ApiBase
 {
@@ -20,9 +21,9 @@ export default class KmWorkflowsApi extends ApiBase
         return data;
     }
 
-    async getBatchWorkflowDetails(batchId)  {
+    async getBatchWorkflowDetails(batchId):Promise<EKmDocumentsBatchWorkflow>  {
 
-        const data = useAPIFetch(`/api/v2013/workflows/batches/${encodeURIComponent(batchId)}`,  { method:'get' })
+        const data = useAPIFetch<EKmDocumentsBatchWorkflow>(`/api/v2013/workflows/batches/${encodeURIComponent(batchId)}`,  { method:'get' })
                     
         return data;
 

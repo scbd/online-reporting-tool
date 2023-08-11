@@ -29,17 +29,17 @@
         </div>
         <!-- need to change to json -->
         <!-- filter: isOpen | orderBy: '-createdOn'  -->
-        <div v-for="(activity, index)  in  workflow.activities" :key=" activity " class="m-2">
+        <div v-for="(activity, index)  in  openActivity" :key=" activity " class="m-2">
             <div class="d-grid gap-1 d-md-flex" v-if="isWorkflowAssignedToMe(activity)">
                 <button type="button" class="btn btn-success bold" @click="updateActivity({ action : 'approve' })"
-                    :disabled=" isUpdating " v-if=" activity.name != 'deleteRecord' ">
+                    :disabled=" isBusy " v-if=" activity.name != 'deleteRecord' ">
                     <span>{{t('approve')}}</span>
                 </button>
-                <button type="button" class="btn btn-danger bold" @click="confirmDelete()" :disabled=" isUpdating "
+                <button type="button" class="btn btn-danger bold" @click="confirmDelete()" :disabled=" isBusy "
                     v-if=" activity.name == 'deleteRecord' ">
                     <span>{{t('delete')}}</span>
                 </button>
-                <button type="button" class="btn btn-warning bold" @click="showRejectDialog()" :disabled=" isUpdating ">
+                <button type="button" class="btn btn-warning bold" @click="showRejectDialog()" :disabled=" isBusy ">
                     <span v-if=" activity.name == 'deleteRecord' ">{{t('rejectNotDelete')}}</span>
                     <span v-if=" activity.name != 'deleteRecord' ">{{t('reject')}}</span>
                 </button>
@@ -47,7 +47,7 @@
 
             <div v-if="isWorkFlowCreatedByMe(workflow)">
                 <button type="button" class="btn btn-warning bold" @click="askCancelWorkflowRequest()"
-                    :disabled=" isUpdating ">
+                    :disabled=" isBusy ">
                     <span> {{t('cancelRequest')}}</span>
                 </button>
             </div>
@@ -69,11 +69,13 @@
 
     </div>
 </template>
-<i18n src="@/i18n/dist/components/controls/workflow-actions.json"></i18n>
+
+<i18n src="@/i18n/dist/components/actions/workflow-actions.json"></i18n>    
 <script setup lang="ts">
     import moment from 'moment';
     import { useI18n } from 'vue-i18n';
     import { isWorkflowAssignedToMe, isWorkFlowCreatedByMe } from '@/utils'
+    import { useToast } from 'vue-toast-notification';
 
 
     const props = defineProps({
@@ -87,6 +89,7 @@
     const { $api }      = useNuxtApp();
     const security      = useSecurity();
     const { t, locale } = useI18n();
+    const $toast        = useToast()
 
     const daysToApproval = computed(()=>{
         const workflow = props.workflow;
@@ -94,25 +97,36 @@
                             .add(workflow.workflowAge.age, workflow.workflowAge.type);
         return expiryDate.diff(moment.utc(), 'days');
     })
+    const openActivity   = computed(()=>{
+        return props.workflow.value?.activities?.
+            filter(e=>e.closedOn && !e.timedOut)?.
+            sort((a,b)=>Date.parse(a.createdOn)-Date.parse(b.createdOn)).
+            reverse()
+    });
+
+    const isBusy         = ref(false);
 
     function formatDateWithTime(date){
         return date;
     }
 
     async function updateActivity(actionData:object, cancelRequest:boolean) {
-
+        isBusy.value = true;
         try{
+
             let result;
             if(props.workflow.data.batchId)
                 result = await $api.kmWorkflows.updateBatchActivity(props.workflow.data.batchId, props.workflow.activities[0].name, actionData)
             else
                 result = await $api.kmWorkflows.updateActivity(props.workflow._id, props.workflow.activities[0].name, actionData)
             
-            
+            $toast.success(t('approvedSuccessful'))
         }
         catch(error) {
-            useLogger().error(error, 'There was an error processing your request, please try again.');
+            useLogger().error(error, t('approvalError'));
         }
+
+        isBusy.value = false;
     };
 
 </script>
