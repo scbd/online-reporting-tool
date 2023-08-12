@@ -9,7 +9,9 @@
               <CIcon icon="addthis"/> Submit new target
           </NuxtLink>
         </div>
-        List of reports
+
+        
+
       </CCardBody>
     </CCard>
   </template>

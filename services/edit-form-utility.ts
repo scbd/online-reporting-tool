@@ -31,7 +31,7 @@ class editFormUtility{
                 throw error;
             }).then(
             function(success) {
-                var info = success.data;
+                var info = success;
 
                 if (expectedSchema && info.type!=expectedSchema)
                     throw { data: { error: "Invalid schema type" }, status:"badSchema"};
@@ -48,7 +48,7 @@ class editFormUtility{
                         var documentPromise = hasDraft ? $kmStorageApi.drafts.get(identifier)
                                                         : $kmStorageApi.documents.get(identifier);
 
-                        return documentPromise.then(success=>success.data);
+                        return documentPromise;
                     });
             });
     }

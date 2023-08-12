@@ -172,6 +172,7 @@
     import { scrollToElement } from '@/utils';
     import { useRoute } from 'vue-router' 
     import { buildTargetMatrix } from "./util";
+    import { useStorage } from '@vueuse/core'
 
 
     const rowsPerPage = UTILS.ROWS_PER_PAGE;
@@ -181,6 +182,7 @@
     const route    = useRoute();
     const localePath  = useLocalePath()
     const { t }       = useI18n(); 
+    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
 
     const realmConfStore  = useRealmConfStore();
     const kmDocumentDraftStore  = useKmDocumentDraftsStore();

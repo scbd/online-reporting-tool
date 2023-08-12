@@ -161,15 +161,16 @@
                 </div>
             </km-form-group>
 
-            <km-form-group v-if="viewDocument.additionalinformation">
+            <km-form-group v-if="viewDocument.additionalInformation">
                 <div class="card">
                     <div class="card-header bg-secondary">
                         Additional information
                     </div>
                     <div class="card-body">
                         <km-form-group>
+                            {{ viewDocument.additionalInformation }}
                             <label class="form-label" for="referencePeriodInfo">Any other relevant information</label>
-                            <km-lstring-value type="html" :value="viewDocument.additionalinformation" :locale="selectedLocale"></km-lstring-value>
+                            <km-lstring-value type="html" :value="viewDocument.additionalInformation" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                     </div>
                 </div>
