@@ -66,7 +66,8 @@
                                                             <km-form-group name="hasReferencePeriod" required caption="Is there a reference period for above national target(s) which relates to the headline indicator? (rephrase?)">
                                                                 <km-form-check-group>
                                                                     <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodYes'+ indicator.headlineIndicator.identifier"  :value="true"  v-model="indicator.hasReferencePeriod" label="Yes"/>
-                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodNo' + indicator.headlineIndicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" label="No"/>
+                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodNo' + indicator.headlineIndicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" label="No"
+                                                                        @update:modelValue="()=>indicator.referencePeriodInfo=undefined"/>
                                                                 </km-form-check-group>
                                                             </km-form-group> 
 
@@ -227,7 +228,7 @@
             header : {
                 schema : SCHEMAS.NATIONAL_TARGET_7_MAPPING,
                 identifier : useGenerateUUID(),
-                languages  : [locale.value]
+                languages  : EditFormUtility.getPreferredEditLanguages()
             },        
             government : {
                 identifier : user.value?.government

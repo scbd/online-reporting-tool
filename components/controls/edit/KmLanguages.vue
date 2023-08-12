@@ -13,14 +13,15 @@
     <small v-if="selectedLanguages && selectedLanguages.length == 1" class="text-danger form-text">
         {{ t('minOneLanguage') }}
     </small>
-    <km-form-group name="otherLanguages" class="mt-2"  caption="Would like to submit this information in any other language(s)?">                                    
+    <km-form-group name="otherLanguageOption" class="mt-2"  caption="Would like to submit this information in any other language(s)?">                                    
         <km-form-check-group>
-            <km-form-check-item inline type="radio" name="otherLanguages"  for="otherLanguages" id="otherLanguagesYes" 
-                :value="true"  v-model="otherLanguages" label="Yes" @update:modelValue="onOtherLanguage"/>
-            <km-form-check-item inline type="radio" name="otherLanguages"  for="otherLanguages" id="otherLanguagesNo"  :value="false" v-model="otherLanguages" label="No"/>
+            <km-form-check-item inline type="radio" name="otherLanguageOption"  for="otherLanguageOption" id="otherLanguageOptionYes" 
+                :value="true"  v-model="otherLanguageOption" label="Yes" @update:modelValue="onOtherLanguage"/>
+            <km-form-check-item inline type="radio" name="otherLanguageOption"  for="otherLanguageOption" id="otherLanguageOptionNo"  
+            :value="false" v-model="otherLanguageOption" label="No" @update:modelValue="onOtherLanguage"/>
         </km-form-check-group>
     </km-form-group>
-    <km-form-group name="otherLanguages" class="mt-2"  caption="Other language(s)?" v-if="otherLanguages">
+    <km-form-group name="otherLanguages" class="mt-2"  caption="Other language(s)?" v-if="otherLanguageOption">
         <km-select
             v-model="otherSelectedLanguages"
             label="title"
@@ -40,6 +41,7 @@
 <script setup lang="ts">
     import { KmSelect, KmFormCheckGroup, KmFormGroup, KmFormCheckItem } from "~/components/controls";
     import { useThesaurusStore }    from '@/stores/thesaurus';
+    import { useUserPreferencesStore }    from '@/stores/userPreferences';
     import { languages }            from '@/app-data/languages'
 
     const props = defineProps({
@@ -55,11 +57,11 @@
 
     const security                  = useSecurity();
     const thesaurusStore            = useThesaurusStore ();
+    const userPreferencesStore      = useUserPreferencesStore();
     const {t, locale }              = useI18n();
     const selectedLanguages         = ref([]);
     const otherSelectedLanguages    = ref([]);
-    const otherLanguages            = ref(false)
-
+    const otherLanguageOption       = ref(false);
     
     const formattedLanguages      = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));
     const formattedOtherLanguages = computed(()=>{
@@ -70,22 +72,31 @@
                                 return { code : e.identifier.replace('lang-', ''), title : lstring(e.title)}
                             });
         return sortBy(otherLanguages, 'title')
-    })
+    });
+
     onMounted(()=>{
-        console.log('hello', props.modelValue)
-        selectedLanguages.value         = props.modelValue?.filter(e=>isUNLanguage(e));
-        otherSelectedLanguages.value    = props.modelValue?.filter(e=>!isUNLanguage(e));
+        let editLanguages = props.modelValue;
+        
+        selectedLanguages.value         = editLanguages?.filter(e=>isUNLanguage(e));
+        otherSelectedLanguages.value    = editLanguages?.filter(e=>!isUNLanguage(e));
         if(otherSelectedLanguages.value?.length){
-            otherLanguages.value = true;
+            otherLanguageOption.value = true;
             onOtherLanguage()
         }
+        
     })
 
     function onChange(code:string){
-         emit('update:modelValue', [...selectedLanguages.value||[], ...otherSelectedLanguages.value||[]])
+        const languages = [...selectedLanguages.value||[], ...otherSelectedLanguages.value||[]];
+        emit('update:modelValue', languages);
+        userPreferencesStore.setPreferredEditLanguages(languages);
     }
 
     function onOtherLanguage(){
+        if(!otherLanguageOption.value){
+            otherSelectedLanguages.value = [];
+            onChange('');
+        }
         return thesaurusStore.loadDomainTerms(THESAURUS.OTHER_LANGUAGES)
     }
 

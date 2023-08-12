@@ -1,9 +1,9 @@
 <template>
-  <div :id="`km-rich-lstring-${uid}`">   
+  <div :id="`km-rich-lstring-${uid}`"> 
     <CNav variant="tabs" role="tablist">
       <CNavItem v-for="locale in locales" :key="locale" :id="`lstringTab-${uid}`">
         <CNavLink
-          href="javascript:void(0);" :active="activeLocale === locale" @click="() => {activeLocale = locale}">
+          href="javascript:void(0);" :active="selectedLocale === locale" @click="onTabChange(locale)">
           <!-- <CTooltip :content="lstring(getTerm(locale).title)" trigger="hover">
                 <template #toggler="{ on }">
                     <span v-on="on">{{locale.toUpperCase()}}</span>
@@ -15,9 +15,9 @@
     </CNav>
     <CTabContent>
       <CTabPane role="tabpanel" :aria-labelledby="`tabContent-${locale}-${uid}`" v-for="locale in locales" :key="locale" 
-        :visible="activeLocale === locale" :id="`lstringTabContent-${uid}`">       
-        <km-ck-editor v-if="activeLocale==locale" v-model="binding[activeLocale]" :identifier="identifier"
-            :locale="activeLocale" @onChange="onChange"></km-ck-editor>     
+        :visible="selectedLocale === locale" :id="`lstringTabContent-${uid}`">       
+        <km-ck-editor v-if="selectedLocale==locale" v-model="binding[selectedLocale]" :identifier="identifier"
+            :locale="selectedLocale" @onChange="onChange"></km-ck-editor>     
       </CTabPane>
     </CTabContent>
   </div>
@@ -29,6 +29,7 @@ import { makeUid } from '@coreui/utils/src'
 // import { Tab } from 'bootstrap'
 import KmCkEditor from './KmCkEditor.vue'
 import { useThesaurusStore }    from '@/stores/thesaurus';
+import { useUserPreferencesStore }    from '@/stores/userPreferences';
 
 export default {
   name: "KmRichLstring",
@@ -58,15 +59,16 @@ export default {
   },
   data() {
     return {
-      activeLocale : '',
-      uid : makeUid(),
-      tabPaneActiveKey:1
+        activeLocale : '',
+        uid : makeUid(),
+        tabPaneActiveKey:1,
+        userPreferencesStore : useUserPreferencesStore()
     };
   },
   watch:{
     locales : function(newVal){
         if(!newVal.includes(this.activeLocale)){        
-            this.activeLocale = newVal[0];
+            this.onTabChange(newVal[0]);
         }
         this.loadLanguages()
     }
@@ -81,11 +83,13 @@ export default {
       get() {
         return this.modelValue||{};
       },
-    //   set(value) {
-    //     console.log(value)
-    //     const clean = useKmStorage().cleanDocument({...value});
-    //     this.$emit('update:modelValue', clean);
-    //   }
+    },
+    selectedLocale : {
+        get(){
+            if(this.locales.includes(this.userPreferencesStore.editorActiveLanguageTab ))
+                return this.userPreferencesStore.editorActiveLanguageTab ;
+            return this.activeLocale;
+        }
     }
   },
   methods: { 
@@ -104,6 +108,10 @@ export default {
 
         const thesaurusStore    = useThesaurusStore ();
         return thesaurusStore.getTerm(`lang-${term}`)||{};
+    },
+    onTabChange(locale){
+        this.activeLocale = locale;
+        this.userPreferencesStore.setEditorActiveLanguageTab(locale);
     }
   },
   mounted(){

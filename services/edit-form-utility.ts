@@ -1,5 +1,8 @@
 
 import { useRealmConfStore }    from '@/stores/realmConf';
+import { useI18n } from 'vue-i18n';
+import { useUserPreferencesStore }    from '@/stores/userPreferences';
+import {uniq } from 'lodash';
 
 class editFormUtility{
 
@@ -225,6 +228,19 @@ class editFormUtility{
         
         return this.createWorkflow(draftInfo, additionalInfo, workflowType); // return workflow info
 
+    }
+
+    getPreferredEditLanguages(){
+
+        const { locale }              = useI18n();
+        const userPreferencesStore    = useUserPreferencesStore();
+        let languages = [ locale.value ];
+        
+        if(userPreferencesStore.preferredEditLanguages?.length){
+            languages = uniq([...languages, ...userPreferencesStore.preferredEditLanguages]);
+        }
+
+        return languages;
     }
 
 	private createWorkflow(draftInfo, additionalInfo, type:string){

@@ -1,5 +1,5 @@
 <template>
-    <div id="km-value-ml"> 
+    <div id="km-value-ml">
         <div :class="`input-group input-lang-${locale}`">
     
             <div v-if="type=='string'" class="form-control km-value km-value-ml-div" 
@@ -10,7 +10,7 @@
                 :dir="direction(valueLstring, locale)" aria-describedby="basic-addon1" v-html="valueLstring">                
             </div>
             <span class="input-group-text" id="basic-addon1" style="cursor:default">
-               {{lstring(getTerm(locale).title||locale)}}
+               {{lstring(getTerm(valueLocale).title)}}
             </span>
         </div>
     </div>

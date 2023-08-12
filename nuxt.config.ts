@@ -65,7 +65,8 @@ export default defineNuxtConfig({
     ],
     modules: [
         '@nuxtjs/i18n-edge',
-        '@pinia/nuxt'
+        '@pinia/nuxt',
+        '@pinia-plugin-persistedstate/nuxt',
     ],
     css:[
         // 'bootstrap/dist/css/bootstrap.css'

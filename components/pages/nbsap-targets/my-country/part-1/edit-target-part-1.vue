@@ -15,7 +15,7 @@
                                 </div>
                                 <div class="card-body">  
                                     <km-form-group name="government" caption="Government" required>
-                                        <km-government v-model="document.government"></km-government>                           
+                                        <km-government v-model="document.government" ></km-government>                           
                                     </km-form-group>   
 
                                     <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
@@ -422,7 +422,7 @@
             header : {
                 schema : SCHEMAS.NATIONAL_TARGET_7,
                 identifier : useGenerateUUID(),
-                languages  : ['en']
+                languages  : EditFormUtility.getPreferredEditLanguages()
             },        
             government : {
                 identifier : undefined
