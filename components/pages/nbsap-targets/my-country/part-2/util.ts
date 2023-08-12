@@ -8,17 +8,17 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
         
         target.nationalTargets = []
 
-        const lNationalTargets  = [...nationalTargets.filter (e=>e.body?.globalTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier))];
-        const lNationalMappings = {...nationalMappings.find(e=>e.body?.globalGoalOrTarget?.identifier  == target.identifier)};
+        const lNationalTargets  = [...nationalTargets.filter (e=>(e.workingDocumentBody || e.body)?.globalTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier))];
+        const lNationalMappings = {...nationalMappings.find(e=>(e.workingDocumentBody || e.body)?.globalGoalOrTarget?.identifier  == target.identifier)};
 
-        target.elementOfGlobalTargetsInfo = lNationalMappings?.body?.elementOfGlobalTargetsInfo;
-        target.nationalMapping            = lNationalMappings?.body;
+        target.elementOfGlobalTargetsInfo = (lNationalMappings?.workingDocumentBody || lNationalMappings?.body)?.elementOfGlobalTargetsInfo;
+        target.nationalMapping            = (lNationalMappings?.workingDocumentBody || lNationalMappings?.body);
         target.nationalTargets = lNationalTargets.map(e=>{
-            return { identifier : e.identifier, title : e.body?.title}
+            return { identifier : e.identifier, title : (e.workingDocumentBody || e.body)?.title}
         });
 
         target.headlineIndicators.forEach(indicator => {
-            indicator.nationalTargets = [...lNationalTargets.filter(e=>e.body.headlineIndicators?.find(e=>e.identifier == indicator.identifier))];
+            indicator.nationalTargets = [...lNationalTargets];
             indicator.referencePeriod = target.nationalMapping?.referencePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
         });
 
@@ -27,8 +27,8 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
         target.otherIndicators = otherIndicators.filter(indicator=>{
             
             const found = lNationalTargets.find(nationalTarget=>{
-                return  nationalTarget.body.componentIndicators?.find(e=>e.identifier == indicator.identifier)||
-                        nationalTarget.body.complementaryIndicators?.find(e=>e.identifier == indicator.identifier)
+                return  (nationalTarget?.workingDocumentBody || nationalTarget?.body)?.componentIndicators?.find(e=>e.identifier == indicator.identifier)||
+                        (nationalTarget?.workingDocumentBody || nationalTarget?.body)?.complementaryIndicators?.find(e=>e.identifier == indicator.identifier)
             });
             return found;
         })

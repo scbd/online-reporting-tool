@@ -140,7 +140,7 @@
 
         const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
                             KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)]);  
-        draftNationalTargets.value     = result[0].Items?.map(e=>{return {...e, recordStatus : 'draft'}});
+        draftNationalTargets.value     = result[0].Items;
         publishedNationalTargets.value = result[1].Items.filter(e=>!draftNationalTargets.value.find(draft=>draft.identifier == e.identifier))
         
     }

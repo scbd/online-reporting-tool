@@ -21,35 +21,12 @@
                                 </div>
                                 <div class="card-body">  
                                     <km-form-group name="government" caption="Government" required>
-                                        <km-select
-                                            v-model="document.government.identifier"
-                                            class="validationClass"
-                                            label="name"
-                                            track-by="code"
-                                            value-key="code"
-                                            placeholder="Government"
-                                            :options="countryList"
-                                            :disabled="!security.role.isAdministrator()">
-                                        </km-select>                                
+                                        <km-government v-model="document.government"></km-government>                           
                                     </km-form-group>   
 
                                     <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
-                                        <km-select
-                                            v-model="document.header.languages"
-                                            class="validationClass"
-                                            label="title"
-                                            track-by="code"
-                                            value-key="code"
-                                            placeholder="Language of record"
-                                            :options="formattedLanguages"
-                                            :multiple="true"
-                                            :allow-empty="false"
-                                        >
-                                        </km-select>
-                                        <small v-if="document.header.languages && document.header.languages.length == 1" class="text-danger form-text">
-                                            Minimum of one language is mandatory, please select another language to remove the default language.
-                                        </small>
-                                    </km-form-group>  
+                                        <km-languages v-model="document.header.languages"></km-languages>
+                                    </km-form-group>   
                                 </div>
                             </div>
                         </km-form-group>
@@ -59,7 +36,7 @@
                                 <div class="card-header bg-secondary">
                                     Elements of the global targets
                                 </div>
-                                <div class="card-body">                                    
+                                <div class="card-body">                      
                                     <km-form-group required caption="Elements of the global targets addressed by national targets" name="elementOfGlobalTargetsInfo">
                                         <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>                                    
@@ -98,17 +75,7 @@
                                                             </km-form-group>                                     
                                                         </td>
                                                     </tr> 
-                                                </table>
-                                                <CAlert color="danger" class="d-flex align-items-center"  v-if="!(getIndicator(indicator.headlineIndicator).nationalTargets||[]).length">
-                                                    <CIcon icon="cil-burn" class="flex-shrink-0 me-2" width="24" height="24" />
-                                                    <div>
-                                                        Your country has not submitted any national target(s) linked to this headline indicator. (rephrase?)
-                                                        <!-- <br/>
-                                                        <CButton color="secondary" size="sm" @click="showEditMapping(target)">
-                                                            Submit new target here
-                                                        </CButton> -->
-                                                    </div>
-                                                </CAlert>
+                                                </table>                                                
                                             </CCardText>
 
                                         </CCardBody>
@@ -135,18 +102,16 @@
 <script setup>
   
     import { useAsyncState } from '@vueuse/core'
-    import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,
+    import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner, KmFormWorkflow
     } from "~/components/controls";
     import viewTarget               from "./view-target-part-2.vue";
-    import { mapStores }            from 'pinia'
-    import { languages }            from '@/app-data/languages'
-    import { useCountriesStore }    from '@/stores/countries';
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
     import { useToast } from 'vue-toast-notification';
-    import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
+    import { useStorage } from '@vueuse/core'
+    import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
 
     const props = defineProps({
@@ -164,11 +129,9 @@
     const route           = useRoute();
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const locale          = useI18n().locale
-    const countriesStore  = useCountriesStore ();
-    const realmConfStore  = useRealmConfStore();
-    const kmDocumentDraftStore  = useKmDocumentDraftsStore();
     const $toast                = useToast();        
     const container = useAttrs().container;
+    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
     
     const showSpinnerModal = ref(false);
     const selectedLocale = ref(locale.value);
@@ -188,9 +151,6 @@
         }
     })
 
-    await Promise.all([
-        countriesStore.loadCountries()
-    ]);
 
     let document = ref({});
     let isLoading = ref(false);
@@ -199,8 +159,8 @@
         document.value = {...props.rawDocument};
     }
     else if(props.identifier || route?.params?.identifier){
-        const req = useAsyncState(KmDocumentDraftsService.loadDraftDocument(props.identifier || route?.params?.identifier)
-                                                                .then(e=>e?.body?? emptyDocument()));        
+        const req = useAsyncState(EditFormUtility.load(props.identifier || route?.params?.identifier)
+                                                                .then(e=>e ?? emptyDocument()));        
         if(req.error?.value)
             throw new Error(req.error.value);
 
@@ -212,26 +172,9 @@
         //validate if there is a mapping record for the given target and load it instead
     }
 
-    
-    const formattedLanguages     = computed(()=>Object.entries(languages).map(e=>{ return { code : e[0], title : e[1]}}));    
-    const countryList           = computed(()=>{
-        if(!countriesStore?.countries?.length)
-            return [];
-
-        const mapCountries = countriesStore.countries.map(e=>{
-            return { name : e.name[useI18n().locale.value], code : e.code?.toLowerCase()}
-        })
-
-        return mapCountries;
-    });
-
     const cleanDocument = computed(()=>{
-        const clean = useStorage().cleanDocument({...document.value});
+        const clean = useKmStorage().cleanDocument({...document.value});
         
-        if(clean.elementOfGlobalTargetsinfo){
-            clean.elementOfGlobalTargetsInfo = { ...clean.elementOfGlobalTargetsinfo }
-            clean.elementOfGlobalTargetsinfo = undefined
-        }
         // incase if national target record was modified and global target was removed after 
         // the mapping was submitted then filter such reference period
         if(clean.referencePeriod && headlineIndicators.value?.length){            

@@ -72,7 +72,8 @@
                                     <td colspan="2">{{lstring(nationalTarget.title)}}</td>
                                     <td :rowspan="target.nationalTargets.length" v-if="index==0">
                                         <label></label>
-                                        <div v-html="lstring(target.elementOfGlobalTargetsInfo)"></div>
+                                        <km-lstring-value class="mt-2" type="html" v-if="target.elementOfGlobalTargetsInfo"
+                                            :value="target.elementOfGlobalTargetsInfo" :locale="useI18n().locale"></km-lstring-value>
                                     </td>                                
                                 </tr>
                                 <tr v-if="!target.nationalTargets?.length">
@@ -89,19 +90,19 @@
                                     <td style="width: 20%;">
                                         <strong>Headline Indicators</strong>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <strong>National target(s) linked to headline indicator</strong>
-                                    </td>
-                                    <td><strong>Reference period</strong></td>
+                                    </td> -->
+                                    <td colspan="2"><strong>Reference period</strong></td>
                                 </tr>
                                 <tr v-for="(indicator, index) in target.headlineIndicators" :key="indicator.identifier">
                                     <td style="width: 20%;">
                                         {{lstring(indicator.title)}}
                                     </td>
-                                    <td :colspan="indicator.nationalTargets.length ? 1 : 2">
+                                    <!-- <td :colspan="indicator.nationalTargets.length ? 1 : 2">
                                         <div v-for="target in indicator.nationalTargets">
                                             {{lstring(target.title)}}
-                                        </div>
+                                        </div> -->
 
                                         <!-- <missing-target-error  v-if="!indicator.nationalTargets.length"
                                             :query="{'globalTarget' : target.identifier, headlineIndicator:indicator.identifier}">
@@ -109,12 +110,13 @@
                                                 <span v-html="t('indicatorMissingTarget')"></span>
                                             </template>
                                         </missing-target-error>    -->
-                                    </td>
-                                    <td v-if="indicator.nationalTargets.length">
+                                    <!-- </td> -->
+                                    <td v-if="indicator.nationalTargets.length" colspan="2">
                                         <div v-if="indicator.referencePeriod">
-                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod" color="info" shape="rounded-pill">Has reference period</CBadge>
-                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod===false" color="info" shape="rounded-pill">No reference period</CBadge>
-                                            <div v-html="lstring(indicator.referencePeriod.referencePeriodInfo)"></div>
+                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod" color="success" shape="rounded-pill">Has reference period</CBadge>
+                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod===false" color="danger" shape="rounded-pill">No reference period</CBadge>
+                                            <km-lstring-value class="mt-2" type="html" v-if="indicator.referencePeriod.referencePeriodInfo"
+                                            :value="indicator.referencePeriod.referencePeriodInfo" :locale="useI18n().locale"></km-lstring-value>
                                         </div>
                                     </td> 
                                 </tr>
@@ -161,7 +163,7 @@
 <i18n  src="@/i18n/dist/pages/national-reports/index.json"></i18n>
 
 <script setup lang="ts">
-  import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup,
+  import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLstringValue,
              KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink
            } from "@/components/controls";
     import missingTargetError from '../missing-target-error.vue';
@@ -173,9 +175,11 @@
     import { useRoute } from 'vue-router' 
     import { buildTargetMatrix } from "./util";
     import { useStorage } from '@vueuse/core'
+    import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
+    import { KmDocumentsService } from "@/services/kmDocuments";
 
 
-    const rowsPerPage = UTILS.ROWS_PER_PAGE;
+    const rowsPerPage = 300; // UTILS.ROWS_PER_PAGE;
     const { $appRoutes:appRoutes } = useNuxtApp();
     const { user } = useAuth();
     const security = useSecurity();
@@ -221,23 +225,13 @@
       return localePath(url);
     }
 
-    async function loadNationalTargets(){
+    async function loadRecords(query){
 
-      const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+        const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
+                            KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)]);  
 
-      const response = await kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true);
-
-      return response.Items;
-
-    }
-
-    async function loadTargetMappings(){
-
-        const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}')`;
-
-        const response = await kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true);
-
-        return response.Items;
+        return [...result[0].Items,
+                ...result[1].Items.filter(e=>!result[0].Items?.find(draft=>draft.identifier == e.identifier))]
 
     }
 
@@ -274,13 +268,14 @@
 
             const response = await Promise.all([
                 GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators(), 
-                loadNationalTargets(), loadTargetMappings()
+                loadRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`), 
+                loadRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}')`)
             ]);
 
             let targets            = [...response[0]];
             const nationalTargets  = response[1]
             const nationalMappings = response[2];
-        
+        console.log(response)
             targets = buildTargetMatrix(targets, nationalTargets, nationalMappings);
             gbfGoalAndTargetList.value = sortBy(targets, 'identifier');
         }
