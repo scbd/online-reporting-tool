@@ -6,7 +6,7 @@
                 :dir="direction(valueLstring, locale)" aria-describedby="basic-addon1">
                 {{ valueLstring }}
             </div>
-            <div v-if="type=='html'" class="form-control km-value km-value-ml-div" 
+            <div v-if="type=='html'" class="form-control km-value km-value-ml-div ck-content" 
                 :dir="direction(valueLstring, locale)" aria-describedby="basic-addon1" v-html="valueLstring">                
             </div>
             <span class="input-group-text" id="basic-addon1" style="cursor:default">
@@ -39,6 +39,6 @@ import { useThesaurusStore }    from '@/stores/thesaurus';
     
 </script>
 
-<style scoped>
-   
+<style>
+   @import '@/libs/editor/content-style.css'
 </style>

@@ -28,7 +28,7 @@
 
                                     <km-form-group name="mainPolicyOfMeasureOrActionInfo" 
                                         caption="Please outline the main policy measures or actions that will be taken to achieve this national target.">
-                                        <km-input-rich-lstring v-model="document.mainPolicyOfMeasureOrActionInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.mainPolicyOfMeasureOrActionInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -99,11 +99,11 @@
                                         <small id="emailHelp" class="form-text text-muted">Please check all relevant considerations for implementation.</small>
                                     </km-form-group>
                                     <km-form-group name="implementingConsiderationsInfo" caption="Please explain how these considerations have been taken into account">
-                                        <km-input-rich-lstring v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     <km-form-group name="implementingConsiderationsInfo" 
                                         caption="Explanation, including which aspects of the goal or target are covered">
-                                        <km-input-rich-lstring v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
 
                                 </div>
@@ -190,7 +190,7 @@
                                 </div>
                                 <div class="card-body">
                                     <km-form-group name="nonStateActorCommitmentInfo" caption="List the non-state commitments towards this national Target">
-                                        <km-input-rich-lstring v-model="document.nonStateActorCommitmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.nonStateActorCommitmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     <km-form-group name="hasNonStateActors"  caption="Are there any overlaps or links between this national target and targets or commitments submitted as non-State actor commitments to the Kunming-Montreal Global Biodiversity Framework?">
                                         
@@ -201,7 +201,7 @@
                                     </km-form-group> 
                                     <km-form-group v-if="document.hasNonStateActors==true" 
                                     name="nonStateActorsInfo" caption="please indicate which commitment(s) and which actor(s)">
-                                        <km-input-rich-lstring v-model="document.nonStateActorsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.nonStateActorsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -224,10 +224,10 @@
                                     <km-form-group for="additionalImplementationCustomValue"
                                         caption="Please explain (Additional means of implementation are needed for the attainment of this national target)" required
                                         v-if="document.additionalImplementation.identifier=='additionalImplementationRequired' || document.additionalImplementation.identifier=='additionalImplementationOther'">
-                                        <km-input-rich-lstring v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     <km-form-group name="additionalImplementationInfo" caption="Additional explanation">
-                                        <km-input-rich-lstring v-model="document.additionalImplementationInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.additionalImplementationInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -240,7 +240,8 @@
                                 </div>
                                 <div class="card-body">
                                     <km-form-group name="additionalInformation" caption="Any other relevant information">
-                                        <km-input-rich-lstring v-model="document.additionalInformation" :locales="document.header.languages"></km-input-rich-lstring>
+                                        {{ document.additionalInformation }}
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.additionalInformation" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -271,7 +272,9 @@
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
     import {useToast} from 'vue-toast-notification';
+    import { useStorage } from '@vueuse/core'
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
+    import { EditFormUtility } from "@/services/edit-form-utility";
 
     const props = defineProps({
         identifier  : {type: String },
@@ -291,6 +294,7 @@
     const kmDocumentDraftStore      = useKmDocumentDraftsStore();
     const $toast                    = useToast();      
     const container                 = useAttrs().container;
+    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
 
     const headlineIndicatorsRef      = ref(null);
     const componentIndicatorsRef     = ref(null);
@@ -314,9 +318,8 @@
     if(refProps.rawDocument.value){
         document.value = {...refProps.rawDocument.value};
     }
-    else if(refProps.identifier.value || route?.params?.identifier){
-        await kmDocumentDraftStore.loadDraftDocument(refProps.identifier.value||route.params.identifier);
-        document.value = kmDocumentDraftStore.draftRecord?.body;
+    else if(refProps.identifier.value || route?.params?.identifier){        
+        document.value = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
     }
 
     if(document.value.globalTargetAlignment?.length){

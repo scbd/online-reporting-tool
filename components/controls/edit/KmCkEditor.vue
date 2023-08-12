@@ -26,13 +26,13 @@
 
 <script>
 
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import CKEditor     from '@ckeditor/ckeditor5-vue';
+import '@/libs/editor/ckeditor.js'//'@ckeditor/ckeditor5-build-classic'
+import CKEditor     from '@/libs/editor/ckeditor-vue'//'@ckeditor/ckeditor5-vue';
 
 export default {
   name: 'KmCkEditor',
   components: {
-    ckeditor: CKEditor.component,
+    ckeditor: CKEditor,
   },
   props: {
     modelValue: {
@@ -63,11 +63,15 @@ export default {
       required: false,
       default: function () {},
     },
+    identifier: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
       wordCount: 0,
-      editor: ClassicEditor,
+      editor: window.ClassicEditor,
       isUploadingFile:false,
       editorConfig : {        
         language: {
@@ -76,8 +80,8 @@ export default {
         },          
         toolbar: [
           'heading',
-          // 'fontSize',
-          // 'fontColor',
+          'fontSize',
+          'fontColor',
           '|',
           'bold',
           'italic',
@@ -85,26 +89,25 @@ export default {
           '|',
           'indent',
           'outdent',
-          // 'alignment',
+          'alignment',
           '|',
           'bulletedList',
           'numberedList',
           'blockQuote',
           '|',
-          // 'highlight',
+          'highlight',
           'insertTable',
           '|',
-          // 'imageInsert',
+          'imageInsert',
           'mediaEmbed',
-          // '|',
-          // 'horizontalLine',
           '|',
-          // 'removeFormat',
+          'horizontalLine',
+          '|',
+          'removeFormat',
           'undo',
           'redo',
-          // '|',
-          // 'pageBreak',
-          // 'brBreak',
+          '|',
+          'pageBreak'
         ],
         alignment: {
           options: ['left', 'right', 'center', 'justify'],
@@ -245,10 +248,7 @@ export default {
           ],
         },
         wordCount: {
-          onUpdate: function (stats) {
-            console.log(stats)
-            self.wordCount = stats.words
-          },
+        //   onUpdate: onWordCount,
         },
         mediaEmbed: {
           previewsInData: false,
@@ -324,6 +324,10 @@ export default {
     }
   },  
   methods: {
+    onWordCount(stats) {
+        console.log(stats)
+        this.wordCount = stats.words
+    },
     onEditorReady(ed) {
       const self = this;
 
@@ -338,16 +342,17 @@ export default {
             var data = new FormData();
             data.append('file', file);
 
-            return self.$api.kmStorage.attachments.uploadTempFile(data, { headers: {'Content-Type': undefined}})
-            .then(function(success) {
-              loader.uploaded = success.data;
-              return success.data;
-            })
-            .catch(function(error) {
-              console.error(error);
-              throw error;
-            });
-
+            return self.$api.kmStorage.attachments.upload(self.identifier, file, { headers: {'Content-Type': undefined}})
+            //.uploadTempFile(data, { headers: {'Content-Type': undefined}})
+                        .then(function(success) {
+                            success.urls = success.urls || [success.url];
+                            loader.uploaded = success;
+                            return success;
+                        })
+                        .catch(function(error) {
+                        console.error(error);
+                        throw error;
+                        });
           })
         }
         abort() {
@@ -382,9 +387,10 @@ export default {
 
         		formData.append('file', file);
 
-        		self.$api.kmStorage.attachments.uploadTempFile(formData, { headers: {'Content-Type': undefined}})
+        		// self.$api.kmStorage.attachments.uploadTempFile(formData, { headers: {'Content-Type': undefined}})
+                self.$api.kmStorage.attachments.upload(self.identifier, file, { headers: {'Content-Type': undefined}})
         		.then(function(success) {
-        			var viewFragment = ed.data.processor.toView('&nbsp;<a rel="noopener noreferrer" target="_blank" href="'+success.data.url+'">'+success.data.metadata.fileName+ '</a>' );
+        			var viewFragment = ed.data.processor.toView('&nbsp;<a rel="noopener noreferrer" target="_blank" href="'+success.url+'">'+success.metadata.fileName+ '</a>' );
         			var modelFragment = ed.data.toModel(viewFragment);
         			ed.model.insertContent( modelFragment);
         			self.onFileUpload({data:success.data});
@@ -408,9 +414,11 @@ export default {
       })
 
       function onEditorImageUploaded(eventInfo, name, value, oldValue){
-      	if(value.url){
-      		self.onFileUpload({data:value})
-      	}
+        console.log((eventInfo, name, value, oldValue))
+        //TODO: check why url is not in event args
+      	// if(value.url){
+      	// 	self.onFileUpload({data:value})
+      	// }
       }
     },
     onEditorFocus( event, editor ) {
@@ -448,8 +456,6 @@ export default {
 }
 </script>
 <style>
-
-@import url(https://cdn.jsdelivr.net/npm/@scbd/ckeditor5-build-inline-full@35.0.0/build/ckeditor.css);
 
 .ck.ck-balloon-panel.ck-balloon-panel_visible {
   /* stylelint-disable-line */

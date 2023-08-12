@@ -16,7 +16,7 @@
     <CTabContent>
       <CTabPane role="tabpanel" :aria-labelledby="`tabContent-${locale}-${uid}`" v-for="locale in locales" :key="locale" 
         :visible="activeLocale === locale" :id="`lstringTabContent-${uid}`">       
-        <km-ck-editor v-if="activeLocale==locale" v-model="binding[activeLocale]" 
+        <km-ck-editor v-if="activeLocale==locale" v-model="binding[activeLocale]" :identifier="identifier"
             :locale="activeLocale" @onChange="onChange"></km-ck-editor>     
       </CTabPane>
     </CTabContent>
@@ -50,6 +50,10 @@ export default {
     disabled: {
       type: Boolean,
       required: false,
+    },
+    identifier: {
+      type: String,
+      required: true,
     },
   },
   data() {

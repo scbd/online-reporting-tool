@@ -20,7 +20,6 @@
     "sass": "^1.63.6"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^38.1.0",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
     "@coreui/coreui": "^4.2.6",
     "@coreui/icons": "^3.0.1",
