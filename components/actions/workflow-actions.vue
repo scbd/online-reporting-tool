@@ -98,8 +98,8 @@
         return expiryDate.diff(moment.utc(), 'days');
     })
     const openActivity   = computed(()=>{
-        return props.workflow.value?.activities?.
-            filter(e=>e.closedOn && !e.timedOut)?.
+        return props.workflow.activities?.
+            filter(e=>!e.closedOn && !e.timedOut)?.
             sort((a,b)=>Date.parse(a.createdOn)-Date.parse(b.createdOn)).
             reverse()
     });
