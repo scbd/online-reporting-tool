@@ -349,7 +349,7 @@
 
     const selectedLocale = ref(locale.value);
     const cleanDocument = computed(()=>{
-        const clean = useStorage().cleanDocument({...document.value});
+        const clean = useKmStorage().cleanDocument({...document.value});
        
         clean.gbfGoalsAndTargetAlignment = undefined;
         clean.headlineIndicators =undefined

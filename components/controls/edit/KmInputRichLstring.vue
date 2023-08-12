@@ -83,14 +83,14 @@ export default {
       },
     //   set(value) {
     //     console.log(value)
-    //     const clean = useStorage().cleanDocument({...value});
+    //     const clean = useKmStorage().cleanDocument({...value});
     //     this.$emit('update:modelValue', clean);
     //   }
     }
   },
   methods: { 
     onChange(value){
-        const clean = useStorage().cleanDocument({...this.binding});
+        const clean = useKmStorage().cleanDocument({...this.binding});
         this.$emit('update:modelValue', clean);
     },
     loadLanguages(){

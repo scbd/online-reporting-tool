@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { removeEmpty } from '@/utils';
 
-export const useStorage = ()=>{
+export const useKmStorage = ()=>{
     return {
         cleanDocument
     }
