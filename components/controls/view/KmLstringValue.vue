@@ -40,5 +40,5 @@ import { useThesaurusStore }    from '@/stores/thesaurus';
 </script>
 
 <style>
-   @import '@/libs/editor/content-style.css'
+   @import '@/libs/ckeditor/build/content-style.css'
 </style>

@@ -26,13 +26,13 @@
 
 <script>
 
-import '@/libs/editor/ckeditor.js'//'@ckeditor/ckeditor5-build-classic'
-import CKEditor     from '@/libs/editor/ckeditor-vue'//'@ckeditor/ckeditor5-vue';
+import '@/libs/ckeditor/build/ckeditor.js'//'@ckeditor/ckeditor5-build-classic'
+import CKEditor     from '@ckeditor/ckeditor5-vue';
 
 export default {
   name: 'KmCkEditor',
   components: {
-    ckeditor: CKEditor,
+    ckeditor: CKEditor.component,
   },
   props: {
     modelValue: {
