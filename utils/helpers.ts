@@ -78,7 +78,7 @@ export const scrollToElement = (querySelector, container)=>{
 
     qBody.stop().animate({
         scrollTop: scrollNum
-    }, 100);
+    }, 'slow');
 }
 
 export const isWorkflowAssignedToMe = function (activity:object) {

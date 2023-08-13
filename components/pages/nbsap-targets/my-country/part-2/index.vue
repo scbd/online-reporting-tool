@@ -144,17 +144,16 @@
         </CCardBody>
       
       </CCard> 
-      <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showEditMappingModal" >
+      <CModal  class="show d-block nbsapTargetsPart2Edit" size="xl" alignment="center" backdrop="static" :visible="showEditMappingModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>{{lstring(editMappingTarget.title)}}</CModalTitle>
         </CModalHeader>
         <CModalBody>
-            <div id="nbsapTargetsPart2Edit">
-                <edit-target-part-2 :global-goal-or-target="editMappingTarget.identifier" 
+            <edit-target-part-2 :global-goal-or-target="editMappingTarget.identifier" 
                 :identifier="editMappingTarget.nationalMapping ? editMappingTarget.nationalMapping.header.identifier : undefined"
-                :headline-indicators="editMappingTarget.headlineIndicators" container="#nbsapTargetsPart2Edit"
-                :on-close="closeEditMappingDialog"></edit-target-part-2>
-            </div>
+                :headline-indicators="editMappingTarget.headlineIndicators" container="nbsapTargetsPart2Edit"
+                :on-close="closeEditMappingDialog">
+            </edit-target-part-2>
         </CModalBody>   
     </CModal>
 

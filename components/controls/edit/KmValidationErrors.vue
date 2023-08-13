@@ -22,13 +22,13 @@
                          <span>{{ t(getTranslation(error)) }}</span> /
                          <ul v-if="error.properties">
                              <li v-for="property in error.properties" :title="error.parameters" :key="property">					
-                                <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo(property.property)">
+                                <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo($event, property.property)">
                                     {{ getLabel(property.property) }}
                                 </a>
                              </li>
                          </ul>
                          <span v-if="!error.properties">
-                             <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo(error.property)">
+                             <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo($event, error.property)">
                                 {{ getLabel(error.property) }}
                             </a>
                          </span>
@@ -70,7 +70,9 @@
         return error?.code;
     }
 
-    function jumpTo(field:string) {
+    function jumpTo(event, field:string) {
+        event.preventDefault;
+        event.stopPropagation();
         $emits('onJumpTo', field);
     }
 

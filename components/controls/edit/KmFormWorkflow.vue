@@ -22,7 +22,6 @@
                     </CAlert>
                 </slot>
             </div>
-
             <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
                 <CCol>
                     <div class="action-buttons float-end mb-1">
@@ -38,7 +37,7 @@
                         <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                     </div>
                 </CCol>
-                <km-validation-errors  v-if="(activeTab == tabName.submission && validationReport.validationErrors) || 
+                <km-validation-errors  v-if="(activeTab == tabName.submission && validationReport.errors?.length) || 
                                              (activeTab == tabName.review || activeTab == tabName.publish)"
                     :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
             </CRow>
@@ -47,7 +46,7 @@
             <div v-if="activeTab == tabName.publish" class="m-1"><slot name="publish"></slot></div>
 
             <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
-                    <km-validation-errors v-if="(activeTab == tabName.submission && validationReport.validationErrors) || 
+                    <km-validation-errors v-if="(activeTab == tabName.submission && validationReport.errors?.length) || 
                                             (activeTab == tabName.review || activeTab == tabName.publish)"
                     :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>  
                 <CCol>
@@ -87,6 +86,7 @@
     import { EditFormUtility }  from '@/services/edit-form-utility';
     import {useToast} from 'vue-toast-notification';
     import {isEmpty} from 'lodash'
+    import { scrollToElement } from '@/utils';
 
 
     const tabName = {
@@ -242,23 +242,8 @@
         
         setTimeout(() => {
             
-            const qLabel = $(container).find("form[name='editForm'] label[for='" + field + "']:first");
-            const qBody  = $(container);
-
-            var scrollNum = qLabel.offset().top
-
-            if(container!= 'body,html'){
-                //its a dialog calculate scrollTop
-                var dialogContainer = $(container)
-                scrollNum = scrollNum - dialogContainer.offset().top + dialogContainer.scrollTop();
-            }
-            else
-                scrollNum -= 130; //forms 
-
-            qBody.stop().animate({
-                scrollTop: scrollNum
-            }, 100);
-
+            scrollToElement("form[name='editForm'] label[for='" + field + "']:first", container);
+            
         }, 200);
 
     }

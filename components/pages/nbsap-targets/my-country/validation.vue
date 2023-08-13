@@ -149,7 +149,7 @@
             </div>
           </div>
 
-        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showEditDocumentModal" >
+        <CModal  class="show d-block nationalTargetsValidationEdit" size="xl" alignment="center" backdrop="static" :visible="showEditDocumentModal" >
             <CModalHeader :close-button="false">
                 <CModalTitle>
                     <span v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7">{{lstring(editDocument.title)}}</span>
@@ -157,22 +157,20 @@
                 </CModalTitle>
             </CModalHeader>
             <CModalBody>
-                <div id="nationalTargetsValidationEdit">
-                    <div v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7">
-                        <edit-target-part-1 :raw-document="editDocument" :workflow-active-tab="2"
-                            :identifier="editDocument.header.identifier"
-                            :on-close="onEditTargetClose"  :on-post-save-draft="onPostSaveDraft"
-                            container="#nationalTargetsValidationEdit">
-                        </edit-target-part-1>
-                    </div>
-                    <div v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING">
-                        <edit-target-part-2 :raw-document="editDocument" :workflow-active-tab="2"
-                            :global-goal-or-target="editDocument.globalGoalOrTarget.identifier" 
-                            :headline-indicators="getGlobalTarget(editDocument.globalGoalOrTarget.identifier).headlineIndicators"
-                            :identifier="editDocument.header.identifier" :on-close="onEditTargetClose"  :on-post-save-draft="onPostSaveDraft"
-                            container="#nationalTargetsValidationEdit">
-                        </edit-target-part-2>
-                    </div>
+                <div v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7">
+                    <edit-target-part-1 :raw-document="editDocument" :workflow-active-tab="2"
+                        :identifier="editDocument.header.identifier"
+                        :on-close="onEditTargetClose"  :on-post-save-draft="onPostSaveDraft"
+                        container=".nationalTargetsValidationEdit">
+                    </edit-target-part-1>
+                </div>
+                <div v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING">
+                    <edit-target-part-2 :raw-document="editDocument" :workflow-active-tab="2"
+                        :global-goal-or-target="editDocument.globalGoalOrTarget.identifier" 
+                        :headline-indicators="getGlobalTarget(editDocument.globalGoalOrTarget.identifier).headlineIndicators"
+                        :identifier="editDocument.header.identifier" :on-close="onEditTargetClose"  :on-post-save-draft="onPostSaveDraft"
+                        container=".nationalTargetsValidationEdit">
+                    </edit-target-part-2>
                 </div>
             </CModalBody>
         </CModal>
@@ -351,6 +349,7 @@
     }
 
     async function onEditTarget(document:Object){
+        console.log(document);
         editDocument.value  = document.body;
         showEditDocumentModal.value = true;
     }
