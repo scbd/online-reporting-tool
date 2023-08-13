@@ -1,0 +1,29 @@
+<template>
+    <div>
+        <search-result v-if="documents.length" :documents="documents"></search-result>
+        <CAlert color="info" class="d-flex align-items-center" v-if="!documents.length">
+            <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
+            <div class="p-2">
+                 There are no records to display!
+            </div>
+        </CAlert>
+    </div>
+</template>
+
+<script setup lang="ts">
+import searchResult from '@/components/controls/search/search-result.vue';
+import { SCHEMAS } from '@/utils';
+
+    const documents = ref([]);
+
+    const searchQuery = {
+        q : `_state_s: public AND schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7}) AND realm_ss:ORT-DEV`
+    }
+    const result = await useAPIFetch('/api/v2013/index/select', {method:'POST', body : searchQuery})
+console.log(result.response.docs)
+    documents.value = result.response.docs;
+</script>
+
+<style scoped>
+
+</style>
