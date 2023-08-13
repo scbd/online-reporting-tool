@@ -24,6 +24,6 @@
     "submitTargets"          : "Submit your national targets here",
     "partI"                  : "Part I",
     "partII"                 : "Part II",
-    "welcome"                : "Welcome to your country's National Targets submission section. please select option to proceed."
-
+    "welcome"                : "Welcome to your country's National Targets submission section. please select option to proceed.",
+    "spinnerMessage"         : "Please wait while we process your request."
 }

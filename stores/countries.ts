@@ -18,5 +18,8 @@ export const useCountriesStore = defineStore('countries', {
           this.countries = data;
         };
     },
+  },
+  persist: {
+      storage: persistedState.localStorage,
   }
 })
