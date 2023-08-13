@@ -45,7 +45,7 @@
                 <CCard>
                   <CCardBody>
                     <div class=" float-end d-grid gap-1 d-flex">
-                        <CButton :disabled="disableActions" @click="onPublish()" color="secondary" v-if="showPublishBtn">
+                        <CButton :disabled="disableActions || !showPublishBtn" @click="onPublish()" color="secondary">
                             <c-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             {{t('publish')}}
                         </CButton>
@@ -54,7 +54,7 @@
                             {{t('validatePartIAndPartII')}}
                         </CButton>
                     </div>
-                    <workflow-actions v-if="openWorkflow" :workflow="openWorkflow"></workflow-actions>
+                    <workflow-actions v-if="openWorkflow" :workflow="openWorkflow" @on-workflow-action="onWorkflowAction"></workflow-actions>
                   </CCardBody>
                 </CCard>
               </CCol>
@@ -88,37 +88,30 @@
                 </CModalTitle>
             </CModalHeader>
             <CModalBody>
-                <div id="nationalTargetsValidationEdit">
-                    <div >
-                       
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>{{ t('globalTarget') }}</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(target, index) in missingTargets.targets">
-                                    <td width="83%">
-                                        {{ lstring(target.title) }}
-                                    </td>
-                                    <td>
-                                        <btn-new-target v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7" 
-                                            :query="{'globalTarget' : target.identifier}" :identifier="identifier"></btn-new-target>        
-                                        <CButton  v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING" 
-                                            color="secondary" size="sm" 
-                                            @click="navigateTo({path: useLocalePath()($appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II), query:{'globalTarget' : target.identifier}})" >
-                                            <font-awesome-icon icon="fa-solid fa-pen-to-square"/> Edit mapping
-                                        </CButton>
-                                    </td>
-                                </tr>
-                            </tbody>                           
-                        </table>
-                        
-                    </div>
-                    
-                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{{ t('globalTarget') }}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(target, index) in missingTargets.targets">
+                            <td width="83%">
+                                {{ lstring(target.title) }}
+                            </td>
+                            <td>
+                                <btn-new-target v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7" 
+                                    :query="{'globalTarget' : target.identifier}" :identifier="identifier"></btn-new-target>        
+                                <CButton  v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING" 
+                                    color="secondary" size="sm" 
+                                    @click="navigateTo({path: useLocalePath()($appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II), query:{'globalTarget' : target.identifier}})" >
+                                    <font-awesome-icon icon="fa-solid fa-pen-to-square"/> Edit mapping
+                                </CButton>
+                            </td>
+                        </tr>
+                    </tbody>                           
+                </table>
             </CModalBody>
             <CModalFooter>
                 <CButton @click="missingTargetDialogClose(missingTargets.schema)" color="success">{{t('close')}}</CButton>
@@ -344,6 +337,19 @@
                 }
             }
         }
+    }
+
+    async function onWorkflowAction(actionData){
+        // console.log(actionData);
+        showSpinnerDialog.value = true;
+        const workflow =  await $api.kmWorkflows.getWorkflow(actionData.workflowId);
+        if(workflow){
+            openWorkflow.value = undefined;
+            stateTargetWorkflow.value.batchId = undefined;
+        }
+
+        showSpinnerDialog.value = false;
+        
     }
 
     function onValidationFinished(records:object){

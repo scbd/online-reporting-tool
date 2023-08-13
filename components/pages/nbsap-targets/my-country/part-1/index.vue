@@ -60,6 +60,7 @@
                     <td>
                         <div v-if="draft.workingDocumentBody"><CBadge color="dark">Draft</CBadge></div>
                         <div v-if="!draft.workingDocumentBody"><CBadge color="success">Published</CBadge></div>
+                        <div v-if="draft.workingDocumentLock"><CBadge color="danger">{{t('locked')}}</CBadge></div>
                     </td>
                     <td>
                       {{draft.updatedOn}}<br/>
@@ -70,7 +71,7 @@
                         <CButton color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, draft)">
                           <font-awesome-icon icon="fa-search" /> View target
                         </CButton>
-                        <CButton color="secondary" size="sm" :disabled="canEdit" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
+                        <CButton color="secondary" size="sm" :disabled="canEdit || draft.workingDocumentLock" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
                           <font-awesome-icon icon="fa-edit" /> Edit target
                         </CButton>
                       </div>
@@ -92,6 +93,7 @@
   import { KmSuspense, KmInputRichLstring, KmSelect, KmFormGroup,
              KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink
            } from "@/components/controls";
+    import { useI18n } from "vue-i18n";
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import {sortBy} from 'lodash';
@@ -101,6 +103,7 @@
 
 
     const rowsPerPage              = UTILS.ROWS_PER_PAGE;
+    const { t }                    = useI18n();
     const { $appRoutes:appRoutes } = useNuxtApp();
     const { user }                 = useAuth();
     const security                 = useSecurity();

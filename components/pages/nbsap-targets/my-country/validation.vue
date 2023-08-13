@@ -369,6 +369,8 @@
                         
                         removeDraftFromPublished(existingDocument, publishedNationalTargets);
                     }
+                    else 
+                        existingDocument = newDocument;
                 }
                 else{
                     existingDocument   = publishedNationalMappings.value.find(e=>e.identifier == newDocument.header.identifier);
@@ -377,6 +379,8 @@
                         draftNationalMappings.value.push({...existingDocument});
                         removeDraftFromPublished(existingDocument, publishedNationalMappings);
                     }
+                    else 
+                        existingDocument = newDocument;
                 }
                 
                 $emits('onRecordsLoad', {

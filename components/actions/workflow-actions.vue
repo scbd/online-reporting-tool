@@ -13,7 +13,7 @@
                 <span class="bold">{{ workflow.createdBy_info.firstName + ' ' + workflow.createdBy_info.lastName }} </span>
                     ({{workflow.createdBy_info.email}})
                 <span> {{t('on')}} </span> <span style="text-transform: uppercase; font-size:12px" class="bold"
-                    >{{ formatDateWithTime(workflow.createdOn) }} </span>
+                    >{{ formatDate(workflow.createdOn) }} </span>
             </span>
         </div>
         <div v-if="workflow.data.additionalInfo">
@@ -53,7 +53,7 @@
             </div>
             <div v-if="security.role.isAdministrator() ">
                 <br />
-                <strong>{{t('workFlowAssign')}} {{activity.createdOn | formatDateWithTime}}</strong> ({{t('visible')}})
+                <strong>{{t('workFlowAssign')}} {{formatDate(activity.createdOn)}}</strong> ({{t('visible')}})
                 <span class="badge bg-secondary">
                     {{workflow.workflowAge.age}} {{workflow.workflowAge.type}}
                 </span>
@@ -66,17 +66,18 @@
                 </table>
             </div>
         </div>
-
+        <km-modal-spinner :visible="isBusy" :message="t('approvalProcessing')"></km-modal-spinner>
     </div>
 </template>
 
 <i18n src="@/i18n/dist/components/actions/workflow-actions.json"></i18n>    
-<script setup lang="ts">
+<script setup lang="ts">    
     import moment from 'moment';
     import { useI18n } from 'vue-i18n';
     import { isWorkflowAssignedToMe, isWorkFlowCreatedByMe } from '@/utils'
     import { useToast } from 'vue-toast-notification';
-
+    import { KmModalSpinner } from '@/components/controls';
+    import { sleep } from '@/utils';
 
     const props = defineProps({
         workflow: {
@@ -84,12 +85,13 @@
             required: true
         }
     });    
-    const emit = defineEmits(['']);
+    const emit = defineEmits(['onWorkflowAction']);
 
     const { $api }      = useNuxtApp();
     const security      = useSecurity();
     const { t, locale } = useI18n();
-    const $toast        = useToast()
+    const $toast        = useToast();
+    const isBusy        = ref(false);
 
     const daysToApproval = computed(()=>{
         const workflow = props.workflow;
@@ -104,11 +106,6 @@
             reverse()
     });
 
-    const isBusy         = ref(false);
-
-    function formatDateWithTime(date){
-        return date;
-    }
 
     async function updateActivity(actionData:object, cancelRequest:boolean) {
         isBusy.value = true;
@@ -118,8 +115,18 @@
             if(props.workflow.data.batchId)
                 result = await $api.kmWorkflows.updateBatchActivity(props.workflow.data.batchId, props.workflow.activities[0].name, actionData)
             else
-                result = await $api.kmWorkflows.updateActivity(props.workflow._id, props.workflow.activities[0].name, actionData)
-            
+                result = await $api.kmWorkflows.updateActivity(props.workflow._id, props.workflow.activities[0].name, actionData);
+
+            await sleep(5000) //sleep for 5 seconds 
+
+            emit('onWorkflowAction', {
+                action    : 'approved',
+                workflowId: props.workflow._id,
+                batchId   : props.workflow.data.batchId,
+                name      : props.workflow.activities[0].name,
+                actionData
+            });
+
             $toast.success(t('approvedSuccessful'))
         }
         catch(error) {

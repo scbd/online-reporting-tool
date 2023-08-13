@@ -58,5 +58,8 @@ export const useThesaurusStore = defineStore('thesaurus', {
         return this.terms[identifier];
 
     },
+  },
+  persist: {
+      storage: persistedState.localStorage,
   }
 })

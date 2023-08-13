@@ -7,7 +7,7 @@
             <slot>
                 <CSpinner/> 
                 <span v-if="message">{{ message }}</span>
-                <span v-if="message">{{t('loading')}}...</span>
+                <span v-if="!message">{{t('loading')}}...</span>
             </slot>
         </CModalBody>           
     </CModal>

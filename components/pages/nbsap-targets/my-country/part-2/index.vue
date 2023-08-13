@@ -44,7 +44,7 @@
                         <td>
                             {{lstring(target.title)}}
                             <div class="d-grid justify-content-end" v-if="target.nationalTargets?.length">
-                                <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping">
+                                <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping" :disabled="target.nationalMapping && target.nationalMapping.workfinDocumentLock">
                                     Edit mapping
                                 </CButton>
                                 <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="!target.nationalMapping && target.nationalTargets">
@@ -274,7 +274,7 @@
             let targets            = [...response[0]];
             const nationalTargets  = response[1]
             const nationalMappings = response[2];
-        console.log(response)
+            
             targets = buildTargetMatrix(targets, nationalTargets, nationalMappings);
             gbfGoalAndTargetList.value = sortBy(targets, 'identifier');
         }

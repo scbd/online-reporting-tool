@@ -25,5 +25,6 @@
     "yes": "Yes",
     "deleteConfirmation": "Delete Confirmation",
     "isDeleteRecord": "Are you sure you want to delete this record?",
-    "deleteRecord": "Delete record"
+    "deleteRecord": "Delete record",
+    "approvalProcessing": "Please wait while we process your approval action"
 }
