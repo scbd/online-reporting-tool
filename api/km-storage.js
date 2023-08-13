@@ -97,13 +97,26 @@ class KmDraftsApi extends ApiBase
   async query(params){
     params.collection = "mydraft";
     const data =  await useAPIFetch(serviceUrls.documentQueryUrl(),  { method:'get', params })
-                  
+    
+    if(data?.Items?.length){
+        data.Items = data.Items.map(e=>{
+                        if(e.workingDocumentBody){
+                            e.body = e.workingDocumentBody;
+                        }
+                        return e;
+                    });
+    }
+
     return data;
   }
 
   async get(identifier, params){
     const data =  await useAPIFetch(serviceUrls.draftUrl(identifier),  { method:'get', params })
-                  
+    
+    if(data.workingDocumentBody){
+        data.body = data.workingDocumentBody;
+    }
+
     return data;
   }
 
