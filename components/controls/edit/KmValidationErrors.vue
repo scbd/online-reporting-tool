@@ -16,7 +16,9 @@
                     @click="report.hideErrors=!report.hideErrors" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                  </button>
-                 <strong>{{t('contains')}} <span v-bind="report && report.errors.length"></span> {{t('errors')}}</strong>
+                 <strong>
+                    {{t('contains')}} {{ report.errors.length }} {{t('errors')}}
+                </strong>
                  <ul>
                      <li v-for="error in report.errors" :title="error.parameters" :key="error">
                          <span>{{ t(getTranslation(error)) }}</span> /

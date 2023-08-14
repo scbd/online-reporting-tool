@@ -248,7 +248,7 @@
         
         try{
             await onValidate();
-            const hasValidationErrors = [...(userRecords.draftNationalTargets||[]), ...(userRecords.draftNationalMappings||[])].some(e=>e.validationErrors);
+            const hasValidationErrors = [...(userRecords.draftNationalTargets||[]), ...(userRecords.draftNationalMappings||[])].some(e=>e.errors);
             
             if(hasValidationErrors){
                 showValidationErrorDialog.value = true;

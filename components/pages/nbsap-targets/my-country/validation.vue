@@ -17,17 +17,17 @@
                 </thead>
                 <tbody>
                   
-                  <tr v-for="(document,  index) in draftNationalTargets" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
+                  <tr v-for="(document,  index) in draftNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
                     <th scope="row">{{ index+1 }}</th>
                     <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
                     <td>
                         <CBadge color="info" v-if="document.isValidating">
                                 <km-spinner :message="t('validating')+ '...'"></km-spinner>
                         </CBadge>
-                        <CBadge color="danger" v-if="!document.isValidating && document.validationErrors">
-                            {{t('hasErrors')}} ({{ document.validationErrors.length }})
+                        <CBadge color="danger" v-if="!document.isValidating && document.errors">
+                            {{t('hasErrors')}} ({{ document.errors.length }})
                         </CBadge>
-                        <CBadge color="success" v-if="document.validated && !document.isValidating && !document.validationErrors">
+                        <CBadge color="success" v-if="document.validated && !document.isValidating && !document.errors">
                             {{t('passedValidation')}}
                         </CBadge>
                         <CBadge color="dark" v-if="!document.workingDocumentLock">
@@ -49,7 +49,7 @@
                     </td>
                   </tr>
 
-                  <tr v-for="(document,  index) in publishedNationalTargets" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
+                  <tr v-for="(document,  index) in publishedNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
                     <th scope="row">{{ index+1 + (draftNationalTargets?.length||0) }}</th>
                     <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
                     <td>                        
@@ -89,7 +89,7 @@
                 </thead>
                 <tbody>
                   
-                  <tr v-for="(document,  index) in draftNationalMappings" :key="document.identifier" :class="{'bg-danger':document.validationErrors}">
+                  <tr v-for="(document,  index) in draftNationalMappings" :key="document.identifier" :class="{'bg-danger':document.errors}">
                     <th scope="row">{{ index+1 }}</th>
                     <td>
                         <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>                        
@@ -98,10 +98,10 @@
                         <CBadge color="info" v-if="document.isValidating">
                                 <km-spinner :message="t('validating')+ '...'"></km-spinner>
                         </CBadge>
-                        <CBadge color="danger" v-if="!document.isValidating && document.validationErrors">
-                            {{t('hasErrors')}} ({{ document.validationErrors.length }})
+                        <CBadge color="danger" v-if="!document.isValidating && document.errors">
+                            {{t('hasErrors')}} ({{ document.errors.length }})
                         </CBadge>
-                        <CBadge color="success" v-if="document.validated && !document.isValidating && !document.validationErrors">
+                        <CBadge color="success" v-if="document.validated && !document.isValidating && !document.errors">
                             {{t('passedValidation')}}
                         </CBadge>
                         <CBadge color="dark" v-if="!document.workingDocumentLock">
@@ -327,10 +327,10 @@
             try{
                 document.isValidating = true
                 document.validated    = false;
-                document.validationErrors = undefined;
+                document.errors = undefined;
                 const validationErrors = await validateDocument(document.body)
                 if(validationErrors)
-                    document.validationErrors = [...validationErrors];
+                    document.errors = [...errors];
                 
             }
             catch(e){
