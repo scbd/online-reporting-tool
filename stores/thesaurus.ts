@@ -60,6 +60,6 @@ export const useThesaurusStore = defineStore('thesaurus', {
     },
   },
   persist: {
-    //   storage: persistedState.sessionStorage//TODO : switch to localStorage,
+      storage: persistedState.sessionStorage//TODO : switch to localStorage,
   }
 })
