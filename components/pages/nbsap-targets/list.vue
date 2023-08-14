@@ -17,7 +17,8 @@ import { SCHEMAS } from '@/utils';
     const documents = ref([]);
 
     const searchQuery = {
-        q : `_state_s: public AND schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7}) AND realm_ss:ORT-DEV`
+        rows:300,
+        q : `_state_s: public AND schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:ORT-DEV`
     }
     const result = await useAPIFetch('/api/v2013/index/select', {method:'POST', body : searchQuery})
 console.log(result.response.docs)

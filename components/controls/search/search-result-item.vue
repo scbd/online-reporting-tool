@@ -7,6 +7,9 @@
                     <strong class="text-muted">{{ target }}</strong>
                     <span class="m-2" v-if="index < document.globalTargetAlignment_EN_ss.length-1">|</span>
                 </span>
+                <span v-if="document.globalGoalOrTarget_EN_s">
+                    <strong class="text-muted">{{ document.globalGoalOrTarget_EN_s }}</strong>
+                </span>
             </CCardText>
             <CCardText>
                 <small class="me-2 fs-6">{{document.schema_EN_s}}</small>|
