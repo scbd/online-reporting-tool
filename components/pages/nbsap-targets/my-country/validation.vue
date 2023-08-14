@@ -330,7 +330,7 @@
                 document.errors = undefined;
                 const validationErrors = await validateDocument(document.body)
                 if(validationErrors)
-                    document.errors = [...errors];
+                    document.errors = [...validationErrors];
                 
             }
             catch(e){
