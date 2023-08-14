@@ -4,7 +4,9 @@
         <slot name="header"> Country national target overview</slot>
       </CCardHeader>
       <CCardBody>
-            <national-targets-overview></national-targets-overview>
+            <km-suspense>
+                <national-targets-overview></national-targets-overview>
+            </km-suspense>
       </CCardBody>
     </CCard>
 </template>

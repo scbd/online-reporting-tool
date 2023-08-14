@@ -10,8 +10,9 @@
           </NuxtLink>
         </div>
 
-        <national-target-list></national-target-list>
-
+        <km-suspense>
+            <national-target-list></national-target-list>
+        </km-suspense>
       </CCardBody>
     </CCard>
   </template>
@@ -20,6 +21,7 @@
   <script setup lang="ts">
   import NationalTargetList from '@/components/pages/nbsap-targets/list.vue';
   import { SCHEMAS, ROLES } from '@/utils';
+  import { KmSuspense } from "@/components/controls";
     const { $appRoutes:appRoutes } = useNuxtApp();
 
     definePageMeta({
