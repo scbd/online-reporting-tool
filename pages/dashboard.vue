@@ -2,7 +2,7 @@
   <div>
     <user-profile-info class="mb-2"></user-profile-info>
     <CRow>
-      <template>
+      <!-- <template> -->
         <CCol md="12">
           <div class="alert alert-success" role="alert">
             <h4 class="alert-heading">Recent Publish!</h4>
@@ -19,7 +19,7 @@
         </CCol>
         <CCol md="3" sm="6">
           <div class="card">
-            <div class="card-header content-center text-white p-0 bg-facebook">
+            <div class="card-header content-center text-white p-2 bg-success">
               <span height="52" class="my-4">7th National Reports</span>
             </div>
             <div class="card-body row text-center">
@@ -44,7 +44,7 @@
         </CCol>
         <CCol md="3" sm="6">
           <div class="card">
-            <div class="card-header content-center text-white p-0 bg-linkedin">
+            <div class="card-header content-center text-white p-2 bg-success">
               <span height="52" class="my-4">NBSAP targets</span>
             </div>
             <div class="card-body row text-center">
@@ -69,7 +69,7 @@
         </CCol>
         <CCol md="3" sm="6">
           <div class="card">
-            <div class="card-header content-center text-white p-0 bg-warning">
+            <div class="card-header content-center text-white p-2 bg-success">
               <span height="52" class="my-4">Assessed Targets</span>
             </div>
             <div class="card-body row text-center">
@@ -94,7 +94,7 @@
         </CCol>
         <CCol md="3" sm="6">
           <div class="card">
-            <div class="card-header content-center text-white p-0 bg-success">
+            <div class="card-header content-center text-white p-2 bg-success">
               <span height="52" class="my-4">Some other Number</span>
             </div>
             <div class="card-body row text-center">
@@ -115,9 +115,9 @@
             </div>
           </div>
         </CCol>
-      </template>
+      <!-- </template> -->
     </CRow>
-    <CRow>
+    <!-- <CRow>
       <CCol md="12">
         <CCard>
           <CCardHeader> Latest records </CCardHeader>
@@ -134,7 +134,7 @@
           </CCardBody>
         </CCard>
       </CCol>
-    </CRow>
+    </CRow> -->
   </div>
 </template>
 
