@@ -23,7 +23,7 @@
     const { $appRoutes:appRoutes } = useNuxtApp();
 
     definePageMeta({
-        auth:true,
+        auth:false,
         schema:SCHEMAS.NATIONAL_TARGET_7,
         roles:[...ROLES.ALL_NATIONAL_USERS],
     })

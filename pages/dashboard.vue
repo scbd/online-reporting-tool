@@ -1,5 +1,6 @@
 <template>
   <div>
+    <user-profile-info class="mb-2"></user-profile-info>
     <CRow>
       <template>
         <CCol md="12">
@@ -138,6 +139,7 @@
 </template>
 
 <script setup>
+import UserProfileInfo  from "@/components/common/user-profile-info.vue"
 
       definePageMeta({
         auth:false
