@@ -390,7 +390,7 @@ export default {
         		// self.$api.kmStorage.attachments.uploadTempFile(formData, { headers: {'Content-Type': undefined}})
                 self.$api.kmStorage.attachments.upload(self.identifier, file, { headers: {'Content-Type': undefined}})
         		.then(function(success) {
-        			var viewFragment = ed.data.processor.toView('&nbsp;<a rel="noopener noreferrer" target="_blank" href="'+success.url+'">'+success.metadata.fileName+ '</a>' );
+        			var viewFragment = ed.data.processor.toView('<span class="me-2"><a rel="noopener noreferrer" target="_blank" href="'+success.url+'">'+success.filename+ '</a></span>' );
         			var modelFragment = ed.data.toModel(viewFragment);
         			ed.model.insertContent( modelFragment);
         			self.onFileUpload({data:success.data});
