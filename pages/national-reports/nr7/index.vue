@@ -5,7 +5,7 @@
       </CCardHeader>
       <CCardBody>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <NuxtLink to="/nbsap-targets/new">
+          <NuxtLink to="/national-targets/new">
             <CButton color="secondary" size="sm">
               <CIcon icon="addthis"/>NR7 All reports
             </CButton>

@@ -183,7 +183,7 @@
   
 </template>
 
-<i18n src="@/i18n/dist/pages/nbsap-targets/edit-target.json"></i18n>
+<i18n src="@/i18n/dist/pages/national-targets/edit-target.json"></i18n>
 
 <script setup>
   

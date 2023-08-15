@@ -14,7 +14,7 @@
 <script setup lang="ts">
 
     import { KmSuspense, KmLink, KmNavLink } from '@/components/controls'
-    import nationalTargetsOverview from '@/components/pages/nbsap-targets/my-country/overview.vue';
+    import nationalTargetsOverview from '@/components/pages/national-targets/my-country/overview.vue';
       import { SCHEMAS, ROLES } from '@/utils';
     
     definePageMeta({

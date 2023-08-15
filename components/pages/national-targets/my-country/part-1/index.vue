@@ -7,7 +7,7 @@
           <div class="card">
             <div class="card-body">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <!-- <NuxtLink to="/nbsap-targets/new"> -->
+                <!-- <NuxtLink to="/national-targets/new"> -->
                   <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
                     <CIcon icon="addthis"/> Submit new target
                   </CButton>
@@ -87,7 +87,7 @@
       </CCard> 
   </template>
   
-<!-- <i18n  src="~/i18n/dist/pages/nbsap-targets/index.json"></i18n> -->
+<!-- <i18n  src="~/i18n/dist/pages/national-targets/index.json"></i18n> -->
 
 <script setup lang="ts">
   import { KmSuspense, KmInputRichLstring, KmSelect, KmFormGroup,

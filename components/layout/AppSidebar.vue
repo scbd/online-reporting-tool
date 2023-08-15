@@ -30,7 +30,7 @@
         <template #togglerContent>
             {{ t('menuNationalTargets') }}
         </template>
-        <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
+        <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS]" :to="localePath('/national-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
         <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)">
           <template #togglerContent>
             <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />

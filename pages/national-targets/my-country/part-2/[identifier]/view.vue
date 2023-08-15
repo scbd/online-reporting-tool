@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
   import { KmSuspense } from "@/components/controls";
-  import viewTargetPart2 from '@/components/pages/nbsap-targets/my-country/part-2/view-target-part-2.vue';
+  import viewTargetPart2 from '@/components/pages/national-targets/my-country/part-2/view-target-part-2.vue';
   import { useRoute } from 'vue-router';
       import { SCHEMAS, ROLES } from '@/utils';
 

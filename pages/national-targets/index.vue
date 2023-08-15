@@ -17,9 +17,9 @@
     </CCard>
   </template>
   
-  <i18n  src="~/i18n/dist/pages/nbsap-targets/index.json"></i18n>
+  <i18n  src="~/i18n/dist/pages/national-targets/index.json"></i18n>
   <script setup lang="ts">
-  import NationalTargetList from '@/components/pages/nbsap-targets/list.vue';
+  import NationalTargetList from '@/components/pages/national-targets/list.vue';
   import { SCHEMAS, ROLES } from '@/utils';
   import { KmSuspense } from "@/components/controls";
     const { $appRoutes:appRoutes } = useNuxtApp();

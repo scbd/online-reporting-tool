@@ -258,7 +258,7 @@
     </CCard>
   
 </template>
-<i18n src="@/i18n/dist/components/pages/nbsap-targets/my-country/part-1/edit-target-part-1.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/national-targets/my-country/part-1/edit-target-part-1.json"></i18n>
 <script setup>
   
     import { KmInputRichLstring, KmSelect, KmFormGroup, KmInputLstringMl, KmMultiCheckbox,
