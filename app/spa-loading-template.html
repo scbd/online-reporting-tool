@@ -1,0 +1,81 @@
+<div class="loader-circle">
+    <div class="loader-content">
+        <div class="leaf">
+            <img src="https://attachments.cbd.int/cbd-leaf-green.svg" />
+        </div>
+        <div class="text">
+            <span class="app-name">Online Reporting Tool</span><br><br><br>
+            <span class="loading">Loading...</span> <br>
+        </div>   
+    </div>
+  <div class="loader-line-mask">
+    <div class="loader-line"></div>
+  </div>
+</div>
+<style>
+  body {
+    background: #FFF;
+  }
+  .loader-circle {
+    position: absolute;
+    left: 45%;
+    top: 30%;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    margin-left: -60px;
+    margin-top: -60px;
+  }
+  .loader-content {
+    /* position: absolute;     */
+    /* transform: translate(-50%, -100%); */
+    color: #009b48;
+    font-family: Arial, sans-serif;
+  }
+  .loader-content .leaf{
+    position: absolute;
+    left: 35%;
+    top: 2%;
+  }
+
+  .loader-content .text{
+    position: absolute;
+    left: 15%;
+    top: 45%;
+  }
+  .loader-content .text .app-name{
+    font-size: larger;
+    font-weight: bolder;
+  }
+  .loader-content .text .loading{
+    padding-left: 35%;
+  }
+  .loader-line-mask {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 140px;
+    height: 280px;
+    margin-left: -140px;
+    margin-top: -140px;
+    overflow: hidden;
+    transform-origin: 140px 140px;
+    -webkit-mask-image: -webkit-linear-gradient(top, #000000, rgb(0 155 72));
+    animation: rotate 1.2s infinite linear;
+  }
+  .loader-line-mask .loader-line {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgb(0 155 72);
+  }
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
