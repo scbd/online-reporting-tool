@@ -2,11 +2,11 @@
     <div id="km-value-ml">
         <div :class="`input-group input-lang-${locale}`">
     
-            <div v-if="type=='string'" class="form-control km-value km-value-ml-div" 
+            <div v-if="type=='string'" class="form-control km-value km-value-ml-string" 
                 :dir="direction(valueLstring, locale)" aria-describedby="basic-addon1">
                 {{ valueLstring }}
             </div>
-            <div v-if="type=='html'" class="form-control km-value km-value-ml-div ck-content" 
+            <div v-if="type=='html'" class="form-control km-value km-value-ml-html ck-content" 
                 :dir="direction(valueLstring, locale)" aria-describedby="basic-addon1" v-html="valueLstring">                
             </div>
             <span class="input-group-text" id="basic-addon1" style="cursor:default">

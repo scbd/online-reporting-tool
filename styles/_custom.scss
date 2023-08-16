@@ -18,9 +18,12 @@ ul.header-nav li.nav-item:hover{
 .form-group label{
     font-weight: 700;
 }
- ul {
+.km-value-ml-html.ck-content ul {
     list-style: none;
  } 
+ .km-value-ml-html.ck-content ul:first{
+    padding-left: 10px;
+}
  
  font-awesome-icon{
     padding-right: 5px;
@@ -62,16 +65,11 @@ ul.header-nav li.nav-item:hover{
     margin-bottom: 0px!important;
 }
 
-
 .border-left-info {
     border-left-color: #39f!important
 }
 .border-left-3 {
     border-left-width: 3px!important;
-}
-
-.ck-content ul:first{
-    padding-left: 10px;
 }
 
 .comma:not(:last-of-type):after {
