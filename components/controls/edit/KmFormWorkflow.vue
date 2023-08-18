@@ -22,7 +22,6 @@
                     </CAlert>
                 </slot>
             </div>
-
             <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
                 <CCol>
                     <div class="action-buttons float-end mb-1">
@@ -38,14 +37,18 @@
                         <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                     </div>
                 </CCol>
-                <km-validation-errors :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
+                <km-validation-errors  v-if="(activeTab == tabName.submission && validationReport.errors?.length) || 
+                                             (activeTab == tabName.review || activeTab == tabName.publish)"
+                    :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
             </CRow>
             <div v-show="activeTab == tabName.submission" class="m-1"><slot name="submission"></slot></div>
             <div v-if="activeTab == tabName.review" class="m-1"><slot name="review"></slot></div>
             <div v-if="activeTab == tabName.publish" class="m-1"><slot name="publish"></slot></div>
 
             <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
-                <km-validation-errors :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>  
+                    <km-validation-errors v-if="(activeTab == tabName.submission && validationReport.errors?.length) || 
+                                            (activeTab == tabName.review || activeTab == tabName.publish)"
+                    :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>  
                 <CCol>
                     <div class="action-buttons float-end">
                         <CButton @click="onSaveDraft()" color="primary" class="me-md-2">{{t('saveDraft')}}</CButton> 
@@ -82,6 +85,8 @@
     import { useI18n } from 'vue-i18n';
     import { EditFormUtility }  from '@/services/edit-form-utility';
     import {useToast} from 'vue-toast-notification';
+    import {isEmpty} from 'lodash'
+    import { scrollToElement } from '@/utils';
 
 
     const tabName = {
@@ -156,7 +161,7 @@
     async function onReviewDocument(tabChanged){
         if(!tabChanged && activeTab.value == tabName.review)
             return;
-            console.log('review')
+            
         await wizardRef.value.changeTab(tabName.review)
         activeTab.value = tabName.review;
 
@@ -190,7 +195,7 @@
             if(definedProps.onPostSaveDraft)
                 definedProps.onPostSaveDraft({...documentSaveResponse, body:{...originalDocument}});
 
-            $toast.success(t('toastDraftSaveMessage'), {position:'top-right'});  
+            $toast.success(t('draftSaveMessage'), {position:'top-right'});  
         }
         catch(e){
             $toast.error('Error saving draft record', {position:'top-right'}); 
@@ -212,13 +217,19 @@
 
     async function validate(document) {
                     
-        if(!document)
-            throw "Invalid document";
+        try{
+            if(!document)
+                throw "Invalid document";
 
-        const { $api } = useNuxtApp();
-        const data     = await $api.kmStorage.documents.validate(document);
+            const { $api } = useNuxtApp();
+            const data     = await $api.kmStorage.documents.validate(document);
 
-        return data;
+            return data;
+        }
+        catch(e){
+            useLogger().error(e);
+            $toast.error('Error occurred while validating your record, please save your data and try again.')
+        }
     }
 
     async function onJumpTo(field) {
@@ -231,23 +242,8 @@
         
         setTimeout(() => {
             
-            const qLabel = $(container).find("form[name='editForm'] label[for='" + field + "']:first");
-            const qBody  = $(container);
-
-            var scrollNum = qLabel.offset().top
-
-            if(container!= 'body,html'){
-                //its a dialog calculate scrollTop
-                var dialogContainer = $(container)
-                scrollNum = scrollNum - dialogContainer.offset().top + dialogContainer.scrollTop();
-            }
-            else
-                scrollNum -= 130; //forms 
-
-            qBody.stop().animate({
-                scrollTop: scrollNum
-            }, 100);
-
+            scrollToElement("form[name='editForm'] label[for='" + field + "']:first", container);
+            
         }, 200);
 
     }

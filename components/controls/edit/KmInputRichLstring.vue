@@ -1,18 +1,23 @@
 <template>
-  <div :id="`km-rich-lstring-${uid}`">   
+  <div :id="`km-rich-lstring-${uid}`"> 
     <CNav variant="tabs" role="tablist">
       <CNavItem v-for="locale in locales" :key="locale" :id="`lstringTab-${uid}`">
         <CNavLink
-          href="javascript:void(0);" :active="activeLocale === locale" @click="() => {activeLocale = locale}">
-          {{ locale.toUpperCase() }}
+          href="javascript:void(0);" :active="selectedLocale === locale" @click="onTabChange(locale)">
+          <!-- <CTooltip :content="lstring(getTerm(locale).title)" trigger="hover">
+                <template #toggler="{ on }">
+                    <span v-on="on">{{locale.toUpperCase()}}</span>
+                </template>
+            </CTooltip> -->
+            {{lstring(getTerm(locale).title||locale)}}
         </CNavLink>
       </CNavItem>
     </CNav>
     <CTabContent>
       <CTabPane role="tabpanel" :aria-labelledby="`tabContent-${locale}-${uid}`" v-for="locale in locales" :key="locale" 
-        :visible="activeLocale === locale" :id="`lstringTabContent-${uid}`">       
-        <km-ck-editor v-if="activeLocale==locale" v-model="binding[activeLocale]" 
-            :locale="activeLocale" @onChange="onChange"></km-ck-editor>     
+        :visible="selectedLocale === locale" :id="`lstringTabContent-${uid}`">       
+        <km-ck-editor v-if="selectedLocale==locale" v-model="binding[selectedLocale]" :identifier="identifier"
+            :locale="selectedLocale" @onChange="onChange"></km-ck-editor>     
       </CTabPane>
     </CTabContent>
   </div>
@@ -23,6 +28,8 @@ import $ from 'jquery';
 import { makeUid } from '@coreui/utils/src'
 // import { Tab } from 'bootstrap'
 import KmCkEditor from './KmCkEditor.vue'
+import { useThesaurusStore }    from '@/stores/thesaurus';
+import { useUserPreferencesStore }    from '@/stores/userPreferences';
 
 export default {
   name: "KmRichLstring",
@@ -45,19 +52,25 @@ export default {
       type: Boolean,
       required: false,
     },
+    identifier: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
-      activeLocale : '',
-      uid : makeUid(),
-      tabPaneActiveKey:1
+        activeLocale : '',
+        uid : makeUid(),
+        tabPaneActiveKey:1,
+        userPreferencesStore : useUserPreferencesStore()
     };
   },
   watch:{
     locales : function(newVal){
-      if(!newVal.includes(this.activeLocale)){        
-        this.activeLocale = newVal[0];
-      }
+        if(!newVal.includes(this.activeLocale)){        
+            this.onTabChange(newVal[0]);
+        }
+        this.loadLanguages()
     }
   },
   computed:{
@@ -70,17 +83,35 @@ export default {
       get() {
         return this.modelValue||{};
       },
-    //   set(value) {
-    //     console.log(value)
-    //     const clean = useStorage().cleanDocument({...value});
-    //     this.$emit('update:modelValue', clean);
-    //   }
+    },
+    selectedLocale : {
+        get(){
+            if(this.locales.includes(this.userPreferencesStore.editorActiveLanguageTab ))
+                return this.userPreferencesStore.editorActiveLanguageTab ;
+            return this.activeLocale;
+        }
     }
   },
   methods: { 
     onChange(value){
-        const clean = useStorage().cleanDocument({...this.binding});
+        const clean = useKmStorage().cleanDocument({...this.binding});
         this.$emit('update:modelValue', clean);
+    },
+    loadLanguages(){
+        const thesaurusStore    = useThesaurusStore ();
+        this.locales?.forEach(e=>{
+            thesaurusStore.loadTerm(`lang-${e}`);
+        });            
+    },
+
+    getTerm(term){
+
+        const thesaurusStore    = useThesaurusStore ();
+        return thesaurusStore.getTerm(`lang-${term}`)||{};
+    },
+    onTabChange(locale){
+        this.activeLocale = locale;
+        this.userPreferencesStore.setEditorActiveLanguageTab(locale);
     }
   },
   mounted(){
@@ -88,8 +119,9 @@ export default {
     this.activeLocale = this.locales[0];
 
     if(this.modelValue){
-      this.binding = {...this.modelValue||{}};
+        this.binding = {...this.modelValue||{}};
     }
+    this.loadLanguages();
   }
 };
 </script>

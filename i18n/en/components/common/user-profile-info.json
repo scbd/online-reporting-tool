@@ -1,0 +1,16 @@
+{
+    "welcome": "Welcome",
+    "publishingAuthority": "Publishing Authority",
+    "nationalFocalPoint": "National Focal Point",
+    "nationalAuthorizedUser": "National Authorized User",
+    "registeredUser": "Registered User",
+    "admin": "Administrator",
+    "name": "Name",
+    "primaryEmail": "Primary email",
+    "countryAffiliation": "Country affiliation",
+    "none": "none",
+    "roles": "Role(s)",
+    "nauHelp": "National Authorized User (NAUs) can create draft national records and submit them to the Publishing Authority to verify and publish.",
+    "updateProfile": "Update profile",
+    "updatePassword": "Update password"
+}

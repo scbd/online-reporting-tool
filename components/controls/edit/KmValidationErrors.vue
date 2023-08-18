@@ -6,7 +6,7 @@
          <div v-if="report && report.isSaving" class="alert alert-info">
              <i class="fa fa-cog fa-spin"></i> {{t('savingDocument')}}
          </div>
-         <div v-if="report && report.schema && !report.isAnalyzing && !report.isSaving && !report.errors" class="alert alert-success">
+         <div v-if="report && !report.isAnalyzing && !report.isSaving && !report.errors" class="alert alert-success">
 			{{t('valid')}}
 		</div>
          <div v-if="report && !report.isAnalyzing && !report.isSaving">
@@ -16,19 +16,21 @@
                     @click="report.hideErrors=!report.hideErrors" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                  </button>
-                 <strong>{{t('contains')}} <span v-bind="report && report.errors.length"></span> {{t('errors')}}</strong>
+                 <strong>
+                    {{t('contains')}} {{ report.errors.length }} {{t('errors')}}
+                </strong>
                  <ul>
                      <li v-for="error in report.errors" :title="error.parameters" :key="error">
                          <span>{{ t(getTranslation(error)) }}</span> /
                          <ul v-if="error.properties">
                              <li v-for="property in error.properties" :title="error.parameters" :key="property">					
-                                <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo(property.property)">
+                                <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo($event, property.property)">
                                     {{ getLabel(property.property) }}
                                 </a>
                              </li>
                          </ul>
                          <span v-if="!error.properties">
-                             <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo(error.property)">
+                             <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo($event, error.property)">
                                 {{ getLabel(error.property) }}
                             </a>
                          </span>
@@ -70,7 +72,9 @@
         return error?.code;
     }
 
-    function jumpTo(field:string) {
+    function jumpTo(event, field:string) {
+        event.preventDefault;
+        event.stopPropagation();
         $emits('onJumpTo', field);
     }
 

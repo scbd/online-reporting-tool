@@ -7,11 +7,11 @@
   >
     <CSidebarBrand>
         <img src="https://chm.cbd.int/app/img/cbd-logo-en.svg" role="img" custom-class-name="sidebar-brand-full" height="35">
-        <CPopover content="On-line Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
+        <CTooltip content="On-line Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
             <template #toggler="{ on }">
                 <span class="brand-name" v-on="on">CHM - ORT</span>
             </template>
-        </CPopover>
+        </CTooltip>
      
     </CSidebarBrand>     
     <CSidebarNav>
@@ -30,7 +30,7 @@
         <template #togglerContent>
             {{ t('menuNationalTargets') }}
         </template>
-        <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS]" :to="localePath('/nbsap-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
+        <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS]" :to="localePath('/national-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
         <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)">
           <template #togglerContent>
             <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />

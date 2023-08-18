@@ -11,11 +11,13 @@
     </div>
 </template>
 
-<i18n src="@/i18n/dist/components/controls/KmSpinner.json"></i18n>
+<i18n src="@/i18n/dist/components/controls/KmSpinnerSuspense.json"></i18n>
+
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
     import KmSpinner from './KmSpinner.vue';
     const nuxtApp = useNuxtApp();
-    const { t } = nuxtApp.$i18n;
+    const { t } = useI18n();
 </script>
 
 <style>

@@ -1,0 +1,41 @@
+
+export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], nationalMappings: any[])=>{
+    
+    const matrix = [];
+
+    for (let i = 0; i < globalTargets.length; i++) {
+        const target = {...globalTargets[i]};
+        
+        target.nationalTargets = []
+
+        const lNationalTargets  = [...nationalTargets.filter (e=>(e.workingDocumentBody || e.body)?.globalTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier))];
+        const lNationalMappings = {...nationalMappings.find(e=>(e.workingDocumentBody || e.body)?.globalGoalOrTarget?.identifier  == target.identifier)};
+
+        target.elementOfGlobalTargetsInfo = (lNationalMappings?.workingDocumentBody || lNationalMappings?.body)?.elementOfGlobalTargetsInfo;
+        target.nationalMapping            = (lNationalMappings?.workingDocumentBody || lNationalMappings?.body);
+        target.nationalTargets = lNationalTargets.map(e=>{
+            return { identifier : e.identifier, title : (e.workingDocumentBody || e.body)?.title}
+        });
+
+        target.headlineIndicators.forEach(indicator => {
+            indicator.nationalTargets = [...lNationalTargets];
+            indicator.referencePeriod = target.nationalMapping?.referencePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
+        });
+
+        const otherIndicators = [...target.componentIndicators, ...target.complementaryIndicators];
+
+        target.otherIndicators = otherIndicators.filter(indicator=>{
+            
+            const found = lNationalTargets.find(nationalTarget=>{
+                return  (nationalTarget?.workingDocumentBody || nationalTarget?.body)?.componentIndicators?.find(e=>e.identifier == indicator.identifier)||
+                        (nationalTarget?.workingDocumentBody || nationalTarget?.body)?.complementaryIndicators?.find(e=>e.identifier == indicator.identifier)
+            });
+            return found;
+        })
+
+        matrix.push(target);
+
+    }
+
+    return matrix;
+}

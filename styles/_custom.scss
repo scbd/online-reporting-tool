@@ -18,9 +18,12 @@ ul.header-nav li.nav-item:hover{
 .form-group label{
     font-weight: 700;
 }
- ul {
+.km-value-ml-html.ck-content ul {
     list-style: none;
  } 
+ .km-value-ml-html.ck-content ul:first{
+    padding-left: 10px;
+}
  
  font-awesome-icon{
     padding-right: 5px;
@@ -54,6 +57,21 @@ ul.header-nav li.nav-item:hover{
 .v-toast.v-toast--top {
     z-index: 1000000;
 }
-.multiselect__content-wrapper{
-    background: #d0cbcb;
+.multiselect__content-wrapper,
+.form-control:focus {
+    box-shadow: 0 0 0 0.15rem rgba(3, 39, 94, 0.25);
+}
+.mb-0{
+    margin-bottom: 0px!important;
+}
+
+.border-left-info {
+    border-left-color: #39f!important
+}
+.border-left-3 {
+    border-left-width: 3px!important;
+}
+
+.comma:not(:last-of-type):after {
+    content: ", ";
 }

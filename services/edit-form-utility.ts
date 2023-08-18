@@ -1,5 +1,8 @@
 
 import { useRealmConfStore }    from '@/stores/realmConf';
+import { useI18n } from 'vue-i18n';
+import { useUserPreferencesStore }    from '@/stores/userPreferences';
+import {uniq } from 'lodash';
 
 class editFormUtility{
 
@@ -31,7 +34,7 @@ class editFormUtility{
                 throw error;
             }).then(
             function(success) {
-                var info = success.data;
+                var info = success;
 
                 if (expectedSchema && info.type!=expectedSchema)
                     throw { data: { error: "Invalid schema type" }, status:"badSchema"};
@@ -48,7 +51,7 @@ class editFormUtility{
                         var documentPromise = hasDraft ? $kmStorageApi.drafts.get(identifier)
                                                         : $kmStorageApi.documents.get(identifier);
 
-                        return documentPromise.then(success=>success.data);
+                        return documentPromise;
                     });
             });
     }
@@ -225,6 +228,19 @@ class editFormUtility{
         
         return this.createWorkflow(draftInfo, additionalInfo, workflowType); // return workflow info
 
+    }
+
+    getPreferredEditLanguages(){
+
+        const { locale }              = useI18n();
+        const userPreferencesStore    = useUserPreferencesStore();
+        let languages = [ locale.value ];
+        
+        if(userPreferencesStore.preferredEditLanguages?.length){
+            languages = uniq([...languages, ...userPreferencesStore.preferredEditLanguages]);
+        }
+
+        return languages;
     }
 
 	private createWorkflow(draftInfo, additionalInfo, type:string){

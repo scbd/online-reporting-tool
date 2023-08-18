@@ -1,16 +1,16 @@
 <template>
-  <div>    
-    <AppSidebar />
-    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
-      <AppHeader />
-      <div class="body flex-grow-1 px-3">
-        <CContainer fluid>
-          <router-view />
-        </CContainer>
-      </div>
-      <AppFooter class="mt-5"/>      
+    <div>    
+        <AppSidebar />
+        <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+            <AppHeader />
+            <div class="body flex-grow-1 px-3">
+                <CContainer fluid>
+                <router-view />
+                </CContainer>
+            </div>
+            <AppFooter class="mt-5"/>      
+        </div>
     </div>
-  </div>
 </template>
 <script>
 import { CContainer } from '@coreui/vue'

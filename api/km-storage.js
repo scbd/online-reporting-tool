@@ -97,13 +97,26 @@ class KmDraftsApi extends ApiBase
   async query(params){
     params.collection = "mydraft";
     const data =  await useAPIFetch(serviceUrls.documentQueryUrl(),  { method:'get', params })
-                  
+    
+    if(data?.Items?.length){
+        data.Items = data.Items.map(e=>{
+                        if(e.workingDocumentBody){
+                            e.body = e.workingDocumentBody;
+                        }
+                        return e;
+                    });
+    }
+
     return data;
   }
 
   async get(identifier, params){
     const data =  await useAPIFetch(serviceUrls.draftUrl(identifier),  { method:'get', params })
-                  
+    
+    if(data.workingDocumentBody){
+        data.body = data.workingDocumentBody;
+    }
+
     return data;
   }
 
@@ -175,17 +188,34 @@ class KmAttachmentsApi extends ApiBase
   async uploadTempFile(body, params)  {
     // const headers = {'Content-Type': undefined };
     const data =  await useAPIFetch('/api/v2015/temporary-files',   { method:'post', body, params })
-                  
+    //required by ckeditor
+    data.urls = data.urls || [data.url];
+    
     return data;
   }
-  upload(identifier, file, params) {
-      params = params || {};
-      params.identifier = identifier;
-      params.filename = file.name;
+  async upload(identifier, file, params) {
+        params = params || {};
+        params.identifier = identifier;
+        params.filename = file.name;
 
-      var contentType = params.contentType || getMimeTypes(file.name, file.type || "application/octet-stream");
+        var contentType = params.contentType || this.getMimeType(file);
 
-      params.contentType = undefined;
+        // params.contentType = undefined;
+        params.headers = params.header || {};
+        params.headers["Content-Type"] = contentType;
+
+        ////TEMP////////////////
+            const data =  await useAPIFetch(serviceUrls.attachmentUrl(identifier, file.name),   { method:'put', body:file, params })
+            //required by ckeditor
+
+            const config = useRuntimeConfig()
+            data.url = config.public.API_URL+data.url;
+            data.urls = {
+                "default": data.url 
+            };
+            
+            return data;
+        ///////TEMP////////////////
 
       //TODO : use s3
       //1 request for temp file from s3
@@ -194,7 +224,6 @@ class KmAttachmentsApi extends ApiBase
       //persist temp file location in api
   }
   getMimeType(file) {
-    // return getMimeTypes(file.name, file.type || "application/octet-stream");
     const filename = file.name
     const sMimeType = file.type || "application/octet-stream";     
 
