@@ -1,7 +1,14 @@
 <template>
   <div>
-    <div style="border: 1px solid #eee" v-if="editorConfig">
-      <ckeditor
+    <div style="border: 1px solid #eee" v-if="editorConfig" class="vld-parent">
+        <overlay-loading :active="isUploadingFile" 
+        :can-cancel="false" background-color="rgb(9 9 9)"
+        :is-full-page="false">
+        <km-spinner size="lg" 
+            :message="t('uploadingFile')"></km-spinner>
+    </overlay-loading>
+
+        <ckeditor
           tag-name="textarea"
           v-model="binding"
           :editor="editor"
@@ -28,11 +35,17 @@
 
 import '@/libs/ckeditor/build/ckeditor.js'//'@ckeditor/ckeditor5-build-classic'
 import CKEditor     from '@ckeditor/ckeditor5-vue';
+import OverlayLoading from 'vue3-loading-overlay';
+import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
+import KmSpinner from '../KmSpinner.vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'KmCkEditor',
   components: {
     ckeditor: CKEditor.component,
+    OverlayLoading,
+    KmSpinner
   },
   props: {
     modelValue: {
@@ -67,6 +80,13 @@ export default {
       type: String,
       required: true,
     },
+  },
+  setup(){
+    const  { t } = useI18n();
+
+    return {
+        t
+    }
   },
   data() {
     return {
@@ -119,7 +139,7 @@ export default {
       })
 
       ed.editing.view.document.on('drop', async function (eventInfo, data) {
-        // console.debug('drop', eventInfo, data)
+        console.debug('drop', eventInfo, data)
         if(data.dataTransfer){
         	self.isUploadingFile = true;
         	var fileUploads = data.dataTransfer.files.map(function(file, i){
@@ -137,14 +157,14 @@ export default {
 
         		formData.append('file', file);
 
-        		self.$api.kmStorage.attachments.uploadTempFile(formData, { headers: {'Content-Type': undefined}})
-                // self.$api.kmStorage.attachments.upload(self.identifier, file, { headers: {'Content-Type': undefined}})
-        		.then(function(success) {
-        			var viewFragment = ed.data.processor.toView('<span class="me-2"><a rel="noopener noreferrer" target="_blank" href="'+success.url+'">'+success.filename+ '</a></span>' );
-        			var modelFragment = ed.data.toModel(viewFragment);
-        			ed.model.insertContent( modelFragment);
-        			self.onFileUpload({data:success.data});
-        		})
+        		return self.$api.kmStorage.attachments.uploadTempFile(formData, { headers: {'Content-Type': undefined}})
+                    .then(function(success) {
+                                            
+                        var viewFragment = ed.data.processor.toView('<span class="me-2">&nbsp;<a rel="noopener noreferrer" target="_blank" href="'+success.url+'">'+success.metadata.fileName+ '</a>&nbsp;</span>' );
+                        var modelFragment = ed.data.toModel(viewFragment);
+                        ed.model.insertContent( modelFragment);
+                        self.onFileUpload({data:success.data});
+                    })
         	});
 
           try{
@@ -164,7 +184,7 @@ export default {
       })
 
       function onEditorImageUploaded(eventInfo, name, value, oldValue){
-        // console.log((eventInfo, name, value, oldValue))
+        console.log((eventInfo, name, value, oldValue))
         //TODO: check why url is not in event args
       	// if(value.url){
       	// 	self.onFileUpload({data:value})
