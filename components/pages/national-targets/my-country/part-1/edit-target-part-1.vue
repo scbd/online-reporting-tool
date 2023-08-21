@@ -251,6 +251,14 @@
                 <template v-slot:review>
                     <view-target :identifier="document.header.identifier" :document="cleanDocument"></view-target>
                 </template>
+                <template #publish>                                          
+                    <CAlert color="info" class="d-flex align-items-center">
+                        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
+                        <div class="p-2">
+                            please use the Overview menu to publish this information
+                        </div>
+                    </CAlert>       
+                </template>
             </km-form-workflow>
             <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
  

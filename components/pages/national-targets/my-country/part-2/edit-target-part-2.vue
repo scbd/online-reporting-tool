@@ -85,11 +85,18 @@
                                 </div>
                             </div>
                         </km-form-group>
-                    </div>
-                    
+                    </div>                    
                 </template>
                 <template #review>                    
                     <view-target :identifier="document.header.identifier" :document="cleanDocument"></view-target>
+                </template>
+                <template #publish>    
+                    <CAlert color="info" class="d-flex align-items-center">
+                        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
+                        <div class="p-2">
+                            please use the Overview menu to publish this information
+                        </div>
+                    </CAlert>                
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>

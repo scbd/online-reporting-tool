@@ -1,27 +1,8 @@
 <template>
     <div :class="{'dim-section':isBusy}">
-        <Wizard
-            squared-tabs
-            card-background
-            navigable-tabs
-            scrollable-tabs
-            hideButtons
-            :custom-tabs="tabs"
-            :beforeChange="onTabBeforeChange"
-            @change="onChangeCurrentTab"
-            @complete:wizard="wizardCompleted"
-            :startIndex="activeTab"
-            ref="wizardRef"
-        >
-            <div v-if="activeTab == tabName.introduction" class="m-1">
-                <slot name="introduction" >
-                    <CAlert color="success" v-bind:visible="true">
-                        <CAlertHeading>Introduction!</CAlertHeading>
-                        <hr />
-                        <p class="mb-0">This section will have a brief description to help users submit information</p>
-                    </CAlert>
-                </slot>
-            </div>
+
+        <form-wizard  @onChange="onChangeCurrentTab" :preselect-tab="activeTab">
+
             <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
                 <CCol>
                     <div class="action-buttons float-end mb-1">
@@ -41,9 +22,29 @@
                                              (activeTab == tabName.review || activeTab == tabName.publish)"
                     :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
             </CRow>
-            <div v-show="activeTab == tabName.submission" class="m-1"><slot name="submission"></slot></div>
+
+            <tab-content :title="tabs[tabName.introduction].title" :is-active="activeTab == tabName.introduction">
+                <slot name="introduction" >
+                    <CAlert color="success" v-bind:visible="true">
+                        <CAlertHeading>Introduction!</CAlertHeading>
+                        <hr />
+                        <p class="mb-0">This section will have a brief description to help users submit information</p>
+                    </CAlert>
+                </slot>
+            </tab-content>
+            <tab-content :title="tabs[tabName.submission].title" v-show="activeTab == tabName.submission" :is-active="true">
+                <slot name="submission"></slot>
+            </tab-content>
+            <tab-content :title="tabs[tabName.review].title" :is-active="activeTab == tabName.review">
+                <slot name="review"></slot>
+            </tab-content>
+            <tab-content :title="tabs[tabName.publish].title" :is-active="activeTab == tabName.publish">
+                <slot name="publish"></slot>
+            </tab-content>
+            
+            <!-- <div v-show="activeTab == tabName.submission" class="m-1"><slot name="submission"></slot></div>
             <div v-if="activeTab == tabName.review" class="m-1"><slot name="review"></slot></div>
-            <div v-if="activeTab == tabName.publish" class="m-1"><slot name="publish"></slot></div>
+            <div v-if="activeTab == tabName.publish" class="m-1"><slot name="publish"></slot></div> -->
 
             <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
                     <km-validation-errors v-if="(activeTab == tabName.submission && validationReport.errors?.length) || 
@@ -60,25 +61,15 @@
                 </CCol>
             
             </CRow>
-        </Wizard>
-        <!-- <Wizard
-            squared-tabs
-            card-background
-            navigable-tabs
-            scrollable-tabs
-            hideButtons
-            :custom-tabs="tabs"
-            :beforeChange="onTabBeforeChange"
-            @change="onChangeCurrentTab"
-            @complete:wizard="wizardCompleted"
-            :startIndex="activeTab"
-        ></Wizard> -->
+        </form-wizard>
+        
     </div>
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/KmFormWorkflow.json"></i18n>
 <script setup>
-    import 'form-wizard-vue3/dist/form-wizard-vue3.css';
-    import Wizard from 'form-wizard-vue3';
+
+    import FormWizard from './KmFormWizard.vue';
+    import TabContent from './KmFormWizardTabContent.vue';
     import { KmValidationErrors, KmSpinner } from "~/components/controls";
     import { CButton, CRow } from '@coreui/vue';
     import $ from 'jquery';
@@ -124,7 +115,6 @@
     const $toast        = useToast();
     
     let validationReport = ref({});
-    const wizardRef      = ref(null);
     const activeTab      = ref(null);
 
     let { focusedTab, tab, ...props } = toRefs(definedProps);
@@ -138,31 +128,25 @@
         },
         {
             title: 'Review',
-        }
-        // {
-        //     title: 'Publish',
-        // },
+        },
+        {
+            title: 'Publish',
+        },
     ];
     
     const isBusy = computed(()=>validationReport.value?.isSaving || validationReport.value?.isAnalyzing)
-    const onChangeCurrentTab = (index, oldIndex)=>{
+    const onChangeCurrentTab = (index)=>{
         activeTab.value = index;
-        if(activeTab.value == tabName.review){
+        if([tabName.review, tabName.publish].includes(activeTab.value)){
             onReviewDocument(true);
         }
-    }
-    const onTabBeforeChange = ()=> {
-        // console.log('All Tabs');
-    }
-    const wizardCompleted = ()=> {
-        // console.log('Wizard Completed');
-    }
+        activeTab.value = index;
+    }    
 
     async function onReviewDocument(tabChanged){
         if(!tabChanged && activeTab.value == tabName.review)
             return;
             
-        await wizardRef.value.changeTab(tabName.review)
         activeTab.value = tabName.review;
 
         validationReport.value = { isAnalyzing:true };
@@ -236,7 +220,6 @@
 
         //change tab to review
         if(activeTab.value != tabName.submission){
-            await wizardRef.value.changeTab(tabName.submission)
             onChangeCurrentTab(tabName.submission)
         }
         
@@ -249,7 +232,6 @@
     }
 
     onMounted(() => {
-        wizardRef.value.changeTab(focusedTab.value ?? 0)
         onChangeCurrentTab(focusedTab.value ?? 0)
     })
 </script>
