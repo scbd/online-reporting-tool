@@ -3,7 +3,7 @@
 
         <form-wizard  @onChange="onChangeCurrentTab" :preselect-tab="activeTab">
 
-            <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
+            <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
                 <CCol>
                     <div class="action-buttons float-end mb-1">
                         <CButton @click="onSaveDraft()" color="primary" class="me-md-2" :disabled="isBusy">
@@ -18,12 +18,12 @@
                         <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                     </div>
                 </CCol>
-                <km-validation-errors  v-if="(activeTab == tabName.submission && validationReport.errors?.length) || 
-                                             (activeTab == tabName.review || activeTab == tabName.publish)"
+                <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
+                                             (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
                     :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
             </CRow>
 
-            <tab-content :title="tabs[tabName.introduction].title" :is-active="activeTab == tabName.introduction">
+            <tab-content :title="workflowTabs.introduction.title" :is-active="activeTab == workflowTabs.introduction.index">
                 <slot name="introduction" >
                     <CAlert color="success" v-bind:visible="true">
                         <CAlertHeading>Introduction!</CAlertHeading>
@@ -32,23 +32,23 @@
                     </CAlert>
                 </slot>
             </tab-content>
-            <tab-content :title="tabs[tabName.submission].title" v-show="activeTab == tabName.submission" :is-active="true">
+            <tab-content :title="workflowTabs.submission.title" v-show="activeTab == workflowTabs.submission.index" :is-active="true">
                 <slot name="submission"></slot>
             </tab-content>
-            <tab-content :title="tabs[tabName.review].title" :is-active="activeTab == tabName.review">
+            <tab-content :title="workflowTabs.review.title" :is-active="activeTab == workflowTabs.review.index">
                 <slot name="review"></slot>
             </tab-content>
-            <tab-content :title="tabs[tabName.publish].title" :is-active="activeTab == tabName.publish">
+            <tab-content :title="workflowTabs.publish.title" :is-active="activeTab == workflowTabs.publish.index">
                 <slot name="publish"></slot>
             </tab-content>
             
-            <!-- <div v-show="activeTab == tabName.submission" class="m-1"><slot name="submission"></slot></div>
-            <div v-if="activeTab == tabName.review" class="m-1"><slot name="review"></slot></div>
-            <div v-if="activeTab == tabName.publish" class="m-1"><slot name="publish"></slot></div> -->
+            <!-- <div v-show="activeTab == workflowTabs.submission.index" class="m-1"><slot name="submission"></slot></div>
+            <div v-if="activeTab == workflowTabs.review.index" class="m-1"><slot name="review"></slot></div>
+            <div v-if="activeTab == workflowTabs.publish.index" class="m-1"><slot name="publish"></slot></div> -->
 
-            <CRow v-if="(activeTab == tabName.submission || activeTab == tabName.review || activeTab == tabName.publish)">
-                    <km-validation-errors v-if="(activeTab == tabName.submission && validationReport.errors?.length) || 
-                                            (activeTab == tabName.review || activeTab == tabName.publish)"
+            <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
+                    <km-validation-errors v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
+                                            (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
                     :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>  
                 <CCol>
                     <div class="action-buttons float-end">
@@ -79,14 +79,13 @@
     import {isEmpty} from 'lodash'
     import { scrollToElement } from '@/utils';
 
-
-    const tabName = {
-        introduction : 0,
-        submission : 1,
-        review : 2,
-        publish: 3
-        
+    const workflowTabs = {
+        introduction: { index : 0, title: 'Introduction', },
+        submission  : { index : 1, title: 'Submission', },
+        review      : { index : 2, title: 'Review', },
+        publish     : { index : 3, title: 'Publish', },
     }
+
     const definedProps = defineProps({
         focusedTab                  : { type:Number, default:0 },
         tab                         : { type:String },
@@ -118,36 +117,22 @@
     const activeTab      = ref(null);
 
     let { focusedTab, tab, ...props } = toRefs(definedProps);
+        
+    const isBusy = computed(()=>validationReport.value?.isSaving || validationReport.value?.isAnalyzing);
     
-    const tabs = [
-        {
-            title: 'Introduction',
-        },
-        {
-            title: 'Submission',
-        },
-        {
-            title: 'Review',
-        },
-        {
-            title: 'Publish',
-        },
-    ];
-    
-    const isBusy = computed(()=>validationReport.value?.isSaving || validationReport.value?.isAnalyzing)
     const onChangeCurrentTab = (index)=>{
         activeTab.value = index;
-        if([tabName.review, tabName.publish].includes(activeTab.value)){
+        if([workflowTabs.review.index, workflowTabs.publish.index].includes(activeTab.value)){
             onReviewDocument(true);
         }
         activeTab.value = index;
     }    
 
     async function onReviewDocument(tabChanged){
-        if(!tabChanged && activeTab.value == tabName.review)
+        if(!tabChanged && activeTab.value == workflowTabs.review.index)
             return;
             
-        activeTab.value = tabName.review;
+        activeTab.value = workflowTabs.review.index;
 
         validationReport.value = { isAnalyzing:true };
         const document = props.getDocument.value();
@@ -219,8 +204,8 @@
     async function onJumpTo(field) {
 
         //change tab to review
-        if(activeTab.value != tabName.submission){
-            onChangeCurrentTab(tabName.submission)
+        if(activeTab.value != workflowTabs.submission.index){
+            onChangeCurrentTab(workflowTabs.submission.index)
         }
         
         setTimeout(() => {
