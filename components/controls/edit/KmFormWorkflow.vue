@@ -79,13 +79,6 @@
     import {isEmpty} from 'lodash'
     import { scrollToElement } from '@/utils';
 
-    const workflowTabs = {
-        introduction: { index : 0, title: 'Introduction', },
-        submission  : { index : 1, title: 'Submission', },
-        review      : { index : 2, title: 'Review', },
-        publish     : { index : 3, title: 'Publish', },
-    }
-
     const definedProps = defineProps({
         focusedTab                  : { type:Number, default:0 },
         tab                         : { type:String },
@@ -113,13 +106,20 @@
     const {t }          = useI18n();
     const $toast        = useToast();
     
-    let validationReport = ref({});
+    const validationReport = ref({});
     const activeTab      = ref(null);
+
+    const workflowTabs = {
+        introduction: { index : 0, title: t('introduction') },
+        submission  : { index : 1, title: t('submission') },
+        review      : { index : 2, title: t('review') },
+        publish     : { index : 3, title: t('publish') },
+    }
 
     let { focusedTab, tab, ...props } = toRefs(definedProps);
         
     const isBusy = computed(()=>validationReport.value?.isSaving || validationReport.value?.isAnalyzing);
-    
+
     const onChangeCurrentTab = (index)=>{
         activeTab.value = index;
         if([workflowTabs.review.index, workflowTabs.publish.index].includes(activeTab.value)){
