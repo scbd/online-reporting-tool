@@ -212,7 +212,7 @@ class KmAttachmentsApi extends ApiBase
     const temporaryAttachment =  await useAPIFetch(temporarySlot.url,   { key,  method:'PUT', body:file, ...apiConfig})
 
     //persists the file using the KM persists attachments endpoint
-    const persistedAttachment =  await useAPIFetch(serviceUrls.persistAttachmentUrl(identifier, temporarySlot.uid),   { key,  method:'POST', body:{}, baseURL:'http://fonseca.biodiv.org'  })
+    const persistedAttachment =  await useAPIFetch(serviceUrls.persistAttachmentUrl(identifier, temporarySlot.uid),   { key,  method:'POST', body:{fileName}  })
     
     const config = useRuntimeConfig();
     return {

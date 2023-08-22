@@ -178,12 +178,12 @@ export default {
                     })
         	});
 
-          try{
-        	  await Promise.all(fileUploads)
-          }
-          catch(e){
-            console.error(e)
-          }
+            try{
+                await Promise.all(fileUploads)
+            }
+            catch(e){
+                console.error(e)
+            }
         	finally{
         		self.isUploadingFile = false
         	};

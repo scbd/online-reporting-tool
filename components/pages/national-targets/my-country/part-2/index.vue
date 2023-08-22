@@ -153,17 +153,23 @@
         import('./edit-target-part-2.vue')
     )
 
-    onMounted(async() => {
-        await init();
+    onMounted(() => {
 
-        if(route?.query?.globalTarget){
-            setTimeout(() => {
-                scrollToElement(`#gbTraget_${route.query.globalTarget}`);
-            }, 200);
-            const target = gbfGoalAndTargetList.value?.find(e=>e.identifier == route.query.globalTarget);
-            if(target?.nationalTargets?.length)
-                showEditMapping(target)
-        }
+        isBusy.value = true;  
+        setTimeout(async () => {
+            await init();
+            // .then(()=>{
+
+                if(route?.query?.globalTarget){
+                    setTimeout(() => {
+                        scrollToElement(`#gbTraget_${route.query.globalTarget}`);
+                    }, 200);
+                    const target = gbfGoalAndTargetList.value?.find(e=>e.identifier == route.query.globalTarget);
+                    if(target?.nationalTargets?.length)
+                        showEditMapping(target)
+                }
+            // });
+        }, 200)
     })
     
 
