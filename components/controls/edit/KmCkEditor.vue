@@ -23,14 +23,20 @@
         ></ckeditor>
     </div>
     <p style="border: 1px solid #eee; border-top: none">
-      Attach files by dragging & dropping or pasting from clipboard
+      {{ t('attachmentMessage') }}
       <span class="float-end" id="wordCountSec" style="padding-right: 5px">
-        <strong>Word count: {{ wordCount }}</strong></span
+        <strong>{{ t('wordCount') }}: {{ wordCount }}</strong></span
       >
+    </p>
+    <p style="border: 1px solid #eee; border-top: none" v-if="uploadErrors.length">
+        <CAlert class="m-2" color="danger" dismissible @close="() => { uploadErrors = [] }">
+            {{ t('uploadError') }} 
+            <ul><li v-for="error in uploadErrors" :key="error">{{ error.file }}</li></ul>
+        </CAlert>
     </p>
   </div>
 </template>
-
+<i18n src="@/i18n/dist/components/controls/edit/KmCkEditor.json"></i18n>
 <script>
 
 import '@/libs/ckeditor/build/ckeditor.js'//'@ckeditor/ckeditor5-build-classic'
@@ -93,7 +99,8 @@ export default {
       wordCount: 0,
       editor: window.ClassicEditor,
       isUploadingFile:false,
-      editorConfig : undefined
+      editorConfig : undefined,
+      uploadErrors : []
     }
   },  
   methods: {
@@ -105,31 +112,34 @@ export default {
           this.loader = loader;
         }
         upload() {
-          var loader = this.loader;
+          const loader = this.loader;
           return this.loader.file.then(function(file){
-
-            var data = new FormData();
-            data.append('file', file);
-
-            return self.$api.kmStorage.attachments
-            //.upload(self.identifier, file, { headers: {'Content-Type': undefined}})
-            .uploadTempFile(data, { headers: {'Content-Type': undefined}})
-                        .then(function(success) {
-                            success.urls = success.urls || [success.url];
-                            loader.uploaded = success;
-                            return success;
-                        })
-                        .catch(function(error) {
-                            console.error(error);
-                            throw error;
-                        });
+            
+            self.isUploadingFile = true;
+            return self.$api.kmStorage.attachments.uploadTempFile(self.identifier, file, file.name)
+                .then(function(success) {
+                    //required by ckeditor
+                    success.urls = {
+                        "default": success.url 
+                    }
+                    loader.uploaded = success;
+                    return success;
+                })
+                .catch(function(error) {
+                    self.uploadErrors.push({file:file.name })
+                    console.error(error);
+                    throw error;
+                })
+                .finally(()=>{
+                    self.isUploadingFile = false;
+                });
           })
         }
         abort() {
         }
       }
       ed.plugins.get('FileRepository').createUploadAdapter = function(loader){
-      	var uploadAdapter = new UploadAdapter(loader);
+      	const uploadAdapter = new UploadAdapter(loader);
       	uploadAdapter.loader.on('change:uploaded' , onEditorImageUploaded);
       	return uploadAdapter;
       };
@@ -139,14 +149,13 @@ export default {
       })
 
       ed.editing.view.document.on('drop', async function (eventInfo, data) {
-        console.debug('drop', eventInfo, data)
         if(data.dataTransfer){
         	self.isUploadingFile = true;
-        	var fileUploads = data.dataTransfer.files.map(function(file, i){
-        		var formData = new FormData();
-        		var file = data.dataTransfer.files[i];
-        		var fileType = file.type.substring( 0, 5 );
-        		var mimeType = self.$api.kmStorage.attachments.getMimeType(file);
+
+        	const fileUploads = data.dataTransfer.files.map(function(file, i){
+        		const formData = new FormData();
+        		const fileType = file.type.substring( 0, 5 );
+        		const mimeType = self.$api.kmStorage.attachments.getMimeType(file);
 
         		if(fileType == "image")
         			return;
@@ -156,14 +165,16 @@ export default {
         		}
 
         		formData.append('file', file);
-
-        		return self.$api.kmStorage.attachments.uploadTempFile(formData, { headers: {'Content-Type': undefined}})
+        		return self.$api.kmStorage.attachments.uploadTempFile(self.identifier, file, file.name)
                     .then(function(success) {
-                                            
-                        var viewFragment = ed.data.processor.toView('<span class="me-2">&nbsp;<a rel="noopener noreferrer" target="_blank" href="'+success.url+'">'+success.metadata.fileName+ '</a>&nbsp;</span>' );
-                        var modelFragment = ed.data.toModel(viewFragment);
+                        const viewFragment = ed.data.processor.toView('<span class="me-2">&nbsp;<a rel="noopener noreferrer" target="_blank" href="'+success.url+'">'+success.filename+ '</a>&nbsp;</span>' );
+                        const modelFragment = ed.data.toModel(viewFragment);
                         ed.model.insertContent( modelFragment);
                         self.onFileUpload({data:success.data});
+                    })
+                    .catch(e=>{
+                        self.uploadErrors.push({file:file.name })
+                        console.error(e)
                     })
         	});
 
@@ -171,7 +182,7 @@ export default {
         	  await Promise.all(fileUploads)
           }
           catch(e){
-            console.debug(e)
+            console.error(e)
           }
         	finally{
         		self.isUploadingFile = false
@@ -184,7 +195,7 @@ export default {
       })
 
       function onEditorImageUploaded(eventInfo, name, value, oldValue){
-        console.log((eventInfo, name, value, oldValue))
+        // console.log((eventInfo, name, value, oldValue))
         //TODO: check why url is not in event args
       	// if(value.url){
       	// 	self.onFileUpload({data:value})
