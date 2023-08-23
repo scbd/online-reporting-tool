@@ -377,6 +377,9 @@
     const onClose = async (document)=>{
         if(props.onClose)
             props.onClose(document)
+        else{
+            await useNavigateAppTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I);
+        }
     }
     const onPostSaveDraft = async (document)=>{
         if(props.onPostSaveDraft)
