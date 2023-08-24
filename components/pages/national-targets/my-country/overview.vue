@@ -450,9 +450,11 @@
     }
 
     onMounted(() => {
-        // GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators().then(response=>{
-        //     globalTargets = response;
-        // });
+        setTimeout(() => {
+            GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators().then(response=>{
+                globalTargets = response;
+            });
+        }, 100);
     })
 
 </script>

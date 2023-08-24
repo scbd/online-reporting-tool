@@ -36,6 +36,7 @@
 
 import VueMultiselect from 'vue-multiselect';
 import { isEqual } from 'lodash'
+import { asArray } from '@/utils/helpers';
 
 export default {
   name      : 'KmSelect',

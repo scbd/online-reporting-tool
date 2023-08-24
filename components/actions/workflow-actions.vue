@@ -31,23 +31,23 @@
         <!-- filter: isOpen | orderBy: '-createdOn'  -->
         <div v-for="(activity, index)  in  openActivity" :key=" activity " class="m-2">
             <div class="d-grid gap-1 d-md-flex" v-if="isWorkflowAssignedToMe(activity)">
-                <button type="button" class="btn btn-success bold" @click="updateActivity({ action : 'approve' })"
-                    :disabled=" isBusy " v-if=" activity.name != 'deleteRecord' ">
+                <button type="button" class="btn btn-success bold" @click="confirmWorkflowRequestAction('confirmApproval')"
+                    :disabled=" isRevealed " v-if=" activity.name != 'deleteRecord' ">
                     <span>{{t('approve')}}</span>
                 </button>
-                <button type="button" class="btn btn-danger bold" @click="confirmDelete()" :disabled=" isBusy "
+                <!-- <button type="button" class="btn btn-danger bold" @click="confirmDelete()" :disabled=" isRevealed "
                     v-if=" activity.name == 'deleteRecord' ">
                     <span>{{t('delete')}}</span>
-                </button>
-                <button type="button" class="btn btn-warning bold" @click="showRejectDialog()" :disabled=" isBusy ">
+                </button> -->
+                <button type="button" class="btn btn-warning bold" @click="confirmWorkflowRequestAction('confirmRejection')" :disabled=" isRevealed ">
                     <span v-if=" activity.name == 'deleteRecord' ">{{t('rejectNotDelete')}}</span>
                     <span v-if=" activity.name != 'deleteRecord' ">{{t('reject')}}</span>
                 </button>
             </div>
 
             <div v-if="isWorkFlowCreatedByMe(workflow)">
-                <button type="button" class="btn btn-warning bold" @click="askCancelWorkflowRequest()"
-                    :disabled=" isBusy ">
+                <button type="button" class="btn btn-warning bold" @click="confirmCancelWorkflowRequest()"
+                    :disabled=" isRevealed ">
                     <span> {{t('cancelRequest')}}</span>
                 </button>
             </div>
@@ -66,8 +66,63 @@
                 </table>
             </div>
         </div>
-        <km-modal-spinner :visible="isBusy" :message="t('approvalProcessing')"></km-modal-spinner>
     </div>
+
+    <CModal  class="show d-block" alignment="center" backdrop="static" :visible="isRevealed && activeDialog.name == 'confirmCancellation'" >
+        <CModalHeader :close-button="false">
+            <CModalTitle>
+                {{ t('cancelPublishingRequest') }}
+            </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            <strong>{{ t('cancelPublishingRequestConfirm') }}</strong>
+            <div class="mt-2" v-if="activeDialog.processing">
+                <CSpinner size="md" variant="grow"/><strong>{{ t('cancellationProcessing') }}</strong>
+            </div>
+        </CModalBody>
+        <CModalFooter>
+            <CButton color="danger" @click="confirm({confirm:true, activeDialog})">{{t('yes')}}</CButton>
+            <CButton color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('no')}}</CButton>
+        </CModalFooter>
+    </CModal>
+
+
+    <CModal  class="show d-block" alignment="center" backdrop="static" :visible="isRevealed && activeDialog.name == 'confirmRejection'" >
+        <CModalHeader :close-button="false">
+            <CModalTitle>
+                {{ t('rejectConfirmation') }}
+            </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            <strong>{{ t('rejectPublishingRequestConfirm') }}</strong>
+            <div class="mt-2" v-if="activeDialog.processing">
+                <CSpinner size="md" variant="grow"/><strong>{{ t('cancellationProcessing') }}</strong>
+            </div>
+        </CModalBody>
+        <CModalFooter>
+            <CButton color="danger" @click="confirm({confirm:true, activeDialog, actionData:{ action : 'reject' }})">{{t('reject')}}</CButton>
+            <CButton color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('cancel')}}</CButton>
+        </CModalFooter>
+    </CModal>
+
+    <CModal  class="show d-block" alignment="center" backdrop="static" :visible="isRevealed && activeDialog.name == 'confirmApproval'" >
+        <CModalHeader :close-button="false">
+            <CModalTitle>
+                {{ t('approveConfirmation') }}
+            </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            <strong>{{ t('approvePublishingRequestConfirm') }}</strong>
+            <div class="mt-2" v-if="activeDialog.processing">
+                <CSpinner size="md" variant="grow"/><strong>{{ t('approvalProcessing') }}</strong>
+            </div>
+        </CModalBody>
+        <CModalFooter>
+            <CButton color="danger" @click="confirm({confirm:true, activeDialog, actionData:{ action : 'approve' }})">{{t('approve')}}</CButton>
+            <CButton color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('cancel')}}</CButton>
+        </CModalFooter>
+    </CModal>
+
 </template>
 
 <i18n src="@/i18n/dist/components/actions/workflow-actions.json"></i18n>    
@@ -78,6 +133,7 @@
     import { useToast } from 'vue-toast-notification';
     import { KmModalSpinner } from '@/components/controls';
     import { sleep } from '@/utils';
+    import { useConfirmDialog } from '@/composables/useConfirmDialog'//'@vueuse/core'
 
     const props = defineProps({
         workflow: {
@@ -91,7 +147,8 @@
     const security      = useSecurity();
     const { t, locale } = useI18n();
     const $toast        = useToast();
-    const isBusy        = ref(false);
+    const activeDialog  = ref({name:'', data:[]});
+    const { isRevealed, reveal, confirm, cancel, onConfirm,  onCancel, } = useConfirmDialog();
 
     const daysToApproval = computed(()=>{
         const workflow = props.workflow;
@@ -107,8 +164,7 @@
     });
 
 
-    async function updateActivity(actionData:object, cancelRequest:boolean) {
-        isBusy.value = true;
+    async function updateActivity(actionData:object) {
         try{
 
             let result;
@@ -120,21 +176,73 @@
             await sleep(5000) //sleep for 5 seconds 
 
             emit('onWorkflowAction', {
-                action    : 'approved',
+                action    : actionData.action,
                 workflowId: props.workflow._id,
                 batchId   : props.workflow.data.batchId,
                 name      : props.workflow.activities[0].name,
                 actionData
             });
-
-            $toast.success(t('approvedSuccessful'))
+            if(actionData.action == 'approve')
+                $toast.success(t('approvedSuccessful'))
+            else
+                $toast.success(t('rejectedSuccessful'))
         }
         catch(error) {
-            useLogger().error(error, t('approvalError'));
+            useLogger().error(error, t('error'));
         }
 
-        isBusy.value = false;
     };
+
+    async function confirmWorkflowRequestAction(dialog){
+        activeDialog.value.name = dialog;
+        const { data, isCanceled } = await reveal();       
+        activeDialog.value = {name:'', data:[]};
+
+    }
+
+    async function confirmCancelWorkflowRequest(workflow:Object){
+        activeDialog.value.name = 'confirmCancellation';
+        const { data, isCanceled } = await reveal();       
+        activeDialog.value = {name:'', data:[]};
+
+    }
+
+    onConfirm(async (data)=>{
+
+        if(!data?.confirm)
+            return;
+
+        if(data.activeDialog.name == 'confirmCancellation')
+            return deleteWorkflowRequest(data);
+        else
+            return updateActivity(data.actionData)//'confirmRejection', 'approve'
+    });
+
+    async function deleteWorkflowRequest(data){
+
+        try{
+            data.activeDialog.processing = true;
+            let result;
+            if(props.workflow.data.batchId)
+                result = await $api.kmWorkflows.cancelBatch(props.workflow.data.batchId)
+            else
+                result = await $api.kmWorkflows.cancelWorkflow(props.workflow._id);
+
+            await sleep(5000) //sleep for 5 seconds 
+
+            emit('onWorkflowAction', {
+                action    : 'canceled',
+                workflowId: props.workflow._id,
+                batchId   : props.workflow.data.batchId,
+                name      : props.workflow.activities[0].name
+            });
+
+            $toast.success(t('canceledSuccessful'))
+        }
+        catch(error) {
+            useLogger().error(error, t('error'));
+        }
+    }
 
 </script>
 
