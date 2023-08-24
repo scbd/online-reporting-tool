@@ -100,8 +100,8 @@
             </div>
         </CModalBody>
         <CModalFooter>
-            <CButton color="danger" @click="confirm({confirm:true, activeDialog, actionData:{ action : 'reject' }})">{{t('reject')}}</CButton>
-            <CButton color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('cancel')}}</CButton>
+            <CButton :disabled="activeDialog.processing" color="danger" @click="confirm({confirm:true, activeDialog, actionData:{ action : 'reject' }})">{{t('reject')}}</CButton>
+            <CButton :disabled="activeDialog.processing" color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('cancel')}}</CButton>
         </CModalFooter>
     </CModal>
 
@@ -118,8 +118,8 @@
             </div>
         </CModalBody>
         <CModalFooter>
-            <CButton color="danger" @click="confirm({confirm:true, activeDialog, actionData:{ action : 'approve' }})">{{t('approve')}}</CButton>
-            <CButton color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('cancel')}}</CButton>
+            <CButton :disabled="activeDialog.processing" color="danger" @click="confirm({confirm:true, activeDialog, actionData:{ action : 'approve' }})">{{t('approve')}}</CButton>
+            <CButton :disabled="activeDialog.processing" color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('cancel')}}</CButton>
         </CModalFooter>
     </CModal>
 
@@ -147,7 +147,7 @@
     const security      = useSecurity();
     const { t, locale } = useI18n();
     const $toast        = useToast();
-    const activeDialog  = ref({name:'', data:[]});
+    const activeDialog  = ref({name:'', data:[], processing:false});
     const { isRevealed, reveal, confirm, cancel, onConfirm,  onCancel, } = useConfirmDialog();
 
     const daysToApproval = computed(()=>{
@@ -167,6 +167,7 @@
     async function updateActivity(actionData:object) {
         try{
 
+            activeDialog.value.processing = true;
             let result;
             if(props.workflow.data.batchId)
                 result = await $api.kmWorkflows.updateBatchActivity(props.workflow.data.batchId, props.workflow.activities[0].name, actionData)
@@ -191,19 +192,20 @@
             useLogger().error(error, t('error'));
         }
 
+        activeDialog.value.processing = false;
     };
 
     async function confirmWorkflowRequestAction(dialog){
         activeDialog.value.name = dialog;
         const { data, isCanceled } = await reveal();       
-        activeDialog.value = {name:'', data:[]};
+        activeDialog.value = {name:'', data:[], processing:false};
 
     }
 
     async function confirmCancelWorkflowRequest(workflow:Object){
         activeDialog.value.name = 'confirmCancellation';
         const { data, isCanceled } = await reveal();       
-        activeDialog.value = {name:'', data:[]};
+        activeDialog.value = {name:'', data:[], processing:false};
 
     }
 

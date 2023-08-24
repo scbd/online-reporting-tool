@@ -34,7 +34,6 @@ export const useThesaurusStore = defineStore('thesaurus', {
     async loadDomainTerms(identifier:string, params:any){
         if(!identifier)
           return;
-
         let terms = this.getDomainTerms(identifier)
         if(!terms){
 
@@ -63,6 +62,12 @@ export const useThesaurusStore = defineStore('thesaurus', {
     },
   },
   persist: {
-      storage: persistedState.localStorage//TODO : switch to localStorage,
+      storage: persistedState.localStorage, //TODO : switch to localStorage,
+    //   beforeRestore: (ctx) => {
+    //     console.log(`about to restore '${ctx.store.$id}'`)
+    //   },
+    //   afterRestore: (ctx) => {
+    //     console.log(`just restored '${ctx.store.$id}'`)
+    //   }
   }
 })
