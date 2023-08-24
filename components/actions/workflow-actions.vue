@@ -81,8 +81,8 @@
             </div>
         </CModalBody>
         <CModalFooter>
-            <CButton color="danger" @click="confirm({confirm:true, activeDialog})">{{t('yes')}}</CButton>
-            <CButton color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('no')}}</CButton>
+            <CButton :disabled="activeDialog.processing" color="danger" @click="confirm({confirm:true, activeDialog})">{{t('yes')}}</CButton>
+            <CButton :disabled="activeDialog.processing" color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('no')}}</CButton>
         </CModalFooter>
     </CModal>
 
@@ -94,13 +94,16 @@
             </CModalTitle>
         </CModalHeader>
         <CModalBody>
-            <strong>{{ t('rejectPublishingRequestConfirm') }}</strong>
+            <strong>{{ t('rejectionReason') }}</strong>
+            <div>
+                <textarea class="form-control" rows="5" name="reason" v-model="activeDialog.rejectReason" required></textarea>
+            </div>
             <div class="mt-2" v-if="activeDialog.processing">
                 <CSpinner size="md" variant="grow"/><strong>{{ t('cancellationProcessing') }}</strong>
             </div>
         </CModalBody>
         <CModalFooter>
-            <CButton :disabled="activeDialog.processing" color="danger" @click="confirm({confirm:true, activeDialog, actionData:{ action : 'reject' }})">{{t('reject')}}</CButton>
+            <CButton :disabled="activeDialog.processing || !activeDialog.rejectReason" color="danger" @click="confirm({confirm:true, activeDialog, actionData:{ action : 'reject', reason:activeDialog.rejectReason }})">{{t('reject')}}</CButton>
             <CButton :disabled="activeDialog.processing" color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('cancel')}}</CButton>
         </CModalFooter>
     </CModal>
@@ -147,7 +150,7 @@
     const security      = useSecurity();
     const { t, locale } = useI18n();
     const $toast        = useToast();
-    const activeDialog  = ref({name:'', data:[], processing:false});
+    const activeDialog  = ref({name:'', data:[], processing:false, rejectReason:undefined});
     const { isRevealed, reveal, confirm, cancel, onConfirm,  onCancel, } = useConfirmDialog();
 
     const daysToApproval = computed(()=>{
@@ -174,7 +177,7 @@
             else
                 result = await $api.kmWorkflows.updateActivity(props.workflow._id, props.workflow.activities[0].name, actionData);
 
-            await sleep(5000) //sleep for 5 seconds 
+            await sleep(10000) //sleep for 10 seconds 
 
             emit('onWorkflowAction', {
                 action    : actionData.action,
@@ -198,14 +201,14 @@
     async function confirmWorkflowRequestAction(dialog){
         activeDialog.value.name = dialog;
         const { data, isCanceled } = await reveal();       
-        activeDialog.value = {name:'', data:[], processing:false};
+        activeDialog.value = {name:'', data:[], processing:false, rejectReason:undefined};
 
     }
 
     async function confirmCancelWorkflowRequest(workflow:Object){
         activeDialog.value.name = 'confirmCancellation';
         const { data, isCanceled } = await reveal();       
-        activeDialog.value = {name:'', data:[], processing:false};
+        activeDialog.value = {name:'', data:[], processing:false, rejectReason:undefined};
 
     }
 
@@ -230,7 +233,7 @@
             else
                 result = await $api.kmWorkflows.cancelWorkflow(props.workflow._id);
 
-            await sleep(5000) //sleep for 5 seconds 
+            await sleep(10000) //sleep for 10 seconds 
 
             emit('onWorkflowAction', {
                 action    : 'canceled',

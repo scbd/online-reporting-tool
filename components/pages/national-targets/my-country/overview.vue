@@ -124,7 +124,7 @@
             </CModalFooter>
         </CModal>
 
-        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showConfirmDialog" >
+        <CModal  class="show d-block" alignment="center" backdrop="static" :visible="showConfirmDialog" >
             <CModalHeader :close-button="false">
                 <CModalTitle class="bg-red">
                     {{t('confirmationTitle')}}
@@ -333,7 +333,7 @@
         else if (stateTargetWorkflow.value.batchId){
             const batchWorkflow =  await $api.kmWorkflows.getBatchWorkflowDetails(stateTargetWorkflow.value.batchId);
             if(batchWorkflow){                
-                if(['workflowActivityInitiated', 'workflowActivityUpdated',].includes(batchWorkflow.status)){
+                if(['workflowActivityInitiated', 'workflowActivityUpdated', 'workflowTimeOut', 'workflowCanceled', 'workflowRejected',].includes(batchWorkflow.status)){
                     stateTargetWorkflow.value.batchId = undefined;
                 }
             }
@@ -398,6 +398,8 @@
                                         });
             
             stateTargetWorkflow.value.batchId = res.batchId
+
+            await sleep(10000);
         }
         catch(e){
             useLogger().error(e);

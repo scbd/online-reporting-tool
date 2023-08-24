@@ -25,7 +25,7 @@
     "rejectConfirmation": "Reject Confirmation",
     "rejectPublishingRequestConfirm": "Are you sure you want reject this request",
     "rejectionProcessing": "Please wait while we process your rejection action",
-    "provide": "Please provide the reason this record is being rejected.",
+    "rejectionReason": "Please provide the reason this record is being rejected.",
     "cancelPublishingRequest": "Cancel publishing request",
     "cancelPublishingRequestConfirm": "Are you sure you want to cancel this publishing request?",
     "yes": "Yes",
