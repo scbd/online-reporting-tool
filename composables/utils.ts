@@ -16,10 +16,13 @@ export const useLogger = ()=>{
 
 
 function error(error, userMessage){
-    console.error(error);
-    
-    //TODO: send error to server
 
+    if(![404, 401].includes(error?.status)){
+        console.error(error);
+        
+        //TODO: send error to server
+    }
+        
     if(userMessage){
         const $toast = useToast();
         $toast.error(userMessage, {position:'top-right'}); 
