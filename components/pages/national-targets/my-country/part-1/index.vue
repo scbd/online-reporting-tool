@@ -32,7 +32,8 @@
             <div class="card-header bg-secondary">
                 National targets 
             </div>
-            <div class="card-body">            
+            <div class="card-body">    
+                <div v-if="isLoadingRecords" class="d-flex justify-content-center m-5"><km-spinner ></km-spinner></div>       
               <table class="table" v-if="kmDocumentDraftStore.documentDrafts">
                 <thead>
                   <tr>
@@ -45,7 +46,6 @@
                   </tr>
                 </thead>
                 <tbody>
-                  
                   <tr v-for="(draft,  index) in nationalTargets" :key="draft.identifier">
                     <th scope="row">{{ index+1 }}</th>
                     <td>{{(draft.workingDocumentTitle||draft.title).en}}</td>
@@ -68,11 +68,9 @@
                     </td>
                     <td>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <CButton color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, draft)">
-                          <font-awesome-icon icon="fa-search" /> View target
-                        </CButton>
+                        <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, draft)" title="View"></km-link>
                         <CButton color="secondary" size="sm" :disabled="canEdit || draft.workingDocumentLock" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
-                          <font-awesome-icon icon="fa-edit" /> Edit target
+                          <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
                       </div>
                     </td>
@@ -90,7 +88,7 @@
 <!-- <i18n  src="~/i18n/dist/pages/national-targets/index.json"></i18n> -->
 
 <script setup lang="ts">
-  import { KmSuspense, KmInputRichLstring, KmSelect, KmFormGroup,
+  import { KmSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLink,KmSpinner,
              KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink
            } from "@/components/controls";
     import { useI18n } from "vue-i18n";
@@ -114,8 +112,10 @@
     const kmDocumentDraftStore     = useKmDocumentDraftsStore();
     const draftNationalTargets     = ref([]);
     const publishedNationalTargets = ref([]);
+    const isLoadingRecords         = ref(false);
 
     const canEdit = computed(()=>{
+        return true
         return !!stateTargetWorkflow.value.batchId
     });
 
@@ -131,21 +131,40 @@
       return localePath(url);
     }
 
+    function navigationUrl(route, draft){
+         
+        const query = {};
+        const path = route.replace(':identifier', draft?.identifier||draft?.header?.identifier);
+
+        if(draft.workingDocumentBody)
+            query.draft = true //open draft record view page
+
+        return {
+            path, query
+        }
+    }
     const navigateToPage = async (route:string, draft:any)=>{
-        const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
-        await navigateTo(url);
-        await navigateTo(url);
+        const {path, query} = navigationUrl(route, draft)
+
+        await useNavigateAppTo({path, query});
+
+        
     }
 
     async function loadRecords(){
+        try{
+            isLoadingRecords.value = true;
+            const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
 
-        const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
-
-        const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
-                            KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)]);  
-        draftNationalTargets.value     = result[0].Items;
-        publishedNationalTargets.value = result[1].Items.filter(e=>!draftNationalTargets.value.find(draft=>draft.identifier == e.identifier))
-        
+            const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
+                                KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)]);  
+            draftNationalTargets.value     = result[0].Items;
+            publishedNationalTargets.value = result[1].Items.filter(e=>!draftNationalTargets.value.find(draft=>draft.identifier == e.identifier))
+            isLoadingRecords.value = false;
+        }
+        catch(e){
+            useLogger().error(e)
+        }
     }
 
     loadRecords();

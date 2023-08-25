@@ -179,11 +179,6 @@
       await navigateTo(url);
     }
 
-    const customUrl = (route:string, draft:any)=>{
-      const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
-      return localePath(url);
-    }
-
     async function loadRecords(query){
 
         const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
