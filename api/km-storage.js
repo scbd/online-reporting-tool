@@ -190,18 +190,37 @@ class KmAttachmentsApi extends ApiBase
   async uploadTempFile(identifier, file, fileName, options)  {
     
     
-    const { headers, timeout, contentType, onUploadProgress, onDownloadProgress }= { ...(options||{}) };
+    const { timeout, onUploadProgress, onDownloadProgress }= { ...(options||{}) };
 
     const apiConfig = {
-      headers: headers ||{},
+      headers: {},
       timeout: timeout || 60 * 60 * 1000,
       onUploadProgress, 
       onDownloadProgress
     };
     
     const tempSlotBody = {
-        filename : fileName
+        filename    : fileName,
     }
+
+    //find the content type and validate with whitelist
+    if(file instanceof FormData){
+        const tempFile = formData.get('file')
+        if(tempFile){
+            tempSlotBody.contentType = this.getMimeType(file);
+        }
+    }
+    else if(file instanceof File){
+        tempSlotBody.contentType = this.getMimeType(file)
+    }
+    else{
+        throw new Error('Unable to read file information.')
+    }
+    
+    if (this.mimeTypeWhitelist().indexOf(tempSlotBody.contentType) < 0) {
+        throw new Error("File type not supported: " + mimeType + "(" + file.name + ")");
+    }
+
     const key = S4();
     // get a temporary slot from S3 to upload the file
     const temporarySlot =  await useAPIFetch(serviceUrls.temporaryAttachmentUrl(),   { key, method:'POST', body : tempSlotBody})
