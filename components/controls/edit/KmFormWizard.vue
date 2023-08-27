@@ -1,15 +1,14 @@
 <template>
     <div class="km-nav-wizard">
         <div class="nav-header mb-2">
-
             <ul class="nav nav-pills nav-fill">
                 <li @click.prevent.stop="selectTab(index)" 
-                class="nav-item" :class="{ 'active': currentTab == index }" 
+                class="nav-item" :class="{ 'active': tab.isActive }" 
                 v-for="(tab, index) in tabs" v-bind:key="`tab-${index}`">
 
                     <a class="nav-link" href="#">
                             <span class="tabStatus">{{index+1}} </span> 
-                            <span class="tabLabel">{{tab.props.title}}</span>
+                            <span class="tabLabel">{{tab.title}}</span>
                     </a>
                 </li>
             </ul>
@@ -22,11 +21,11 @@
         <div class="nav-footer mt-2">
             <ul class="nav nav-pills nav-fill">
                 <li @click.prevent.stop="selectTab(index)" 
-                    class="nav-item" :class="{ 'active': currentTab == index }" 
+                    class="nav-item" :class="{ 'active': tab.isActive }" 
                     v-for="(tab, index) in tabs" v-bind:key="`tab-${index}`">
                     <a class="nav-link" href="#">
                             <span class="tabStatus">{{index+1}} </span> 
-                            <span class="tabLabel">{{tab.props.title}}</span>
+                            <span class="tabLabel">{{tab.title}}</span>
                     </a>
                 </li>
             </ul>
@@ -34,33 +33,25 @@
     </div>
 </template>
 <script>
-export default {
-    props:{
-        preselectTab : {type :Number, default : 0},
-    },
-    data(){
-        return{
-            tabs: [],
-            totalTabs : 0,
-            currentTab : 0
-        }
-    },
-    mounted(){
-            this.tabs = this.$slots.default().filter((child) => child.type.name === "tab-content");;
-            this.totalTabs = this.tabs.length;
-            this.currentTab = this.preselectTab ?  this.preselectTab : this.tabs.findIndex((tab) => tab.props.isActive === true);
+import { provide } from 'vue';
 
-            //Select first tab if none is marked selected
-            if(this.currentTab === -1 && this.totalTabs > 0){  
-                this.tabs[0].props.isActive = true;
-                this.currentTab = 0;
-            }
-    },
-    watch:{
-        preselectTab : function(){
-            this.currentTab = this.preselectTab
+export default {
+    setup(){
+        const tabs = ref([]);
+        return {
+            tabs
         }
     },
+    computed:{
+        totalTabs(){ return this.tabs.length },
+        currentTab(){ return this.tabs.find(e=>e.active); }
+    },
+    beforeMount(){
+        provide('addFormWizardTabKey', (tab)=>{
+            this.tabs.push(tab);
+        })
+    },
+    expose: ['selectTab'],
     methods:{        
 
         selectTab(index){            
@@ -69,12 +60,11 @@ export default {
         _switchTab(index){
             //Disable all tabs
             this.tabs.forEach(tab => {
-                tab.props.isActive = true;
+                tab.isActive = false;
             });
 
-            this.currentTab = index;
-            this.tabs[index].props.isActive = true;
-            this.$emit('onChange', this.currentTab);
+            this.tabs[index].isActive = true;
+            this.$emit('onTabChange', index);
         }
     }
     

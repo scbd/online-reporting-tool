@@ -240,7 +240,6 @@
                                 </div>
                                 <div class="card-body">
                                     <km-form-group name="additionalInformation" caption="Any other relevant information">
-                                        {{ document.additionalInformation }}
                                         <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.additionalInformation" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>

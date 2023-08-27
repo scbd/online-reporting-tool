@@ -1,7 +1,7 @@
 <template>
     <div :class="{'dim-section':isBusy}">
 
-        <form-wizard  @onChange="onChangeCurrentTab" :preselect-tab="activeTab">
+        <form-wizard  @on-tab-change="onChangeCurrentTab" ref="formWizard">
 
             <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
                 <CCol>
@@ -42,10 +42,6 @@
                 <slot name="publish"></slot>
             </tab-content>
             
-            <!-- <div v-show="activeTab == workflowTabs.submission.index" class="m-1"><slot name="submission"></slot></div>
-            <div v-if="activeTab == workflowTabs.review.index" class="m-1"><slot name="review"></slot></div>
-            <div v-if="activeTab == workflowTabs.publish.index" class="m-1"><slot name="publish"></slot></div> -->
-
             <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
                     <km-validation-errors v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
                                             (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
@@ -105,7 +101,7 @@
     const { $eventBus } = useNuxtApp();
     const {t }          = useI18n();
     const $toast        = useToast();
-    
+    const formWizard       = ref(null);
     const validationReport = ref({});
     const activeTab      = ref(null);
 
@@ -121,6 +117,7 @@
     const isBusy = computed(()=>validationReport.value?.isSaving || validationReport.value?.isAnalyzing);
 
     const onChangeCurrentTab = (index)=>{
+        
         activeTab.value = index;
         if([workflowTabs.review.index, workflowTabs.publish.index].includes(activeTab.value)){
             onReviewDocument(true);
@@ -217,7 +214,7 @@
     }
 
     onMounted(() => {
-        onChangeCurrentTab(focusedTab.value ?? 0)
+        formWizard.value?.selectTab(focusedTab.value ?? 0)
     })
 </script>
 

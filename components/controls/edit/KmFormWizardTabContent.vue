@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { inject } from 'vue';
 export default {
     name: 'tab-content',
     props:{
@@ -16,13 +17,13 @@ export default {
             required: true
         }
     },
-    data(){
-        return{
-            
-        }
-    },
-    created(){
-        // this.isActive = this.selected;
+    mounted(){
+        const addTab = inject('addFormWizardTabKey');
+
+        addTab({
+            title : this.title,
+            isActive : this.isActive
+        })
     }
 }
 </script>
