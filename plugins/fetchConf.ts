@@ -36,7 +36,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     },
     onRequestError ({ error }) {
-      console.error(error)
+      useLogger.error(error)
     }
   })
 })

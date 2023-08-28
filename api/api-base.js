@@ -20,7 +20,7 @@ export default class ApiBase
 
 export function tryCastToApiError(error) {
 
-  console.error(error);
+  useLogger.error(error);
 
   if(error && error.response && error.response.data && error.response.data.code) {
       const apiError = error.response.data

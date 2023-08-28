@@ -238,7 +238,7 @@
             await validationRef.value.validate(type);
         }
         catch(e){
-            console.error(e);
+            useLogger.error(e);
         }
         isValidating.value = false;
     }
@@ -307,7 +307,7 @@
             showSuccessDialog.value = true;
         }
         catch(e){
-            console.error(e);
+            useLogger.error(e);
         }
         isPublishing.value = false;
     }

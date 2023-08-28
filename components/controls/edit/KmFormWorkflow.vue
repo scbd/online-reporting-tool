@@ -165,7 +165,7 @@
         }
         catch(e){
             $toast.error('Error saving draft record', {position:'top-right'}); 
-            console.error(e)
+            useLogger.error(e)
         }
         validationReport.value = { };
     }

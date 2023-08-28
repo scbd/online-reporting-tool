@@ -65,7 +65,7 @@ export const authUser = async (token = null) => {
         }
     }
     catch(e){
-        console.error(`Error loading user info`, e)
+        useLogger.error(`Error loading user info`, e)
         return {}
     }
 };
