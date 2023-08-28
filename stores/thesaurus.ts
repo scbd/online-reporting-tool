@@ -3,17 +3,16 @@ import { defineStore } from 'pinia'
 export const useThesaurusStore = defineStore('thesaurus', {
   state: () => {
     return {
-      domains: [],
-      domainTerms : [],
+      domains: {},
+      domainTerms : {},
       terms       : {}
     }
   },
   getters:{
     getDomainTerms(state){
       return function (identifier){
-        const domainTerms = this.domainTerms.find(e=>e.identifier == identifier)
-        // console.log(identifier, domainTerms, this.domainTerms.length)
-        return domainTerms?.terms;
+        const domainTerms = this.domainTerms[identifier];
+        return domainTerms;
       }
     },
     getTerm(state){
@@ -26,7 +25,7 @@ export const useThesaurusStore = defineStore('thesaurus', {
     async loadDomain(domainName:string, params:any){
       
         const { $api } = useNuxtApp();
-        let domain = this.domains?.find(e=>e.identifier==domainName)
+        let domain = this.domains[domainName]
         if(!domain){
           domain = await $api.thesaurs.getDomain(domainName, params);
           this.domains.push(domain);
@@ -35,13 +34,16 @@ export const useThesaurusStore = defineStore('thesaurus', {
     async loadDomainTerms(identifier:string, params:any){
         if(!identifier)
           return;
-
         let terms = this.getDomainTerms(identifier)
         if(!terms){
 
           const { $api } = useNuxtApp();
           terms  = await $api.thesaurus.getDomainTerms(identifier, params);
-          this.domainTerms.push({identifier, terms});
+          this.domainTerms[identifier] = terms;
+          
+          terms.forEach(term => {
+            this.terms[term.identifier] = term;
+          });
         }
         return terms;
     },  
@@ -60,6 +62,12 @@ export const useThesaurusStore = defineStore('thesaurus', {
     },
   },
   persist: {
-      storage: persistedState.sessionStorage//TODO : switch to localStorage,
+      storage: persistedState.localStorage, //TODO : switch to localStorage,
+    //   beforeRestore: (ctx) => {
+    //     console.log(`about to restore '${ctx.store.$id}'`)
+    //   },
+    //   afterRestore: (ctx) => {
+    //     console.log(`just restored '${ctx.store.$id}'`)
+    //   }
   }
 })

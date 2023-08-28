@@ -1,1 +1,15 @@
-{}
+{
+    "headerTitle" : "Global Goals/Targets mapping",
+    "openAll" : "Open All",
+    "closeAll": "Close All",
+    "editMapping": "Edit mapping",
+    "addMapping" : "Add mapping",
+
+    "linkedTargetsTitle" : "National target(s) linked to this global Goal/Target",
+    "elementsOfInfo": "Element of Global Targets information",
+    "headlineIndicators":"Headline Indicators",
+    "referencePeriod": "Reference period",
+    "hasReferencePeriod":"Has reference period",
+    "noReferencePeriod":"No reference period",
+    "otherIndicators": "Other indicators linked in the national target(s) for this global Goal/Target"
+}

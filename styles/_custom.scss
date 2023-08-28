@@ -75,3 +75,7 @@ ul.header-nav li.nav-item:hover{
 .comma:not(:last-of-type):after {
     content: ", ";
 }
+.unset-anchor{
+    color: unset;
+    text-decoration: unset;
+}

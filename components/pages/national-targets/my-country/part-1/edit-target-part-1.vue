@@ -240,7 +240,6 @@
                                 </div>
                                 <div class="card-body">
                                     <km-form-group name="additionalInformation" caption="Any other relevant information">
-                                        {{ document.additionalInformation }}
                                         <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.additionalInformation" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
@@ -250,6 +249,14 @@
                 </template>
                 <template v-slot:review>
                     <view-target :identifier="document.header.identifier" :document="cleanDocument"></view-target>
+                </template>
+                <template #publish>                                          
+                    <CAlert color="info" class="d-flex align-items-center">
+                        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
+                        <div class="p-2">
+                            please use the Overview menu to publish this information
+                        </div>
+                    </CAlert>       
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
@@ -369,6 +376,9 @@
     const onClose = async (document)=>{
         if(props.onClose)
             props.onClose(document)
+        else{
+            await useNavigateAppTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I);
+        }
     }
     const onPostSaveDraft = async (document)=>{
         if(props.onPostSaveDraft)

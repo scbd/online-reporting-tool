@@ -1,11 +1,7 @@
 <template>
     <div>
         <div class="justify-content-center">
-            <!-- <div >
-                <legend>{{t('welcome')}}</legend>
-                <hr/>
-            </div>   -->
-
+            
             <CRow>
               <CCol :sm="6">
                 <CCard>
@@ -54,14 +50,18 @@
                             {{t('validatePartIAndPartII')}}
                         </CButton>
                     </div>
-                    <workflow-actions v-if="openWorkflow" :workflow="openWorkflow" @on-workflow-action="onWorkflowAction"></workflow-actions>
+                    <km-suspense>
+                        <workflow-actions v-if="openWorkflow" :workflow="openWorkflow" @on-workflow-action="onWorkflowAction"></workflow-actions>
+                    </km-suspense>
                   </CCardBody>
                 </CCard>
               </CCol>
             </CRow>
             <CRow>
                 <CCol>
-                    <validation ref="validationRef" @on-records-load="onRecordsLoad" @on-validation-finished="onValidationFinished"></validation>
+                    <km-suspense>
+                        <validation ref="validationRef" @on-records-load="onRecordsLoad" @on-validation-finished="onValidationFinished"></validation>
+                    </km-suspense>
                 </CCol>
             </CRow>
         </div>
@@ -124,7 +124,7 @@
             </CModalFooter>
         </CModal>
 
-        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showConfirmDialog" >
+        <CModal  class="show d-block" alignment="center" backdrop="static" :visible="showConfirmDialog" >
             <CModalHeader :close-button="false">
                 <CModalTitle class="bg-red">
                     {{t('confirmationTitle')}}
@@ -200,12 +200,13 @@
     import _ from 'lodash';
     import { KmSuspense, KmLink, KmNavLink, KmModalSpinner } from '@/components/controls'
     import WorkflowActions from '@/components/actions/workflow-actions.vue';
-    import validation from '@/components/pages/national-targets/my-country/validation.vue';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import btnNewTarget from './btn-new-target.vue';
     import { sleep } from '@/utils';
     import { useStorage } from '@vueuse/core'
     import { useRealmConfStore } from '@/stores/realmConf';
+
+    const validation = defineAsyncComponent(()=>import("@/components/pages/national-targets/my-country/validation.vue"));
 
     let globalTargets               = undefined;
     let userRecords                 = {}
@@ -332,7 +333,7 @@
         else if (stateTargetWorkflow.value.batchId){
             const batchWorkflow =  await $api.kmWorkflows.getBatchWorkflowDetails(stateTargetWorkflow.value.batchId);
             if(batchWorkflow){                
-                if(['workflowActivityInitiated', 'workflowActivityUpdated',].includes(batchWorkflow.status)){
+                if(['workflowActivityInitiated', 'workflowActivityUpdated', 'workflowTimeOut', 'workflowCanceled', 'workflowRejected',].includes(batchWorkflow.status)){
                     stateTargetWorkflow.value.batchId = undefined;
                 }
             }
@@ -397,6 +398,8 @@
                                         });
             
             stateTargetWorkflow.value.batchId = res.batchId
+
+            await sleep(10000);
         }
         catch(e){
             useLogger().error(e);
@@ -449,9 +452,11 @@
     }
 
     onMounted(() => {
-        GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators().then(response=>{
-            globalTargets = response;
-        });
+        setTimeout(() => {
+            GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators().then(response=>{
+                globalTargets = response;
+            });
+        }, 100);
     })
 
 </script>

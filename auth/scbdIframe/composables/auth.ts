@@ -65,7 +65,7 @@ export const authUser = async (token = null) => {
         }
     }
     catch(e){
-        console.debug(`Error loading user info`, e)
+        console.error(`Error loading user info`, e)
         return {}
     }
 };

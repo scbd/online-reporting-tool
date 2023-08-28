@@ -12,7 +12,7 @@
           <NuxtLink class="nav-link" :to="localePath('/dashboard')"> {{t('menuDashboard')}}</NuxtLink>
         </CNavItem>
         <CNavItem>
-          <NuxtLink class="nav-link" :to="localePath('/nbsap-targets')" exact>
+          <NuxtLink class="nav-link" :to="localePath('/national-targets')" exact>
             {{t('menuNationalTargets')}} 
           </NuxtLink>
         </CNavItem>

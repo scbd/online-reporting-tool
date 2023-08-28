@@ -36,4 +36,16 @@ export default class KmWorkflowsApi extends ApiBase
     async updateBatchActivity(id, activityName, body) {
         return useAPIFetch("/api/v2013/workflows/batches/" + id + "/activities/" + activityName, {method:'PUT', body})
     }
+
+    async cancelWorkflow(id:string) {
+        const params = { 'action': 'cancel' };
+        return useAPIFetch(`/api/v2013/workflows/${id}`, {method:'DELETE', params });
+
+    }
+
+    async cancelBatch(batchId:string) {
+        const params = { 'action': 'cancel' };
+        return useAPIFetch(`/api/v2013/workflows/batches/${batchId}`, {method:'DELETE', params});
+
+    }
 }

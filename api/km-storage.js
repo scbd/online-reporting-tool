@@ -2,15 +2,17 @@
 import ApiBase, { tryCastToApiError } from './api-base';
 
 const  serviceUrls = { 
-  documentQueryUrl  (){ return "/api/v2013/documents/" },
-  documentUrl       (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}` },
-  validateUrl       (){ return "/api/v2013/documents/x/validate" },
-  draftUrl          (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft` },
-  attachmentUrl     (identifier, filename){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/${encodeURIComponent(filename)}` },
-  securityUrl       (identifier, operation){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/securities/${encodeURIComponent(operation)}` },
-  draftSecurityUrl  (identifier, operation){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/securities/${encodeURIComponent(operation)}` },
-  draftLockUrl      (identifier, lockID){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/locks/${encodeURIComponent(lockID)}` },
-  documentVersionUrl(identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions` },
+  documentQueryUrl      (){ return "/api/v2013/documents/" },
+  documentUrl           (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}` },
+  validateUrl           (){ return "/api/v2013/documents/x/validate" },
+  draftUrl              (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft` },
+  attachmentUrl         (identifier, filename) { return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/${encodeURIComponent(filename)}` },
+  temporaryAttachmentUrl(                    ) { return `/api/v2015/temporary-files` },
+  persistAttachmentUrl  (identifier, guid    ) { return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/persist-temporary/${encodeURIComponent(guid)}` },
+  securityUrl           (identifier, operation){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/securities/${encodeURIComponent(operation)}` },
+  draftSecurityUrl      (identifier, operation){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/securities/${encodeURIComponent(operation)}` },
+  draftLockUrl          (identifier, lockID)   { return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/locks/${encodeURIComponent(lockID)}` },
+  documentVersionUrl    (identifier)           { return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions` },
 }
 export default class KmStorageApi extends ApiBase
 {
@@ -185,13 +187,57 @@ class KmAttachmentsApi extends ApiBase
     super(options);
   }
 
-  async uploadTempFile(body, params)  {
-    // const headers = {'Content-Type': undefined };
-    const data =  await useAPIFetch('/api/v2015/temporary-files',   { method:'post', body, params })
-    //required by ckeditor
-    data.urls = data.urls || [data.url];
+  async uploadTempFile(identifier, file, fileName, options)  {
     
-    return data;
+    
+    const { timeout, onUploadProgress, onDownloadProgress }= { ...(options||{}) };
+
+    const apiConfig = {
+      headers: {},
+      timeout: timeout || 60 * 60 * 1000,
+      onUploadProgress, 
+      onDownloadProgress
+    };
+    
+    const tempSlotBody = {
+        filename    : fileName,
+    }
+
+    //find the content type and validate with whitelist
+    if(file instanceof FormData){
+        const tempFile = formData.get('file')
+        if(tempFile){
+            tempSlotBody.contentType = this.getMimeType(file);
+        }
+    }
+    else if(file instanceof File){
+        tempSlotBody.contentType = this.getMimeType(file)
+    }
+    else{
+        throw new Error('Unable to read file information.')
+    }
+    
+    if (this.mimeTypeWhitelist().indexOf(tempSlotBody.contentType) < 0) {
+        throw new Error("File type not supported: " + mimeType + "(" + file.name + ")");
+    }
+
+    const key = S4();
+    // get a temporary slot from S3 to upload the file
+    const temporarySlot =  await useAPIFetch(serviceUrls.temporaryAttachmentUrl(),   { key, method:'POST', body : tempSlotBody})
+    
+    // upload the file to the temporary slot on S3    
+    apiConfig.headers['Content-Type' ] = temporarySlot.contentType;
+    apiConfig.headers['Authorization'] = undefined;
+    const temporaryAttachment =  await useAPIFetch(temporarySlot.url,   { key,  method:'PUT', body:file, ...apiConfig})
+
+    //persists the file using the KM persists attachments endpoint
+    const persistedAttachment =  await useAPIFetch(serviceUrls.persistAttachmentUrl(identifier, temporarySlot.uid),   { key,  method:'POST', body:{fileName}  })
+    
+    const config = useRuntimeConfig();
+    return {
+        ...persistedAttachment,
+        url     : config.public.API_URL+persistedAttachment.url        
+    };
   }
   async upload(identifier, file, params) {
         params = params || {};
@@ -205,12 +251,13 @@ class KmAttachmentsApi extends ApiBase
         params.headers["Content-Type"] = contentType;
 
         ////TEMP////////////////
+            //upload to temp url
             const data =  await useAPIFetch(serviceUrls.attachmentUrl(identifier, file.name),   { method:'put', body:file, params })
-            //required by ckeditor
 
+            
             const config = useRuntimeConfig()
             data.url = config.public.API_URL+data.url;
-            data.urls = {
+            data.urls = {//required by ckeditor
                 "default": data.url 
             };
             

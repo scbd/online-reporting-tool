@@ -21,6 +21,10 @@
                             <label class="form-label" for="government">Government</label>
                             <km-value-term :value="viewDocument.government" :locale="selectedLocale"></km-value-term>                                    
                         </km-form-group>
+                        <km-form-group v-if="viewDocument.globalGoalOrTarget">
+                            <label class="form-label">Linked Global Goal/Target</label>
+                            <km-value-term :value="viewDocument.globalGoalOrTarget" :locale="selectedLocale"></km-value-term>                                 
+                        </km-form-group>
                     </div>
                 </div>
             </km-form-group>
@@ -35,11 +39,6 @@
                             <label class="form-label" for="elementOfGlobalTargetsInfo">Elements of the global targets addressed by national targets</label>
                             <km-lstring-value type="html" :value="viewDocument.elementOfGlobalTargetsInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
-
-                        <div>
-                            
-
-                        </div>
                     </div>
                 </div>
             </km-form-group>
@@ -84,7 +83,20 @@
 
         </div>
 
-        <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
+        <div v-if="!viewDocument && !isLoading &&  documentLoadError">
+            <CAlert color="danger" class="d-flex align-items-center">
+                <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
+                <div v-if="documentLoadError==404">
+                    {{t('notFound')}}
+                </div>
+                <div v-if="documentLoadError==401">
+                    {{t('notAuthorized')}}
+                </div>
+            </CAlert>
+        </div>
+        <div class="d-flex justify-content-center" v-if="isLoading">
+            <km-spinner :visible="isLoading" ></km-spinner>
+        </div>
        
       </CCardBody>
     </CCard>
@@ -95,8 +107,8 @@
 
 <script setup>
   
-    import { KmFormGroup, KmModalSpinner, KmLstringValue,
-        KmLocales, KmValueTerm, KmValueBool, KmValueTerms, KmTerm, KmValue
+    import { KmFormGroup, KmSpinner, KmLstringValue,KmTerm,
+        KmLocales, KmValueTerm, KmValueBool, KmValueTerms, KmValue
     } from "~/components/controls";
     import { mapStores }            from 'pinia'
     import { languages }            from '@/app-data/languages'
@@ -104,8 +116,9 @@
     import { useThesaurusStore }    from '@/stores/thesaurus';
     import { useCountriesStore }    from '@/stores/countries';
     import { useRealmConfStore }    from '@/stores/realmConf';
-    import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
+    import { KmDocumentDraftsService}from "@/services/kmDocumentDrafts";
+    import { KmDocumentsService } from "@/services/kmDocuments";
 
     const { user }                = useAuth();
     const security                = useSecurity();
@@ -114,7 +127,6 @@
     const thesaurusStore          = useThesaurusStore ();
     const countriesStore          = useCountriesStore ();
     const realmConfStore          = useRealmConfStore();
-    const kmDocumentDraftStore    = useKmDocumentDraftsStore();
     const {$appRoutes:appRoutes } = useNuxtApp();
 
     const props = defineProps({
@@ -122,14 +134,15 @@
         identifier  : { type:String, required:true}
     })
 
-    let { document, identifier } = toRefs(props)
-    let ldocument = ref(undefined);
+    const { document, identifier } = toRefs(props)
 
-    const showSpinnerModal = ref(false);
+    const lDocument = ref(undefined);
+    const isLoading = ref(false);
+    const documentLoadError = ref(false);
     const selectedLocale = ref(locale.value);
 
     const viewDocument = computed(()=>{
-        return document?.value||ldocument?.value;
+        return document?.value||lDocument?.value;
     })
 
     const degreeOfAlignment = function(identifier){
@@ -148,11 +161,27 @@
 
     async function loadDocument(identifier){
 
-        await kmDocumentDraftStore.loadDraftDocument(route.params.identifier);
-        // console.log(kmDocumentDraftStore.draftRecord.body)
-        // document.value = kmDocumentDraftStore.draftRecord.body;
-        ldocument.value = kmDocumentDraftStore.draftRecord.body;
-        // console.log(document)
+        isLoading.value = true;
+        try{
+            console.log(route.query)
+            if(route.query?.draft == 'true' || route.query?.draft === null){
+                const draftRecord = await KmDocumentDraftsService.loadDraftDocument(route.params.identifier);
+                lDocument.value = draftRecord.body;
+            }
+            else{
+                const record = await KmDocumentsService.loadDocument(route.params.identifier);
+                lDocument.value = record.body;
+            }
+        }
+        catch(e){
+            if([404, 401].includes(e.status)){
+                documentLoadError.value = e.status;
+                useLogger().error(e, `${t(e.status==404 ? 'notFound' : 'notAuthorized')} ` + route.params.identifier);
+            }
+            else
+                useLogger().error(e, `${t('errorLoading')} ` + route.params.identifier);
+        }
+        isLoading.value = false;
         
     }
 

@@ -1,8 +1,10 @@
 <template>
     <NuxtLink :to="to" :class="{'active' : route.path === to}" :target="target" v-bind="$attrs">
-        <CIcon v-if="icon && ~icon.indexOf('cil-')" :icon="icon" class="nav-icon" /> 
-        <font-awesome-icon  v-if="icon && ~icon.indexOf('fa-')" class="nav-icon" :icon="'fa-solid ' + icon" />
-        {{title}}
+        <slot>
+            <CIcon v-if="icon && ~icon.indexOf('cil-')" :icon="icon" class="nav-icon" /> 
+            <font-awesome-icon  v-if="icon && ~icon.indexOf('fa-')" class="nav-icon" :icon="'fa-solid ' + icon" />
+            {{title}}
+        </slot>
     </NuxtLink> 
 </template>
 <script lang="ts">
@@ -18,7 +20,6 @@ export default defineComponent({
     setup(props) {
         const route = useRoute();
         const to = computed(()=>{
-            console.log(props.to)
             return props.to
         });
         const title = computed(()=>props.title);

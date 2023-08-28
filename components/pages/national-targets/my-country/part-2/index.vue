@@ -1,76 +1,48 @@
 <template>
     <CCard>
         <CCardHeader>
-          <slot name="header"> <CIcon name="cil-grid" /> Global Goals/Targets mapping </slot>
+          <slot name="header"> <CIcon name="cil-grid" /> {{ t('headerTitle') }} </slot>
         </CCardHeader>
         <CCardBody>
-          <!-- <div class="card">
-            <div class="card-body">
-              <div class="d-grid gap-2 d-md-flex justify-content-md-end"> -->
-                <!-- <NuxtLink to="/national-targets/new"> -->
-                  <!-- <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
-                    <CIcon icon="addthis"/> Submit new target
-                  </CButton> -->
-                <!-- </NuxtLink> -->
-                <!-- <CButton color="secondary m-1">
-                  <CIcon icon="cil-save"/> Save
-                </CButton> -->
-                <!-- <CButton color="success m-1">
-                  <CIcon icon="cil-save"/> Publish
-                </CButton>
-                <CButton color="warning m-1">
-                  <CIcon icon="cil-share"/> Share
-                </CButton>
-
-                <CButton color="danger m-1">
-                  <CIcon icon="cil-file-pdf"/> PDF
-                </CButton> -->
-              <!-- </div>
-            </div>
-          </div> -->
+            
          
-          <div class="mt-3">
-              <!-- <div class="card-header bg-secondary">
-                Global Goals/Targets
-              </div>
-              <div class="card-body"> -->
-                <km-spinner-suspense v-if="isBusy"></km-spinner-suspense>
+          <div class="mt-1">
 
-                <table class="table table-hover table-bordered">
-                  
-                  <tbody>
-                    <template v-for="(target, index) in gbfGoalAndTargetList" :key="target">                        
-                      <tr class="bg-secondary" :id="'gbTraget_'+target.identifier">
-                        <td>
-                            {{lstring(target.title)}}
-                            <div class="d-grid justify-content-end" v-if="target.nationalTargets?.length">
+                <km-spinner-suspense v-if="isBusy"></km-spinner-suspense>
+                <CButton class="float-end mr-1 mb-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="gbfGoalAndTargetList">
+                    <span v-if="!accordionOpen">{{ t('openAll') }}</span>
+                    <span v-if="accordionOpen" >{{ t('closeAll') }}</span>
+                </CButton>
+                <br>
+                <br>
+                <CAccordion always-open id="mapping-accordion">                    
+                    <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in gbfGoalAndTargetList" :key="target">
+                        <CAccordionHeader :id="'gbTraget_'+target.identifier">
+                            {{lstring(target.title)}}                           
+                        </CAccordionHeader>
+                        <CAccordionBody>
+                            <div class="d-grid justify-content-end mb-2" v-if="target.nationalTargets?.length">
                                 <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping" :disabled="target.nationalMapping && target.nationalMapping.workfinDocumentLock">
-                                    Edit mapping
+                                    {{ t('editMapping') }}
                                 </CButton>
                                 <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="!target.nationalMapping && target.nationalTargets">
-                                    Add mapping
+                                    {{ t('addMapping') }}
                                 </CButton>
                             </div>
-                        </td> 
-                      </tr>
-                      <tr>
-                        <td>
-                          <table class="table table-bordered">                            
+                            <table class="table table-bordered table-hover">                            
                             <tbody>
                                 <tr>
-                                    <!-- <td></td> -->
-                                    <td colspan="2">
-                                        <strong> <span class="text">National target(s) linked to this global Goal/Target </span></strong>
-                                        <!-- for <strong>{{lstring(target.title)}}</strong> -->
+                                    <td  style="width: 40%;">
+                                        <strong> <span class="text">{{ t('linkedTargetsTitle') }} </span></strong>
                                     </td>
-                                    <td>
-                                        <strong>Element of Global Targets information</strong>
+                                    <td colspan="2">
+                                        <strong>{{ t('elementsOfInfo') }}</strong>
                                     </td>
                                 </tr>
                                 <tr v-for="(nationalTarget, index) in target.nationalTargets" :key="nationalTarget.identifier">
                                     <!-- <td></td> -->
-                                    <td colspan="2">{{lstring(nationalTarget.title)}}</td>
-                                    <td :rowspan="target.nationalTargets.length" v-if="index==0">
+                                    <td style="width: 40%;">{{lstring(nationalTarget.title)}}</td>
+                                    <td colspan="2" :rowspan="target.nationalTargets.length" v-if="index==0">
                                         <label></label>
                                         <km-lstring-value class="mt-2" type="html" v-if="target.elementOfGlobalTargetsInfo"
                                             :value="target.elementOfGlobalTargetsInfo" :locale="useI18n().locale"></km-lstring-value>
@@ -87,34 +59,19 @@
                                     </td>
                                 </tr>
                                 <tr v-if="target.headlineIndicators.length">
-                                    <td style="width: 20%;">
-                                        <strong>Headline Indicators</strong>
+                                    <td style="width: 40%;">
+                                        <strong>{{ t('headlineIndicators') }}</strong>
                                     </td>
-                                    <!-- <td>
-                                        <strong>National target(s) linked to headline indicator</strong>
-                                    </td> -->
-                                    <td colspan="2"><strong>Reference period</strong></td>
+                                    <td colspan="2"><strong>{{ t('referencePeriod') }}</strong></td>
                                 </tr>
                                 <tr v-for="(indicator, index) in target.headlineIndicators" :key="indicator.identifier">
-                                    <td style="width: 20%;">
+                                    <td style="width: 40%;">
                                         {{lstring(indicator.title)}}
                                     </td>
-                                    <!-- <td :colspan="indicator.nationalTargets.length ? 1 : 2">
-                                        <div v-for="target in indicator.nationalTargets">
-                                            {{lstring(target.title)}}
-                                        </div> -->
-
-                                        <!-- <missing-target-error  v-if="!indicator.nationalTargets.length"
-                                            :query="{'globalTarget' : target.identifier, headlineIndicator:indicator.identifier}">
-                                            <template #message>
-                                                <span v-html="t('indicatorMissingTarget')"></span>
-                                            </template>
-                                        </missing-target-error>    -->
-                                    <!-- </td> -->
                                     <td v-if="indicator.nationalTargets.length" colspan="2">
                                         <div v-if="indicator.referencePeriod">
-                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod" color="success" shape="rounded-pill">Has reference period</CBadge>
-                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod===false" color="danger" shape="rounded-pill">No reference period</CBadge>
+                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod" color="success" shape="rounded-pill">{{ t('hasReferencePeriod') }}</CBadge>
+                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod===false" color="danger" shape="rounded-pill">{{t('noReferencePeriod')}}</CBadge>
                                             <km-lstring-value class="mt-2" type="html" v-if="indicator.referencePeriod.referencePeriodInfo"
                                             :value="indicator.referencePeriod.referencePeriodInfo" :locale="useI18n().locale"></km-lstring-value>
                                         </div>
@@ -122,23 +79,19 @@
                                 </tr>
                                 <tr v-if="target.otherIndicators.length">
                                     <td colspan="3">
-                                        <strong>Other indicators linked in the national target(s) for this global Goal/Target</strong>
+                                        <strong>{{ t('otherIndicators') }}</strong>
                                     </td>                             
                                 </tr>
                                 <tr v-for="(indicator, index) in target.otherIndicators" :key="indicator.identifier">
-                                    <td>
+                                    <td colspan="3">
                                         {{lstring(indicator.title)}}
                                     </td>
-                                    <td></td>
                                 </tr>
                             </tbody>
                           </table>
-                        </td> 
-                        
-                      </tr>
-                    </template>
-                  </tbody>
-                </table>
+                        </CAccordionBody>
+                    </CAccordionItem>
+                </CAccordion>               
               <!-- </div> -->
           </div>
         </CCardBody>
@@ -176,8 +129,9 @@
     import { useStorage } from '@vueuse/core'
     import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
     import { KmDocumentsService } from "@/services/kmDocuments";
+    import $ from 'jquery';
 
-
+    let   accordionOpen = ref(false);
     const rowsPerPage = 300; // UTILS.ROWS_PER_PAGE;
     const { $appRoutes:appRoutes } = useNuxtApp();
     const { user } = useAuth();
@@ -199,17 +153,23 @@
         import('./edit-target-part-2.vue')
     )
 
-    onMounted(async() => {
-        await init();
+    onMounted(() => {
 
-        if(route?.query?.globalTarget){
-            setTimeout(() => {
-                scrollToElement(`#gbTraget_${route.query.globalTarget}`);
-            }, 200);
-            const target = gbfGoalAndTargetList.value?.find(e=>e.identifier == route.query.globalTarget);
-            if(target?.nationalTargets?.length)
-                showEditMapping(target)
-        }
+        isBusy.value = true;  
+        setTimeout(async () => {
+            await init();
+            // .then(()=>{
+
+                if(route?.query?.globalTarget){
+                    setTimeout(() => {
+                        scrollToElement(`#gbTraget_${route.query.globalTarget}`);
+                    }, 200);
+                    const target = gbfGoalAndTargetList.value?.find(e=>e.identifier == route.query.globalTarget);
+                    if(target?.nationalTargets?.length)
+                        showEditMapping(target)
+                }
+            // });
+        }, 200)
     })
     
 
@@ -217,11 +177,6 @@
       const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
       await navigateTo(url);
       await navigateTo(url);
-    }
-
-    const customUrl = (route:string, draft:any)=>{
-      const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
-      return localePath(url);
     }
 
     async function loadRecords(query){
@@ -251,14 +206,19 @@
     function showEditMapping(target){
         
         editMappingTarget.value = target
-        showEditMappingModal.value = true
+        showEditMappingModal.value = true;
     }
 
-    async function closeEditMappingDialog(){
+    async function closeEditMappingDialog(document:Object){
+        
+        editMappingTarget.value.elementOfGlobalTargetsInfo = document?.elementOfGlobalTargetsInfo;
+        editMappingTarget.value.nationalMapping            = document;
+        editMappingTarget.value.headlineIndicators.forEach(indicator => {
+            indicator.referencePeriod = document?.referencePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
+        });
 
         showEditMappingModal.value = false;
-        editMappingTarget.value = null
-        init();
+        editMappingTarget.value = null;
     }
 
     async function init(){
@@ -277,6 +237,8 @@
             
             targets = buildTargetMatrix(targets, nationalTargets, nationalMappings);
             gbfGoalAndTargetList.value = sortBy(targets, 'identifier');
+
+            setTimeout(()=>toggleAccordion(true), 1000);
         }
         catch(e){
             console.error(e)
@@ -286,4 +248,15 @@
         }
         
     }
+
+    function toggleAccordion(open){
+        accordionOpen.value = open || !accordionOpen.value;
+        const buttons = $('#mapping-accordion .accordion-header button.accordion-button');
+        buttons.each(function(){
+            const ariaExpanded = $(this)[0].ariaExpanded == "true";
+            if((accordionOpen.value && ariaExpanded) || (!accordionOpen.value && !ariaExpanded))
+                $(this).click();
+        })
+    }
+
 </script>

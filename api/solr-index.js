@@ -1,6 +1,5 @@
 
 import ApiBase, { tryCastToApiError } from './api-base';
-import _ from 'lodash';
 
 export default class SolrIndexAPI extends ApiBase
 {

@@ -18,10 +18,11 @@ import { SCHEMAS } from '@/utils';
 
     const searchQuery = {
         rows:300,
-        q : `_state_s: public AND schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:ORT-DEV`
+        q : `_state_s: public AND schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:ORT-DEV`,
+        sort: "updatedDate_dt desc"
     }
     const result = await useAPIFetch('/api/v2013/index/select', {method:'POST', body : searchQuery})
-console.log(result.response.docs)
+
     documents.value = result.response.docs;
 </script>
 

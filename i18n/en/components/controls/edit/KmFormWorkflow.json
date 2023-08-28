@@ -4,7 +4,7 @@
     "preview": "Preview",
     "draftSaveMessage"   : "Your record has been saved as a draft",
     "closeWithoutSaving"    : "Your record has been closed without saving.",
-    "publishRequested"    : "Record saved. A publishing request has been sent to your BCH-NFP.",
+    "publishRequested"    : "Record saved. A publishing request has been sent to your country's Publishing Authority.",
     "recordPublished"       : "Record published. The record will be now publicly accessible on the ORT.", 
 
     "areYouSure": "Are you sure you want to exit this page without saving?",
@@ -12,9 +12,12 @@
     "btnCloseWithoutSaving": "Exit without saving",
     "exit": "Exit",
     "stay": "Stay on this page",
-    "introduction": "Introduction",
     "submissionForm": "Submission form",
-    "review": "Review",
     "intro": "Intro",
-    "form": "Form"
+    "form": "Form",
+
+   "introduction": "Introduction",
+   "submission"  : "Submission",
+   "review"      : "Review",
+   "publish"     : "Publish"
 }
