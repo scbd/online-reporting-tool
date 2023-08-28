@@ -19,7 +19,7 @@
                   
                     <tr v-if="isLoadingRecords">
                         <td colspan="4" >
-                            <div class="justify-content-center"><km-spinner ></km-spinner></div>
+                            <div class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
                         </td>
                     </tr>
                     <tr v-for="(document,  index) in draftNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
@@ -94,7 +94,7 @@
                 <tbody>
                   <tr v-if="isLoadingRecords">
                     <td colspan="4" >
-                        <div class="justify-content-center"><km-spinner ></km-spinner></div>
+                        <div class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
                     </td>
                   </tr>
                   <tr v-for="(document,  index) in draftNationalMappings" :key="document.identifier" :class="{'bg-danger':document.errors}">
@@ -231,6 +231,7 @@
     const disableActions = computed(()=>!!stateTargetWorkflow.value.batchId)
 
     onMounted(()=> {
+        isLoadingRecords.value = true;
         setTimeout(() => {
             init();    
         }, 100);
@@ -293,7 +294,7 @@
 
         }
         catch(e){
-            console.error(e)
+            useLogger().error(e)
         }
         finally{
             isLoadingRecords.value = false;
@@ -327,7 +328,7 @@
             })
         }
         catch(e){
-            console.error(e)
+            useLogger.error(e)
         }
 
         isBusy.value = false;  
@@ -356,7 +357,7 @@
                 
             }
             catch(e){
-                console.error(e);
+                useLogger.error(e);
                 document.error = e;
             }
             document.validated = true;

@@ -2,10 +2,10 @@
     <div class="km-spinner-suspense">
         <slot>
             <div class="d-grid gap-2 d-md-flex justify-content-center">
-                <CButton disabled>
+                <!-- <CButton disabled> -->
                     <km-spinner component="span" size="sm" variant="grow" aria-hidden="true"
                     :message="t('loadingSuspense')"/>
-                </CButton>
+                <!-- </CButton> -->
             </div>
         </slot>
     </div>

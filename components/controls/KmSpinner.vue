@@ -2,8 +2,8 @@
     <div class="km-spinner">
         <slot>
             <CSpinner  size="sm" variant="grow" v-bind="attrs"/> 
-            <span v-if="message">{{ message }}</span>
-            <span v-if="!message">{{t('loading')}}...</span>
+            <span class="ms-1" v-if="message">{{ message }}</span>
+            <span class="ms-1" v-if="!message">{{t('loading')}}...</span>
         </slot>
     </div>
 </template>
