@@ -127,7 +127,7 @@ export default {
                 })
                 .catch(function(error) {
                     self.uploadErrors.push({file:file.name })
-                    useLogger.error(error);
+                    useLogger().error(error);
                     throw error;
                 })
                 .finally(()=>{
@@ -174,7 +174,7 @@ export default {
                     })
                     .catch(e=>{
                         self.uploadErrors.push({file:file.name })
-                        useLogger.error(e)
+                        useLogger().error(e)
                     })
         	});
 
@@ -182,7 +182,7 @@ export default {
                 await Promise.all(fileUploads)
             }
             catch(e){
-                useLogger.error(e)
+                useLogger().error(e)
             }
         	finally{
         		self.isUploadingFile = false

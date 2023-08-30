@@ -328,7 +328,7 @@
             })
         }
         catch(e){
-            useLogger.error(e)
+            useLogger().error(e)
         }
 
         isBusy.value = false;  
@@ -357,7 +357,7 @@
                 
             }
             catch(e){
-                useLogger.error(e);
+                useLogger().error(e);
                 document.error = e;
             }
             document.validated = true;

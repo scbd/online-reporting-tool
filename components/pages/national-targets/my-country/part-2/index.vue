@@ -241,7 +241,7 @@
             setTimeout(()=>toggleAccordion(true), 1000);
         }
         catch(e){
-            useLogger.error(e)
+            useLogger().error(e)
         }
         finally{
             isBusy.value = false;

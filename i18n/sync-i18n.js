@@ -127,7 +127,7 @@ async function getAllDirectoryFiles(dir, options) {
         fileList.push(filePath)
       }
     } catch (e) {
-      useLogger.error(e, file)
+      useLogger().error(e, file)
     }
   }))
   return fileList;
