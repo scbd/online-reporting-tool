@@ -39,6 +39,7 @@
     "mitt": "^3.0.1",
     "moment": "^2.29.4",
     "pinia": "^2.1.4",
+    "socket.io-client": "^4.7.2",
     "vue-multiselect": "^3.0.0-beta.2",
     "vue-toast-notification": "^3.1.1",
     "vue3-loading-overlay": "^0.0.0"
