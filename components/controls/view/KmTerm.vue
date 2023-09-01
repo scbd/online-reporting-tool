@@ -32,7 +32,7 @@
             }
         }
         catch(error){
-            console.error(`Error loading term ${value.value}`, error);
+            useLogger().error(`Error loading term ${value.value}`, error);
         }
     }
 

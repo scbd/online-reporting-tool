@@ -69,7 +69,7 @@
                     <td>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, draft)" title="View"></km-link>
-                        <CButton color="secondary" size="sm" :disabled="canEdit || draft.workingDocumentLock" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
+                        <CButton color="secondary" size="sm" :disabled="!canEdit || draft.workingDocumentLock" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
                           <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
                       </div>
@@ -115,8 +115,7 @@
     const isLoadingRecords         = ref(false);
 
     const canEdit = computed(()=>{
-        return true
-        return !!stateTargetWorkflow.value.batchId
+        return !stateTargetWorkflow.value.batchId
     });
 
     const nationalTargets = computed(()=>{
