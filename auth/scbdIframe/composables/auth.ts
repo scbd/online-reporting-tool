@@ -1,5 +1,6 @@
 import  { useRuntimeConfig, useAppConfig } from '#app';
 import { setUserToken } from '../utils';
+import { SocketIOService } from '@/services/socket-io';
 
 export const useAuth = () => useNuxtApp().$auth
 
@@ -33,7 +34,9 @@ export const authLogin = async () => {
 
 export const authLogout = async () => {
   
-    setUserToken(null)
+    setUserToken(null);
+    SocketIOService.disconnect(true);
+
     // useAuth().user = undefined;
 };
 
@@ -65,7 +68,7 @@ export const authUser = async (token = null) => {
         }
     }
     catch(e){
-        useLogger.error(`Error loading user info`, e)
+        useLogger().error(`Error loading user info`, e)
         return {}
     }
 };
