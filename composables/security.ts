@@ -1,6 +1,6 @@
 
 import { useRealmConfStore }    from '@/stores/realmConf';
-import { intersection }         from 'lodash';
+import { intersection, flatten }         from 'lodash';
 
 export const useSecurity = ()=>{
     return {
@@ -134,6 +134,12 @@ async function checkUserAccess(options:any) {
 
     //if there roles specified on the page verify user has role(s)
     if (roles?.some((r) => auth?.hasScope(r))){
+        return true;
+    }
+    
+    //look for realm specific roles sung realmConf.getRole
+    const mappedRoles = roles?.map((r)=>realmConfStore.getRole(r));
+    if (flatten(mappedRoles||[]).some((r) => auth?.hasScope(r))){
         return true;
     }
 

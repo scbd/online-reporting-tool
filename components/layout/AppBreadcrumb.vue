@@ -27,11 +27,12 @@ import { useRoute } from 'vue-router'
         { text:'ORT', to: localePath('/dashboard'), active: '/dashboard' === route.fullPath }
       ];
       if(route){
-        const { path }  = route.matched[0] || { path: '/' };
+        let { path }  = route.matched[0] || { path: '/' };
+        path          = path.replace('()', '').replace(/\?$/, '');
         const pathSplit = () => path.split('/').splice(1);
         if (!path) return [];
 
-        const skipParams = pageBreadcrumbsConf?.skip?.map(e=>`:${e}()`)
+        const skipParams = pageBreadcrumbsConf?.skip?.map(e=>`:${e}`)
         for (const [index, routeName] of pathSplit().entries()) { // eslint-disable-line
           if (!routeName) continue; // eslint-disable-line no-continue
           if(!Object.keys(languages).includes(routeName)){
