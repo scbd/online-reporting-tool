@@ -50,17 +50,19 @@
         </template>      
         <KmNavLink :to="localePath('/national-reports/nr7')" icon="cil-list" :title="t('reports')"></KmNavLink>
         <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_REPORTS_NR7)">
-          <template #togglerContent>
-            <CIcon customClassName="nav-icon" icon="cil-document"/> {{t('myCountry')}}
-          </template>                 
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('overview')"    :to="localePath('/national-reports/nr7/edit')"           ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionI')"    :to="localePath('/national-reports/nr7/edit/section-1')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionII')"   :to="localePath('/national-reports/nr7/edit/section-2')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionIII')"  :to="localePath('/national-reports/nr7/edit/section-3')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionIV')"   :to="localePath('/national-reports/nr7/edit/section-4')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionV')"    :to="localePath('/national-reports/nr7/edit/section-5')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('sectionVI')"   :to="localePath('/national-reports/nr7/edit/section-6')" ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="cil-pencil" :title="t('annex')"       :to="localePath('/national-reports/nr7/edit/section-7')" ></KmNavLink>
+            <template #togglerContent>
+                <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
+                {{ t('myCountry') }}
+            </template>             
+          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-database" :title="t('indicatorData')" :to="localePath('/national-reports/nr7/edit/indicator-data')"></KmNavLink>
+          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('overview')"      :to="localePath('/national-reports/nr7/edit')"           ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionI')"      :to="localePath('/national-reports/nr7/edit/section-1')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionII')"     :to="localePath('/national-reports/nr7/edit/section-2')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIII')"    :to="localePath('/national-reports/nr7/edit/section-3')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIV')"     :to="localePath('/national-reports/nr7/edit/section-4')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionV')"      :to="localePath('/national-reports/nr7/edit/section-5')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionVI')"     :to="localePath('/national-reports/nr7/edit/section-6')" ></KmNavLink>
+          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('annex')"         :to="localePath('/national-reports/nr7/edit/section-7')" ></KmNavLink>
         </CNavGroup>          
         
       </CNavGroup>
