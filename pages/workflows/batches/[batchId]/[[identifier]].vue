@@ -48,7 +48,7 @@
         isLoading.value = true;
 
         try{
-            const batchWorkflow =  await $api.kmWorkflows.getBatchWorkflowDetails(params.batchId);
+            const batchWorkflow =  await $api.kmWorkflows.getBatchWorkflowDetails(route.params.batchId);
         
             if([SCHEMAS.NATIONAL_TARGET_7, SCHEMAS.NATIONAL_TARGET_7_MAPPING].includes(batchWorkflow.schema))
                 await navigateTo($appRoutes.NATIONAL_TARGETS_MY_COUNTRY)
