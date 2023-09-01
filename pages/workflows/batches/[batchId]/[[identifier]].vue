@@ -68,7 +68,7 @@
 
     onMounted(() => {
       loadWorkflowBatch();  
-    })
+    });
 
 </script>
 

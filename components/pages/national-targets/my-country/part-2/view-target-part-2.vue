@@ -89,7 +89,7 @@
                 <div v-if="documentLoadError==404">
                     {{t('notFound')}}
                 </div>
-                <div v-if="documentLoadError==401">
+                <div v-if="documentLoadError==401 || documentLoadError==403">
                     {{t('notAuthorized')}}
                 </div>
             </CAlert>
@@ -174,7 +174,7 @@
             }
         }
         catch(e){
-            if([404, 401].includes(e.status)){
+            if([404, 401, 403].includes(e.status)){
                 documentLoadError.value = e.status;
                 useLogger().error(e, `${t(e.status==404 ? 'notFound' : 'notAuthorized')} ` + route.params.identifier);
             }

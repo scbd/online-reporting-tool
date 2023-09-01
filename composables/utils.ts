@@ -17,7 +17,7 @@ export const useLogger = ()=>{
 
 function error(error, userMessage){
 
-    if(![404, 401].includes(error?.status)){
+    if(![404, 401, 403].includes(error?.status)){
         console.error(error);
         
         //TODO: send error to server
