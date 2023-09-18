@@ -16,7 +16,16 @@ const appRoutes = {
     NATIONAL_REPORTS_NR6        : '/national-reports/nr6',
 
     NATIONAL_REPORTS_NR7        : '/national-reports/nr7',
-    NATIONAL_REPORTS_NR7_EDIT   : '/national-reports/nr7/edit',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT               : '/national-reports/nr7/my-country/edit',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_INDICATOR_DATA: '/national-reports/nr7/my-country/edit/indicator-data',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_OVERVIEW      : '/national-reports/nr7/my-country/edit/overview',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I     : '/national-reports/nr7/my-country/edit/section-I',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II    : '/national-reports/nr7/my-country/edit/section-II',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III   : '/national-reports/nr7/my-country/edit/section-III',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV    : '/national-reports/nr7/my-country/edit/section-IV',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V     : '/national-reports/nr7/my-country/edit/section-V',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_ANNEX : '/national-reports/nr7/my-country/edit/section-Annex',
+    
 
 }
 
