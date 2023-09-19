@@ -1,16 +1,16 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> NR7 Section I</slot>
+        <slot name="header">{{t('sectionI')}} {{t('sectionIDescription')}}</slot>
       </CCardHeader>
       <CCardBody>
 
-        <div  v-if="isLoading">
+        <div  v-if="nationalReportStore.isBusy">
             <km-spinner></km-spinner>
         </div>
-        <form v-if="!isLoading" name="editForm">          
-            <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
-                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
+        <form v-if="!nationalReportStore.isBusy && nationalReportStore.nationalReportDraft" name="editForm">          
+            <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
+                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template #submission>
                     <km-form-group>
                         <div class="card">
@@ -19,32 +19,33 @@
                             </div>
                             <div class="card-body">  
                                 <km-form-group name="government" caption="Government" required>
-                                    <km-government v-model="document.government"></km-government>                           
+                                    <km-government v-model="nationalReportStore.nationalReportDraft.government"></km-government>                           
                                 </km-form-group>   
 
                                 <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
-                                    <km-languages v-model="document.header.languages"></km-languages>
+                                    <km-languages v-model="nationalReportStore.nationalReportDraft.header.languages"></km-languages>
                                 </km-form-group>   
                             </div>
                         </div>
                     </km-form-group>
                     <km-form-group>
                         <div class="card">
-                            <div class="card-header bg-secondary">
-                                Elements of the global targets
-                            </div>
                             <div class="card-body">                      
-                                <km-form-group required caption="Elements of the global targets addressed by national targets" name="elementOfGlobalTargetsInfo">
-                                    <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                <km-form-group required :caption="t('preparationProcess')" name="processUndertaken">
+                                    <ul>
+                                        <li>{{ t('coordination') }}</li>
+                                        <li>{{ t('consultation') }}</li>
+                                    </ul>
+                                    <km-input-rich-lstring v-model="sectionI.processUndertaken" :locales="nationalReportStore.nationalReportDraft.header.languages"></km-input-rich-lstring>
                                 </km-form-group>                                    
                             </div>
                         </div>
                     </km-form-group>
                 </template>
                 <template #review>                
-                    <view-nr7-section-I :identifier="document.header.identifier" :document="cleanDocument"></view-nr7-section-I>
+                    <view-nr7-section-I :identifier="nationalReportStore.nationalReportDraft.header.identifier" :document="nationalReportStore.nationalReportDraft"></view-nr7-section-I>
                 </template>
-            </km-form-workflow>
+            </nr7-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
         </form>
 
@@ -52,23 +53,24 @@
     </CCard>
   
 </template>
-
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/section-I.json"></i18n>
 <script setup>
   
     import { useAsyncState } from '@vueuse/core'
     import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner, KmFormWorkflow
+        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner
     } from "~/components/controls";
-    // import viewTarget               from "./view-target-part-2.vue";
+    import Nr7Workflow              from './NR7Workflow.vue'
+    import viewNr7SectionI          from "@/components/pages/nr7/my-country/view/section-I.vue";
     import { useRealmConfStore }    from '@/stores/realmConf';
-    import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
+    import { useNationalReport7Store }    from '@/stores/nationalReport7';
     import { useRoute } from 'vue-router' 
     import { useToast } from 'vue-toast-notification';
     import { useStorage } from '@vueuse/core'
     import { EditFormUtility } from "@/services/edit-form-utility";
 
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:1 },
+        workflowActiveTab  : {type:Number, default:0 },
         onClose            : {type:Function, required:false},
         onPostSaveDraft    : {type:Function, required:false},
     }) 
@@ -77,18 +79,17 @@
     const security        = useSecurity();
     const route           = useRoute();
     const {$appRoutes:appRoutes }   = useNuxtApp();
-    const locale          = useI18n().locale
-    const $toast                = useToast();        
+    const {t, locale }              = useI18n();
+    const $toast                    = useToast();        
     const container = useAttrs().container;
+    const nationalReportStore = useNationalReport7Store();
 
-    let document = {
-        header : {
-            schema : SCHEMAS.NATIONAL_REPORT_7,
-            identifier : useGenerateUUID(),
-            languages  : EditFormUtility.getPreferredEditLanguages()
-        },        
-        government : {
-            identifier : user.value?.government
-        },
+    await nationalReportStore.loadNationalReportDraft()
+
+    const sectionI = nationalReportStore.nationalReportDraft.sectionI;
+
+    function cleanDocument(){
+        const clean = useKmStorage().cleanDocument({...nationalReportStore.nationalReportDraft});
+        return toRef(clean)
     }
 </script>
