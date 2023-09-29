@@ -96,7 +96,7 @@
     import { useStorage } from '@vueuse/core'
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { KmDocumentsService } from '@/services/kmDocuments';
-    import { KmDocumentDraftsService } from '@/services/KmDocumentDrafts';
+    import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import $ from 'jquery';
