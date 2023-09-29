@@ -38,9 +38,9 @@
             <tab-content :title="workflowTabs.review.title" :is-active="activeTab == workflowTabs.review.index">
                 <slot name="review"></slot>
             </tab-content>
-            <tab-content :title="workflowTabs.publish.title" :is-active="activeTab == workflowTabs.publish.index">
+            <!-- <tab-content :title="workflowTabs.publish.title" :is-active="activeTab == workflowTabs.publish.index">
                 <slot name="publish"></slot>
-            </tab-content>
+            </tab-content> -->
             
             <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
                     <km-validation-errors v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 

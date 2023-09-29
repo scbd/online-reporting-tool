@@ -22,7 +22,7 @@
                         </CAccordionHeader>
                         <CAccordionBody>
                             <div class="d-grid justify-content-end mb-2" v-if="target.nationalTargets?.length">
-                                <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping" :disabled="target.nationalMapping && target.nationalMapping.workfinDocumentLock">
+                                <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping" :disabled="target.nationalMapping && target.nationalMapping.workingDocumentLock">
                                     {{ t('editMapping') }}
                                 </CButton>
                                 <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="!target.nationalMapping && target.nationalTargets">
