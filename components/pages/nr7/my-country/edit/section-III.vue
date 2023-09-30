@@ -61,37 +61,27 @@
                                         </div>
                                     </div>
                                 </km-form-group>
-                                <km-form-group>
+                                <km-form-group v-if="target.sectionIII.indicators" >
                                     <div class="card">
-                                        <div class="card-header bg-secondary">
+                                        <div class="card-header bg-secondary" >
                                             Indicators
                                         </div>
-                                        <div class="card-body table-responsive1">
-                                            
-                                                <table class="table table-bordered" v-if="target.sectionIII.indicators" >
-                                                    <tbody>
-                                                        <template v-for="indicator in target.sectionIII.indicators" :key="indicator">
-                                                            <tr>
-                                                                <td>
-                                                                   {{ lstring(indicator.title) }} 
-                                                                   <small>({{ indicator.identifier }})</small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td >
-                                                                   <!-- {{ indicator }} -->
-                                                                   <missing-data-alert v-if="!indicator.nationalData"></missing-data-alert>      
-                                                                   
-                                                                   <add-indicator-data class="float-end" :indicator="indicator" :raw-document="indicator.nationalData" :identifier="((indicator.nationalData||{}).header||{}).identifier"
-                                                                        :on-close="onAddIndicatorDataClose"></add-indicator-data>
-                                                                    <div v-if="indicator.nationalData">
-                                                                        <view-data :indicator-data="indicator.nationalData"></view-data>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        </template>
-                                                    </tbody>
-                                                </table>
+                                        <div class="card-body">
+                                            <div class="card mb-3" v-for="indicator in target.sectionIII.indicators" :key="indicator">
+                                                <div class="card-header">
+                                                    {{ lstring(indicator.title) }} 
+                                                    <small>({{ indicator.identifier }})</small>
+                                                </div>
+                                                <div class="card-body">
+                                                    <missing-data-alert v-if="!indicator.nationalData"></missing-data-alert>      
+                                                                    
+                                                    <add-indicator-data class="float-end" :indicator="indicator" :raw-document="indicator.nationalData" :identifier="((indicator.nationalData||{}).header||{}).identifier"
+                                                        :on-close="onAddIndicatorDataClose"></add-indicator-data>
+                                                    <div v-if="indicator.nationalData">
+                                                        <view-data :indicator-data="indicator.nationalData"></view-data>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </km-form-group>

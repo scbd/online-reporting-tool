@@ -1,17 +1,18 @@
 <template>
-    <CButton class="float-end mr-1 mb-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedIndicators">
+    <CButton class="float-end mt-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedIndicators">
         <span v-if="!accordionOpen">{{ t('openAll') }}</span>
         <span v-if="accordionOpen" >{{ t('closeAll') }}</span>
     </CButton>
     <br>
     <br>
+<!-- {{ props }}  -->
     <CAccordion always-open id="mapping-accordion" v-if="computedIndicators?.length">                    
         <CAccordionItem :item-key="index+1" :visible="true" v-for="(indicator, index) in computedIndicators" :key="indicator.identifier"  always-open>
             <CAccordionHeader :id="'gbTraget_'+indicator.identifier">
-                {{lstring(indicator.title)}}                           
+                {{lstring(indicator.title||indicator)}}                           
             </CAccordionHeader>
             <CAccordionBody> 
-                <missing-data-alert v-if="!indicator.nationalData"></missing-data-alert>                        
+                <missing-data-alert v-if="!indicator.nationalData && showMissingAlert"></missing-data-alert>                        
                 <add-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
                     :identifier="((indicator.nationalData||{}).header||{}).identifier" :on-post-save-draft="onAddIndicatorDataClose"
                     ></add-indicator-data>
@@ -40,11 +41,14 @@
     const props = defineProps({
         indicators         : {type:Object, default:[] },
         onClose            : {type:Function, required:false},
+        showMissingAlert   : {type:String, default:false },
     }) 
 
-    const {indicators} = toRefs(props);
+
+    const {indicators, showMissingAlert} = toRefs(props);
     const lIndicators  = toRef([]);    
     lIndicators.value  = cloneDeep(indicators.value)
+    
     const computedIndicators = computed(()=>lIndicators.value);
 
     function toggleAccordion(open){

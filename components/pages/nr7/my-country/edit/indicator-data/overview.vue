@@ -58,10 +58,10 @@
                 </CNav>
                 <CTabContent>
                     <CTabPane role="tabpanel" aria-labelledby="home-tab" :visible="tabPaneActiveKey === 1">
-                        <indicator-list v-if="nationalHeadlineIndicators" :indicators="nationalHeadlineIndicators"></indicator-list>
+                        <indicator-list v-if="nationalHeadlineIndicators" :indicators="nationalHeadlineIndicators" show-missing-alert="true"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 2">
-                        <indicator-list v-if="nationalBinaryIndicators" :indicators="nationalBinaryIndicators"></indicator-list>
+                        <indicator-list v-if="nationalBinaryIndicators" :indicators="nationalBinaryIndicators" show-missing-alert="true"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 3">
                         <indicator-list v-if="nationalComponentIndicators" :indicators="nationalComponentIndicators"></indicator-list>
@@ -69,8 +69,8 @@
                     <CTabPane role="tabpanel" aria-labelledby="contact-tab" :visible="tabPaneActiveKey === 4">
                         <indicator-list v-if="nationalComplementaryIndicators" :indicators="nationalComplementaryIndicators"></indicator-list>
                     </CTabPane>
-                    <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 5">                        
-                        <indicator-list v-if="otherNationalIndicators" :indicators="otherNationalIndicators"></indicator-list>
+                    <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 5">
+                        <indicator-list v-if="otherNationalIndicators?.length" :indicators="otherNationalIndicators"></indicator-list>
                     </CTabPane>
                 </CTabContent>
                 <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
@@ -122,7 +122,7 @@
     const globalIndicators     = ref({});
 
     let nationalIndicatorData  = ref([])
-    let nationalTargets        = ([]);
+    let nationalTargets        = ref([]);
     const isBusy = ref(false);
     const tabPaneActiveKey = ref(1)
 
