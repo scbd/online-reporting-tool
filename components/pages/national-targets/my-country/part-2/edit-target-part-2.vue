@@ -14,7 +14,7 @@
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template #submission>
                      <div  >
-                       <km-form-group>
+                       <!-- <km-form-group>
                             <div class="card">
                                 <div class="card-header bg-secondary">
                                     General
@@ -29,7 +29,30 @@
                                     </km-form-group>   
                                 </div>
                             </div>
-                        </km-form-group>
+                        </km-form-group> -->
+
+                        <km-form-group>
+                            <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
+                                <CAccordionItem :visible="true">
+                                    <CAccordionHeader id="generalAccordion">
+                                        Government and Language(s)                       
+                                    </CAccordionHeader>
+                                    <CAccordionBody> 
+                                        <km-form-group name="government" caption="Government" required>
+                                            <km-government v-model="document.government" ></km-government>                           
+                                        </km-form-group>   
+
+                                        <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
+                                            <km-languages v-model="document.header.languages"></km-languages>
+                                        </km-form-group>   
+
+                                        <km-form-group name="title" caption="Full name/title of national target" required>
+                                            <km-input-lstring  id="title" placeholder="Enter national target title" v-model="document.title" :locales="document.header.languages"></km-input-lstring>
+                                        </km-form-group>
+                                    </CAccordionBody>
+                                </CAccordionItem>
+                            </CAccordion>
+                        </km-form-group>         
 
                         <km-form-group>
                             <div class="card">
