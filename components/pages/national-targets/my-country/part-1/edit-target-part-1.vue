@@ -7,25 +7,34 @@
             <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"  
             :container="container"  :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template v-slot:submission>   
-                    <form name="editForm">             
+                    <form name="editForm">    
+                        <km-form-group>
+                            <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
+                                <CAccordionItem :visible="true">
+                                    <CAccordionHeader id="generalAccordion">
+                                        Government and Language(s)                       
+                                    </CAccordionHeader>
+                                    <CAccordionBody> 
+                                        <km-form-group name="government" caption="Government" required>
+                                            <km-government v-model="document.government" ></km-government>                           
+                                        </km-form-group>   
+
+                                        <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
+                                            <km-languages v-model="document.header.languages"></km-languages>
+                                        </km-form-group>   
+                                    </CAccordionBody>
+                                </CAccordionItem>
+                            </CAccordion>
+                        </km-form-group>         
                         <km-form-group>
                             <div class="card">
                                 <div class="card-header bg-secondary">
                                     General
                                 </div>
                                 <div class="card-body">  
-                                    <km-form-group name="government" caption="Government" required>
-                                        <km-government v-model="document.government" ></km-government>                           
-                                    </km-form-group>   
-
-                                    <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
-                                        <km-languages v-model="document.header.languages"></km-languages>
-                                    </km-form-group>   
-
                                     <km-form-group name="title" caption="Full name/title of national target" required>
                                         <km-input-lstring  id="title" placeholder="Enter national target title" v-model="document.title" :locales="document.header.languages"></km-input-lstring>
                                     </km-form-group>
-
                                     <km-form-group name="mainPolicyOfMeasureOrActionInfo" 
                                         caption="Please outline the main policy measures or actions that will be taken to achieve this national target.">
                                         <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.mainPolicyOfMeasureOrActionInfo" :locales="document.header.languages"></km-input-rich-lstring>
@@ -40,21 +49,28 @@
                                 </div>
                                 <div class="card-body">
                                     <km-form-group caption="Alignment with global goals and targets" required name="globalTargetAlignment">
-                                        <km-select
-                                            v-model="selectedGlobalTargets"
-                                            class="validationClass"
-                                            label="title"
-                                            track-by="identifier"
-                                            value-key="identifier"
-                                            placeholder="Global Goals and Targets"
-                                            :options="globalGoalsAndTargets"
-                                            :multiple="true"
-                                            :close-on-select="false"
-                                            @change="onGoalsAndTargetSelected"
-                                            :custom-label="customLabel"
-                                            :custom-selected-item="customSelectedItem"
-                                        >
-                                        </km-select>
+                                        <div class="row">
+                                            <div class="col-11">
+                                                <km-select
+                                                    v-model="selectedGlobalTargets"
+                                                    class="validationClass"
+                                                    label="title"
+                                                    track-by="identifier"
+                                                    value-key="identifier"
+                                                    placeholder="Global Goals and Targets"
+                                                    :options="globalGoalsAndTargets"
+                                                    :multiple="true"
+                                                    :close-on-select="false"
+                                                    @change="onGoalsAndTargetSelected"
+                                                    :custom-label="customLabel"
+                                                    :custom-selected-item="customSelectedItem"
+                                                >
+                                                </km-select>
+                                            </div>
+                                            <div class="col-1">
+                                                <button type="button" class="btn btn-secondary btn-xs" @click="showAllTargets">Show All Targets</button>
+                                            </div>
+                                        </div>
                                         <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
 
                                     </km-form-group>
@@ -263,7 +279,18 @@
  
       </CCardBody>
     </CCard>
-  
+    <CModal class="show d-block global-target-modal" size="xl" alignment="center" backdrop="static" :visible="showGlobalTargetsModal" >
+        <CModalHeader :close-button="false">
+            <CModalTitle>Global Goals/Targets</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            <km-multi-checkbox v-model="selectedGlobalTargets" :options="globalGoalsAndTargets">
+            </km-multi-checkbox>
+        </CModalBody>   
+        <CModalFooter>
+            <CButton color="secondary" @click="closeDialog">{{t('close')}}</CButton>
+        </CModalFooter>
+    </CModal>
 </template>
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/part-1/edit-target-part-1.json"></i18n>
 <script setup>
@@ -282,6 +309,7 @@
     import { useStorage } from '@vueuse/core'
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { EditFormUtility } from "@/services/edit-form-utility";
+    import {uniqBy} from 'lodash'
 
     const props = defineProps({
         identifier  : {type: String },
@@ -302,6 +330,7 @@
     const $toast                    = useToast();      
     const container                 = useAttrs().container;
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
+    const showGlobalTargetsModal    = ref(false);
 
     const headlineIndicatorsRef      = ref(null);
     const componentIndicatorsRef     = ref(null);
@@ -398,10 +427,10 @@
         const complementaryRes  = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)}));
         const binaryRes         = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
 
-        headlineIndicatorsRef.value      = sortBy([...(headlineRes?.flat()||[])], 'title')
-        componentIndicatorsRef.value     = sortBy([...(componentRes?.flat()||[])], 'title')
-        complementaryIndicatorsRef.value = sortBy([...(complementaryRes?.flat()||[])], 'title')
-        binaryIndicatorsRef.value        = sortBy([...(binaryRes?.flat()||[])], 'title')
+        headlineIndicatorsRef.value      = sortBy(uniqBy([...(headlineRes?.flat()||[])], 'identifier'), 'title')
+        componentIndicatorsRef.value     = sortBy(uniqBy([...(componentRes?.flat()||[])], 'identifier'), 'title')
+        complementaryIndicatorsRef.value = sortBy(uniqBy([...(complementaryRes?.flat()||[])], 'identifier'), 'title')
+        binaryIndicatorsRef.value        = sortBy(uniqBy([...(binaryRes?.flat()||[])], 'identifier'), 'title')
         
         if(document.value?.componentIndicators?.length){
             document.value.componentIndicators = document.value?.componentIndicators.filter(selected=>{
@@ -447,4 +476,22 @@
         return emptyDoc
     }
 
+    function showAllTargets(){
+        showGlobalTargetsModal.value = true;
+    }
+    function closeDialog(){
+        showGlobalTargetsModal.value = false;
+    }
+
 </script>
+<style>
+    .global-target-modal .km-multi-checkbox .form-check{
+        border: 1px solid #eee;
+        margin: 5px;
+        padding: 15px;
+    }
+    /* .global-target-modal .km-multi-checkbox .form-check input[type="checkbox"]{
+        margin-left: -0.5em;
+        margin-right: 5px;
+    } */
+</style>
