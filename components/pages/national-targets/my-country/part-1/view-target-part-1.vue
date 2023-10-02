@@ -43,8 +43,22 @@
                     <div class="card-body">
 
                         <km-form-group>
-                            <label class="form-label" for="exampleFormControlSelect1">Alignment with global goals and targets</label>
-                            <km-value-terms :value="viewDocument.globalTargetAlignment" :locale="selectedLocale"></km-value-terms>
+                            <table class="table table-bordered">                                            
+                                <tbody>
+                                    <tr>
+                                        <td>Global Goal(s)/Target(s)</td>
+                                        <td>Degree of Alignment</td>
+                                    </tr>
+                                    <tr v-for="target in viewDocument.globalTargetAlignment" :key="target.identifier">
+                                        <td>
+                                            <km-value-term :value="target" :locale="selectedLocale"></km-value-term>
+                                        </td>
+                                        <td>
+                                            <strong><km-value-term :value="target.degreeOfAlignment" v-if="target.degreeOfAlignment" :locale="selectedLocale"></km-value-term></strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </km-form-group>
 
                         <km-form-group v-if="viewDocument.hasImplementingConsiderations!=undefined">                                    
@@ -64,9 +78,7 @@
                         </km-form-group>
 
                         <km-form-group v-if="viewDocument.degreeOfAlignment && degreeOfAlignment">
-                            <label class="form-label" for="exampleFormControlSelect1">Degree of alignment</label>
-                            <!-- <km-value-terms :value="viewDocument.degreeOfAlignment" :locale="selectedLocale"></km-value-terms>
-                            TODO move to thesaurus -->
+                            <label class="form-label" for="exampleFormControlSelect1">Degree of alignment</label>                            
                             <km-value>{{ degreeOfAlignment(viewDocument.degreeOfAlignment.identifier)?.title }}</km-value>
                         </km-form-group>
 
