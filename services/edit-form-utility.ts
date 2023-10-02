@@ -267,7 +267,13 @@ class editFormUtility{
 			"additionalInfo"	: additionalInfo
 		};
 
-		return workflows.create(type.name, type.version, workflowData); // return workflow info
+        var body = {
+            type: type.name,
+            version: type.version,
+            data: workflowData
+        };
+
+        return useAPIFetch("/api/v2013/workflows",{ body, method:'POST'})
 	}
 
     private getDocumentMetadata(document:any){

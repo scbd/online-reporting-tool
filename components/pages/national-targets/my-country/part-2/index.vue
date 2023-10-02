@@ -21,13 +21,14 @@
                             {{lstring(target.title)}}                           
                         </CAccordionHeader>
                         <CAccordionBody>
-                            <div class="d-grid justify-content-end mb-2" v-if="target.nationalTargets?.length">
+                            <div class="d-grid gap-1 d-md-flex justify-content-end mb-2" v-if="target.nationalTargets?.length">
                                 <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping" :disabled="target.nationalMapping && target.nationalMapping.workingDocumentLock">
                                     {{ t('editMapping') }}
                                 </CButton>
                                 <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="!target.nationalMapping && target.nationalTargets">
                                     {{ t('addMapping') }}
                                 </CButton>
+                                <km-delete-record class="float-end" v-if="target.nationalMapping && target.nationalTargets" :document="target.nationalMappingInfo"  @on-delete="onRecordDelete"></km-delete-record>
                             </div>
                             <table class="table table-bordered table-hover">                            
                             <tbody>
@@ -116,7 +117,7 @@
 
 <script setup lang="ts">
   import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLstringValue,
-             KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink
+             KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink, KmDeleteRecord
            } from "@/components/controls";
     import missingTargetError from '../missing-target-error.vue';
     import { useRealmConfStore }    from '@/stores/realmConf';
@@ -257,6 +258,26 @@
             if((accordionOpen.value && ariaExpanded) || (!accordionOpen.value && !ariaExpanded))
                 $(this).click();
         })
+    }
+
+    async function onRecordDelete({identifier, type}){
+
+        // if(type != 'draft'){
+        //     publishedNationalTargets.value = publishedNationalTargets.value.filter(e=>e.identifier != identifier)
+        // }
+
+        // draftNationalTargets.value     = draftNationalTargets.value.filter(e=>e.identifier != identifier)
+
+        const globalTarget = gbfGoalAndTargetList.value?.find(e=>e.nationalMappingInfo?.identifier == identifier)
+        if(type != 'draft'){ // if published version is deleted than clear everything
+            globalTarget.nationalMapping = undefined;
+            globalTarget.nationalMappingInfo = undefined;
+        }
+        else{
+            globalTarget.nationalMappingInfo = await KmDocumentsService.loadDocument(identifier);
+            globalTarget.nationalMapping     = globalTarget.nationalMappingInfo.body;
+        }
+
     }
 
 </script>

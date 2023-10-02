@@ -72,6 +72,7 @@
                         <CButton color="secondary" size="sm" :disabled="!canEdit || draft.workingDocumentLock" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
                           <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
+                        <km-delete-record :document="draft" @on-delete="onRecordDelete"></km-delete-record>
                       </div>
                     </td>
                   </tr>
@@ -89,7 +90,7 @@
 
 <script setup lang="ts">
   import { KmSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLink,KmSpinner,
-             KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink
+             KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink, KmDeleteRecord
            } from "@/components/controls";
     import { useI18n } from "vue-i18n";
     import { useRealmConfStore }    from '@/stores/realmConf';
@@ -164,6 +165,15 @@
         catch(e){
             useLogger().error(e)
         }
+    }
+
+    function onRecordDelete({identifier, type}){
+
+        if(type != 'draft'){
+            publishedNationalTargets.value = publishedNationalTargets.value.filter(e=>e.identifier != identifier)
+        }
+        
+        draftNationalTargets.value     = draftNationalTargets.value.filter(e=>e.identifier != identifier)
     }
 
     loadRecords();
