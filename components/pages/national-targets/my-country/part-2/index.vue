@@ -5,18 +5,29 @@
         </CCardHeader>
         <CCardBody>
             
-         
           <div class="mt-1">
 
                 <km-spinner-suspense v-if="isBusy"></km-spinner-suspense>
-                <CButton class="float-end mr-1 mb-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="gbfGoalAndTargetList">
-                    <span v-if="!accordionOpen">{{ t('openAll') }}</span>
-                    <span v-if="accordionOpen" >{{ t('closeAll') }}</span>
-                </CButton>
+                <CRow>
+                    <CCol :sm="6">
+                        <label>Filter </label>
+                        <select v-model="filterBy" class="form-select" style="width:30%">
+                            <option disabled value="">Please select one</option>
+                            <option v-for="filter in filters" :value="filter.value" :key="filter.value">{{ filter.title }}</option>
+                        </select>
+                    </CCol>
+                    <CCol :sm="6">
+                        <CButton class="float-end mr-1 mb-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedTargets">
+                            <span v-if="!accordionOpen">{{ t('openAll') }}</span>
+                            <span v-if="accordionOpen" >{{ t('closeAll') }}</span>
+                        </CButton>
+                    </CCol>
+                </CRow>
+                
                 <br>
                 <br>
                 <CAccordion always-open id="mapping-accordion">                    
-                    <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in gbfGoalAndTargetList" :key="target">
+                    <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in computedTargets" :key="target">
                         <CAccordionHeader :id="'gbTraget_'+target.identifier">
                             {{lstring(target.title)}}                           
                         </CAccordionHeader>
@@ -38,6 +49,7 @@
                                     </td>
                                     <td colspan="2">
                                         <strong>{{ t('elementsOfInfo') }}</strong>
+                                        <div class="form-text text-muted">Click the Add/Edit mapping button to edit this section</div>
                                     </td>
                                 </tr>
                                 <tr v-for="(nationalTarget, index) in target.nationalTargets" :key="nationalTarget.identifier">
@@ -63,7 +75,10 @@
                                     <td style="width: 40%;">
                                         <strong>{{ t('headlineIndicators') }}</strong>
                                     </td>
-                                    <td colspan="2"><strong>{{ t('referencePeriod') }}</strong></td>
+                                    <td colspan="2">
+                                        <strong>{{ t('referencePeriod') }}</strong>
+                                        <div class="form-text text-muted">Click the Add/Edit mapping button to edit this section</div>
+                                    </td>
                                 </tr>
                                 <tr v-for="(indicator, index) in target.headlineIndicators" :key="indicator.identifier">
                                     <td style="width: 40%;">
@@ -131,6 +146,7 @@
     import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
     import { KmDocumentsService } from "@/services/kmDocuments";
     import $ from 'jquery';
+    import { sortBy } from "lodash";
 
     let   accordionOpen = ref(false);
     const rowsPerPage = 300; // UTILS.ROWS_PER_PAGE;
@@ -149,10 +165,33 @@
     const gbfGoalAndTargetList = ref(null);
     const showEditMappingModal = ref(false);
     const editMappingTarget    = ref(null);
+    const filterBy             = ref(null);
 
     const EditTargetPart2 = defineAsyncComponent(() =>
         import('./edit-target-part-2.vue')
     )
+
+    const filters = [
+        {value : 'missingMapping', title: 'Missing national mapping record'},
+        {value : 'missingTarget', title: 'Missing national target record'},
+        {value : 'hasMapping', title: 'Has national mapping record'},
+        {value : 'hasTarget', title: 'Has national target record'}
+    ]
+
+    const computedTargets = computed(()=>{
+        let list = gbfGoalAndTargetList.value||[];
+        if(list?.length && filterBy.value){
+            if(filterBy.value == 'missingMapping')
+                list = list.filter(e=>!e.nationalMapping);
+            else if(filterBy.value == 'missingTarget')
+                list = list.filter(e=>!e.nationalTargets?.length);
+            else if(filterBy.value == 'hasMapping')
+                list = list.filter(e=>e.nationalMapping);
+            else if(filterBy.value == 'hasTarget')
+                list = list.filter(e=>e.nationalTargets?.length);
+        }
+        return sortBy(list, 'identifier');
+    })
 
     onMounted(() => {
 
@@ -172,14 +211,7 @@
             // });
         }, 200)
     })
-    
-
-    const navigateToPage = async (route:string, draft:any)=>{
-      const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
-      await navigateTo(url);
-      await navigateTo(url);
-    }
-
+        
     async function loadRecords(query){
 
         const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
@@ -188,20 +220,6 @@
         return [...result[0].Items,
                 ...result[1].Items.filter(e=>!result[0].Items?.find(draft=>draft.identifier == e.identifier))]
 
-    }
-
-    function addDraftToTargetGroup(target, record){
-      const existingTarget = martrix.find(e=>e.identifier == target.identifier)
-
-      if(!existingTarget){
-        martrix.push({
-          identifier:target.identifier,
-          nationalTargets : [record]
-        });
-      }
-      else{
-        existingTarget.nationalTargets.push(record)
-      }
     }
 
     function showEditMapping(target){
