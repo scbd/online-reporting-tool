@@ -1,3 +1,4 @@
+import {uniqBy} from 'lodash'
 
 export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], nationalMappings: any[])=>{
     
@@ -13,6 +14,7 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
 
         target.elementOfGlobalTargetsInfo = (lNationalMappings?.workingDocumentBody || lNationalMappings?.body)?.elementOfGlobalTargetsInfo;
         target.nationalMapping            = (lNationalMappings?.workingDocumentBody || lNationalMappings?.body);
+        target.nationalMappingInfo        = lNationalMappings
         target.nationalTargets = lNationalTargets.map(e=>{
             return { identifier : e.identifier, title : (e.workingDocumentBody || e.body)?.title}
         });
@@ -22,7 +24,7 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
             indicator.referencePeriod = target.nationalMapping?.referencePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
         });
 
-        const otherIndicators = [...target.componentIndicators, ...target.complementaryIndicators];
+        const otherIndicators = uniqBy([...target.componentIndicators, ...target.complementaryIndicators], 'identifier');
 
         target.otherIndicators = otherIndicators.filter(indicator=>{
             
