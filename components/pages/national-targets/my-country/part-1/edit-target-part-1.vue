@@ -4,6 +4,7 @@
         <slot name="header"> National Target</slot>
       </CCardHeader>
       <CCardBody>
+        
             <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"  
             :container="container"  :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template v-slot:submission>   
@@ -32,7 +33,7 @@
                                     General
                                 </div>
                                 <div class="card-body">  
-                                    <km-form-group name="title" caption="Full name/title of national target" required>
+                                    <km-form-group name="title" caption="Full name/title of national target" required data-content="Provide a nice title for your national target">
                                         <km-input-lstring  id="title" placeholder="Enter national target title" v-model="document.title" :locales="document.header.languages"></km-input-lstring>
                                     </km-form-group>
                                     <km-form-group name="mainPolicyOfMeasureOrActionInfo" 
@@ -48,6 +49,7 @@
                                     Alignment
                                 </div>
                                 <div class="card-body">
+                                    
                                     <km-form-group caption="Alignment with global goals and targets" required name="globalTargetAlignment">
                                         <div class="row">
                                             <div class="col-11">
@@ -68,6 +70,7 @@
                                                 </km-select>
                                             </div>
                                             <div class="col-1">
+                                                
                                                 <button type="button" class="btn btn-secondary btn-xs" @click="showAllTargets">Show All Targets</button>
                                             </div>
                                         </div>
@@ -81,7 +84,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td></td>
-                                                    <td class="w-25 fw-bold">Degree of Alignment</td>
+                                                    <td class="w-25 fw-bold">Degree of <km-help content="Please check all relevant national targets and indicate their degree of alignment with the global targets.">Alignment </km-help></td>
                                                 </tr>
                                                 <tr v-for="target in document.globalTargetAlignment" :key="target.identifier">
                                                     <td>
@@ -279,8 +282,9 @@
  
       </CCardBody>
     </CCard>
-    <CModal class="show d-block global-target-modal" size="xl" alignment="center" backdrop="static" :visible="showGlobalTargetsModal" >
-        <CModalHeader :close-button="false">
+    <CModal class="show d-block global-target-modal" :size="container? 'lg' : 'xl'" scrollable="true" alignment="center" 
+        :visible="showGlobalTargetsModal"  @close="() => { showGlobalTargetsModal = false }">
+        <CModalHeader>
             <CModalTitle>Global Goals/Targets</CModalTitle>
         </CModalHeader>
         <CModalBody>
@@ -297,7 +301,7 @@
   
     import { KmInputRichLstring, KmSelect, KmFormGroup, KmInputLstringMl, KmMultiCheckbox,
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmFormWorkflow,
-        KmValueTerm, KmGovernment, KmLanguages
+        KmValueTerm, KmGovernment, KmLanguages, KmHelp
     } from "~/components/controls";
     import viewTarget               from  "./view-target-part-1.vue";
     import { mapStores }            from 'pinia'

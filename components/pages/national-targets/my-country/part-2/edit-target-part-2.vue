@@ -45,10 +45,6 @@
                                         <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
                                             <km-languages v-model="document.header.languages"></km-languages>
                                         </km-form-group>   
-
-                                        <km-form-group name="title" caption="Full name/title of national target" required>
-                                            <km-input-lstring  id="title" placeholder="Enter national target title" v-model="document.title" :locales="document.header.languages"></km-input-lstring>
-                                        </km-form-group>
                                     </CAccordionBody>
                                 </CAccordionItem>
                             </CAccordion>
@@ -60,7 +56,8 @@
                                     Elements of the global targets
                                 </div>
                                 <div class="card-body">                      
-                                    <km-form-group required caption="Elements of the global targets addressed by national targets" name="elementOfGlobalTargetsInfo">
+                                    <km-form-group required caption="Elements of the global targets addressed by national targets (Please also include which aspects of the global targets have not been covered by the national targets)" 
+                                        name="elementOfGlobalTargetsInfo" data-content="Please also include which aspects of the global targets have not been covered by the national targets">
                                         <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>                                    
                                 </div>
@@ -134,7 +131,7 @@
   
     import { useAsyncState } from '@vueuse/core'
     import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner, KmFormWorkflow
+        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner, KmFormWorkflow, KmHelp
     } from "~/components/controls";
     import viewTarget               from "./view-target-part-2.vue";
     import { useRealmConfStore }    from '@/stores/realmConf';
