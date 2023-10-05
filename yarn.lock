@@ -6555,6 +6555,11 @@ webpack-virtual-modules@^0.5.0:
   resolved "https://registry.yarnpkg.com/webpack-virtual-modules/-/webpack-virtual-modules-0.5.0.tgz#362f14738a56dae107937ab98ea7062e8bdd3b6c"
   integrity sha512-kyDivFZ7ZM0BVOUteVbDFhlRt7Ah/CSPwJdi8hBpkK7QLumUqdLtVfm/PX/hkcnrvr0i77fO5+TjZ94Pe+C9iw==
 
+webui-popover@^1.2.18:
+  version "1.2.18"
+  resolved "https://registry.yarnpkg.com/webui-popover/-/webui-popover-1.2.18.tgz#85a2f10fdb73874177e5c42e9fa4918c15567771"
+  integrity sha512-JIpcJnXXjtjg1/VKIEzLRC8ZEutpMZNY9/uBV8ztZ8Hh2IF7Op31Y55krARiTr9CLqXSyBghr9jPAG0dZFL2cA==
+
 whatwg-url@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-5.0.0.tgz#966454e8765462e37644d3626f6742ce8b70965d"
