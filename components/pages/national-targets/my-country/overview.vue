@@ -49,6 +49,9 @@
                             <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             {{t('validatePartIAndPartII')}}
                         </CButton>
+                        <CButton @click="onRefresh()" color="secondary">
+                            {{t('refresh')}}
+                        </CButton>
                     </div>
                     <km-suspense>
                         <workflow-actions v-if="openWorkflow" :workflow="openWorkflow" @on-workflow-action="onWorkflowAction"></workflow-actions>
@@ -317,6 +320,9 @@
         if(!records.draftNationalTargets?.length && !records.draftNationalMappings?.length){
             showPublishBtn.value = false;
         }
+        else{
+            showPublishBtn.value = true;
+        }
 
 
         // verify if there any lock records
@@ -449,6 +455,9 @@
 
     function disableActionButtons(){
 
+    }
+    function onRefresh(){
+        validationRef.value.refresh();
     }
 
     onMounted(() => {
