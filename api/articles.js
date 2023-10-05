@@ -8,22 +8,16 @@ export default class ArticlesApi extends ApiBase
   }
   
   async queryArticleGroup(groupKey, params)  {
-    return $fetch.get(`/api/v2017/articles/grouping/${groupKey}`, { params })
-                    .then(res => res.data)
-                    .catch(tryCastToApiError);
+    return useAPIFetch(`/api/v2017/articles/grouping/${groupKey}`, {method:'GET', query:params })
   }
 
   async queryArticles(params)  {
-    return $fetch.get(`/api/v2017/articles`, { params })
-                    .then(res => res.data)
-                    .catch(tryCastToApiError);
+    return useAPIFetch(`/api/v2017/articles`, {method:'GET', query:params })
   }
 
   async getArticleById(id)  {
 
-    return $fetch.get(`/api/v2017/articles/${id}`)
-                    .then(res => res.data)
-                    .catch(tryCastToApiError);
+    return useAPIFetch(`/api/v2017/articles/${id}`, {method:'GET'})
   }
 
   async getArticlesByTag(tag, options={})  {
@@ -35,9 +29,7 @@ export default class ArticlesApi extends ApiBase
 
   async getArticleAdminTags(params){
 
-    const tags = await $fetch.get(`/api/v2021/article-admin-tags`, { params })
-                              .then(res => res.data)
-                              .catch(tryCastToApiError);
+    const tags = await useAPIFetch(`/api/v2021/article-admin-tags`, {method:'GET', query: params })
 
     return tags
   }

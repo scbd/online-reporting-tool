@@ -25,11 +25,20 @@
 
             <tab-content :title="workflowTabs.introduction.title" :is-active="activeTab == workflowTabs.introduction.index">
                 <slot name="introduction" >
-                    <CAlert color="success" v-bind:visible="true">
-                        <CAlertHeading>Introduction!</CAlertHeading>
-                        <hr />
-                        <p class="mb-0">This section will have a brief description to help users submit information</p>
-                    </CAlert>
+                    <CCard>
+                        <CCardBody>
+
+                            <cbd-article :query="articleQuery()" hide-cover-image="true" show-edit="true">
+                                <template #missingArticle>
+                                    <CAlert color="success" v-bind:visible="true">
+                                        <CAlertHeading>Introduction!</CAlertHeading>
+                                        <hr />
+                                        <p class="mb-0">This section will have a brief description to help users submit information</p>
+                                    </CAlert>
+                                </template>
+                            </cbd-article>
+                        </CCardBody>
+                    </CCard>
                 </slot>
             </tab-content>
             <tab-content :title="workflowTabs.submission.title" v-show="activeTab == workflowTabs.submission.index" :is-active="true">
@@ -67,13 +76,15 @@
     import FormWizard from './KmFormWizard.vue';
     import TabContent from './KmFormWizardTabContent.vue';
     import { KmValidationErrors, KmSpinner } from "~/components/controls";
-    import { CButton, CRow } from '@coreui/vue';
+    import cbdArticle from '../../common/cbd-article.vue';
+    import { CButton, CCardBody, CRow } from '@coreui/vue';
     import $ from 'jquery';
     import { useI18n } from 'vue-i18n';
     import { EditFormUtility }  from '@/services/edit-form-utility';
     import {useToast} from 'vue-toast-notification';
     import {isEmpty} from 'lodash'
     import { scrollToElement } from '@/utils';
+    import { useRealmConfStore } from '@/stores/realmConf';
 
     const definedProps = defineProps({
         focusedTab                  : { type:Number, default:0 },
@@ -211,6 +222,29 @@
             
         }, 200);
 
+    }
+
+    function articleQuery(){
+        const document = props.getDocument.value();
+        const realmConfStore  = useRealmConfStore();
+        const realmConf = realmConfStore.realmConf;
+        const ag = [];
+        ag.push({
+            "$match":{
+                "adminTags": { 
+                    "$all" :
+                        [   'edit-form', 
+                            encodeURIComponent(realmConf.realm.toLowerCase().replace(/(\-[a-zA-Z]{1,5})/, '')),
+                            encodeURIComponent(document.value?.header?.schema?.toLowerCase()||'')
+                        ]
+                }
+            }
+        });
+        ag.push({"$project" : {"title":1, "content":1, "_id":1}});
+        
+        return {
+            "ag" : JSON.stringify(ag)
+        };
     }
 
     onMounted(() => {

@@ -20,6 +20,7 @@ export {default as KmTerm               }  from './view/KmTerm';
 export {default as KmValueTerm          }  from './view/KmValueTerm';
 export {default as KmValueTerms         }  from './view/KmValueTerms';
 export {default as KmValueBool          }  from './view/KmValueBool';
+export {default as KmHelp               }  from './view/KmHelp.vue'; 
 
 export {default as KmLink               }  from './KmLink';
 export {default as KmNavLink            }  from './KmNavLink';
