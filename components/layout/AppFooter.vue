@@ -1,4 +1,5 @@
 <template>
+  <cbd-footer></cbd-footer>
   <CFooter>
     <div>
       <a href="https://ort.cbd.int" target="_blank">ORT</a>
@@ -12,7 +13,10 @@
 </template>
 
 <script>
+import cbdFooter from './cbd/footer.vue'
+
 export default {
   name: 'AppFooter',
+  components: {cbdFooter}
 }
 </script>
