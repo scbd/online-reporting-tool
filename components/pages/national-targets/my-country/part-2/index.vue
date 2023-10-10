@@ -8,24 +8,26 @@
           <div class="mt-1">
 
                 <km-spinner-suspense v-if="isBusy"></km-spinner-suspense>
-                <CRow>
-                    <CCol :sm="6">
+                <CRow class="mb-2">
+                    <CCol :sm="6" class="d-grid gap-1 d-md-flex">
                         <label>Filter </label>
                         <select v-model="filterBy" class="form-select" style="width:30%">
                             <option disabled value="">Please select one</option>
                             <option v-for="filter in filters" :value="filter.value" :key="filter.value">{{ filter.title }}</option>
                         </select>
                     </CCol>
-                    <CCol :sm="6">
-                        <CButton class="float-end mr-1 mb-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedTargets">
-                            <span v-if="!accordionOpen">{{ t('openAll') }}</span>
-                            <span v-if="accordionOpen" >{{ t('closeAll') }}</span>
-                        </CButton>
+                    <CCol :sm="6" class="float-end">
+                        <div class="d-grid gap-1 d-md-flex justify-content-end mb-2">
+                        <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" title="Go to Overview" 
+                            role="button" class="btn btn-sm btn-secondary" icon="fa-wand-magic-sparkles">
+                        </km-link> 
+                        <CButton class="btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedTargets">
+                            <span v-if="!accordionOpen"><font-awesome-icon icon="fa-arrows-down-to-line"></font-awesome-icon> {{ t('expandAll') }}</span>
+                            <span v-if="accordionOpen" ><font-awesome-icon icon="fa-arrows-up-to-line"></font-awesome-icon> {{ t('collapseAll') }}</span>
+                        </CButton></div>
                     </CCol>
                 </CRow>
                 
-                <br>
-                <br>
                 <CAccordion always-open id="mapping-accordion">                    
                     <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in computedTargets" :key="target">
                         <CAccordionHeader :id="'gbTraget_'+target.identifier">
@@ -34,9 +36,11 @@
                         <CAccordionBody>
                             <div class="d-grid gap-1 d-md-flex justify-content-end mb-2" v-if="target.nationalTargets?.length">
                                 <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping" :disabled="target.nationalMapping && target.nationalMapping.workingDocumentLock">
+                                    <font-awesome-icon icon="fa-edit"></font-awesome-icon>
                                     {{ t('editMapping') }}
                                 </CButton>
                                 <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="!target.nationalMapping && target.nationalTargets">
+                                    <font-awesome-icon icon="fa-plus"></font-awesome-icon>
                                     {{ t('addMapping') }}
                                 </CButton>
                                 <km-delete-record class="float-end" v-if="target.nationalMapping && target.nationalTargets" :document="target.nationalMappingInfo"  @on-delete="onRecordDelete"></km-delete-record>
@@ -131,7 +135,7 @@
 <i18n  src="@/i18n/dist/pages/national-reports/index.json"></i18n>
 
 <script setup lang="ts">
-  import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLstringValue,
+  import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLstringValue, KmLink,
              KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink, KmDeleteRecord
            } from "@/components/controls";
     import missingTargetError from '../missing-target-error.vue';

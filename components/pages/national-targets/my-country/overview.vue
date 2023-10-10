@@ -10,10 +10,11 @@
                     <CCardText>{{t('nationalTarget')}}</CCardText>
                     <div class="d-grid gap-1 d-flex">
                         <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I" title="Go to Part I" 
-                            role="button" class="btn btn-secondary"></km-link>
+                            role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>
                         <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" title="Submit new target" 
-                            role="button" class="btn btn-secondary"></km-link>
+                            role="button" class="btn btn-secondary" icon="fa-plus"></km-link>
                         <CButton :disabled="disableActions"  @click="onValidate('partI')" color="secondary">
+                            <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             {{t('validatePartI')}}
                         </CButton>
@@ -28,9 +29,10 @@
                     <CCardText>{{t('nationalMapping')}} </CCardText>
                     <div class="d-grid gap-1 d-flex">
                         <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II" title="Go to Part II" 
-                            role="button" class="btn btn-secondary"></km-link>  
+                            role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>  
                         <CButton :disabled="disableActions" @click="onValidate('partII')" color="secondary">
                             <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                            <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             {{t('validatePartII')}}
                         </CButton>
                     </div>
@@ -43,13 +45,16 @@
                     <div class=" float-end d-grid gap-1 d-flex">
                         <CButton :disabled="disableActions || !showPublishBtn" @click="onPublish()" color="secondary">
                             <c-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                            <font-awesome-icon icon="fa-bullhorn"></font-awesome-icon>
                             {{t('publish')}}
                         </CButton>
                         <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
                             <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                            <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             {{t('validatePartIAndPartII')}}
                         </CButton>
                         <CButton @click="onRefresh()" color="secondary">
+                            <font-awesome-icon icon="fa-arrows-rotate"/>
                             {{t('refresh')}}
                         </CButton>
                     </div>

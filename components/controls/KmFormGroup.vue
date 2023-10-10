@@ -1,5 +1,5 @@
 <template>
-    <CCol class="km-form-group mb-3" :class="{'has-error':hasError, 'has-help':content}">
+    <CCol class="km-form-group mb-3" :class="{'has-error':hasError, 'has-help':content, 'mandatory':required}">
         <CFormLabel class="mb-1 control-label" v-if="caption" :for="name" :name="name" :required="required ? true : null">
             {{caption}}            
         </CFormLabel>
@@ -39,6 +39,11 @@
 
 </script>
 <style scoped>
+
+    .km-form-group.mandatory{
+        border-left: 5px solid red;
+        padding-left: 10px;
+    }
     .km-form-group label.required:after, .km-form-group label[required]:after {
         color: #e32;
         content: ' * ';

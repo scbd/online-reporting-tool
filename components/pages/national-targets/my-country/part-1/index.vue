@@ -7,9 +7,14 @@
           <div class="card">
             <div class="card-body">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            
+                <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" title="Go to Overview" 
+                            role="button" class="btn btn-secondary" 
+                            icon="fa-wand-magic-sparkles">
+                </km-link> 
                 <!-- <NuxtLink to="/national-targets/new"> -->
                   <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
-                    <CIcon icon="addthis"/> Submit new target
+                    <font-awesome-icon icon="fa-plus"/> Submit new target
                   </CButton>
                 <!-- </NuxtLink> -->
                 <!-- <CButton color="secondary m-1">

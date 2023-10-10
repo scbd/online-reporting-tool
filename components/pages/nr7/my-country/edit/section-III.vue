@@ -14,8 +14,8 @@
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template #submission>
                     <CButton class="float-end mr-1 mb-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="nationalTargets">
-                        <span v-if="!accordionOpen">{{ t('openAll') }}</span>
-                        <span v-if="accordionOpen" >{{ t('closeAll') }}</span>
+                        <span v-if="!accordionOpen">{{ t('expandAll') }}</span>
+                        <span v-if="accordionOpen" >{{ t('collapseAll') }}</span>
                     </CButton>
                     <br>
                     <br>
@@ -126,6 +126,7 @@
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
     import ViewData         from './indicator-data/view-data.vue';
     import {uniqBy} from 'lodash';
+    import { alignedGoalsTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
 
     let document = ref({});
     let sectionIII;

@@ -1,7 +1,7 @@
 <template>
     <CButton class="float-end mt-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedIndicators">
-        <span v-if="!accordionOpen">{{ t('openAll') }}</span>
-        <span v-if="accordionOpen" >{{ t('closeAll') }}</span>
+        <span v-if="!accordionOpen">{{ t('expandAll') }}</span>
+        <span v-if="accordionOpen" >{{ t('collapseAll') }}</span>
     </CButton>
     <br>
     <br>
