@@ -1,7 +1,7 @@
 {
-    "headerTitle" : "Global Goals/Targets mapping",
-    "openAll" : "Open All",
-    "closeAll": "Close All",
+    "headerTitle" : "National mapping with global Goals/Targets",
+    "expandAll" : "Expand All",
+    "collapseAll": "Collapse All",
     "editMapping": "Edit mapping",
     "addMapping" : "Add mapping",
 

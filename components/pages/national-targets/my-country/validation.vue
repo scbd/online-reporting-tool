@@ -6,7 +6,7 @@
                 National targets 
             </div>
             <div class="card-body">            
-              <table class="table" v-if="draftNationalTargets">
+              <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -22,56 +22,57 @@
                             <div class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
                         </td>
                     </tr>
-                    <tr v-for="(document,  index) in draftNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
-                        <th scope="row">{{ index+1 }}</th>
-                        <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
-                        <td>
-                            <CBadge color="info" v-if="document.isValidating">
-                                    <km-spinner :message="t('validating')+ '...'"></km-spinner>
-                            </CBadge>
-                            <CBadge color="danger" v-if="!document.isValidating && document.errors">
-                                {{t('hasErrors')}} ({{ document.errors.length }})
-                            </CBadge>
-                            <CBadge color="success" v-if="document.validated && !document.isValidating && !document.errors">
-                                {{t('passedValidation')}}
-                            </CBadge>
-                            <CBadge color="dark" v-if="!document.workingDocumentLock">
-                                {{t('draftState')}}
-                            </CBadge>
-                            <CBadge color="danger" v-if="document.workingDocumentLock">
-                                {{t('lockedState')}}
-                            </CBadge>
-                        </td>
-                        <td>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
-                            <font-awesome-icon icon="fa-search" /> View
-                            </CButton>
-                            <CButton :disabled="isBusy || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
-                            <font-awesome-icon icon="fa-edit" /> Edit
-                            </CButton>
-                        </div>
-                        </td>
-                    </tr>
-
-                  <tr v-for="(document,  index) in publishedNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
-                    <th scope="row">{{ index+1 + (draftNationalTargets?.length||0) }}</th>
-                    <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
-                    <td>                        
-                        <CBadge color="success">
-                            {{t('publishedState')}}
-                        </CBadge>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" 
-                            :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)" title="View"></km-link>
-                        <CButton :disabled="isBusy || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
-                          <font-awesome-icon icon="fa-edit" /> Edit
-                        </CButton>
-                      </div>
-                    </td>
-                  </tr>
+                    <template  v-if="!isLoadingRecords">
+                        <tr v-for="(document,  index) in draftNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
+                            <th scope="row">{{ index+1 }}</th>
+                            <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
+                            <td>
+                                <CBadge color="info" v-if="document.isValidating">
+                                        <km-spinner :message="t('validating')+ '...'"></km-spinner>
+                                </CBadge>
+                                <CBadge color="danger" v-if="!document.isValidating && document.errors">
+                                    {{t('hasErrors')}} ({{ document.errors.length }})
+                                </CBadge>
+                                <CBadge color="success" v-if="document.validated && !document.isValidating && !document.errors">
+                                    {{t('passedValidation')}}
+                                </CBadge>
+                                <CBadge color="dark" v-if="!document.workingDocumentLock">
+                                    {{t('draftState')}}
+                                </CBadge>
+                                <CBadge color="danger" v-if="document.workingDocumentLock">
+                                    {{t('lockedState')}}
+                                </CBadge>
+                            </td>
+                            <td>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <CButton :disabled="isValidatingRecords" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
+                                <font-awesome-icon icon="fa-search" /> View
+                                </CButton>
+                                <CButton :disabled="isValidatingRecords || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
+                                <font-awesome-icon icon="fa-edit" /> Edit
+                                </CButton>
+                            </div>
+                            </td>
+                        </tr>
+                        <tr v-for="(document,  index) in publishedNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
+                            <th scope="row">{{ index+1 + (draftNationalTargets?.length||0) }}</th>
+                            <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
+                            <td>                        
+                                <CBadge color="success">
+                                    {{t('publishedState')}}
+                                </CBadge>
+                            </td>
+                            <td>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" 
+                                    :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)" title="View"></km-link>
+                                <CButton :disabled="isValidatingRecords || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
+                                <font-awesome-icon icon="fa-edit" /> Edit
+                                </CButton>
+                            </div>
+                            </td>
+                        </tr>
+                    </template>
                 </tbody>
               </table>
             </div>
@@ -82,7 +83,7 @@
                 Global Goal/Targets mapping
             </div>
             <div class="card-body">            
-              <table class="table" v-if="draftNationalMappings">
+              <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -92,64 +93,66 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-if="isLoadingRecords">
-                    <td colspan="4" >
-                        <div class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
-                    </td>
-                  </tr>
-                  <tr v-for="(document,  index) in draftNationalMappings" :key="document.identifier" :class="{'bg-danger':document.errors}">
-                    <th scope="row">{{ index+1 }}</th>
-                    <td>
-                        <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>                        
-                    </td>                    
-                    <td>
-                        <CBadge color="info" v-if="document.isValidating">
-                                <km-spinner :message="t('validating')+ '...'"></km-spinner>
-                        </CBadge>
-                        <CBadge color="danger" v-if="!document.isValidating && document.errors">
-                            {{t('hasErrors')}} ({{ document.errors.length }})
-                        </CBadge>
-                        <CBadge color="success" v-if="document.validated && !document.isValidating && !document.errors">
-                            {{t('passedValidation')}}
-                        </CBadge>
-                        <CBadge color="dark" v-if="!document.workingDocumentLock">
-                            {{t('draftState')}}
-                        </CBadge>
-                        <CBadge color="danger" v-if="document.workingDocumentLock">
-                            {{t('lockedState')}}
-                        </CBadge>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW, document)">
-                            <font-awesome-icon icon="fa-search" /> View
-                        </CButton>
-                        <CButton :disabled="isBusy || disableActions|| isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
-                            <font-awesome-icon icon="fa-edit" /> Edit
-                        </CButton>
-                      </div>
-                    </td>
-                  </tr>
+                    <tr v-if="isLoadingRecords">
+                        <td colspan="4" >
+                            <div class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
+                        </td>
+                    </tr>
+                    <template  v-if="!isLoadingRecords">
+                        <tr v-for="(document,  index) in draftNationalMappings" :key="document.identifier" :class="{'bg-danger':document.errors}">
+                            <th scope="row">{{ index+1 }}</th>
+                            <td>
+                                <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>                        
+                            </td>                    
+                            <td>
+                                <CBadge color="info" v-if="document.isValidating">
+                                        <km-spinner :message="t('validating')+ '...'"></km-spinner>
+                                </CBadge>
+                                <CBadge color="danger" v-if="!document.isValidating && document.errors">
+                                    {{t('hasErrors')}} ({{ document.errors.length }})
+                                </CBadge>
+                                <CBadge color="success" v-if="document.validated && !document.isValidating && !document.errors">
+                                    {{t('passedValidation')}}
+                                </CBadge>
+                                <CBadge color="dark" v-if="!document.workingDocumentLock">
+                                    {{t('draftState')}}
+                                </CBadge>
+                                <CBadge color="danger" v-if="document.workingDocumentLock">
+                                    {{t('lockedState')}}
+                                </CBadge>
+                            </td>
+                            <td>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <CButton :disabled="isValidatingRecords" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW, document)">
+                                    <font-awesome-icon icon="fa-search" /> View
+                                </CButton>
+                                <CButton :disabled="isValidatingRecords || disableActions|| isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
+                                    <font-awesome-icon icon="fa-edit" /> Edit
+                                </CButton>
+                            </div>
+                            </td>
+                        </tr>
 
-                  <tr v-for="(document,  index) in publishedNationalMappings" :key="document.identifier">
-                    <th scope="row">{{ index+1 + (draftNationalMappings?.length||0) }}</th>
-                    <td>
-                        <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>      
-                    </td>                    
-                    <td>                        
-                        <CBadge color="success">
-                            {{t('publishedState')}}
-                        </CBadge>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW, document)" title="View"></km-link>
-                        <CButton :disabled="isBusy || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
-                          <font-awesome-icon icon="fa-edit" /> Edit
-                        </CButton>
-                      </div>
-                    </td>
-                  </tr>
+                        <tr v-for="(document,  index) in publishedNationalMappings" :key="document.identifier">
+                            <th scope="row">{{ index+1 + (draftNationalMappings?.length||0) }}</th>
+                            <td>
+                                <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>      
+                            </td>                    
+                            <td>                        
+                                <CBadge color="success">
+                                    {{t('publishedState')}}
+                                </CBadge>
+                            </td>
+                            <td>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW, document)" title="View"></km-link>
+                                <CButton :disabled="isValidatingRecords || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
+                                <font-awesome-icon icon="fa-edit" /> Edit
+                                </CButton>
+                            </div>
+                            </td>
+                        </tr>
+                    </template>
                 </tbody>
               </table>
             </div>
@@ -195,11 +198,10 @@
     import { useThesaurusStore } from "@/stores/thesaurus";
     import { buildTargetMatrix } from "./part-2/util";
     import { useStorage } from '@vueuse/core';
+    import { EditFormUtility } from "@/services/edit-form-utility";
 
-    defineExpose({
-        validate
-    });
-    const $emits = defineEmits(['onRecordsLoad', 'onValidationFinished']);
+                    defineExpose({ validate, refresh });
+    const $emits =  defineEmits(['onRecordsLoad', 'onValidationFinished']);
 
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
     const EditTargetPart1 = defineAsyncComponent(()=>import("./part-1/edit-target-part-1.vue"));
@@ -213,12 +215,13 @@
     const route    = useRoute();
     const localePath  = useLocalePath()
     const { t, locale }       = useI18n(); 
+    const { $eventBus } = useNuxtApp();
 
     const realmConfStore  = useRealmConfStore();
     const kmDocumentDraftStore  = useKmDocumentDraftsStore();
     const thesaurusStore  = useThesaurusStore();
 
-    const isBusy                    = ref(false);
+    const isValidatingRecords                    = ref(false);
     const isLoadingRecords          = ref(false);
     const draftNationalTargets      = ref([]);
     const publishedNationalTargets  = ref([]);
@@ -231,11 +234,15 @@
     const disableActions = computed(()=>!!stateTargetWorkflow.value.batchId)
 
     onMounted(()=> {
+        $eventBus.on('evt:server-pushNotification', onServerPushNotification)
         isLoadingRecords.value = true;
         setTimeout(() => {
             init();    
         }, 100);
-        
+    })
+
+    onBeforeUnmount(()=>{
+        $eventBus.off('evt:server-pushNotification', onServerPushNotification)
     })
     
     function navigationUrl(route, document){
@@ -305,7 +312,7 @@
     async function validate(type:string){
         try{
 
-            isBusy.value = true;  
+            isValidatingRecords.value = true;  
             if(!type){
                 await Promise.all([
                     validateDocuments(draftNationalTargets.value), 
@@ -331,7 +338,14 @@
             useLogger().error(e)
         }
 
-        isBusy.value = false;  
+        isValidatingRecords.value = false;  
+    }
+
+    function refresh(){
+        isLoadingRecords.value = true; 
+        setTimeout(() => {
+            init();
+        }, 200);
     }
 
     async function validateDocument(document:any){
@@ -438,6 +452,37 @@
         const index = publishedList.value.indexOf(existing);
         if(index>=0)
             publishedList.value.splice(index, 1)
+    }
+
+    async function onServerPushNotification(data:Object){
+        
+        if(!data?.data)
+            return;
+
+        const notificationType = ['workflowActivityStatus', 'userNotification'];
+
+        if(notificationType.includes(data.type) && data.data?.identifier){
+            
+            const publishedList:Array<Object> =  data.data.schema == SCHEMAS.NATIONAL_TARGET_7 ? publishedNationalTargets :  publishedNationalMappings;
+            const draftList:Array<Object>     =  data.data.schema == SCHEMAS.NATIONAL_TARGET_7 ? draftNationalTargets :  draftNationalMappings;
+
+            const existingDocument = draftList.value.find(e=>e.identifier == data.data.identifier);
+
+            if(data.data.workflowActivity == 'document-lock'){
+                existingDocument.workingDocumentLock = 'workflow-fake'//fake workflow id
+            }
+            else if(data.data.workflowActivity == 'create-revision-from-draft'){
+                const newDocument = await KmDocumentsService.loadDocument(data.data.identifier);
+                if(newDocument){
+                    const index          = publishedList.value.findIndex(e=>e.identifier == newDocument.identifier);
+                    const draftIndex     = draftList.value.findIndex(e=>e.identifier == newDocument.identifier);
+                    publishedList.value[index] = newDocument;
+                    draftList.value.splice(draftIndex, 1);
+                    stateTargetWorkflow.value = undefined;
+                }      
+            }
+            //'document-deleted'
+        }
     }
 </script>
 

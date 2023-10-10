@@ -9,7 +9,7 @@
     "successTitle"           : "Success",
     "yes"                    : "Yes",
     "no"                     : "No",
-    "confirmationMessage"    : "Are you sure you wan to proceed with publishing your countries National Targets and Mapping?",
+    "confirmationMessage"    : "Are you sure you want to proceed with publishing your countries National Targets and Mapping?",
     "confirmationTitle"      : "Confirmation",
     "nationalTarget"         : "National Target",
     "nationalMapping"        : "Global Target mapping",
@@ -25,5 +25,6 @@
     "partI"                  : "Part I",
     "partII"                 : "Part II",
     "welcome"                : "Welcome to your country's National Targets submission section. please select option to proceed.",
-    "spinnerMessage"         : "Please wait while we process your request."
+    "spinnerMessage"         : "Please wait while we process your request.",
+    "refresh"                : "Refresh"
 }

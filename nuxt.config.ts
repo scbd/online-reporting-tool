@@ -51,7 +51,7 @@ export default defineNuxtConfig({
         // strictMessage: false,
         // escapeHtml:true,
         // strategy: "prefix",
-        vueI18n: './config/i18n.config.ts'
+        vueI18n: './i18n.config.ts'
     },
     vue: {  
         compilerOptions: {

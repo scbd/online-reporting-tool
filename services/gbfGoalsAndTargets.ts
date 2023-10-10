@@ -105,7 +105,20 @@ class GBFGoalsAndTargets{
         
     }
 
+    async loadIndicator(code:string, fields:Array<string> = this.defaultFields){
 
+        const thesaurusStore  = useThesaurusStore();
+        await thesaurusStore.loadTerm(code);
+    
+        const indicator = thesaurusStore.getTerm(code);
+        if(fields?.length){
+            return mapFields([indicator], fields)[0];
+        }
+
+        return indicator;
+
+    }
+    
 }
 
 function mapFields(list:Array<any>, fields:Array<string>){
@@ -122,20 +135,20 @@ function mapFields(list:Array<any>, fields:Array<string>){
 async function loadIndicators(code:string, goalOrTarget:string){
 
     const thesaurusStore  = useThesaurusStore();
-    const headlinePromise = thesaurusStore.loadDomainTerms(code, {releations:true})
+    const headlinePromise = thesaurusStore.loadDomainTerms(code, {relations:true})
     const response = await Promise.all([ GbfGoalsAndTargets.loadGbfGoalsAndTargets([]), headlinePromise]);
 
     const indicators = thesaurusStore.getDomainTerms(code);
     const gbfGoalsAndTargets = response[0];
     if(goalOrTarget){
         const term = gbfGoalsAndTargets.find(e=> e.identifier == goalOrTarget);
-        const termIndicators = indicators.filter(indicator=>{
-            return term.narrowerTerms.includes(indicator.identifier)
+        const termIndicators = indicators.filter((indicator: { identifier: any; })=>{
+            return term && term.narrowerTerms.includes(indicator.identifier)
         })
         
         return termIndicators;
     }
 
-    return gbfGoalsAndTargets
+    return indicators
 }
 export const GbfGoalsAndTargets = new GBFGoalsAndTargets();

@@ -5,29 +5,45 @@
         </CCardHeader>
         <CCardBody>
             
-         
           <div class="mt-1">
 
                 <km-spinner-suspense v-if="isBusy"></km-spinner-suspense>
-                <CButton class="float-end mr-1 mb-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="gbfGoalAndTargetList">
-                    <span v-if="!accordionOpen">{{ t('openAll') }}</span>
-                    <span v-if="accordionOpen" >{{ t('closeAll') }}</span>
-                </CButton>
-                <br>
-                <br>
+                <CRow class="mb-2">
+                    <CCol :sm="6" class="d-grid gap-1 d-md-flex">
+                        <label>Filter </label>
+                        <select v-model="filterBy" class="form-select" style="width:30%">
+                            <option disabled value="">Please select one</option>
+                            <option v-for="filter in filters" :value="filter.value" :key="filter.value">{{ filter.title }}</option>
+                        </select>
+                    </CCol>
+                    <CCol :sm="6" class="float-end">
+                        <div class="d-grid gap-1 d-md-flex justify-content-end mb-2">
+                        <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" title="Go to Overview" 
+                            role="button" class="btn btn-sm btn-secondary" icon="fa-wand-magic-sparkles">
+                        </km-link> 
+                        <CButton class="btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedTargets">
+                            <span v-if="!accordionOpen"><font-awesome-icon icon="fa-arrows-down-to-line"></font-awesome-icon> {{ t('expandAll') }}</span>
+                            <span v-if="accordionOpen" ><font-awesome-icon icon="fa-arrows-up-to-line"></font-awesome-icon> {{ t('collapseAll') }}</span>
+                        </CButton></div>
+                    </CCol>
+                </CRow>
+                
                 <CAccordion always-open id="mapping-accordion">                    
-                    <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in gbfGoalAndTargetList" :key="target">
+                    <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in computedTargets" :key="target">
                         <CAccordionHeader :id="'gbTraget_'+target.identifier">
                             {{lstring(target.title)}}                           
                         </CAccordionHeader>
                         <CAccordionBody>
-                            <div class="d-grid justify-content-end mb-2" v-if="target.nationalTargets?.length">
-                                <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping" :disabled="target.nationalMapping && target.nationalMapping.workfinDocumentLock">
+                            <div class="d-grid gap-1 d-md-flex justify-content-end mb-2" v-if="target.nationalTargets?.length">
+                                <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="target.nationalMapping" :disabled="target.nationalMapping && target.nationalMapping.workingDocumentLock">
+                                    <font-awesome-icon icon="fa-edit"></font-awesome-icon>
                                     {{ t('editMapping') }}
                                 </CButton>
                                 <CButton color="primary" size="sm" @click="showEditMapping(target)" v-if="!target.nationalMapping && target.nationalTargets">
+                                    <font-awesome-icon icon="fa-plus"></font-awesome-icon>
                                     {{ t('addMapping') }}
                                 </CButton>
+                                <km-delete-record class="float-end" v-if="target.nationalMapping && target.nationalTargets" :document="target.nationalMappingInfo"  @on-delete="onRecordDelete"></km-delete-record>
                             </div>
                             <table class="table table-bordered table-hover">                            
                             <tbody>
@@ -37,6 +53,7 @@
                                     </td>
                                     <td colspan="2">
                                         <strong>{{ t('elementsOfInfo') }}</strong>
+                                        <div class="form-text text-muted">Click the Add/Edit mapping button to edit this section</div>
                                     </td>
                                 </tr>
                                 <tr v-for="(nationalTarget, index) in target.nationalTargets" :key="nationalTarget.identifier">
@@ -62,7 +79,10 @@
                                     <td style="width: 40%;">
                                         <strong>{{ t('headlineIndicators') }}</strong>
                                     </td>
-                                    <td colspan="2"><strong>{{ t('referencePeriod') }}</strong></td>
+                                    <td colspan="2">
+                                        <strong>{{ t('referencePeriod') }}</strong>
+                                        <div class="form-text text-muted">Click the Add/Edit mapping button to edit this section</div>
+                                    </td>
                                 </tr>
                                 <tr v-for="(indicator, index) in target.headlineIndicators" :key="indicator.identifier">
                                     <td style="width: 40%;">
@@ -115,8 +135,8 @@
 <i18n  src="@/i18n/dist/pages/national-reports/index.json"></i18n>
 
 <script setup lang="ts">
-  import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLstringValue,
-             KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink
+  import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLstringValue, KmLink,
+             KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink, KmDeleteRecord
            } from "@/components/controls";
     import missingTargetError from '../missing-target-error.vue';
     import { useRealmConfStore }    from '@/stores/realmConf';
@@ -130,6 +150,7 @@
     import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
     import { KmDocumentsService } from "@/services/kmDocuments";
     import $ from 'jquery';
+    import { sortBy } from "lodash";
 
     let   accordionOpen = ref(false);
     const rowsPerPage = 300; // UTILS.ROWS_PER_PAGE;
@@ -148,10 +169,33 @@
     const gbfGoalAndTargetList = ref(null);
     const showEditMappingModal = ref(false);
     const editMappingTarget    = ref(null);
+    const filterBy             = ref(null);
 
     const EditTargetPart2 = defineAsyncComponent(() =>
         import('./edit-target-part-2.vue')
     )
+
+    const filters = [
+        {value : 'missingMapping', title: 'Missing national mapping record (part II)'},
+        {value : 'missingTarget', title: 'Missing national target record (part I)'},
+        {value : 'hasMapping', title: 'Has national mapping record (part II)'},
+        {value : 'hasTarget', title: 'Has national target record (part I)'}
+    ]
+
+    const computedTargets = computed(()=>{
+        let list = gbfGoalAndTargetList.value||[];
+        if(list?.length && filterBy.value){
+            if(filterBy.value == 'missingMapping')
+                list = list.filter(e=>!e.nationalMapping);
+            else if(filterBy.value == 'missingTarget')
+                list = list.filter(e=>!e.nationalTargets?.length);
+            else if(filterBy.value == 'hasMapping')
+                list = list.filter(e=>e.nationalMapping);
+            else if(filterBy.value == 'hasTarget')
+                list = list.filter(e=>e.nationalTargets?.length);
+        }
+        return sortBy(list, 'identifier');
+    })
 
     onMounted(() => {
 
@@ -171,14 +215,7 @@
             // });
         }, 200)
     })
-    
-
-    const navigateToPage = async (route:string, draft:any)=>{
-      const url = route.replace(':identifier', draft?.identifier||draft?.header?.identifier)
-      await navigateTo(url);
-      await navigateTo(url);
-    }
-
+        
     async function loadRecords(query){
 
         const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
@@ -187,20 +224,6 @@
         return [...result[0].Items,
                 ...result[1].Items.filter(e=>!result[0].Items?.find(draft=>draft.identifier == e.identifier))]
 
-    }
-
-    function addDraftToTargetGroup(target, record){
-      const existingTarget = martrix.find(e=>e.identifier == target.identifier)
-
-      if(!existingTarget){
-        martrix.push({
-          identifier:target.identifier,
-          nationalTargets : [record]
-        });
-      }
-      else{
-        existingTarget.nationalTargets.push(record)
-      }
     }
 
     function showEditMapping(target){
@@ -257,6 +280,26 @@
             if((accordionOpen.value && ariaExpanded) || (!accordionOpen.value && !ariaExpanded))
                 $(this).click();
         })
+    }
+
+    async function onRecordDelete({identifier, type}){
+
+        // if(type != 'draft'){
+        //     publishedNationalTargets.value = publishedNationalTargets.value.filter(e=>e.identifier != identifier)
+        // }
+
+        // draftNationalTargets.value     = draftNationalTargets.value.filter(e=>e.identifier != identifier)
+
+        const globalTarget = gbfGoalAndTargetList.value?.find(e=>e.nationalMappingInfo?.identifier == identifier)
+        if(type != 'draft'){ // if published version is deleted than clear everything
+            globalTarget.nationalMapping = undefined;
+            globalTarget.nationalMappingInfo = undefined;
+        }
+        else{
+            globalTarget.nationalMappingInfo = await KmDocumentsService.loadDocument(identifier);
+            globalTarget.nationalMapping     = globalTarget.nationalMappingInfo.body;
+        }
+
     }
 
 </script>

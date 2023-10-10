@@ -44,7 +44,7 @@ export default {
     },
     computed:{
         totalTabs(){ return this.tabs.length },
-        currentTab(){ return this.tabs.find(e=>e.active); }
+        currentTab(){ return this.tabs.find(e=>e.isActive); }
     },
     beforeMount(){
         provide('addFormWizardTabKey', (tab)=>{

@@ -15,7 +15,7 @@
       :searchable="searchable"
       :disabled="disabled"
       @search-change="onEventTextChange"
-      @update:model-value="$emit('change', $event)"
+      
       :custom-label="customLabel"
       :allow-empty="allowEmpty"
       deselect-label="Can't remove this value"

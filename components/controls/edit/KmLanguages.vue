@@ -10,9 +10,9 @@
         :placeholder="t('languageOfRecord')"
         @update:modelValue="onChange">
     </km-select>      
-    <small v-if="selectedLanguages && selectedLanguages.length == 1" class="text-danger form-text">
+    <!-- <small v-if="selectedLanguages && selectedLanguages.length == 1" class="text-danger form-text">
         {{ t('minOneLanguage') }}
-    </small>
+    </small> -->
     <km-form-group name="otherLanguageOption" class="mt-2"  caption="Would like to submit this information in any other language(s)?">                                    
         <km-form-check-group>
             <km-form-check-item inline type="radio" name="otherLanguageOption"  for="otherLanguageOption" id="otherLanguageOptionYes" 

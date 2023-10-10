@@ -11,7 +11,7 @@
                             {{t('saveDraft')}}
                         </CButton> 
                         <CButton @click="onReviewDocument()" color="primary" class="me-md-2" :disabled="isBusy">
-                            {{t('preview')}}
+                            {{t('review')}}
                         </CButton>
                         <!-- <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton> 
                         <CButton @click="printDocument()" color="dark" class="me-md-2">Print</CButton>  -->
@@ -25,11 +25,20 @@
 
             <tab-content :title="workflowTabs.introduction.title" :is-active="activeTab == workflowTabs.introduction.index">
                 <slot name="introduction" >
-                    <CAlert color="success" v-bind:visible="true">
-                        <CAlertHeading>Introduction!</CAlertHeading>
-                        <hr />
-                        <p class="mb-0">This section will have a brief description to help users submit information</p>
-                    </CAlert>
+                    <CCard>
+                        <CCardBody>
+
+                            <cbd-article :query="articleQuery()" hide-cover-image="true" show-edit="true">
+                                <template #missingArticle>
+                                    <CAlert color="success" v-bind:visible="true">
+                                        <CAlertHeading>Introduction!</CAlertHeading>
+                                        <hr />
+                                        <p class="mb-0">This section will have a brief description to help users submit information</p>
+                                    </CAlert>
+                                </template>
+                            </cbd-article>
+                        </CCardBody>
+                    </CCard>
                 </slot>
             </tab-content>
             <tab-content :title="workflowTabs.submission.title" v-show="activeTab == workflowTabs.submission.index" :is-active="true">
@@ -38,9 +47,9 @@
             <tab-content :title="workflowTabs.review.title" :is-active="activeTab == workflowTabs.review.index">
                 <slot name="review"></slot>
             </tab-content>
-            <tab-content :title="workflowTabs.publish.title" :is-active="activeTab == workflowTabs.publish.index">
+            <!-- <tab-content :title="workflowTabs.publish.title" :is-active="activeTab == workflowTabs.publish.index">
                 <slot name="publish"></slot>
-            </tab-content>
+            </tab-content> -->
             
             <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
                     <km-validation-errors v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
@@ -49,7 +58,7 @@
                 <CCol>
                     <div class="action-buttons float-end">
                         <CButton @click="onSaveDraft()" color="primary" class="me-md-2">{{t('saveDraft')}}</CButton> 
-                        <CButton @click="onReviewDocument()" color="primary" class="me-md-2" >{{t('preview')}}</CButton>
+                        <CButton @click="onReviewDocument()" color="primary" class="me-md-2" >{{t('review')}}</CButton>
                         <!-- <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton> 
                         <CButton @click="printDocument()" color="dark" class="me-md-2">Print</CButton>  -->
                         <CButton @click="onClose()" color="danger" class="me-md-2">{{t('close')}}</CButton>
@@ -67,13 +76,15 @@
     import FormWizard from './KmFormWizard.vue';
     import TabContent from './KmFormWizardTabContent.vue';
     import { KmValidationErrors, KmSpinner } from "~/components/controls";
-    import { CButton, CRow } from '@coreui/vue';
+    import cbdArticle from '../../common/cbd-article.vue';
+    import { CButton, CCardBody, CRow } from '@coreui/vue';
     import $ from 'jquery';
     import { useI18n } from 'vue-i18n';
     import { EditFormUtility }  from '@/services/edit-form-utility';
     import {useToast} from 'vue-toast-notification';
     import {isEmpty} from 'lodash'
     import { scrollToElement } from '@/utils';
+    import { useRealmConfStore } from '@/stores/realmConf';
 
     const definedProps = defineProps({
         focusedTab                  : { type:Number, default:0 },
@@ -122,7 +133,6 @@
         if([workflowTabs.review.index, workflowTabs.publish.index].includes(activeTab.value)){
             onReviewDocument(true);
         }
-        activeTab.value = index;
     }    
 
     async function onReviewDocument(tabChanged){
@@ -202,7 +212,7 @@
 
         //change tab to review
         if(activeTab.value != workflowTabs.submission.index){
-            onChangeCurrentTab(workflowTabs.submission.index)
+            formWizard.value?.selectTab(workflowTabs.submission.index)
         }
         
         setTimeout(() => {
@@ -211,6 +221,29 @@
             
         }, 200);
 
+    }
+
+    function articleQuery(){
+        const document = props.getDocument.value();
+        const realmConfStore  = useRealmConfStore();
+        const realmConf = realmConfStore.realmConf;
+        const ag = [];
+        ag.push({
+            "$match":{
+                "adminTags": { 
+                    "$all" :
+                        [   'edit-form', 
+                            encodeURIComponent(realmConf.realm.toLowerCase().replace(/(\-[a-zA-Z]{1,5})/, '')),
+                            encodeURIComponent(document.value?.header?.schema?.toLowerCase()||'')
+                        ]
+                }
+            }
+        });
+        ag.push({"$project" : {"title":1, "content":1, "_id":1}});
+        
+        return {
+            "ag" : JSON.stringify(ag)
+        };
     }
 
     onMounted(() => {

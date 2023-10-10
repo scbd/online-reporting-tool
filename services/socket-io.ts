@@ -29,9 +29,9 @@ class socketIo {
 
     disconnect(isLogoff:Boolean){
         if(isLogoff)
-            this.socket.emit('logoff');
-        this.socket.disconnect();
-        this.socket.close();
+            this.socket?.emit('logoff');
+        this.socket?.disconnect();
+        this.socket?.close();
     };
 
 
@@ -53,7 +53,7 @@ class socketIo {
                         // if(_.intersection(_.map(realms, _.toUpper), realmService.envRealms()).length == 0)
                         //     return;
                     }
-
+                    console.log(message);
                     const { $eventBus } = useNuxtApp();
                     $eventBus.emit('evt:server-pushNotification', message)
                 }  

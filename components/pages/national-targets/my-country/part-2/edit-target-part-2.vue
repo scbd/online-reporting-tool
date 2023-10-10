@@ -14,7 +14,7 @@
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template #submission>
                      <div  >
-                       <km-form-group>
+                       <!-- <km-form-group>
                             <div class="card">
                                 <div class="card-header bg-secondary">
                                     General
@@ -29,7 +29,26 @@
                                     </km-form-group>   
                                 </div>
                             </div>
-                        </km-form-group>
+                        </km-form-group> -->
+
+                        <km-form-group>
+                            <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
+                                <CAccordionItem :visible="true">
+                                    <CAccordionHeader id="generalAccordion">
+                                        Government and Language(s)                       
+                                    </CAccordionHeader>
+                                    <CAccordionBody> 
+                                        <km-form-group name="government" caption="Government" required>
+                                            <km-government v-model="document.government" ></km-government>                           
+                                        </km-form-group>   
+
+                                        <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
+                                            <km-languages v-model="document.header.languages"></km-languages>
+                                        </km-form-group>   
+                                    </CAccordionBody>
+                                </CAccordionItem>
+                            </CAccordion>
+                        </km-form-group>         
 
                         <km-form-group>
                             <div class="card">
@@ -37,7 +56,8 @@
                                     Elements of the global targets
                                 </div>
                                 <div class="card-body">                      
-                                    <km-form-group required caption="Elements of the global targets addressed by national targets" name="elementOfGlobalTargetsInfo">
+                                    <km-form-group required caption="Elements of the global targets addressed by national targets (Please also include which aspects of the global targets have not been covered by the national targets)" 
+                                        name="elementOfGlobalTargetsInfo" data-content="Please also include which aspects of the global targets have not been covered by the national targets">
                                         <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>                                    
                                 </div>
@@ -63,7 +83,7 @@
                                                                     {{index+1}}. {{lstring(target.title)}}
                                                                 </div>
                                                             </km-form-group>
-                                                            <km-form-group name="hasReferencePeriod" required caption="Is there a reference period for above national target(s) which relates to the headline indicator? (rephrase?)">
+                                                            <km-form-group name="hasReferencePeriod" required caption="Is there a reference period for above national target(s) which relates to the headline indicator?">
                                                                 <km-form-check-group>
                                                                     <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodYes'+ indicator.headlineIndicator.identifier"  :value="true"  v-model="indicator.hasReferencePeriod" label="Yes"/>
                                                                     <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodNo' + indicator.headlineIndicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" label="No"
@@ -111,7 +131,7 @@
   
     import { useAsyncState } from '@vueuse/core'
     import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner, KmFormWorkflow
+        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner, KmFormWorkflow, KmHelp
     } from "~/components/controls";
     import viewTarget               from "./view-target-part-2.vue";
     import { useRealmConfStore }    from '@/stores/realmConf';

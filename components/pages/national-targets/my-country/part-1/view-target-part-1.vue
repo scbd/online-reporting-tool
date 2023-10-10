@@ -41,10 +41,31 @@
                         Alignment
                     </div>
                     <div class="card-body">
+                             
+                        <km-form-group v-if="viewDocument.globalGoalAlignment">
+                            <label class="form-label" for="globalGoalAlignment">Global goal(s) alignment </label>
+                            <km-value-terms :value="viewDocument.globalGoalAlignment" :locale="selectedLocale"></km-value-terms>
+                        </km-form-group>
 
                         <km-form-group>
-                            <label class="form-label" for="exampleFormControlSelect1">Alignment with global goals and targets</label>
-                            <km-value-terms :value="viewDocument.globalTargetAlignment" :locale="selectedLocale"></km-value-terms>
+                            
+                            <label class="form-label" for="globalGoalAlignment">Global target(s) alignment </label>
+                            <table class="table table-bordered">                                            
+                                <tbody>
+                                    <tr>
+                                        <td>Global target(s)</td>
+                                        <td>Degree of Alignment</td>
+                                    </tr>
+                                    <tr v-for="target in viewDocument.globalTargetAlignment" :key="target.identifier">
+                                        <td>
+                                            <km-value-term :value="target" :locale="selectedLocale"></km-value-term>
+                                        </td>
+                                        <td>
+                                            <strong><km-value-term :value="target.degreeOfAlignment" v-if="target.degreeOfAlignment" :locale="selectedLocale"></km-value-term></strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </km-form-group>
 
                         <km-form-group v-if="viewDocument.hasImplementingConsiderations!=undefined">                                    
@@ -64,9 +85,7 @@
                         </km-form-group>
 
                         <km-form-group v-if="viewDocument.degreeOfAlignment && degreeOfAlignment">
-                            <label class="form-label" for="exampleFormControlSelect1">Degree of alignment</label>
-                            <!-- <km-value-terms :value="viewDocument.degreeOfAlignment" :locale="selectedLocale"></km-value-terms>
-                            TODO move to thesaurus -->
+                            <label class="form-label" for="exampleFormControlSelect1">Degree of alignment</label>                            
                             <km-value>{{ degreeOfAlignment(viewDocument.degreeOfAlignment.identifier)?.title }}</km-value>
                         </km-form-group>
 
@@ -143,7 +162,11 @@
                             <label class="form-check-label" for="additionalImplementation">
                             Please indicate if additional means of implementation are needed for the attainment of this national target.</label>                                    
                             <!-- TODO move to thesaurus -->
-                            <km-value>{{ t(`${viewDocument.additionalImplementation.identifier}`) }}</km-value>                                    
+                            <km-value>
+                                <span v-if="viewDocument.additionalImplementation.identifier == 'additionalImplementationRequired'"  >Yes (Additional means of implementation are needed for the attainment of this national target)</span>
+                                <span v-if="viewDocument.additionalImplementation.identifier == 'additionalImplementationAvailable'" >No (Means of implementation available)</span>
+                                <span v-if="viewDocument.additionalImplementation.identifier == 'additionalImplementationOther'"     >Other</span>
+                            </km-value>                                    
                         </km-form-group> 
 
                         <km-form-group v-if="(viewDocument.additionalImplementation||{}).customValue">

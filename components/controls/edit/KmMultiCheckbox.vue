@@ -1,10 +1,8 @@
 <template>
-    <div
-      class="km-multi-checkbox flex flex-col items-start justify-center w-64 border-2 p-8 rounded-lg"
-    >
+    <div class="km-multi-checkbox flex flex-col items-start justify-center w-64 border-2 p-8 rounded-lg">
       <check-box
         v-for="option in options"
-        :checked="modelValue && modelValue.includes(option.identifier)"
+        :checked="modelValue && modelValue.find(e=>e.identifier==option.identifier)"
         @update:checked="check(option.identifier, $event)"
         :fieldId="option.identifier"
         :label="lstring(option.title)"
@@ -54,11 +52,6 @@
     },
     components: {
       "check-box": Checkbox,
-    },
-    data(){
-        return {
-            tet : 'yes'
-        }
     }
   };
   </script>

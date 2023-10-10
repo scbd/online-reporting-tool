@@ -7,9 +7,14 @@
           <div class="card">
             <div class="card-body">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            
+                <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" title="Go to Overview" 
+                            role="button" class="btn btn-secondary" 
+                            icon="fa-wand-magic-sparkles">
+                </km-link> 
                 <!-- <NuxtLink to="/national-targets/new"> -->
                   <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
-                    <CIcon icon="addthis"/> Submit new target
+                    <font-awesome-icon icon="fa-plus"/> Submit new target
                   </CButton>
                 <!-- </NuxtLink> -->
                 <!-- <CButton color="secondary m-1">
@@ -50,8 +55,8 @@
                     <th scope="row">{{ index+1 }}</th>
                     <td>{{(draft.workingDocumentTitle||draft.title).en}}</td>
                     <td>
-                      <ul v-if="draft.body.globalTargetAlignment">
-                        <li v-for="target in draft.body.globalTargetAlignment" :key="target.identifier">
+                      <ul v-if="alignedGoalsTargets(draft.workingDocumentBody||draft.body)?.length">
+                        <li v-for="target in alignedGoalsTargets(draft.workingDocumentBody||draft.body)" :key="target.identifier">
                           <a v-if="target.identifier.startsWith('GBF-GOAL')" href="https://www.cbd.int/gbf/goals/" target="_blank">{{ target.identifier }}</a> 
                           <a v-if="target.identifier.startsWith('GBF-TARGET')" :href="`https://www.cbd.int/gbf/targets/${getTargetNumber(target.identifier)}`" target="_blank">{{ target.identifier }}</a> 
                         </li>
@@ -72,6 +77,7 @@
                         <CButton color="secondary" size="sm" :disabled="!canEdit || draft.workingDocumentLock" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
                           <font-awesome-icon icon="fa-edit" /> Edit
                         </CButton>
+                        <km-delete-record :document="draft" @on-delete="onRecordDelete"></km-delete-record>
                       </div>
                     </td>
                   </tr>
@@ -89,7 +95,7 @@
 
 <script setup lang="ts">
   import { KmSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLink,KmSpinner,
-             KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink
+             KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink, KmDeleteRecord
            } from "@/components/controls";
     import { useI18n } from "vue-i18n";
     import { useRealmConfStore }    from '@/stores/realmConf';
@@ -98,6 +104,7 @@
     import { useStorage } from '@vueuse/core'
     import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
     import { KmDocumentsService } from "@/services/kmDocuments";
+    import { alignedGoalsTargets } from '@/components/pages/national-targets/my-country/part-2/util';    
 
 
     const rowsPerPage              = UTILS.ROWS_PER_PAGE;
@@ -164,6 +171,15 @@
         catch(e){
             useLogger().error(e)
         }
+    }
+
+    function onRecordDelete({identifier, type}){
+
+        if(type != 'draft'){
+            publishedNationalTargets.value = publishedNationalTargets.value.filter(e=>e.identifier != identifier)
+        }
+        
+        draftNationalTargets.value     = draftNationalTargets.value.filter(e=>e.identifier != identifier)
     }
 
     loadRecords();

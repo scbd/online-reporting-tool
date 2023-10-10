@@ -10,6 +10,7 @@ export {default as KmFormWorkflow       }  from './edit/KmFormWorkflow'
 export {default as KmValidationErrors   }  from './edit/KmValidationErrors.vue'
 export {default as KmGovernment         }  from './edit/KmGovernment.vue'
 export {default as KmLanguages          }  from './edit/KmLanguages.vue'
+export {default as KmDeleteRecord       }  from './edit/KmDeleteRecord.vue'
 
 
 export {default as KmLocales            }  from './view/KmLocales';
@@ -19,6 +20,7 @@ export {default as KmTerm               }  from './view/KmTerm';
 export {default as KmValueTerm          }  from './view/KmValueTerm';
 export {default as KmValueTerms         }  from './view/KmValueTerms';
 export {default as KmValueBool          }  from './view/KmValueBool';
+export {default as KmHelp               }  from './view/KmHelp.vue'; 
 
 export {default as KmLink               }  from './KmLink';
 export {default as KmNavLink            }  from './KmNavLink';

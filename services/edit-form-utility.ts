@@ -24,15 +24,14 @@ class editFormUtility{
         const { $api } = useNuxtApp();
         const $kmStorageApi = $api.kmStorage
 
-        return $kmStorageApi.drafts.get(identifier, { info: "" }).then(
-            function(success) {
-                return success;
-            },
-            function(error) {
-                if (error?.cause?.status == 404)
-                    return $kmStorageApi.documents.get(identifier, { info: "" });
-                throw error;
-            }).then(
+        return $kmStorageApi.drafts.get(identifier, { info: "" })
+            .then(success=>success,
+                error=>{
+                    if (error?.cause?.status == 404)
+                        return $kmStorageApi.documents.get(identifier, { info: "" });
+                    throw error;
+            })
+            .then(
             function(success) {
                 var info = success;
 
@@ -268,7 +267,13 @@ class editFormUtility{
 			"additionalInfo"	: additionalInfo
 		};
 
-		return workflows.create(type.name, type.version, workflowData); // return workflow info
+        var body = {
+            type: type.name,
+            version: type.version,
+            data: workflowData
+        };
+
+        return useAPIFetch("/api/v2013/workflows",{ body, method:'POST'})
 	}
 
     private getDocumentMetadata(document:any){

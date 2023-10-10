@@ -1,3 +1,4 @@
+import {uniqBy} from 'lodash'
 
 export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], nationalMappings: any[])=>{
     
@@ -8,11 +9,12 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
         
         target.nationalTargets = []
 
-        const lNationalTargets  = [...nationalTargets.filter (e=>(e.workingDocumentBody || e.body)?.globalTargetAlignment?.map(g=>g.identifier)?.includes(target.identifier))];
+        const lNationalTargets  = [...nationalTargets.filter (e=>alignedGoalsTargets(e.workingDocumentBody || e.body)?.map(g=>g.identifier)?.includes(target.identifier))];
         const lNationalMappings = {...nationalMappings.find(e=>(e.workingDocumentBody || e.body)?.globalGoalOrTarget?.identifier  == target.identifier)};
 
         target.elementOfGlobalTargetsInfo = (lNationalMappings?.workingDocumentBody || lNationalMappings?.body)?.elementOfGlobalTargetsInfo;
         target.nationalMapping            = (lNationalMappings?.workingDocumentBody || lNationalMappings?.body);
+        target.nationalMappingInfo        = lNationalMappings
         target.nationalTargets = lNationalTargets.map(e=>{
             return { identifier : e.identifier, title : (e.workingDocumentBody || e.body)?.title}
         });
@@ -22,7 +24,7 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
             indicator.referencePeriod = target.nationalMapping?.referencePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
         });
 
-        const otherIndicators = [...target.componentIndicators, ...target.complementaryIndicators];
+        const otherIndicators = uniqBy([...target.componentIndicators, ...target.complementaryIndicators], 'identifier');
 
         target.otherIndicators = otherIndicators.filter(indicator=>{
             
@@ -38,4 +40,11 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
     }
 
     return matrix;
+}
+
+export function alignedGoalsTargets(document:Object){
+    return [
+        ...(document.globalGoalAlignment ||[]),
+        ...(document.globalTargetAlignment||[])
+    ]
 }
