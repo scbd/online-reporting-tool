@@ -133,7 +133,6 @@
         if([workflowTabs.review.index, workflowTabs.publish.index].includes(activeTab.value)){
             onReviewDocument(true);
         }
-        activeTab.value = index;
     }    
 
     async function onReviewDocument(tabChanged){
@@ -213,7 +212,7 @@
 
         //change tab to review
         if(activeTab.value != workflowTabs.submission.index){
-            onChangeCurrentTab(workflowTabs.submission.index)
+            formWizard.value?.selectTab(workflowTabs.submission.index)
         }
         
         setTimeout(() => {
