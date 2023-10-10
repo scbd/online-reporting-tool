@@ -10,9 +10,9 @@
                 <template v-slot:submission>   
                     <form name="editForm">    
                         <km-form-group>
-                            <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
-                                <CAccordionItem :visible="true">
-                                    <CAccordionHeader id="generalAccordion">
+                            <CAccordion :active-item-key="1" always-open>
+                                <CAccordionItem :item-key="1">
+                                    <CAccordionHeader>
                                         Government and Language(s)                       
                                     </CAccordionHeader>
                                     <CAccordionBody> 
@@ -25,7 +25,7 @@
                                         </km-form-group>   
                                     </CAccordionBody>
                                 </CAccordionItem>
-                            </CAccordion>
+                                </CAccordion>
                         </km-form-group>         
                         <km-form-group>
                             <div class="card">
@@ -35,6 +35,10 @@
                                 <div class="card-body">  
                                     <km-form-group name="title" caption="Full name/title of national target" required data-content="Provide a nice title for your national target">
                                         <km-input-lstring  id="title" placeholder="Enter national target title" v-model="document.title" :locales="document.header.languages"></km-input-lstring>
+                                    </km-form-group>
+                                    <km-form-group name="description" 
+                                        caption="Description">
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.description" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     <km-form-group name="mainPolicyOfMeasureOrActionInfo" 
                                         caption="Please outline the main policy measures or actions that will be taken to achieve this national target.">
@@ -50,7 +54,24 @@
                                 </div>
                                 <div class="card-body">
                                     
-                                    <km-form-group caption="Alignment with global goals and targets" required name="globalTargetAlignment">
+                                    <km-form-group caption="Contribution to global Goals" name="globalGoalAlignment">                                     
+                                            <km-select
+                                                v-model="document.globalGoalAlignment"
+                                                class="validationClass"
+                                                label="title"
+                                                track-by="identifier"
+                                                value-key="identifier"
+                                                placeholder="Global Goals"
+                                                :options="globalGoals"
+                                                :multiple="true"
+                                                :close-on-select="false"
+                                                @update:modelValue="onGoalsAndTargetSelected($event, 'goals')"
+                                                :custom-label="customLabel"
+                                                :custom-selected-item="customSelectedItem"
+                                            >
+                                            </km-select>
+                                    </km-form-group>
+                                    <km-form-group caption="Alignment with global targets" required name="globalTargetAlignment">
                                         <div class="row">
                                             <div class="col-11">
                                                 <km-select
@@ -59,39 +80,38 @@
                                                     label="title"
                                                     track-by="identifier"
                                                     value-key="identifier"
-                                                    placeholder="Global Goals and Targets"
-                                                    :options="globalGoalsAndTargets"
+                                                    placeholder="Global Targets"
+                                                    :options="globalTargets"
                                                     :multiple="true"
                                                     :close-on-select="false"
-                                                    @change="onGoalsAndTargetSelected"
+                                                    @update:modelValue="onGoalsAndTargetSelected($event, 'targets')"
                                                     :custom-label="customLabel"
                                                     :custom-selected-item="customSelectedItem"
                                                 >
                                                 </km-select>
                                             </div>
-                                            <div class="col-1">
-                                                
-                                                <button type="button" class="btn btn-secondary btn-xs" @click="showAllTargets">Show All Targets</button>
+                                            <div class="col-1">                                                
+                                                <button type="button" class="btn btn-secondary btn-xs" @click="showAllTargets">List Targets</button>
                                             </div>
                                         </div>
                                         <small id="emailHelp" class="form-text text-muted">Please check all relevant national targets and indicate their degree of alignment with the global targets.</small>
 
                                     </km-form-group>
                                     
-                                    <km-form-group required caption="Degree of alignment" name="degreeOfAlignment" v-if="document.globalTargetAlignment">                                        
+                                    <km-form-group required caption="Degree of alignment" name="degreeOfAlignment" v-if="globallyAlignedTargets?.length">                                        
                                         
                                         <table class="table table-bordered">                                            
                                             <tbody>
                                                 <tr>
                                                     <td></td>
-                                                    <td class="w-25 fw-bold">Degree of <km-help content="Please check all relevant national targets and indicate their degree of alignment with the global targets.">Alignment </km-help></td>
+                                                    <td class="w-25 fw-bold">Degree of <km-help content="Indicate their degree of alignment with the global targets.">Alignment </km-help></td>
                                                 </tr>
-                                                <tr v-for="target in document.globalTargetAlignment" :key="target.identifier">
+                                                <tr v-for="target in globallyAlignedTargets" :key="target.identifier">
                                                     <td>
                                                         <km-form-group required :name="target.identifier+'_degreeOfAlignment'">
                                                             <label class="control-label" :for="target.identifier+'_degreeOfAlignment'">
                                                                 <span class="visually-hidden">{{ t('degreeOfAlignment') }} - </span>
-                                                                {{ lstring(globalGoalsAndTargets.find(e=>e.identifier == target.identifier).title) }}
+                                                                {{ lstring(globalTargets.find(e=>e.identifier == target.identifier).title) }}
                                                             </label>
                                                         </km-form-group>
                                                     </td>
@@ -111,7 +131,12 @@
                                             <span :class="{'text-warning font-weight-bold': (document.degreeOfAlignment||{}).identifier=='68197B76-67B4-40AD-BB14-A8C340E1320B'}">Medium = covers most elements of the global target; </span>
                                             <span :class="{'text-danger font-weight-bold': (document.degreeOfAlignment||{}).identifier=='9668759B-3653-4994-A917-3F039B0BAA5C'}">Low = covers at least one element of the global target</span>
                                         </small>
-                                    </km-form-group>                                              
+                                    </km-form-group>    
+                                    
+                                    <km-form-group name="implementingConsiderationsInfo" 
+                                        caption="Explanation, including which aspects of the goal or target are covered">
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    </km-form-group>
                                     <km-form-group name="relatedOtherProcesses" caption="Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it">
                                         <km-multi-checkbox v-model="document.implementingConsiderations" :options="gbfTargetConsideration">
                                         </km-multi-checkbox>
@@ -119,10 +144,6 @@
                                     </km-form-group>
                                     <km-form-group name="implementingConsiderationsInfo" caption="Please explain how these considerations have been taken into account">
                                         <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                    </km-form-group>
-                                    <km-form-group name="implementingConsiderationsInfo" 
-                                        caption="Explanation, including which aspects of the goal or target are covered">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
 
                                 </div>
@@ -228,14 +249,14 @@
                         <km-form-group>
                             <div class="card">
                                 <div class="card-header bg-secondary">
-                                    Means of implementation and barriers to implementation
+                                    Means to implementation and barriers to implementation
                                 </div>
                                 <div class="card-body">
                                     <km-form-group name="additionalImplementation" 
                                         caption="Please indicate if additional means of implementation are needed for the attainment of this national target.">
                                        
                                         <km-form-check-group>
-                                            <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationRequire"    value="additionalImplementationRequired"  v-model="document.additionalImplementation.identifier" label="Yes (Additional means of implementation are needed for the attainment of this national target)"/>
+                                            <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationRequired"   value="additionalImplementationRequired"  v-model="document.additionalImplementation.identifier" label="Yes (Additional means of implementation are needed for the attainment of this national target)"/>
                                             <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationAvailable"  value="additionalImplementationAvailable" v-model="document.additionalImplementation.identifier" label="No (Means of implementation available)"/>
                                             <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationOther"      value="additionalImplementationOther"                             v-model="document.additionalImplementation.identifier" label="Other"/>
                                         </km-form-check-group>                                    
@@ -288,7 +309,7 @@
             <CModalTitle>Global Goals/Targets</CModalTitle>
         </CModalHeader>
         <CModalBody>
-            <km-multi-checkbox v-model="selectedGlobalTargets" :options="globalGoalsAndTargets">
+            <km-multi-checkbox v-model="selectedGlobalTargets" :options="globalTargets" @update:modelValue="onGoalsAndTargetSelected(selectedGlobalTargets, 'targets')">
             </km-multi-checkbox>
         </CModalBody>   
         <CModalFooter>
@@ -363,19 +384,18 @@
     }
 
     if(document.value.globalTargetAlignment?.length){
-        selectedGlobalTargets.value = document.value.globalTargetAlignment?.map(e=>{return { identifier : e.identifier }})
+        selectedGlobalTargets.value = document.value.globalTargetAlignment?.filter(e=>e.identifier.startsWith('GBF-T'))?.map(e=>{return { identifier : e.identifier }});        
     }
     
     //initialize for local use
     document.value.government = document.value?.government || {};
     document.value.additionalImplementation = document.value?.additionalImplementation || {};
 
-    const globalGoalsAndTargets = computed(()=>{
-        const goalsAndTargets = [
-            ...((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))),
-            ...((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))), 
-        ]
-        return goalsAndTargets;
+    const globalTargets = computed(()=>{
+        return (thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
+    })
+    const globalGoals   = computed(()=>{
+        return ((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
     })
     const gbfTargetConsideration = computed(()=>{
         return (thesaurusStore.getDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
@@ -383,6 +403,7 @@
     const formattedDegreeOfAlignments = computed(()=>{
         return thesaurusStore.getDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT)||[]
     })
+    const globallyAlignedTargets  = computed(()=>document.value.globalTargetAlignment?.filter(e=>e.identifier.startsWith('GBF-T')))
     const headlineIndicators      = computed(()=>headlineIndicatorsRef.value||[]);
     const componentIndicators     = computed(()=>componentIndicatorsRef.value||[]);
     const complementaryIndicators = computed(()=>complementaryIndicatorsRef.value||[]);
@@ -401,8 +422,12 @@
     onMounted(() => {
         if(user?.value?.isAuthenticated){
             document.value.government.identifier = document.value?.government?.identifier || user.value.government
+
             if(document.value?.globalTargetAlignment)
-                onGoalsAndTargetSelected(document.value?.globalTargetAlignment);
+                onGoalsAndTargetSelected(document.value?.globalTargetAlignment, 'targets');
+
+            if(document.value?.globalGoalAlignment)
+                onGoalsAndTargetSelected(document.value?.globalGoalAlignment);
         }
     })  
 
@@ -418,18 +443,21 @@
             props.onPostSaveDraft(document)
     }
 
-    const onGoalsAndTargetSelected = async (selected)=>{
+    const onGoalsAndTargetSelected = async (selected, type)=>{
 
-        document.value.globalTargetAlignment = selected.map(e=>{
-            const existing = document.value.globalTargetAlignment?.find(target=>target.identifier == e.identifier)
-            return { identifier : e.identifier, degreeOfAlignment:{}, ...(existing||{}) }
-        });
+        if(type == 'targets'){
+            document.value.globalTargetAlignment = selected.map(e=>{
+                const existing = document.value.globalTargetAlignment?.find(target=>target.identifier == e.identifier)
+                return { identifier : e.identifier, degreeOfAlignment:{}, ...(existing||{}) }
+            });
+        }
         
-
-        const headlineRes       = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
-        const componentRes      = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComponentIndicator(e.identifier)}));
-        const complementaryRes  = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)}));
-        const binaryRes         = await Promise.all(selected.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
+        //show Indicators for both Global Goals and Targets
+        const selectedGoalsAndTargets = [...(document.value.globalGoalAlignment||[]), ...(document.value.globalTargetAlignment||[]) ]
+        const headlineRes       = await Promise.all(selectedGoalsAndTargets.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
+        const componentRes      = await Promise.all(selectedGoalsAndTargets.map(e=>{return GbfGoalsAndTargets.loadGbfComponentIndicator(e.identifier)}));
+        const complementaryRes  = await Promise.all(selectedGoalsAndTargets.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)}));
+        const binaryRes         = await Promise.all(selectedGoalsAndTargets.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
 
         headlineIndicatorsRef.value      = sortBy(uniqBy([...(headlineRes?.flat()||[])], 'identifier'), 'title')
         componentIndicatorsRef.value     = sortBy(uniqBy([...(componentRes?.flat()||[])], 'identifier'), 'title')

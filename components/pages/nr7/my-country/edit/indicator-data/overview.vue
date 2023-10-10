@@ -97,7 +97,7 @@
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { KmDocumentsService } from '@/services/kmDocuments';
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
-    
+    import { alignedGoalsTargets } from '@/components/pages/national-targets/my-country/part-2/util';    
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import $ from 'jquery';
 
@@ -172,8 +172,8 @@
 
         const response = await KmDocumentsService.loadDocuments(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`,500, undefined, 0, true)
         const targets  = await Promise.all(response?.Items?.map(async e=>{
-                            const headlineIndicators = await Promise.all(e.body?.globalTargetAlignment?.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
-                            const binaryIndicators   = await Promise.all(e.body?.globalTargetAlignment?.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
+                            const headlineIndicators = await Promise.all(alignedGoalsTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
+                            const binaryIndicators   = await Promise.all(alignedGoalsTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
                             return {
                                 identifier             : e.identifier,
                                 title                  : e.title,

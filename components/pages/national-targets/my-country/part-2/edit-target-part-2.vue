@@ -83,7 +83,7 @@
                                                                     {{index+1}}. {{lstring(target.title)}}
                                                                 </div>
                                                             </km-form-group>
-                                                            <km-form-group name="hasReferencePeriod" required caption="Is there a reference period for above national target(s) which relates to the headline indicator? (rephrase?)">
+                                                            <km-form-group name="hasReferencePeriod" required caption="Is there a reference period for above national target(s) which relates to the headline indicator?">
                                                                 <km-form-check-group>
                                                                     <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodYes'+ indicator.headlineIndicator.identifier"  :value="true"  v-model="indicator.hasReferencePeriod" label="Yes"/>
                                                                     <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodNo' + indicator.headlineIndicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" label="No"

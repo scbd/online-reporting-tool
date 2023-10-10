@@ -55,8 +55,8 @@
                     <th scope="row">{{ index+1 }}</th>
                     <td>{{(draft.workingDocumentTitle||draft.title).en}}</td>
                     <td>
-                      <ul v-if="draft.body.globalTargetAlignment">
-                        <li v-for="target in draft.body.globalTargetAlignment" :key="target.identifier">
+                      <ul v-if="alignedGoalsTargets(draft.workingDocumentBody||draft.body)?.length">
+                        <li v-for="target in alignedGoalsTargets(draft.workingDocumentBody||draft.body)" :key="target.identifier">
                           <a v-if="target.identifier.startsWith('GBF-GOAL')" href="https://www.cbd.int/gbf/goals/" target="_blank">{{ target.identifier }}</a> 
                           <a v-if="target.identifier.startsWith('GBF-TARGET')" :href="`https://www.cbd.int/gbf/targets/${getTargetNumber(target.identifier)}`" target="_blank">{{ target.identifier }}</a> 
                         </li>
@@ -104,6 +104,7 @@
     import { useStorage } from '@vueuse/core'
     import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
     import { KmDocumentsService } from "@/services/kmDocuments";
+    import { alignedGoalsTargets } from '@/components/pages/national-targets/my-country/part-2/util';    
 
 
     const rowsPerPage              = UTILS.ROWS_PER_PAGE;
