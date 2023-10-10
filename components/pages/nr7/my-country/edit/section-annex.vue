@@ -1,109 +1,79 @@
 <template>
-  <span>Test section</span>
-  
-  <!-- <CCard>
-    <CCardHeader>
-      <slot name="header">
-        <CIcon name="cil-grid" /> Annex : Information as requested in related decisions adopted by the Conference of the
-        Parties at its fifteenth meeting
-      </slot>
-    </CCardHeader>
-    <CCardBody>
+    <CCard>
+      <CCardHeader>
+        <slot name="header"> NR7 Annex</slot>
+      </CCardHeader>
+      <CCardBody>
 
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button @click="submitDocument()" class="btn btn-primary">Save</button>
-        <NuxtLink to="/national-reports/nr7/edit">
-          <CButton color="success ml-1">
-            <font-awesome-icon icon="fa-solid fa-book-atlas" /> Go to Overview
-          </CButton>
-        </NuxtLink>
-      </div>
-      <form>
-      <div class="alert alert-warning mt-2" role="alert">
-        <h4 class="alert-heading">Help!</h4>
-        It is suggested that in this annex, Parties focus on the implementation of the following decisions of COP 15
-        adopted as part of the post-2020 global biodiversity framework:
-        <ul>
-          <li>Strategy for capacity building/development;</li>
-          <li>Long-term approach to mainstreaming biodiversity;</li>
-          <li>Gender plan of action;</li>
-          <li>Strategy for resource mobilization.</li>
-        </ul>
-      </div>
-      <div class="form-group">
-        <label>Some label for this field</label>
-        <small id="emailHelp" class="form-text text-muted">some help related to this field</small>
-        <ckeditor></ckeditor>
-      </div>
-
-      <div class="form-group">
-        <label>Any other websites, web links and files</label></br>
-        <button @click="submitDocument()" class="btn btn-secondary"><font-awesome-icon icon="fa-globe" /> Add
-          Links</button>
-        <button @click="submitDocument()" class="btn btn-secondary"><font-awesome-icon icon="fa-file" /> Add
-          Files</button>
-      </div>
-      <div class="form-group">
-
-        <div class="form-group">
-          <label>Any other information</label>
-          <ckeditor></ckeditor>
-
-          <button @click="AddAdditionalBlocks()" class="btn btn-primary">Add Other information block</button><br></br>
-          <div v-for="(additional, index) in additionalBlocks" :key="index">
-            <ckeditor v-model="additional.additionalInfo"></ckeditor>
-          </div>
-
-          <button @click="AddAdditionalBlocks()" class="btn btn-primary">Add Other information block</button>
+        <div  v-if="isLoading">
+            <km-spinner></km-spinner>
         </div>
-      </div>
+        <form v-if="!isLoading" name="editForm">          
+            <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
+                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
+                <template #submission>
+                    
+                    <km-form-group>
+                        <div class="card">
+                            <div class="card-header bg-secondary">
+                                Any other information
+                            </div>
+                            <div class="card-body">                      
+                                <km-form-group required caption="" name="elementOfGlobalTargetsInfo">
+                                    <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                </km-form-group>                                    
+                            </div>
+                        </div>
+                    </km-form-group>
+                </template>
+                <template #review>                
+                    <view-nr7-section-I :identifier="document.header.identifier" :document="cleanDocument"></view-nr7-section-I>
+                </template>
+            </km-form-workflow>
+            <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
+        </form>
 
-      </form>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button @click="submitDocument()" class="btn btn-primary">Save</button>
-        <button @click="submitDocument()" class="btn btn-primary">Cancel</button>
-      </div>
-    </CCardBody>
-  </CCard> -->
-</template>
- 
-<script>
-import { defineComponent } from '@vue/composition-api'
-
-export default defineComponent({
-  components:{
-  },
-  setup() {
-    
-  },
-})
-</script>
-
-<!-- <script>
- 
-export default {
-  components: {
-    Ckeditor
-  },
-  name: 'Nr7Section7',
-  meta: {
-    schema: 'nationalReport7'
-  },
-  props: {
-
-  },
-  methods: {
-    AddAdditionalBlocks() {
-      this.additionalBlocks.push(
-        { additionalInfo: '' }
-      )
-    }
-  },
-  data() {
-    return {
-      additionalBlocks: []
-    }
-  }
-}
-</script> -->
+      </CCardBody>
+    </CCard>
   
+</template>
+
+<script setup>
+  
+    import { useAsyncState } from '@vueuse/core'
+    import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
+        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner, KmFormWorkflow
+    } from "~/components/controls";
+    // import viewTarget               from "./view-target-part-2.vue";
+    import { useRealmConfStore }    from '@/stores/realmConf';
+    import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
+    import { useRoute } from 'vue-router' 
+    import { useToast } from 'vue-toast-notification';
+    import { useStorage } from '@vueuse/core'
+    import { EditFormUtility } from "@/services/edit-form-utility";
+
+    const props = defineProps({
+        workflowActiveTab  : {type:Number, default:1 },
+        onClose            : {type:Function, required:false},
+        onPostSaveDraft    : {type:Function, required:false},
+    }) 
+
+    const { user }        = useAuth();
+    const security        = useSecurity();
+    const route           = useRoute();
+    const {$appRoutes:appRoutes }   = useNuxtApp();
+    const locale          = useI18n().locale
+    const $toast                = useToast();        
+    const container = useAttrs().container;
+
+    let document = {
+        header : {
+            schema : SCHEMAS.NATIONAL_REPORT_7,
+            identifier : useGenerateUUID(),
+            languages  : EditFormUtility.getPreferredEditLanguages()
+        },        
+        government : {
+            identifier : user.value?.government
+        },
+    }
+</script>

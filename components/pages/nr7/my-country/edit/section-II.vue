@@ -14,7 +14,7 @@
                 <template #submission>
                     <km-form-group>
                         <div class="card">
-                            <div class="card-body">    {{ sectionII }}                  
+                            <div class="card-body">              
                                 <km-form-group name="hasRevisedNbsap" :caption="t('revisedNbsap')">                                       
                                     <km-form-check-group>
                                         <km-form-check-item type="radio" name="hasRevisedNbsap"  for="hasRevisedNbsap" id="hasRevisedNbsapYes"       value="yes"        v-model="sectionII.hasRevisedNbsap.value" :label="t('yes')"/>
@@ -177,6 +177,7 @@
 
     function cleanDocument(){
         const  clean = useKmStorage().cleanDocument({...nationalReportStore.nationalReportDraft});
+        clean.sectionIII = undefined;
         return toRef(clean);
     }
 </script>

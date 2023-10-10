@@ -17,7 +17,7 @@
           </NuxtLink>
         </CNavItem>
         <CNavItem>
-          <NuxtLink class="nav-link" :to="localePath('/national-reports/nr7/edit')">
+          <NuxtLink class="nav-link" :to="localePath('/national-reports/nr7')">
           {{t('menu7Nr')}} 
           </NuxtLink>
         </CNavItem>

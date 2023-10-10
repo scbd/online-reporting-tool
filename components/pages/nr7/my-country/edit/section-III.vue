@@ -1,18 +1,17 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header">{{t('sectionIII')}} {{t('sectionIIIDescription')}}</slot>
+        {{t('sectionIII')}} {{t('sectionIIIDescription')}}
       </CCardHeader>
       <CCardBody>
 
         <div  v-if="nationalReportStore.isBusy">
             <km-spinner></km-spinner>
         </div>
-        <!-- {{sectionIII}} -->
         <form v-if="!nationalReportStore.isBusy && nationalReportStore.nationalReportDraft" name="editForm">          
-            <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
-                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
-                <template #submission>
+            <!-- <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
+                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft"> -->
+                <!-- <template #submission> -->
                     <CButton class="float-end mr-1 mb-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="nationalTargets">
                         <span v-if="!accordionOpen">{{ t('expandAll') }}</span>
                         <span v-if="accordionOpen" >{{ t('collapseAll') }}</span>
@@ -21,7 +20,7 @@
                     <br>
                     <CAccordion always-open id="mapping-accordion">                    
                         <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in nationalTargets" :key="target">
-                            <CAccordionHeader :id="'gbTraget_'+target.identifier">
+                            <CAccordionHeader :id="'gbfTarget'+target.identifier">
                                 {{lstring(target.title)}}                           
                             </CAccordionHeader>
                             <CAccordionBody> 
@@ -61,13 +60,13 @@
                                         </div>
                                     </div>
                                 </km-form-group>
-                                <km-form-group v-if="target.sectionIII.indicators" >
+                                <km-form-group v-if="target.sectionIII?.indicators" >
                                     <div class="card">
                                         <div class="card-header bg-secondary" >
                                             Indicators
                                         </div>
                                         <div class="card-body">
-                                            <div class="card mb-3" v-for="indicator in target.sectionIII.indicators" :key="indicator">
+                                            <div class="card mb-3" v-for="indicator in target.sectionIII?.indicators" :key="indicator">
                                                 <div class="card-header">
                                                     {{ lstring(indicator.title) }} 
                                                     <small>({{ indicator.identifier }})</small>
@@ -90,26 +89,26 @@
                         </CAccordionItem>
                     </CAccordion>         
                     
-                </template>
+                <!-- </template>
                 <template #review>                
                     <view-nr7-section-II :identifier="nationalReportStore.nationalReportDraft.header.identifier" :document="nationalReportStore.nationalReportDraft"></view-nr7-section-II>
                 </template>
             </nr7-workflow>
-            <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
+            <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner> -->
         </form>
 
       </CCardBody>
     </CCard>
   
 </template>
-<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/section-II.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/section-III.json"></i18n>
 <script setup>
   
     import { useAsyncState } from '@vueuse/core'
     import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
         KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner
     } from "~/components/controls";
-    import Nr7Workflow              from './NR7Workflow.vue'
+    // import Nr7Workflow              from './NR7Workflow.vue'
     import viewNr7SectionII         from "@/components/pages/nr7/my-country/view/section-II.vue";
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
@@ -183,6 +182,7 @@
 
     function cleanDocument(){
         const  clean = useKmStorage().cleanDocument({...nationalReportStore.nationalReportDraft});
+        clean.sectionIII = undefined;
         return toRef(clean);
     }
 
@@ -237,12 +237,12 @@
         nationalIndicatorData.value = await loadNationalIndicatorData();
 
         document.value = nationalReportStore.nationalReportDraft;
-        sectionIII = nationalReportStore.nationalReportDraft.sectionIII;
+        // sectionIII = nationalReportStore.nationalReportDraft.sectionIII;
         if(!sectionIII){
             nationalReportStore.nationalReportDraft.sectionIII = sectionIII = toRef([]);
         }
 
-        if(!sectionIII?.length){
+        // if(!sectionIII?.length){
             nationalTargets.value.forEach(e=>{
                 const indicators = [
                     ...(uniqBy(e.headlineIndicators     ||[], 'identifier').map(e=>mapWithNationalData(e, 'headlineIndicators'))),
@@ -260,11 +260,11 @@
                 e.sectionIII = nationalTarget;
                 sectionIII.value.push({nationalTarget});
             });
-        }
-        else{
-            //remove any deleted one
-            //add new targets
-        }
+        // }
+        // else{
+        //     //remove any deleted one
+        //     //add new targets
+        // }
        
 
         setTimeout(()=>toggleAccordion(true), 1000);

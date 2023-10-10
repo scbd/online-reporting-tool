@@ -101,7 +101,7 @@
         </CCol>
         <CCol md="3" sm="6">
 
-            <km-link :to="appRoutes.NATIONAL_REPORTS" class="unset-anchor">
+            <km-link :to="appRoutes.NATIONAL_REPORTS_NBSAP" class="unset-anchor">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
                     <span height="52" class="my-4">National Biodiversity Strategies and Action Plans (NBSAPs)</span>

@@ -8,7 +8,7 @@
 <!-- {{ props }}  -->
     <CAccordion always-open id="mapping-accordion" v-if="computedIndicators?.length">                    
         <CAccordionItem :item-key="index+1" :visible="true" v-for="(indicator, index) in computedIndicators" :key="indicator.identifier"  always-open>
-            <CAccordionHeader :id="'gbTraget_'+indicator.identifier">
+            <CAccordionHeader :id="'gbfTarget'+indicator.identifier">
                 {{lstring(indicator.title||indicator)}}                           
             </CAccordionHeader>
             <CAccordionBody> 

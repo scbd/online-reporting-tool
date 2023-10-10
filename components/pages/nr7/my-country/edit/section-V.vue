@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> NR7 Section I</slot>
+        <slot name="header">Section V. Conclusions on the national implementation of the Convention and the Kunming-Montreal Global Biodiversity Framework</slot>
       </CCardHeader>
       <CCardBody>
 
