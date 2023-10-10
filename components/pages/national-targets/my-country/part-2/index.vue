@@ -176,10 +176,10 @@
     )
 
     const filters = [
-        {value : 'missingMapping', title: 'Missing national mapping record'},
-        {value : 'missingTarget', title: 'Missing national target record'},
-        {value : 'hasMapping', title: 'Has national mapping record'},
-        {value : 'hasTarget', title: 'Has national target record'}
+        {value : 'missingMapping', title: 'Missing national mapping record (part II)'},
+        {value : 'missingTarget', title: 'Missing national target record (part I)'},
+        {value : 'hasMapping', title: 'Has national mapping record (part II)'},
+        {value : 'hasTarget', title: 'Has national target record (part I)'}
     ]
 
     const computedTargets = computed(()=>{

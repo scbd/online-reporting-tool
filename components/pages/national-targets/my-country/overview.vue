@@ -53,7 +53,7 @@
                             <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             {{t('validatePartIAndPartII')}}
                         </CButton>
-                        <CButton @click="onRefresh()" color="secondary">
+                        <CButton @click="onRefresh()" color="secondary" style="z-index: 1000;">
                             <font-awesome-icon icon="fa-arrows-rotate"/>
                             {{t('refresh')}}
                         </CButton>
