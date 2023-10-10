@@ -30,7 +30,7 @@
                 
                 <CAccordion always-open id="mapping-accordion">                    
                     <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in computedTargets" :key="target">
-                        <CAccordionHeader :id="'gbTraget_'+target.identifier">
+                        <CAccordionHeader :id="'gbfTarget'+target.identifier">
                             {{lstring(target.title)}}                           
                         </CAccordionHeader>
                         <CAccordionBody>
@@ -206,7 +206,7 @@
 
                 if(route?.query?.globalTarget){
                     setTimeout(() => {
-                        scrollToElement(`#gbTraget_${route.query.globalTarget}`);
+                        scrollToElement(`#gbfTarget${route.query.globalTarget}`);
                     }, 200);
                     const target = gbfGoalAndTargetList.value?.find(e=>e.identifier == route.query.globalTarget);
                     if(target?.nationalTargets?.length)

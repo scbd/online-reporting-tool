@@ -12,9 +12,9 @@ const appRoutes = {
     NATIONAL_TARGETS_MY_COUNTRY_PART_II_EDIT: '/national-targets/my-country/part-2/:identifier/edit',
     NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW: '/national-targets/my-country/part-2/:identifier/view',
     
+    NATIONAL_REPORTS_NBSAP      : 'https://chm.cbd.int/database?schema_s=nationalReport',
     NATIONAL_REPORTS            : '/national-reports',
-    NATIONAL_REPORTS_NR6        : '/national-reports/nr6',
-
+    NATIONAL_REPORTS_NR6        : 'https://chm.cbd.int/database?schema_s=nationalReport6',
     NATIONAL_REPORTS_NR7        : '/national-reports/nr7',
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT               : '/national-reports/nr7/my-country/edit',
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_INDICATOR_DATA: '/national-reports/nr7/my-country/edit/indicator-data',

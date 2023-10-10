@@ -12,13 +12,16 @@
 
 <script setup lang="ts">
 import searchResult from '@/components/controls/search/search-result.vue';
+import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';
 
+    const realmConfStore  = useRealmConfStore();
+    const realmConf = realmConfStore.realmConf; 
     const documents = ref([]);
 
     const searchQuery = {
         rows:300,
-        q : `_state_s: public AND schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:ORT-DEV`,
+        q : `_state_s: public AND schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:${realmConf.realm}`,
         sort: "updatedDate_dt desc"
     }
     const result = await useAPIFetch('/api/v2013/index/select', {method:'POST', body : searchQuery})

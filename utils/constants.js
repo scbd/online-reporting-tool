@@ -26,6 +26,8 @@ export const ROLES = {
 export const SCHEMAS = {
     NATIONAL_TARGET_7                   : 'nationalTarget7',
     NATIONAL_TARGET_7_MAPPING           : 'nationalTarget7Mapping',    
+    NATIONAL_REPORT                     : 'nationalReport',
+    NATIONAL_REPORT_6                   : 'nationalReport6',
     NATIONAL_REPORT_7                   : 'nationalReport7',
     NATIONAL_REPORT_7_INDICATOR_DATA    : 'nationalReport7IndicatorData'
 }

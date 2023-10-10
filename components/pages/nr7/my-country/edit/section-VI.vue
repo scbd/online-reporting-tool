@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> NR7 Section I</slot>
+        <slot name="header"> NR7 Section VI</slot>
       </CCardHeader>
       <CCardBody>
 

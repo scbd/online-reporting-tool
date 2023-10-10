@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> NR7 Section I</slot>
+        <slot name="header">Section IV. Assessment of national progress towards the goals and targets of the Kunming-Montreal Global Biodiversity Framework</slot>
       </CCardHeader>
       <CCardBody>
 
