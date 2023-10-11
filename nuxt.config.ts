@@ -4,9 +4,9 @@ import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 
-// process.env.ACCOUNTS_HOST_URL = process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbd.int';
-// process.env.API_URL           = process.env.API_URL           || 'https://api.cbd.int';
-// process.env.REALM_CONF_HOST   = process.env.REALM_CONF_HOST   || 'ort.cbd.int';
+process.env.ACCOUNTS_HOST_URL = process.env.ACCOUNTS_HOST_URL || 'https://accounts.cbd.int';
+process.env.API_URL           = process.env.API_URL           || 'https://api.cbd.int';
+process.env.REALM_CONF_HOST   = process.env.REALM_CONF_HOST   || 'ort.cbd.int';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
