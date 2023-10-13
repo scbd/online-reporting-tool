@@ -18,11 +18,11 @@ export default defineNuxtConfig({
                         endpoints: {
                             logout: false,
                             login: {
-                                url: `${process.env.API_URL}/api/v2013/authentication/token`,
+                                url: `${process.env.NUXT_PUBLIC_API_URL}/api/v2013/authentication/token`,
                                 method: 'post'
                             },
                             user: {
-                                url: `${process.env.API_URL}/api/v2013/authentication/user`,
+                                url: `${process.env.NUXT_PUBLIC_API_URL}/api/v2013/authentication/user`,
                                 method: 'get'
                             }
                         },

@@ -73,7 +73,7 @@
                                                 </div>
                                             </km-form-group>
 
-                                            <div class="mt-3" v-if="indicatorData">
+                                            <div class="mt-3" v-if="indicatorData?.data">
                                                 <view-data :indicator-data="indicatorData" v-if="indicatorData"></view-data>
                                             </div>
 
@@ -136,7 +136,10 @@
     const wcmcIndicatorData = ref([])
     
 
-    const indicatorData = computed(()=>{return {data:document.value?.data}});
+    const indicatorData = computed(()=>{
+        const { data, dataSources, description, indicatorProviders } = document.value
+        return { data, dataSources, description, indicatorProviders };        
+    });
   
     if(props.rawDocument){
         document.value = cloneDeep({...props.rawDocument});
@@ -191,10 +194,10 @@
         readXlsxFile(file).then((rows) => {
             // `rows` is an array of rows
             // each row being an array of cells.
-            console.log(rows)
 
             if(!rows[0].some(e=>['year', 'value'].includes(e.toLowerCase()))){
-                alert('invalid template, please use the system provided template')
+                alert('invalid template, please use the system provided template');
+                return;
             }
             const data = [];
             for (let i = 1; i < rows.length; i++) {
@@ -204,7 +207,6 @@
             
             document.value.data = data;
         })
-        console.log(file)
     };
 
     function onSourceOfDataChange(value){
@@ -220,8 +222,11 @@
     }
 
     async function loadGlobalDataSet(){
-        isFetchingGlobalData.value = true;
         wcmcIndicatorData.value = [];
+        if(!document.value?.indicator?.identifier)
+            return;
+
+        isFetchingGlobalData.value = true;
         //1. get list of targets and its indicator https://tt-backend.new-web-supported-staging.linode.unep-wcmc.org/api/goalsTargets
         //2. map indicator with cbd indicator
         //3. get indicator data using iso3 country and indicator id https://tt-backend.new-web-supported-staging.linode.unep-wcmc.org/api/indicator/country
@@ -232,7 +237,7 @@
         
         //1
         if(!wcmcTargets.value.length){
-            const targets = await useAPIFetch('/api/target-tracker/goals-targets', { baseURL: 'http://localhost:3000'});
+            const targets = await useAPIFetch('/api/target-tracker/goals-targets', {baseURL : window.location.origin});
             const cbdIndicators = await GbfGoalsAndTargets.loadGbfHeadlineIndicator();
             wcmcTargets.value = targets.data.map(e=>e.indicators).flat().map(e=>{
                 const cbdIndicator = cbdIndicators.find(cbd=>cbd.title.en.trim() == e.title.trim());
@@ -246,30 +251,37 @@
         }
         const country = countryStore.countries.find(e=>e.code == document.value.government.identifier.toUpperCase());
 
-        console.log(wcmcTargets, country);
-        const indicator = wcmcTargets.value.find(e=>e.cbdIndicator.identifier == document.value.indicator.identifier);
-        const body ={
-            indicator: indicator.indicatorId,
-            country  : country.code3
-        }
-        const dataResponse = await useAPIFetch('/api/target-tracker/country-indicator-data', {body, method:'POST' , baseURL: 'http://localhost:3000'});
-        wcmcIndicatorData.value = dataResponse;
+        if(document.value?.indicator?.identifier){
+            const indicator = wcmcTargets.value.find(e=>e.cbdIndicator?.identifier == document.value?.indicator?.identifier);
+            const body ={
+                indicator: indicator.indicatorId,
+                country  : country.code3
+            }
+            const dataResponse = await useAPIFetch('/api/target-tracker/country-indicator-data', {body, method:'POST', baseURL:window.location.origin });
+            wcmcIndicatorData.value = dataResponse;
 
-        const globalData = dataResponse?.data?.charts?.filter(e=>e.tabType == 'GloballyDerived')
-        if(globalData?.length) {
-            const chart = globalData[0];
-            const valueData = chart.datasets.find(e=>e.derived == "Global");
-            
-            document.value.data = chart.labels.map((e, index)=>{
-                            const val = valueData?.data[index]
-                            return {
-                                year : e.replace(/Baseline|\(|\)/g, ''),
-                                value: val
-                            }
-                        });
+            const globalData = dataResponse?.data?.charts?.filter(e=>e.tabType == 'GloballyDerived')
+            if(globalData?.length) {
+                const chart = globalData[0];
+                const valueData = chart.datasets.find(e=>e.derived == "Global");
+                
+                document.value.data = chart.labels.map((e, index)=>{
+                                const val = valueData?.data[index]
+                                return {
+                                    year : e.replace(/Baseline|\(|\)/g, ''),
+                                    value: val
+                                }
+                            });
+
+                
+                const globallyDerivedData = dataResponse?.data?.globallyDerivedData;
+                if(globallyDerivedData){
+                    document.value.dataSources = globallyDerivedData.dataSources;
+                    document.value.description = globallyDerivedData.description
+                    document.value.indicatorProviders = globallyDerivedData.indicatorProviders
+                }
+            }
         }
-       
-        console.log(globalData)
         isFetchingGlobalData.value = false;
     }
 

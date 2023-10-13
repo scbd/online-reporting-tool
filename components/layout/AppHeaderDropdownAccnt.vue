@@ -24,7 +24,7 @@
       <CDropdownItem @click="logout()"> <CIcon icon="cil-lock-locked" /> Logout </CDropdownItem>
     </CDropdownMenu>
   </CDropdown>
-  <a v-if="!user || !user.isAuthenticated" :href="`https://accounts.cbddev.xyz?returnUrl=${returnUrl}`">Sign in</a>
+  <a v-if="!user || !user.isAuthenticated" :href="`${accountsUrl}?returnUrl=${returnUrl}`">Sign in</a>
 </template>
 
 <script>
@@ -36,10 +36,12 @@ export default {
       await authLogout()
       window.location.reload()
     }
+    
     return {
-      user: useAuth().user,
-      itemsCount: 42,
-      returnUrl :window.location.href,
+      user       : useAuth().user,
+      itemsCount : 42,
+      accountsUrl: useRuntimeConfig().public.ACCOUNTS_HOST_URL,
+      returnUrl  : window.location.href,
       logout
     }
   },
