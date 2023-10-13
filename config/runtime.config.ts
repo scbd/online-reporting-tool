@@ -1,14 +1,14 @@
 export default defineNuxtConfig({
     runtimeConfig : {
         public:{
-            ACCOUNTS_HOST_URL : process.env.ACCOUNTS_HOST_URL,
-            API_URL           : process.env.API_URL          ,
-            REALM_CONF_HOST   : process.env.REALM_CONF_HOST  ,
+            ACCOUNTS_HOST_URL : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL,
+            API_URL           : process.env.NUXT_PUBLIC_API_URL          ,
+            REALM_CONF_HOST   : process.env.NUXT_PUBLIC_REALM_CONF_HOST  ,
             auth : {
-                accountsHostUrl : process.env.ACCOUNTS_HOST_URL,
+                accountsHostUrl : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL,
                 redirect: {
-                    login:  `${process.env.ACCOUNTS_HOST_URL}/signin`,
-                    logout: `${process.env.ACCOUNTS_HOST_URL}/logout`,
+                    login:  `${process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL}/signin`,
+                    logout: `${process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL}/logout`,
                     callback: false,
                     home: '/'
                 },
@@ -27,11 +27,11 @@ export default defineNuxtConfig({
                         endpoints: {
                             logout: false,
                             login: {
-                                url: `${process.env.API_URL}/api/v2013/authentication/token`,
+                                url: `${process.env.NUXT_PUBLIC_API_URL}/api/v2013/authentication/token`,
                                 method: 'post'
                             },
                             user: {
-                                url: `${process.env.API_URL}/api/v2013/authentication/user`,
+                                url: `${process.env.NUXT_PUBLIC_API_URL}/api/v2013/authentication/user`,
                                 method: 'get'
                             }
                         },
@@ -44,7 +44,7 @@ export default defineNuxtConfig({
             },
             socketIo: {
                 name: 'SCBD',
-                url: `${process.env.API_URL}`,
+                url: `${process.env.NUXT_PUBLIC_API_URL}`,
                 default: true,
             },
         }
