@@ -2,7 +2,11 @@
     <span v-if="useSecurity().role.isAdministrator()">
         {{ attrs }}, {{ modelValue }}, {{ attrs.value }}
     </span>
-    <CFormCheck :inline="attrs.inline" :type="attrs.type" @click="onCheck" :checked="modelValue === attrs.value" 
+    <CFormCheck :inline="attrs.inline" :type="attrs.type" 
+        :name="attrs.name"  :for="attrs.for" 
+        :id="attrs.id" :value="attrs.value"  
+        @click="onCheck" 
+        :checked="modelValue === attrs.value" 
         :label="label" />  
 </template>
 <script lang="ts" setup>
