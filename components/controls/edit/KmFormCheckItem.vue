@@ -1,13 +1,13 @@
 <template>
-    <span v-if="useSecurity().role.isAdministrator()">
+    <!-- <span v-if="useSecurity().role.isAdministrator()">
         {{ attrs }}, {{ modelValue }}, {{ attrs.value }} {{ modelValue == attrs.value }}
-    </span>
+    </span> -->
     <CFormCheck :inline="attrs.inline" :type="attrs.type" 
         :name="attrs.name"  :for="attrs.for" 
         :id="attrs.id" :value="attrs.value"  
         @click="onCheck" 
         :checked="modelValue == attrs.value" 
-        :label="label" />  
+        :label="label" v-model="props.modelValue"/> 
 </template>
 <script lang="ts" setup>
 
