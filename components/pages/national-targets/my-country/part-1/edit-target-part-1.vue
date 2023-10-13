@@ -258,7 +258,7 @@
                                         <km-form-check-group>
                                             <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationRequired"   value="additionalImplementationRequired"  v-model="document.additionalImplementation.identifier" label="Yes (Additional means of implementation are needed for the attainment of this national target)"/>
                                             <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationAvailable"  value="additionalImplementationAvailable" v-model="document.additionalImplementation.identifier" label="No (Means of implementation available)"/>
-                                            <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationOther"      value="additionalImplementationOther"                             v-model="document.additionalImplementation.identifier" label="Other"/>
+                                            <km-form-check-item type="radio" name="additionalImplementation"  for="additionalImplementation" id="additionalImplementationOther"      value="additionalImplementationOther"     v-model="document.additionalImplementation.identifier" label="Other"/>
                                         </km-form-check-group>                                    
                                     </km-form-group> 
                                     <km-form-group for="additionalImplementationCustomValue"

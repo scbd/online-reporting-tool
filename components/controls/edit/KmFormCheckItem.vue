@@ -1,5 +1,8 @@
 <template>
-    <CFormCheck v-bind="attrs" @click="onCheck" :checked="modelValue === attrs.value" 
+    <span v-if="useSecurity().role.isAdministrator()">
+        {{ attrs }}, {{ modelValue }}, {{ attrs.value }}
+    </span>
+    <CFormCheck :inline="attrs.inline" :type="attrs.type" @click="onCheck" :checked="modelValue === attrs.value" 
         :label="label" />  
 </template>
 <script lang="ts" setup>
