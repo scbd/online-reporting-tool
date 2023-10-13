@@ -108,10 +108,11 @@ import { CCard, CCardBody, CCardFooter, CCardHeader, CCardTitle } from '@coreui/
                     documentID: documentToDelete.documentID,
                 }, ''); 
                 await sleep(5000)
-            }    
-            emit('onDelete', { identifier:documentToDelete.identifier, type });
-            $toast.success(t('deleteSuccessfully'), {position:'top-right'});  
+            }     
             showDeleteConfirmation(false);
+            await sleep(200)
+            emit('onDelete', { identifier:documentToDelete.identifier, type });
+            $toast.success(t('deleteSuccessfully'), {position:'top-right'}); 
         }
         catch(e){
             useLogger().error(e, `Error deleting record ${type||''}`)
