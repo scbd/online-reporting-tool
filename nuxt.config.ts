@@ -3,6 +3,11 @@ import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite';
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+
+process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL = process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz';
+process.env.NUXT_PUBLIC_API_URL           = process.env.NUXT_PUBLIC_API_URL           || 'https://api.cbddev.xyz';
+process.env.NUXT_PUBLIC_REALM_CONF_HOST   = process.env.NUXT_PUBLIC_REALM_CONF_HOST   || 'ort.cbddev.xyz';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     devtools: { enabled: true },  
