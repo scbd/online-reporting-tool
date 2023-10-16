@@ -230,11 +230,18 @@ class editFormUtility{
     }
 
     getPreferredEditLanguages(){
+        let languages;
 
-        const { locale }              = useI18n();
+        try{
+            const { locale } = useI18n();
+            languages = [ locale.value ];            
+        }
+        catch(e){
+            const { $i18n } = useNuxtApp()
+            languages = [$i18n.locale.value]
+        }
+
         const userPreferencesStore    = useUserPreferencesStore();
-        let languages = [ locale.value ];
-        
         if(userPreferencesStore.preferredEditLanguages?.length){
             languages = uniq([...languages, ...userPreferencesStore.preferredEditLanguages]);
         }
