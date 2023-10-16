@@ -5,9 +5,12 @@ export const setUserToken = (token)=>{
 }
 
 export const getUserToken = async ()=>{
+    if(process.client){
+        const token = await getScbdIframeToken()    
+        return token;
+    }
     
-  const token = await getScbdIframeToken()    
-  return token;
+    return {};
 }
 
 async function getScbdIframeToken(){

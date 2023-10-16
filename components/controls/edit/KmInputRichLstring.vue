@@ -15,9 +15,11 @@
     </CNav>
     <CTabContent>
       <CTabPane role="tabpanel" :aria-labelledby="`tabContent-${locale}-${uid}`" v-for="locale in locales" :key="locale" 
-        :visible="selectedLocale === locale" :id="`lstringTabContent-${uid}`">       
-        <km-ck-editor v-if="selectedLocale==locale" v-model="binding[selectedLocale]" :identifier="identifier"
-            :locale="selectedLocale" @onChange="onChange"></km-ck-editor>     
+        :visible="selectedLocale === locale" :id="`lstringTabContent-${uid}`"> 
+        <client-only>
+            <km-ck-editor v-if="selectedLocale==locale" v-model="binding[selectedLocale]" :identifier="identifier"
+                :locale="selectedLocale" @onChange="onChange"></km-ck-editor>     
+        </client-only>      
       </CTabPane>
     </CTabContent>
   </div>

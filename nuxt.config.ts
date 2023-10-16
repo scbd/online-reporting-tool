@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     devtools: { enabled: true },  
-    ssr:false,
+    ssr:true,
     nitro: {
         storage: {
             ".data:auth": { driver: "fs", base: "./.data/auth" },
