@@ -211,7 +211,9 @@
 
     function onSourceOfDataChange(value){
         document.value.data = undefined;
-
+        document.value.dataSources = undefined;
+        document.value.description = undefined;
+        document.value.indicatorProviders = undefined;
         if(value == 'availableDataset'){
             loadGlobalDataSet()
         }
