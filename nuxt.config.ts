@@ -24,7 +24,8 @@ export default defineNuxtConfig({
     modules: [
         '@nuxtjs/i18n-edge',
         '@pinia/nuxt',
-        '@pinia-plugin-persistedstate/nuxt'
+        '@pinia-plugin-persistedstate/nuxt',
+        'nuxt-gtag'
     ],
     css:[
         // 'bootstrap/dist/css/bootstrap.css'
@@ -126,7 +127,10 @@ export default defineNuxtConfig({
                 name: 'SCBD',
                 url: `${process.env.NUXT_PUBLIC_API_URL}`,
                 default: true,
-            },
+            }
         }
+    },
+    gtag: {
+        id: process.env.NUXT_PUBLIC_GOOGLE_TAG_ID || 'G-XXXXXX',
     }
 })

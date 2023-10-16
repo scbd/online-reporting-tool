@@ -18,6 +18,7 @@
     "@types/node": "^18",
     "fs-extra": "^11.1.1",
     "nuxt": "^3.6.2",
+    "nuxt-gtag": "^1.1.1",
     "sass": "^1.63.6"
   },
   "dependencies": {
