@@ -1,5 +1,5 @@
 <template>
-    <div class="km-spinner">
+    <div class="km-spinner" :class="{'d-flex justify-content-center' : alignCenter}">
         <slot>
             <CSpinner  size="sm" variant="grow" v-bind="attrs"/> 
             <span class="ms-1" v-if="message">{{ message }}</span>
@@ -17,6 +17,8 @@ import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const  attrs  = useAttrs()
     const { message } = toRefs(props);
+
+    const alignCenter = attrs.hasOwnProperty('center');
     
 </script>
 
