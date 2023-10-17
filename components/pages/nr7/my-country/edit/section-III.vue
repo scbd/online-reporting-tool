@@ -4,11 +4,10 @@
         {{t('sectionIII')}} {{t('sectionIIIDescription')}}
       </CCardHeader>
       <CCardBody>
-
-        <div  v-if="nationalReportStore.isBusy">
+        <div  v-if="nationalReportStore.isBusy || isBusy">
             <km-spinner></km-spinner>
         </div>
-        <form v-if="!nationalReportStore.isBusy && nationalReportStore.nationalReportDraft" name="editForm">          
+        <form v-if="!isBusy && !nationalReportStore.isBusy && nationalReportStore.nationalReportDraft" name="editForm">          
             <!-- <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft"> -->
                 <!-- <template #submission> -->
@@ -146,6 +145,7 @@
     const nationalReportStore = useNationalReport7Store();
     const nationalTargets     = ref();
     const nationalIndicatorData = ref([]);
+    const isBusy                = ref(true);
 
     const stakeholderLists = [
         {identifier: '1', title: 'Indigenous peoples and local communities,,'},
@@ -230,44 +230,56 @@
     }
 
     async function init(){
+        isBusy.value = true;
 
-        await GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators();
-        await nationalReportStore.loadNationalReportDraft();
-        nationalTargets.value = await loadNationalTargets(); 
-        nationalIndicatorData.value = await loadNationalIndicatorData();
+        try{
+            const response = await Promise.all([
+                                GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators(),
+                                nationalReportStore.loadNationalReportDraft(),
+                                loadNationalTargets(),
+                                loadNationalIndicatorData()
+                            ]);            
+            nationalTargets.value = response[2]; 
+            nationalIndicatorData.value = response[3];
 
-        document.value = nationalReportStore.nationalReportDraft;
-        // sectionIII = nationalReportStore.nationalReportDraft.sectionIII;
-        if(!sectionIII){
-            nationalReportStore.nationalReportDraft.sectionIII = sectionIII = toRef([]);
+            document.value = nationalReportStore.nationalReportDraft;
+            // sectionIII = nationalReportStore.nationalReportDraft.sectionIII;
+            if(!sectionIII){
+                nationalReportStore.nationalReportDraft.sectionIII = sectionIII = toRef([]);
+            }
+
+            // if(!sectionIII?.length){
+                nationalTargets.value.forEach(e=>{
+                    const indicators = [
+                        ...(uniqBy(e.headlineIndicators     ||[], 'identifier').map(e=>mapWithNationalData(e, 'headlineIndicators'))),
+                        ...(uniqBy(e.binaryIndicators       ||[], 'identifier').map(e=>mapWithNationalData(e, 'binaryIndicators'))),
+                        ...(uniqBy(e.componentIndicators    ||[], 'identifier').map(e=>mapWithNationalData(e, 'componentIndicators'))),
+                        ...(uniqBy(e.complementaryIndicators||[], 'identifier').map(e=>mapWithNationalData(e, 'complementaryIndicators'))),
+                        ...(uniqBy(e.nationalIndicators     ||[], 'identifier').map(e=>mapWithNationalData(e, 'nationalIndicators'))),
+                    ]
+                    // indicators.map(e=>e.identifier)
+                    const nationalTarget = { 
+                        identifier : e.identifier,
+                        mainActionsInfo : {},
+                        indicators :  indicators
+                    };
+                    e.sectionIII = nationalTarget;
+                    sectionIII.value.push({nationalTarget});
+                });
+            // }
+            // else{
+            //     //remove any deleted one
+            //     //add new targets
+            // }
+        
+
+            setTimeout(()=>toggleAccordion(true), 1000);
+        }
+        catch(e){
+            useLogger().error(e,  'Error loading Section III')
         }
 
-        // if(!sectionIII?.length){
-            nationalTargets.value.forEach(e=>{
-                const indicators = [
-                    ...(uniqBy(e.headlineIndicators     ||[], 'identifier').map(e=>mapWithNationalData(e, 'headlineIndicators'))),
-                    ...(uniqBy(e.binaryIndicators       ||[], 'identifier').map(e=>mapWithNationalData(e, 'binaryIndicators'))),
-                    ...(uniqBy(e.componentIndicators    ||[], 'identifier').map(e=>mapWithNationalData(e, 'componentIndicators'))),
-                    ...(uniqBy(e.complementaryIndicators||[], 'identifier').map(e=>mapWithNationalData(e, 'complementaryIndicators'))),
-                    ...(uniqBy(e.nationalIndicators     ||[], 'identifier').map(e=>mapWithNationalData(e, 'nationalIndicators'))),
-                ]
-                // indicators.map(e=>e.identifier)
-                const nationalTarget = { 
-                    identifier : e.identifier,
-                    mainActionsInfo : {},
-                    indicators :  indicators
-                };
-                e.sectionIII = nationalTarget;
-                sectionIII.value.push({nationalTarget});
-            });
-        // }
-        // else{
-        //     //remove any deleted one
-        //     //add new targets
-        // }
-       
-
-        setTimeout(()=>toggleAccordion(true), 1000);
+        isBusy.value = false;
     }
 
     function mapWithNationalData(indicator, type){
@@ -299,5 +311,8 @@
             })
     }
 
-    await init();
+    setTimeout(()=>{
+        isBusy.value = true;
+        init()
+    }, 200);
 </script>

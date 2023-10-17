@@ -8,7 +8,7 @@
             {{ t('addIndicatorData') }}
         </CButton>
     </div>
-    <CModal  class="show d-block nbsapTargetsPart2Edit" size="xl" alignment="center" backdrop="static" :visible="showEditIndicatorDataModal" >
+    <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 {{lstring(props.indicator.title)}}
@@ -211,7 +211,9 @@
 
     function onSourceOfDataChange(value){
         document.value.data = undefined;
-
+        document.value.dataSources = undefined;
+        document.value.description = undefined;
+        document.value.indicatorProviders = undefined;
         if(value == 'availableDataset'){
             loadGlobalDataSet()
         }

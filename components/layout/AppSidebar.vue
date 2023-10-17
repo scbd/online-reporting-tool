@@ -53,15 +53,27 @@
             <template #togglerContent>
                 <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
                 {{ t('myCountry') }}
+            </template>
+            <template v-if="!isDevelopment">
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-database"      :title="t('indicatorData')"  ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('overview')"       ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionI')"       ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionII')"      ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIII')"     ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIV')"      ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionV')"       ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('annex')"          ></KmNavLink>
+            </template>
+            <template v-if="isDevelopment">             
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-database"      :title="t('indicatorData')" :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_INDICATOR_DATA)" ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('overview')"      :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_OVERVIEW      )" ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionI')"      :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I     )" ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionII')"     :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II    )" ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIII')"    :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III   )" ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIV')"     :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV    )" ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionV')"      :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V     )" ></KmNavLink>
+                <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('annex')"         :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_ANNEX )" ></KmNavLink>
             </template>             
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-database"      :title="t('indicatorData')"  ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('overview')"       ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionI')"       ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionII')"      ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIII')"     ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIV')"      ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionV')"       ></KmNavLink>
-          <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('annex')"          ></KmNavLink>
         </CNavGroup>          
         
       </CNavGroup>
@@ -86,6 +98,7 @@ export default {
     KmNavLink
 },
   async setup() {
+    const { ACCOUNTS_HOST_URL } = useRuntimeConfig().public
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const {locale} = useI18n()
     const localePath  = useLocalePath()
@@ -101,8 +114,7 @@ export default {
       [appRoutes.NATIONAL_TARGETS_MY_COUNTRY]   : true,//false,
       [appRoutes.NATIONAL_REPORTS_NR6]      : true,
       [appRoutes.NATIONAL_REPORTS_NR7]      : true,
-      [appRoutes.NATIONAL_REPORTS_NR7_EDIT] : true,//false,     
-      
+      [appRoutes.NATIONAL_REPORTS_NR7_EDIT] : true,//false,
       
     }
     // for (const route in menuAccess) {
@@ -115,6 +127,8 @@ export default {
     const isChildRouteActive = (path)=>{
       return route.fullPath.indexOf(path)>=0
     }
+
+    const isDevelopment = ACCOUNTS_HOST_URL.indexOf('accounts.cbddev.xyz')>=0
     
     return {
       sidebarUnfoldable: false,
@@ -123,7 +137,8 @@ export default {
       menuAccess,
       localePath,
       t,
-      isChildRouteActive
+      isChildRouteActive,
+      isDevelopment
     }
   },
 }
