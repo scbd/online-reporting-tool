@@ -1,6 +1,7 @@
 import  { useRuntimeConfig, useAppConfig } from '#app';
 import { setUserToken } from '../utils';
 import { SocketIOService } from '@/services/socket-io';
+import EUser from '@/types/EUser';
 
 export const useAuth = () => useNuxtApp().$auth
 
@@ -40,38 +41,37 @@ export const authLogout = async () => {
     // useAuth().user = undefined;
 };
 
-export const authUser = async (token = null) => {
-    const user = useState("user")
+export async function authUser(token = null): Promise<EUser> {
+    const user = useState<EUser>("user");
 
-    if(user.value)
-        return user.value
+    if (user.value)
+        return user.value;
 
     const authConf = useAuthConf();
-    const auth     = useAuth();
-    
-//     if(auth.user)
-//         return auth.user;
+    const auth = useAuth();
 
-    try{
+    //     if(auth.user)
+    //         return auth.user;
+    try {
         const headers = authHeader(token);
 
-        if(headers){
-            const luser = await $fetch(`${authConf.endpoints?.user?.url}`, {
-                                        method: authConf.endpoints?.user?.method?.toUpperCase(),
-                                        headers        
-                                    });
+        if (headers) {
+            const lUser = await $fetch<EUser>(`${authConf.endpoints?.user?.url}`, {
+                method: authConf.endpoints?.user?.method?.toUpperCase(),
+                headers
+            });
 
             // await useAuth().updateSession();
             // auth.user = user;
-            user.value = luser
+            user.value = lUser;
             return user.value;
         }
     }
-    catch(e){
-        useLogger().error(`Error loading user info`, e)
-        return {}
+    catch (e) {
+        useLogger().error(e, `Error loading user info`);
+        return {} as EUser;
     }
-};
+}
 
 export const authHeader = (token)=>{
     const auth = useAuth()
