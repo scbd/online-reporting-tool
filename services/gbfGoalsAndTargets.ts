@@ -49,19 +49,20 @@ class GBFGoalsAndTargets{
                             ]);
         const goalsAndTargets = response[0];
 
-        for (let i = 0; i < goalsAndTargets.length; i++) {
-            const target = goalsAndTargets[i];
+        const goalPromise = goalsAndTargets?.map(async target=>{
             const response = await Promise.all([
                                 this.loadGbfHeadlineIndicator(target.identifier),
                                 this.loadGbfComponentIndicator(target.identifier),
                                 this.loadGbfComplementaryIndicator(target.identifier),
                                 this.loadGbfBinaryIndicator(target.identifier)
                             ])
-            target.headlineIndicators       = response[0]
-            target.componentIndicators      = response[1]
-            target.complementaryIndicators  = response[2]
-            target.binaryIndicators         = response[3]
-        }
+            target.headlineIndicators       = response[0];
+            target.componentIndicators      = response[1];
+            target.complementaryIndicators  = response[2];
+            target.binaryIndicators         = response[3];
+        })
+
+        await Promise.all(goalPromise);
 
         if(fields?.length){
             return mapFields(goalsAndTargets, fields);
