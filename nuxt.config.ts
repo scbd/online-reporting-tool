@@ -132,5 +132,6 @@ export default defineNuxtConfig({
     },
     gtag: {
         id: process.env.NUXT_PUBLIC_GOOGLE_TAG_ID || 'G-XXXXXX',
-    }
+        initialConsent: false,
+    },
 })
