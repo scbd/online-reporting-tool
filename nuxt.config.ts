@@ -134,4 +134,10 @@ export default defineNuxtConfig({
         id: process.env.NUXT_PUBLIC_GOOGLE_TAG_ID || 'G-XXXXXX',
         initialConsent: false,
     },
+    components: [
+        {
+            path: '~/components',
+            pathPrefix: false,
+        },
+    ],
 })
