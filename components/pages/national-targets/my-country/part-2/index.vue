@@ -18,16 +18,16 @@
                     </CCol>
                     <CCol :sm="6" class="float-end">
                         <div class="d-grid gap-1 d-md-flex justify-content-end mb-2">
-                        <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" title="Go to Overview" 
-                            role="button" class="btn btn-sm btn-secondary" icon="fa-wand-magic-sparkles">
-                        </km-link> 
-                        <CButton class="btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedTargets">
-                            <span v-if="!accordionOpen"><font-awesome-icon icon="fa-arrows-down-to-line"></font-awesome-icon> {{ t('expandAll') }}</span>
-                            <span v-if="accordionOpen" ><font-awesome-icon icon="fa-arrows-up-to-line"></font-awesome-icon> {{ t('collapseAll') }}</span>
-                        </CButton></div>
+                            <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" title="Go to Overview" 
+                                role="button" class="btn btn-sm btn-secondary" icon="fa-wand-magic-sparkles">
+                            </km-link> 
+                            <toggle-accordion selector="#mapping-accordion .accordion-header button.accordion-button" v-if="computedTargets"></toggle-accordion>
+                        </div>
                     </CCol>
                 </CRow>
                 
+                <km-spinner v-if="isBusy" center></km-spinner>
+
                 <CAccordion always-open id="mapping-accordion">                    
                     <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in computedTargets" :key="target">
                         <CAccordionHeader :id="'gbfTarget'+target.identifier">
@@ -271,17 +271,6 @@
         }
         
     }
-
-    function toggleAccordion(open){
-        accordionOpen.value = open || !accordionOpen.value;
-        const buttons = $('#mapping-accordion .accordion-header button.accordion-button');
-        buttons.each(function(){
-            const ariaExpanded = $(this)[0].ariaExpanded == "true";
-            if((accordionOpen.value && ariaExpanded) || (!accordionOpen.value && !ariaExpanded))
-                $(this).click();
-        })
-    }
-
     async function onRecordDelete({identifier, type}){
 
         // if(type != 'draft'){

@@ -1,8 +1,5 @@
 <template>
-    <CButton class="float-end mt-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedIndicators">
-        <span v-if="!accordionOpen">{{ t('expandAll') }}</span>
-        <span v-if="accordionOpen" >{{ t('collapseAll') }}</span>
-    </CButton>
+    <toggle-accordion class="float-end mt-1 btn-xs" v-if="computedIndicators"></toggle-accordion>
     <br>
     <br>
 <!-- {{ props }}  -->
@@ -32,12 +29,9 @@
 
     import { useAsyncState } from '@vueuse/core'
     import { useRealmConfStore }    from '@/stores/realmConf';
-    import $ from 'jquery';
     import {cloneDeep} from 'lodash';
 
     const {t, locale }          = useI18n()
-
-    const accordionOpen = ref(false);
     const props = defineProps({
         indicators         : {type:Object, default:[] },
         onClose            : {type:Function, required:false},
@@ -50,16 +44,6 @@
     lIndicators.value  = cloneDeep(indicators.value)
     
     const computedIndicators = computed(()=>lIndicators.value);
-
-    function toggleAccordion(open){
-        accordionOpen.value = open || !accordionOpen.value;
-        const buttons = $('#mapping-accordion .accordion-header button.accordion-button');
-        buttons.each(function(){
-            const ariaExpanded = $(this)[0].ariaExpanded == "true";
-            if((accordionOpen.value && ariaExpanded) || (!accordionOpen.value && !ariaExpanded))
-                $(this).click();
-        })
-    }
     
     function onAddIndicatorDataClose(document){
         

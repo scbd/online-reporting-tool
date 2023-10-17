@@ -99,11 +99,9 @@
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     import { alignedGoalsTargets } from '@/components/pages/national-targets/my-country/part-2/util';    
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
-    import $ from 'jquery';
 
     let document = ref({});
     let sectionIII;
-    const accordionOpen = ref(false);
     const props = defineProps({
         workflowActiveTab  : {type:Number, default:0 },
         onClose            : {type:Function, required:false},
@@ -159,21 +157,12 @@
         return toRef(clean);
     }
 
-    function toggleAccordion(open){
-        accordionOpen.value = open || !accordionOpen.value;
-        const buttons = $('#mapping-accordion .accordion-header button.accordion-button');
-        buttons.each(function(){
-            const ariaExpanded = $(this)[0].ariaExpanded == "true";
-            if((accordionOpen.value && ariaExpanded) || (!accordionOpen.value && !ariaExpanded))
-                $(this).click();
-        })
-    }
     async function loadNationalTargets(){
 
         const response = await KmDocumentsService.loadDocuments(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`,500, undefined, 0, true)
         const targets  = await Promise.all(response?.Items?.map(async e=>{
-                            const headlineIndicators = await Promise.all(alignedGoalsTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
-                            const binaryIndicators   = await Promise.all(alignedGoalsTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
+                            const headlineIndicators = await Promise.all(getAlignedGoalsOrTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)}));
+                            const binaryIndicators   = await Promise.all(getAlignedGoalsOrTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
                             return {
                                 identifier             : e.identifier,
                                 title                  : e.title,
@@ -219,8 +208,6 @@
             complementaryIndicators : indicatorResponse[3],
         }
         isBusy.value = false;
-
-        setTimeout(()=>toggleAccordion(true), 1000);
     }
 
     init();
