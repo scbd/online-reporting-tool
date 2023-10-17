@@ -4,8 +4,7 @@
         <slot name="header"> National Target</slot>
       </CCardHeader>
       <CCardBody>
-        
-            <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"  
+            <km-form-workflow v-if="!isBusy" :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"  
             :container="container"  :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template v-slot:submission>   
                     <form name="editForm">    
@@ -98,7 +97,7 @@
 
                                     </km-form-group>
                                     
-                                    <km-form-group required caption="Degree of alignment" name="degreeOfAlignment" v-if="globallyAlignedTargets?.length">                                        
+                                    <km-form-group required caption="Degree of alignment" name="degreeOfAlignment" v-if="document?.globalTargetAlignment?.length">                                        
                                         
                                         <table class="table table-bordered">                                            
                                             <tbody>
@@ -106,7 +105,7 @@
                                                     <td></td>
                                                     <td class="w-25 fw-bold">Degree of <km-help content="Indicate their degree of alignment with the global targets.">Alignment </km-help></td>
                                                 </tr>
-                                                <tr v-for="target in globallyAlignedTargets" :key="target.identifier">
+                                                <tr v-for="target in document.globalTargetAlignment" :key="target.identifier">
                                                     <td>
                                                         <km-form-group required :name="target.identifier+'_degreeOfAlignment'">
                                                             <label class="control-label" :for="target.identifier+'_degreeOfAlignment'">
@@ -149,7 +148,7 @@
                                 </div>
                             </div>
                         </km-form-group>
-                        <km-form-group v-if="headlineIndicators.length">
+                        <km-form-group v-if="headlineIndicators?.length">
                             <div class="card">
                                 <div class="card-header bg-secondary">
                                     Indicators to be used to monitor this national target
@@ -169,7 +168,7 @@
                                             </tbody>
                                         </table>
                                     </km-form-group>
-                                    <km-form-group caption="Binary indicators" name="binaryIndicators" v-if="binaryIndicatorsRef && binaryIndicatorsRef.length">
+                                    <km-form-group caption="Binary indicators" name="binaryIndicators" v-if="binaryIndicators && binaryIndicators.length">
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -177,7 +176,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr v-for="indicator in binaryIndicatorsRef" :key="indicator.identifier">
+                                                <tr v-for="indicator in binaryIndicators" :key="indicator.identifier">
                                                     <td>{{ lstring(indicator.title) }}</td>
                                                 </tr>
                                             </tbody>
@@ -299,7 +298,7 @@
                     </CAlert>       
                 </template>
             </km-form-workflow>
-            <km-modal-spinner :visible="kmDocumentDraftStore.isBusy" v-if="kmDocumentDraftStore.isBusy"></km-modal-spinner>
+            <km-spinner center :visible="isBusy" v-if="isBusy"></km-spinner>
  
       </CCardBody>
     </CCard>
@@ -320,25 +319,17 @@
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/part-1/edit-target-part-1.json"></i18n>
 <script setup>
   
-    import { KmInputRichLstring, KmSelect, KmFormGroup, KmInputLstringMl, KmMultiCheckbox,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmFormWorkflow,
-        KmValueTerm, KmGovernment, KmLanguages, KmHelp
-    } from "~/components/controls";
     import viewTarget               from  "./view-target-part-1.vue";
-    import { mapStores }            from 'pinia'
     import { useThesaurusStore }    from '@/stores/thesaurus';
-    import { useRealmConfStore }    from '@/stores/realmConf';
-    import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
-    import {useToast} from 'vue-toast-notification';
     import { useStorage } from '@vueuse/core'
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { EditFormUtility } from "@/services/edit-form-utility";
     import {uniqBy} from 'lodash'
 
     const props = defineProps({
-        identifier  : {type: String },
-        rawDocument : {type: Object },
+        identifier         : {type: String },
+        rawDocument        : {type: Object },
         workflowActiveTab  : {type:Number, default:1 },
         onClose            : {type:Function, required:false},
         onPostSaveDraft    : {type:Function, required:false},
@@ -346,91 +337,29 @@
     const refProps                  = toRefs(props);
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const { user }                  = useAuth();
-    const security                  = useSecurity();
     const route                     = useRoute();    
     const {t, locale }              = useI18n();
     const thesaurusStore            = useThesaurusStore ();
-    const realmConfStore            = useRealmConfStore();
-    const kmDocumentDraftStore      = useKmDocumentDraftsStore();
-    const $toast                    = useToast();      
     const container                 = useAttrs().container;
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
     const showGlobalTargetsModal    = ref(false);
+    const document                  = ref(emptyDocument());
+    const headlineIndicators        = ref(null);
+    const componentIndicators       = ref(null);
+    const complementaryIndicators   = ref(null);
+    const binaryIndicators          = ref(null);
+    const selectedGlobalTargets     = ref([]);      
+    const isBusy                    = ref(false);
 
-    const headlineIndicatorsRef      = ref(null);
-    const componentIndicatorsRef     = ref(null);
-    const complementaryIndicatorsRef = ref(null);
-    const binaryIndicatorsRef        = ref(null);
-    const selectedGlobalTargets      = ref([]);
-        
-    const showSpinnerModal = ref(false);
-
-    await Promise.all([
-        GbfGoalsAndTargets.loadGbfGoalsAndTargets(),
-        thesaurusStore.loadDomainTerms(THESAURUS.GBF_HEADLINE_INDICATORS),
-        thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPONENT_INDICATORS    ),
-        thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPLEMENTARY_INDICATORS),
-        thesaurusStore.loadDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS  ),
-        thesaurusStore.loadDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT  ),
-    ]);
-    
-    const document =  ref(emptyDocument());
-
-    if(refProps.rawDocument.value){
-        document.value = {...refProps.rawDocument.value};
-    }
-    else if(refProps.identifier.value || route?.params?.identifier){        
-        document.value = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
-    }
-
-    if(document.value.globalTargetAlignment?.length){
-        selectedGlobalTargets.value = document.value.globalTargetAlignment?.filter(e=>e.identifier.startsWith('GBF-T'))?.map(e=>{return { identifier : e.identifier }});        
-    }
-    
-    //initialize for local use
-    document.value.government = document.value?.government || {};
-    document.value.additionalImplementation = document.value?.additionalImplementation || {};
-
-    const globalTargets = computed(()=>{
-        return (thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
-    })
-    const globalGoals   = computed(()=>{
-        return ((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
-    })
-    const gbfTargetConsideration = computed(()=>{
-        return (thesaurusStore.getDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name))
-    })
-    const formattedDegreeOfAlignments = computed(()=>{
-        return thesaurusStore.getDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT)||[]
-    })
-    const globallyAlignedTargets  = computed(()=>document.value.globalTargetAlignment?.filter(e=>e.identifier.startsWith('GBF-T')))
-    const headlineIndicators      = computed(()=>headlineIndicatorsRef.value||[]);
-    const componentIndicators     = computed(()=>componentIndicatorsRef.value||[]);
-    const complementaryIndicators = computed(()=>complementaryIndicatorsRef.value||[]);
-
-    const selectedLocale = ref(locale.value);
+    const globalTargets               = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
+    const globalGoals                 = computed(()=>((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))));
+    const gbfTargetConsideration      = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
+    const formattedDegreeOfAlignments = computed(()=>thesaurusStore.getDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT)||[]);
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
-       
-        clean.gbfGoalsAndTargetAlignment = undefined;
-        clean.headlineIndicators =undefined
-        clean.degreeOfAlignment=undefined
-
         return clean
     })
     
-    onMounted(() => {
-        if(user?.value?.isAuthenticated){
-            document.value.government.identifier = document.value?.government?.identifier || user.value.government
-
-            if(document.value?.globalTargetAlignment)
-                onGoalsAndTargetSelected(document.value?.globalTargetAlignment, 'targets');
-
-            if(document.value?.globalGoalAlignment)
-                onGoalsAndTargetSelected(document.value?.globalGoalAlignment);
-        }
-    })  
-
     const onClose = async (document)=>{
         if(props.onClose)
             props.onClose(document)
@@ -459,22 +388,17 @@
         const complementaryRes  = await Promise.all(selectedGoalsAndTargets.map(e=>{return GbfGoalsAndTargets.loadGbfComplementaryIndicator(e.identifier)}));
         const binaryRes         = await Promise.all(selectedGoalsAndTargets.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)}));
 
-        headlineIndicatorsRef.value      = sortBy(uniqBy([...(headlineRes?.flat()||[])], 'identifier'), 'title')
-        componentIndicatorsRef.value     = sortBy(uniqBy([...(componentRes?.flat()||[])], 'identifier'), 'title')
-        complementaryIndicatorsRef.value = sortBy(uniqBy([...(complementaryRes?.flat()||[])], 'identifier'), 'title')
-        binaryIndicatorsRef.value        = sortBy(uniqBy([...(binaryRes?.flat()||[])], 'identifier'), 'title')
+        headlineIndicators.value      = sortBy(uniqBy(headlineRes?.     flat()||[], 'identifier'), 'title');
+        componentIndicators.value     = sortBy(uniqBy(componentRes?.    flat()||[], 'identifier'), 'title');
+        complementaryIndicators.value = sortBy(uniqBy(complementaryRes?.flat()||[], 'identifier'), 'title');
+        binaryIndicators.value        = sortBy(uniqBy(binaryRes?.       flat()||[], 'identifier'), 'title');
         
-        if(document.value?.componentIndicators?.length){
-            document.value.componentIndicators = document.value?.componentIndicators.filter(selected=>{
-                return componentIndicatorsRef.value.find(e=>e.identifier == selected.identifier)
-            })
-        }
-        if(document.value?.complementaryIndicators?.length){
-            document.value.complementaryIndicators = document.value?.complementaryIndicators.filter(selected=>{
-                return complementaryIndicatorsRef.value.find(e=>e.identifier == selected.identifier)
-            })
-        }
-
+        document.value.headlineIndicators  = headlineIndicators.value.map(e=>customSelectedItem(e.identifier));
+        document.value.binaryIndicators    = binaryIndicators  .value.map(e=>customSelectedItem(e.identifier));        
+        document.value.componentIndicators = document.value?.componentIndicators.filter(selected=>componentIndicators.value.find(e=>e.identifier == selected.identifier))
+        document.value.complementaryIndicators = document.value.complementaryIndicators.filter(selected=>complementaryIndicators.value.find(e=>e.identifier == selected.identifier))
+        if(!selectedGoalsAndTargets?.length)
+            document.value.otherNationalIndicators = []
     }
 
     function onGetDocument(){
@@ -511,10 +435,59 @@
     function showAllTargets(){
         showGlobalTargetsModal.value = true;
     }
+
     function closeDialog(){
         showGlobalTargetsModal.value = false;
     }
 
+    async function init(){
+        isBusy.value = true;
+        try{
+            await Promise.all([
+                GbfGoalsAndTargets.loadGbfGoalsAndTargets(),
+                thesaurusStore.loadDomainTerms(THESAURUS.GBF_HEADLINE_INDICATORS),
+                thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPONENT_INDICATORS    ),
+                thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPLEMENTARY_INDICATORS),
+                thesaurusStore.loadDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS  ),
+                thesaurusStore.loadDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT  ),
+            ]);
+            
+
+            if(refProps.rawDocument.value){
+                document.value = {...refProps.rawDocument.value};
+            }
+            else if(refProps.identifier.value || route?.params?.identifier){        
+                document.value = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
+            }
+
+            if(document.value.globalTargetAlignment?.length){
+                selectedGlobalTargets.value = document.value.globalTargetAlignment?.filter(e=>e.identifier.startsWith('GBF-T'))?.map(e=>{return { identifier : e.identifier }});        
+            }
+            
+            //initialize for local use
+            document.value.government = document.value?.government || {};
+            document.value.additionalImplementation = document.value?.additionalImplementation || {};
+
+            if(user?.value?.isAuthenticated){
+                document.value.government.identifier = document.value?.government?.identifier || user.value.government
+
+                if(document.value?.globalTargetAlignment)
+                    onGoalsAndTargetSelected(document.value?.globalTargetAlignment, 'targets');
+
+                if(document.value?.globalGoalAlignment)
+                    onGoalsAndTargetSelected(document.value?.globalGoalAlignment);
+            }
+        }
+        catch(e){
+            useLogger().error(e, 'Error loading document for edit');
+        }
+
+        isBusy.value = false;
+    }
+
+    onMounted(() => {
+        init();
+    })  
 </script>
 <style>
     .global-target-modal .km-multi-checkbox .form-check{
