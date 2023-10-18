@@ -198,21 +198,9 @@
                 </div>
             </km-form-group> 
         </div>
-        <div v-if="!viewDocument && !isLoading &&  documentLoadError">
-            <CAlert color="danger" class="d-flex align-items-center">
-                <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
-                <div v-if="documentLoadError==404">
-                    {{t('notFound')}}
-                </div>
-                <div v-if="documentLoadError==401 || documentLoadError==403">
-                    {{t('notAuthorized')}}
-                </div>
-            </CAlert>
-        </div>
-        <div class="d-flex justify-content-center" v-if="isLoading">
-            <km-spinner :visible="isLoading" ></km-spinner>
-        </div>
-        
+
+        <km-document-error v-if="!viewDocument && !isLoading &&  documentLoadError" :document-error="documentLoadError"></km-document-error>        
+        <km-spinner :visible="isLoading" v-if="isLoading" center></km-spinner>        
        
       </CCardBody>
     </CCard>

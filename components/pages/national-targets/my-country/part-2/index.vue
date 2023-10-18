@@ -1,13 +1,12 @@
 <template>
     <CCard>
         <CCardHeader>
-          <slot name="header"> <CIcon name="cil-grid" /> {{ t('headerTitle') }} </slot>
+          <slot name="header"> <font-awesome-icon icon="fa-layer-group" /> {{ t('headerTitle') }} </slot>
         </CCardHeader>
         <CCardBody>
             
-          <div class="mt-1">
+            <div class="mt-1">
 
-                <km-spinner-suspense v-if="isBusy"></km-spinner-suspense>
                 <CRow class="mb-2">
                     <CCol :sm="6" class="d-grid gap-1 d-md-flex">
                         <label>Filter </label>
@@ -21,7 +20,7 @@
                             <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" title="Go to Overview" 
                                 role="button" class="btn btn-sm btn-secondary" icon="fa-wand-magic-sparkles">
                             </km-link> 
-                            <toggle-accordion selector="#mapping-accordion .accordion-header button.accordion-button" v-if="computedTargets"></toggle-accordion>
+                            <toggle-accordion ref="accordionToggle" selector="#mapping-accordion .accordion-header button.accordion-button" v-if="computedTargets"></toggle-accordion>
                         </div>
                     </CCol>
                 </CRow>
@@ -57,7 +56,6 @@
                                     </td>
                                 </tr>
                                 <tr v-for="(nationalTarget, index) in target.nationalTargets" :key="nationalTarget.identifier">
-                                    <!-- <td></td> -->
                                     <td style="width: 40%;">{{lstring(nationalTarget.title)}}</td>
                                     <td colspan="2" :rowspan="target.nationalTargets.length" v-if="index==0">
                                         <label></label>
@@ -93,7 +91,7 @@
                                             <CBadge v-if="indicator.referencePeriod.hasReferencePeriod" color="success" shape="rounded-pill">{{ t('hasReferencePeriod') }}</CBadge>
                                             <CBadge v-if="indicator.referencePeriod.hasReferencePeriod===false" color="danger" shape="rounded-pill">{{t('noReferencePeriod')}}</CBadge>
                                             <km-lstring-value class="mt-2" type="html" v-if="indicator.referencePeriod.referencePeriodInfo"
-                                            :value="indicator.referencePeriod.referencePeriodInfo" :locale="useI18n().locale"></km-lstring-value>
+                                            :value="indicator.referencePeriod.referencePeriodInfo" :locale="locale"></km-lstring-value>
                                         </div>
                                     </td> 
                                 </tr>
@@ -111,9 +109,8 @@
                           </table>
                         </CAccordionBody>
                     </CAccordionItem>
-                </CAccordion>               
-              <!-- </div> -->
-          </div>
+                </CAccordion>       
+            </div>
         </CCardBody>
       
       </CCard> 
@@ -135,47 +132,37 @@
 <i18n  src="@/i18n/dist/pages/national-reports/index.json"></i18n>
 
 <script setup lang="ts">
-  import { KmSpinnerSuspense, KmInputRichLstring, KmSelect, KmFormGroup, KmLstringValue, KmLink,
-             KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmModalSpinner, KmNavLink, KmDeleteRecord
-           } from "@/components/controls";
     import missingTargetError from '../missing-target-error.vue';
-    import { useRealmConfStore }    from '@/stores/realmConf';
-    import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
-    import { CModalFooter } from "@coreui/vue";
     import { scrollToElement } from '@/utils';
     import { useRoute } from 'vue-router' 
     import { buildTargetMatrix } from "./util";
     import { useStorage } from '@vueuse/core'
     import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
     import { KmDocumentsService } from "@/services/kmDocuments";
-    import $ from 'jquery';
+    
     import { sortBy } from "lodash";
 
-    let   accordionOpen = ref(false);
     const rowsPerPage = 300; // UTILS.ROWS_PER_PAGE;
     const { $appRoutes:appRoutes } = useNuxtApp();
-    const { user } = useAuth();
-    const security = useSecurity();
     const route    = useRoute();
     const localePath  = useLocalePath()
-    const { t }       = useI18n(); 
+    const { t, locale }       = useI18n(); 
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
-
-    const realmConfStore  = useRealmConfStore();
-    const kmDocumentDraftStore  = useKmDocumentDraftsStore();
 
     const isBusy = ref(false);
     const gbfGoalAndTargetList = ref(null);
     const showEditMappingModal = ref(false);
     const editMappingTarget    = ref(null);
     const filterBy             = ref(null);
+    const accordionToggle      = ref(null);
 
     const EditTargetPart2 = defineAsyncComponent(() =>
         import('./edit-target-part-2.vue')
     )
 
     const filters = [
+        {value : 'all', title: 'All'},
         {value : 'missingMapping', title: 'Missing national mapping record (part II)'},
         {value : 'missingTarget', title: 'Missing national target record (part I)'},
         {value : 'hasMapping', title: 'Has national mapping record (part II)'},
@@ -200,19 +187,8 @@
     onMounted(() => {
 
         isBusy.value = true;  
-        setTimeout(async () => {
-            await init();
-            // .then(()=>{
-
-                if(route?.query?.globalTarget){
-                    setTimeout(() => {
-                        scrollToElement(`#gbfTarget${route.query.globalTarget}`);
-                    }, 200);
-                    const target = gbfGoalAndTargetList.value?.find(e=>e.identifier == route.query.globalTarget);
-                    if(target?.nationalTargets?.length)
-                        showEditMapping(target)
-                }
-            // });
+        setTimeout(()=> {
+            init();            
         }, 200)
     })
         
@@ -233,12 +209,13 @@
     }
 
     async function closeEditMappingDialog(document:Object){
-        
-        editMappingTarget.value.elementOfGlobalTargetsInfo = document?.elementOfGlobalTargetsInfo;
-        editMappingTarget.value.nationalMapping            = document;
-        editMappingTarget.value.headlineIndicators.forEach(indicator => {
-            indicator.referencePeriod = document?.referencePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
-        });
+        if(document){
+            editMappingTarget.value.elementOfGlobalTargetsInfo = document?.elementOfGlobalTargetsInfo;
+            editMappingTarget.value.nationalMapping            = document;
+            editMappingTarget.value.headlineIndicators.forEach(indicator => {
+                indicator.referencePeriod = document?.referencePeriod?.find(e=>e.headlineIndicator.identifier == indicator.identifier);
+            });
+        }
 
         showEditMappingModal.value = false;
         editMappingTarget.value = null;
@@ -260,8 +237,17 @@
             
             targets = buildTargetMatrix(targets, nationalTargets, nationalMappings);
             gbfGoalAndTargetList.value = sortBy(targets, 'identifier');
+            
+            nextTick(()=>accordionToggle.value.toggle(true))
 
-            setTimeout(()=>toggleAccordion(true), 1000);
+            if(route?.query?.globalTarget){
+                setTimeout(() => {
+                    scrollToElement(`#gbfTarget${route.query.globalTarget}`);
+                }, 200);
+                const target = gbfGoalAndTargetList.value?.find(e=>e.identifier == route.query.globalTarget);
+                if(target?.nationalTargets?.length)
+                    showEditMapping(target)
+            }
         }
         catch(e){
             useLogger().error(e)
