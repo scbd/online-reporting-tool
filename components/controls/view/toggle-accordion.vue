@@ -1,5 +1,5 @@
 <template>    
-    <CButton class="btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="selector">
+    <CButton class="btn-xs" color="primary" size="sm" @click="toggle()" v-if="selector">
         <span v-if="!accordionOpen"><font-awesome-icon icon="fa-arrows-down-to-line"></font-awesome-icon> {{ t('expandAll') }}</span>
         <span v-if="accordionOpen" ><font-awesome-icon icon="fa-arrows-up-to-line"></font-awesome-icon> {{ t('collapseAll') }}</span>
     </CButton>
@@ -12,8 +12,10 @@
     const { t }         = useI18n();
     const accordionOpen = ref(false);
     const { selector }  = useAttrs();
+
+    defineExpose({toggle})
     
-    function toggleAccordion(open){
+    function toggle(open){
         if(!selector)
             return;
 

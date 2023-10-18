@@ -1,9 +1,8 @@
 <template>
-    <toggle-accordion class="float-end mt-1 btn-xs" v-if="computedIndicators"></toggle-accordion>
-    <br>
-    <br>
-<!-- {{ props }}  -->
-    <CAccordion always-open id="mapping-accordion" v-if="computedIndicators?.length">                    
+    <toggle-accordion class="btn-xs m-1 float-end" v-if="computedIndicators" ref="accordionToggle" 
+        :selector="'#' + componentId + '-mapping-accordion .accordion-header button.accordion-button'" >
+    </toggle-accordion>    
+    <CAccordion always-open :id="componentId + '-mapping-accordion'" v-if="computedIndicators?.length">                    
         <CAccordionItem :item-key="index+1" :visible="true" v-for="(indicator, index) in computedIndicators" :key="indicator.identifier"  always-open>
             <CAccordionHeader :id="'gbfTarget'+indicator.identifier">
                 {{lstring(indicator.title||indicator)}}                           
@@ -18,7 +17,7 @@
                 </div>
             </CAccordionBody>
         </CAccordionItem>
-    </CAccordion>      
+    </CAccordion>
   <!-- :on-close="onAddIndicatorDataClose" -->
 </template>
 <script setup>
@@ -26,6 +25,7 @@
     import addIndicatorData from './add-data.vue';
     import MissingDataAlert from './missing-data-alert.vue';
     import ViewData from './view-data.vue';
+    import { makeUid }         from '@coreui/utils/src'
 
     import { useAsyncState } from '@vueuse/core'
     import { useRealmConfStore }    from '@/stores/realmConf';
@@ -38,9 +38,10 @@
         showMissingAlert   : {type:String, default:false },
     }) 
 
-
+    const componentId = makeUid()
     const {indicators, showMissingAlert} = toRefs(props);
     const lIndicators  = toRef([]);    
+    const accordionToggle      = ref(null);
     lIndicators.value  = cloneDeep(indicators.value)
     
     const computedIndicators = computed(()=>lIndicators.value);
@@ -54,4 +55,8 @@
         indicator.nationalData = document.body;
 
     }
+
+    onMounted(()=>{
+        nextTick(()=>accordionToggle.value.toggle(true))
+    })
 </script>

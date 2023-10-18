@@ -13,7 +13,8 @@
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft"> -->
                 <!-- <template #submission> -->
                     
-                    <toggle-accordion class="float-end mr-1 mb-1 btn-xs"  selector="#mapping-accordion .accordion-header button.accordion-button" v-if="nationalTargets?.length"></toggle-accordion>
+                    <toggle-accordion class="float-end mr-1 mb-1 btn-xs"  ref="accordionToggle"
+                    selector="#mapping-accordion .accordion-header button.accordion-button" v-if="nationalTargets?.length"></toggle-accordion>
                     <br>
                     <br>
                     <CAccordion always-open id="mapping-accordion">                    
@@ -143,6 +144,7 @@
     const nationalTargets     = ref();
     const nationalIndicatorData = ref([]);
     const isBusy                = ref(true);
+    const accordionToggle      = ref(null);
 
     const stakeholderLists = [
         {identifier: '1', title: 'Indigenous peoples and local communities,,'},
@@ -259,9 +261,8 @@
             //     //remove any deleted one
             //     //add new targets
             // }
-        
-
-            setTimeout(()=>toggleAccordion(true), 1000);
+           
+            nextTick(()=>accordionToggle.value.toggle(true))
         }
         catch(e){
             useLogger().error(e,  'Error loading Section III')
