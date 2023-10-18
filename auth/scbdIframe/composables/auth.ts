@@ -1,7 +1,6 @@
 import  { useRuntimeConfig, useAppConfig } from '#app';
 import { setUserToken } from '../utils';
 import { SocketIOService } from '@/services/socket-io';
-import EUser from '@/types/EUser';
 
 export const useAuth = () => useNuxtApp().$auth
 

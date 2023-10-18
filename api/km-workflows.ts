@@ -1,6 +1,5 @@
 
 import ApiBase, { tryCastToApiError } from './api-base';
-import { EKmDocumentsBatchWorkflow } from '@/types/EKmDocumentsBatchWorkflow.js';
 
 export default class KmWorkflowsApi extends ApiBase
 {

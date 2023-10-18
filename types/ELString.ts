@@ -1,0 +1,3 @@
+const ELString : IDictionary<String> {
+    
+}

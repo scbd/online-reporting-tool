@@ -1,4 +1,4 @@
-export default interface IUser {
+interface IUser {
     email          : String
     government     : String
     isAuthenticated: Boolean
