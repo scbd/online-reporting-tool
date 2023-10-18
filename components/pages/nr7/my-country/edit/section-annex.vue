@@ -46,7 +46,7 @@
     } from "~/components/controls";
     // import viewTarget               from "./view-target-part-2.vue";
     import { useRealmConfStore }    from '@/stores/realmConf';
-    import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
+    import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
     import { useToast } from 'vue-toast-notification';
     import { useStorage } from '@vueuse/core'

@@ -83,10 +83,6 @@
 <script setup>
   
     import IndicatorList from './indicator-list.vue';
-    import { useAsyncState } from '@vueuse/core'
-    import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner
-    } from "~/components/controls";
     import Nr7Workflow              from '../NR7Workflow.vue'
     import viewNr7SectionII         from "@/components/pages/nr7/my-country/view/section-II.vue";
     import { useRealmConfStore }    from '@/stores/realmConf';
@@ -97,7 +93,7 @@
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { KmDocumentsService } from '@/services/kmDocuments';
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
-    import { alignedGoalsTargets } from '@/components/pages/national-targets/my-country/part-2/util';    
+    import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';    
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
 
     let document = ref({});
