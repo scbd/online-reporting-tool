@@ -264,6 +264,8 @@
                 isPublishing.value = false;
                 return;
             }
+            if(!globalTargets)
+                globalTargets = await GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators();
 
             //verify user has submitted national targets for all Global Indicators
             //and show dialog and move next step if he still wants to proceed
@@ -465,12 +467,8 @@
         validationRef.value.refresh();
     }
 
-    onMounted(() => {
-        setTimeout(() => {
-            GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators().then(response=>{
-                globalTargets = response;
-            });
-        }, 100);
+    onMounted(() => {     
+        
     })
 
 </script>

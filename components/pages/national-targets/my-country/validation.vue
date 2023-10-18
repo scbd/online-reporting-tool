@@ -11,6 +11,7 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Title</th>
+                    <td>Global goals/targets</td>
                     <th scope="col">State</th>
                     <th scope="col"></th>
                   </tr>
@@ -18,14 +19,17 @@
                 <tbody>
                   
                     <tr v-if="isLoadingRecords">
-                        <td colspan="4" >
+                        <td colspan="5" >
                             <div class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
                         </td>
                     </tr>
                     <template  v-if="!isLoadingRecords">
                         <tr v-for="(document,  index) in draftNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
                             <th scope="row">{{ index+1 }}</th>
-                            <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
+                            <td class="w-50">{{(document.workingDocumentTitle||document.title).en}}</td>                                
+                            <td class="w-25">
+                                <goal-target-list :goal-targets="getAlignedGoalsOrTargets(document.workingDocumentBody)"></goal-target-list>   
+                            </td>                   
                             <td>
                                 <CBadge color="info" v-if="document.isValidating">
                                         <km-spinner :message="t('validating')+ '...'"></km-spinner>
@@ -46,17 +50,22 @@
                             <td>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <CButton :disabled="isValidatingRecords" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
-                                <font-awesome-icon icon="fa-search" /> View
+                                    <font-awesome-icon icon="fa-search" /> View
                                 </CButton>
                                 <CButton :disabled="isValidatingRecords || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
-                                <font-awesome-icon icon="fa-edit" /> Edit
+                                    <font-awesome-icon icon="fa-edit" /> Edit
                                 </CButton>
+                                <km-delete-record :document="document" @on-delete="onRecordDelete"></km-delete-record>
                             </div>
                             </td>
                         </tr>
                         <tr v-for="(document,  index) in publishedNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
                             <th scope="row">{{ index+1 + (draftNationalTargets?.length||0) }}</th>
-                            <td>{{(document.workingDocumentTitle||document.title).en}}</td>                    
+                            <td class="w-50">{{(document.workingDocumentTitle||document.title).en}}</td> 
+                                
+                            <td class="w-25">
+                                <goal-target-list :goal-targets="getAlignedGoalsOrTargets(document.body)"></goal-target-list>                                
+                            </td>                         
                             <td>                        
                                 <CBadge color="success">
                                     {{t('publishedState')}}
@@ -69,6 +78,7 @@
                                 <CButton :disabled="isValidatingRecords || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
                                 <font-awesome-icon icon="fa-edit" /> Edit
                                 </CButton>
+                                <km-delete-record :document="document" @on-delete="onRecordDelete"></km-delete-record>
                             </div>
                             </td>
                         </tr>
@@ -94,16 +104,16 @@
                 </thead>
                 <tbody>
                     <tr v-if="isLoadingRecords">
-                        <td colspan="4" >
+                        <td colspan="5" >
                             <div class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
                         </td>
                     </tr>
                     <template  v-if="!isLoadingRecords">
                         <tr v-for="(document,  index) in draftNationalMappings" :key="document.identifier" :class="{'bg-danger':document.errors}">
                             <th scope="row">{{ index+1 }}</th>
-                            <td>
+                            <td class="w-75">
                                 <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>                        
-                            </td>                    
+                            </td>   
                             <td>
                                 <CBadge color="info" v-if="document.isValidating">
                                         <km-spinner :message="t('validating')+ '...'"></km-spinner>
@@ -129,13 +139,14 @@
                                 <CButton :disabled="isValidatingRecords || disableActions|| isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
                                     <font-awesome-icon icon="fa-edit" /> Edit
                                 </CButton>
+                                <km-delete-record :document="document" @on-delete="onRecordDelete"></km-delete-record>
                             </div>
                             </td>
                         </tr>
 
                         <tr v-for="(document,  index) in publishedNationalMappings" :key="document.identifier">
                             <th scope="row">{{ index+1 + (draftNationalMappings?.length||0) }}</th>
-                            <td>
+                            <td class="w-75">
                                 <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>      
                             </td>                    
                             <td>                        
@@ -149,6 +160,7 @@
                                 <CButton :disabled="isValidatingRecords || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
                                 <font-awesome-icon icon="fa-edit" /> Edit
                                 </CButton>
+                                <km-delete-record :document="document" @on-delete="onRecordDelete"></km-delete-record>
                             </div>
                             </td>
                         </tr>
@@ -191,14 +203,13 @@
 <script setup lang="ts">
     import  { KmSpinnerSuspense, KmSpinner, KmModalSpinner, KmTerm, KmLink
             } from "@/components/controls";
-    import { useRealmConfStore }    from '@/stores/realmConf';
-    import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
+    import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { KmDocumentsService } from '@/services/kmDocuments';
-    import { useThesaurusStore } from "@/stores/thesaurus";
     import { buildTargetMatrix } from "./part-2/util";
     import { useStorage } from '@vueuse/core';
     import { EditFormUtility } from "@/services/edit-form-utility";
+    import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';  
 
                     defineExpose({ validate, refresh });
     const $emits =  defineEmits(['onRecordsLoad', 'onValidationFinished']);
@@ -216,10 +227,6 @@
     const localePath  = useLocalePath()
     const { t, locale }       = useI18n(); 
     const { $eventBus } = useNuxtApp();
-
-    const realmConfStore  = useRealmConfStore();
-    const kmDocumentDraftStore  = useKmDocumentDraftsStore();
-    const thesaurusStore  = useThesaurusStore();
 
     const isValidatingRecords                    = ref(false);
     const isLoadingRecords          = ref(false);
@@ -272,7 +279,7 @@
     async function loadNationalRecords(query, draftList, publishedList){
 
         const response = await Promise.all([
-            kmDocumentDraftStore.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
+            KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
             KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)
         ]) 
 
@@ -483,6 +490,9 @@
             }
             //'document-deleted'
         }
+    }
+    function onRecordDelete({identifier, type}): void{
+        init();
     }
 </script>
 
