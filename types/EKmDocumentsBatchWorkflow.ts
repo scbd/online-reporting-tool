@@ -1,4 +1,4 @@
-export interface EKmDocumentsBatchWorkflow {
+interface EKmDocumentsBatchWorkflow {
     _id: Id
     realm: string
     government: string
@@ -10,28 +10,28 @@ export interface EKmDocumentsBatchWorkflow {
     workflowActivity: WorkflowActivity
   }
   
-  export interface Id {
+  interface Id {
     $oid: string
   }
   
-  export interface Meta {
+  interface Meta {
     createdBy: number
     createdOn: Date
     updatedBy: number
     updatedOn: Date
   }
     
-  export type RecordStatus = { [key: string] : RecordStatusRecord }
-  export interface RecordStatusRecord {
+  type RecordStatus = { [key: string] : RecordStatusRecord }
+  interface RecordStatusRecord {
      workflowId: string
   }
   
-  export interface WorkflowActivity {
+  interface WorkflowActivity {
     data: Data
     name: string
   }
   
-  export interface Data {
+  interface Data {
     action: string
   }
   

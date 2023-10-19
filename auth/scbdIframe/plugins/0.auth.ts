@@ -1,5 +1,4 @@
 import { getUserToken } from "../utils";
-import EUser from '@/types/EUser';
 
 export default defineNuxtPlugin(async (nuxtApp) => {
     // Skip plugin when rendering error page

@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader v-if="identifier">
-        <slot name="header"> Global Goals/Target Mapping view</slot>
+        <slot name="header"> National mapping with global Goals/Target</slot>
       </CCardHeader>
       <CCardBody>
        
@@ -56,14 +56,8 @@
                                 </CCardTitle>
                                 <hr/>
                                 <CCardText >
-                                        <!-- v-if="getIndicator(indicator.headlineIndicator).nationalTargets.length" -->
-                                    <!-- <km-form-group caption="National target(s) linked to headline indicator">
-                                        <div  class="ps-2" v-for="(target, index) in getIndicator(indicator.headlineIndicator).nationalTargets" :key="target.identifier">
-                                            {{index+1}}. {{lstring(target.title)}}
-                                        </div>
-                                    </km-form-group> -->
                                     <km-form-group>
-                                        <label class="form-check-label" for="hasReferencePeriod">Is there a reference period and national target which relates to the headline indicator?</label>
+                                        <label class="form-check-label" for="hasReferencePeriod">Is there a reference period which relates to the headline indicator?</label>
                                         <km-value-bool :value="indicator.hasReferencePeriod" :locale="selectedLocale"></km-value-bool>
                                     </km-form-group> 
 
@@ -83,20 +77,8 @@
 
         </div>
 
-        <div v-if="!viewDocument && !isLoading &&  documentLoadError">
-            <CAlert color="danger" class="d-flex align-items-center">
-                <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
-                <div v-if="documentLoadError==404">
-                    {{t('notFound')}}
-                </div>
-                <div v-if="documentLoadError==401 || documentLoadError==403">
-                    {{t('notAuthorized')}}
-                </div>
-            </CAlert>
-        </div>
-        <div class="d-flex justify-content-center" v-if="isLoading">
-            <km-spinner :visible="isLoading" ></km-spinner>
-        </div>
+        <km-document-error v-if="!viewDocument && !isLoading &&  documentLoadError"></km-document-error>
+        <km-spinner :visible="isLoading"  v-if="isLoading" center></km-spinner>
        
       </CCardBody>
     </CCard>
@@ -107,26 +89,12 @@
 
 <script setup>
   
-    import { KmFormGroup, KmSpinner, KmLstringValue,KmTerm,
-        KmLocales, KmValueTerm, KmValueBool, KmValueTerms, KmValue
-    } from "~/components/controls";
-    import { mapStores }            from 'pinia'
-    import { languages }            from '@/app-data/languages'
-    import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
-    import { useThesaurusStore }    from '@/stores/thesaurus';
-    import { useCountriesStore }    from '@/stores/countries';
-    import { useRealmConfStore }    from '@/stores/realmConf';
     import { useRoute } from 'vue-router' 
     import { KmDocumentDraftsService}from "@/services/kmDocumentDrafts";
     import { KmDocumentsService } from "@/services/kmDocuments";
 
-    const { user }                = useAuth();
-    const security                = useSecurity();
     const route                   = useRoute();
     const {t, locale}             = useI18n();
-    const thesaurusStore          = useThesaurusStore ();
-    const countriesStore          = useCountriesStore ();
-    const realmConfStore          = useRealmConfStore();
     const {$appRoutes:appRoutes } = useNuxtApp();
 
     const props = defineProps({
@@ -145,10 +113,6 @@
         return document?.value||lDocument?.value;
     })
 
-    const degreeOfAlignment = function(identifier){
-        return degreeOfAlignments.find(e=>e.identifier == identifier) 
-    }
-
     onMounted(() => {
         if(props.identifier && !props.document){
             loadDocument(props.identifier)       
@@ -163,7 +127,6 @@
 
         isLoading.value = true;
         try{
-            console.log(route.query)
             if(route.query?.draft == 'true' || route.query?.draft === null){
                 const draftRecord = await KmDocumentDraftsService.loadDraftDocument(route.params.identifier);
                 lDocument.value = draftRecord.body;

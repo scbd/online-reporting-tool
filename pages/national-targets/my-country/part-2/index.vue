@@ -17,10 +17,7 @@
         roles:[...ROLES.ALL_NATIONAL_USERS],
     })
 
-    onMounted(async()=>{
-      const res = await GbfGoalsAndTargets.loadGbfHeadlineIndicator('GBF-GOAL-A')
-
-      console.log(res)
+    onMounted(async()=>{      
     })
 
 </script>

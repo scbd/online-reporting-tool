@@ -1,41 +1,23 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> Global Goals/Target Mapping</slot>
+        <slot name="header"> National mapping with global Goal/Target</slot>
       </CCardHeader>
       <CCardBody>
 
-        <div  v-if="isLoading">
-            <km-spinner></km-spinner>
-        </div>
-        <form v-if="!isLoading && document" name="editForm">
-           
-            <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
+            <div  v-if="isLoading">
+                <km-spinner center></km-spinner>
+            </div>           
+            <km-form-workflow v-if="!isLoading && document?.header" :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template #submission>
-                     <div  >
-                       <!-- <km-form-group>
-                            <div class="card">
-                                <div class="card-header bg-secondary">
-                                    General
-                                </div>
-                                <div class="card-body">  
-                                    <km-form-group name="government" caption="Government" required>
-                                        <km-government v-model="document.government"></km-government>                           
-                                    </km-form-group>   
-
-                                    <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
-                                        <km-languages v-model="document.header.languages"></km-languages>
-                                    </km-form-group>   
-                                </div>
-                            </div>
-                        </km-form-group> -->
-
+                    <form name="editForm">                     
                         <km-form-group>
                             <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
                                 <CAccordionItem :visible="true">
                                     <CAccordionHeader id="generalAccordion">
-                                        Government and Language(s)                       
+                                        Government and Language(s) 
+                                        <small class="text-muted float-end">(Click here to change the record language)</small>                       
                                     </CAccordionHeader>
                                     <CAccordionBody> 
                                         <km-form-group name="government" caption="Government" required>
@@ -49,41 +31,47 @@
                                 </CAccordionItem>
                             </CAccordion>
                         </km-form-group>         
-
+                        <km-form-group v-if="nationalTargets?.length">
+                            <CCard>
+                                <CCardHeader>
+                                    Linked national target(s)
+                                </CCardHeader>
+                                <CCardBody>
+                                    <div  class="ps-2" v-for="(target, index) in nationalTargets" :key="target.identifier">
+                                        {{index+1}}. {{lstring(target.title)}}
+                                    </div>
+                                </CCardBody>
+                            </CCard>                            
+                        </km-form-group>
                         <km-form-group>
-                            <div class="card">
-                                <div class="card-header bg-secondary">
+                            <CCard>
+                                <CCardHeader>
                                     Elements of the global targets
-                                </div>
-                                <div class="card-body">                      
+                                </CCardHeader>
+                                <CCardBody>                      
                                     <km-form-group required caption="Elements of the global targets addressed by national targets (Please also include which aspects of the global targets have not been covered by the national targets)" 
                                         name="elementOfGlobalTargetsInfo" data-content="Please also include which aspects of the global targets have not been covered by the national targets">
                                         <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                    </km-form-group>                                    
-                                </div>
-                            </div>
+                                    </km-form-group>                                
+                                </CCardBody>
+                            </CCard>         
                         </km-form-group>
                         <km-form-group>
-                            <div class="card">
-                                <div class="card-header bg-secondary">
+                            <CCard>
+                                <CCardHeader>
                                     Reference Period
-                                </div>
-                                <div class="card-body">
-                                    <!-- <legend>Headline Indicators</legend> -->
+                                </CCardHeader>
+                                <CCardBody>   
                                     <CCard class="mb-2" v-for="(indicator, index) in document.referencePeriod" :key="indicator.identifier">
                                         <CCardBody>
                                             <CCardTitle>{{lstring(getIndicator(indicator.headlineIndicator).title)}}</CCardTitle>
                                             <hr/>
                                             <CCardText>
-                                                <table class="table" v-if="(getIndicator(indicator.headlineIndicator).nationalTargets||[]).length">
+                                                <table class="table" v-if="indicator.headlineIndicator">
                                                     <tr>
                                                         <td>   
-                                                            <km-form-group caption="National target(s) linked to headline indicator">
-                                                                <div  class="ps-2" v-for="(target, index) in getIndicator(indicator.headlineIndicator).nationalTargets" :key="target.identifier">
-                                                                    {{index+1}}. {{lstring(target.title)}}
-                                                                </div>
-                                                            </km-form-group>
-                                                            <km-form-group name="hasReferencePeriod" required caption="Is there a reference period for above national target(s) which relates to the headline indicator?">
+                                                            
+                                                            <km-form-group name="hasReferencePeriod" required caption="Is there a reference period which relates to the headline indicator?">
                                                                 <km-form-check-group>
                                                                     <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodYes'+ indicator.headlineIndicator.identifier"  :value="true"  v-model="indicator.hasReferencePeriod" label="Yes"/>
                                                                     <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodNo' + indicator.headlineIndicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" label="No"
@@ -100,28 +88,17 @@
                                             </CCardText>
 
                                         </CCardBody>
-                                    </CCard>
-                                   
-                                </div>
-                            </div>
+                                    </CCard>                                
+                                </CCardBody>
+                            </CCard>         
                         </km-form-group>
-                    </div>                    
+                    </form>                   
                 </template>
                 <template #review>                    
                     <view-target :identifier="document.header.identifier" :document="cleanDocument"></view-target>
                 </template>
-                <template #publish>    
-                    <CAlert color="info" class="d-flex align-items-center">
-                        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
-                        <div class="p-2">
-                            please use the Overview menu to publish this information
-                        </div>
-                    </CAlert>                
-                </template>
             </km-form-workflow>
-            <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
-        </form>
-
+            <km-document-error v-if="!isLoading &&  documentLoadError" :document-error="documentLoadError"></km-document-error>        
       </CCardBody>
     </CCard>
   
@@ -129,15 +106,8 @@
 
 <script setup>
   
-    import { useAsyncState } from '@vueuse/core'
-    import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner, KmFormWorkflow, KmHelp
-    } from "~/components/controls";
     import viewTarget               from "./view-target-part-2.vue";
-    import { useRealmConfStore }    from '@/stores/realmConf';
-    import { useKmDocumentDraftsStore }    from '@/stores/kmDocumentDrafts';
     import { useRoute } from 'vue-router' 
-    import { useToast } from 'vue-toast-notification';
     import { useStorage } from '@vueuse/core'
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
@@ -153,52 +123,15 @@
     }) 
 
     const { user }        = useAuth();
-    const security        = useSecurity();
     const route           = useRoute();
     const {$appRoutes:appRoutes }   = useNuxtApp();
-    const locale          = useI18n().locale
-    const $toast                = useToast();        
     const container = useAttrs().container;
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
     
-    const showSpinnerModal = ref(false);
-    const selectedLocale = ref(locale.value);
-    const headlineIndicators = ref(null) 
-    const validationReport = ref(null);
-  
-    watchEffect(()=>{
-
-        if(props.headlineIndicators?.length){
-            return headlineIndicators.value = [...props.headlineIndicators].map(e=>{
-                e.hasReferencePeriod = false;
-                return e;
-            })
-        }
-        else{
-            loadHeadlineIndicators(props.globalGoalOrTarget)
-        }
-    })
-
-
-    let document = ref({});
-    let isLoading = ref(false);
-
-    if(props.rawDocument){
-        document.value = {...props.rawDocument};
-    }
-    else if(props.identifier || route?.params?.identifier){
-        const req = useAsyncState(EditFormUtility.load(props.identifier || route?.params?.identifier)
-                                                                .then(e=>e ?? emptyDocument()));        
-        if(req.error?.value)
-            throw new Error(req.error.value);
-
-        document = req.state
-        isLoading = req.isLoading;
-    }
-    else{
-        document.value = emptyDocument();
-        //validate if there is a mapping record for the given target and load it instead
-    }
+    const headlineIndicators = ref(null);
+    const document = ref({});
+    const isLoading = ref(false);
+    const documentLoadError = ref(null);  
 
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
@@ -221,10 +154,14 @@
             });  
         }
         return clean
-    })
+    });
+
+    const nationalTargets = computed(()=>{
+        return props.headlineIndicators[0].nationalTargets
+    });
 
     onMounted(() => {
-        
+        init();
     })
 
     function onGetDocument(){
@@ -240,17 +177,7 @@
             props.onPostSaveDraft(document)
     }
     function emptyDocument(){
-        const referencePeriod = [];
-        if(headlineIndicators.value?.length){            
-
-            headlineIndicators.value.forEach(indicator => {
-                referencePeriod.push({
-                    headlineIndicator   : { identifier : indicator.identifier},
-                    hasReferencePeriod : false
-                })
-            });            
-        }
-
+        
         return {
             header : {
                 schema : SCHEMAS.NATIONAL_TARGET_7_MAPPING,
@@ -263,17 +190,60 @@
             globalGoalOrTarget : {
                 identifier: props.globalGoalOrTarget
             },
-            referencePeriod
+            referencePeriod :   headlineIndicators.value?.map(indicator => {
+                                    return {
+                                        headlineIndicator  : { identifier : indicator.identifier},
+                                        hasReferencePeriod : false
+                                    }
+                                })
         }
     }
 
     async function loadHeadlineIndicators(globalTarget){
-
-        const indicators = await GbfGoalsAndTargets.loadGbfHeadlineIndicator(globalTarget.identifier);
-        headlineIndicators.value = sortBy([...(indicators?.flat()||[])], 'title')
+        const indicators = await GbfGoalsAndTargets.loadGbfHeadlineIndicator(globalTarget);
+        headlineIndicators.value = sortBy(indicators?.flat()||[], 'title')
     }
 
     function getIndicator(indicator){
         return headlineIndicators.value?.find(e=>e.identifier == indicator?.identifier)
     }
+
+    async function init(){
+        isLoading.value = true;
+        const identifier = props.identifier || route?.params?.identifier;
+        try{
+
+            await loadHeadlineIndicators(props.globalGoalOrTarget)
+
+            if(props.rawDocument){
+                document.value = {...props.rawDocument};
+            }
+            else if(identifier){
+                document.value = await EditFormUtility.load(identifier);                
+            }
+            else{
+                document.value = emptyDocument();
+                //validate if there is a mapping record for the given target and load it instead
+            }
+        }
+        catch(e){
+            if([404, 401, 403].includes(e.status)){
+                documentLoadError.value = e.status;
+                useLogger().error(e, `${t(e.status==404 ? 'notFound' : 'notAuthorized')} ` + identifier);
+            }
+            else
+                useLogger().error(e, `${t('errorLoading')} ` + identifier);
+            
+        }
+
+        isLoading.value = false;
+    }
 </script>
+<style scoped>
+.accordion-button small{
+    display: none;
+}
+.accordion-button.collapsed small{
+    display: block;
+}
+</style>

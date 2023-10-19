@@ -9,7 +9,7 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
         
         target.nationalTargets = []
 
-        const lNationalTargets  = [...nationalTargets.filter (e=>alignedGoalsTargets(e.workingDocumentBody || e.body)?.map(g=>g.identifier)?.includes(target.identifier))];
+        const lNationalTargets  = [...nationalTargets.filter (e=>getAlignedGoalsOrTargets(e.workingDocumentBody || e.body)?.map(g=>g.identifier)?.includes(target.identifier))];
         const lNationalMappings = {...nationalMappings.find(e=>(e.workingDocumentBody || e.body)?.globalGoalOrTarget?.identifier  == target.identifier)};
 
         target.elementOfGlobalTargetsInfo = (lNationalMappings?.workingDocumentBody || lNationalMappings?.body)?.elementOfGlobalTargetsInfo;
@@ -42,7 +42,7 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
     return matrix;
 }
 
-export function alignedGoalsTargets(document:Object){
+export function getAlignedGoalsOrTargets(document:Object){
     return [
         ...(document.globalGoalAlignment ||[]),
         ...(document.globalTargetAlignment||[])

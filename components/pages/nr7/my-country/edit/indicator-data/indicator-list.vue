@@ -1,12 +1,8 @@
 <template>
-    <CButton class="float-end mt-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="computedIndicators">
-        <span v-if="!accordionOpen">{{ t('expandAll') }}</span>
-        <span v-if="accordionOpen" >{{ t('collapseAll') }}</span>
-    </CButton>
-    <br>
-    <br>
-<!-- {{ props }}  -->
-    <CAccordion always-open id="mapping-accordion" v-if="computedIndicators?.length">                    
+    <toggle-accordion class="btn-xs m-1 float-end" v-if="computedIndicators" ref="accordionToggle" 
+        :selector="'#' + componentId + '-mapping-accordion .accordion-header button.accordion-button'" >
+    </toggle-accordion>    
+    <CAccordion always-open :id="componentId + '-mapping-accordion'" v-if="computedIndicators?.length">                    
         <CAccordionItem :item-key="index+1" :visible="true" v-for="(indicator, index) in computedIndicators" :key="indicator.identifier"  always-open>
             <CAccordionHeader :id="'gbfTarget'+indicator.identifier">
                 {{lstring(indicator.title||indicator)}}                           
@@ -21,7 +17,7 @@
                 </div>
             </CAccordionBody>
         </CAccordionItem>
-    </CAccordion>      
+    </CAccordion>
   <!-- :on-close="onAddIndicatorDataClose" -->
 </template>
 <script setup>
@@ -29,37 +25,26 @@
     import addIndicatorData from './add-data.vue';
     import MissingDataAlert from './missing-data-alert.vue';
     import ViewData from './view-data.vue';
+    import { makeUid }         from '@coreui/utils/src'
 
     import { useAsyncState } from '@vueuse/core'
     import { useRealmConfStore }    from '@/stores/realmConf';
-    import $ from 'jquery';
     import {cloneDeep} from 'lodash';
 
     const {t, locale }          = useI18n()
-
-    const accordionOpen = ref(false);
     const props = defineProps({
         indicators         : {type:Object, default:[] },
         onClose            : {type:Function, required:false},
         showMissingAlert   : {type:String, default:false },
     }) 
 
-
+    const componentId = makeUid()
     const {indicators, showMissingAlert} = toRefs(props);
     const lIndicators  = toRef([]);    
+    const accordionToggle      = ref(null);
     lIndicators.value  = cloneDeep(indicators.value)
     
     const computedIndicators = computed(()=>lIndicators.value);
-
-    function toggleAccordion(open){
-        accordionOpen.value = open || !accordionOpen.value;
-        const buttons = $('#mapping-accordion .accordion-header button.accordion-button');
-        buttons.each(function(){
-            const ariaExpanded = $(this)[0].ariaExpanded == "true";
-            if((accordionOpen.value && ariaExpanded) || (!accordionOpen.value && !ariaExpanded))
-                $(this).click();
-        })
-    }
     
     function onAddIndicatorDataClose(document){
         
@@ -70,4 +55,8 @@
         indicator.nationalData = document.body;
 
     }
+
+    onMounted(()=>{
+        nextTick(()=>accordionToggle.value.toggle(true))
+    })
 </script>

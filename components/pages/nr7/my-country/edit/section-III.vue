@@ -4,6 +4,7 @@
         {{t('sectionIII')}} {{t('sectionIIIDescription')}}
       </CCardHeader>
       <CCardBody>
+        
         <div  v-if="nationalReportStore.isBusy || isBusy">
             <km-spinner></km-spinner>
         </div>
@@ -11,10 +12,9 @@
             <!-- <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft"> -->
                 <!-- <template #submission> -->
-                    <CButton class="float-end mr-1 mb-1 btn-xs" color="primary" size="sm" @click="toggleAccordion()" v-if="nationalTargets">
-                        <span v-if="!accordionOpen">{{ t('expandAll') }}</span>
-                        <span v-if="accordionOpen" >{{ t('collapseAll') }}</span>
-                    </CButton>
+                    
+                    <toggle-accordion class="float-end mr-1 mb-1 btn-xs"  ref="accordionToggle"
+                    selector="#mapping-accordion .accordion-header button.accordion-button" v-if="nationalTargets?.length"></toggle-accordion>
                     <br>
                     <br>
                     <CAccordion always-open id="mapping-accordion">                    
@@ -119,16 +119,14 @@
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
-    import $ from 'jquery';
     import addIndicatorData from './indicator-data/add-data.vue';
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
     import ViewData         from './indicator-data/view-data.vue';
     import {uniqBy} from 'lodash';
-    import { alignedGoalsTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
+    import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
 
     let document = ref({});
     let sectionIII;
-    const accordionOpen = ref(false);
     const props = defineProps({
         workflowActiveTab  : {type:Number, default:0 },
         onClose            : {type:Function, required:false},
@@ -146,6 +144,7 @@
     const nationalTargets     = ref();
     const nationalIndicatorData = ref([]);
     const isBusy                = ref(true);
+    const accordionToggle      = ref(null);
 
     const stakeholderLists = [
         {identifier: '1', title: 'Indigenous peoples and local communities,,'},
@@ -186,21 +185,12 @@
         return toRef(clean);
     }
 
-    function toggleAccordion(open){
-        accordionOpen.value = open || !accordionOpen.value;
-        const buttons = $('#mapping-accordion .accordion-header button.accordion-button');
-        buttons.each(function(){
-            const ariaExpanded = $(this)[0].ariaExpanded == "true";
-            if((accordionOpen.value && ariaExpanded) || (!accordionOpen.value && !ariaExpanded))
-                $(this).click();
-        })
-    }
     async function loadNationalTargets(){
 
         const response = await KmDocumentsService.loadDocuments(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`,500, undefined, 0, true)
         const targets = await Promise.all(response?.Items?.map(async e=>{
-                            const headlineIndicators = await Promise.all(alignedGoalsTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)})||[]);
-                            const binaryIndicators   = await Promise.all(alignedGoalsTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)})||[]);
+                            const headlineIndicators = await Promise.all(getAlignedGoalsOrTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)})||[]);
+                            const binaryIndicators   = await Promise.all(getAlignedGoalsOrTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)})||[]);
                             const componentIndicators       = await Promise.all(e.body?.componentIndicators    ?.map(e=>{return GbfGoalsAndTargets.loadIndicator(e.identifier)})||[]);
                             const complementaryIndicators   = await Promise.all(e.body?.complementaryIndicators?.map(e=>{return GbfGoalsAndTargets.loadIndicator(e.identifier)})||[]);
                             return {
@@ -271,9 +261,8 @@
             //     //remove any deleted one
             //     //add new targets
             // }
-        
-
-            setTimeout(()=>toggleAccordion(true), 1000);
+           
+            nextTick(()=>accordionToggle.value.toggle(true))
         }
         catch(e){
             useLogger().error(e,  'Error loading Section III')

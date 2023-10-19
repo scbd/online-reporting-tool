@@ -198,21 +198,9 @@
                 </div>
             </km-form-group> 
         </div>
-        <div v-if="!viewDocument && !isLoading &&  documentLoadError">
-            <CAlert color="danger" class="d-flex align-items-center">
-                <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
-                <div v-if="documentLoadError==404">
-                    {{t('notFound')}}
-                </div>
-                <div v-if="documentLoadError==401 || documentLoadError==403">
-                    {{t('notAuthorized')}}
-                </div>
-            </CAlert>
-        </div>
-        <div class="d-flex justify-content-center" v-if="isLoading">
-            <km-spinner :visible="isLoading" ></km-spinner>
-        </div>
-        
+
+        <km-document-error v-if="!viewDocument && !isLoading &&  documentLoadError" :document-error="documentLoadError"></km-document-error>        
+        <km-spinner :visible="isLoading" v-if="isLoading" center></km-spinner>        
        
       </CCardBody>
     </CCard>
@@ -223,27 +211,13 @@
 
 <script setup>
   
-    import { KmFormGroup, KmSpinner, KmLstringValue,
-        KmLocales, KmValueTerm, KmValueBool, KmValueTerms, KmValue
-    } from "~/components/controls";
-    import { mapStores }            from 'pinia'
-    import { languages }            from '@/app-data/languages'
     import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
-    import { useThesaurusStore }    from '@/stores/thesaurus';
-    import { useCountriesStore }    from '@/stores/countries';
-    import { useRealmConfStore }    from '@/stores/realmConf';
     import { useRoute } from 'vue-router' 
     import { KmDocumentDraftsService}from "@/services/kmDocumentDrafts";
     import { KmDocumentsService } from "@/services/kmDocuments";
-    
 
-    const { user }                = useAuth();
-    const security                = useSecurity();
     const route                   = useRoute();
     const {t, locale}             = useI18n();
-    const thesaurusStore          = useThesaurusStore ();
-    const countriesStore          = useCountriesStore ();
-    const realmConfStore          = useRealmConfStore();
     const {$appRoutes:appRoutes } = useNuxtApp();
 
     const props = defineProps({
@@ -251,8 +225,7 @@
         identifier  : { type:String, required:true}
     })
 
-    const { document, identifier } = toRefs(props)
-
+    const { document, identifier } = toRefs(props);
     const lDocument = ref(undefined);
     const isLoading = ref(false);
     const documentLoadError = ref(false);
@@ -280,7 +253,6 @@
 
         isLoading.value = true;
         try{
-            console.log(route.query)
             if(route.query?.draft == 'true' || route.query?.draft === null){
                 const draftRecord = await KmDocumentDraftsService.loadDraftDocument(route.params.identifier);
                 lDocument.value = draftRecord.body;
