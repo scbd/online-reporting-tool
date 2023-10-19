@@ -27,8 +27,13 @@
                             <km-lstring-value :value="viewDocument.title" :locale="selectedLocale"></km-lstring-value>                                    
                         </km-form-group>
 
+                        <km-form-group v-if="viewDocument.description">
+                            <label class="form-label" for="description">Description</label>
+                            <km-lstring-value type="html" :value="viewDocument.description" :locale="selectedLocale"></km-lstring-value>
+                        </km-form-group>
+
                         <km-form-group v-if="viewDocument.mainPolicyOfMeasureOrActionInfo">
-                            <label class="form-label" for="mainPolicyOfMeasureOrActionInfo">Please outline the main policy measures or actions that will be taken to achieve this national target. </label>
+                            <label class="form-label" for="mainPolicyOfMeasureOrActionInfo">Please outline the main policy measures or actions that will be taken to achieve this national target</label>
                             <km-lstring-value type="html" :value="viewDocument.mainPolicyOfMeasureOrActionInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                     </div>
@@ -58,10 +63,10 @@
                                     </tr>
                                     <tr v-for="target in viewDocument.globalTargetAlignment" :key="target.identifier">
                                         <td>
-                                            <km-value-term :value="target" :locale="selectedLocale"></km-value-term>
+                                            <km-value-term class="degree-of-alignment" :value="target" :locale="selectedLocale"></km-value-term>
                                         </td>
                                         <td>
-                                            <strong><km-value-term :value="target.degreeOfAlignment" v-if="target.degreeOfAlignment" :locale="selectedLocale"></km-value-term></strong>
+                                            <km-value-term class="degree-of-alignment" :value="target.degreeOfAlignment" v-if="target.degreeOfAlignment" :locale="selectedLocale"></km-value-term>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -84,11 +89,6 @@
                             <km-lstring-value type="html" :value="viewDocument.implementingConsiderationsInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
 
-                        <km-form-group v-if="viewDocument.degreeOfAlignment && degreeOfAlignment">
-                            <label class="form-label" for="exampleFormControlSelect1">Degree of alignment</label>                            
-                            <km-value>{{ degreeOfAlignment(viewDocument.degreeOfAlignment.identifier)?.title }}</km-value>
-                        </km-form-group>
-
                         <km-form-group v-if="viewDocument.degreeOfAlignmentInfo">
                             <label class="form-label" for="implementingConsiderationsInfo">Explanation, including which aspects of the goal or target are covered</label>
                             <km-lstring-value type="html" :value="viewDocument.degreeOfAlignmentInfo" :locale="selectedLocale"></km-lstring-value>
@@ -104,8 +104,12 @@
                     </div>
                     <div class="card-body">
                         <km-form-group v-if="viewDocument.headlineIndicators">
-                            <label class="form-label" for="exampleFormControlSelect1">Headline indicators</label>
+                            <label class="form-label" for="headlineIndicators">Headline indicators</label>
                             <km-value-terms :value="viewDocument.headlineIndicators" :locale="selectedLocale"></km-value-terms>                                    
+                        </km-form-group>
+                        <km-form-group v-if="viewDocument.binaryIndicators">
+                            <label class="form-label" for="binaryIndicators">Binary indicators</label>
+                            <km-value-terms :value="viewDocument.binaryIndicators" :locale="selectedLocale"></km-value-terms>                                    
                         </km-form-group>
                         <km-form-group v-if="viewDocument.componentIndicators">
                             <label class="form-label" for="componentIndicators">Component indicators</label>
@@ -275,3 +279,9 @@
     }
 
 </script>
+<style scoped>
+    .degree-of-alignment :deep(.form-control.km-value){
+        background-color: unset!important;
+        border: unset!important;
+    }
+</style>
