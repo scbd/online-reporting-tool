@@ -6,14 +6,16 @@ import {removeEmpty} from '@/utils'
 export default defineNuxtPlugin((nuxtApp) => {
   
   globalThis.$fetch = ofetch.create({
-    onRequest ({ _request, options }) {
+    onRequest ({ request, options }) {
         const auth = useAuth()
         const config = useRuntimeConfig()
         const realmConfStore = useRealmConfStore()
         
         const realmConf = realmConfStore.realmConf;
 
-        options.baseURL = options.baseURL || config.public.API_URL;
+        if(/^\/api\/*/.test(request))
+            options.baseURL = options.baseURL || config.public.API_URL;
+        
         options.headers = options.headers || {};
 
         if(realmConf.realm)
