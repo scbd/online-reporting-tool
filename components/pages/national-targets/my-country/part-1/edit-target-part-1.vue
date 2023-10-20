@@ -132,7 +132,7 @@
                                         </small>
                                     </km-form-group>    
                                     
-                                    <km-form-group name="implementingConsiderationsInfo" 
+                                    <km-form-group name="degreeOfAlignmentInfo" 
                                         caption="Explanation, including which aspects of the goal or target are covered">
                                         <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
@@ -387,8 +387,8 @@
         
         document.value.headlineIndicators  = headlineIndicators.value.map(e=>customSelectedItem(e.identifier));
         document.value.binaryIndicators    = binaryIndicators  .value.map(e=>customSelectedItem(e.identifier));        
-        document.value.componentIndicators = document.value?.componentIndicators.filter(selected=>componentIndicators.value.find(e=>e.identifier == selected.identifier))
-        document.value.complementaryIndicators = document.value.complementaryIndicators.filter(selected=>complementaryIndicators.value.find(e=>e.identifier == selected.identifier))
+        document.value.componentIndicators = document.value?.componentIndicators?.filter(selected=>componentIndicators.value.find(e=>e.identifier == selected.identifier))
+        document.value.complementaryIndicators = document.value?.complementaryIndicators?.filter(selected=>complementaryIndicators.value.find(e=>e.identifier == selected.identifier))
         if(!selectedGoalsAndTargets?.length)
             document.value.otherNationalIndicators = []
     }

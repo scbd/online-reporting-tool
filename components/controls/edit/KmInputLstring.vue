@@ -5,12 +5,11 @@
         <CFormInput aria-describedby="basic-addon2" v-model="binding[locale]" :dir="locale=='ar' ? 'rtl' : 'ltr'" 
             @update:modelValue="emitChange" />
         <CInputGroupText id="basic-addon2">
-            <!-- <CTooltip :content="lstring(getTerm(locale).title)" trigger="hover">
+            <CTooltip :content="lstring(getTerm(locale).title)" trigger="hover">
                 <template #toggler="{ on }">
                     <span v-on="on">{{locale.toUpperCase()}}</span>
                 </template>
-            </CTooltip> -->
-            {{ lstring(getTerm(locale).title||locale) }}
+            </CTooltip>
         </CInputGroupText>
     </CInputGroup>    
   </div>
@@ -27,19 +26,19 @@ export default {
     },
     props: {
         locales: {
-        type: Array,
-        required: true,
+            type: Array,
+            required: true,
         },
         modelValue: {
-        type: Object,
-        required: false,
-        default(){
-            return {}
-        }
+            type: Object,
+            required: false,
+            default(){
+                return {}
+            }
         },
         disabled: {
-        type: Boolean,
-        required: false,
+            type: Boolean,
+            required: false,
         },
     },
     data() {
@@ -51,7 +50,9 @@ export default {
         locales : function(newVal, oldVal){
             const deleted = without(oldVal, ...newVal)
             if(deleted?.length){      
-                this.binding[deleted[0]] = undefined;
+                deleted.forEach(e=>{
+                    this.binding[e] = undefined;
+                })
                 this.emitChange();
             }
             this.loadLanguages();

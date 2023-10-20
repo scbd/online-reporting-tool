@@ -26,7 +26,7 @@
 <script>
 import $ from 'jquery';
 import { makeUid } from '@coreui/utils/src'
-// import { Tab } from 'bootstrap'
+import {without} from 'lodash';
 import KmCkEditor from './KmCkEditor.vue'
 import { useThesaurusStore }    from '@/stores/thesaurus';
 import { useUserPreferencesStore }    from '@/stores/userPreferences';
@@ -66,7 +66,14 @@ export default {
     };
   },
   watch:{
-    locales : function(newVal){
+    locales : function(newVal, oldVal){
+        const deleted = without(oldVal, ...newVal)
+        if(deleted?.length){      
+            deleted.forEach(e=>{
+                this.binding[e] = undefined;
+            })
+            this.onChange();
+        }
         if(!newVal.includes(this.activeLocale)){        
             this.onTabChange(newVal[0]);
         }

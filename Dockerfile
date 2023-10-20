@@ -4,11 +4,11 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 
-RUN npm run clean-reinstall
+RUN yarn run clean-reinstall
 
 COPY . ./
 
-RUN npm run build
+RUN yarn run build
 
 ENV PORT 8000
 
