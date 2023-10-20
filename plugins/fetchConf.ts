@@ -7,14 +7,16 @@ export default defineNuxtPlugin((nuxtApp) => {
   
   globalThis.$fetch = ofetch.create({
     onRequest ({ request, options }) {
-        const auth = useAuth()
+        
         const config = useRuntimeConfig()
+        if(/^\/api\/*/.test(request))
+            options.baseURL = options.baseURL || config.public.API_URL;
+
+        const auth = useAuth()
         const realmConfStore = useRealmConfStore()
         
         const realmConf = realmConfStore.realmConf;
 
-        if(/^\/api\/*/.test(request))
-            options.baseURL = options.baseURL || config.public.API_URL;
         
         options.headers = options.headers || {};
 

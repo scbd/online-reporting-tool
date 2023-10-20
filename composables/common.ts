@@ -14,3 +14,25 @@ export const useNavigateAppTo = (to:RouteLocation, options: NavigateToOptions) =
     return navigateTo(to, options);
 
 };
+
+export const useResolveApiBaseUrl = function(url:string){
+
+    const conf  = useRuntimeConfig();
+    const apiUrl= conf.public.API_URL;
+
+    if(/^\/api/.test(url))
+        return `${apiUrl}${url}`
+
+    return url;
+}
+
+export const useResolveAccountsHostUrl = function(url:string){
+
+    const conf              = useRuntimeConfig();
+    const accountsHostUrl   = conf.public.ACCOUNTS_HOST_URL;
+
+    if(/^\//.test(url))
+        return `${accountsHostUrl}${url}`
+
+    return url;
+}

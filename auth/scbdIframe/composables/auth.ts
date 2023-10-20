@@ -9,18 +9,18 @@ export const useAuthConf = () => {
 
     const strategy = conf.public.auth.stratagey;
     const strategyConf = { ...conf.public.auth.strategies[strategy] };
-    const { redirect, accountsHostUrl} = conf.public.auth;
+    const { redirect } = conf.public.auth;
     return {
         ...strategyConf,
         redirect,
-        accountsHostUrl
+        accountsHostUrl : conf.public.ACCOUNTS_HOST_URL
     }
 }
 
 export const authRedirectToLogin = async (from:string) => {
    
     const authConf = useAuthConf();
-    const redirectTo = `${authConf.redirect.login}?returnUrl=${encodeURIComponent(window.location.origin)}${encodeURIComponent(from)}`
+    const redirectTo = `${useResolveAccountsHostUrl(authConf.redirect.login)}?returnUrl=${encodeURIComponent(window.location.origin)}${encodeURIComponent(from)}`
 
     await navigateTo(redirectTo, { external: true });
 
@@ -55,7 +55,7 @@ export async function authUser(token = null): Promise<EUser> {
         const headers = authHeader(token);
 
         if (headers) {
-            const lUser = await $fetch<EUser>(`${authConf.endpoints?.user?.url}`, {
+            const lUser = await $fetch<EUser>(`${useResolveApiBaseUrl(authConf.endpoints?.user?.url)}`, {
                 method: authConf.endpoints?.user?.method?.toUpperCase(),
                 headers
             });

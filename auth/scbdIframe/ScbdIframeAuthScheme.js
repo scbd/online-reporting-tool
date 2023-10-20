@@ -1,3 +1,4 @@
+import { useResolveApiBaseUrl } from "@/composables/common";
 
 export default class ScbdIframeAuthScheme {
 
@@ -39,17 +40,9 @@ export default class ScbdIframeAuthScheme {
     setUserToken(token) {
       //TODO : set token expiry
       this.token.set(token);
-      return this.fetchUser(this.options.endpoints.user.url);
+      return this.fetchUser(useResolveApiBaseUrl(this.options.endpoints.user.url));
     }
-  
-    async login(endpoint, args) {
-      const response = await super.login(endpoint, args);
-  
-      await this.setScbdIframeToken(response.data);
-  
-      return response;
-    }
-  
+    
     async logout() {
       this.userTokenResolved = undefined;
       

@@ -12,15 +12,18 @@ export default defineComponent({
     setup(props, context) { 
         const ctx = useNuxtApp();
         const config = useRuntimeConfig();
-
         const auth = useAuth()
-        const socket = SocketIOService.connect(config.public.socketIo.url, auth?.token)
+        let   socketIoUrl = config.public.socketIo.url
+        
+        if(/^\//.test(socketIoUrl))
+            socketIoUrl = config.public.API_URL + socketIoUrl;
+
+        const socket = SocketIOService.connect(socketIoUrl, auth?.token)
 
 
         return {}
     },
     unmounted(){
-        console.log('app unmounted')
         SocketIOService.disconnect();
     }, 
 });

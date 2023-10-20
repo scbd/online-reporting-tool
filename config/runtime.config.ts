@@ -1,14 +1,14 @@
 export default defineNuxtConfig({
     runtimeConfig : {
         public:{
-            ACCOUNTS_HOST_URL : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL,
-            API_URL           : process.env.NUXT_PUBLIC_API_URL          ,
-            REALM_CONF_HOST   : process.env.NUXT_PUBLIC_REALM_CONF_HOST  ,
+            ACCOUNTS_HOST_URL : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
+            API_URL           : process.env.NUXT_PUBLIC_API_URL           || 'https://api.cbddev.xyz',
+            REALM_CONF_HOST   : process.env.NUXT_PUBLIC_REALM_CONF_HOST   || 'ort.cbddev.xyz',
             auth : {
-                accountsHostUrl : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL,
+                // accountsHostUrl : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL,
                 redirect: {
-                    login:  `${process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL}/signin`,
-                    logout: `${process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL}/logout`,
+                    login:  `/signin`,
+                    logout: `/logout`,
                     callback: false,
                     home: '/'
                 },
@@ -27,11 +27,11 @@ export default defineNuxtConfig({
                         endpoints: {
                             logout: false,
                             login: {
-                                url: `${process.env.NUXT_PUBLIC_API_URL}/api/v2013/authentication/token`,
+                                url: `/api/v2013/authentication/token`,
                                 method: 'post'
                             },
                             user: {
-                                url: `${process.env.NUXT_PUBLIC_API_URL}/api/v2013/authentication/user`,
+                                url: `/api/v2013/authentication/user`,
                                 method: 'get'
                             }
                         },
@@ -44,7 +44,7 @@ export default defineNuxtConfig({
             },
             socketIo: {
                 name: 'SCBD',
-                url: `${process.env.NUXT_PUBLIC_API_URL}`,
+                url: `/`,
                 default: true,
             },
         }
