@@ -88,8 +88,8 @@ export default defineNuxtConfig({
             auth : {
                 accountsHostUrl : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL,
                 redirect: {
-                    login:  `${process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL}/signin`,
-                    logout: `${process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL}/logout`,
+                    login:  process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL + '/signin',
+                    logout: process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL + '/logout',
                     callback: false,
                     home: '/'
                 },
@@ -108,11 +108,11 @@ export default defineNuxtConfig({
                         endpoints: {
                             logout: false,
                             login: {
-                                url: `${process.env.NUXT_PUBLIC_API_URL}/api/v2013/authentication/token`,
+                                url: process.env.NUXT_PUBLIC_API_URL + '/api/v2013/authentication/token',
                                 method: 'post'
                             },
                             user: {
-                                url: `${process.env.NUXT_PUBLIC_API_URL}/api/v2013/authentication/user`,
+                                url: process.env.NUXT_PUBLIC_API_URL + '/api/v2013/authentication/user',
                                 method: 'get'
                             }
                         },
@@ -125,7 +125,7 @@ export default defineNuxtConfig({
             },
             socketIo: {
                 name: 'SCBD',
-                url: `${process.env.NUXT_PUBLIC_API_URL}`,
+                url: process.env.NUXT_PUBLIC_API_URL,
                 default: true,
             }
         }
