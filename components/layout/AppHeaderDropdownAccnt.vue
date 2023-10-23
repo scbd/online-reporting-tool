@@ -34,14 +34,15 @@ export default {
 
     const logout = async ()=>{
       await authLogout()
-      window.location.reload()
+      if(process.client)
+        window.location.reload()
     }
     
     return {
       user       : useAuth().user,
       itemsCount : 42,
       accountsUrl: useRuntimeConfig().public.ACCOUNTS_HOST_URL,
-      returnUrl  : window.location.href,
+      returnUrl  : process.client ? window.location.href : '',
       logout
     }
   },

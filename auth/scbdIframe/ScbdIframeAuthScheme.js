@@ -1,5 +1,8 @@
 import { useResolveApiBaseUrl } from "@/composables/common";
 
+if(process.client){
+    window = {};
+}
 export default class ScbdIframeAuthScheme {
 
     constructor(options) {
@@ -7,36 +10,8 @@ export default class ScbdIframeAuthScheme {
       this.userTokenResolved = undefined;
       
       this.options = options
-    }
-  
-    // async mounted(options= {}) {
-  
-    //   const {
-    //     tokenCallback = () => this.$auth.reset(),
-    //     refreshTokenCallback = undefined
-    //   } = options;
-  
-    //   const {
-    //     tokenExpired,
-    //     refreshTokenExpired
-    //   } = this.check(true)
-  
-    //   if (refreshTokenExpired && typeof refreshTokenCallback === 'function') {
-    //     refreshTokenCallback()
-    //   } else if (tokenExpired && typeof tokenCallback === 'function') {
-    //     tokenCallback()
-    //   }
-      
-    //   // Initialize request interceptor
-    //   this.initializeRequestInterceptor()
-  
-    //   const token = await this.getScbdIframeToken()
-      
-    //   // Fetch user once
-    //   return this.$auth.fetchUserOnce(this.options.endpoints.user.url)
-      
-  
-    // }
+    }  
+    
     setUserToken(token) {
       //TODO : set token expiry
       this.token.set(token);

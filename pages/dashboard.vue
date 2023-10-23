@@ -183,7 +183,7 @@ import { KmLink } from "@/components/controls";
             rows:10,
             q : `_state_s: public AND 
                     ((schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:${realmConf.realm}) OR 
-                    (schema_s : (${SCHEMAS.NATIONAL_REPORT_6} ${SCHEMAS.NATIONAL_REPORT}) AND realm_ss:${realmConf.realm.replace('ORT', 'CHM')}))`,
+                    (schema_s : (${SCHEMAS.NATIONAL_REPORT_6} ${SCHEMAS.NATIONAL_REPORT}) AND realm_ss:${realmConf?.realm?.replace('ORT', 'CHM')}))`,
             facet: true,
             'facet.field': ['schema_s', 'government_EN_s'],
             'facet.pivot' : "government_EN_s,schema_s",
