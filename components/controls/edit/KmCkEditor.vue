@@ -170,7 +170,7 @@ export default {
                         const viewFragment = ed.data.processor.toView('<span class="me-2">&nbsp;<a rel="noopener noreferrer" target="_blank" href="'+success.url+'">'+success.filename+ '</a>&nbsp;</span>' );
                         const modelFragment = ed.data.toModel(viewFragment);
                         ed.model.insertContent( modelFragment);
-                        self.onFileUpload({data:success.data});
+                        self.onFileUpload({file:success});
                     })
                     .catch(e=>{
                         self.uploadErrors.push({file:file.name })
@@ -197,24 +197,30 @@ export default {
       function onEditorImageUploaded(eventInfo, name, value, oldValue){
         // console.log((eventInfo, name, value, oldValue))
         //TODO: check why url is not in event args
-      	// if(value.url){
-      	// 	self.onFileUpload({data:value})
-      	// }
+      	if(value.url){
+      		self.onFileUpload({file:value})
+      	}
       }
+
+      this.$emit('onEditorReady', ed);
     },
     onEditorFocus( event, editor ) {
       // console.debug( 'Editor focused.', { event, editor } );
+        this.$emit('onEditorFocus', event, editor);
     },
     onEditorBlur( event, editor ) {
       // console.debug( 'Editor blurred.', { event, editor } );
+        this.$emit('onEditorBlur', event, editor);
     },
-    onEditorInput( data, event, editor ) {            
+    onEditorInput( data, event, editor ) {       
+        this.$emit('onEditorInput', event, editor);     
     },
     onEditorDestroy( editor ) {
       // console.debug( 'Editor destroyed.', { editor } );
+        this.$emit('onEditorDestroy', editor);
     },
     onFileUpload(params){
-    //   console.debug('file uploaded', params)
+        this.$emit('onFileUpload', params);
     },
     getEditorConfig(){
         const self = this;
@@ -454,7 +460,7 @@ export default {
             ],
             },
         }
-    }
+    },
   },
   computed:{
     binding: {
@@ -463,7 +469,6 @@ export default {
       },
       set(value) {
         this.$emit('update:modelValue', value);
-        this.$emit('onChange', value);
       }
     }
   },
