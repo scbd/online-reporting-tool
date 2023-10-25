@@ -129,6 +129,7 @@ export default {
         this.binding = {...this.modelValue||{}};
     }
     this.loadLanguages();
-  }
+  },
+  emits:['update:modelValue', 'onFileUpload']
 };
 </script>

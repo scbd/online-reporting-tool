@@ -66,7 +66,8 @@ export default {
             this.tabs[index].isActive = true;
             this.$emit('onTabChange', index);
         }
-    }
+    },
+    emits:['onTabChange']
     
 }
 </script>

@@ -96,6 +96,7 @@ export default {
     mounted(){        
         this.binding = {...this.modelValue||{}};
         this.loadLanguages();
-    }
+    },
+    emits:['update:modelValue']
 };
 </script>
