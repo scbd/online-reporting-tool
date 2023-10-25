@@ -51,7 +51,7 @@
                                 <CCardBody>                      
                                     <km-form-group required caption="Elements of the global targets addressed by national targets (Please also include which aspects of the global targets have not been covered by the national targets)" 
                                         name="elementOfGlobalTargetsInfo" data-content="Please also include which aspects of the global targets have not been covered by the national targets">
-                                        <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload" :identifier="document.header.identifier" v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>                                
                                 </CCardBody>
                             </CCard>         
@@ -80,7 +80,7 @@
                                                             </km-form-group> 
 
                                                             <km-form-group v-if="indicator.hasReferencePeriod" name="referencePeriodInfo" caption="Please explain" required>
-                                                                <km-input-rich-lstring v-model="indicator.referencePeriodInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                                                <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="indicator.referencePeriodInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                                             </km-form-group>                                     
                                                         </td>
                                                     </tr> 
@@ -172,10 +172,16 @@
         if(props.onClose)
             props.onClose(document)
     }
+
     const onPostSaveDraft = async (document)=>{
         if(props.onPostSaveDraft)
             props.onPostSaveDraft(document)
     }
+    
+    function onFileUpload({file, locale}){
+        useOnFileUpload({document, file, locale});
+    }
+
     function emptyDocument(){
         
         return {

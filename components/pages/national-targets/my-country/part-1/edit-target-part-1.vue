@@ -37,11 +37,11 @@
                                     </km-form-group>
                                     <km-form-group name="description" 
                                         caption="Description">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.description" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="document.description" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     <km-form-group name="mainPolicyOfMeasureOrActionInfo" 
                                         caption="Please outline the main policy measures or actions that will be taken to achieve this national target.">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.mainPolicyOfMeasureOrActionInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="document.mainPolicyOfMeasureOrActionInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                                     
                                     <km-form-group name="degreeOfAlignmentInfo" 
                                         caption="Explanation, including which aspects of the goal or target are covered">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="document.degreeOfAlignmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     <km-form-group name="relatedOtherProcesses" caption="Which of the “considerations for implementation” in Section C of the GBF have been taken into account in developing this national target, and the actions to implement it">
                                         <km-multi-checkbox v-model="document.implementingConsiderations" :options="gbfTargetConsideration">
@@ -142,7 +142,7 @@
                                         <small id="emailHelp" class="form-text text-muted">Please check all relevant considerations for implementation.</small>
                                     </km-form-group>
                                     <km-form-group name="implementingConsiderationsInfo" caption="Please explain how these considerations have been taken into account">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="document.implementingConsiderationsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
 
                                 </div>
@@ -229,7 +229,7 @@
                                 </div>
                                 <div class="card-body">
                                     <km-form-group name="nonStateActorCommitmentInfo" caption="List the non-state commitments towards this national Target">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.nonStateActorCommitmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="document.nonStateActorCommitmentInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     <km-form-group name="hasNonStateActors"  caption="Are there any overlaps or links between this national target and targets or commitments submitted as non-State actor commitments to the Kunming-Montreal Global Biodiversity Framework?">
                                         
@@ -240,7 +240,7 @@
                                     </km-form-group> 
                                     <km-form-group v-if="document.hasNonStateActors==true" 
                                     name="nonStateActorsInfo" caption="please indicate which commitment(s) and which actor(s)">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.nonStateActorsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="document.nonStateActorsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -263,10 +263,10 @@
                                     <km-form-group for="additionalImplementationCustomValue"
                                         caption="Please explain (Additional means of implementation are needed for the attainment of this national target)" required
                                         v-if="document.additionalImplementation.identifier=='additionalImplementationRequired' || document.additionalImplementation.identifier=='additionalImplementationOther'">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="document.additionalImplementation.customValue" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     <km-form-group name="additionalImplementationInfo" caption="Additional explanation">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.additionalImplementationInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="document.additionalImplementationInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -279,7 +279,7 @@
                                 </div>
                                 <div class="card-body">
                                     <km-form-group name="additionalInformation" caption="Any other relevant information">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="document.additionalInformation" :locales="document.header.languages"></km-input-rich-lstring>
+                                        <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="document.additionalInformation" :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -395,6 +395,10 @@
 
     function onGetDocument(){
         return cleanDocument;
+    }
+
+    function onFileUpload({file, locale}){
+        useOnFileUpload({document, file, locale});
     }
 
     const customLabel = ({title})=>{        
