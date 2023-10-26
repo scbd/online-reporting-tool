@@ -78,7 +78,9 @@
         
       </CNavGroup>
     </CSidebarNav>
-    <CSidebarToggler class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)"/>
+    <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">   
+        <span class="app-version" v-if="TAG||COMMIT">Ver {{ TAG||COMMIT.substring(0, 20) }}</span>    
+    </CSidebarToggler>
   </CSidebar>
 </template>
 
@@ -97,7 +99,7 @@ export default {
     KmNavLink
 },
   async setup() {
-    const { ACCOUNTS_HOST_URL } = useRuntimeConfig().public
+    const { ACCOUNTS_HOST_URL, TAG, COMMIT } = useRuntimeConfig().public
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const {locale} = useI18n()
     const localePath  = useLocalePath()
@@ -139,7 +141,7 @@ export default {
       t,
       isChildRouteActive,
       isDevelopment,
-      userPreferences
+      userPreferences, TAG, COMMIT
     }
   },
 }
@@ -154,5 +156,12 @@ export default {
   font-size: medium;
   padding: 5px;
   margin-top: 10px;
+}
+
+.app-version{
+    position: absolute;
+    left:5px;
+    bottom: 10px;
+    color: #fff;
 }
 </style>
