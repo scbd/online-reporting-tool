@@ -6,7 +6,9 @@ export const useUserPreferencesStore = defineStore('userPreferences', {
         return {
             preferredEditLanguages  : [],
             preferredEditGovernment : '',
-            editorActiveLanguageTab : ''
+            editorActiveLanguageTab : '',
+            sidebarVisible          : true,
+            sidebarUnfoldable       : true
         }
     },
     getters:{
@@ -22,8 +24,19 @@ export const useUserPreferencesStore = defineStore('userPreferences', {
         setEditorActiveLanguageTab(lang:String){
             this.editorActiveLanguageTab = lang;
         },
+        setSidebarVisible(visible:boolean){
+            this.sidebarVisible = visible;
+            this.sidebarUnfoldable = false
+        },
+        setSidebarUnfoldable(unfoldable:boolean){
+            this.sidebarUnfoldable = unfoldable;
+        },
     },
     persist: {
         storage: persistedState.localStorage,
+        afterRestore: (ctx) => {
+            ctx.store.sidebarUnfoldable = false;// always keep th sidebar open
+            ctx.store.sidebarVisible = true;// always keep th sidebar open
+        }
     }
 })

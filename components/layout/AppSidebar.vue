@@ -1,8 +1,8 @@
 <template>
   <CSidebar
     position="fixed"
-    :unfoldable="sidebarUnfoldable"
-    :visible="sidebarVisible"
+    :unfoldable="userPreferences.sidebarUnfoldable"
+    :visible="userPreferences.sidebarVisible"
     @visible-change="(event) =>{}"
   >
     <CSidebarBrand>
@@ -78,9 +78,7 @@
         
       </CNavGroup>
     </CSidebarNav>
-    <CSidebarToggler
-      class="d-none d-lg-flex"
-    />
+    <CSidebarToggler class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)"/>
   </CSidebar>
 </template>
 
@@ -88,6 +86,7 @@
 <script>
 
 import { useRealmConfStore }    from '@/stores/realmConf';
+import { useUserPreferencesStore } from '@/stores/userPreferences';
 import { KmNavLink } from '@/components/controls';
 import { useRoute } from 'vue-router';
 
@@ -103,6 +102,7 @@ export default {
     const {locale} = useI18n()
     const localePath  = useLocalePath()
     const { loadRealmConf } = useRealmConfStore();
+    const userPreferences = useUserPreferencesStore();
     const { t } = useI18n()
     const route = useRoute();
     
@@ -138,7 +138,8 @@ export default {
       localePath,
       t,
       isChildRouteActive,
-      isDevelopment
+      isDevelopment,
+      userPreferences
     }
   },
 }
