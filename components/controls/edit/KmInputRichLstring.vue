@@ -17,7 +17,7 @@
       <CTabPane role="tabpanel" :aria-labelledby="`tabContent-${locale}-${uid}`" v-for="locale in locales" :key="locale" 
         :visible="selectedLocale === locale" :id="`lstringTabContent-${uid}`">       
         <km-ck-editor v-if="selectedLocale==locale" v-model="binding[selectedLocale]" :identifier="identifier"
-            :locale="selectedLocale" @onChange="onChange"></km-ck-editor>     
+            :locale="selectedLocale" @update:modelValue="onChange" @onFileUpload="onFileUpload"></km-ck-editor>     
       </CTabPane>
     </CTabContent>
   </div>
@@ -103,6 +103,9 @@ export default {
     onChange(value){
         const clean = useKmStorage().cleanDocument({...this.binding});
         this.$emit('update:modelValue', clean);
+    },
+    onFileUpload({file}){
+        this.$emit('onFileUpload', {file, locale : this.activeLocale});
     },
     loadLanguages(){
         const thesaurusStore    = useThesaurusStore ();
