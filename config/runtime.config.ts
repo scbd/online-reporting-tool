@@ -4,6 +4,8 @@ export default defineNuxtConfig({
             ACCOUNTS_HOST_URL : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
             API_URL           : process.env.NUXT_PUBLIC_API_URL           || 'https://api.cbddev.xyz',
             REALM_CONF_HOST   : process.env.NUXT_PUBLIC_REALM_CONF_HOST   || 'ort.cbddev.xyz',
+            TAG               : '',
+            COMMIT            : '',
             auth : {
                 // accountsHostUrl : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL,
                 redirect: {

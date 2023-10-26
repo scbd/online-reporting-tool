@@ -1,7 +1,7 @@
 <template>
   <CHeader position="sticky" class="mb-4">
     <CContainer fluid>
-      <CHeaderToggler class="ps-1" @click="">
+      <CHeaderToggler class="ps-1" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">
         <CIcon icon="cil-menu" size="lg" />
       </CHeaderToggler>
       <CHeaderBrand class="mx-auto d-lg-none" to="/">
@@ -48,7 +48,7 @@
                 <CDropdownHeader component="h6" class="bg-light fw-semibold py-2">
                   {{t('languages')}}
                 </CDropdownHeader>
-                <CDropdownItem v-for="(locale, key) in languages" v-bind:key="key"  @click="switchLocale(key)"> {{locale}} </CDropdownItem>
+                <KmNavLink class="hand-cursor" v-for="(locale, key) in languages" v-bind:key="key"  @click="switchLocale(key)" :title="locale"></KmNavLink>
               </CDropdownMenu>
             </CDropdown>
           </span>
@@ -73,6 +73,7 @@ import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt'
 import { logo } from '@/assets/brand/logo'
 import { languages } from '@/app-data/languages'
+import { useUserPreferencesStore } from '@/stores/userPreferences';
 
 export default {
   name: 'AppHeader',
@@ -85,6 +86,7 @@ export default {
     const { setLocale, } = useI18n()
     const switchLocalePath = useSwitchLocalePath();
     const { t } = useI18n()
+    const userPreferences = useUserPreferencesStore();
     
     async function switchLocale (locale){
       setLocale(locale);
@@ -93,7 +95,7 @@ export default {
       await navigateTo(newLocalePath);
     }
 
-    return { logo, t, languages, switchLocale }
+    return { logo, t, languages, switchLocale, userPreferences }
   },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer mt-3" style="position: unset;">
+    <footer class="footer m-0 p-0 mt-3" style="position: unset;">
 
         <div id="block-followblock" class="follow-us settings-tray-editable block block-cbd-utility block-follow-block"
             data-drupal-settingstray="editable">
@@ -173,7 +173,7 @@
 <style scoped src="./cbd.css"></style>
 <style scoped>
     .footer .footer-block a{
-        font-size: 0.8em!important;
+        font-size: 1em!important;
     }
     .footer .h4{
         font-size: 1em!important;

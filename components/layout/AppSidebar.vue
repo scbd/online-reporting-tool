@@ -1,8 +1,8 @@
 <template>
   <CSidebar
     position="fixed"
-    :unfoldable="sidebarUnfoldable"
-    :visible="sidebarVisible"
+    :unfoldable="userPreferences.sidebarUnfoldable"
+    :visible="userPreferences.sidebarVisible"
     @visible-change="(event) =>{}"
   >
     <CSidebarBrand>
@@ -78,9 +78,9 @@
         
       </CNavGroup>
     </CSidebarNav>
-    <CSidebarToggler
-      class="d-none d-lg-flex"
-    />
+    <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">   
+        <span class="app-version" v-if="TAG||COMMIT">Ver {{ TAG||COMMIT.substring(0, 20) }}</span>    
+    </CSidebarToggler>
   </CSidebar>
 </template>
 
@@ -88,6 +88,7 @@
 <script>
 
 import { useRealmConfStore }    from '@/stores/realmConf';
+import { useUserPreferencesStore } from '@/stores/userPreferences';
 import { KmNavLink } from '@/components/controls';
 import { useRoute } from 'vue-router';
 
@@ -98,11 +99,12 @@ export default {
     KmNavLink
 },
   async setup() {
-    const { ACCOUNTS_HOST_URL } = useRuntimeConfig().public
+    const { ACCOUNTS_HOST_URL, TAG, COMMIT } = useRuntimeConfig().public
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const {locale} = useI18n()
     const localePath  = useLocalePath()
     const { loadRealmConf } = useRealmConfStore();
+    const userPreferences = useUserPreferencesStore();
     const { t } = useI18n()
     const route = useRoute();
     
@@ -138,7 +140,8 @@ export default {
       localePath,
       t,
       isChildRouteActive,
-      isDevelopment
+      isDevelopment,
+      userPreferences, TAG, COMMIT
     }
   },
 }
@@ -153,5 +156,12 @@ export default {
   font-size: medium;
   padding: 5px;
   margin-top: 10px;
+}
+
+.app-version{
+    position: absolute;
+    left:5px;
+    bottom: 10px;
+    color: #fff;
 }
 </style>
