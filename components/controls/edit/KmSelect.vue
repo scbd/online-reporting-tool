@@ -114,7 +114,8 @@ export default {
   },
   mounted(){
     
-  }
+  },
+  emits:['update:modelValue']
 };
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

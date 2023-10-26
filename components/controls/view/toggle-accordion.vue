@@ -8,6 +8,7 @@
 <i18n src="@/i18n/dist/components/controls/view/toggle-accordion.json"></i18n>
 <script setup>
     import $ from 'jquery';
+    import { useI18n } from 'vue-i18n';
 
     const { t }         = useI18n();
     const accordionOpen = ref(false);

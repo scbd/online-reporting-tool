@@ -477,7 +477,8 @@ export default {
         ...this.getEditorConfig(),
         ...this.config
     }    
-  }
+  },
+  emits:['update:modelValue','onEditorReady', 'onEditorFocus', 'onEditorBlur', 'onEditorInput', 'onFileUpload', 'onEditorDestroy']
 }
 </script>
 <style>
