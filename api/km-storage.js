@@ -129,7 +129,7 @@ class KmDraftsApi extends ApiBase
     return data;
   }
   async put(identifier, body, params){
-    const data = await useAPIFetchWithCache( serviceUrls.draftUrl(identifier), { body, method:'put', params });
+    const data = await useAPIFetch( serviceUrls.draftUrl(identifier), { body, method:'put', params });
     return data;
   }
   async delete(identifier, params){

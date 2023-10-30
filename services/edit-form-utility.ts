@@ -24,6 +24,8 @@ class editFormUtility{
         const { $api } = useNuxtApp();
         const $kmStorageApi = $api.kmStorage
 
+        const metadata   = this.getDocumentMetadata({});
+
         return $kmStorageApi.drafts.get(identifier, { info: "" })
             .then(success=>success,
                 error=>{
@@ -31,16 +33,16 @@ class editFormUtility{
                         return $kmStorageApi.documents.get(identifier, { info: "" });
                     throw error;
             })
-            .then(
-            function(success) {
+            .then(function(success) {
                 var info = success;
 
                 if (expectedSchema && info.type!=expectedSchema)
                     throw { data: { error: "Invalid schema type" }, status:"badSchema"};
-
+                
+                metadata.schema = info.type;
                 var hasDraft = !!info.workingDocumentCreatedOn;
-                var securityPromise = hasDraft ? $kmStorageApi.drafts.canUpdate(info.identifier, info.type)
-                                                : $kmStorageApi.drafts.canCreate(info.identifier, info.type);
+                var securityPromise = hasDraft ? $kmStorageApi.drafts.canUpdate(info.identifier,  {metadata })
+                                                : $kmStorageApi.drafts.canCreate(info.identifier, {metadata });
 
                 return securityPromise.then(
                     function(isAllowed) {
@@ -133,10 +135,7 @@ class editFormUtility{
         
         var identifier = document.header.identifier;
         var schema     = document.header.schema;
-        var metadata   = {};
-
-        if (document.government)
-            metadata.government = document.government.identifier;
+        const metadata = this.getDocumentMetadata(document);
 
         // Check if document exists
 
@@ -144,8 +143,8 @@ class editFormUtility{
 
             // Check user security on document
 
-            var qCanWrite = exists ? $kmStorageApi.documents.canUpdate(identifier, schema, metadata)
-                                    : $kmStorageApi.documents.canCreate(identifier, schema, metadata);
+            var qCanWrite = exists ? $kmStorageApi.documents.canUpdate(identifier,  { metadata })
+                                    : $kmStorageApi.documents.canCreate(identifier, { metadata });
 
             return qCanWrite;
 
@@ -177,10 +176,7 @@ class editFormUtility{
         
         var identifier = document.header.identifier;
         var schema     = document.header.schema;
-        var metadata   = {};
-
-        if (document.government)
-            metadata.government = document.government.identifier;
+        const metadata = this.getDocumentMetadata(document);
 
         // Check if doc & draft exists
 
@@ -188,8 +184,8 @@ class editFormUtility{
 
             // Check user security on drafts
 
-            var qCanWrite = exists ? $kmStorageApi.drafts.canUpdate(identifier, schema, metadata)
-                                    : $kmStorageApi.drafts.canCreate(identifier, schema, metadata);
+            var qCanWrite = exists ? $kmStorageApi.drafts.canUpdate(identifier,  { metadata })
+                                    : $kmStorageApi.drafts.canCreate(identifier, { metadata });
 
             return qCanWrite;
 
@@ -289,12 +285,18 @@ class editFormUtility{
         const realmConf = realmConfStore.realmConf;
 
         const metadata   = {
-            "schema": document.header.schema,
-            "realm": realmConf.realm
+            schema      : document?.header?.schema,
+            realm       : realmConf.realm,
+            government  : undefined
         };
 
         if (document.government)
-            metadata.government = document.government.identifier;
+            metadata.government = document?.government?.identifier;
+        
+        if(!metadata.government){
+            const { user } = useAuth();
+            metadata.government = user?.government;
+        }
 
         return metadata;
     }

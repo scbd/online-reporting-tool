@@ -8,7 +8,7 @@
             Settings
         </CDropdownHeader>
         <KmNavLink :to="`${accountsUrl}/profile`" title="Profile" icon="cil-user"></KmNavLink>
-        <KmNavLink to="/settings" title="Settings" icon="cil-settings"></KmNavLink>
+        <KmNavLink to="/users/setting" title="Settings" icon="cil-settings"></KmNavLink>
         <CDropdownDivider />      
         <KmNavLink @click="logout()" :to="returnUrl" title="Logout" icon="cil-lock-locked"></KmNavLink>
     </CDropdownMenu>
