@@ -4,3 +4,7 @@
   will-change: auto;
   @include transition(padding .15s);
 }
+
+.min-vh-50{
+    min-height: 50vh;
+}
