@@ -239,7 +239,7 @@
         
         //1
         if(!wcmcTargets.value.length){
-            const targets = await useAPIFetch('/api/target-tracker/goals-targets', {baseURL : window.location.origin});
+            const targets = await useAPIFetch('/target-tracker/goals-targets');
             const cbdIndicators = await GbfGoalsAndTargets.loadGbfHeadlineIndicator();
             wcmcTargets.value = targets.data.map(e=>e.indicators).flat().map(e=>{
                 const cbdIndicator = cbdIndicators.find(cbd=>cbd.title.en.trim() == e.title.trim());
@@ -259,7 +259,7 @@
                 indicator: indicator.indicatorId,
                 country  : country.code3
             }
-            const dataResponse = await useAPIFetch('/api/target-tracker/country-indicator-data', {body, method:'POST', baseURL:window.location.origin });
+            const dataResponse = await useAPIFetch('/target-tracker/country-indicator-data', {body, method:'POST' });
             wcmcIndicatorData.value = dataResponse;
 
             const globalData = dataResponse?.data?.charts?.filter(e=>e.tabType == 'GloballyDerived')
