@@ -74,7 +74,7 @@
             </CRow>
         </div>
 
-        <CModal scrollable class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showTargetsDialog" >
+        <CModal scrollable class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showTargetsDialog=false}" :visible="showTargetsDialog" >
             <CModalHeader :close-button="false">
                 <CModalTitle style="width:100%">
                     <span v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7">{{t('nationalTarget')}}</span>
@@ -132,7 +132,7 @@
             </CModalFooter>
         </CModal>
 
-        <CModal  class="show d-block" alignment="center" backdrop="static" :visible="showConfirmDialog" >
+        <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {showConfirmDialog=false}" :visible="showConfirmDialog" >
             <CModalHeader :close-button="false">
                 <CModalTitle class="bg-red">
                     {{t('confirmationTitle')}}
@@ -148,7 +148,7 @@
         </CModal>
         <km-modal-spinner :visible="showSpinnerDialog" :message="t('spinnerMessage')"></km-modal-spinner>
 
-        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showSuccessDialog" >
+        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showConfirmDialog=false}" :visible="showSuccessDialog" >
             <CModalHeader :close-button="false">
                 <CModalTitle>
                     {{t('successTitle')}}
@@ -181,7 +181,7 @@
             </CModalFooter>
         </CModal>
 
-        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showValidationErrorDialog" >
+        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showValidationErrorDialog=false}" :visible="showValidationErrorDialog" >
             <CModalHeader :close-button="false">
                 <CModalTitle>
                     {{t('validationErrorsTitle')}}

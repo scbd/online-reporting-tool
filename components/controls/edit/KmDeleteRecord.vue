@@ -5,7 +5,7 @@
         <slot><span class="pl-1">{{t('delete')}}</span></slot>
     </CButton>
 
-    <CModal  class="show d-block" alignment="center" backdrop="static" :visible="showDeleteConfirmationModal" >
+    <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {showDeleteConfirmationModal=false}" :visible="showDeleteConfirmationModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 {{ t('deleteConfirmationTitle') }}

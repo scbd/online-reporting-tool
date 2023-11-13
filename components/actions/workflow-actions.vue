@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <CModal  class="show d-block" alignment="center" backdrop="static" :visible="isRevealed && activeDialog.name == 'confirmCancellation'" >
+    <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {isRevealed=false}" :visible="isRevealed && activeDialog.name == 'confirmCancellation'" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 {{ t('cancelPublishingRequest') }}
@@ -87,7 +87,7 @@
     </CModal>
 
 
-    <CModal  class="show d-block" alignment="center" backdrop="static" :visible="isRevealed && activeDialog.name == 'confirmRejection'" >
+    <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {isRevealed=false}"  :visible="isRevealed && activeDialog.name == 'confirmRejection'" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 {{ t('rejectConfirmation') }}
@@ -108,7 +108,7 @@
         </CModalFooter>
     </CModal>
 
-    <CModal  class="show d-block" alignment="center" backdrop="static" :visible="isRevealed && activeDialog.name == 'confirmApproval'" >
+    <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {isRevealed=false}" :visible="isRevealed && activeDialog.name == 'confirmApproval'" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 {{ t('approveConfirmation') }}

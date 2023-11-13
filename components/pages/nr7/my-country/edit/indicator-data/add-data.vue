@@ -8,7 +8,7 @@
             {{ t('addIndicatorData') }}
         </CButton>
     </div>
-    <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" :visible="showEditIndicatorDataModal" >
+    <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 {{lstring(props.indicator.title)}}
