@@ -40,8 +40,8 @@ export const authLogout = async () => {
     // useAuth().user = undefined;
 };
 
-export async function authUser(token = null): Promise<EUser> {
-    const user = useState<EUser>("user");
+export async function authUser(token = null): Promise<EAuthUser> {
+    const user = useState<EAuthUser>("user");
 
     if (user.value)
         return user.value;
@@ -55,7 +55,7 @@ export async function authUser(token = null): Promise<EUser> {
         const headers = authHeader(token);
 
         if (headers) {
-            const lUser = await $fetch<EUser>(`${useResolveApiBaseUrl(authConf.endpoints?.user?.url)}`, {
+            const lUser = await $fetch<EAuthUser>(`${useResolveApiBaseUrl(authConf.endpoints?.user?.url)}`, {
                 method: authConf.endpoints?.user?.method?.toUpperCase(),
                 headers
             });
@@ -68,7 +68,7 @@ export async function authUser(token = null): Promise<EUser> {
     }
     catch (e) {
         useLogger().error(e, `Error loading user info`);
-        return {} as EUser;
+        return {} as EAuthUser;
     }
 }
 

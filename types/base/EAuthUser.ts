@@ -1,4 +1,4 @@
-interface IUser {
+interface EAuthUser {
     email          : String
     government     : String
     isAuthenticated: Boolean

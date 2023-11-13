@@ -6,7 +6,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         return {};
     }
     
-    let user = ref<EUser>(null);
+    let user = ref<EAuthUser>(null);
     const { authenticationToken:token, expiration } =  await getUserToken();  
     if(token){
         user.value  = await authUser(token);
