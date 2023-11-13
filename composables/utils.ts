@@ -16,25 +16,32 @@ export const useLogger = ()=>{
 }
 
 
-function error(error, userMessage){
+function error(appError, userMessage){
 
-    if(![404, 401, 403].includes(error?.status)){
-        console.error(error);
-        
-        const { ACCOUNTS_HOST_URL, TAG, COMMIT } = useRuntimeConfig().public;
-        const realmConfStore  = useRealmConfStore();
-        const realmConf = realmConfStore.realmConf; 
-        //TODO: send error to server
-        const errorLog = {
-            ...error, 
-            url      : window.location.href,
-            userAgent: window.navigator.userAgent,
-            ver      : TAG||COMMIT,
-            timestamp: new Date(),
-            realm : realmConf.realm
-        }; 
+    if(![404, 401, 403].includes(appError?.status)){
 
-        useAPIFetch('/error-logs', {method:'POST', body: errorLog})
+        try{
+            console.error(appError);
+            
+            const { ACCOUNTS_HOST_URL, TAG, COMMIT } = useRuntimeConfig().public;
+            const realmConfStore  = useRealmConfStore();
+            const realmConf = realmConfStore.realmConf; 
+            //TODO: send error to server
+            const errorLog = {
+                stack : JSON.stringify(appError, Object.getOwnPropertyNames(appError)), 
+                message: userMessage || appError?.message,
+                url      : window.location.href,
+                userAgent: window.navigator.userAgent,
+                ver      : TAG||COMMIT,
+                timestamp: new Date(),
+                realm : realmConf.realm
+            }; 
+
+            useAPIFetch('/error-logs', {method:'POST', body: errorLog});
+        }
+        catch(err){
+            console.log(err, 'error sending error log to server.')
+        }
     }
         
     if(userMessage){

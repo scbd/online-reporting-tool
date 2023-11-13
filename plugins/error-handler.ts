@@ -1,9 +1,8 @@
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.config.errorHandler = (error, instance, info) => {
-      // handle error, e.g. report to a service
-      console.error(error, instance, info); 
-      useLogger().error({error, info})     
+        console.debug(error, instance, info)
+        useLogger().error({stack : error, message : info}, undefined)     
     }
 
   })
