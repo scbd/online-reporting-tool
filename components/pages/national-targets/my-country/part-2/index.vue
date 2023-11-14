@@ -114,7 +114,7 @@
         </CCardBody>
       
       </CCard> 
-      <CModal  class="show d-block nationalTargetsPart2Edit" size="xl" alignment="center" backdrop="static" :visible="showEditMappingModal" >
+      <CModal  class="show d-block nationalTargetsPart2Edit" size="xl" alignment="center" backdrop="static" @close="() => {showEditMappingModal=false}" :visible="showEditMappingModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>{{lstring(editMappingTarget.title)}}</CModalTitle>
         </CModalHeader>
