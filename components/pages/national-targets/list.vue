@@ -1,7 +1,7 @@
 <template>
     <div>
-        <search-result v-if="documents.length" :documents="documents"></search-result>
-        <CAlert color="info" class="d-flex align-items-center" v-if="!documents.length">
+        <search-result v-if="documents?.length" :documents="documents"></search-result>
+        <CAlert color="info" class="d-flex align-items-center" v-if="!documents?.length">
             <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
             <div class="p-2">
                  There are no records to display!
@@ -27,6 +27,7 @@ import { SCHEMAS } from '@/utils';
     const result = await useAPIFetch('/api/v2013/index/select', {method:'POST', body : searchQuery})
 
     documents.value = result.response.docs;
+
 </script>
 
 <style scoped>

@@ -42,9 +42,17 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
     return matrix;
 }
 
-export function getAlignedGoalsOrTargets(document:Object){
-    return [
-        ...(document.globalGoalAlignment ||[]),
-        ...(document.globalTargetAlignment||[])
-    ]
+export function getAlignedGoalsOrTargets(document:ENationalTarget7|ENationalTarget7Mapping){
+
+    if(document?.header.schema == SCHEMAS.NATIONAL_TARGET_7){
+        return [
+            ...(document.globalGoalAlignment ||[]),
+            ...(document.globalTargetAlignment||[])
+        ]
+    }
+    else if(document?.header.schema == SCHEMAS.NATIONAL_TARGET_7_MAPPING){
+        return [document.globalGoalOrTarget]
+    }
+
+    return [];
 }

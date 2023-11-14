@@ -5,86 +5,10 @@
             <div class="card-header bg-secondary">
                 National targets 
             </div>
-            <div class="card-body">            
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Title</th>
-                    <td>Global goals/targets</td>
-                    <th scope="col">State</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                    <tr v-if="isLoadingRecords">
-                        <td colspan="5" >
-                            <div class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
-                        </td>
-                    </tr>
-                    <template  v-if="!isLoadingRecords">
-                        <tr v-for="(document,  index) in draftNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
-                            <th scope="row">{{ index+1 }}</th>
-                            <td class="w-50">{{(document.workingDocumentTitle||document.title).en}}</td>                                
-                            <td class="w-25">
-                                <goal-target-list :goal-targets="getAlignedGoalsOrTargets(document.workingDocumentBody)"></goal-target-list>   
-                            </td>                   
-                            <td>
-                                <CBadge color="info" v-if="document.isValidating">
-                                        <km-spinner :message="t('validating')+ '...'"></km-spinner>
-                                </CBadge>
-                                <CBadge color="danger" v-if="!document.isValidating && document.errors">
-                                    {{t('hasErrors')}} ({{ document.errors.length }})
-                                </CBadge>
-                                <CBadge color="success" v-if="document.validated && !document.isValidating && !document.errors">
-                                    {{t('passedValidation')}}
-                                </CBadge>
-                                <CBadge color="dark" v-if="!document.workingDocumentLock">
-                                    {{t('draftState')}}
-                                </CBadge>
-                                <CBadge color="danger" v-if="document.workingDocumentLock">
-                                    {{t('lockedState')}}
-                                </CBadge>
-                            </td>
-                            <td>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <CButton :disabled="isValidatingRecords" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)">
-                                    <font-awesome-icon icon="fa-search" /> View
-                                </CButton>
-                                <CButton :disabled="isValidatingRecords || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
-                                    <font-awesome-icon icon="fa-edit" /> Edit
-                                </CButton>
-                                <km-delete-record :document="document" @on-delete="onRecordDelete"></km-delete-record>
-                            </div>
-                            </td>
-                        </tr>
-                        <tr v-for="(document,  index) in publishedNationalTargets" :key="document.identifier" :class="{'bg-danger':document.errors}">
-                            <th scope="row">{{ index+1 + (draftNationalTargets?.length||0) }}</th>
-                            <td class="w-50">{{(document.workingDocumentTitle||document.title).en}}</td> 
-                                
-                            <td class="w-25">
-                                <goal-target-list :goal-targets="getAlignedGoalsOrTargets(document.body)"></goal-target-list>                                
-                            </td>                         
-                            <td>                        
-                                <CBadge color="success">
-                                    {{t('publishedState')}}
-                                </CBadge>
-                            </td>
-                            <td>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" 
-                                    :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, document)" title="View"></km-link>
-                                <CButton :disabled="isValidatingRecords || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
-                                <font-awesome-icon icon="fa-edit" /> Edit
-                                </CButton>
-                                <km-delete-record :document="document" @on-delete="onRecordDelete"></km-delete-record>
-                            </div>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-              </table>
+            <div class="card-body"> 
+                <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
+                <record-list v-if="nationalTargetRecords?.length" :national-records="nationalTargetRecords"
+                @on-delete-record="onDeleteRecord" @on-edit-record="onEditRecord" @on-record-status-change="onRecordStatusChange"></record-list>        
             </div>
           </div>
           
@@ -92,85 +16,18 @@
             <div class="card-header bg-secondary">
                 Global Goal/Targets mapping
             </div>
-            <div class="card-body">            
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">State</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr v-if="isLoadingRecords">
-                        <td colspan="5" >
-                            <div class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
-                        </td>
-                    </tr>
-                    <template  v-if="!isLoadingRecords">
-                        <tr v-for="(document,  index) in draftNationalMappings" :key="document.identifier" :class="{'bg-danger':document.errors}">
-                            <th scope="row">{{ index+1 }}</th>
-                            <td class="w-75">
-                                <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>                        
-                            </td>   
-                            <td>
-                                <CBadge color="info" v-if="document.isValidating">
-                                        <km-spinner :message="t('validating')+ '...'"></km-spinner>
-                                </CBadge>
-                                <CBadge color="danger" v-if="!document.isValidating && document.errors">
-                                    {{t('hasErrors')}} ({{ document.errors.length }})
-                                </CBadge>
-                                <CBadge color="success" v-if="document.validated && !document.isValidating && !document.errors">
-                                    {{t('passedValidation')}}
-                                </CBadge>
-                                <CBadge color="dark" v-if="!document.workingDocumentLock">
-                                    {{t('draftState')}}
-                                </CBadge>
-                                <CBadge color="danger" v-if="document.workingDocumentLock">
-                                    {{t('lockedState')}}
-                                </CBadge>
-                            </td>
-                            <td>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <CButton :disabled="isValidatingRecords" color="secondary" size="sm"  @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW, document)">
-                                    <font-awesome-icon icon="fa-search" /> View
-                                </CButton>
-                                <CButton :disabled="isValidatingRecords || disableActions|| isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
-                                    <font-awesome-icon icon="fa-edit" /> Edit
-                                </CButton>
-                                <km-delete-record :document="document" @on-delete="onRecordDelete"></km-delete-record>
-                            </div>
-                            </td>
-                        </tr>
-
-                        <tr v-for="(document,  index) in publishedNationalMappings" :key="document.identifier">
-                            <th scope="row">{{ index+1 + (draftNationalMappings?.length||0) }}</th>
-                            <td class="w-75">
-                                <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>      
-                            </td>                    
-                            <td>                        
-                                <CBadge color="success">
-                                    {{t('publishedState')}}
-                                </CBadge>
-                            </td>
-                            <td>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW, document)" title="View"></km-link>
-                                <CButton :disabled="isValidatingRecords || disableActions || isEditAllowed(document)" color="secondary" size="sm" @click="onEditTarget(document)">
-                                <font-awesome-icon icon="fa-edit" /> Edit
-                                </CButton>
-                                <km-delete-record :document="document" @on-delete="onRecordDelete"></km-delete-record>
-                            </div>
-                            </td>
-                        </tr>
+            <div class="card-body">      
+                <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>      
+                <record-list v-if="nationalMappingRecords?.length" :national-records="nationalMappingRecords"
+                    @on-delete-record="onDeleteRecord" @on-edit-record="onEditRecord" @on-record-status-change="onRecordStatusChange">
+                    <template #recordTitle="{document}">
+                        <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>          
                     </template>
-                </tbody>
-              </table>
+                </record-list>        
             </div>
           </div>
 
-        <CModal  class="show d-block nationalTargetsValidationEdit" size="xl" alignment="center" backdrop="static" :visible="showEditDocumentModal" >
+        <CModal  class="show d-block nationalTargetsValidationEdit" size="xl" alignment="center" backdrop="static" @close="() => {showEditDocumentModal=false}" :visible="showEditDocumentModal" >
             <CModalHeader :close-button="false">
                 <CModalTitle>
                     <span v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7">{{lstring(editDocument.title)}}</span>
@@ -210,9 +67,11 @@
     import { useStorage } from '@vueuse/core';
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';  
+    import recordList from "./record-list.vue";
 
-                    defineExpose({ validate, refresh });
-    const $emits =  defineEmits(['onRecordsLoad', 'onValidationFinished']);
+
+                    defineExpose({ validate, refresh, setProcessingStatus });
+    const $emits =  defineEmits(['onRecordsLoad', 'onValidationFinished', 'onRecordStatusChange']);
 
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
     const EditTargetPart1 = defineAsyncComponent(()=>import("./part-1/edit-target-part-1.vue"));
@@ -228,54 +87,30 @@
     const { t, locale }       = useI18n(); 
     const { $eventBus } = useNuxtApp();
 
-    const isValidatingRecords                    = ref(false);
+    const isValidatingRecords       = ref(false);
     const isLoadingRecords          = ref(false);
     const draftNationalTargets      = ref([]);
     const publishedNationalTargets  = ref([]);
     const draftNationalMappings     = ref([]);
     const publishedNationalMappings = ref([]);
-    const editDocument              = ref(null);
-    const editTargetMapping         = ref(null);
+    const editDocument              = ref<ENationalTarget7|ENationalTarget7>();
     const showEditDocumentModal     = ref(false);
 
-    const disableActions = computed(()=>!!stateTargetWorkflow.value.batchId)
+    const disableActions = computed(()=>!!stateTargetWorkflow.value?.batchId)
+    const nationalTargetRecords = computed(()=>{
+        return [...draftNationalTargets.value, ...publishedNationalTargets.value]
+    });
+    const nationalMappingRecords = computed(()=>{
+        return [...draftNationalMappings.value, ...publishedNationalMappings.value]
+    });
 
     onMounted(()=> {
-        $eventBus.on('evt:server-pushNotification', onServerPushNotification)
         isLoadingRecords.value = true;
         setTimeout(() => {
             init();    
         }, 100);
     })
-
-    onBeforeUnmount(()=>{
-        $eventBus.off('evt:server-pushNotification', onServerPushNotification)
-    })
     
-    function navigationUrl(route, document){
-         
-         const query = {};
-         const path = route.replace(':identifier', document?.identifier||document?.header?.identifier);
- 
-         if(document.workingDocumentBody)
-             query.draft = true //open draft record view page
- 
-         return {
-             path, query
-         }
-     }
-
-    const navigateToPage = async (route:string, document:any)=>{
-        const {path, query} = navigationUrl(route, document)
-
-        await useNavigateAppTo({path, query});
-    }
-
-    const customUrl = (route:string, document:any)=>{
-      const url = route.replace(':identifier', document?.identifier||document?.header?.identifier)
-      return localePath(url);
-    }
-
     async function loadNationalRecords(query, draftList, publishedList){
 
         const response = await Promise.all([
@@ -355,6 +190,28 @@
         }, 200);
     }
 
+    function setProcessingStatus(isProcessing:Boolean, identifier:String){
+
+        const documents = [
+            ...(draftNationalTargets.value||[]),
+            ...(draftNationalMappings.value||[])
+        ]
+        if(!identifier){
+            documents.forEach(element => setStatus(element, isProcessing));
+        }
+        else{
+            const document = documents.find(e=>e.identifier == identifier)
+            if(document)
+                setStatus(document, isProcessing);
+        }
+
+        function setStatus(document:Object, isProcessing:Boolean){
+            document.showProcessing  = isProcessing;
+            document.isValidating    = false;
+            document.validated       = false;
+        }
+    }
+
     async function validateDocument(document:any){
         
         const { $api } = useNuxtApp();
@@ -366,7 +223,6 @@
 
     async function validateDocuments(documents){
 
-        //use foreach so that everything is validated together
         const promises = documents.map(async document=>{
             try{
                 document.isValidating = true
@@ -392,12 +248,6 @@
         return targetMapping.find(e=>e.identifier == identifier)
     }
 
-    async function onEditTarget(document:Object){
-        console.log(document);
-        editDocument.value  = document.body;
-        showEditDocumentModal.value = true;
-    }
-
     function onEditTargetClose(newDocument:Object){
         editDocument.value  = null;
         showEditDocumentModal.value = false;
@@ -409,7 +259,7 @@
                 if(newDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7){
                     existingDocument   = publishedNationalTargets.value?.find(e=>e.identifier == newDocument.header.identifier);
                     if(existingDocument){
-                        draftNationalTargets.value.push({...existingDocument});
+                        draftNationalTargets.value.push({...existingDocument, workingDocumentBody:newDocument, workingDocumentTitle:newDocument.title});
                         
                         removeDraftFromPublished(existingDocument, publishedNationalTargets);
                     }
@@ -420,20 +270,24 @@
                     existingDocument   = publishedNationalMappings.value.find(e=>e.identifier == newDocument.header.identifier);
                     
                     if(existingDocument){
-                        draftNationalMappings.value.push({...existingDocument});
+                        draftNationalMappings.value.push({...existingDocument, workingDocumentBody:newDocument});
                         removeDraftFromPublished(existingDocument, publishedNationalMappings);
                     }
                     else 
                         existingDocument = newDocument;
                 }
                 
-                $emits('onRecordsLoad', {
-                    draftNationalTargets : draftNationalTargets.value, 
-                    draftNationalMappings : draftNationalMappings.value,
-                    publishedNationalTargets : publishedNationalTargets.value, 
-                    publishedNationalMappings : publishedNationalMappings.value
-                })
             }
+            else{
+                existingDocument.workingDocumentBody = Object.assign(existingDocument.workingDocumentBody, newDocument)
+            }
+
+            $emits('onRecordsLoad', {
+                draftNationalTargets : draftNationalTargets.value, 
+                draftNationalMappings : draftNationalMappings.value,
+                publishedNationalTargets : publishedNationalTargets.value, 
+                publishedNationalMappings : publishedNationalMappings.value
+            })
             validateDocuments([existingDocument])
         }
     }
@@ -450,10 +304,6 @@
         }      
     }
 
-    function isEditAllowed(document){
-        return !!document?.workingDocumentLock
-    }
-
     function removeDraftFromPublished(draftRecord, publishedList){
         const existing = publishedList.value.find(e=>e.identifier == draftRecord.identifier)
         const index = publishedList.value.indexOf(existing);
@@ -461,37 +311,45 @@
             publishedList.value.splice(index, 1)
     }
 
-    async function onServerPushNotification(data:Object){
+    function onRecordStatusChange({workflowActivity, identifier, schema, newDocument}){
         
-        if(!data?.data)
-            return;
+        const publishedList:Array<EDocumentInfo> =  schema == SCHEMAS.NATIONAL_TARGET_7 ? publishedNationalTargets :  publishedNationalMappings;
+        const draftList:Array<EDocumentInfo>     =  schema == SCHEMAS.NATIONAL_TARGET_7 ? draftNationalTargets :  draftNationalMappings;
 
-        const notificationType = ['workflowActivityStatus', 'userNotification'];
+        const existingDocument = draftList.value.find(e=>e.identifier == identifier);
 
-        if(notificationType.includes(data.type) && data.data?.identifier){
-            
-            const publishedList:Array<Object> =  data.data.schema == SCHEMAS.NATIONAL_TARGET_7 ? publishedNationalTargets :  publishedNationalMappings;
-            const draftList:Array<Object>     =  data.data.schema == SCHEMAS.NATIONAL_TARGET_7 ? draftNationalTargets :  draftNationalMappings;
-
-            const existingDocument = draftList.value.find(e=>e.identifier == data.data.identifier);
-
-            if(data.data.workflowActivity == 'document-lock'){
+        if(workflowActivity == 'document-lock'){
+            if(existingDocument){
                 existingDocument.workingDocumentLock = 'workflow-fake'//fake workflow id
+                if(!security.role.isPublishingAuthority())
+                    existingDocument.showProcessing = false;
             }
-            else if(data.data.workflowActivity == 'create-revision-from-draft'){
-                const newDocument = await KmDocumentsService.loadDocument(data.data.identifier);
-                if(newDocument){
-                    const index          = publishedList.value.findIndex(e=>e.identifier == newDocument.identifier);
-                    const draftIndex     = draftList.value.findIndex(e=>e.identifier == newDocument.identifier);
-                    publishedList.value[index] = newDocument;
-                    draftList.value.splice(draftIndex, 1);
-                    stateTargetWorkflow.value = undefined;
-                }      
-            }
-            //'document-deleted'
         }
+        else if(workflowActivity == 'create-revision-from-draft'){
+            const draftIndex     = draftList.value.findIndex(e=>e.identifier == identifier);
+            draftList.value.splice(draftIndex, 1);
+            if(newDocument){
+                const index          = publishedList.value.findIndex(e=>e.identifier == newDocument.identifier);
+                if(index>0)
+                    publishedList.value[index] = newDocument;
+                else
+                    publishedList.value.push(newDocument);
+            }     
+        }
+        else if(workflowActivity == 'document-unlock'){
+            const draftIndex     = draftList.value.findIndex(e=>e.identifier == identifier);
+            draftList.value[draftIndex] = newDocument;
+        }
+        
+        $emits('onRecordStatusChange', {workflowActivity, identifier, schema, newDocument}) 
     }
-    function onRecordDelete({identifier, type}): void{
+
+    const onEditRecord = (documentInfo:EDocumentInfo)=>{
+        editDocument.value  = documentInfo.body;
+        showEditDocumentModal.value = true;
+    }
+
+    const onDeleteRecord = ({identifier, type})=>{
         init();
     }
 </script>
