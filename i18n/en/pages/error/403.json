@@ -1,0 +1,6 @@
+{
+    "errorCode":"403",
+    "errorHeading":"Forbidden",
+    "errorMessage" : "You are not authorized to access or view this resource",
+    "backHome": "Go back home"
+}

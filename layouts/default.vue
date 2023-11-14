@@ -6,6 +6,7 @@
             <div class="body flex-grow-1 px-3">
                 <CContainer fluid>
                 <router-view />
+                <slot name="error"></slot>
                 </CContainer>
             </div>
             <AppFooter class="m-0 p-0"/>      
@@ -18,7 +19,6 @@ import { CContainer } from '@coreui/vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppSidebar from '@/components/layout/AppSidebar.vue'
-
 
 export default {
   name: 'DefaultLayout',
