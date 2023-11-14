@@ -1,5 +1,4 @@
 
-import { type } from 'os';
 <template>
     <div class="d-grid gap-1 km-record-status">
         <div class="processing-status" v-if="document.showProcessing">

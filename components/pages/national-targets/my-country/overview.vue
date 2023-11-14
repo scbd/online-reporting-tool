@@ -214,6 +214,7 @@
     import { sleep } from '@/utils';
     import { useStorage } from '@vueuse/core'
     import { useRealmConfStore } from '@/stores/realmConf';
+    import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
 
     const validation = defineAsyncComponent(()=>import("@/components/pages/national-targets/my-country/validation.vue"));
 
@@ -335,15 +336,11 @@
 
 
         // verify if there any lock records
+        openWorkflow.value=undefined;
         const lockedRecord = [...records.draftNationalTargets, ...records.draftNationalMappings].find(e=>e.workingDocumentLock);
 
         if(lockedRecord){
-            const workflowId = lockedRecord.workingDocumentLock.lockID.replace('workflow-', '');
-            const workflow =  await $api.kmWorkflows.getWorkflow(workflowId);
-            if(workflow){
-                openWorkflow.value = workflow;
-                stateTargetWorkflow.value.batchId = undefined;
-            }
+            await loadOpenWorkflow(lockedRecord);
         }
         else if (stateTargetWorkflow.value.batchId){
             const batchWorkflow =  await $api.kmWorkflows.getBatchWorkflowDetails(stateTargetWorkflow.value.batchId);
@@ -354,6 +351,21 @@
             }
         }
     }
+
+async function loadOpenWorkflow(lockedRecord: any, iteration:number=0) {
+  const workflowId=lockedRecord.workingDocumentLock.lockID.replace('workflow-', '');
+  const workflow=await $api.kmWorkflows.getWorkflow(workflowId);
+  if(workflow) {
+    if(!workflow?.activities?.length && iteration < 5){
+        await sleep(2000);
+        return loadOpenWorkflow(lockedRecord, iteration+1)
+    }
+    else{
+        openWorkflow.value=workflow;
+        stateTargetWorkflow.value.batchId=undefined;
+    }
+  }
+}
 
     async function onWorkflowAction(actionData){
         // console.log(actionData);
@@ -404,7 +416,7 @@
             const { user }        = useAuth();
             const realmConfStore  = useRealmConfStore();
             const realmConf = realmConfStore.realmConf;
-            
+            validationRef.value.setProcessingStatus(true);
             const res = await useAPIFetch(`/api/v2023/national-reports/7/national-targets/${user.government||'scbd'}/publish`,{
                                             method: 'POST',
                                             query : {
@@ -419,6 +431,7 @@
         catch(e){
             useLogger().error(e);
             isPublishing.value = false;
+            validationRef.value.setProcessingStatus(false);
         }
         showSpinnerDialog.value = false;
 
@@ -466,9 +479,17 @@
 
     }
     function onRefresh(){
+        isLoading.value = true;
         validationRef.value.refresh();
     }
-
+    const onRecordStatusChange = async ({identifier, newDocument})=>{
+        if(!openWorkflow.value){
+            if(!newDocument)
+                newDocument = await KmDocumentDraftsService.loadDraftDocument(identifier);
+            loadOpenWorkflow(newDocument)
+        }
+    }
+    
     onMounted(() => {     
         
     })
