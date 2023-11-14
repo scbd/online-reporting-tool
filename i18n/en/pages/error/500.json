@@ -1,0 +1,6 @@
+{
+    "errorCode":"500",
+    "errorHeading":"Oops! there was a problem!",
+    "errorMessage" : "The page you are looking for is temporarily unavailable. Please try again",
+    "backHome": "Go back home"
+}

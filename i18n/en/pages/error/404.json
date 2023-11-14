@@ -1,0 +1,6 @@
+{
+    "errorCode":"404",
+    "errorHeading":"Oops! You're lost.",
+    "errorMessage" : "The page you are looking for was not found.",
+    "backHome": "Go back home"
+}

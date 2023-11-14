@@ -18,6 +18,7 @@
 <i18n src="@/i18n/dist/common/errors.json"></i18n>
 
 <script setup lang="ts">
+    const { locale, t } = useI18n();
     const props = defineProps({
                         documentError : { type:Object, required:true}
                     });
