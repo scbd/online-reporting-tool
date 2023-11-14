@@ -1,3 +1,0 @@
-const ELString : IDictionary<String> {
-    
-}
