@@ -10,7 +10,7 @@ export default defineEventHandler((event) => {
         return proxyRequest(event, `${options.apiUrl}/api/v2016/error-logs?type=client-app-errors&serverAppVersion=${encodeURIComponent(options.appVersion)}&realm=${options.realm}`, {})
     }
     catch(e){
-        console.log(e)
+        console.error(e)
         throw createError({
             statusCode: 500,
             statusMessage: 'Failed to  log error.',

@@ -23,7 +23,7 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
         // };
     },
     async loadNationalReportDraft(identifier:string){
-        console.log('hello')
+        
         this.isBusy = true;
         try{
             const { $api }        = useNuxtApp();

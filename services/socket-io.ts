@@ -53,7 +53,7 @@ class socketIo {
                         // if(_.intersection(_.map(realms, _.toUpper), realmService.envRealms()).length == 0)
                         //     return;
                     }
-                    console.log(message);
+                    console.debug(message);
                     const { $eventBus } = useNuxtApp();
                     $eventBus.emit('evt:server-pushNotification', message)
                 }  
