@@ -45,7 +45,7 @@
                     <div class=" float-end d-grid gap-1 d-flex">
                         <CButton :disabled="disableActions || !showPublishBtn" @click="onPublish()" color="secondary">
                             <c-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true"></c-spinner>
-                            <font-awesome-icon icon="fa-bullhorn"></font-awesome-icon>
+                            <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                             {{t('publish')}}
                         </CButton>
                         <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
@@ -53,8 +53,8 @@
                             <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             {{t('validatePartIAndPartII')}}
                         </CButton>
-                        <CButton @click="onRefresh()" color="secondary" style="z-index: 1000;">
-                            <font-awesome-icon icon="fa-arrows-rotate"/>
+                        <CButton @click="onRefresh()" color="secondary" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
+                            <font-awesome-icon icon="fa-arrows-rotate" :spin="isLoading"/>
                             {{t('refresh')}}
                         </CButton>
                     </div>
@@ -68,7 +68,8 @@
             <CRow>
                 <CCol>
                     <km-suspense>
-                        <validation ref="validationRef" @on-records-load="onRecordsLoad" @on-validation-finished="onValidationFinished"></validation>
+                        <validation ref="validationRef" @on-records-load="onRecordsLoad" @on-validation-finished="onValidationFinished"
+                            @on-record-status-change="onRecordStatusChange"></validation>
                     </km-suspense>
                 </CCol>
             </CRow>
@@ -223,6 +224,7 @@
     const showPublishBtn            = ref(true);
     const isValidating              = ref(false);
     const isPublishing              = ref(false);
+    const isLoading                 = ref(false);
     const showTargetsDialog         = ref(false);
     const showConfirmDialog         = ref(false);
     const showSpinnerDialog         = ref(false);
@@ -236,8 +238,8 @@
     const { t }                     = useI18n();
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
 
-    const disableActions = computed(()=>isValidating.value || isPublishing.value || !!stateTargetWorkflow.value.batchId)
-    // const disableActions            = computed(()=>isValidating || isPublishing)
+    const disableActions = computed(()=>isLoading.value || isValidating.value || isPublishing.value || !!stateTargetWorkflow.value.batchId)
+    
     async function onValidate(type:string = undefined){
 
         isValidating.value = true;
@@ -270,7 +272,7 @@
             //verify user has submitted national targets for all Global Indicators
             //and show dialog and move next step if he still wants to proceed
             const userNationalTargets = [...(userRecords.draftNationalTargets||[]), ...(userRecords.publishedNationalTargets||[])]
-            console.log(userNationalTargets)
+            
             const missingTargets = await findMissingGlobalTargets(userNationalTargets, 'globalTargetAlignment' );
             if(missingTargets?.length){
                 const userResponse = await showMissingTargetsDialog(SCHEMAS.NATIONAL_TARGET_7, missingTargets);
@@ -323,7 +325,7 @@
     }
 
     async function onRecordsLoad(records:object){
-        
+        isLoading.value = false;
         if(!records.draftNationalTargets?.length && !records.draftNationalMappings?.length){
             showPublishBtn.value = false;
         }

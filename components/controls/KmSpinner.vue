@@ -1,6 +1,7 @@
 <template>
     <div class="km-spinner" :class="{'d-flex justify-content-center' : alignCenter}">
         <slot>
+            <!-- <font-awesome-icon icon="yin-yang" spin size="xl" ></font-awesome-icon> -->
             <CSpinner  size="sm" variant="grow" v-bind="attrs"/> 
             <span class="ms-1" v-if="message">{{ message }}</span>
             <span class="ms-1" v-if="!message">{{t('loading')}}...</span>
