@@ -53,11 +53,11 @@ function isAdministrator() {
     return isUserInRoles(quickObjs.realmConfStore.getRole(ROLES.ADMINISTRATOR));
 }
 
-function isPublishingAuthority(schema, schemaType) {
+function isPublishingAuthority(schema=undefined, schemaType=undefined) {
     return isUserInRoles(quickObjs.realmConfStore.getRole('publishingAuthorities', schema, schemaType));
 }
 
-function isNationalAuthorizedUser(schema, schemaType) {
+function isNationalAuthorizedUser(schema=undefined, schemaType=undefined) {
     return isUserInRoles(quickObjs.realmConfStore.getRole('nationalAuthorizedUser', schema, schemaType));
 }
 
@@ -70,12 +70,12 @@ function isUser() {
 }
 
 // verifies if the user has roles at schema level, fallback to govt level otherwise
-function isNationalSchemaUser(schema) {				
+function isNationalSchemaUser(schema=undefined) {				
     return isPublishingAuthority(schema, 'national') || isNationalAuthorizedUser(schema, 'national') || isNationalFocalPoint();
 }
 
 // verifies if the user is in any roles object or roles overwritten at schema 
-function isNationalUser(skipSchemaRoles) {
+function isNationalUser(skipSchemaRoles=undefined) {
     var hasNationalRole = isPublishingAuthority(undefined, 'national') || isNationalAuthorizedUser(undefined, 'national') || isNationalFocalPoint();
     
     if(!skipSchemaRoles && !hasNationalRole){//check if the user has roles at schema level 
@@ -86,7 +86,7 @@ function isNationalUser(skipSchemaRoles) {
     return hasNationalRole;
 }
 
-function isSchemaUser(schema, schemaType){
+function isSchemaUser(schema=undefined, schemaType=undefined){
     return 	isPublishingAuthority(schema, schemaType) || 
             isNationalAuthorizedUser(schema, schemaType) || 
             (isNationalFocalPoint() && quickObjs.realmConfStore.realmConf.schemas[schema]?.type=='national');

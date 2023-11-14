@@ -5,7 +5,7 @@ export default defineEventHandler((event) => {
         return response;
     }
     catch(e){
-        console.log(e)
+        console.error(e)
         throw createError({
             statusCode: 500,
             statusMessage: 'Failed to  query the target tracker API.',

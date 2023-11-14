@@ -117,7 +117,6 @@ const { t, locale } = useI18n()
 const { user } = useAuth();
     const security      = useSecurity();
 
-console.log(user)
 </script>
 
 <style scoped></style>
