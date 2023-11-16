@@ -29,7 +29,7 @@ function error(appError, userMessage){
             //TODO: send error to server
             const errorLog = {
                 stack : JSON.stringify(appError, Object.getOwnPropertyNames(appError)), 
-                message: userMessage || appError?.message,
+                message: JSON.stringify(userMessage || appError?.message || 'unknown'),
                 url      : window.location.href,
                 userAgent: window.navigator.userAgent,
                 ver      : TAG||COMMIT,
@@ -40,7 +40,7 @@ function error(appError, userMessage){
             useAPIFetch('/error-logs', {method:'POST', body: errorLog});
         }
         catch(err){
-            console.log(err, 'error sending error log to server.')
+            console.error(err, 'error sending error log to server.')
         }
     }
         

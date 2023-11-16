@@ -79,7 +79,7 @@
 
     const navigateToRoute = async (document:any)=>{
         
-        const {path, query} = navigationUrl(props.viewRoute, document)
+        const {path, query} = navigationUrl(document)
 
         await useNavigateAppTo({path, query}, {});
     }

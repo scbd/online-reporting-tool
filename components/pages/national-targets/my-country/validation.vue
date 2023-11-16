@@ -7,7 +7,7 @@
             </div>
             <div class="card-body"> 
                 <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
-                <record-list v-if="nationalTargetRecords?.length" :national-records="nationalTargetRecords"
+                <record-list v-if="nationalTargetRecords?.length" :national-records="nationalTargetRecords" :view-route="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW"
                 @on-delete-record="onDeleteRecord" @on-edit-record="onEditRecord" @on-record-status-change="onRecordStatusChange"></record-list>        
             </div>
           </div>
@@ -18,7 +18,7 @@
             </div>
             <div class="card-body">      
                 <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>      
-                <record-list v-if="nationalMappingRecords?.length" :national-records="nationalMappingRecords"
+                <record-list v-if="nationalMappingRecords?.length" :national-records="nationalMappingRecords" :view-route="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW"
                     @on-delete-record="onDeleteRecord" @on-edit-record="onEditRecord" @on-record-status-change="onRecordStatusChange">
                     <template #recordTitle="{document}">
                         <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>          
