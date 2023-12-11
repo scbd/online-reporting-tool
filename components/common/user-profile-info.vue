@@ -1,6 +1,6 @@
 <template>
-    <CCard v-if="user">
-        <CCardHeader> User Info </CCardHeader>
+    <CCard v-if="user.isAuthenticated">
+        <CCardHeader> {{t('title')}} </CCardHeader>
         <CCardBody>
             <div>
                 <div class="row m-0 p-o py-1" >

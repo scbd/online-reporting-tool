@@ -9,5 +9,10 @@
     "referencePeriod": "Reference period",
     "hasReferencePeriod":"Has reference period",
     "noReferencePeriod":"No reference period",
-    "otherIndicators": "Other indicators linked in the national target(s) for this global Goal/Target"
+    "otherIndicators": "Other indicators linked in the national target(s) for this global Goal/Target",
+
+    "filter":"Filter",
+    "selectOne":"Please select one",
+    "overview":"Go to Overview",
+    "addEditMapping":"Click the Add/Edit mapping button to edit this section"
 }

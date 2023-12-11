@@ -13,15 +13,15 @@
     <!-- <small v-if="selectedLanguages && selectedLanguages.length == 1" class="text-danger form-text">
         {{ t('minOneLanguage') }}
     </small> -->
-    <km-form-group name="otherLanguageOption" class="mt-2"  caption="Would like to submit this information in any other language(s)?">                                    
+    <km-form-group name="otherLanguageOption" class="mt-2"  :caption="t('otherLanguageInfo')">                                    
         <km-form-check-group>
             <km-form-check-item inline type="radio" name="otherLanguageOption"  for="otherLanguageOption" id="otherLanguageOptionYes" 
-                :value="true"  v-model="otherLanguageOption" label="Yes" @update:modelValue="onOtherLanguage"/>
+                :value="true"  v-model="otherLanguageOption" :label="t('yes')" @update:modelValue="onOtherLanguage"/>
             <km-form-check-item inline type="radio" name="otherLanguageOption"  for="otherLanguageOption" id="otherLanguageOptionNo"  
-            :value="false" v-model="otherLanguageOption" label="No" @update:modelValue="onOtherLanguage"/>
+            :value="false" v-model="otherLanguageOption" :label="t('no')" @update:modelValue="onOtherLanguage"/>
         </km-form-check-group>
     </km-form-group>
-    <km-form-group name="otherLanguages" class="mt-2"  caption="Other language(s)?" v-if="otherLanguageOption">
+    <km-form-group name="otherLanguages" class="mt-2"  :caption="t('otherLanguage')" v-if="otherLanguageOption">
         <km-select
             v-model="otherSelectedLanguages"
             label="title"

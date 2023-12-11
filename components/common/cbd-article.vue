@@ -14,15 +14,17 @@
             <div v-if="viewArticle" v-html="lstring(viewArticle.content, $locale)" class="ck-content"></div>
             <div v-if="!viewArticle" class="ck-content">
                 <slot name="missingArticle">
-                    No information is available for this section at the moment.
+                    {{t('noInformation')}}
                 </slot>
             </div>
         </div>
-        <div v-if="loading">Loading section content<i class="fa fa-spinner fa-spin"></i></div>
+        <div v-if="loading">
+            <font-awesome-icon icon="spinner" spin></font-awesome-icon> {{t('loading')}}
+        </div>
     </div>
 
 </template>
-
+<i18n src="@/i18n/dist/components/common/cbd-article.json"></i18n>
 <script>
 
 // import cbdAddNewArticle from './cbd-add-new-article.vue';
@@ -39,6 +41,11 @@ export default {
         customTags 	    : { type: Array  , required: false, default:[]           }, // [] of customTag id's
         adminTags 	    : { type: Array  , required: false, default:[]           }, // [] of adminTag text
         target          : { type: String , required: false, default: '_self'     },
+    },
+    setup(){
+        const { t } = useI18n();
+
+        return { t };
     },
     data() {
         return {

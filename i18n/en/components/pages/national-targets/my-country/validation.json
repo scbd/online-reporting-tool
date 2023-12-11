@@ -5,5 +5,8 @@
     "lockedState"    : "Draft locked",
     "passedValidation"  : "Validation successful",    
     "hasErrors" : "Failed Validations",
-    "validating"    : "Validating"
+    "validating"    : "Validating",
+
+    "nationTargets": "National targets",
+    "globalMaping": "Global Goal/Targets mapping"
 }

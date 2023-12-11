@@ -6,15 +6,15 @@
         <CCol md="12">
           <div class="alert alert-success" role="alert">
             <div  v-if="publishedRecords?.length">
-                <h4 class="alert-heading">Recent Publish!</h4>
+                <h4 class="alert-heading">{{t('recentPublish')}}</h4>
                 <p>
-                <strong>{{publishedRecords[0].country}}</strong> recently published {{ publishedRecords[0].type }}.
+                <strong>{{publishedRecords[0].country}}</strong> {{t('recentlyPublished')}} {{ publishedRecords[0].type }}.
                 </p>
                 <hr />
             </div>
             <p class="mb-0">
-              Are you a country representative responsible for National Report submission,
-              <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY">click here</km-link> to begin
+                {{t('countryRepresentative')}}
+              <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY">{{t('clickHere')}}</km-link> {{t('toBegin')}}
             </p>
           </div>
         </CCol>
@@ -22,24 +22,24 @@
             <km-link :to="appRoutes.NATIONAL_REPORTS_NR6" class="unset-anchor" target="_blank">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
-                    <span height="52" class="my-4">6th National Reports</span>
+                    <span height="52" class="my-4">{{t('6Nr')}}</span>
                     </div>
                     <div class="card-body row text-center">
                     <div class="col">
                         <div class="text-value-lg">{{nr6Count}}</div>
                         <div class="text-uppercase text-muted small">
-                        6th National Reports
+                            {{t('6Nr')}}
                         </div>
                     </div>
                     <div
                         class="c-vr text-value-lg"
                         style="width: unset; background-color: unset"
                     >
-                        By
+                    {{t('by')}}
                     </div>
                     <div class="col">
                         <div class="text-value-lg">{{nr6CountryCount}}</div>
-                        <div class="text-uppercase text-muted small">Countries</div>
+                        <div class="text-uppercase text-muted small">{{t('countries')}}</div>
                     </div>
                     </div>
                 </div>
@@ -49,24 +49,24 @@
             <km-link :to="appRoutes.NATIONAL_REPORTS_NR7" class="unset-anchor">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
-                    <span height="52" class="my-4">7th National Reports</span>
+                    <span height="52" class="my-4">{{t('7Nr')}}</span>
                     </div>
                     <div class="card-body row text-center">
                     <div class="col">
                         <div class="text-value-lg">{{nr7Count}}</div>
                         <div class="text-uppercase text-muted small">
-                        7th National Reports
+                            {{t('7Nr')}}
                         </div>
                     </div>
                     <div
                         class="c-vr text-value-lg"
                         style="width: unset; background-color: unset"
                     >
-                        By
+                    {{t('by')}}
                     </div>
                     <div class="col">
                         <div class="text-value-lg">{{nr7CountryCount}}</div>
-                        <div class="text-uppercase text-muted small">Countries</div>
+                        <div class="text-uppercase text-muted small">{{t('countries')}}</div>
                     </div>
                     </div>
                 </div>
@@ -76,24 +76,24 @@
             <km-link :to="appRoutes.NATIONAL_TARGETS" class="unset-anchor">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
-                    <span height="52" class="my-4">National targets</span>
+                    <span height="52" class="my-4">{{t('nationalTargets')}}</span>
                     </div>
                     <div class="card-body row text-center">
                     <div class="col">
                         <div class="text-value-lg">{{nr7TargetCount}}</div>
                         <div class="text-uppercase text-muted small">
-                        National Targets
+                            {{t('nationalTargets')}}
                         </div>
                     </div>
                     <div
                         class="c-vr text-value-lg"
                         style="width: unset; background-color: unset"
                     >
-                        By
+                    {{t('by')}}
                     </div>
                     <div class="col">
                         <div class="text-value-lg">{{ nr7TargetCountryCount }}</div>
-                        <div class="text-uppercase text-muted small">Countries</div>
+                        <div class="text-uppercase text-muted small">{{t('countries')}}</div>
                     </div>
                     </div>
                 </div>
@@ -104,24 +104,24 @@
             <km-link :to="appRoutes.NATIONAL_REPORTS_NBSAP" class="unset-anchor">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
-                    <span height="52" class="my-4">National Biodiversity Strategies and Action Plans (NBSAPs)</span>
+                    <span height="52" class="my-4">{{t('nbsapsFull')}}</span>
                     </div>
                     <div class="card-body row text-center">
                     <div class="col">
                         <div class="text-value-lg">{{nrCount}}</div>
                         <div class="text-uppercase text-muted small">
-                            NBSAPs
+                            {{t('nbsaps')}}
                         </div>
                     </div>
                     <div
                         class="c-vr text-value-lg"
                         style="width: unset; background-color: unset"
                     >
-                        By
+                    {{t('by')}}
                     </div>
                     <div class="col">
                         <div class="text-value-lg">{{nrCountryCount}}</div>
-                        <div class="text-uppercase text-muted small">Countries</div>
+                        <div class="text-uppercase text-muted small">{{t('countries')}}</div>
                     </div>
                     </div>
                 </div>
@@ -133,16 +133,16 @@
     <CRow class="mt-5">
       <CCol md="12">
         <CCard>
-          <CCardHeader> Latest records </CCardHeader>
+          <CCardHeader> {{t('LatestRecords')}} </CCardHeader>
           <CCardBody>
             <CTable hover>
                 <CTableHead>
                     <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Title</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Country</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Published on</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">{{t('title')}}</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">{{t('country')}}</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">{{t('type')}}</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">{{t('publishedOn')}}</CTableHeaderCell>
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -161,14 +161,14 @@
     </CRow>
   </div>
 </template>
-
+<i18n src="@/i18n/dist/pages/Dashboard.json"></i18n>
 <script setup>
 import UserProfileInfo  from "@/components/common/user-profile-info.vue"
 import { useRealmConfStore } from '@/stores/realmConf';
 import { facets } from '@/services/solr';
 import { KmLink } from "@/components/controls";
 
-
+        const { t }  = useI18n();
         definePageMeta({
             auth:false
         })

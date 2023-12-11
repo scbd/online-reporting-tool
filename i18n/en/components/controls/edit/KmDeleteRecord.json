@@ -3,5 +3,14 @@
     "deleteConfirmMessage" : "Are you sure you want to delete this record?",
     "cancel":"Cancel",
     "delete":"Delete",
-    "deleteSuccessfully" : "Record Deleted successfully"
+    "deleteSuccessfully" : "Record Deleted successfully",
+
+    "publishedRecord" : "Published Record",
+    "deletePublished" : "Delete Published",
+    "deletePublishedInfo" : "Deleting published record will also delete below draft records.",
+    "draftRecord"      : "Draft Record",
+    "deleteDraft"     : "Delete Draft",
+    "deleteDraftInfo" : "Deleting draft record does not affect the published record.",
+    "deleteError": "Error deleting record"
+
 }

@@ -31,9 +31,9 @@
                             <cbd-article :query="articleQuery()" hide-cover-image="true" show-edit="true">
                                 <template #missingArticle>
                                     <CAlert color="success" v-bind:visible="true">
-                                        <CAlertHeading>Introduction!</CAlertHeading>
+                                        <CAlertHeading>{{t('introduction')}}!</CAlertHeading>
                                         <hr />
-                                        <p class="mb-0">This section will have a brief description to help users submit information</p>
+                                        <p class="mb-0">{{t('introInfo')}}</p>
                                     </CAlert>
                                 </template>
                             </cbd-article>
@@ -75,14 +75,10 @@
 
     import FormWizard from './KmFormWizard.vue';
     import TabContent from './KmFormWizardTabContent.vue';
-    import { KmValidationErrors, KmSpinner } from "~/components/controls";
     import cbdArticle from '../../common/cbd-article.vue';
-    import { CButton, CCardBody, CRow } from '@coreui/vue';
-    import $ from 'jquery';
     import { useI18n } from 'vue-i18n';
     import { EditFormUtility }  from '@/services/edit-form-utility';
     import {useToast} from 'vue-toast-notification';
-    import {isEmpty} from 'lodash'
     import { scrollToElement } from '@/utils';
     import { useRealmConfStore } from '@/stores/realmConf';
 
