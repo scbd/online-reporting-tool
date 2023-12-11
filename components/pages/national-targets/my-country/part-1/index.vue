@@ -1,12 +1,12 @@
 <template>
     <CCard>
         <CCardHeader>
-          <slot name="header"> <font-awesome-icon icon="fa fa-arrows-down-to-people" /> National target(s) : Part I </slot>
+          <slot name="header"> <font-awesome-icon icon="fa fa-arrows-down-to-people" /> {{t('title')}} </slot>
         </CCardHeader>
         <CCardBody>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             
-                <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" title="Go to Overview" 
+                <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" :title="t('goToOverview')" 
                             role="button" class="btn btn-secondary" 
                             icon="fa-wand-magic-sparkles">
                 </km-link> 
@@ -16,7 +16,7 @@
                     {{t('refresh')}}
                 </CButton>
                 <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
-                    <font-awesome-icon icon="fa-plus"/> Submit new target
+                    <font-awesome-icon icon="fa-plus"/> {{t('submitNewTarget')}}
                 </CButton>
             </div>
             <km-spinner v-if="isLoadingRecords" center ></km-spinner>

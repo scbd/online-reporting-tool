@@ -17,7 +17,7 @@
                     </CCol>
                     <CCol :sm="6" class="float-end">
                         <div class="d-grid gap-1 d-md-flex justify-content-end mb-2">
-                            <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" :title="{{t('overview')}}" 
+                            <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" :title="t('overview')" 
                                 role="button" class="btn btn-sm btn-secondary" icon="fa-wand-magic-sparkles">
                             </km-link> 
                             <toggle-accordion ref="accordionToggle" selector="#mapping-accordion .accordion-header button.accordion-button" v-if="computedTargets"></toggle-accordion>
