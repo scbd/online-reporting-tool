@@ -114,7 +114,7 @@
     const navigateToPage = async (route:string, draft:any)=>{
         const {path, query} = navigationUrl(route, draft)
 
-        await useNavigateAppTo({path, query});
+        await useNavigateAppTo(path, {query});
 
     }
 

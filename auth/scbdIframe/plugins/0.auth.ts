@@ -41,7 +41,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           const { checkUserAccess } = useSecurity()
           const userCanAccess = await checkUserAccess({...to.meta, path:to.path});
           if(!userCanAccess){
-              return navigateTo('/error/403');
+              return useNavigateAppTo('/error/403');
           }
         }
       }

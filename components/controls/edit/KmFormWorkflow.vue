@@ -184,7 +184,7 @@
             redirectTo = definedProps.onPreClose(originalDocument);
             
         if(redirectTo.value)
-            await navigateTo(redirectTo.value)
+            await useNavigateAppTo(redirectTo.value)
     }
 
     async function validate(document) {
