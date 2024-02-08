@@ -1,0 +1,5 @@
+{
+  "notFound": "未找到记录！",
+  "notAuthorized": "您无权访问此记录！",
+  "errorLoading": "加载视图文件时出错 "
+}

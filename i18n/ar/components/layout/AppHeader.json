@@ -1,6 +1,7 @@
 {
-    "languages" : "اللغات",
-    "menuDashboard" : "لوحة القيادة",
-    "menuNationalTargets" : "الأهداف الوطنية",
-    "menu7Nr" : "التقرير الوطني السابع"
+  "languages": "اللغات",
+  "menuDashboard": "لوحة المعلومات",
+  "menuNationalTargets": "الأهداف الوطنية",
+  "menu7Nr": "التقرير الوطني السابع",
+  "menuSearch": "البحث "
 }

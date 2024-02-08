@@ -1,0 +1,9 @@
+{
+  "languageOfRecord": "Idioma(s) del registro",
+  "minOneLanguage": "Se requiere como mínimo un idioma. Sírvase seleccionar otro idioma para eliminar el idioma predeterminado.",
+  "otherLanguageOfRecord": "Otro(s) idioma(s) del registro",
+  "otherLanguageInfo": "¿Desea presentar esta informacxión en algún otro idioma?",
+  "otherLanguage": "¿Otro(s) idioma(s)?",
+  "yes": "Sí",
+  "no": "No"
+}

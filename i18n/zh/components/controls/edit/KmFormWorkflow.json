@@ -1,0 +1,22 @@
+{
+  "close": "关闭",
+  "saveDraft": "保存草稿",
+  "preview": "预览",
+  "draftSaveMessage": "您的记录已存为草稿",
+  "closeWithoutSaving": "您的记录已关闭且未作保存。",
+  "publishRequested": "记录已保存。已向贵国的发布机构发出了发布请求。",
+  "recordPublished": "记录已发布。此记录现可供在在线报告工具上公开查阅。",
+  "areYouSure": "您确定要不保存就退出此页面吗？",
+  "anyChange": "所有更改都将丢失。",
+  "btnCloseWithoutSaving": "退出且不保存",
+  "exit": "退出",
+  "stay": "留在此页面上",
+  "submissionForm": "提交信息表",
+  "intro": "介绍",
+  "form": "表单",
+  "introduction": "序言",
+  "submission": "提交",
+  "review": "审查",
+  "publish": "发布",
+  "introInfo": "本部分将有简要说明，以帮助用户提交信息"
+}

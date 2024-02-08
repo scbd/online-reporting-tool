@@ -1,0 +1,5 @@
+{
+  "notFound": "¡Registro no encontrado!",
+  "notAuthorized": "¡No está autorizado a acceder a este registro!",
+  "errorLoading": "Error al cargar \"ver documento\". "
+}

@@ -1,0 +1,14 @@
+{
+  "deleteConfirmationTitle": "تأكيد الحذف",
+  "deleteConfirmMessage": "هل تريد حقًا حذف هذا السجل؟",
+  "cancel": "إلغاء",
+  "delete": "حذف",
+  "deleteSuccessfully": "تم حذف السجل",
+  "publishedRecord": "سجل منشور",
+  "deletePublished": "حذف سجل منشور",
+  "deletePublishedInfo": "سيؤدي حذف السجل المنشور أيضًا إلى حذف مسودات السجلات أدناه",
+  "draftRecord": "مسودة سجل",
+  "deleteDraft": "حذف مسودة سجل",
+  "deleteDraftInfo": "لا يؤثر حذف مسودة سجل على السجل المنشور.",
+  "deleteError": "خطأ في حذف السجل"
+}

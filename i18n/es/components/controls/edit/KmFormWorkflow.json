@@ -1,0 +1,22 @@
+{
+  "close": "Cerrar",
+  "saveDraft": "Guardar borrador",
+  "preview": "Vista previa",
+  "draftSaveMessage": "Su registro fue guardado como borrador",
+  "closeWithoutSaving": "Su registro fue cerrado sin guardar.",
+  "publishRequested": "Registro guardado. Se envió una solicitud de publicación a la autoridad publicadora de su país.",
+  "recordPublished": "Registro publicado. Se podrá acceder ahora al registro en la Herramienta de presentación de informes en línea",
+  "areYouSure": "¿Está seguro de que quiere cerrar este página sin guardar los cambios?",
+  "anyChange": "Se perderán todos los cambios.",
+  "btnCloseWithoutSaving": "Salir sin guardar",
+  "exit": "Salir",
+  "stay": "Permanecer en esta página",
+  "submissionForm": "Formulario de presentación",
+  "intro": "Introducción",
+  "form": "Formulario",
+  "introduction": "Introducción",
+  "submission": "Presentación",
+  "review": "Revisión",
+  "publish": "Publicar",
+  "introInfo": "En esta se sección se presentará una breve descripción de ayuda a los usuarios para la presentación de la información."
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Título",
+  "gbfGoals": "Objetivo(s) y Meta(s) del Marco Mundial de Biodiversidad de Kunming-Montreal",
+  "status": "Estado",
+  "updatedOn": "Actualizado el",
+  "view": "Ver",
+  "edit": "Editar",
+  "passedValidation": "Validación exitosa",
+  "hasErrors": "No pudo realizarse la validación",
+  "validating": "Validando..."
+}

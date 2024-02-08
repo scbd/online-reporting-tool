@@ -1,0 +1,11 @@
+{
+  "title": "标题",
+  "gbfGoals": "全球生物多样性基金的目标和具体目标",
+  "status": "状态",
+  "updatedOn": "更新日期：",
+  "view": "查看",
+  "edit": "编辑",
+  "passedValidation": "验证成功",
+  "hasErrors": "验证失败",
+  "validating": "正在验证..."
+}

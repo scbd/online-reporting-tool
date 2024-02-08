@@ -1,0 +1,9 @@
+{
+  "languageOfRecord": "记录语言",
+  "minOneLanguage": "必须至少使用一种语言，请选择另一语言以移除默认语言。",
+  "otherLanguageOfRecord": "其他记录语言",
+  "otherLanguageInfo": "是否希望以其他语言提交此信息？",
+  "otherLanguage": "其他语言？",
+  "yes": "是",
+  "no": "否"
+}

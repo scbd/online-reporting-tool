@@ -1,0 +1,9 @@
+{
+  "languageOfRecord": "Langue (s) de publication :",
+  "minOneLanguage": "Au moins une langue est obligatoire, veuillez sélectionner une autre langue pour supprimer la langue par défaut.",
+  "otherLanguageOfRecord": "Autre langue (s) de publication",
+  "otherLanguageInfo": "Voulez-vous soumettre cette information dans une ou d’autres langues?",
+  "otherLanguage": "Autre (s) langue(s)?",
+  "yes": "Oui",
+  "no": "Non"
+}

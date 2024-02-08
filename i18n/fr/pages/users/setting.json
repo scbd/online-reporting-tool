@@ -1,0 +1,9 @@
+{
+  "settings": "Paramètres",
+  "browserCache": "Cache du navigateur",
+  "cacheInfo": "L’ORT met en cache certaines informations dans le cache de votre navigateur pour des performances plus rapides.",
+  "clearCacheInfo": "Si vous rencontrez des problèmes, il est recommandé de vider ce cache.",
+  "clearAll": "Tout effacer",
+  "clear": "Effacer",
+  "cache": "cache"
+}

@@ -1,0 +1,16 @@
+{
+  "headerTitle": "Cartographie nationale des objectifs/cibles",
+  "editMapping": "Modifier la cartographie",
+  "addMapping": "Ajouter une cartographie",
+  "linkedTargetsTitle": "Cible(s) national(es) liée(s) à cette objectif/cible mondial(e)",
+  "elementsOfInfo": "Élément d’information du les objectifs mondiaux",
+  "headlineIndicators": "Indicateur(s) principal(aux)",
+  "referencePeriod": "Période de référence\t",
+  "hasReferencePeriod": "A une période de référence",
+  "noReferencePeriod": "Pas de période de référence",
+  "otherIndicators": "Autre indicateur(s) lié(s) à un/des objectif(s) national(aux) pour cet objectif/cible mondial?",
+  "filter": "Filtre",
+  "selectOne": "Veuillez sélectionner un filtre",
+  "overview": "Aller à l’aperçu",
+  "addEditMapping": "Cliquer le bouton Ajouter/Modifier la cartographie pour modifier cette section"
+}

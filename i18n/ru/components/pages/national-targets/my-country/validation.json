@@ -1,0 +1,10 @@
+{
+  "publishedState": "Опубликовано",
+  "draftState": "Черновик",
+  "lockedState": "Черновик заблокирован",
+  "passedValidation": "Проверка выполнена успешно",
+  "hasErrors": "Неудавшиеся проверки",
+  "validating": "Проверка",
+  "nationTargets": "Национальные задачи",
+  "globalMaping": "Сопоставление глобальных целей/задач"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "Información del usuario",
+  "welcome": "Bienvenidos",
+  "publishingAuthority": "Autoridad publicadora",
+  "nationalFocalPoint": "Punto Focal Nacional",
+  "nationalAuthorizedUser": "Usuario nacional autorizado",
+  "registeredUser": "Usuario registrado",
+  "admin": "Administrador",
+  "name": "Nombre",
+  "primaryEmail": "Correo electrónico principal",
+  "countryAffiliation": "Afiliación del país",
+  "none": "ninguna",
+  "roles": "Función(es)",
+  "nauHelp": "El usuario nacional autorizado (UNA) puede crear registros nacionales borrador y presentarlos a la autoridad publicadora para su aprobación.",
+  "updateProfile": "Actualizar perfil",
+  "updatePassword": "Actualizar contraseña"
+}

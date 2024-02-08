@@ -1,0 +1,16 @@
+{
+  "headerTitle": "国家具体目标与全球目标/具体目标的对应关系",
+  "editMapping": "编辑对应关系",
+  "addMapping": "添加对应关系",
+  "linkedTargetsTitle": "与此全球目标/具体目标关联的国家具体目标",
+  "elementsOfInfo": "全球具体目标要素信息",
+  "headlineIndicators": "标题指标",
+  "referencePeriod": "参照期",
+  "hasReferencePeriod": "有参照期",
+  "noReferencePeriod": "无参照期",
+  "otherIndicators": "与此全球目标/具体目标对应的国家具体目标相关联的其他指标",
+  "filter": "筛选条件",
+  "selectOne": "请选择一项",
+  "overview": "转到概述",
+  "addEditMapping": "单击添加/编辑对应关系按钮，以编辑此部分"
+}

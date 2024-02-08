@@ -1,0 +1,11 @@
+{
+  "title": "Cartographie nationale des objectifs/cibles mondiales",
+  "general": "Général",
+  "government": "Gouvernement",
+  "linkedTarget": "Objectif/cible mondial(e) relié(e) ",
+  "elementsOfTargets": "Éléments des objectifs mondiaux",
+  "addressedElements": "Éléments des objectifs mondiaux abordés par les obejctifs nationaux",
+  "referencePeriod": "Période de référence",
+  "referencePeriodForIndicators": "Est-ce qu’il y a une période de référence qui se rapporte à l’indication global?",
+  "explain": "Veuillez expliquer"
+}
