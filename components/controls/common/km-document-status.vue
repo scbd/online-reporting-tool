@@ -21,6 +21,7 @@
 
     import { useStorage } from '@vueuse/core';
     import { KmDocumentsService } from '@/services/kmDocuments';
+    import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
 
     const props               = defineProps({
         document : { type:Object, required:true}
@@ -61,7 +62,7 @@
             // if(workflowActivity == 'document-lock'){
             //     lockStatus.value = 'workflow-lock'//fake workflow id
             // }else
-             if(workflowActivity == 'create-revision-from-draft' || workflowActivity == 'document-unlock'){
+             if(workflowActivity == 'create-revision-from-draft'){
                 try{
                     const newDocument = await KmDocumentsService.loadDocument(identifier);
                     statusChangeData.newDocument = newDocument;
@@ -72,6 +73,21 @@
                 }
                 catch(e){
                     //ignore as it will be 404 in most cases.
+                }   
+            }
+            else if(workflowActivity == 'document-unlock'){
+                
+                try{
+                    const newDocument = await KmDocumentDraftsService.loadDraftDocument(identifier);
+                    statusChangeData.newDocument = newDocument;
+                    // lockStatus.value = undefined;
+                    if(newDocument){
+                        stateTargetWorkflow.value = undefined;
+                    }   
+                }
+                catch(e){
+                    //ignore as it will be 404 in most cases.
+                    console.log(e)
                 }   
             }
             //'document-deleted'

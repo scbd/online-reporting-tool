@@ -161,7 +161,7 @@
     </CRow>
   </div>
 </template>
-<i18n src="@/i18n/dist/pages/Dashboard.json"></i18n>
+<i18n src="@/i18n/dist/pages/dashboard.json"></i18n>
 <script setup>
 import UserProfileInfo  from "@/components/common/user-profile-info.vue"
 import { useRealmConfStore } from '@/stores/realmConf';

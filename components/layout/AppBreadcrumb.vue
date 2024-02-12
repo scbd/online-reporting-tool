@@ -23,7 +23,7 @@ import { useRoute } from 'vue-router'
       const {breadcrumbs : pageBreadcrumbsConf } = route.meta;
 
       const crumbs    = [
-        { text:'CHM', to:'https:chm.cbd.int' },
+        { text:'CHM', to:'https://chm.cbd.int' },
         { text:'ORT', to: localePath('/dashboard'), active: '/dashboard' === route.fullPath }
       ];
       if(route){

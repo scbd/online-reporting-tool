@@ -111,12 +111,13 @@
     const formWizard       = ref(null);
     const validationReport = ref({});
     const activeTab      = ref(null);
-
+    
     const workflowTabs = {
-        introduction: { index : 0, title: t('introduction') },
-        submission  : { index : 1, title: t('submission') },
-        review      : { index : 2, title: t('review') },
-        publish     : { index : 3, title: t('publish') },
+        // use individual compute so that on language change the text is updated
+        introduction: { index : 0, title: computed(()=>t('introduction')) }, 
+        submission  : { index : 1, title: computed(()=>t('submission')) },
+        review      : { index : 2, title: computed(()=>t('review')) },
+        publish     : { index : 3, title: computed(()=>t('publish')) },
     }
 
     let { focusedTab, tab, ...props } = toRefs(definedProps);
