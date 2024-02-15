@@ -20,13 +20,15 @@ import { useRoute } from 'vue-router'
     function makeCrumbs (){ //eslint-disable-line
 
       const route = useRoute();
-      const {breadcrumbs : pageBreadcrumbsConf } = route.meta;
 
       const crumbs    = [
         { text:'CHM', to:'https://chm.cbd.int' },
         { text:'ORT', to: localePath('/dashboard'), active: '/dashboard' === route.fullPath }
       ];
       if(route){
+        
+        const {breadcrumbs : pageBreadcrumbsConf } = route.meta;
+
         let { path }  = route.matched[0] || { path: '/' };
         path          = path.replace('()', '').replace(/\?$/, '');
         const pathSplit = () => path.split('/').splice(1);

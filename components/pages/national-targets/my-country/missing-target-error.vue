@@ -15,6 +15,7 @@
 <script setup lang="ts">
     import btnNewTarget from './btn-new-target.vue';
     
+    const { t }       = useI18n(); 
     const props = defineProps({
         identifier   : { type:String, required:false},
         query : { type:Object, required:false}
