@@ -76,7 +76,7 @@
                                                 <km-select
                                                     v-model="selectedGlobalTargets"
                                                     class="validationClass"
-                                                    label="title"
+                                                    label="shortTitle"
                                                     track-by="identifier"
                                                     value-key="identifier"
                                                     :placeholder="t('globalTargets')"
@@ -84,7 +84,7 @@
                                                     :multiple="true"
                                                     :close-on-select="false"
                                                     @update:modelValue="onGoalsAndTargetSelected($event, 'targets')"
-                                                    :custom-label="customLabel"
+                                                    :custom-label="customShortLabel"
                                                     :custom-selected-item="customSelectedItem"
                                                 >
                                                 </km-select>
@@ -103,14 +103,29 @@
                                             <tbody>
                                                 <tr>
                                                     <td></td>
-                                                    <td class="w-25 fw-bold">{{t('degreeOf')}} <km-help :content="t('indicateHelp')">{{t('alignment')}} </km-help></td>
+                                                    <td class="w-25 fw-bold">{{t('degreeOf')}} 
+                                                        <km-help :content="t('indicateHelp')">{{t('alignment')}}</km-help>
+                                                    </td>
                                                 </tr>
                                                 <tr v-for="target in document.globalTargetAlignment" :key="target.identifier">
                                                     <td>
                                                         <km-form-group required :name="target.identifier+'_degreeOfAlignment'">
                                                             <label class="control-label" :for="target.identifier+'_degreeOfAlignment'">
                                                                 <span class="visually-hidden">{{ t('degreeOfAlignment') }} - </span>
-                                                                {{ lstring(globalTargets.find(e=>e.identifier == target.identifier).title) }}
+                                                                {{ lstring(globalTargets.find(e=>e.identifier == target.identifier).shortTitle, locale) }}
+                                                                <km-help class="ms-1 me-1" 
+                                                                    :title="lstring(globalTargets.find(e=>e.identifier == target.identifier).shortTitle)">
+                                                                    <template #content>
+                                                                        <strong>{{ lstring(globalTargets.find(e=>e.identifier == target.identifier).title)}}</strong>
+                                                                        <div>
+                                                                            <i>
+                                                                                <small>
+                                                                                {{lstring(globalTargets.find(e=>e.identifier == target.identifier).longDescription)}}
+                                                                                </small>
+                                                                            </i>
+                                                                        </div>
+                                                                    </template>
+                                                                </km-help>
                                                             </label>
                                                         </km-form-group>
                                                     </td>
@@ -301,6 +316,21 @@
         </CModalHeader>
         <CModalBody>
             <km-multi-checkbox v-model="selectedGlobalTargets" :options="globalTargets" @update:modelValue="onGoalsAndTargetSelected(selectedGlobalTargets, 'targets')">
+                <template #label="{option}">
+                    {{ lstring(option.shortTitle) }}
+                    <km-help class="ms-1 me-1" :title="lstring(option.shortTitle)">
+                        <template #content>
+                            <h5>{{ lstring(globalTargets.find(e=>e.identifier == option.identifier).title)}}</h5>
+                            <div>
+                                <i>
+                                    <small>
+                                    {{lstring(globalTargets.find(e=>e.identifier == option.identifier).longDescription)}}
+                                    </small>
+                                </i>
+                            </div>
+                        </template>
+                    </km-help>
+                </template>
             </km-multi-checkbox>
         </CModalBody>   
         <CModalFooter>
@@ -404,6 +434,11 @@
     const customLabel = ({title})=>{        
         return lstring(title, locale.value);
     }
+
+    const customShortLabel = ({shortTitle})=>{        
+        return lstring(shortTitle, locale.value);
+    }
+    
     const customSelectedItem = (item)=>{
         return { identifier : item };
     }

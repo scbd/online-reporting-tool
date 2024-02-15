@@ -3,7 +3,13 @@
         <div :class="`input-group input-lang-${locale}`">    
             <div class="form-control km-value" 
                 :dir="direction(term && term.title, locale)" aria-describedby="basic-addon1">
-                <km-term :value="value" :locale="locale" @on-term-load="onTermLoad(term)"></km-term>
+                <km-term :value="value" :locale="locale" @on-term-load="onTermLoad(term)">
+                    <template #help="{term}">
+                        <slot name="help" :term="term">
+
+                        </slot>
+                    </template>
+                </km-term>
             </div>
             <!-- <span class="input-group-text" id="basic-addon1" style="cursor:default">
                 {{ lstringLocale(term && term.title, locale).toUpperCase() }}

@@ -63,7 +63,22 @@
                                     </tr>
                                     <tr v-for="target in viewDocument.globalTargetAlignment" :key="target.identifier">
                                         <td>
-                                            <km-value-term class="degree-of-alignment" :value="target" :locale="selectedLocale"></km-value-term>
+                                            <km-value-term class="degree-of-alignment" :value="target" :locale="selectedLocale">
+                                                <template #help="{term}">
+                                                    <km-help class="ms-1 me-1" :title="lstring(term.shortTitle)">
+                                                        <template #content>
+                                                            <h5>{{ lstring(term.title)}}</h5>
+                                                            <div>
+                                                                <i>
+                                                                    <small>
+                                                                    {{lstring(term.longDescription)}}
+                                                                    </small>
+                                                                </i>
+                                                            </div>
+                                                        </template>
+                                                    </km-help>
+                                                </template> 
+                                            </km-value-term>
                                         </td>
                                         <td>
                                             <km-value-term class="degree-of-alignment" :value="target.degreeOfAlignment" v-if="target.degreeOfAlignment" :locale="selectedLocale"></km-value-term>
