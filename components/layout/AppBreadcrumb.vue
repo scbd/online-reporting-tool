@@ -23,11 +23,12 @@ import { useRoute } from 'vue-router'
 
       const crumbs    = [
         { text:'CHM', to:'https://chm.cbd.int' },
-        { text:'ORT', to: localePath('/dashboard'), active: '/dashboard' === route.fullPath }
       ];
       if(route){
         
+        crumbs.push({ text:'ORT', to: localePath('/dashboard'), active: '/dashboard' === route.fullPath });
         const {breadcrumbs : pageBreadcrumbsConf } = route.meta;
+        
 
         let { path }  = route.matched[0] || { path: '/' };
         path          = path.replace('()', '').replace(/\?$/, '');
