@@ -7,7 +7,7 @@
         <CDropdownHeader component="h6" class="bg-light fw-semibold py-2">
             {{t('settings')}}
         </CDropdownHeader>
-        <KmNavLink :to="`${accountsUrl}/profile`" title="Profile" icon="cil-user"></KmNavLink>
+        <KmNavLink :to="`${accountsUrl}/profile?returnUrl=${returnUrl}`" title="Profile" icon="cil-user"></KmNavLink>
         <KmNavLink to="/users/setting" title="Settings" icon="cil-settings"></KmNavLink>
         <CDropdownDivider />      
         <KmNavLink @click="logout()" :to="returnUrl" title="Logout" icon="cil-lock-locked"></KmNavLink>
@@ -17,6 +17,8 @@
 </template>
 <i18n src="@/i18n/dist/components/layout/AppHeaderDropdownAccnt.json"></i18n>
 <script>
+
+import { useRoute } from 'vue-router';
 export default {
   name: 'AppHeaderDropdownAccnt',
   setup() {
@@ -26,13 +28,20 @@ export default {
       await authLogout()
       window.location.reload()
     }
-    
+
+    const returnUrl = computed(()=>{
+        const route = useRoute();
+        const url = new URL(window.location.href);
+        url.path = route.path;
+        return url.href;
+     })
+
     return {
         t,
       user       : useAuth().user,
       itemsCount : 42,
       accountsUrl: useRuntimeConfig().public.ACCOUNTS_HOST_URL,
-      returnUrl  : window.location.href,
+      returnUrl,
       logout
     }
   },

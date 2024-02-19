@@ -1,5 +1,5 @@
 <template>
-    <CCard v-if="user.isAuthenticated">
+    <CCard v-if="user?.isAuthenticated">
         <CCardHeader> {{t('title')}} </CCardHeader>
         <CCardBody>
             <div>
