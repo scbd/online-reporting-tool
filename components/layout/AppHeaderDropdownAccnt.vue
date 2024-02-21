@@ -23,6 +23,7 @@ export default {
   name: 'AppHeaderDropdownAccnt',
   setup() {
     const { t } = useI18n();
+    const route = useRoute();
 
     const logout = async ()=>{
       await authLogout()
@@ -30,7 +31,6 @@ export default {
     }
 
     const returnUrl = computed(()=>{
-        const route = useRoute();
         const url = new URL(window.location.href);
         url.path = route.path;
         return url.href;

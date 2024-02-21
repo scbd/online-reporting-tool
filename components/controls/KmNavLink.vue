@@ -1,11 +1,11 @@
 <template>
     <CNavItem >
-        <!-- isActve{{ route.path }} {{ to }} @click="useNavigateAppTo(to)" href="#" -->
-        <NuxtLink class="nav-link" :to="to" :class="{'active' : route.path === to}" :target="target">
+        <!-- isActve{{ route.path }} {{ to }} @click="useNavigateAppTo(to)" href="#" -->        
+        <km-link class="nav-link" :to="to" :class="{'active' : route.path === to}" :target="target" :title="title">
             <CIcon v-if="icon && ~icon.indexOf('cil-')" :icon="icon" class="nav-icon" /> 
             <font-awesome-icon  v-if="icon && ~icon.indexOf('fa-')" class="menu-icon" :icon="'fa-solid ' + icon" />
             {{title}}
-        </NuxtLink> 
+        </km-link> 
     </CNavItem>
 </template>
 <script lang="ts">
@@ -20,8 +20,10 @@ export default defineComponent({
     },
     setup(props) {
         const route = useRoute();
+        const localePath  = useLocalePath();
+
         const to = computed(()=>{
-            return props.to
+            return localePath(props.to)
         });
         const title = computed(()=>props.title);
         const icon = computed(()=>props.icon);
