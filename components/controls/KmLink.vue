@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :to="to" :class="{'active' : route.path === to}" :target="target" v-bind="$attrs">
+    <NuxtLink :to="to" :class="{'active' : route.path === to}" :target="target" v-bind="$attrs"> {{ isRouteActive() }}
         <slot>
             <CIcon v-if="icon && ~icon.indexOf('cil-')" :icon="icon" class="nav-icon" /> 
             <font-awesome-icon  v-if="icon && ~icon.indexOf('fa-')" class="nav-icon" :icon="'fa-solid ' + icon" />
@@ -27,7 +27,10 @@ export default defineComponent({
 
         const title = computed(()=>props.title);
         const icon = computed(()=>props.icon);
-        const isRouteActive = ()=>route.path === props.to;
+        const isRouteActive = (()=>{
+            console.log('kmlink', route.fullPath)
+            return route.path === props.to;
+        })
 
         return {
             to,

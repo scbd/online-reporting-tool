@@ -18,7 +18,7 @@
 <i18n src="@/i18n/dist/components/layout/AppHeaderDropdownAccnt.json"></i18n>
 <script>
 
-import { useRoute } from 'vue-router';
+// import { useRoute } from 'vue-router';
 export default {
   name: 'AppHeaderDropdownAccnt',
   setup() {

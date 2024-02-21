@@ -1,4 +1,4 @@
-<template>
+<template>{{ currentRoute }} - {{ currentRoute2 }}
   <CBreadcrumb class="d-md-down-none me-auto mb-0"> 
     <NuxtLink v-for="item in breadcrumbs" class="breadcrumb-item"
       :key="item"
@@ -11,7 +11,8 @@
 import { onMounted, ref } from 'vue'
 import { capitalCase } from 'change-case';
 import { languages } from '@/app-data/languages'
-import { useRoute } from 'vue-router' 
+import { useRoute as useRouteVue } from 'vue-router' 
+import { useRoute } from '#imports';
 //TODO: verify when nuxt issue is fixed, temp use useRoute directly from vue instead of nuxt
 
     const localePath  = useLocalePath();
@@ -19,8 +20,8 @@ import { useRoute } from 'vue-router'
 
     function makeCrumbs (){ //eslint-disable-line
 
-      const route = useRoute();
-
+    //   const route = useRoute();
+console.log(route.href, useRouteVue())
       const crumbs    = [
         { text:'CHM', to:'https://chm.cbd.int' },
       ];
@@ -63,5 +64,8 @@ import { useRoute } from 'vue-router'
     const breadcrumbs = computed(()=>{
       return makeCrumbs()
     })
+
+    const currentRoute = computed(()=>route.fullPath)
+    const currentRoute2 = computed(()=>useRouteVue()?.fullPath)
       
 </script>

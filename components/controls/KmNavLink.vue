@@ -27,6 +27,10 @@ export default defineComponent({
         const icon = computed(()=>props.icon);
         const isRouteActive = ()=>route.path === props.to;
 
+        const isRouteActive1 = (()=>{
+            console.log('kmnavlink', route.fullPath)
+            return route.path === props.to;
+        })
         return {
             to,
             title,
