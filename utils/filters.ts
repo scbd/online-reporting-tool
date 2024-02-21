@@ -21,8 +21,7 @@ export function lstring(ltext, locale) {
 
     if (typeof(ltext) === 'string')
         return ltext;
-    if(!locale)
-        console.log('no locale provide ', ltext)
+    
     locale = locale || lstringLocale(ltext, locale);
     let sText="";
     if (!sText && locale)
