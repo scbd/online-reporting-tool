@@ -43,7 +43,7 @@
             const batchWorkflow =  await $api.kmWorkflows.getBatchWorkflowDetails(route.params.batchId);
         
             if([SCHEMAS.NATIONAL_TARGET_7, SCHEMAS.NATIONAL_TARGET_7_MAPPING].includes(batchWorkflow.schema))
-                await navigateTo($appRoutes.NATIONAL_TARGETS_MY_COUNTRY)
+                await useNavigateAppTo($appRoutes.NATIONAL_TARGETS_MY_COUNTRY)
         }
         catch(e){
             if([404, 401, 403].includes(e.status)){

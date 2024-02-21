@@ -114,7 +114,7 @@
                                     :query="{'globalTarget' : target.identifier}" :identifier="identifier"></btn-new-target>        
                                 <CButton  v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING" 
                                     color="secondary" size="sm" 
-                                    @click="navigateTo({path: useLocalePath()($appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II), query:{'globalTarget' : target.identifier}})" >
+                                    @click="useNavigateAppTo({path: useLocalePath()($appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II), query:{'globalTarget' : target.identifier}})" >
                                     <font-awesome-icon icon="fa-solid fa-pen-to-square"/> Edit mapping
                                 </CButton>
                             </td>

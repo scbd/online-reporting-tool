@@ -64,7 +64,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
                     const route = useRoute();
                     const url = resolveUrlParams( matchedRoute.url, params);
-                    return navigateTo({path:url, query: route.query, params:route.params})
+                    return useNavigateAppTo({path:url, query: route.query, params:route.params})
                 }
                 // register/:schema/:identifier/edit
             }

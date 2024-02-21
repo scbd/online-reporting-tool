@@ -31,8 +31,7 @@
         roles:[...ROLES.ALL_NATIONAL_USERS],
     })
     const navigateToPage = async (url:string)=>{
-      await navigateTo(url);
-      await navigateTo(url);
+      await useNavigateAppTo(url);
     }
     
   </script>

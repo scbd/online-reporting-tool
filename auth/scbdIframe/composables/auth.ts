@@ -22,7 +22,7 @@ export const authRedirectToLogin = async (from:string) => {
     const authConf = useAuthConf();
     const redirectTo = `${useResolveAccountsHostUrl(authConf.redirect.login)}?returnUrl=${encodeURIComponent(window.location.origin)}${encodeURIComponent(from)}`
 
-    await navigateTo(redirectTo, { external: true });
+    await useNavigateAppTo(redirectTo, { external: true });
 
     return redirectTo;
 };

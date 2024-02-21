@@ -60,7 +60,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
   
   if (loggedIn.value) {
-    await navigateTo(currentRoute.path  || "/");
+    await useNavigateAppTo(currentRoute.path  || "/");
   }
 
   const hasScope = (scope:string)=>{
