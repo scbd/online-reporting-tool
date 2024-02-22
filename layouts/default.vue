@@ -70,7 +70,7 @@ export default {
         const { user } = useAuth();
 
         if(window._slaask){
-            if (user.value.isAuthenticated && window. _slaask) {
+            if (user?.value?.isAuthenticated && window. _slaask) {
                 window._slaask.identify(user.name, {
                     'user-id': user.value.userID,
                     'name'   : user.value.name,
