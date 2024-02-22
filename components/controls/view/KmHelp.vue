@@ -1,9 +1,16 @@
 <template>
-    <a href="#" ref="helpAnchor" class="show-pop" data-animation='pop'>
-        <slot>
-            <font-awesome-icon icon="fa-solid fa-circle-question" />
+    <span ref="helpAnchor" class="show-pop" data-animation='pop'>
+        <slot></slot>
+        <slot name="icon">
+            <font-awesome-icon icon="fa-solid fa-circle-question" v-if="!slots.icon && !slots.default" />
         </slot>
-    </a>
+    </span>
+
+    <div class="webui-popover-content">
+        <slot name="content">
+            {{ popoverContent }}
+        </slot>
+    </div>
 </template>
 
 <script setup>
@@ -12,11 +19,13 @@ import 'webui-popover/dist/jquery.webui-popover.css'
 import $ from 'jquery'
 
     const helpAnchor = ref(null);
+    const $attrs = useAttrs();
+    const slots  = useSlots();
+
+    const popoverContent = computed(()=>$attrs.content);
 
     onMounted(()=>{
         
-        const $attrs = useAttrs();
-
         const settings = {
             trigger: 'hover',
             title: $attrs.title || 'Online Reporting Tool - Help',
@@ -28,21 +37,18 @@ import $ from 'jquery'
             delay: {
                 show: null,
                 hide: 200
-            },
-            content: $attrs.content || ''
+            }
         };
 
         if($attrs.container && $attrs.container!='')
             settings.container = $attrs.container;
-
-            
+        
         $(helpAnchor.value)
             .webuiPopover('destroy')
             .webuiPopover(settings);
-
     });
 
-    onUnmounted(()=>{
+    onBeforeUnmount(()=>{
         $(helpAnchor.value).webuiPopover('destroy')
     })
 
@@ -51,12 +57,13 @@ import $ from 'jquery'
 <style lang="scss">
     .show-pop{
         color: unset;
-        // text-decoration-style: dotted;
+        text-decoration-style: dotted;
+        border-bottom: 3px solid rgb(93, 136, 221);
         text-decoration-color: rgb(93 136 221);    
         text-decoration-thickness: 3px;
     }
     .webui-popover-content {
-        max-width: 500px;
-        max-height: 300px;
+        max-width: 800px;
+        max-height: 500px;
     }
 </style>

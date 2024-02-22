@@ -2,6 +2,9 @@
     <span>
         <CAlert color="danger" v-if="error">Error loading term {{ value.identifier }}</CAlert>
         {{ lstring(term.title, locale) }}
+        <slot name="help" :term="term">
+
+        </slot>
     </span>
 </template>
 
