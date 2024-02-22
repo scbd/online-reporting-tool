@@ -3,6 +3,6 @@ export const languages = {
     "zh" : "中文",
     "en" : "English",
     "es" : "Español",
-    "fr" : "Françai",
+    "fr" : "Français",
     "ru" : "Русский"
 }

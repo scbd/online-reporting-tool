@@ -1,10 +1,9 @@
-import { RouteLocation } from "vue-router";
+import { RouteLocationRaw } from "vue-router";
+import { NavigateToOptions } from '#imports'
 
-
-
-export const useNavigateAppTo = (to:RouteLocation, options: NavigateToOptions) =>{ 
+export const useNavigateAppTo = (to:RouteLocationRaw, options?: NavigateToOptions | undefined) =>{ 
     
-    const localePath  = useLocalePath()
+    const localePath  = useLocalePath();
     
     if(typeof to === 'string'){
         return navigateTo(localePath(to), options)

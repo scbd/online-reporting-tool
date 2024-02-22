@@ -3,7 +3,7 @@
         
           <div class="card mt-3">
             <div class="card-header bg-secondary">
-                National targets 
+                {{t('nationalTargets')}}
             </div>
             <div class="card-body"> 
                 <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
@@ -14,7 +14,7 @@
           
           <div class="card mt-3">
             <div class="card-header bg-secondary">
-                Global Goal/Targets mapping
+                {{t('globalMapping')}}
             </div>
             <div class="card-body">      
                 <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>      

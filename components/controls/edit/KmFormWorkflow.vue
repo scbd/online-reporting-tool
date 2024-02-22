@@ -31,9 +31,9 @@
                             <cbd-article :query="articleQuery()" hide-cover-image="true" show-edit="true">
                                 <template #missingArticle>
                                     <CAlert color="success" v-bind:visible="true">
-                                        <CAlertHeading>Introduction!</CAlertHeading>
+                                        <CAlertHeading>{{t('introduction')}}!</CAlertHeading>
                                         <hr />
-                                        <p class="mb-0">This section will have a brief description to help users submit information</p>
+                                        <p class="mb-0">{{t('introInfo')}}</p>
                                     </CAlert>
                                 </template>
                             </cbd-article>
@@ -75,14 +75,10 @@
 
     import FormWizard from './KmFormWizard.vue';
     import TabContent from './KmFormWizardTabContent.vue';
-    import { KmValidationErrors, KmSpinner } from "~/components/controls";
     import cbdArticle from '../../common/cbd-article.vue';
-    import { CButton, CCardBody, CRow } from '@coreui/vue';
-    import $ from 'jquery';
     import { useI18n } from 'vue-i18n';
     import { EditFormUtility }  from '@/services/edit-form-utility';
     import {useToast} from 'vue-toast-notification';
-    import {isEmpty} from 'lodash'
     import { scrollToElement } from '@/utils';
     import { useRealmConfStore } from '@/stores/realmConf';
 
@@ -115,12 +111,13 @@
     const formWizard       = ref(null);
     const validationReport = ref({});
     const activeTab      = ref(null);
-
+    
     const workflowTabs = {
-        introduction: { index : 0, title: t('introduction') },
-        submission  : { index : 1, title: t('submission') },
-        review      : { index : 2, title: t('review') },
-        publish     : { index : 3, title: t('publish') },
+        // use individual compute so that on language change the text is updated
+        introduction: { index : 0, title: computed(()=>t('introduction')) }, 
+        submission  : { index : 1, title: computed(()=>t('submission')) },
+        review      : { index : 2, title: computed(()=>t('review')) },
+        publish     : { index : 3, title: computed(()=>t('publish')) },
     }
 
     let { focusedTab, tab, ...props } = toRefs(definedProps);
