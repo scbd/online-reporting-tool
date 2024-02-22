@@ -133,7 +133,7 @@
     <CRow class="mt-5">
       <CCol md="12">
         <CCard>
-          <CCardHeader> {{t('LatestRecords')}} </CCardHeader>
+          <CCardHeader> {{t('latestRecords')}} </CCardHeader>
           <CCardBody>
             <CTable hover>
                 <CTableHead>
