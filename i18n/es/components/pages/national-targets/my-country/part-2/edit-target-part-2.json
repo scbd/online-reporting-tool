@@ -1,0 +1,16 @@
+{
+  "title": "Correspondencias nacionales con los Objetivos y Metas mundiales",
+  "governmentAndLanguages": "Gobierno e Idioma(s)",
+  "government": "Gobierno",
+  "clickToChange": "Haga clic aquí para cambiar el idioma del registro",
+  "submissionLanguage": "Sírvase seleccionar el/los idioma(s) en los que desea presentar este registro",
+  "linkedTargets": "Meta(s) nacional(es) vinculada(s)",
+  "elementsOfTargets": "Elementos de las metas mundiales",
+  "elementsAddressed": "Elementos de las metas mundiales que se abordan en las metas nacionales. (Sírvase incluir también qué aspectos de las metas mundiales no se abarcan en las metas nacionales.)",
+  "aspectsOfTargets": "Sírvase incluir también qué aspectos de las metas mundiales no se abarcan las metas nacionales.",
+  "referencePeriod": "Período de referencia",
+  "referencePeriodForIndicators": "¿Existe un período de referencia relacionado con el indicador principal?",
+  "explain": "Sírvase explicar",
+  "yes": "Sí",
+  "no": "No"
+}

@@ -1,0 +1,9 @@
+{
+  "settings": "Configuración",
+  "browserCache": "Caché del navegador",
+  "cacheInfo": "La Herramienta de presentación de informes en línea almacena parte de la información en la caché del navegador para mejorar el rendimiento.",
+  "clearCacheInfo": "En el caso en el que tenga problemas, se recomienda eliminar esta caché.",
+  "clearAll": "Eliminar todo",
+  "clear": "Eliminar",
+  "cache": "caché"
+}

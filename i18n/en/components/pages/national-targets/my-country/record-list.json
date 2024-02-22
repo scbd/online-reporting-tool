@@ -1,1 +1,11 @@
-{}
+{
+    "title":"Title",
+    "gbfGoals":"GBF goal(s) and target(s)",
+    "status":"Status",
+    "updatedOn":"Updated on",
+    "view":"View",
+    "edit":"Edit",    
+    "passedValidation"  : "Validation successful",    
+    "hasErrors" : "Failed Validations",
+    "validating"    : "Validating..."
+}

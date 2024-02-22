@@ -1,0 +1,14 @@
+{
+  "sectionII": "Section II",
+  "sectionIIDescription": "Le statut des stratégies et plans d'action révisés ou mis à jour (SPANB) à la lumière du Cadre mondial de la biodiversité Kunming-Montréal. ",
+  "revisedNbsap": "Est-ce que votre pays a révisé ou mis à jour ses SPANB à la lumière du Cadre mondial de la biodiversité Kunming-Montréal?",
+  "yes": "Oui",
+  "no": "Non",
+  "inProcess": "En cours de processus",
+  "indicateCompletionDate": "Veuillez indiquer la date anticipée de réalisation de la révision et la mise à jour des SPANBs.",
+  "stakeholderEngagement": "Est-ce que votre pays implique et engage des parties prenantes pour la révision et la mise à jour des SPANBs?",
+  "stakeholders": "Parties prenantes",
+  "hasNbsapAdopted": "Est-ce que les SPANBs révisés ou mis à jour a été adopté en tant qu’instrument légal ou comme politique?",
+  "indicateAdoptionDate": "Veuillez indiquer la date anticipée d’adoption",
+  "policyInstrument": "Veuillez indiquer le type d’instrument politique adopté des SPANBs révisés et mis à jour de votre pays"
+}

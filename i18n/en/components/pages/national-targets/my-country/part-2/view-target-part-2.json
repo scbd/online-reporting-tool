@@ -1,1 +1,12 @@
-{}
+{
+    "title":"National mapping with global Goals/Target",
+    "general":"General",
+    "government":"Government",
+    "linkedTarget":"Linked Global Goal/Target",
+    "elementsOfTargets":"Elements of the global targets",
+    "addressedElements":"Elements of the global targets addressed by national targets",
+    "referencePeriod":"Reference Period",
+    "referencePeriodForIndicators":"Is there a reference period which relates to the headline indicator?",
+    "explain":"Please explain"
+
+}

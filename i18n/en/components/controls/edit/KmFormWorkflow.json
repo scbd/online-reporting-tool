@@ -19,5 +19,6 @@
    "introduction": "Introduction",
    "submission"  : "Submission",
    "review"      : "Review",
-   "publish"     : "Publish"
+   "publish"     : "Publish",
+   "introInfo"   : "This section will have a brief description to help users submit information"
 }

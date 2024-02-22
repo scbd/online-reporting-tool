@@ -1,0 +1,5 @@
+{
+  "notFound": "Запись не найдена!",
+  "notAuthorized": "У вас нет прав на доступ к этой записи!",
+  "errorLoading": "Error loading view document "
+}

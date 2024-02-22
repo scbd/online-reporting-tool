@@ -1,1 +1,9 @@
-{}
+{
+    "settings":"Settings",
+    "browserCache":"Browser Cache",
+    "cacheInfo":"The ORT caches some information in your browser cache for faster performance.",
+    "clearCacheInfo":"Incase if you are facing issues, it is recommended to clear this cache.",
+    "clearAll":"Clear All",
+    "clear":"Clear",
+    "cache":"cache"
+}

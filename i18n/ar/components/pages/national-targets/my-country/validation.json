@@ -1,0 +1,10 @@
+{
+  "publishedState": "منشورة",
+  "draftState": "مسودة",
+  "lockedState": "المسودة مغلقة",
+  "passedValidation": "اكتمال التحقُّق",
+  "hasErrors": "فشل عمليات التحقُّق",
+  "validating": "قيد التحقُّق",
+  "nationTargets": "الأهداف الوطنية",
+  "globalMaping": "ربط الأهداف الوطنية بمثيلاتها العالمية"
+}

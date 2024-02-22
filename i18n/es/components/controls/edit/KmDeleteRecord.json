@@ -1,0 +1,14 @@
+{
+  "deleteConfirmationTitle": "Confirma borrar",
+  "deleteConfirmMessage": "¿Está seguro de que quiere borrar este registro?",
+  "cancel": "Cancelar",
+  "delete": "Borrar",
+  "deleteSuccessfully": "Registro borrado exitosamente",
+  "publishedRecord": "Registro publicado",
+  "deletePublished": "Borrar publicación",
+  "deletePublishedInfo": "Al borrar un registro publicado también se borrarán los registros borrador.",
+  "draftRecord": "Registro borrador",
+  "deleteDraft": "Borrar borrador",
+  "deleteDraftInfo": "Borrar un registro borrador no generará repercusiones en el registro publicado.",
+  "deleteError": "Error al borrar un registro"
+}

@@ -1,0 +1,15 @@
+{
+  "analyzingDocument": "تحليل المستند...",
+  "savingDocument": "حفظ المستند...",
+  "valid": "المستند صالح.",
+  "contains": "مستندك يحتوي على",
+  "errors": "أخطاء.",
+  "unknown": "خطأ غير معروف",
+  "mandatory": "الخانة إلزامية",
+  "mandatoryAnyOf": "إحدى هذه الخانات إلزامية",
+  "invalidValue": "القيمة المحددة غير صالحة",
+  "invalidProperty": "تعذر تحديد هذه القيمة",
+  "unspecifiedLocale": "اللغة مستخدمة ولكنها لم تُحدّد في المستند",
+  "unexpectedTerm": "تعذر استخدام مُصطلح محدد",
+  "invalidType": "نوع الخانات غير صحيح"
+}

@@ -1,0 +1,14 @@
+{
+  "deleteConfirmationTitle": "确认删除",
+  "deleteConfirmMessage": "确定要删除此记录吗？",
+  "cancel": "取消",
+  "delete": "删除",
+  "deleteSuccessfully": "记录已成功删除",
+  "publishedRecord": "已发布记录",
+  "deletePublished": "删除已发布记录",
+  "deletePublishedInfo": "删除已发布记录也会删除下面的记录草稿。",
+  "draftRecord": "记录草稿",
+  "deleteDraft": "删除草稿",
+  "deleteDraftInfo": "删除记录草稿不会影响已发布记录。",
+  "deleteError": "删除记录时出错"
+}
