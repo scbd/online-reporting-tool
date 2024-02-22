@@ -89,10 +89,10 @@
 
     const isValidatingRecords       = ref(false);
     const isLoadingRecords          = ref(false);
-    const draftNationalTargets      = ref([]);
-    const publishedNationalTargets  = ref([]);
-    const draftNationalMappings     = ref([]);
-    const publishedNationalMappings = ref([]);
+    const draftNationalTargets      = ref<EDocumentInfo[]>([]);
+    const publishedNationalTargets  = ref<EDocumentInfo[]>([]);
+    const draftNationalMappings     = ref<EDocumentInfo[]>([]);
+    const publishedNationalMappings = ref<EDocumentInfo[]>([]);
     const editDocument              = ref<ENationalTarget7|ENationalTarget7>();
     const showEditDocumentModal     = ref(false);
 

@@ -1,5 +1,5 @@
 import { viteSyncI18nFiles } from './i18n/sync-i18n';
-import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite';
+// import VueI18nVitePlugin from '@intlify/unplugin-vue-i18n/vite';
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 

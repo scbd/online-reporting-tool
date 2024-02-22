@@ -246,6 +246,15 @@
     onMounted(() => {
         formWizard.value?.selectTab(focusedTab.value ?? 0)
     })
+
+    // same as beforeRouteLeave option with no access to `this`
+    onBeforeRouteLeave((to, from) => {
+      const answer = window.confirm(
+        'Do you really want to leave? you have unsaved changes!'
+      )
+      // cancel the navigation and stay on the same page
+      if (!answer) return false
+    })
 </script>
 
 <style>

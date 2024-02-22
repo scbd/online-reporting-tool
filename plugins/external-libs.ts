@@ -6,7 +6,9 @@ import mitt from 'mitt'
     
 export default defineNuxtPlugin((nuxtApp) => {
     
-    nuxtApp.vueApp.use(ToastPlugin);
+    nuxtApp.vueApp.use(ToastPlugin, {
+        position: 'top-right'
+    });
     
     const eventBus = mitt();
 
