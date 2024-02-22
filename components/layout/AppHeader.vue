@@ -92,7 +92,7 @@ export default {
       setLocale(locale);
       const newLocalePath = switchLocalePath(locale);
       // console.log(locale, newLocalePath)
-      await navigateTo(newLocalePath);
+      await useNavigateAppTo(newLocalePath);
     }
 
     return { logo, t, languages, switchLocale, userPreferences }

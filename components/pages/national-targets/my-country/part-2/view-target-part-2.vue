@@ -120,7 +120,7 @@
     })
  
     const onClose = async ()=>{
-        await navigateTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II)
+        await useNavigateAppTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II)
     }
 
     async function loadDocument(identifier){
