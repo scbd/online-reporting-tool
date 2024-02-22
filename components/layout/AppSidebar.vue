@@ -30,15 +30,15 @@
         <template #togglerContent>
             {{ t('menuNationalTargets') }}
         </template>
-        <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS]" :to="localePath('/national-targets')" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
+        <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS]" :to="localePath(`/national-targets`)" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>
         <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)">
           <template #togglerContent>
             <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
             {{ t('menuMyCountryTargets') }}
           </template>
-          <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_MY_COUNTRY]"  :to="localePath(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)"         icon="fa-wand-magic-sparkles" :title="t('overview')"></KmNavLink>
-          <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_MY_COUNTRY]"  :to="localePath(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I)"  icon="fa-arrows-down-to-people" :title="t('menuMyCountryTargetsPart1')"></KmNavLink>
-          <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_MY_COUNTRY]" :to="localePath(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II)"  icon="fa-layer-group" :title="t('menuMyCountryTargetsPart2')"></KmNavLink>
+          <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_MY_COUNTRY]"  :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY"         icon="fa-wand-magic-sparkles" :title="t('overview')"></KmNavLink>
+          <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_MY_COUNTRY]"  :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I"  icon="fa-arrows-down-to-people" :title="t('menuMyCountryTargetsPart1')"></KmNavLink>
+          <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_MY_COUNTRY]"  :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II"  icon="fa-layer-group" :title="t('menuMyCountryTargetsPart2')"></KmNavLink>
         </CNavGroup>
       </CNavGroup>
       

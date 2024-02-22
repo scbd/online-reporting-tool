@@ -41,7 +41,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           const { checkUserAccess } = useSecurity()
           const userCanAccess = await checkUserAccess({...to.meta, path:to.path});
           if(!userCanAccess){
-              return navigateTo('/error/403');
+              return useNavigateAppTo('/error/403');
           }
         }
       }
@@ -60,7 +60,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
   
   if (loggedIn.value) {
-    await navigateTo(currentRoute.path  || "/");
+    await useNavigateAppTo(currentRoute.path  || "/");
   }
 
   const hasScope = (scope:string)=>{

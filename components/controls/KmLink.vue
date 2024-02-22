@@ -18,10 +18,13 @@ export default defineComponent({
         target  : { type:String }
     },
     setup(props) {
+        const localePath  = useLocalePath();
         const route = useRoute();
+        
         const to = computed(()=>{
-            return props.to
+            return localePath(props.to)
         });
+
         const title = computed(()=>props.title);
         const icon = computed(()=>props.icon);
         const isRouteActive = ()=>route.path === props.to;
@@ -34,7 +37,7 @@ export default defineComponent({
             isRouteActive,
             route
         }
-    },
+    }
 })
 </script>
 <style scoped>

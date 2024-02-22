@@ -9,15 +9,15 @@
 
                 <CRow class="mb-2">
                     <CCol :sm="6" class="d-grid gap-1 d-md-flex">
-                        <label>Filter </label>
+                        <label>{{t('filter')}} </label>
                         <select v-model="filterBy" class="form-select" style="width:30%">
-                            <option disabled value="">Please select one</option>
+                            <option disabled value="">{{t('selectOne')}}</option>
                             <option v-for="filter in filters" :value="filter.value" :key="filter.value">{{ filter.title }}</option>
                         </select>
                     </CCol>
                     <CCol :sm="6" class="float-end">
                         <div class="d-grid gap-1 d-md-flex justify-content-end mb-2">
-                            <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" title="Go to Overview" 
+                            <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" :title="t('overview')" 
                                 role="button" class="btn btn-sm btn-secondary" icon="fa-wand-magic-sparkles">
                             </km-link> 
                             <toggle-accordion ref="accordionToggle" selector="#mapping-accordion .accordion-header button.accordion-button" v-if="computedTargets"></toggle-accordion>
@@ -52,7 +52,7 @@
                                     </td>
                                     <td colspan="2">
                                         <strong>{{ t('elementsOfInfo') }}</strong>
-                                        <div class="form-text text-muted">Click the Add/Edit mapping button to edit this section</div>
+                                        <div class="form-text text-muted">{{t('addEditMapping')}}</div>
                                     </td>
                                 </tr>
                                 <tr v-for="(nationalTarget, index) in target.nationalTargets" :key="nationalTarget.identifier">
@@ -79,7 +79,7 @@
                                     </td>
                                     <td colspan="2">
                                         <strong>{{ t('referencePeriod') }}</strong>
-                                        <div class="form-text text-muted">Click the Add/Edit mapping button to edit this section</div>
+                                        <div class="form-text text-muted">{{t('addEditMapping')}}</div>
                                     </td>
                                 </tr>
                                 <tr v-for="(indicator, index) in target.headlineIndicators" :key="indicator.identifier">
@@ -89,7 +89,9 @@
                                     <td v-if="indicator.nationalTargets.length" colspan="2">
                                         <div v-if="indicator.referencePeriod">
                                             <CBadge v-if="indicator.referencePeriod.hasReferencePeriod" color="success" shape="rounded-pill">{{ t('hasReferencePeriod') }}</CBadge>
-                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod===false" color="danger" shape="rounded-pill">{{t('noReferencePeriod')}}</CBadge>
+                                            <CBadge v-if="indicator.referencePeriod.hasReferencePeriod===false" color="danger" shape="rounded-pill">
+                                                {{t('noReferencePeriod')}}
+                                            </CBadge>
                                             <km-lstring-value class="mt-2" type="html" v-if="indicator.referencePeriod.referencePeriodInfo"
                                             :value="indicator.referencePeriod.referencePeriodInfo" :locale="locale"></km-lstring-value>
                                         </div>

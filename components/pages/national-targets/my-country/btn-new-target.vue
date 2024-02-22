@@ -30,7 +30,7 @@
             } 
         }
 
-        await navigateTo({ 
+        await useNavigateAppTo({ 
             path,
             query:routeQuery,
             
