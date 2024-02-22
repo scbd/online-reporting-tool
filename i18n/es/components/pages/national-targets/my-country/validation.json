@@ -1,0 +1,10 @@
+{
+  "publishedState": "Publicado",
+  "draftState": "Borrador",
+  "lockedState": "Borrador bloqueado",
+  "passedValidation": "Validación exitosa",
+  "hasErrors": "No pudo realizarse la validación",
+  "validating": "Validando",
+  "nationTargets": "Metas nacionales",
+  "globalMaping": "Correspondencias con los Objetivos y las Metas mundiales"
+}

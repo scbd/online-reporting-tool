@@ -1,0 +1,17 @@
+{
+  "title": "Information pour l’utilisateur",
+  "welcome": "Bienvenue",
+  "publishingAuthority": "Autorité de publication",
+  "nationalFocalPoint": "Correspondant national",
+  "nationalAuthorizedUser": "Utilisateur national autorisé",
+  "registeredUser": "Utilisateurs enregistrés",
+  "admin": "Administrateur",
+  "name": "Nom",
+  "primaryEmail": "Courriel prioritaire",
+  "countryAffiliation": "Pays d'affiliation",
+  "none": "aucun",
+  "roles": "Rôle(s)",
+  "nauHelp": "L'utilisateur national autorisé (NAU) peut créer des projets de notices nationales et les soumettre à l'autorité de publication pour approbation.",
+  "updateProfile": "Mettre à jour le profil",
+  "updatePassword": "Actualiser le mot de passe"
+}

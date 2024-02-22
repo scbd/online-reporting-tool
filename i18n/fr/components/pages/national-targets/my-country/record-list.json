@@ -1,0 +1,11 @@
+{
+  "title": "Titre",
+  "gbfGoals": "Objectifs et cibles du CMB",
+  "status": "Statut",
+  "updatedOn": "Mis à jour le",
+  "view": "Vue",
+  "edit": "Modifier",
+  "passedValidation": "Validation réussie",
+  "hasErrors": "Les validations ont échouées",
+  "validating": "En cours de validation"
+}

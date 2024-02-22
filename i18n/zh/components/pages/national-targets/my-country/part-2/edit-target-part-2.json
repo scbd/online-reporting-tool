@@ -1,0 +1,16 @@
+{
+  "title": "国家具体目标与全球目标/具体目标的对应关系",
+  "governmentAndLanguages": "政府和语言",
+  "government": "政府",
+  "clickToChange": "单击此处，以更改记录语言",
+  "submissionLanguage": "请选择您希望提交之记录的语言",
+  "linkedTargets": "关联的国家具体目标",
+  "elementsOfTargets": "全球国家目标的要素",
+  "elementsAddressed": "国家具体目标所涉及的全球具体目标要素（还请包括国家具体目标未涉及的全球具体目标的方面）",
+  "aspectsOfTargets": "还请包括国家具体目标未涉及的全球具体目标的方面",
+  "referencePeriod": "参照期",
+  "referencePeriodForIndicators": "是否有与标题指标相关的参照期？",
+  "explain": "请解释",
+  "yes": "是",
+  "no": "否"
+}

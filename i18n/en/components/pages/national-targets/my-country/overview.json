@@ -26,5 +26,7 @@
     "partII"                 : "Part II",
     "welcome"                : "Welcome to your country's National Targets submission section. please select option to proceed.",
     "spinnerMessage"         : "Please wait while we process your request.",
-    "refresh"                : "Refresh"
+    "refresh"                : "Refresh",
+    "goToPartI"              : "Go to Part I",
+    "submitNewTarget"        : "Submit new target"
 }

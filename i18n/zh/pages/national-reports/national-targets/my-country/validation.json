@@ -1,0 +1,5 @@
+{
+  "validating": "正在验证",
+  "passedValidation": "已通过强制性检查",
+  "hasErrors": "缺少必填信息"
+}

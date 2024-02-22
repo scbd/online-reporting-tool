@@ -1,0 +1,14 @@
+{
+  "deleteConfirmationTitle": "Confirmer la suppression?",
+  "deleteConfirmMessage": "Êtes-vous sûr de vouloir supprimer cette demande de publication?",
+  "cancel": "Annuler",
+  "delete": "Supprimer",
+  "deleteSuccessfully": "Fichier supprimé avec succès",
+  "publishedRecord": "Fichier publié",
+  "deletePublished": "Supprimer le fichier publié",
+  "deletePublishedInfo": "Supprimer un fichier publié supprimer également les brouillons de fichiers en dessous.",
+  "draftRecord": "Fichier brouillon",
+  "deleteDraft": "Annuler le brouillon",
+  "deleteDraftInfo": "Supprimer un brouillon de fichier n’affectera toutefois pas le fichier publié.",
+  "deleteError": "Erreur dans la suppression du fichier"
+}

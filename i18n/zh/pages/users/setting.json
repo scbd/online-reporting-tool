@@ -1,0 +1,9 @@
+{
+  "settings": "设置",
+  "browserCache": "浏览器缓存",
+  "cacheInfo": "在线报告工具会在浏览器缓存中缓存一些信息，以提高性能。",
+  "clearCacheInfo": "如果遇到问题，建议清除缓存。",
+  "clearAll": "全部清除",
+  "clear": "清除",
+  "cache": "缓存"
+}

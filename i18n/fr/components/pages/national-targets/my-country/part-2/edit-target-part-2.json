@@ -1,0 +1,16 @@
+{
+  "title": "Cartographie nationale des objectifs/cibles mondiaux",
+  "governmentAndLanguages": "Gouvernement et langues",
+  "government": "Gouvernement",
+  "clickToChange": "Cliquez ici pour changer la langue d’enregistrement",
+  "submissionLanguage": "Veuillez sélectionner la ou les langues dans lesquelles vous souhaitez soumettre ce fichier.",
+  "linkedTargets": "Objectif(s) national(aux relié(s)",
+  "elementsOfTargets": "Éléments des objectifs mondiaux",
+  "elementsAddressed": "Éléments des objectifs mondiaux abordés par les objectifs nationaux (veuillez également inclure les aspects des objectifs mondiaux qui n'ont pas été couverts par les objectifs nationaux)",
+  "aspectsOfTargets": "Veuillez également inclure les aspects des objectifs mondiaux qui n'ont pas été couverts par les objectifs nationaux",
+  "referencePeriod": "Période de référence",
+  "referencePeriodForIndicators": "Est-ce qu’il y a une période de référence qui se rapporte à l’indication global?",
+  "explain": "Veuillez expliquer",
+  "yes": "Oui",
+  "no": "Non"
+}

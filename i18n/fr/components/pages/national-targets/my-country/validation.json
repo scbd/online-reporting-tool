@@ -1,0 +1,10 @@
+{
+  "publishedState": "Publié",
+  "draftState": "Brouillon",
+  "lockedState": "Brouillon verrouillé",
+  "passedValidation": "Validation réussie",
+  "hasErrors": "Les validations ont échouées",
+  "validating": "En cours de validation",
+  "nationTargets": "Objectifs nationaux",
+  "globalMaping": "Cartographie mondiale des objectifs/cibles"
+}

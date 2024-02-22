@@ -1,0 +1,5 @@
+{
+  "notFound": "Enregistrement non trouvé!",
+  "notAuthorized": "Vous n'êtes pas autorisé à modifier cet enregistrement.",
+  "errorLoading": "Erreur de téléchargement voir le document "
+}

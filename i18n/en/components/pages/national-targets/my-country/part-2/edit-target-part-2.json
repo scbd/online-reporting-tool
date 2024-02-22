@@ -1,1 +1,16 @@
-{}
+{
+    "title":"National mapping with global Goal/Target",
+    "governmentAndLanguages":"Government and Language(s)",
+    "government":"Government",
+    "clickToChange":"Click here to change the record language",
+    "submissionLanguage":"Please select in which language(s) you wish to submit this record",
+    "linkedTargets":"Linked national target(s)",
+    "elementsOfTargets":"Elements of the global targets",
+    "elementsAddressed":"Elements of the global targets addressed by national targets (Please also include which aspects of the global targets have not been covered by the national targets)",
+    "aspectsOfTargets":"Please also include which aspects of the global targets have not been covered by the national targets",
+    "referencePeriod":"Reference Period",
+    "referencePeriodForIndicators":"Is there a reference period which relates to the headline indicator?",
+    "explain":"Please explain",
+    "yes":"Yes",
+    "no":"No"
+}

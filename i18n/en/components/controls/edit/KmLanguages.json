@@ -1,5 +1,11 @@
 {
     "languageOfRecord": "Language(s) of record",
     "minOneLanguage": "Minimum of one language is mandatory, please select another language to remove the default language.",
-    "otherLanguageOfRecord": "Other language(s) of record" 
+    "otherLanguageOfRecord": "Other language(s) of record",
+
+    "otherLanguageInfo":"Would like to submit this information in any other language(s)?",
+    "otherLanguage":"Other language(s)?",
+    "yes":"Yes",
+    "no":"No"
+
 }

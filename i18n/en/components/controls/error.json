@@ -1,1 +1,13 @@
-{}
+{
+    "error": "Error",
+    "sorryForError":"We are sorry to inform you that an unexpected error has occurred on this page.",
+    "weUnderstand":"We understand that this is very unfortunate and may have caused inconvenience to you.",
+    "doNotHesitate":"Please don't hesitate to",
+    "contact":"contact the Secretariat",
+    "furtherQuestion":"if you have any further questions or concerns.",
+    "wouldLike":"If you would like",
+    "moreInfo":"more information about this message",
+    "youCan":", you can",
+    "clickHere":"click here",
+    "message":"Message:"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "用户信息",
+  "welcome": "欢迎",
+  "publishingAuthority": "发布机构",
+  "nationalFocalPoint": "国家联络点",
+  "nationalAuthorizedUser": "国家授权用户",
+  "registeredUser": "注册用户",
+  "admin": "管理员",
+  "name": "名称",
+  "primaryEmail": "主邮箱",
+  "countryAffiliation": "归属国家",
+  "none": "无",
+  "roles": "角色",
+  "nauHelp": "国家授权用户（NAU）可以创建国家记录草稿，并将其提交给发布机构进行验证和发布。",
+  "updateProfile": "更新概况",
+  "updatePassword": "更新密码"
+}
