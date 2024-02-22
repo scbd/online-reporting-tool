@@ -20,8 +20,9 @@ export function lstring(ltext, locale) {
       return "";
 
     if (typeof(ltext) === 'string')
-    return ltext;
-      
+        return ltext;
+    
+    locale = locale || lstringLocale(ltext, locale);
     let sText="";
     if (!sText && locale)
       sText = ltext[locale];
@@ -46,9 +47,9 @@ export const lstringLocale = (ltext, locale)=> {
     const { locale:defaultLocale } = useI18n();
 
     if(locale && Array.isArray(locale))
-    locale = defaultLocale;
+        locale = defaultLocale.value;
 
-    locale = locale || defaultLocale;
+    locale = locale || defaultLocale.value;
 
     if(!ltext)
     return locale;
@@ -59,11 +60,11 @@ export const lstringLocale = (ltext, locale)=> {
     if(ltext[locale])
     return locale;
 
-    if(ltext[defaultLocale])
-            return defaultLocale;
+    if(ltext[defaultLocale.value])
+            return defaultLocale.value;
 
     if(ltext.en)
-    return 'en';
+        return 'en';
     
     if(ltext.fr) return 'fr';
     if(ltext.es) return 'es';
