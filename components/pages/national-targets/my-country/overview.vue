@@ -11,7 +11,7 @@
                     <div class="d-grid gap-1 d-flex">
                         <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I" title="Go to Part I" 
                             role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>
-                        <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" title="Submit new target" 
+                        <km-link :disabled="disableActions" :to="useLocalePath()(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW)" title="Submit new target" 
                             role="button" class="btn btn-secondary" icon="fa-plus"></km-link>
                         <CButton :disabled="disableActions"  @click="onValidate('partI')" color="secondary">
                             <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
@@ -114,7 +114,7 @@
                                     :query="{'globalTarget' : target.identifier}" :identifier="identifier"></btn-new-target>        
                                 <CButton  v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING" 
                                     color="secondary" size="sm" 
-                                    @click="navigateTo({path: useLocalePath()($appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II), query:{'globalTarget' : target.identifier}})" >
+                                    @click="useNavigateAppTo({path: useLocalePath()($appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II), query:{'globalTarget' : target.identifier}})" >
                                     <font-awesome-icon icon="fa-solid fa-pen-to-square"/> Edit mapping
                                 </CButton>
                             </td>

@@ -81,7 +81,7 @@
         
         const {path, query} = navigationUrl(document)
 
-        await useNavigateAppTo({path, query}, {});
+        await useNavigateAppTo(path, {query});
     }
 
     function isEditAllowed(document:EDocumentInfo){
