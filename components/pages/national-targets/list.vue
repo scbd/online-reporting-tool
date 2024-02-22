@@ -4,17 +4,18 @@
         <CAlert color="info" class="d-flex align-items-center" v-if="!documents?.length">
             <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
             <div class="p-2">
-                 There are no records to display!
+                 {{t('noRecords')}}
             </div>
         </CAlert>
     </div>
 </template>
-
+<i18n src="@/i18n/dist/components/pages/national-targets/list.json"></i18n>
 <script setup lang="ts">
 import searchResult from '@/components/controls/search/search-result.vue';
 import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';
 
+    const { t } = useI18n();
     const realmConfStore  = useRealmConfStore();
     const realmConf = realmConfStore.realmConf; 
     const documents = ref([]);

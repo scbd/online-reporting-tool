@@ -1,14 +1,13 @@
 <template>
     <CCard>
-        <CCardHeader>Settings</CCardHeader>
+        <CCardHeader>{{t('settings')}}</CCardHeader>
         <CCardBody>
 
             <CCard>
                 <CCardBody>
-                    <CCardTitle>Browser Cache</CCardTitle>
+                    <CCardTitle>{{t('browserCache')}}</CCardTitle>
                     <CCardText>
-                        The ORT caches some information in your browser cache for faster performance.
-                        Incase if you are facing issues, it is recommended to clear this cache.
+                        {{t('cacheInfo')}} {{t('clearCacheInfo')}}
                     </CCardText>
                 </CCardBody>
                 <CCardBody>
@@ -20,7 +19,7 @@
                                         <td>{{ cache.cache }}</td>
                                         <td></td>
                                         <td>
-                                            <button class="ms-2 btn btn-danger btn-sm" @click="clearCache(cache)">Clear All {{ cache.cache }}</button>
+                                            <button class="ms-2 btn btn-danger btn-sm" @click="clearCache(cache)">{{t('clearAll')}} {{ cache.cache }}</button>
                                         </td>
                                     </tr>
                                     <tr v-for="(rec,recKey) in cache.data?._value" :key="recKey">
@@ -31,7 +30,7 @@
                                             </CBadge>
                                         </td>
                                         <td class="ps-5">
-                                            <button class="ms-2 btn btn-danger btn-sm"  @click="clearCache(cache, recKey)">Clear {{recKey}} cache</button>
+                                            <button class="ms-2 btn btn-danger btn-sm"  @click="clearCache(cache, recKey)">{{t('clear')}} {{recKey}} {{t('cache')}}</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -44,10 +43,11 @@
         </CCardBody>
     </CCard>
 </template>
-
+<i18n src="@/i18n/dist/pages/users/setting.json"></i18n>
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
 
+const { t }  = useI18n();
 const localStorageCache = [];
 
 for (const cache in localStorage) {

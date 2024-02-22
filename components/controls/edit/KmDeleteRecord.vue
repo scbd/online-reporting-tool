@@ -20,28 +20,28 @@
             <CRow>
                 <CCol :sm="12" v-if="hasPublishedVersion" class="mt-2">
                         <CCard>
-                            <CCardHeader>Published Record</CCardHeader>
+                            <CCardHeader>{{t('publishedRecord')}}</CCardHeader>
                             <CCardBody>
                                 <CCardTitle>{{ lstring(documentToDelete.title, locale) }}</CCardTitle>
                                 <CCardText> {{ lstring(documentToDelete.summary, locale) }}</CCardText>
 
                                 <CButton color="danger" size="sm" :disabled="isLoading" @click="deleteRecord('published')" class="float-end">
-                                    <font-awesome-icon icon="fa-trash" /> Delete Published
+                                    <font-awesome-icon icon="fa-trash" /> {{t('deletePublished')}}
                                 </CButton>
-                                <small class="form-text text-muted" v-if="hasDraft">Deleting published record will also delete below draft records.</small>
+                                <small class="form-text text-muted" v-if="hasDraft">{{t('deletePublishedInfo')}}</small>
                             </CCardBody>
                         </CCard>
                 </CCol>
                 <CCol :sm="12" v-if="hasDraft" class="mt-2">
                         <CCard>
-                            <CCardHeader>Draft Record</CCardHeader>
+                            <CCardHeader>{{t('draftRecord')}}</CCardHeader>
                             <CCardBody>
                                 <CCardTitle>{{ lstring(documentToDelete.workingDocumentTitle, locale) }}</CCardTitle>
                                 <CCardText> {{ lstring(documentToDelete.workingDocumentSummary, locale) }}</CCardText>
                                 <CButton color="danger" size="sm" :disabled="isLoading" @click="deleteRecord('draft')" class="float-end">
-                                    <font-awesome-icon icon="fa-trash" /> Delete Draft
+                                    <font-awesome-icon icon="fa-trash" /> {{t('deleteDraft')}}
                                 </CButton>
-                                <small class="form-text text-muted" v-if="hasDraft">Deleting draft record does not affect the published record.</small>
+                                <small class="form-text text-muted" v-if="hasDraft">{{t('deleteDraftInfo')}}</small>
                             </CCardBody>
                         </CCard>
                 </CCol>
@@ -115,7 +115,7 @@ import { CCard, CCardBody, CCardFooter, CCardHeader, CCardTitle } from '@coreui/
             $toast.success(t('deleteSuccessfully'), {position:'top-right'}); 
         }
         catch(e){
-            useLogger().error(e, `Error deleting record ${type||''}`)
+            useLogger().error(e, `${t('deleteError')} ${type||''}`)
         }       
 
         isLoading.value = false;

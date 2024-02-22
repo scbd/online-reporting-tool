@@ -1,11 +1,12 @@
 <template>   
     <CButton color="secondary" size="sm" @click="addEditTarget()">       
-        <font-awesome-icon icon="fa-solid fa-pen-to-square"/> Submit new target here
+        <font-awesome-icon icon="fa-solid fa-pen-to-square"/> {{t('submitTarget')}}
     </CButton>
 </template>
-
+<i18n src="@/i18n/dist/components/pages/national-targets/my-country/btn-new-target.json"></i18n>
 <script setup lang="ts">
 
+    const { t } = useI18n();
     const { $appRoutes }   = useNuxtApp();
     const props = defineProps({
         identifier   : { type:String, required:false},

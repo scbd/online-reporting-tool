@@ -3,10 +3,10 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">GBF goal(s) and target(s)</th>
-                <th scope="col">Status</th>
-                <th scope="col">Updated on</th>
+                <th scope="col">{{t('title')}}</th>
+                <th scope="col">{{t('gbfGoals')}}</th>
+                <th scope="col">{{t('status')}}</th>
+                <th scope="col">{{t('updatedOn')}}</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -23,7 +23,7 @@
                 </td>                   
                 <td>
                     <CBadge color="info" v-if="document.isValidating">
-                            <km-spinner :message="t('validating')+ '...'"></km-spinner>
+                            <km-spinner :message="t('validating')"></km-spinner>
                     </CBadge>
                     <CBadge color="warning" v-if="!document.isValidating && document.errors">
                         {{t('hasErrors')}} ({{ document.errors.length }})
@@ -36,11 +36,11 @@
                 <td>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <CButton :disabled="document.isValidating" color="secondary" size="sm"  @click="navigateToRoute(document)">
-                        <font-awesome-icon icon="fa-search" /> View
+                        <font-awesome-icon icon="fa-search" /> {{t('view')}}
                     </CButton>
                     <CButton :disabled="document.isValidating || document.disableActions || isEditAllowed(document)" color="secondary" size="sm"
                          @click="onEditRecord(document)">
-                        <font-awesome-icon icon="fa-edit" /> Edit
+                        <font-awesome-icon icon="fa-edit" /> {{t('edit')}}
                     </CButton>
                     <km-delete-record :document="document" @on-delete="onDeleteRecord"></km-delete-record>
                 </div>
@@ -49,7 +49,7 @@
         </tbody>
     </table>
 </template>
-
+<i18n src="@/i18n/dist/components/pages/national-targets/my-country/record-list.json"></i18n>
 <script setup lang="ts">
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';  
 

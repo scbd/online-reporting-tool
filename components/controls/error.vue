@@ -1,43 +1,42 @@
 <template>
     <CAlert color="danger" v-if="error">
         <CAlertHeading>
-            <CIcon icon="cil-check-circle" class="flex-shrink-0 me-2" width="24" height="24" />Error!
+            <CIcon icon="cil-check-circle" class="flex-shrink-0 me-2" width="24" height="24" />{{t('error')}}
         </CAlertHeading>
         <p>
-            We are sorry to inform you that an unexpected error has occurred on this page.
-            We understand that this is very unfortunate and may have caused inconvenience to you.
+            {{t('sorryForError')}}
+            {{t('weUnderstand')}}
         </p>
 
         <p>
-            Please don't hesitate to <a class="alert-link" href="mailto:secretariat@cbd.int">contact the Secretariat</a>
-            if you have any further questions or concerns.
+            {{t('doNotHesitate')}} <a class="alert-link" href="mailto:secretariat@cbd.int">{{t('contact')}}</a>
+            {{t('furtherQuestions')}}
         </p>
 
         <hr>
 
         <div>
-            If you would like <a class="alert-link" href="#" @click.prevent="moreInfo()">more information about this
-                message</a>, you can <a class="alert-link" href="#" @click.prevent="moreInfo()">click here</a>.
+            {{t('wouldLike')}} <a class="alert-link" href="#" @click.prevent="moreInfo()">{{t('moreInformation')}}</a>{{t('youCan')}} <a class="alert-link" href="#" @click.prevent="moreInfo()">{{t('clickHere')}}</a>.
         </div>
 
         <div v-if="showMoreInfo">
             <hr>
             <div v-if="error.code">
-                Error: <b>{{ error.code }}</b>
+                {{t('error:')}} <b>{{ error.code }}</b>
             </div>
             <div>
-                Message: {{ error.message }}
+                {{t('message:')}} {{ error.message }}
             </div>
         </div>
     </CAlert>
 </template>
-
+<i18n src="@/i18n/dist/components/controls/error.json"></i18n>
 <script setup lang="ts">
 
     const props = defineProps({
         error : { type:Object, required:true}
     })
-    
+    const { t } = useI18n();
     const showMoreInfo = ref(false) 
     const moreInfo = ()=>{
         showMoreInfo.value = true;

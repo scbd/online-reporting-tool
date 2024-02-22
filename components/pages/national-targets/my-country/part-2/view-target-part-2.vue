@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader v-if="identifier">
-        <slot name="header"> National mapping with global Goals/Target</slot>
+        <slot name="header"> {{t('title')}}</slot>
       </CCardHeader>
       <CCardBody>
        
@@ -14,15 +14,15 @@
             <km-form-group>
                 <div class="card">
                     <div class="card-header bg-secondary">
-                        General
+                        {{t('general')}}
                     </div>
                     <div class="card-body">  
                         <km-form-group v-if="viewDocument.government && viewDocument.government.identifier">
-                            <label class="form-label" for="government">Government</label>
+                            <label class="form-label" for="government">{{t('government')}}</label>
                             <km-value-term :value="viewDocument.government" :locale="selectedLocale"></km-value-term>                                    
                         </km-form-group>
                         <km-form-group v-if="viewDocument.globalGoalOrTarget">
-                            <label class="form-label">Linked Global Goal/Target</label>
+                            <label class="form-label">{{t('linkedTarget')}}</label>
                             <km-value-term :value="viewDocument.globalGoalOrTarget" :locale="selectedLocale"></km-value-term>                                 
                         </km-form-group>
                     </div>
@@ -32,11 +32,11 @@
             <km-form-group>
                 <div class="card">
                     <div class="card-header bg-secondary">
-                        Elements of the global targets
+                        {{t('elementsOfTargets')}}
                     </div>
                     <div class="card-body">                                
                         <km-form-group v-if="viewDocument.elementOfGlobalTargetsInfo || viewDocument.hasReferencePeriod || viewDocument.hasReferencePeriod">
-                            <label class="form-label" for="elementOfGlobalTargetsInfo">Elements of the global targets addressed by national targets</label>
+                            <label class="form-label" for="elementOfGlobalTargetsInfo">{{t('addressedElements')}}</label>
                             <km-lstring-value type="html" :value="viewDocument.elementOfGlobalTargetsInfo" :locale="selectedLocale"></km-lstring-value>
                         </km-form-group>
                     </div>
@@ -45,7 +45,7 @@
             <km-form-group v-if="viewDocument.referencePeriod">
                 <div class="card">
                     <div class="card-header bg-secondary">
-                        Reference Period
+                        {{t('referencePeriod')}}
                     </div>
                     <div class="card-body">
                         
@@ -57,13 +57,13 @@
                                 <hr/>
                                 <CCardText >
                                     <km-form-group>
-                                        <label class="form-check-label" for="hasReferencePeriod">Is there a reference period which relates to the headline indicator?</label>
+                                        <label class="form-check-label" for="hasReferencePeriod">{{t('referencePeriodForIndicator')}}</label>
                                         <km-value-bool :value="indicator.hasReferencePeriod" :locale="selectedLocale"></km-value-bool>
                                     </km-form-group> 
 
                                     
                                     <km-form-group v-if="indicator.hasReferencePeriod">
-                                        <label class="form-label" for="referencePeriodInfo">Please explain</label>
+                                        <label class="form-label" for="referencePeriodInfo">{{t('explain')}}</label>
                                         <km-lstring-value type="html" :value="indicator.referencePeriodInfo" :locale="selectedLocale"></km-lstring-value>
                                     </km-form-group> 
                                 </CCardText>
@@ -85,7 +85,7 @@
   
 </template>
 
-<i18n src="@/i18n/dist/pages/national-targets/edit-target.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/national-targets/my-country/part-2/view-target-part-2.json"></i18n>
 
 <script setup>
   
