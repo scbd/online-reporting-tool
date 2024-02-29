@@ -2,26 +2,26 @@
 interface ENationalTarget7 {
     header                         : EHeader;
     government                     : ETerm;
-    title                          : typeof ELstring;
-    description                    : typeof ELstring;
+    title                          : typeof ELString;
+    description                    : typeof ELString;
     sequence                       : number;
     globalGoalAlignment            : ETerm[];
     globalTargetAlignment          : TargetAlignment[];
-    degreeOfAlignmentInfo          : typeof ELstring;
+    degreeOfAlignmentInfo          : typeof ELString;
     implementingConsiderations     : ETerm[];
-    implementingConsiderationsInfo : typeof ELstring;
-    mainPolicyOfMeasureOrActionInfo: typeof ELstring;
+    implementingConsiderationsInfo : typeof ELString;
+    mainPolicyOfMeasureOrActionInfo: typeof ELString;
     headlineIndicators             : ETerm[];
     binaryIndicators               : ETerm[];
     componentIndicators            : ETerm[];
     complementaryIndicators        : ETerm[];
-    otherNationalIndicators        : typeof ELstring[];
-    nonStateActorCommitmentInfo    : typeof ELstring;
+    otherNationalIndicators        : typeof ELString[];
+    nonStateActorCommitmentInfo    : typeof ELString;
     hasNonStateActors              : boolean;
-    nonStateActorsInfo             : typeof ELstring;
+    nonStateActorsInfo             : typeof ELString;
     additionalImplementation       : LTerm;
-    additionalImplementationInfo   : typeof ELstring;
-    additionalInformation          : typeof ELstring;
+    additionalImplementationInfo   : typeof ELString;
+    additionalInformation          : typeof ELString;
     additionalDocuments            : ELink[];
     notes                          : string;
 }

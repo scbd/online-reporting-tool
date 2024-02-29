@@ -121,7 +121,7 @@
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import addIndicatorData from './indicator-data/add-data.vue';
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
-    import ViewData         from './indicator-data/view-data.vue';
+    import ViewData         from './indicator-data/nr7-view-indicator-data.vue';
     import {uniqBy} from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
 

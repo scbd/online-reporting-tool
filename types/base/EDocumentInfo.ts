@@ -15,8 +15,8 @@ interface EDocumentInfo {
     size                    : number;
     rights                  : string[];
     charset                 : string;
-    title                   : typeof ELstring;
-    summary                 : typeof ELstring;
+    title                   : typeof ELString;
+    summary                 : typeof ELString;
     metadata                : { [key: string]: string; };
     body                    : ENationalTarget7 | ENationalTarget7Mapping | object;
     workingDocumentID       : number | null;
@@ -26,8 +26,8 @@ interface EDocumentInfo {
     workingDocumentUpdatedBy: EUserInfo;
     workingDocumentSize     : number | null;
     workingDocumentOwner    : string;
-    workingDocumentTitle    : typeof ELstring;
-    workingDocumentSummary  : typeof ELstring;
+    workingDocumentTitle    : typeof ELString;
+    workingDocumentSummary  : typeof ELString;
     workingDocumentMetadata : { [key: string]: string; };
     workingDocumentBody     : ENationalTarget7 | ENationalTarget7Mapping | object;
     workingDocumentLock     : ELockInfo;

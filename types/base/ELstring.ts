@@ -1,3 +1,4 @@
-const ELstring : EDictionary<String> {
+
+const ELString : EDictionary<String> {
     
 }

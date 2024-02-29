@@ -8,12 +8,35 @@
                 {{lstring(indicator.title||indicator)}}                           
             </CAccordionHeader>
             <CAccordionBody> 
-                <missing-data-alert v-if="!indicator.nationalData && showMissingAlert"></missing-data-alert>                        
-                <add-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
-                    :identifier="((indicator.nationalData||{}).header||{}).identifier" :on-post-save-draft="onAddIndicatorDataClose"
-                    ></add-indicator-data>
-                <div v-if="indicator.nationalData">
-                    <view-data :indicator-data="indicator.nationalData"></view-data>
+                <missing-data-alert v-if="!indicator.nationalData && showMissingAlert"></missing-data-alert>    
+                <div v-if="!indicator.identifier.indexOf('KMGBF-INDICATOR-BIN')>=0">              
+                    <add-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
+                        :identifier="((indicator.nationalData||{}).header||{}).identifier" :on-post-save-draft="onAddIndicatorDataClose"
+                        ></add-indicator-data>
+                    <div v-if="indicator.nationalData">
+                        <nr7-view-indicator-data :indicator-data="indicator.nationalData"></nr7-view-indicator-data>
+                    </div>
+                </div>      
+                <div v-if="indicator.identifier.indexOf('KMGBF-INDICATOR-BIN')>=0" >                    
+                    <div class="m-3" v-for="question in getBinaryQuestion(indicator)?.questions" :key="question">
+                        <div v-if="!question.questions?.length">
+                            <km-question :question="question" v-model="quest"></km-question>
+                        </div>
+                        <div v-if="question.questions?.length">
+                            <CCard>
+                                <CCardHeader>
+                                    {{question?.number}} {{question?.title}}
+                                </CCardHeader>
+                                <CCardBody>
+                                    <div class="m-3" v-for="subQuestion in question.questions" :key="subQuestion">
+                                        <div v-id="!subQuestion.questions">
+                                            <km-question :question="subQuestion" v-model="quest"></km-question>
+                                        </div>
+                                    </div>
+                                </CCardBody>
+                            </CCard>
+                        </div>
+                    </div>
                 </div>
             </CAccordionBody>
         </CAccordionItem>
@@ -24,12 +47,12 @@
   
     import addIndicatorData from './add-data.vue';
     import MissingDataAlert from './missing-data-alert.vue';
-    import ViewData from './view-data.vue';
     import { makeUid }         from '@coreui/utils/src'
 
     import { useAsyncState } from '@vueuse/core'
     import { useRealmConfStore }    from '@/stores/realmConf';
     import {cloneDeep} from 'lodash';
+    import {binaryIndicatorQuestions} from '~/app-data/binary-indicator-questions.js'
 
     const {t, locale }          = useI18n()
     const props = defineProps({
@@ -37,7 +60,7 @@
         onClose            : {type:Function, required:false},
         showMissingAlert   : {type:String, default:false },
     }) 
-
+    const quest = {};
     const componentId = makeUid()
     const {indicators, showMissingAlert} = toRefs(props);
     const lIndicators  = toRef([]);    
@@ -54,6 +77,11 @@
         let indicator = lIndicators.value.find(e=>e.identifier == document.body?.indicator?.identifier);
         indicator.nationalData = document.body;
 
+    }
+
+    function getBinaryQuestion(indicator){
+        // console.log(indicator)
+        return binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator.identifier)
     }
 
     onMounted(()=>{
