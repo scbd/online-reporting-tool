@@ -19,7 +19,8 @@
     "fs-extra": "^11.1.1",
     "nuxt": "^3.10.2",
     "nuxt-gtag": "^1.1.1",
-    "sass": "^1.63.6"
+    "sass": "^1.63.6",
+    "semistandard": "^17.0.0"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-vue": "^5.1.0",
