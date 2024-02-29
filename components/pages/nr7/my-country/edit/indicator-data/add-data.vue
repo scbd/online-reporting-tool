@@ -103,7 +103,7 @@
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import readXlsxFile from 'read-excel-file';
-    import ViewData from './view-data.vue';
+    import ViewData from './nr7-view-indicator-data.vue';
     import {cloneDeep} from 'lodash';
     import { useCountriesStore } from '@/stores/countries';
 
