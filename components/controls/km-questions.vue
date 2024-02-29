@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 
+const t = ""
     const model = defineModel<Array<Object>();
 
     const props = defineProps({
@@ -18,7 +19,7 @@
     });
 
     const { locale} = useI18n()
-    
+
 </script>
 
 <style>

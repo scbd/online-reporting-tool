@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "clean-reinstall": "rm -rf node_modules && yarn install"
+    "clean-reinstall": "rm -rf node_modules && yarn install",
+    "fix-semistandard": "semistandard --fix"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.11.0",
@@ -47,5 +48,10 @@
     "vue-toast-notification": "^3.1.1",
     "vue3-loading-overlay": "^0.0.0",
     "webui-popover": "^1.2.18"
+  },
+  "semistandard": {
+    "ignore": [
+      "**/libs/*"
+    ]
   }
 }
