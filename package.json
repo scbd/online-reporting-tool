@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "clean-reinstall": "rm -rf node_modules && yarn install"
+    "clean-reinstall": "rm -rf node_modules && yarn install",
+    "rename-file-name": "node ./rename-file"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.11.0",
