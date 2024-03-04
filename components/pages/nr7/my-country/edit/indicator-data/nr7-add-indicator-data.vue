@@ -289,8 +289,6 @@
 
 </script>
 <style>
-    .km-nav-wizard .nav-header, .km-nav-wizard .nav-footer{
-        display: none;
-    }
+    
 </style>
 
