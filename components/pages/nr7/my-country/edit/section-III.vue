@@ -119,7 +119,7 @@
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
-    import addIndicatorData from './indicator-data/add-data.vue';
+    import addIndicatorData from './indicator-data/nr7-add-indicator-data.vue';
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
     import ViewData         from './indicator-data/nr7-view-indicator-data.vue';
     import {uniqBy} from 'lodash';
