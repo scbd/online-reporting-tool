@@ -8,6 +8,8 @@ interface Question {
     multiple    : Boolean;
     options     : QuestionOption[];
     mandatory   : Boolean;
+    questions   : Question[];
+    answer      : string; // used for ng-model
 }
 
 interface QuestionOption {

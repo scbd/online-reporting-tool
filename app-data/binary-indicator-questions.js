@@ -1,8 +1,9 @@
-import binaryQuestionsT from '~/i18n/en/app-data/binary-indicator-questions.json'
+
+import binaryQuestionsT from '../i18n/en/app-data/binary-indicator-questions.json' assert { type: "json" };;
 
 export const binaryIndicatorQuestions = [
     {
-        "key":"GBF-GOAL-B",
+        "key":"binaryResponseGoalB",
         "target": "GBF-GOAL-B",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-B",
         "title": "",
@@ -61,11 +62,10 @@ export const binaryIndicatorQuestions = [
                 ],
                 "mandatory":true
             },
-        ],
-        "note": ""
+        ]
     },
     {
-        "key":"GBF-TARGET-01",
+        "key":"binaryResponseTarget1",
         "target": "GBF-TARGET-01",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-1",
         "title": "",
@@ -190,7 +190,7 @@ export const binaryIndicatorQuestions = [
         ]
     },
     {
-        "key":"goalB",
+        "key":"binaryResponseTarget6",
         "target": "",
         "binaryIndicator": "",
         "title": "",
@@ -253,7 +253,7 @@ export const binaryIndicatorQuestions = [
         "note": ""
     },
     {
-        "key":"goalB",
+        "key":"binaryResponseTarget8",
         "target": "",
         "binaryIndicator": "",
         "title": "",
@@ -312,7 +312,6 @@ export const binaryIndicatorQuestions = [
                 ],
                 "mandatory":true
             },
-        ],
-        "note": ""
+        ]
     }
 ]
