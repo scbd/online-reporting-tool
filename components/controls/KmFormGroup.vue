@@ -1,7 +1,7 @@
 <template>
-    <CCol class="km-form-group mb-3" :class="{'has-error':hasError, 'has-help':content, 'mandatory':required}">
-        <CFormLabel class="mb-1 control-label" v-if="caption" :for="name" :name="name" :required="required ? true : null">
-            {{caption}}            
+    <CCol class="km-form-group mb-1" :class="{'has-error':hasError, 'has-help':content, 'mandatory':required}">
+        <CFormLabel class="mb-1 control-label" :for="name" :name="name" :required="required ? true : null">            
+            <slot name="caption">{{caption}}</slot>
         </CFormLabel>
         <km-help v-if="content" :title="title" :content="content" class="ms-1 me-1"></km-help>
         <div>
