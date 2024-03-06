@@ -5,6 +5,6 @@
   "passedValidation": "Validation réussie",
   "hasErrors": "Les validations ont échouées",
   "validating": "En cours de validation",
-  "nationTargets": "Objectifs nationaux",
-  "globalMaping": "Cartographie mondiale des objectifs/cibles"
+  "nationalTargets": "Objectifs nationaux",
+  "globalMapping": "Cartographie mondiale des objectifs/cibles"
 }
