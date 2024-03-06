@@ -148,7 +148,11 @@
                 <CTableBody>
                     <CTableRow v-for="(record, $index) in publishedRecords" :key="record.identifier">
                         <CTableHeaderCell scope="row">{{ $index+1 }}</CTableHeaderCell>
-                        <CTableDataCell>{{record.title}}</CTableDataCell>
+                        <CTableDataCell>
+                            <km-link :to="record.url" target="_blank">
+                                {{record.title}}
+                            </km-link>
+                        </CTableDataCell>
                         <CTableDataCell>{{record.country}}</CTableDataCell>
                         <CTableDataCell>{{record.type}}</CTableDataCell>
                         <CTableDataCell>{{ formatDate(record.publishedOn) }}</CTableDataCell>
@@ -187,7 +191,8 @@ import { KmLink } from "@/components/controls";
             facet: true,
             'facet.field': ['schema_s', 'government_EN_s'],
             'facet.pivot' : "government_EN_s,schema_s",
-            sort: "updatedDate_dt desc"
+            sort: "updatedDate_dt desc",
+            fl: "id, identifier_s,government_EN_t, title_EN_t, schema_EN_t,submittedDate_dt,schema_s, url_ss"
         }
         const searchFacets = await facets(searchQuery)
         const countryFacets = searchFacets.facetPivot['government_EN_s,schema_s'];
@@ -208,7 +213,8 @@ import { KmLink } from "@/components/controls";
                 return {
                     country:e.government_EN_t, title: e.title_EN_t, type:e.schema_EN_t,
                     identifier: e.identifier_s, publishedOn:e.submittedDate_dt,
-                    schema:e.schema_s
+                    schema:e.schema_s,
+                    url:e.url_ss?.length ? e.url_ss[0] : '/s' 
                 }
             })
         })

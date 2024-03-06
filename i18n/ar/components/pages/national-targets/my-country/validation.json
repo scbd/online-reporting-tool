@@ -5,6 +5,6 @@
   "passedValidation": "اكتمال التحقُّق",
   "hasErrors": "فشل عمليات التحقُّق",
   "validating": "قيد التحقُّق",
-  "nationTargets": "الأهداف الوطنية",
-  "globalMaping": "ربط الأهداف الوطنية بمثيلاتها العالمية"
+  "nationalTargets": "الأهداف الوطنية",
+  "globalMapping": "ربط الأهداف الوطنية بمثيلاتها العالمية"
 }

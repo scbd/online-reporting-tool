@@ -7,6 +7,6 @@
     "hasErrors" : "Failed Validations",
     "validating"    : "Validating",
 
-    "nationTargets": "National targets",
-    "globalMaping": "Global Goal/Targets mapping"
+    "nationalTargets": "National targets",
+    "globalMapping": "Global Goal/Targets mapping"
 }

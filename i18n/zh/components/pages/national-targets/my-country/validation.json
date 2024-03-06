@@ -5,6 +5,6 @@
   "passedValidation": "验证成功",
   "hasErrors": "验证失败",
   "validating": "正在验证",
-  "nationTargets": "国家具体目标",
-  "globalMaping": "全球目标/具体目标对应关系"
+  "nationalTargets": "国家具体目标",
+  "globalMapping": "全球目标/具体目标对应关系"
 }

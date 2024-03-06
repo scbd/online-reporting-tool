@@ -15,10 +15,10 @@
                 <th scope="row">{{ index+1 }}</th>
                 <td class="w-50">
                     <slot name="recordTitle" :document="document">
-                        {{(document.workingDocumentTitle||document.title).en}}
+                        {{lstring(document.workingDocumentTitle||document.title, locale)}}
                     </slot>
                 </td>                                
-                <td class="w-25">
+                <td class="w-15">
                     <goal-target-list :goal-targets="getAlignedGoalsOrTargets(document.workingDocumentBody||document.body)"></goal-target-list>   
                 </td>                   
                 <td>
@@ -34,16 +34,20 @@
                     <km-document-status :document="document" @on-status-change="onRecordStatusChange"></km-document-status>
                 </td>
                 <td>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <CButton :disabled="document.isValidating" color="secondary" size="sm"  @click="navigateToRoute(document)">
-                        <font-awesome-icon icon="fa-search" /> {{t('view')}}
-                    </CButton>
-                    <CButton :disabled="document.isValidating || document.disableActions || isEditAllowed(document)" color="secondary" size="sm"
-                         @click="onEditRecord(document)">
-                        <font-awesome-icon icon="fa-edit" /> {{t('edit')}}
-                    </CButton>
-                    <km-delete-record :document="document" @on-delete="onDeleteRecord"></km-delete-record>
-                </div>
+                    {{formatDate(document.updatedOn)}}<br/>
+                    {{ document.updatedBy.firstName }} {{ document.updatedBy.lastName }}
+                </td>
+                <td>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <CButton :disabled="document.isValidating" color="secondary" size="sm"  @click="navigateToRoute(document)">
+                            <font-awesome-icon icon="fa-search" /> {{t('view')}}
+                        </CButton>
+                        <CButton :disabled="document.isValidating || document.disableActions || isEditAllowed(document)" color="secondary" size="sm"
+                            @click="onEditRecord(document)">
+                            <font-awesome-icon icon="fa-edit" /> {{t('edit')}}
+                        </CButton>
+                        <km-delete-record :document="document" @on-delete="onDeleteRecord"></km-delete-record>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -60,7 +64,7 @@
 
     const emit = defineEmits(['onEditRecord', 'onDeleteRecord', 'onRecordStatusChange'])
 
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { nationalRecords } = toRefs(props);
 
 
