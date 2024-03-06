@@ -34,7 +34,7 @@
             <tbody>
                 <tr v-for="(draft,  index) in nationalTargets" :key="draft.identifier">
                 <th scope="row">{{ index+1 }}</th>
-                <td>{{(draft.workingDocumentTitle||draft.title).en}}</td>
+                <td>{{lstring(draft.workingDocumentTitle||draft.title, locale)}}</td>
                 <td>
                     <ul v-if="getAlignedGoalsOrTargets(draft.workingDocumentBody||draft.body)?.length">
                     <li v-for="target in getAlignedGoalsOrTargets(draft.workingDocumentBody||draft.body)" :key="target.identifier">
@@ -49,7 +49,7 @@
                     <div v-if="draft.workingDocumentLock"><CBadge color="danger">{{t('locked')}}</CBadge></div>
                 </td>
                 <td>
-                    {{draft.updatedOn}}<br/>
+                    {{formatDate(draft.updatedOn)}}<br/>
                     {{ draft.updatedBy.firstName }} {{ draft.updatedBy.lastName }}
                 </td>
                 <td>
@@ -81,7 +81,7 @@
 
 
     const rowsPerPage              = UTILS.ROWS_PER_PAGE;
-    const { t }                    = useI18n();
+    const { t, locale }            = useI18n();
     const { $appRoutes:appRoutes } = useNuxtApp();
     const stateTargetWorkflow      = useStorage('ort-target-workflow', { batchId : undefined });
     const draftNationalTargets     = ref([]);
