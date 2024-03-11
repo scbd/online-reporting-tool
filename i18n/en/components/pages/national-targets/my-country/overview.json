@@ -28,5 +28,6 @@
     "spinnerMessage"         : "Please wait while we process your request.",
     "refresh"                : "Refresh",
     "goToPartI"              : "Go to Part I",
-    "submitNewTarget"        : "Submit new target"
+    "submitNewTarget"        : "Submit new target",
+    "globalTargets"          : "Global Targets"
 }

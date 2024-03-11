@@ -16,7 +16,7 @@
                             <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
                                 <CAccordionItem :visible="true">
                                     <CAccordionHeader id="generalAccordion">
-                                        {{t('governmentAndLanguage')}}
+                                        {{t('governmentAndLanguages')}}
                                         <small class="text-muted float-end">({{t('clickToChange')}})</small>                       
                                     </CAccordionHeader>
                                     <CAccordionBody> 
@@ -122,6 +122,7 @@
         onPostSaveDraft    : {type:Function, required:false},
     }) 
 
+    const { t }           = useI18n();
     const { user }        = useAuth();
     const route           = useRoute();
     const {$appRoutes:appRoutes }   = useNuxtApp();

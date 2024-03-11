@@ -78,8 +78,8 @@
         <CModal scrollable class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showTargetsDialog=false}" :visible="showTargetsDialog" >
             <CModalHeader :close-button="false">
                 <CModalTitle style="width:100%">
-                    <span v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7">{{t('nationalTarget')}}</span>
-                    <span v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING">{{t('nationalMapping')}}</span>
+                    <span v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7">{{t('nationalTarget')}} : {{ t('partI') }}</span>
+                    <span v-if="missingTargets.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING">{{t('nationalMapping')}} : {{ t('partII') }}</span>
                     <hr/>
                     <CAlert color="danger" class="d-flex align-items-center">
                             <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
@@ -100,7 +100,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>{{ t('globalTarget') }}</th>
+                            <th>{{ t('globalTargets') }}</th>
                             <th></th>
                         </tr>
                     </thead>
