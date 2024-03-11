@@ -274,7 +274,7 @@
             //and show dialog and move next step if he still wants to proceed
             const userNationalTargets = [...(userRecords.draftNationalTargets||[]), ...(userRecords.publishedNationalTargets||[])]
             
-            const missingTargets = await findMissingGlobalTargets(userNationalTargets, 'globalTargetAlignment' );
+            const missingTargets = await findMissingGlobalTargets(userNationalTargets, ['globalTargetAlignment', 'globalGoalAlignment'] );
             if(missingTargets?.length){
                 const userResponse = await showMissingTargetsDialog(SCHEMAS.NATIONAL_TARGET_7, missingTargets);
                 if(userResponse == 'close'){
@@ -288,7 +288,7 @@
             //verify user has submitted extra info (part II) for all  Global Indicators
             //and show dialog and move next step if he still wants to proceed
             const userNationalMappings = [...(userRecords.draftNationalMappings||[]), ...(userRecords.publishedNationalMappings||[])]
-            const missingMappings = await findMissingGlobalTargets(userNationalMappings, 'globalGoalOrTarget' );
+            const missingMappings = await findMissingGlobalTargets(userNationalMappings, ['globalGoalOrTarget'] );
             if(missingMappings?.length){
                 const userResponse = await showMissingTargetsDialog(SCHEMAS.NATIONAL_TARGET_7_MAPPING, missingMappings);
                 if(userResponse == 'close'){
@@ -384,16 +384,18 @@ async function loadOpenWorkflow(lockedRecord: any, iteration:number=0) {
         userRecords = records;
     }
 
-    async function findMissingGlobalTargets(nationalTargets, field){
+    async function findMissingGlobalTargets(nationalTargets, fields: Array<string>){
         
-        const targets = _(nationalTargets).map(e=>{
-            if(field == 'globalTargetAlignment')
-                return e.body[field]?.map(t=>t.identifier)
-            
-            return e.body[field]?.identifier;
+        let targets = _(fields).map(field=>{
+                            return nationalTargets.map(e=>{
+                                const values = e.body[field];
 
-        }).flatten().compact().uniq().value();
-        
+                                if(Array.isArray(values))
+                                    return values?.map(t=>t.identifier)
+                                
+                                return values?.identifier;
+                            });
+                        }).flattenDeep().compact().uniq().value();
 
         return globalTargets.filter(e=>{
             return !targets.includes(e.identifier)
