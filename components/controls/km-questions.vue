@@ -1,7 +1,8 @@
 <template>
-    <div class="mb-3" v-for="question in questions" :key="question.key">
+    <div  v-if="answersInitialized" >
+    <div class="mb-3" v-for="question in questions" :key="question.key">           
         <div v-if="!question.questions?.length">
-            <km-question :question="question" v-model="question.answer" @update:modelValue="onAnswer"></km-question>
+            <km-question :question="question" v-model="answers[question.key]" @update:modelValue="onAnswer"></km-question>
         </div>
         <div v-if="question.questions?.length">
             <CCard>
@@ -9,45 +10,52 @@
                     {{question?.number}} {{question?.title}}
                 </CCardHeader>
                 <CCardBody>
-                    <km-questions :questions="question.questions" v-model="question.answers" @update:modelValue="onAnswer"></km-questions>  
+                    <km-questions :subQuestion="true" :questions="question.questions" v-model="answers[question.key]" @update:modelValue="onAnswer"></km-questions>  
                 </CCardBody>
             </CCard>          
         </div>
-    </div>
+    </div></div>
 </template>
 
 <i18n src="@/i18n/dist/components/controls/km-questions.json"></i18n>
 
 <script setup lang="ts">
-// 
+    import { flattenObject } from "~/utils/helpers";
+const attrs = useAttrs();
     const model = defineModel<Array<Object>>({required:true});
-
     const props = defineProps({
         questions : {type:Object as PropType<Question[]>}
     });
 
-    const { locale} = useI18n()
+    const answersInitialized = ref(false);
+    const answers = ref({});
 
-    const  onAnswer = function(val){
-        model.value = getQuestionAnswer(props.questions);        
+    const  onAnswer = function(){
+        const newVal = flattenObject(answers.value);     
+        model.value = newVal;
     }
 
-    function getQuestionAnswer(questions : Question[] | undefined){
-        return questions.map(e=>{
-                let answers = [];
-                if(e.answer)
-                    answers.push({ question : e.key,  answer   : e.answer });
-
-                if(e?.questions?.length){
-                    const subAnswers = getQuestionAnswer(e.questions||[])
-                    if(subAnswers.length)
-                        answers = answers.concat(subAnswers);
-                }
-                return answers;
-
-            }).flat()
+    const answerArrayToHierarchy = function (questions, answers){
+        const hierarchy = {};
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+            if(!question.questions){
+                hierarchy[question.key] = answers[question.key];
+            }
+            else{
+                hierarchy[question.key] = answerArrayToHierarchy(question.questions, answers);
+            }
+        }
+        return hierarchy;
     }
-    
+
+    onMounted(()=>{       
+        answers.value = answerArrayToHierarchy(props.questions, model.value||{});
+        answersInitialized.value = true;
+    })
+
+
+
 </script>
 
 <style>

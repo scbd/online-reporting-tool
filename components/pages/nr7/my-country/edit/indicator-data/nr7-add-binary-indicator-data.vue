@@ -1,11 +1,11 @@
 <template>
     
-    <div class="d-grid justify-content-end mb-2">
+    <div class="d-grid justify-content-end mb-2" v-if="binaryQuestion?.questions?.length">
         <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="props.identifier" :disabled="props.disabled">
-            {{ t('editIndicatorData') }}
+            {{ t('editBinaryIndicatorData') }}
         </CButton>
         <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="!props.identifier" :disabled="props.disabled">
-            {{ t('addIndicatorData') }}
+            {{ t('addBinaryIndicatorData') }}
         </CButton>
     </div>
     <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
@@ -17,7 +17,6 @@
         <CModalBody>
             <CCard>
                 <CCardBody>
-
                     <div  v-if="isLoading">
                         <km-spinner></km-spinner>
                     </div>
@@ -45,14 +44,15 @@
                                     </CAccordion>   
                                     <div class="">     
                                         <CCard>
-                                            <CCardBody>                         
-                                                <km-questions :questions="binaryQuestion?.questions" v-model="binaryData[indicator.identifier]"></km-questions>
+                                            <CCardBody>                 
+                                                <km-questions :questions="binaryQuestion?.questions" 
+                                                    v-model="document[binaryQuestion.key].responses"></km-questions>
                                             </CCardBody>  
                                         </CCard>
                                     </div> 
                                     <div class="mt-3">
-                                        <km-additional-information v-model="document.additionalInformation" :locales="document.header.languages">
-                                            Any other information
+                                        <km-additional-information v-model="document[binaryQuestion.key].comments" :locales="document.header.languages">
+                                            t('comments')
                                         </km-additional-information>
                                     </div>
                                 </div>                                 
@@ -65,46 +65,41 @@
         </CModalBody>   
     </CModal>
 </template>
-
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-add-binary-indicator-data.json"></i18n>
 <script setup>
-  
+    
+    import {cloneDeep} from 'lodash';
     import { useToast } from 'vue-toast-notification';
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
+    import { KmDocumentsService } from '~/services/kmDocuments';
+    import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
     import ViewData from './nr7-view-indicator-data.vue';
-    import {binaryIndicatorQuestions} from '~/app-data/binary-indicator-questions.js'
+    import {binaryIndicatorQuestions as binaryIndicatorSource} from '~/app-data/binary-indicator-questions.js'
    
     const props = defineProps({
         identifier         : {type:String, required:false},
-        rawDocument        : {type: Object },
+        // rawDocument        : {type: Object },
         indicator          : {type:Object, required:true},
         workflowActiveTab  : {type:Number, default:1 },
         onClose            : {type:Function, required:false},
         onPostSaveDraft    : {type:Function, required:false},
     }) 
 
-    const { user }        = useAuth();
-    const security        = useSecurity();
-    const route           = useRoute();
-    const {$appRoutes:appRoutes }   = useNuxtApp();
-    const {t, locale }          = useI18n()
-    const $toast                = useToast();        
-    const container = useAttrs().container;
+    const binaryIndicatorQuestions = reactive(cloneDeep(binaryIndicatorSource));
+    const { user }                = useAuth();
+    const security                = useSecurity();
+    const route                   = useRoute();
+    const {$appRoutes:appRoutes } = useNuxtApp();
+    const {t, locale }            = useI18n()
+    const $toast                  = useToast();
+    const container               = useAttrs().container;
 
-    const binaryData = ref({});     
-    const validationReport = ref(null);
-    let document = ref({});
-    let isLoading = ref(false);
+    const validationReport           = ref(null);
+    let   document                   = ref({});
+    let   isLoading                  = ref(false);
     const showEditIndicatorDataModal = ref(false);
-      
-    if(props.rawDocument){
-        document.value = cloneDeep({...props.rawDocument});
-    }
-    else{
-        document.value = emptyDocument();
-        //TODO:validate if there is a mapping record for the given target and load it instead
-    }
-    
+
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
         
@@ -112,7 +107,8 @@
     });
     
     const binaryQuestion = computed(()=>{
-        return binaryIndicatorQuestions.find(e=>e.binaryIndicator == props.indicator?.identifier)
+        return binaryIndicatorQuestions
+                .find(e=>e.binaryIndicator == props.indicator?.identifier);
     })
 
     function onGetDocument(){
@@ -130,25 +126,43 @@
         if(props.onPostSaveDraft)
             props.onPostSaveDraft(document)
     }
-    function emptyDocument(){        
 
-        return {
-            header : {
-                schema : SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA,
-                identifier : useGenerateUUID(),
-                languages  : EditFormUtility.getPreferredEditLanguages()
-            },        
-            government : {
-                identifier : user.value?.government
-            },
-            indicator : {
-                identifier: props.indicator.identifier
-            }
-        }
+    function showEditIndicatorData(target){      
+        console.log(target)  
+        showEditIndicatorDataModal.value = true;
+        loadDocument();
     }
 
-    function showEditIndicatorData(target){        
-        showEditIndicatorDataModal.value = true;
+    async function loadDocument(){
+        try{
+            isLoading.value = true;
+            if(props.identifier){
+                const documentInfo = await EditFormUtility.load(props.identifier, SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)
+                document.value = documentInfo.body;
+                // const keys = binaryQuestions.questions.flat(3).map(e=>e.key)
+                // binaryData.value.answers = answersDummy.filter(e=>keys.includes(e.question))
+                // binaryQuestion
+            }
+            else{
+                document.value = EditFormUtility.buildEmptyDocument(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA);
+                //TODO:validate if there is a mapping record for the given target and load it instead
+            }
+
+            let indicatorResponse = document.value[binaryQuestion.value.key];
+            if(!indicatorResponse)
+                indicatorResponse = document.value[binaryQuestion.value.key] = {}
+            
+            indicatorResponse.indicator = { identifier : props.indicator?.identifier}
+            indicatorResponse.responses = indicatorResponse.responses || {},
+            indicatorResponse.additionalInformation = indicatorResponse.additionalInformation || {}
+        }
+        catch(e){
+            useLogger().error(e)
+            $toast.error('Error loading document')
+        }
+        finally{
+            isLoading.value = false;
+        }
     }
 
 </script>

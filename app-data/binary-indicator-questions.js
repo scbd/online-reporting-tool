@@ -65,6 +65,68 @@ export const binaryIndicatorQuestions = [
         ]
     },
     {
+        "key":"binaryResponseGoalC",
+        "target": "GBF-GOAL-B",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-C",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ]
+    },
+    {
         "key":"binaryResponseTarget1",
         "target": "GBF-TARGET-01",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-1",
@@ -191,10 +253,10 @@ export const binaryIndicatorQuestions = [
     },
     {
         "key":"binaryResponseTarget6",
-        "target": "",
-        "binaryIndicator": "",
+        "target": "GBF-TARGET-06",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-6",
         "title": "",
-        "questions":[
+        "questions1":[
             {
                 "key":"",
                 "section":"goalB",
@@ -254,10 +316,10 @@ export const binaryIndicatorQuestions = [
     },
     {
         "key":"binaryResponseTarget8",
-        "target": "",
-        "binaryIndicator": "",
+        "target": "GBF-TARGET-08",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-8",
         "title": "",
-        "questions":[
+        "questions1":[
             {
                 "key":"",
                 "section":"goalB",
@@ -313,5 +375,630 @@ export const binaryIndicatorQuestions = [
                 "mandatory":true
             },
         ]
+    },
+    {
+        "key":"binaryResponseTarget9",
+        "target": "GBF-TARGET-09",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-9",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ],
+        "note": ""
+    },
+    {
+        "key":"binaryResponseTarget12",
+        "target": "GBF-TARGET-12",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-12",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"binaryResponseTarget12",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ]
+    },
+    {
+        "key":"binaryResponseTarget13",
+        "target": "GBF-TARGET-13",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-13",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ],
+        "note": ""
+    },
+    {
+        "key":"binaryResponseTarget14",
+        "target": "GBF-TARGET-14",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-14",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ]
+    },
+    {
+        "key":"binaryResponseTarget15",
+        "target": "GBF-TARGET-15",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-15",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ]
+    },
+    {
+        "key":"binaryResponseTarget16",
+        "target": "GBF-TARGET-16",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-16",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ]
+    },
+    {
+        "key":"binaryResponseTarget17",
+        "target": "GBF-TARGET-17",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-17",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ],
+        "note": ""
+    },
+    {
+        "key":"binaryResponseTarget20",
+        "target": "GBF-TARGET-20",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-20",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ]
+    },
+    {
+        "key":"binaryResponseTarget22",
+        "target": "GBF-TARGET-22",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-22",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ],
+        "note": ""
+    },
+    {
+        "key":"binaryResponseTarget23",
+        "target": "GBF-TARGET-23",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-23",
+        "title": "",
+        "questions1":[
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"",
+                "section":"goalB",
+                "number":"",
+                "type":"option",
+                "title": binaryQuestionsT.goalB_question1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+        ],
+        "note": ""
     }
 ]

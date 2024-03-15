@@ -226,7 +226,8 @@
                 document.value = {...props.rawDocument};
             }
             else if(identifier){
-                document.value = await EditFormUtility.load(identifier);                
+                const documentInfo = await EditFormUtility.load(identifier); 
+                document.value = documentInfo.body;               
             }
             else{
                 document.value = emptyDocument();

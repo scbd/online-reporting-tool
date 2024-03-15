@@ -26,11 +26,11 @@ class editFormUtility{
 
         const metadata   = this.getDocumentMetadata({});
 
-        return $kmStorageApi.drafts.get(identifier, { info: "" })
+        return $kmStorageApi.drafts.get(identifier, { info: true })
             .then(success=>success,
                 error=>{
                     if (error?.cause?.status == 404)
-                        return $kmStorageApi.documents.get(identifier, { info: "" });
+                        return $kmStorageApi.documents.get(identifier, { info: true });
                     throw error;
             })
             .then(function(success) {
@@ -52,7 +52,12 @@ class editFormUtility{
                         var documentPromise = hasDraft ? $kmStorageApi.drafts.get(identifier)
                                                         : $kmStorageApi.documents.get(identifier);
 
-                        return documentPromise;
+                        return documentPromise.then((document)=>{
+                            return {
+                                ...info,
+                                body : document
+                            }
+                        });
                     });
             });
     }
@@ -243,6 +248,25 @@ class editFormUtility{
         }
 
         return languages;
+    }
+
+    buildEmptyDocument(schema:string, additionalProps : any){
+        
+        additionalProps = additionalProps || {};
+
+        const { user } = useAuth();
+
+        return {
+            header : {
+                schema,
+                identifier : useGenerateUUID(),
+                languages  : this.getPreferredEditLanguages()
+            },        
+            government : {
+                identifier : user.value?.government
+            },
+            ...additionalProps
+        }
     }
 
 	private createWorkflow(draftInfo, additionalInfo, type:string){

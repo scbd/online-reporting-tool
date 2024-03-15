@@ -488,7 +488,8 @@
                 document.value = {...refProps.rawDocument.value};
             }
             else if(refProps.identifier.value || route?.params?.identifier){        
-                document.value = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
+                const documentInfo = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
+                document.value = documentInfo.body;
             }
 
             if(document.value.globalTargetAlignment?.length){
