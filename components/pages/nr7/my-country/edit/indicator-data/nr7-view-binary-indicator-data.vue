@@ -12,7 +12,14 @@
                 </CCardHeader>
                 <CCardBody>
                     <km-value v-if="indicatorData?.responses[question.key]">
-                        {{ question.options.find(e=>e.value == indicatorData?.responses[question.key])?.title }}
+                        <span v-if="question.type == 'option'">
+                            {{ question.options.find(e=>e.value == indicatorData?.responses[question.key])?.title }}
+                        </span>
+                        <span v-if="question.type == 'checkbox'">
+                                <div v-for="answer in indicatorData?.responses[question.key]" :key="answer">
+                                    {{ question.options.find(e=>e.value == answer)?.title }}
+                                </div>
+                        </span>
                     </km-value>
                     <missing-data-alert v-if="!indicatorData?.responses[question.key]" class="alert-sm">
                         <template #message>

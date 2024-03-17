@@ -9,13 +9,13 @@
             :key="option"
         /> -->
         <div class="form-check" v-for="option in options" :key="option" >
-            <input type="checkbox" :id="option['identifier']" 
+            <input type="checkbox" :id="option[optionValueField]" 
                 class="form-check-input" 
-                :checked="modelValue && modelValue.find(e=>e.identifier==option.identifier)"
-                @click="check(option.identifier, $event)">
-            <label :for="option['identifier']" class="form-check-label" >
+                :checked="modelValue && modelValue.find(e=>e[optionValueField] == option[optionValueField])"
+                @click="check(option[optionValueField], $event)">
+            <label :for="option[optionValueField]" class="form-check-label" >
                 <slot name="label" :option="option">
-                   {{ lstring(option.title) }}
+                   {{ lstring(option[optionTitleField]) }}
                 </slot>
             </label>
         </div>
@@ -35,32 +35,41 @@
       options: {
         type: Array,
         required: true,
-        validator: (modelValue) => {
+        validator: (modelValue, props) => {
           const hasNameKey = modelValue.every((option) =>
-            Object.keys(option).includes("title")
+            Object.keys(option).includes(props.optionValueField)
           );
           const hasIdKey = modelValue.every((option) =>
-            Object.keys(option).includes("identifier")
+            Object.keys(option).includes(props.optionTitleField)
           );
           return hasNameKey && hasIdKey;
         },
       },
+      optionValueField: {
+        type:String,
+        default:'identifier'
+      },
+      optionTitleField: {
+        type:String,
+        default:'title'
+      }
     },
     setup(props, context) {
+        const attrs = useAttrs();
       const check = (optionId, $event) => {
         let updatedValue = [...props.modelValue||[]];
         const checked = $event?.srcElement?.checked;
         if (checked) {
-          updatedValue.push({identifier : optionId});
+          updatedValue.push({[props.optionValueField] : optionId});
         } else {
-          updatedValue.splice(updatedValue.indexOf({identifier :optionId}), 1);
+          updatedValue.splice(updatedValue.indexOf({[props.optionValueField] :optionId}), 1);
         }
-        
+        console.log(updatedValue)
         context.emit("update:modelValue", updatedValue);
       };
   
       return {
-        check,
+        check
       };
     },
     components: {

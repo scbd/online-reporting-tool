@@ -880,33 +880,45 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-22",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-22",
         "title": "",
-        "questions1":[
+        "questions":[
             {
-                "key":"",
-                "section":"goalB",
-                "number":"",
-                "type":"option",
-                "title": binaryQuestionsT.goalB_question1,
-                "multiple":false,
-                "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
-                    },
+                "key":"22_1",
+                "section":"binaryResponseTarget22",
+                "number":"22.1",
+                "title": binaryQuestionsT.target22_1_question_1,
+                questions:[
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "key":"22_1_a",
+                        "section":"binaryResponseTarget22",
+                        "number":"a",
+                        "type":"checkbox",
+                        "title": binaryQuestionsT.target22_1_question_1_a,
+                        "multiple":false,
+                        "options":[
+                           {
+                                "value":"indigenousPeoplesLocalCommunities",
+                                "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
+                            },
+                            {
+                                "value":"womenGirls",
+                                "title": binaryQuestionsT.womenGirls
+                            },
+                            {
+                                "value":"childrenYouth",
+                                "title": binaryQuestionsT.childrenYouth
+                            },
+                            {
+                                "value":"personWithDisabilities",
+                                "title": binaryQuestionsT.personWithDisabilities
+                            },
+                            {
+                                "value":"none",
+                                "title": binaryQuestionsT.none
+                            }
+                        ],
+                        "mandatory":true
                     },
-                    {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
-                    },
-                ],
-                "mandatory":true
+                ]
             },
             {
                 "key":"",

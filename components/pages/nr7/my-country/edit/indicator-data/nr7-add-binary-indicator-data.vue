@@ -21,7 +21,7 @@
                         <km-spinner></km-spinner>
                     </div>
                     <form v-if="!isLoading && document" name="editForm">
-                    
+                    {{ document }}
                         <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
                             :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                             <template #submission>   
@@ -56,6 +56,10 @@
                                         </km-additional-information>
                                     </div>
                                 </div>                                 
+                            </template>
+                            <template #review>
+                                <nr7-view-binary-indicator-data :indicator-data="document[binaryQuestion.key]" :questions="binaryQuestion?.questions">
+                                </nr7-view-binary-indicator-data>
                             </template>
                         </km-form-workflow>
                     </form>
