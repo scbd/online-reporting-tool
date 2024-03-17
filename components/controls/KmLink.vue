@@ -22,7 +22,8 @@ export default defineComponent({
         const route = useRoute();
         
         const to = computed(()=>{
-            if(props.to?.startsWith('http'))
+            
+            if(typeof props.to == 'string' && props.to?.startsWith('http'))
                 return props.to;
 
             return localePath(props.to)

@@ -8,9 +8,10 @@
                 {{lstring(indicator.title||indicator)}}                           
             </CAccordionHeader>
             <CAccordionBody> 
-                <missing-data-alert v-if="!indicator.nationalData && showMissingAlert"></missing-data-alert>    
+                
+                <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
+                    <missing-data-alert v-if="!Object.keys(indicator.nationalData||{})?.length && showMissingAlert"></missing-data-alert>    
      
-                <div v-if="indicator.identifier.indexOf('KMGBF-INDICATOR-BIN')<0">     Hello  
                     <nr7-add-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
                         :identifier="((indicator.nationalData||{}).header||{}).identifier" :on-post-save-draft="onAddIndicatorDataClose">
                     </nr7-add-indicator-data>       
@@ -18,10 +19,14 @@
                         <nr7-view-indicator-data :indicator-data="indicator.nationalData"></nr7-view-indicator-data>
                     </div>
                 </div>      
-                <div v-if="indicator.identifier.indexOf('KMGBF-INDICATOR-BIN')>=0" >   
-                    <nr7-add-binary-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
-                        :identifier="((indicator.nationalData||{}).header||{}).identifier" :on-post-save-draft="onAddIndicatorDataClose">
-                    </nr7-add-binary-indicator-data>       
+                <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
+                    <nr7-add-binary-indicator-data :indicator="indicator"
+                        :identifier="indicator?.nationalData?.header?.identifier" :on-post-save-draft="onAddBinaryIndicatorDataClose">
+                    </nr7-add-binary-indicator-data>   
+                    <div v-if="indicator.nationalData">
+                        <nr7-view-binary-indicator-data :indicator-data="indicator.nationalData" :questions="indicator?.question?.questions">
+                        </nr7-view-binary-indicator-data>
+                    </div>    
                 </div>
             </CAccordionBody>
         </CAccordionItem>
@@ -56,6 +61,19 @@
         let indicator = lIndicators.value.find(e=>e.identifier == document.body?.indicator?.identifier);
         indicator.nationalData = document.body;
 
+    }
+
+    function onAddBinaryIndicatorDataClose(document, indicator){
+        //when binary data is updated, updates reference of all the indicators in the list
+        lIndicators.value.forEach(indicator=>{
+            if(document.body[indicator.question.key]){
+                indicator.nationalData = {
+                    government : indicator.nationalData.government,
+                    header : indicator.nationalData.header,
+                    ...(document.body[indicator.question.key]||{})
+                }
+            }
+        })
     }
     
     onMounted(()=>{

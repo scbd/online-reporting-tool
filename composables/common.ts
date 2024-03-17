@@ -4,9 +4,10 @@ import { NavigateToOptions } from '#imports'
 export const useNavigateAppTo = (to:RouteLocationRaw, options?: NavigateToOptions | undefined) =>{ 
     
     const localePath  = useLocalePath();
+    options = options || {};
     
     if(typeof to === 'string'){
-        return navigateTo(localePath(to), options)
+        return navigateTo({path: localePath(to), ...options })
     }
     
     to.path = localePath(to.path);    

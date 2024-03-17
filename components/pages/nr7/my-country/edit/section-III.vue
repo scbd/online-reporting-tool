@@ -12,14 +12,15 @@
             <!-- <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft"> -->
                 <!-- <template #submission> -->
-                    
                     <toggle-accordion class="float-end mr-1 mb-1 btn-xs"  ref="accordionToggle"
                     selector="#mapping-accordion .accordion-header button.accordion-button" v-if="nationalTargets?.length"></toggle-accordion>
                     <br>
                     <br>
                     <CAccordion always-open id="mapping-accordion">                    
-                        <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in nationalTargets" :key="target">
-                            <CAccordionHeader :id="'gbfTarget'+target.identifier">
+                        <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in nationalTargets" :key="target"
+                        @mouseover="onMouseOver(target)" @mouseleave="onMouseleave(target)">
+                            <CAccordionHeader :id="'gbfTarget'+target.identifier" class="target-accordion"
+                                :class="{'header header-sticky' : mouseOverTarget?.identifier == target?.identifier}">
                                 {{lstring(target.title)}}                           
                             </CAccordionHeader>
                             <CAccordionBody> 
@@ -60,28 +61,31 @@
                                     </div>
                                 </km-form-group>
                                 <km-form-group v-if="target.sectionIII?.indicators" >
-                                    <div class="card">
+                                    <!-- <div class="card">
                                         <div class="card-header bg-secondary" >
                                             Indicators
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body"> -->
+                                            <legend>Indicators</legend>
+                                            <hr>
                                             <div class="card mb-3" v-for="indicator in target.sectionIII?.indicators" :key="indicator">
                                                 <div class="card-header">
                                                     {{ lstring(indicator.title) }} 
                                                     <small>({{ indicator.identifier }})</small>
+                                                    <span class="float-end">
+                                                        <add-indicator-data  :indicator="indicator" :raw-document="indicator.nationalData" :identifier="((indicator.nationalData||{}).header||{}).identifier"
+                                                        :on-close="onAddIndicatorDataClose"></add-indicator-data>
+                                                    </span>
                                                 </div>
                                                 <div class="card-body">
-                                                    <missing-data-alert v-if="!indicator.nationalData"></missing-data-alert>      
-                                                                    
-                                                    <add-indicator-data class="float-end" :indicator="indicator" :raw-document="indicator.nationalData" :identifier="((indicator.nationalData||{}).header||{}).identifier"
-                                                        :on-close="onAddIndicatorDataClose"></add-indicator-data>
+                                                    <missing-data-alert class="alert-sm" v-if="!indicator.nationalData"></missing-data-alert>  
                                                     <div v-if="indicator.nationalData">
                                                         <view-data :indicator-data="indicator.nationalData"></view-data>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        <!-- </div>
+                                    </div> -->
                                 </km-form-group>
                                 
                             </CAccordionBody>
@@ -145,6 +149,7 @@
     const nationalIndicatorData = ref([]);
     const isBusy                = ref(true);
     const accordionToggle      = ref(null);
+    const mouseOverTarget      = ref(null);
 
     const stakeholderLists = [
         {identifier: '1', title: 'Indigenous peoples and local communities,,'},
@@ -177,7 +182,6 @@
     const customSelectedItem = (item)=>{
         return { identifier : item };
     }
-
 
     function cleanDocument(){
         const  clean = useKmStorage().cleanDocument({...nationalReportStore.nationalReportDraft});
@@ -300,8 +304,22 @@
             })
     }
 
+    function onMouseleave(target){
+        console.log('leave', target)
+        mouseOverTarget.value = null;
+    }
+    function onMouseOver(target){
+        console.log('over', target)
+        mouseOverTarget.value = target;
+    }
+
     setTimeout(()=>{
         isBusy.value = true;
         init()
     }, 200);
 </script>
+<style scoped>
+.target-accordion{
+    top:110px;
+}
+</style>

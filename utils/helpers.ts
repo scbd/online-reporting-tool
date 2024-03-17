@@ -90,3 +90,22 @@ export const isWorkFlowCreatedByMe = function(workflow){
     const { user } = useAuth();   
     return workflow && workflow.createdBy == user.value.userID;
 }
+
+
+export const  flattenObject = function(obj, parentKey = '') {
+    let flattened = {};
+
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+        const propName = parentKey ? `${parentKey}.${key}` : key;
+
+        if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+            Object.assign(flattened, flattenObject(obj[key], parentKey ? propName : ''));
+        } else {
+            flattened[propName] = obj[key];
+        }
+        }
+    }
+
+    return flattened;
+}

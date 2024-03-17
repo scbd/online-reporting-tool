@@ -7,6 +7,11 @@
     "forTerrestrialPlanning" :"For terrestrial spatial planning",
     "forMarinePlanning" :"For marine spatial planning",
     "forInlandWaterPlanning" :"For inland water spatial planning",
+    "indigenousPeoplesLocalCommunities" : "Indigenous peoples and local communities",
+    "womenGirls" : "Women and girls",
+    "childrenYouth" : "Children and youth",
+    "personWithDisabilities" : "Persons with disabilities",
+    "none" : "None of the above",
     
 
     "goalB_question1" : "Does your country have [and implement] policies and/or action plans aimed at ensuring the maintenance, enhancement and restoration of nature’s contributions to people, including of ecosystem functions and services?",
@@ -16,10 +21,12 @@
     "target1_question_1_a" : "Address land-use (terrestrial) change?",
     "target1_question_1_b" : "Address land-use (inland water) change?",
     "target1_question_1_c" : "Address sea-use (coastal and marine) change? (Will be considered not applicable to landlocked States)",
-    "target1_question_2"   : "If the answer to question 1.1 is yes, were the plans created using a participatory process? (Select all that apply, noting that, if your country is a landlocked State, marine spatial planning will be considered as not relevant)"
+    "target1_question_2"   : "If the answer to question 1.1 is yes, were the plans created using a participatory process? (Select all that apply, noting that, if your country is a landlocked State, marine spatial planning will be considered as not relevant)",
 
 
 
+    "target22_1_question_1" : "Does your country have policy, legislative and administrative frameworks at the national and subnational levels that:",
+    "target22_1_question_1_a" : "Ensure full, equitable, inclusive, effective and gender-responsive representation and participation in biodiversity decision-making related to biodiversity of the following? (Select all that apply)"
 
-    
+
 }

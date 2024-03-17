@@ -29,7 +29,8 @@ export const SCHEMAS = {
     NATIONAL_REPORT                     : 'nationalReport',
     NATIONAL_REPORT_6                   : 'nationalReport6',
     NATIONAL_REPORT_7                   : 'nationalReport7',
-    NATIONAL_REPORT_7_INDICATOR_DATA    : 'nationalReport7IndicatorData'
+    NATIONAL_REPORT_7_INDICATOR_DATA    : 'nationalReport7IndicatorData',
+    NATIONAL_REPORT_7_BINARY_INDICATOR_DATA    : 'nationalReport7BinaryIndicatorData'
 }
 
 export const UTILS = {
