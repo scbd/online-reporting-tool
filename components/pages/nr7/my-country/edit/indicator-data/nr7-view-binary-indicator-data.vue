@@ -36,7 +36,7 @@
                     {{question?.number}} {{question?.title}}
                 </CCardHeader>
                 <CCardBody>
-                    <nr7-view-binary-indicator-data :indicator-data="indicatorData" 
+                    <nr7-view-binary-indicator-data :indicator-data="indicatorData" :is-recursive="true"
                         :questions="question.questions">
                     </nr7-view-binary-indicator-data>  
                 </CCardBody>
@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <km-form-group v-if="indicatorData.comments">
+    <km-form-group v-if="indicatorData.comments && !isRecursive">
         <label class="form-label" for="comments">{{t('comments')}}</label>
         <km-lstring-value type="html" :value="indicatorData.comments"  :locale="locale"></km-lstring-value>
     </km-form-group>
@@ -53,7 +53,8 @@
 <script setup lang="ts">
 const props = defineProps({
     indicatorData: { type: Object, required: true },
-    questions : { type: Array, required: true }
+    questions : { type: Array, required: true },
+    isRecursive : {type:Boolean, default:false}
 });
 const {locale, t} = useI18n();
 

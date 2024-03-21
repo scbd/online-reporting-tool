@@ -8,7 +8,8 @@
             {{ t('addBinaryIndicatorData') }}
         </CButton>
     </div>
-    <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
+    <CModal  class="show d-block nr7-add-binary-indicator-data-modal" size="xl" 
+        alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 {{lstring(props.indicator.title)}}
@@ -21,9 +22,15 @@
                         <km-spinner></km-spinner>
                     </div>
                     <form v-if="!isLoading && document" name="editForm">
-                    {{ document }}
                         <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
-                            :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
+                            :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft"
+                            @on-validation-errors="onValidationErrors">
+
+                            <template #validation-errors="{onJumpTo}" v-if="customValidationErrors">
+                                <km-validation-errors 
+                                    :report="customValidationErrors" :container="container" @on-jump-to="onJumpTo">
+                                </km-validation-errors>
+                            </template>
                             <template #submission>   
                                 <div class="mb-3">
                                     <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
@@ -52,7 +59,7 @@
                                     </div> 
                                     <div class="mt-3">
                                         <km-additional-information v-model="document[binaryQuestion.key].comments" :locales="document.header.languages">
-                                            t('comments')
+                                            {{t('comments')}}
                                         </km-additional-information>
                                     </div>
                                 </div>                                 
@@ -98,11 +105,13 @@
     const {t, locale }            = useI18n()
     const $toast                  = useToast();
     const container               = useAttrs().container;
+    const { $eventBus }           = useNuxtApp();
 
     const validationReport           = ref(null);
     let   document                   = ref({});
     let   isLoading                  = ref(false);
     const showEditIndicatorDataModal = ref(false);
+    const customValidationErrors     = ref(null);
 
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
@@ -130,12 +139,26 @@
         if(props.onPostSaveDraft)
             props.onPostSaveDraft(document)
     }
+    const onValidationErrors = (validationResponse)=>{
+        console.log(validationResponse);
+        if(!validationReport?.error){
+            customValidationErrors.value = {
+                errors : [
+                    // {
+                    //     "code": "Error.Mandatory",
+                    //     "property": "b_2"
+                    // },
+                ]
+            }
+        $eventBus.emit('onReviewError', customValidationErrors.value);
+        }
+    }
 
-    function showEditIndicatorData(target){      
-        console.log(target)  
+    function showEditIndicatorData(target){ 
         showEditIndicatorDataModal.value = true;
         loadDocument();
     }
+
 
     async function loadDocument(){
         try{

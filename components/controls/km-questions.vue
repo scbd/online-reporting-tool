@@ -5,14 +5,18 @@
             <km-question :question="question" v-model="answers[question.key]" @update:modelValue="onAnswer"></km-question>
         </div>
         <div v-if="question.questions?.length">
-            <CCard>
-                <CCardHeader>
-                    {{question?.number}} {{question?.title}}
-                </CCardHeader>
-                <CCardBody>
-                    <km-questions :subQuestion="true" :questions="question.questions" v-model="answers[question.key]" @update:modelValue="onAnswer"></km-questions>  
-                </CCardBody>
-            </CCard>          
+            <!-- <CCard>
+                <CCardHeader> -->
+                    <km-form-group>
+                        <template #caption>
+                            {{question?.number}} {{question?.title}}
+                        </template>
+                    </km-form-group>
+                <!-- </CCardHeader>
+                <CCardBody> -->
+                    <km-questions class="ms-3" :subQuestion="true" :questions="question.questions" v-model="answers[question.key]" @update:modelValue="onAnswer"></km-questions>  
+                <!-- </CCardBody>
+            </CCard>           -->
         </div>
     </div></div>
 </template>

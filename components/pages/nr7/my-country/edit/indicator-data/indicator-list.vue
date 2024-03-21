@@ -20,7 +20,7 @@
                     </div>
                 </div>      
                 <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
-                    <nr7-add-binary-indicator-data :indicator="indicator"
+                    <nr7-add-binary-indicator-data :indicator="indicator" container=".nr7-add-binary-indicator-data-modal"
                         :identifier="indicator?.nationalData?.header?.identifier" :on-post-save-draft="onAddBinaryIndicatorDataClose">
                     </nr7-add-binary-indicator-data>   
                     <div v-if="indicator.nationalData">
