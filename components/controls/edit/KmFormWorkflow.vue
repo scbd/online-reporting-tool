@@ -18,9 +18,12 @@
                         <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                     </div>
                 </CCol>
-                <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
+                <slot name="validation-errors" :onJumpTo="onJumpTo">
+                    <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
                                              (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
-                    :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
+                        :report="validationReport" :container="container" @on-jump-to="onJumpTo">
+                    </km-validation-errors>
+                </slot>            
             </CRow>
 
             <tab-content :title="workflowTabs.introduction.title" :is-active="activeTab == workflowTabs.introduction.index">
@@ -103,6 +106,8 @@
         onPreSaveDraftVersion	    : { type:Function, required:false },
     });
     
+    const emit = defineEmits(['onValidationErrors'])
+
     let originalDocument = null
     const container     = useAttrs().container ?? 'body,html';
     const { $eventBus } = useNuxtApp();
@@ -148,7 +153,8 @@
         }
         else 
             validationReport.value = {}
-        $eventBus.emit('onReviewError', validationResponse)
+        $eventBus.emit('onReviewError', validationResponse);
+        emit('onValidationErrors', validationResponse);
     }
 
     async function onSaveDraft(){

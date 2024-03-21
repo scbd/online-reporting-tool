@@ -885,15 +885,127 @@ export const binaryIndicatorQuestions = [
                 "key":"22_1",
                 "section":"binaryResponseTarget22",
                 "number":"22.1",
-                "title": binaryQuestionsT.target22_1_question_1,
+                "title": binaryQuestionsT.target22_question_1,
                 questions:[
                     {
                         "key":"22_1_a",
                         "section":"binaryResponseTarget22",
                         "number":"a",
                         "type":"checkbox",
-                        "title": binaryQuestionsT.target22_1_question_1_a,
+                        "title": binaryQuestionsT.target22_question_1_a,
+                        "multiple":true,
+                        "options":[
+                            {
+                                "value":"indigenousPeoplesLocalCommunities",
+                                "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
+                            },
+                            {
+                                "value":"womenGirls",
+                                "title": binaryQuestionsT.womenGirls
+                            },
+                            {
+                                "value":"childrenYouth",
+                                "title": binaryQuestionsT.childrenYouth
+                            },
+                            {
+                                "value":"personWithDisabilities",
+                                "title": binaryQuestionsT.personWithDisabilities
+                            },
+                            {
+                                "value":"none",
+                                "title": binaryQuestionsT.none
+                            }
+                        ],
+                        "mandatory":true
+                    },
+                    {
+                        "key":"22_1_b",
+                        "section":"binaryResponseTarget22",
+                        "number":"(b)",
+                        "type":"checkbox",
+                        "title": binaryQuestionsT.target22_question_1_b,
+                        "multiple":true,
+                        "options":[                           
+                            {
+                                "value":"cultureAndPractices",
+                                "title": binaryQuestionsT.cultureAndPractices
+                            },
+                            {
+                                "value":"rightsOverLandsAndTerritories",
+                                "title": binaryQuestionsT.rightsOverLandsAndTerritories
+                            },
+                            {
+                                "value":"rightsOverResources",
+                                "title": binaryQuestionsT.rightsOverResources
+                            },
+                            {
+                                "value":"rightsOverTraditionalKnowledge",
+                                "title": binaryQuestionsT.rightsOverTraditionalKnowledge
+                            },
+                            {
+                                "value":"notApplicable",
+                                "title": binaryQuestionsT.notApplicable
+                            }
+                        ],
+                        "mandatory":true
+                    },
+                    {
+                        "key":"22_1_c",
+                        "section":"binaryResponseTarget22",
+                        "number":"(c)",
+                        "type":"option",
+                        "title": binaryQuestionsT.target22_question_1_c,
                         "multiple":false,
+                        "options":[
+                            {
+                                "value":"no",
+                                "title": binaryQuestionsT.no
+                            },
+                            {
+                                "value":"yes",
+                                "title": binaryQuestionsT.yes
+                            },
+                        ],
+                        "mandatory":true
+                    },
+                    {
+                        "key":"22_1_d",
+                        "section":"binaryResponseTarget22",
+                        "number":"(d)",
+                        "type":"checkbox",
+                        "title": binaryQuestionsT.target22_question_1_d,
+                        "multiple":true,
+                        "options":[
+                           {
+                                "value":"indigenousPeoplesLocalCommunities",
+                                "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
+                            },
+                            {
+                                "value":"womenGirls",
+                                "title": binaryQuestionsT.womenGirls
+                            },
+                            {
+                                "value":"childrenYouth",
+                                "title": binaryQuestionsT.childrenYouth
+                            },
+                            {
+                                "value":"personWithDisabilities",
+                                "title": binaryQuestionsT.personWithDisabilities
+                            },
+                            {
+                                "value":"none",
+                                "title": binaryQuestionsT.none
+                            }
+                        ],
+                        "mandatory":true
+                    },
+                    {
+                        "key":"22_1_e",
+                        "section":"binaryResponseTarget22",
+                        "number":"(e)",
+                        "type":"checkbox",
+                        "title": binaryQuestionsT.target22_question_1_e,
+                        "multiple":true,
                         "options":[
                            {
                                 "value":"indigenousPeoplesLocalCommunities",
@@ -921,11 +1033,11 @@ export const binaryIndicatorQuestions = [
                 ]
             },
             {
-                "key":"",
-                "section":"goalB",
-                "number":"",
+                "key":"22_2",
+                "section":"binaryResponseTarget22",
+                "number":"22.2",
                 "type":"option",
-                "title": binaryQuestionsT.goalB_question1,
+                "title": binaryQuestionsT.target22_question_2,
                 "multiple":false,
                 "options":[
                    {
@@ -946,6 +1058,141 @@ export const binaryIndicatorQuestions = [
                     },
                 ],
                 "mandatory":true
+            },
+            {
+                "key":"22_3",
+                "section":"binaryResponseTarget22",
+                "number":"22.3",
+                "type":"option",
+                "title": binaryQuestionsT.target22_question_3,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"yesPartially",
+                        "title": binaryQuestionsT.yesPartially
+                    },
+                    {
+                        "value":"yesFully",
+                        "title": binaryQuestionsT.yesFully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"22_4",
+                "section":"binaryResponseTarget22",
+                "number":"22.4",
+                "type":"option",
+                "title": binaryQuestionsT.target22_question_4,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"yes",
+                        "title": binaryQuestionsT.yes
+                    }
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"22_5",
+                "section":"binaryResponseTarget22",
+                "number":"22.5",
+                "title": binaryQuestionsT.target22_question_5,
+                questions:[
+                    {
+                        "key":"22_5_a",
+                        "section":"binaryResponseTarget22",
+                        "number":"(a)",
+                        "type":"checkbox",
+                        "title": binaryQuestionsT.target22_question_5_a,
+                        "multiple":true,
+                        "options":[
+                            {
+                                "value":"indigenousPeoplesLocalCommunities",
+                                "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
+                            },
+                            {
+                                "value":"womenGirls",
+                                "title": binaryQuestionsT.womenGirls
+                            },
+                            {
+                                "value":"childrenYouth",
+                                "title": binaryQuestionsT.childrenYouth
+                            },
+                            {
+                                "value":"personWithDisabilities",
+                                "title": binaryQuestionsT.personWithDisabilities
+                            },
+                            {
+                                "value":"none",
+                                "title": binaryQuestionsT.none
+                            }
+                        ],
+                        "mandatory":true
+                    },
+                    {
+                        "key":"22_5_b",
+                        "section":"binaryResponseTarget22",
+                        "number":"(b)",
+                        "type":"checkbox",
+                        "title": binaryQuestionsT.target22_question_5_b,
+                        "multiple":true,
+                        "options":[                           
+                            {
+                                "value":"cultureAndPractices",
+                                "title": binaryQuestionsT.cultureAndPractices
+                            },
+                            {
+                                "value":"rightsOverLandsAndTerritories",
+                                "title": binaryQuestionsT.rightsOverLandsAndTerritories
+                            },
+                            {
+                                "value":"rightsOverResources",
+                                "title": binaryQuestionsT.rightsOverResources
+                            },
+                            {
+                                "value":"rightsOverTraditionalKnowledge",
+                                "title": binaryQuestionsT.rightsOverTraditionalKnowledge
+                            },
+                            {
+                                "value":"notApplicable",
+                                "title": binaryQuestionsT.notApplicable
+                            }
+                        ],
+                        "mandatory":true
+                    },
+                    {
+                        "key":"22_5_c",
+                        "section":"binaryResponseTarget22",
+                        "number":"(c)",
+                        "type":"option",
+                        "title": binaryQuestionsT.target22_question_5_c,
+                        "multiple":false,
+                        "options":[
+                            {
+                                "value":"no",
+                                "title": binaryQuestionsT.no
+                            },
+                            {
+                                "value":"yes",
+                                "title": binaryQuestionsT.yes
+                            },
+                        ],
+                        "mandatory":true
+                    }
+                ]
             },
         ],
         "note": ""

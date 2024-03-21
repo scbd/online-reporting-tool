@@ -1,17 +1,25 @@
 {
-    "no":"No",
-    "noButUnderDevelopment":"No, but under development ",
-    "yesPartially":"Yes, partially",
-    "yesFully": "Yes, fully",
-    "noParticipatoryProcess" :"No participatory process",
-    "forTerrestrialPlanning" :"For terrestrial spatial planning",
-    "forMarinePlanning" :"For marine spatial planning",
-    "forInlandWaterPlanning" :"For inland water spatial planning",
-    "indigenousPeoplesLocalCommunities" : "Indigenous peoples and local communities",
-    "womenGirls" : "Women and girls",
-    "childrenYouth" : "Children and youth",
-    "personWithDisabilities" : "Persons with disabilities",
-    "none" : "None of the above",
+    "no"                               : "No",
+    "yes"                              : "Yes",
+    "noButUnderDevelopment"            : "No, but under development ",
+    "yesPartially"                     : "Yes, partially",
+    "yesFully"                         : "Yes, fully",
+    "noParticipatoryProcess"           : "No participatory process",
+    "forTerrestrialPlanning"           : "For terrestrial spatial planning",
+    "forMarinePlanning"                : "For marine spatial planning",
+    "forInlandWaterPlanning"           : "For inland water spatial planning",
+    "indigenousPeoplesLocalCommunities": "Indigenous peoples and local communities",
+    "womenGirls"                       : "Women and girls",
+    "childrenYouth"                    : "Children and youth",
+    "personWithDisabilities"           : "Persons with disabilities",
+    "none"                             : "None of the above",
+    "cultureAndPractices"              : "Culture and practices",
+    "rightsOverLandsAndTerritories"    : "Rights over lands and territories",
+    "rightsOverResources"              : "Rights over resources",
+    "rightsOverTraditionalKnowledge"   : "Rights over traditional knowledge",
+    "notApplicable"                    : "Not applicable",
+
+    "selectAllThatApply"               : "(Select all that apply)",
     
 
     "goalB_question1" : "Does your country have [and implement] policies and/or action plans aimed at ensuring the maintenance, enhancement and restoration of nature’s contributions to people, including of ecosystem functions and services?",
@@ -25,8 +33,21 @@
 
 
 
-    "target22_1_question_1" : "Does your country have policy, legislative and administrative frameworks at the national and subnational levels that:",
-    "target22_1_question_1_a" : "Ensure full, equitable, inclusive, effective and gender-responsive representation and participation in biodiversity decision-making related to biodiversity of the following? (Select all that apply)"
-
+    "target22_question_1" : "Does your country have policy, legislative and administrative frameworks at the national and subnational levels that:",
+    "target22_question_1_a" : "Ensure full, equitable, inclusive, effective and gender-responsive representation and participation in biodiversity decision-making related to biodiversity of the following? (Select all that apply)",
+    "target22_question_1_b" : "Respect, in ensuring representation and participation in decision- making related to biodiversity, indigenous peoples and local communities? (Select all that apply)",
+    "target22_question_1_c" : "Ensure the full protection of environmental human rights defenders?",
+    "target22_question_1_d" : "Ensure public access to information related to biodiversity for indigenous peoples and local communities, women and girls, children and youth and persons with disabilities? (Select all that apply)",
+    "target22_question_1_e" : "Provide access to justice for one or more of the following categories?",
+    
+    "target22_question_2" : "Does your country have operational frameworks and mechanisms related to the policy, legislative and administrative frameworks listed under question 22.1?",
+    "target22_question_3" : "[Does your country have financial resources or budgets for the frameworks listed under questions 22.1 and 22.2? (Select all that apply)]",
+    "target22_question_4" : "Has your country undertaken capacity-building activities for the frameworks listed under questions 22.1 and 22.2?",
+    
+    "target22_question_5"   : "Does your country monitor the following:",
+    "target22_question_5_a" : "The full, equitable, inclusive, effective and gender-responsive representation and participation in biodiversity decision-making of the following? (Select all that apply)",
+    "target22_question_5_b" : "The following culture and rights of indigenous peoples and local communities?",
+    "target22_question_5_c" : "The full protection of environmental human rights defenders?"
+  
 
 }

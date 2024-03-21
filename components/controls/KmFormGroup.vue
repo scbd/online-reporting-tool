@@ -1,13 +1,17 @@
 <template>
-    <CCol class="km-form-group mb-1" :class="{'has-error':hasError, 'has-help':content, 'mandatory':required}">
-        <CFormLabel class="mb-1 control-label" :for="name" :name="name" :required="required ? true : null">            
-            <slot name="caption">{{caption}}</slot>
-        </CFormLabel>
-        <km-help v-if="content" :title="title" :content="content" class="ms-1 me-1"></km-help>
-        <div>
-            <slot></slot>
-        </div>
-    </CCol>
+    <CRow class="km-form-group" :class="$attrs.class">
+        <CCol  :class="{'has-error':hasError, 'has-help':content, 'mandatory':required}">
+            
+            <CFormLabel v-if="caption || $slots.caption" class="mb-1 control-label" 
+                :for="name" :name="name" :required="required ? true : null">            
+                <slot name="caption">{{caption}}</slot>
+            </CFormLabel>
+            <km-help v-if="content" :title="title" :content="content" class="ms-1 me-1"></km-help>
+            <div>
+                <slot></slot>
+            </div>
+        </CCol>
+    </CRow>
 </template>
 <script lang="ts" setup>
     import { makeUid } from '@coreui/utils/src'
@@ -30,6 +34,7 @@
     const hasError = ref(false)
 
     const onReviewErrorHandler = (validationResponse)=>{
+        console.log(validationResponse)
         hasError.value = validationResponse?.errors?.find(e=>e.property == props.name)!= undefined;            
     }
     if(name.value && required.value){
