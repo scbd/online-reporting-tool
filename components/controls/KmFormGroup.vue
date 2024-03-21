@@ -56,4 +56,7 @@
     .km-form-group.has-help label.control-label{
         display: unset;
     }
+    .km-form-group .control-label{
+        font-weight: 700;
+    }
 </style>

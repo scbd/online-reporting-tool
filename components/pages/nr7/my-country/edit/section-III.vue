@@ -305,12 +305,10 @@
     }
 
     function onMouseleave(target){
-        console.log('leave', target)
         mouseOverTarget.value = null;
     }
-    function onMouseOver(target){
-        console.log('over', target)
-        mouseOverTarget.value = target;
+    function onMouseOver({identifier}){
+        mouseOverTarget.value = {identifier};
     }
 
     setTimeout(()=>{

@@ -890,7 +890,7 @@ export const binaryIndicatorQuestions = [
                     {
                         "key":"22_1_a",
                         "section":"binaryResponseTarget22",
-                        "number":"a",
+                        "number":"(a)",
                         "type":"checkbox",
                         "title": binaryQuestionsT.target22_question_1_a,
                         "multiple":true,
