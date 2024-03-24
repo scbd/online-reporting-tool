@@ -4,7 +4,7 @@
         <form-wizard  @on-tab-change="onChangeCurrentTab" ref="formWizard">
 
             <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
-                <CCol>
+                <CCol class="col-12">
                     <div class="action-buttons float-end mb-1">
                         <CButton @click="onSaveDraft()" color="primary" class="me-md-2" :disabled="isBusy">
                         <c-spinner v-if="validationReport.isSaving" size="sm" variant="grow" aria-hidden="true"></c-spinner>
@@ -18,9 +18,14 @@
                         <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                     </div>
                 </CCol>
-                <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
-                                             (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
-                    :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
+                <CCol class="col-12">
+                    <slot name="validation-errors" :onJumpTo="onJumpTo">
+                        <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
+                                                (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
+                            :report="validationReport" :container="container" @on-jump-to="onJumpTo">
+                        </km-validation-errors>
+                    </slot>  
+                </CCol>          
             </CRow>
 
             <tab-content :title="workflowTabs.introduction.title" :is-active="activeTab == workflowTabs.introduction.index">
@@ -51,11 +56,16 @@
                 <slot name="publish"></slot>
             </tab-content> -->
             
-            <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
-                    <km-validation-errors v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
-                                            (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
-                    :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>  
-                <CCol>
+            <CRow class="mt-3" v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
+                <CCol class="col-12">
+                    <slot name="validation-errors" :onJumpTo="onJumpTo">
+                        <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
+                                                (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
+                            :report="validationReport" :container="container" @on-jump-to="onJumpTo">
+                        </km-validation-errors>
+                    </slot> 
+                </CCol>   
+                <CCol class="col-12">
                     <div class="action-buttons float-end">
                         <CButton @click="onSaveDraft()" color="primary" class="me-md-2">{{t('saveDraft')}}</CButton> 
                         <CButton @click="onReviewDocument()" color="primary" class="me-md-2" >{{t('review')}}</CButton>
