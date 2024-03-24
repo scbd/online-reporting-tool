@@ -85,32 +85,17 @@
     const definedProps = defineProps({
         focusedTab                  : { type:Number, default:0 },
         tab                         : { type:String },
-        // validationReport            : { type:Object,   required:true  },
-    	getDocument                 : { type:Function, required:true  },
-        onPreClose                  : { type:Function, required:false },
-        onPostClose                 : { type:Function, required:false },
-        onPreRevert                 : { type:Function, required:false },
-        onPostRevert                : { type:Function, required:false },
-        onPreSaveDraft              : { type:Function, required:false },
-        onPostSaveDraft             : { type:Function, required:false },
-        onPreRequest                : { type:Function, required:false },
-        onPostRequest               : { type:Function, required:false },
-        onPrePublish                : { type:Function, required:false },
-        onPostPublish               : { type:Function, required:false },
-        onError                     : { type:Function, required:false },
-        onStepChange                : { type:Function, required:false },
-        onReviewLanguageChange      : { type:Function, required:false },
-        onPreSaveDraftVersion	    : { type:Function, required:false },
+    	document                    : { type:Object, required:true  }
     });
     
     let originalDocument = null
     const container     = useAttrs().container ?? 'body,html';
-    const { $eventBus } = useNuxtApp();
     const {t }          = useI18n();
     const $toast        = useToast();
     const formWizard       = ref(null);
     const validationReport = ref({});
     const activeTab      = ref(null);
+    let workflowFunctions;
     
     const workflowTabs = {
         // use individual compute so that on language change the text is updated
@@ -139,7 +124,11 @@
         activeTab.value = workflowTabs.review.index;
 
         validationReport.value = { isAnalyzing:true };
-        const document = props.getDocument.value();
+        const document = props.document;
+
+        // onPreReviewDocument
+        if(workflowFunctions?.onPreReviewDocument)
+            document.value = await workflowFunctions.onPreReviewDocument(document);
 
         const validationResponse = await validate(document.value)
         if(validationResponse && validationResponse?.errors?.length) {
@@ -148,25 +137,29 @@
         }
         else 
             validationReport.value = {}
-        $eventBus.emit('onReviewError', validationResponse)
+
+        // onPostReviewDocument
+        if(workflowFunctions?.onPostReviewDocument)
+            await workflowFunctions.onPostReviewDocument(document, validationReport);
+
     }
 
     async function onSaveDraft(){
         try{
             validationReport.value = { isSaving:true };
-            const document = props.getDocument.value();
+            const document = props.document//document;
 
             // onPreSaveDraft
-            if(definedProps.onPreSaveDraft)
-                document = definedProps.onPreSaveDraft(document);
+            if(workflowFunctions?.onPreSaveDraft)
+                document.value = await workflowFunctions.onPreSaveDraft(document);
             
             // save document
             const documentSaveResponse = await EditFormUtility.saveDraft(document.value);
             originalDocument = { ...(document.value) }
 
             // onPostSaveDraft
-            if(definedProps.onPostSaveDraft)
-                definedProps.onPostSaveDraft({...documentSaveResponse, body:{...originalDocument}});
+            if(workflowFunctions.onPostSaveDraft)
+                await workflowFunctions.onPostSaveDraft({...documentSaveResponse, body:{...originalDocument}});
 
             $toast.success(t('draftSaveMessage'), {position:'top-right'});  
         }
@@ -181,11 +174,14 @@
         
         let redirectTo = undefined;
 
-        if(definedProps.onPreClose)
-            redirectTo = definedProps.onPreClose(originalDocument);
+        if(workflowFunctions.onPreClose)
+            redirectTo = await workflowFunctions.onPreClose(originalDocument);
             
-        if(redirectTo.value)
-            await useNavigateAppTo(redirectTo.value)
+        if(redirectTo)
+            await useNavigateAppTo(redirectTo)
+
+        if(workflowFunctions.onPostClose)
+            await workflowFunctions.onPostClose(originalDocument);
     }
 
     async function validate(document) {
@@ -221,7 +217,7 @@
     }
 
     function articleQuery(){
-        const document = props.getDocument.value();
+        const document = props.document;
         const realmConfStore  = useRealmConfStore();
         const realmConf = realmConfStore.realmConf;
         const ag = [];
@@ -245,6 +241,8 @@
 
     onMounted(() => {
         formWizard.value?.selectTab(focusedTab.value ?? 0)
+
+        workflowFunctions = inject('kmWorkflowFunctions');
     })
 
     // same as beforeRouteLeave option with no access to `this`
