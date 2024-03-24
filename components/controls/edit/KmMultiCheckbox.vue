@@ -1,30 +1,17 @@
 <template>
     <div class="km-multi-checkbox flex flex-col items-start justify-center w-64 border-2 p-8 rounded-lg">
-        <!-- <check-box
-            v-for="option in options"
-            :checked="modelValue && modelValue.find(e=>e.identifier==option.identifier)"
-            @update:checked="check(option.identifier, $event)"
-            :fieldId="option.identifier"
-            :label="lstring(option.title)"
-            :key="option"
-        /> -->
-        <div class="form-check" v-for="option in options" :key="option" >
-            <input type="checkbox" :id="option['identifier']" 
-                class="form-check-input" 
-                :checked="modelValue && modelValue.find(e=>e.identifier==option.identifier)"
-                @click="check(option.identifier, $event)">
-            <label :for="option['identifier']" class="form-check-label" >
-                <slot name="label" :option="option">
-                   {{ lstring(option.title) }}
-                </slot>
-            </label>
-        </div>
+        <km-checkbox :field-id="option[optionValueField] + makeUid()" v-for="option in options" :key="option"
+            :checked="modelValue && modelValue.find(e=>e[optionValueField] == option[optionValueField])"
+            @update:checked="check(option[optionValueField], $event)"> 
+            {{ lstring(option[optionTitleField]) }}
+        </km-checkbox>
     </div>
   </template>
   
   <script>
-  import Checkbox from "./KmCheckbox.vue";
-  
+  import Checkbox from "./KmCheckbox.vue";  
+    import { makeUid }         from '@coreui/utils/src';
+
   export default {
     emits: ["update:modelValue"],
     props: {
@@ -35,32 +22,40 @@
       options: {
         type: Array,
         required: true,
-        validator: (modelValue) => {
+        validator: (modelValue, props) => {
           const hasNameKey = modelValue.every((option) =>
-            Object.keys(option).includes("title")
+            Object.keys(option).includes(props.optionValueField)
           );
           const hasIdKey = modelValue.every((option) =>
-            Object.keys(option).includes("identifier")
+            Object.keys(option).includes(props.optionTitleField)
           );
           return hasNameKey && hasIdKey;
         },
       },
+      optionValueField: {
+        type:String,
+        default:'identifier'
+      },
+      optionTitleField: {
+        type:String,
+        default:'title'
+      }
     },
     setup(props, context) {
-      const check = (optionId, $event) => {
+        const attrs = useAttrs();
+      const check = (optionId, checked) => {
         let updatedValue = [...props.modelValue||[]];
-        const checked = $event?.srcElement?.checked;
         if (checked) {
-          updatedValue.push({identifier : optionId});
+          updatedValue.push({[props.optionValueField] : optionId});
         } else {
-          updatedValue.splice(updatedValue.indexOf({identifier :optionId}), 1);
+          updatedValue.splice(updatedValue.indexOf({[props.optionValueField] :optionId}), 1);
         }
-        
         context.emit("update:modelValue", updatedValue);
+        console.log(updatedValue)
       };
   
       return {
-        check,
+        check, makeUid
       };
     },
     components: {
