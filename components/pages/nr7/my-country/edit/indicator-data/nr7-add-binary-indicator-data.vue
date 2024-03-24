@@ -91,11 +91,15 @@
         identifier         : {type:String, required:false},
         // rawDocument        : {type: Object },
         indicator          : {type:Object, required:true},
-        workflowActiveTab  : {type:Number, default:1 },
-        onClose            : {type:Function, required:false},
-        onPostSaveDraft    : {type:Function, required:false},
+        workflowActiveTab  : {type:Number, default:1 }
     }) 
+    // These emits are used by base view when the form is 
+    // open in a dialog mode form overview
+    const emit  = defineEmits(['onClose', 'onPostSaveDraft'])
 
+    //Currently there is no other way but get it using currentInstance
+    const currentVueInstance        = getCurrentInstance();
+   
     const binaryIndicatorQuestions = reactive(cloneDeep(binaryIndicatorSource));
     const { user }                = useAuth();
     const security                = useSecurity();
@@ -124,8 +128,9 @@
     })
 
     const onPostClose = async (document)=>{
-        if(props.onClose)
-            props.onClose(document);
+        //vue prepends 'on' to all events internally
+        if(!!currentVueInstance?.vnode.props?.['onOnClose'])
+            emit('onClose', document);
 
         showEditIndicatorDataModal.value = false;
         customValidationErrors.value = null;
@@ -138,8 +143,9 @@
     };
 
     const onPostSaveDraft = async (document)=>{
-        if(props.onPostSaveDraft)
-            props.onPostSaveDraft(document)
+        //vue prepends 'on' to all events internally
+        if(!!currentVueInstance?.vnode.props?.['onOnPostSaveDraft'])
+            emit('onPostSaveDraft', document);
     };
     
     const onPreReviewDocument = (document)=>{

@@ -315,6 +315,19 @@
         isBusy.value = true;
         init()
     }, 200);
+
+
+    // provide('kmWorkflowFunctions', {
+    //     onPreReviewDocument,
+    //     onPreSaveDraft,
+    //     onPostSaveDraft,
+    //     onPostReviewDocument,
+    //     onPostClose
+    // });
+
+    // provide("validationReview", {
+    //     hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+    // });
 </script>
 <style scoped>
 .target-accordion{

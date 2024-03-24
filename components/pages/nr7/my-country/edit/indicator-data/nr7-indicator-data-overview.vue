@@ -100,9 +100,7 @@
     let document = ref({});
     let sectionIII;
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:0 },
-        onClose            : {type:Function, required:false},
-        onPostSaveDraft    : {type:Function, required:false},
+        workflowActiveTab  : {type:Number, default:0 }
     }) 
 
     const { user }        = useAuth();
@@ -121,6 +119,8 @@
     const isBusy                    = ref(false);
     const tabPaneActiveKey          = ref(1)
 
+    //Currently there is no other way but get it using currentInstance
+    const currentVueInstance        = getCurrentInstance();
 
     const nationalHeadlineIndicators        = computed(()=>globalIndicators.value.headlineIndicators?.map(mapWithNationalRecords));
     const nationalBinaryIndicators          = computed(()=>globalIndicators.value.binaryIndicators?.map(mapBinaryIndicatorWithNationalData));
@@ -158,18 +158,6 @@
             ...indicator,
             nationalData
         }
-    }
-
-    const customLabel = ({title})=>{        
-        return lstring(title, locale.value);
-    }
-    const customSelectedItem = (item)=>{
-        return { identifier : item };
-    }
-
-    function cleanDocument(){
-        const  clean = useKmStorage().cleanDocument({...nationalReportStore.nationalReportDraft});
-        return toRef(clean);
     }
 
     async function loadNationalTargets(){
