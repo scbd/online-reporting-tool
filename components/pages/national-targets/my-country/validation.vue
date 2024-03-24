@@ -38,7 +38,7 @@
                 <div v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7">
                     <edit-target-part-1 :raw-document="editDocument" :workflow-active-tab="2"
                         :identifier="editDocument.header.identifier"
-                        :on-close="onEditTargetClose"  :on-post-save-draft="onPostSaveDraft"
+                        @on-close="onEditTargetClose"  @on-post-save-draft="onPostSaveDraft"
                         container=".nationalTargetsValidationEdit">
                     </edit-target-part-1>
                 </div>
@@ -46,7 +46,7 @@
                     <edit-target-part-2 :raw-document="editDocument" :workflow-active-tab="2"
                         :global-goal-or-target="editDocument.globalGoalOrTarget.identifier" 
                         :headline-indicators="getGlobalTarget(editDocument.globalGoalOrTarget.identifier).headlineIndicators"
-                        :identifier="editDocument.header.identifier" :on-close="onEditTargetClose"  :on-post-save-draft="onPostSaveDraft"
+                        :identifier="editDocument.header.identifier" @on-close="onEditTargetClose"  @on-post-save-draft="onPostSaveDraft"
                         container=".nationalTargetsValidationEdit">
                     </edit-target-part-2>
                 </div>

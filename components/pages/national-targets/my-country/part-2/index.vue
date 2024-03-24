@@ -124,7 +124,7 @@
             <edit-target-part-2 :global-goal-or-target="editMappingTarget.identifier" 
                 :identifier="editMappingTarget.nationalMapping ? editMappingTarget.nationalMapping.header.identifier : undefined"
                 :headline-indicators="editMappingTarget.headlineIndicators" container=".nationalTargetsPart2Edit"
-                :on-close="closeEditMappingDialog">
+                @on-close="closeEditMappingDialog">
             </edit-target-part-2>
         </CModalBody>   
     </CModal>
