@@ -23,7 +23,7 @@
                     </div>
                     <form v-if="!isLoading && document" name="editForm">
                     
-                        <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
+                        <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
                             :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                             <template #submission>   
                                 <div class="mb-3">

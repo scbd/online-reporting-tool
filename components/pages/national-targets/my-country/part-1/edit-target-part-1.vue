@@ -4,7 +4,7 @@
         <slot name="header">{{t('nationalTarget')}} </slot>
       </CCardHeader>
       <CCardBody>
-            <km-form-workflow v-if="!isBusy" :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"  
+            <km-form-workflow v-if="!isBusy" :focused-tab="props.workflowActiveTab" :document="cleanDocument"  
             :container="container"  :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template v-slot:submission>   
                     <form name="editForm">    

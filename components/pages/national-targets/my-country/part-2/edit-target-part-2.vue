@@ -8,7 +8,7 @@
             <div  v-if="isLoading">
                 <km-spinner center></km-spinner>
             </div>           
-            <km-form-workflow v-if="!isLoading && document?.header" :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"
+            <km-form-workflow v-if="!isLoading && document?.header" :focused-tab="props.workflowActiveTab" :document="cleanDocument"
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template #submission>
                     <form name="editForm">                     

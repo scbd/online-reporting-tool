@@ -22,13 +22,12 @@
                         <km-spinner></km-spinner>
                     </div>
                     <form v-if="!isLoading && document" name="editForm">
-                        <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
-                            :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft"
-                            @on-validation-errors="onValidationErrors">
+                        <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
+                            :container="container">
 
-                            <template #validation-errors="{onJumpTo}" v-if="customValidationErrors">
+                            <template #validation-errors="{onJumpTo}" v-if="validationReport?.errors">
                                 <km-validation-errors 
-                                    :report="customValidationErrors" :container="container" @on-jump-to="onJumpTo">
+                                    :report="validationReport" :container="container" @on-jump-to="onJumpTo">
                                 </km-validation-errors>
                             </template>
                             <template #submission>   
@@ -85,8 +84,8 @@
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { KmDocumentsService } from '~/services/kmDocuments';
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
-    import ViewData from './nr7-view-indicator-data.vue';
     import {binaryIndicatorQuestions as binaryIndicatorSource} from '~/app-data/binary-indicator-questions.js'
+
    
     const props = defineProps({
         identifier         : {type:String, required:false},
@@ -108,8 +107,8 @@
     const { $eventBus }           = useNuxtApp();
 
     const validationReport           = ref(null);
-    let   document                   = ref({});
-    let   isLoading                  = ref(false);
+    const document                   = ref({});
+    const isLoading                  = ref(false);
     const showEditIndicatorDataModal = ref(false);
     const customValidationErrors     = ref(null);
 
@@ -124,33 +123,50 @@
                 .find(e=>e.binaryIndicator == props.indicator?.identifier);
     })
 
-    function onGetDocument(){
-        return cleanDocument;
-    }
-
-    const onClose = async (document)=>{
+    const onPostClose = async (document)=>{
         if(props.onClose)
             props.onClose(document);
 
         showEditIndicatorDataModal.value = false;
+        customValidationErrors.value = null;
     }
+
+    const onPreSaveDraft = async (document)=>{
+        console.log(document);
+        document.value.test = 'Blaise';
+        return document;
+    };
 
     const onPostSaveDraft = async (document)=>{
         if(props.onPostSaveDraft)
             props.onPostSaveDraft(document)
+    };
+    
+    const onPreReviewDocument = (document)=>{
+        document.value.test = undefined;
+        return document;
     }
-    const onValidationErrors = (validationResponse)=>{
-        console.log(validationResponse);
-        if(!validationReport?.error){
-            customValidationErrors.value = {
-                errors : [
-                    // {
-                    //     "code": "Error.Mandatory",
-                    //     "property": "b_2"
-                    // },
-                ]
-            }
-        $eventBus.emit('onReviewError', customValidationErrors.value);
+    const onPostReviewDocument = (document, newValidationReport)=>{
+        console.log(document, validationReport);
+
+        validationReport.value = newValidationReport.value || {};
+
+        if(!validationReport.value?.errors){
+
+            const {questions, key, binaryIndicator, target } = binaryQuestion.value
+            const flatQuestions = flattenQuestions(questions);
+
+            // answers for the current binary target, show validation errors only for the current target.
+            const answers = cleanDocument.value[key] ||{responses:{}}; 
+            const errors = [];
+            flatQuestions.forEach(e=>{
+                if(!(answers.responses||{})[e.key])
+                    errors.push({
+                        "code": "Error.Mandatory",
+                        "property": e.key
+                    })
+            });
+            validationReport.value.errors = errors;
         }
     }
 
@@ -158,7 +174,6 @@
         showEditIndicatorDataModal.value = true;
         loadDocument();
     }
-
 
     async function loadDocument(){
         try{
@@ -191,6 +206,29 @@
             isLoading.value = false;
         }
     }
+
+    function flattenQuestions(questions){
+        return questions.map(e=>{
+            if(e.questions?.length)
+                return flattenQuestions(e.questions);
+
+            return e;
+        })
+        .flat()        
+    }
+
+    provide('kmWorkflowFunctions', {
+        onPreReviewDocument,
+        onPreSaveDraft,
+        onPostSaveDraft,
+        onPostReviewDocument,
+        onPostClose
+    });
+
+    provide("validationReview", {
+        hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+    });
+
 
 </script>
 <style>

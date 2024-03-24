@@ -11,17 +11,17 @@
                     </km-form-group>
                 </CCardHeader>
                 <CCardBody>
-                    <km-value v-if="indicatorData?.responses[question.key]">
+                    <km-value v-if="(indicatorData?.responses||{})[question.key]">
                         <span v-if="question.type == 'option'">
-                            {{ question.options.find(e=>e.value == indicatorData?.responses[question.key])?.title }}
+                            {{ question.options.find(e=>e.value == (indicatorData?.responses||{})[question.key])?.title }}
                         </span>
                         <span v-if="question.type == 'checkbox'">
-                                <div v-for="answer in indicatorData?.responses[question.key]" :key="answer">
+                                <div v-for="answer in (indicatorData?.responses||{})[question.key]" :key="answer">
                                     {{ question.options.find(e=>e.value == answer)?.title }}
                                 </div>
                         </span>
                     </km-value>
-                    <missing-data-alert v-if="!indicatorData?.responses[question.key]" class="alert-sm">
+                    <missing-data-alert v-if="!(indicatorData?.responses||{})[question.key]" class="alert-sm">
                         <template #message>
                             Your country has not answered this binary indicator question
                         </template>
@@ -44,8 +44,7 @@
         </div>
     </div>
 
-    <km-form-group v-if="indicatorData.comments && !isRecursive">
-        <label class="form-label" for="comments">{{t('comments')}}</label>
+    <km-form-group v-if="indicatorData.comments && !isRecursive" :caption="t('comments')">        
         <km-lstring-value type="html" :value="indicatorData.comments"  :locale="locale"></km-lstring-value>
     </km-form-group>
 </template>

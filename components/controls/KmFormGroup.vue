@@ -1,6 +1,7 @@
 <template>
     <CRow class="km-form-group" :class="$attrs.class">
-        <CCol  :class="{'has-error':hasError, 'has-help':content, 'mandatory':required}">
+
+        <CCol  :class="{'has-error':hasError(), 'has-help':content, 'mandatory':required}">
             
             <CFormLabel v-if="caption || $slots.caption" class="mb-1 control-label" 
                 :for="name" :name="name" :required="required ? true : null">            
@@ -31,15 +32,20 @@
     const content   = attrs['data-content']
 
     const { name, required } = toRefs(props);    
-    const hasError = ref(false)
+    // const hasError = ref(false)
 
     const onReviewErrorHandler = (validationResponse)=>{
-        console.log(validationResponse)
-        hasError.value = validationResponse?.errors?.find(e=>e.property == props.name)!= undefined;            
+        // hasError.value = validationResponse?.errors?.find(e=>e.property == props.name)!= undefined;            
     }
     if(name.value && required.value){
                             $eventBus.on('onReviewError', onReviewErrorHandler);
         onBeforeUnmount(()=>$eventBus.off('onReviewError', onReviewErrorHandler));
+    }
+
+    let reviewError = inject('validationReview')
+
+    const hasError    = ()=>{
+        return props.name && props.required && reviewError?.hasError(props.name);
     }
 
 </script>

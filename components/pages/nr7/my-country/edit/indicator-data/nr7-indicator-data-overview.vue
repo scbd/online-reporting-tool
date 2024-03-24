@@ -114,13 +114,12 @@
     const container = useAttrs().container;
     const nationalReportStore = useNationalReport7Store();
 
-    const globalIndicators     = ref({});
-
-    let nationalIndicatorData  = ref([]);
-    let nationalBinaryData     = ref([]);
-    let nationalTargets        = ref([]);
-    const isBusy = ref(false);
-    const tabPaneActiveKey = ref(1)
+    const globalIndicators          = ref({});
+    let   nationalIndicatorData     = ref([]);
+    let   nationalBinaryDatDocument = ref({});
+    let   nationalTargets           = ref([]);
+    const isBusy                    = ref(false);
+    const tabPaneActiveKey          = ref(1)
 
 
     const nationalHeadlineIndicators        = computed(()=>globalIndicators.value.headlineIndicators?.map(mapWithNationalRecords));
@@ -144,7 +143,7 @@
 
     function mapBinaryIndicatorWithNationalData(indicator){
         const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator?.identifier);
-        const binaryDataDocument = nationalBinaryData.value?.body
+        const binaryDataDocument = nationalBinaryDatDocument.value?.body||{}
         let nationalData = {}
         
         if(binaryQuestion){
@@ -211,7 +210,7 @@
         nationalIndicatorData.value = await loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA);
         const binaryData            = await loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA);
         if(binaryData?.length)
-            nationalBinaryData.value= binaryData[0];
+            nationalBinaryDatDocument.value= binaryData[0];
         nationalTargets.value       = await loadNationalTargets(); 
         const indicatorResponse = await Promise.all([
                                     GbfGoalsAndTargets.loadGbfHeadlineIndicator(),
@@ -233,7 +232,7 @@
         // //Get the first response as binary data can only have one record per govermnet
         // nationalTargets.value       = indicatorResponse[5] ? indicatorResponse[5][0] : [];
 
-        // nationalBinaryData.value    = indicatorResponse[6];
+        // nationalBinaryDatDocument.value    = indicatorResponse[6];
 
         isBusy.value = false;
     }
