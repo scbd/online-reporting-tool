@@ -1,10 +1,12 @@
 <template>
 
     <div class="form-check">
-        <input @input="(event) => $emit('update:checked', event.target.checked)" type="checkbox" :checked="checked"
-            :id="fieldId" class="form-check-input" />
+        <input @input="(event) => $emit('update:checked', event.target.checked)" type="checkbox" 
+        :checked="checked" :id="fieldId" class="form-check-input" />
         <label :for="fieldId" class="form-check-label">            
-            {{ label }}
+            <slot>
+                {{ label }}
+            </slot>  
         </label>
     </div>
 </template>

@@ -1,40 +1,39 @@
 <template>
-    <CCol class="km-form-group mb-3" :class="{'has-error':hasError, 'has-help':content, 'mandatory':required}">
-        <CFormLabel class="mb-1 control-label" v-if="caption" :for="name" :name="name" :required="required ? true : null">
-            {{caption}}            
-        </CFormLabel>
-        <km-help v-if="content" :title="title" :content="content" class="ms-1 me-1"></km-help>
-        <div>
-            <slot></slot>
-        </div>
-    </CCol>
+    <CRow class="km-form-group" :class="$attrs.class">
+
+        <CCol  :class="{'has-error':hasError(), 'has-help':content, 'mandatory':required}">
+            
+            <CFormLabel v-if="caption || $slots.caption" class="mb-1 control-label" 
+                :for="name" :name="name" :required="required ? true : null">            
+                <slot name="caption">{{caption}}</slot>
+            </CFormLabel>
+            <km-help v-if="content" :title="title" :content="content" class="ms-1 me-1"></km-help>
+            <div>
+                <slot></slot>
+            </div>
+        </CCol>
+    </CRow>
 </template>
 <script lang="ts" setup>
     import { makeUid } from '@coreui/utils/src'
     import KmHelp      from './view/KmHelp.vue';
-    
 
-    const { $eventBus } = useNuxtApp();
     const props = defineProps({
         name      : {type:String, default:makeUid()},
         caption   : {type:String  },
-        required  : {type:Boolean, default:false},
-        isValidFn : {type:Function},
+        required  : {type:Boolean, default:false}
     });
 
     const attrs     = useAttrs();
     const title     = attrs['data-title']
     const content   = attrs['data-content']
 
-    const { name, required } = toRefs(props);    
-    const hasError = ref(false)
+    const { name, required } = toRefs(props);
 
-    const onReviewErrorHandler = (validationResponse)=>{
-        hasError.value = validationResponse?.errors?.find(e=>e.property == props.name)!= undefined;            
-    }
-    if(name.value && required.value){
-                            $eventBus.on('onReviewError', onReviewErrorHandler);
-        onBeforeUnmount(()=>$eventBus.off('onReviewError', onReviewErrorHandler));
+    let reviewError = inject('validationReview')
+
+    const hasError    = ()=>{
+        return props.name && props.required && reviewError?.hasError(props.name);
     }
 
 </script>
@@ -50,5 +49,8 @@
     }
     .km-form-group.has-help label.control-label{
         display: unset;
+    }
+    .km-form-group .control-label{
+        font-weight: 700;
     }
 </style>
