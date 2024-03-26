@@ -231,7 +231,8 @@
                                         </km-select>
                                     </km-form-group>
                                     <km-form-group name="otherNationalIndicators"  :caption="t('nationalIndicators')">
-                                        <km-input-lstring-ml v-model="document.otherNationalIndicators" :locales="document.header.languages"></km-input-lstring-ml>
+                                        <other-national-indicators :generate-identifier="true"
+                                        v-model="document.otherNationalIndicators" :locales="document.header.languages"></other-national-indicators>
                                         <small id="emailHelp" class="form-text text-muted">{{t('addOwnIndicatorsHelp')}}</small>
                                     </km-form-group>
                                 </div>
