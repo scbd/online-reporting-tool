@@ -23,7 +23,7 @@
                     </div>
                     <form v-if="!isLoading && document" name="editForm">
                     
-                        <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
+                        <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
                             :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                             <template #submission>   
                                 <div class="mb-3">
@@ -48,14 +48,12 @@
                                             Data
                                         </div>
                                         <div class="card-body">
-                                            <km-form-group name="sourceOfData" required caption="Source of Data">
-                                                <km-form-check-group>
-                                                    <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData.value" label="Use national data set "/>
-                                                    <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData.value" label="Use the available data (pre-populated data)"/>
-                                                    <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData.value" label="No data available"/>
-                                                    <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData.value" label="Not relevant"/>                                            
-                                                </km-form-check-group>
-                                            </km-form-group> 
+                                            <km-form-check-group name="sourceOfData" required caption="Source of Data">
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData.value" label="Use national data set "/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData.value" label="Use the available data (pre-populated data)"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData.value" label="No data available"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData.value" label="Not relevant"/>                                            
+                                            </km-form-check-group>
 
                                             <km-form-group name="sourceOfDataNational" required caption="National data set" v-if="document.sourceOfData.value=='national'">
                                                 <input type="file" id="input" @change="uploadFile"/>                                                
@@ -73,10 +71,9 @@
                                                 </div>
                                             </km-form-group>
 
-                                            <div class="mt-3" v-if="indicatorData?.data">
+                                            <div class="mt-3 mb-3" v-if="indicatorData?.data">
                                                 <view-data :indicator-data="indicatorData" v-if="indicatorData"></view-data>
                                             </div>
-
 
                                             <km-form-group v-if="document.sourceOfData.value" name="comments" caption="Comments">
                                                 <km-input-rich-lstring v-model="document.comments" :locales="document.header.languages"></km-input-rich-lstring>
@@ -103,7 +100,7 @@
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import readXlsxFile from 'read-excel-file';
-    import ViewData from './view-data.vue';
+    import ViewData from './nr7-view-indicator-data.vue';
     import {cloneDeep} from 'lodash';
     import { useCountriesStore } from '@/stores/countries';
 
@@ -289,8 +286,6 @@
 
 </script>
 <style>
-    .km-nav-wizard .nav-header, .km-nav-wizard .nav-footer{
-        display: none;
-    }
+    
 </style>
 

@@ -4,8 +4,8 @@
         <slot name="header">{{t('nationalTarget')}} </slot>
       </CCardHeader>
       <CCardBody>
-            <km-form-workflow v-if="!isBusy" :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"  
-            :container="container"  :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
+            <km-form-workflow v-if="!isBusy" :focused-tab="props.workflowActiveTab" :document="cleanDocument"  
+            :container="container">
                 <template v-slot:submission>   
                     <form name="editForm">    
                         <km-form-group>
@@ -353,9 +353,14 @@
         identifier         : {type: String },
         rawDocument        : {type: Object },
         workflowActiveTab  : {type:Number, default:1 },
-        onClose            : {type:Function, required:false},
-        onPostSaveDraft    : {type:Function, required:false},
+        // onClose            : {type:Function, required:false},
+        // onPostSaveDraft    : {type:Function, required:false},
     })
+    
+    // These emits are used by base view when the form is 
+    // open in a dialog mode form overview
+    const emit  = defineEmits(['onClose', 'onPostSaveDraft'])
+
     const refProps                  = toRefs(props);
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const { user }                  = useAuth();
@@ -372,26 +377,37 @@
     const binaryIndicators          = ref(null);
     const selectedGlobalTargets     = ref([]);      
     const isBusy                    = ref(false);
+    const validationReport          = ref({});
+
+    //Currently there is no other way but get it using currentInstance
+    const currentVueInstance        = getCurrentInstance();
 
     const globalTargets               = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
     const globalGoals                 = computed(()=>((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))));
     const gbfTargetConsideration      = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
     const formattedDegreeOfAlignments = computed(()=>thesaurusStore.getDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT)||[]);
+    const hasOnClose                  = computed(()=>!!currentVueInstance?.vnode.props?.['onOnClose']); //vue prepends 'on' to all events internally
+
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
         return clean
     })
-    
-    const onClose = async (document)=>{
-        if(props.onClose)
-            props.onClose(document)
+
+    const onPostClose = async (document)=>{
+        
+        if(hasOnClose.value)
+            emit('onClose', document);
         else{
             await useNavigateAppTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I);
         }
     }
+
     const onPostSaveDraft = async (document)=>{
-        if(props.onPostSaveDraft)
-            props.onPostSaveDraft(document)
+        emit('onPostSaveDraft', document);
+    }
+
+    const onPostReviewDocument = async(document, newValidationReport)=>{
+        validationReport.value = newValidationReport.value;
     }
 
     const onGoalsAndTargetSelected = async (selected, type)=>{
@@ -421,10 +437,6 @@
         document.value.complementaryIndicators = document.value?.complementaryIndicators?.filter(selected=>complementaryIndicators.value.find(e=>e.identifier == selected.identifier))
         if(!selectedGoalsAndTargets?.length)
             document.value.otherNationalIndicators = []
-    }
-
-    function onGetDocument(){
-        return cleanDocument;
     }
 
     function onFileUpload({file, locale}){
@@ -488,7 +500,8 @@
                 document.value = {...refProps.rawDocument.value};
             }
             else if(refProps.identifier.value || route?.params?.identifier){        
-                document.value = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
+                const documentInfo = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
+                document.value = documentInfo.body;
             }
 
             if(document.value.globalTargetAlignment?.length){
@@ -518,7 +531,20 @@
 
     onMounted(() => {
         init();
-    })  
+
+        console.log(useAttrs())
+    })
+    
+    
+    provide('kmWorkflowFunctions', {
+        onPostSaveDraft,
+        onPostReviewDocument,
+        onPostClose
+    });
+
+    provide("validationReview", {
+        hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+    });
 </script>
 <style>
     .global-target-modal .km-multi-checkbox .form-check{

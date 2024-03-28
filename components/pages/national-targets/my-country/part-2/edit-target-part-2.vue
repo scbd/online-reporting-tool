@@ -8,8 +8,8 @@
             <div  v-if="isLoading">
                 <km-spinner center></km-spinner>
             </div>           
-            <km-form-workflow v-if="!isLoading && document?.header" :focused-tab="props.workflowActiveTab" :get-document="onGetDocument"
-                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
+            <km-form-workflow v-if="!isLoading && document?.header" :focused-tab="props.workflowActiveTab" :document="cleanDocument"
+                :container="container">
                 <template #submission>
                     <form name="editForm">                     
                         <km-form-group>
@@ -117,10 +117,12 @@
         rawDocument        : {type: Object },
         globalGoalOrTarget : {type:String, required:true},
         headlineIndicators : {type:Array, required:true},
-        workflowActiveTab  : {type:Number, default:1 },
-        onClose            : {type:Function, required:false},
-        onPostSaveDraft    : {type:Function, required:false},
+        workflowActiveTab  : {type:Number, default:1 }
     }) 
+    
+    // These emits are used by base view when the form is 
+    // open in a dialog mode form overview
+    const emit  = defineEmits(['onClose', 'onPostSaveDraft'])
 
     const { t }           = useI18n();
     const { user }        = useAuth();
@@ -132,7 +134,8 @@
     const headlineIndicators = ref(null);
     const document = ref({});
     const isLoading = ref(false);
-    const documentLoadError = ref(null);  
+    const documentLoadError = ref(null); 
+    const validationReport  = ref({}); 
 
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
@@ -165,18 +168,16 @@
         init();
     })
 
-    function onGetDocument(){
-        return cleanDocument;
-    }
-
-    const onClose = async (document)=>{
-        if(props.onClose)
-            props.onClose(document)
+    const onPostClose = async (document)=>{
+        emit('onClose', document);
     }
 
     const onPostSaveDraft = async (document)=>{
-        if(props.onPostSaveDraft)
-            props.onPostSaveDraft(document)
+        emit('onPostSaveDraft', document);
+    }
+
+    const onPostReviewDocument = async(document, newValidationReport)=>{
+        validationReport.value = newValidationReport.value;
     }
     
     function onFileUpload({file, locale}){
@@ -226,7 +227,8 @@
                 document.value = {...props.rawDocument};
             }
             else if(identifier){
-                document.value = await EditFormUtility.load(identifier);                
+                const documentInfo = await EditFormUtility.load(identifier); 
+                document.value = documentInfo.body;               
             }
             else{
                 document.value = emptyDocument();
@@ -245,6 +247,16 @@
 
         isLoading.value = false;
     }
+
+    provide('kmWorkflowFunctions', {
+        onPostSaveDraft,
+        onPostReviewDocument,
+        onPostClose
+    });
+
+    provide("validationReview", {
+        hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+    });
 </script>
 <style scoped>
 .accordion-button small{

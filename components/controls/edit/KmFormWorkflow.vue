@@ -4,7 +4,7 @@
         <form-wizard  @on-tab-change="onChangeCurrentTab" ref="formWizard">
 
             <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
-                <CCol>
+                <CCol class="col-12">
                     <div class="action-buttons float-end mb-1">
                         <CButton @click="onSaveDraft()" color="primary" class="me-md-2" :disabled="isBusy">
                         <c-spinner v-if="validationReport.isSaving" size="sm" variant="grow" aria-hidden="true"></c-spinner>
@@ -18,9 +18,14 @@
                         <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                     </div>
                 </CCol>
-                <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
-                                             (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
-                    :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>            
+                <CCol class="col-12">
+                    <slot name="validation-errors" :onJumpTo="onJumpTo">
+                        <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
+                                                (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
+                            :report="validationReport" :container="container" @on-jump-to="onJumpTo">
+                        </km-validation-errors>
+                    </slot>  
+                </CCol>          
             </CRow>
 
             <tab-content :title="workflowTabs.introduction.title" :is-active="activeTab == workflowTabs.introduction.index">
@@ -51,11 +56,16 @@
                 <slot name="publish"></slot>
             </tab-content> -->
             
-            <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
-                    <km-validation-errors v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
-                                            (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
-                    :report="validationReport" :container="container" @on-jump-to="onJumpTo"></km-validation-errors>  
-                <CCol>
+            <CRow class="mt-3" v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
+                <CCol class="col-12">
+                    <slot name="validation-errors" :onJumpTo="onJumpTo">
+                        <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
+                                                (activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)"
+                            :report="validationReport" :container="container" @on-jump-to="onJumpTo">
+                        </km-validation-errors>
+                    </slot> 
+                </CCol>   
+                <CCol class="col-12">
                     <div class="action-buttons float-end">
                         <CButton @click="onSaveDraft()" color="primary" class="me-md-2">{{t('saveDraft')}}</CButton> 
                         <CButton @click="onReviewDocument()" color="primary" class="me-md-2" >{{t('review')}}</CButton>
@@ -85,32 +95,17 @@
     const definedProps = defineProps({
         focusedTab                  : { type:Number, default:0 },
         tab                         : { type:String },
-        // validationReport            : { type:Object,   required:true  },
-    	getDocument                 : { type:Function, required:true  },
-        onPreClose                  : { type:Function, required:false },
-        onPostClose                 : { type:Function, required:false },
-        onPreRevert                 : { type:Function, required:false },
-        onPostRevert                : { type:Function, required:false },
-        onPreSaveDraft              : { type:Function, required:false },
-        onPostSaveDraft             : { type:Function, required:false },
-        onPreRequest                : { type:Function, required:false },
-        onPostRequest               : { type:Function, required:false },
-        onPrePublish                : { type:Function, required:false },
-        onPostPublish               : { type:Function, required:false },
-        onError                     : { type:Function, required:false },
-        onStepChange                : { type:Function, required:false },
-        onReviewLanguageChange      : { type:Function, required:false },
-        onPreSaveDraftVersion	    : { type:Function, required:false },
+    	document                    : { type:Object, required:true  }
     });
     
     let originalDocument = null
     const container     = useAttrs().container ?? 'body,html';
-    const { $eventBus } = useNuxtApp();
     const {t }          = useI18n();
     const $toast        = useToast();
     const formWizard       = ref(null);
     const validationReport = ref({});
     const activeTab      = ref(null);
+    let workflowFunctions;
     
     const workflowTabs = {
         // use individual compute so that on language change the text is updated
@@ -139,7 +134,11 @@
         activeTab.value = workflowTabs.review.index;
 
         validationReport.value = { isAnalyzing:true };
-        const document = props.getDocument.value();
+        const document = props.document;
+
+        // onPreReviewDocument
+        if(workflowFunctions?.onPreReviewDocument)
+            document.value = await workflowFunctions.onPreReviewDocument(document);
 
         const validationResponse = await validate(document.value)
         if(validationResponse && validationResponse?.errors?.length) {
@@ -148,25 +147,29 @@
         }
         else 
             validationReport.value = {}
-        $eventBus.emit('onReviewError', validationResponse)
+
+        // onPostReviewDocument
+        if(workflowFunctions?.onPostReviewDocument)
+            await workflowFunctions.onPostReviewDocument(document, validationReport);
+
     }
 
     async function onSaveDraft(){
         try{
             validationReport.value = { isSaving:true };
-            const document = props.getDocument.value();
+            const document = props.document//document;
 
             // onPreSaveDraft
-            if(definedProps.onPreSaveDraft)
-                document = definedProps.onPreSaveDraft(document);
+            if(workflowFunctions?.onPreSaveDraft)
+                document.value = await workflowFunctions.onPreSaveDraft(document);
             
             // save document
             const documentSaveResponse = await EditFormUtility.saveDraft(document.value);
             originalDocument = { ...(document.value) }
 
             // onPostSaveDraft
-            if(definedProps.onPostSaveDraft)
-                definedProps.onPostSaveDraft({...documentSaveResponse, body:{...originalDocument}});
+            if(workflowFunctions.onPostSaveDraft)
+                await workflowFunctions.onPostSaveDraft({...documentSaveResponse, body:{...originalDocument}});
 
             $toast.success(t('draftSaveMessage'), {position:'top-right'});  
         }
@@ -181,11 +184,14 @@
         
         let redirectTo = undefined;
 
-        if(definedProps.onPreClose)
-            redirectTo = definedProps.onPreClose(originalDocument);
+        if(workflowFunctions.onPreClose)
+            redirectTo = await workflowFunctions.onPreClose(originalDocument);
             
-        if(redirectTo.value)
-            await useNavigateAppTo(redirectTo.value)
+        if(redirectTo)
+            await useNavigateAppTo(redirectTo)
+
+        if(workflowFunctions.onPostClose)
+            await workflowFunctions.onPostClose(originalDocument);
     }
 
     async function validate(document) {
@@ -221,7 +227,7 @@
     }
 
     function articleQuery(){
-        const document = props.getDocument.value();
+        const document = props.document;
         const realmConfStore  = useRealmConfStore();
         const realmConf = realmConfStore.realmConf;
         const ag = [];
@@ -245,6 +251,8 @@
 
     onMounted(() => {
         formWizard.value?.selectTab(focusedTab.value ?? 0)
+
+        workflowFunctions = inject('kmWorkflowFunctions');
     })
 
     // same as beforeRouteLeave option with no access to `this`
