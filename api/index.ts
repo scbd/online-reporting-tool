@@ -1,11 +1,11 @@
 
-import ArticlesApi            from '@/api/articles'
-import CountriesApi           from '@/api/countries'
-import KmDocumentsApi         from '@/api/km-storage'
+import ArticlesApi            from '~/api/articles'
+import CountriesApi           from '~/api/countries'
+import KmDocumentsApi         from '~/api/km-storage'
 import KmWorkflowsApi         from '@/api/km-workflows'
 import RealmConfigurationApi  from '@/api/realm-configuration'
-import SolrIndexApi           from '@/api/solr-index'
-import ThesaurusApi           from '@/api/thesaurus'
+import SolrIndexApi           from '~/api/solr-index'
+import ThesaurusApi           from '~/api/thesaurus'
 
 const articles           = new ArticlesApi          (context);
 const countries          = new CountriesApi         (context);

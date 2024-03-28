@@ -4,9 +4,9 @@ import { EditFormUtility } from "@/services/edit-form-utility";
 export const useNationalReport7Store = defineStore('nationalReport7', {
   state: () => {
     return {
-      nationalReport: undefined,
-      nationalReportDraft: undefined,
-      nationalReportDraftInfo:undefined,
+      nationalReport: undefined as EDocumentInfo | undefined,
+    //   nationalReportDraft: undefined,
+    //   nationalReportDraftInfo:undefined,
       isBusy:false
     }
   },
@@ -14,21 +14,14 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
     
   },
   actions:{
+    
     async loadNationalReport(identifier:string){
-        // if(!this.documents?.length){
-
-        //   const { $api }  = useNuxtApp();
-        //   const documents = await $api.kmStorage.documents.queryDocuments();
-        //   this.documents = documents;
-        // };
-    },
-    async loadNationalReportDraft(identifier:string){
         
         this.isBusy = true;
         try{
             const { $api }        = useNuxtApp();
             const { user }        = useAuth();
-            if(!identifier && !this.nationalReportDraft){
+            if(!identifier && !this.nationalReport){
                 
                 const queryParams = {
                     $filter   : `(type eq '${SCHEMAS.NATIONAL_REPORT_7}')`,
@@ -39,37 +32,36 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
                 };
                 const existingDraft = await $api.kmStorage.drafts.query(queryParams);
                 if(existingDraft?.Items?.length){
-                    this.nationalReportDraftInfo = existingDraft.Items[0];
-                    this.nationalReportDraft     = this.nationalReportDraftInfo.body;
+                    this.nationalReport = existingDraft.Items[0];
                     return;
                 }
                 const existingDocument = await $api.kmStorage.documents.query(queryParams);
                 if(existingDocument?.Items?.length){
-                    this.nationalReportDraftInfo = existingDocument.Items[0];
-                    this.nationalReportDraft     = this.nationalReportDraftInfo.body
+                    this.nationalReport = existingDocument.Items[0];
                     return;
                 }
                 
-                this.nationalReportDraft = {
-                    header : {
-                        schema : SCHEMAS.NATIONAL_REPORT_7,
-                        identifier : useGenerateUUID(),
-                        languages  : EditFormUtility.getPreferredEditLanguages()
-                    },        
-                    government : {
-                        identifier : user.value?.government
-                    },
-                    sectionI : {},
-                    sectionII : {},
-                    sectionIII : {},
-                    sectionIV : {},
-                    sectionV : {},
-                    annex : {}
+                this.nationalReport = {
+                    body : {
+                        header : {
+                            schema : SCHEMAS.NATIONAL_REPORT_7,
+                            identifier : useGenerateUUID(),
+                            languages  : EditFormUtility.getPreferredEditLanguages()
+                        },        
+                        government : {
+                            identifier : user.value?.government
+                        },
+                        sectionI : {},
+                        sectionII : {},
+                        sectionIII : {},
+                        sectionIV : {},
+                        sectionV : {},
+                        annex : {}
+                    }
                 }          
             }
             else if(identifier){
-                this.nationalReportDraftInfo = await EditFormUtility.load(identifier, SCHEMAS.NATIONAL_REPORT_7);
-                this.nationalReportDraft     = this.nationalReportDraftInfo.body;
+                this.nationalReport = await EditFormUtility.load(identifier, SCHEMAS.NATIONAL_REPORT_7);
             }
         }
         catch(e){
@@ -80,15 +72,6 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
         }
 
     },
-    async saveDraft(){
-        // if(!this.documents?.length){
-
-        //   const { $api }  = useNuxtApp();
-        //   const documents = await $api.kmStorage.documents.queryDocuments();
-        //   this.documents  = documents;
-        // };
-    },
-
     // async saveSectionI(header:Object, government:Object, sectionI:Object){
     //     this.nationalReportDraft.header = header;
     //     this.nationalReportDraft.government = government;

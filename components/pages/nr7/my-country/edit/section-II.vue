@@ -5,10 +5,10 @@
       </CCardHeader>
       <CCardBody>
 
-        <div  v-if="nationalReportStore.isBusy">
+        <div  v-if="nationalReport7Store.isBusy">
             <km-spinner></km-spinner>
         </div>
-        <form v-if="!nationalReportStore.isBusy && nationalReportStore.nationalReportDraft" name="editForm">          
+        <form v-if="!nationalReport7Store.isBusy && nationalReport7Store.nationalReport" name="editForm">          
             <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template #submission>
@@ -84,7 +84,7 @@
                     </km-form-group>
                 </template>
                 <template #review>                
-                    <view-nr7-section-II :identifier="nationalReportStore.nationalReportDraft.header.identifier" :document="nationalReportStore.nationalReportDraft"></view-nr7-section-II>
+                    <view-nr7-section-II :identifier="nationalReport7Store.nationalReport.header.identifier" :document="nationalReport7Store.nationalReport"></view-nr7-section-II>
                 </template>
             </nr7-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
@@ -123,13 +123,13 @@
     const {t, locale }              = useI18n();
     const $toast                    = useToast();        
     const container = useAttrs().container;
-    const nationalReportStore = useNationalReport7Store();
+    const nationalReport7Store = useNationalReport7Store();
 
-    await nationalReportStore.loadNationalReportDraft()
+    await nationalReport7Store.loadNationalReport()
 
-    let sectionII = nationalReportStore.nationalReportDraft.sectionII;
+    let sectionII = nationalReport7Store.nationalReport.sectionII;
     if(!sectionII){
-        nationalReportStore.nationalReportDraft.sectionII = sectionII = toRef({});
+        nationalReport7Store.nationalReport.sectionII = sectionII = toRef({});
     }
     if(!sectionII.hasRevisedNbsap){
         sectionII.hasRevisedNbsap = {};
@@ -176,7 +176,7 @@
 
 
     function cleanDocument(){
-        const  clean = useKmStorage().cleanDocument({...nationalReportStore.nationalReportDraft});
+        const  clean = useKmStorage().cleanDocument({...nationalReport7Store.nationalReport});
         clean.sectionIII = undefined;
         return toRef(clean);
     }

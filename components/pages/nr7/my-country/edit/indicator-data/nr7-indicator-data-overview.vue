@@ -110,7 +110,7 @@
     const {t, locale }              = useI18n();
     const $toast                    = useToast();        
     const container = useAttrs().container;
-    const nationalReportStore = useNationalReport7Store();
+    const nationalReport7Store = useNationalReport7Store();
 
     const globalIndicators          = ref({});
     let   nationalIndicatorData     = ref([]);

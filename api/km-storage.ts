@@ -112,9 +112,9 @@ class KmDraftsApi extends ApiBase
     return data;
   }
 
-  async get(identifier, params){
-    const data =  await useAPIFetch(serviceUrls.draftUrl(identifier),  { method:'get', params })
-    
+  async get(identifier, params):Promise<EDocumentInfo>{
+    const data =  await useAPIFetch<EDocumentInfo>(serviceUrls.draftUrl(identifier),  { method:'get', params })
+
     if(data.workingDocumentBody){
         data.body = data.workingDocumentBody;
     }
@@ -272,7 +272,7 @@ class KmAttachmentsApi extends ApiBase
   }
   getMimeType(file) {
     const filename = file.name
-    const sMimeType = file.type || "application/octet-stream";     
+    let sMimeType = file.type || "application/octet-stream";     
 
     if (filename && sMimeType == "application/octet-stream") {
         var sExt = "";

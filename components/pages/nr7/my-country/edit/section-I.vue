@@ -5,10 +5,10 @@
       </CCardHeader>
       <CCardBody>
 
-        <div  v-if="nationalReportStore.isBusy">
+        <div  v-if="nationalReport7Store.isBusy">
             <km-spinner></km-spinner>
         </div>
-        <form v-if="!nationalReportStore.isBusy && nationalReportStore.nationalReportDraft" name="editForm">          
+        <form v-if="!nationalReport7Store.isBusy && nationalReport7Store.nationalReport" name="editForm">          
             <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
                 <template #submission>
@@ -19,11 +19,11 @@
                             </div>
                             <div class="card-body">  
                                 <km-form-group name="government" caption="Government" required>
-                                    <km-government v-model="nationalReportStore.nationalReportDraft.government"></km-government>                           
+                                    <km-government v-model="nationalReport7Store.nationalReport.government"></km-government>                           
                                 </km-form-group>   
 
                                 <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
-                                    <km-languages v-model="nationalReportStore.nationalReportDraft.header.languages"></km-languages>
+                                    <km-languages v-model="nationalReport7Store.nationalReport.header.languages"></km-languages>
                                 </km-form-group>   
                             </div>
                         </div>
@@ -36,14 +36,14 @@
                                         <li>{{ t('coordination') }}</li>
                                         <li>{{ t('consultation') }}</li>
                                     </ul>
-                                    <km-input-rich-lstring v-model="sectionI.processUndertaken" :locales="nationalReportStore.nationalReportDraft.header.languages"></km-input-rich-lstring>
+                                    <km-input-rich-lstring v-model="sectionI.processUndertaken" :locales="nationalReport7Store.nationalReport.header.languages"></km-input-rich-lstring>
                                 </km-form-group>                                    
                             </div>
                         </div>
                     </km-form-group>
                 </template>
                 <template #review>                
-                    <view-nr7-section-I :identifier="nationalReportStore.nationalReportDraft.header.identifier" :document="nationalReportStore.nationalReportDraft"></view-nr7-section-I>
+                    <view-nr7-section-I :identifier="nationalReport7Store.nationalReport.header.identifier" :document="nationalReport7Store.nationalReport"></view-nr7-section-I>
                 </template>
             </nr7-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
@@ -82,14 +82,14 @@
     const {t, locale }              = useI18n();
     const $toast                    = useToast();        
     const container = useAttrs().container;
-    const nationalReportStore = useNationalReport7Store();
+    const nationalReport7Store = useNationalReport7Store();
 
-    await nationalReportStore.loadNationalReportDraft()
+    await nationalReport7Store.loadNationalReport()
 
-    const sectionI = nationalReportStore.nationalReportDraft.sectionI;
+    const sectionI = nationalReport7Store.nationalReport.sectionI;
 
     function cleanDocument(){
-        const clean = useKmStorage().cleanDocument({...nationalReportStore.nationalReportDraft});
+        const clean = useKmStorage().cleanDocument({...nationalReport7Store.nationalReport});
         return toRef(clean)
     }
 </script>

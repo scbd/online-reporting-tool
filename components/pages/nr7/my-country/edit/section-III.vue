@@ -5,10 +5,10 @@
       </CCardHeader>
       <CCardBody>
         
-        <div  v-if="nationalReportStore.isBusy || isBusy">
+        <div  v-if="nationalReport7Store.isBusy || isBusy">
             <km-spinner></km-spinner>
         </div>
-        <form v-if="!isBusy && !nationalReportStore.isBusy && nationalReportStore.nationalReportDraft" name="editForm">          
+        <form v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport" name="editForm">          
             <!-- <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
                 :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft"> -->
                 <!-- <template #submission> -->
@@ -90,7 +90,7 @@
                     
                 <!-- </template>
                 <template #review>                
-                    <view-nr7-section-II :identifier="nationalReportStore.nationalReportDraft.header.identifier" :document="nationalReportStore.nationalReportDraft"></view-nr7-section-II>
+                    <view-nr7-section-II :identifier="nationalReport7Store.nationalReport.header.identifier" :document="nationalReport7Store.nationalReport"></view-nr7-section-II>
                 </template>
             </nr7-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner> -->
@@ -103,25 +103,16 @@
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/section-III.json"></i18n>
 <script setup>
   
-    import { useAsyncState } from '@vueuse/core'
-    import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner
-    } from "~/components/controls";
-    // import Nr7Workflow              from './NR7Workflow.vue'
-    import viewNr7SectionII         from "@/components/pages/nr7/my-country/view/section-II.vue";
-    import { useRealmConfStore }    from '@/stores/realmConf';
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
     import { useRoute } from 'vue-router' 
     import { useToast } from 'vue-toast-notification';
-    import { useStorage } from '@vueuse/core'
-    import { EditFormUtility } from "@/services/edit-form-utility";
     import { KmDocumentsService } from '@/services/kmDocuments';
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
-    import addIndicatorData from './indicator-data/add-data.vue';
+    import addIndicatorData from './indicator-data/nr7-add-indicator-data.vue';
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
-    import ViewData         from './indicator-data/view-data.vue';
+    import ViewData         from './indicator-data/nr7-view-indicator-data.vue';
     import {uniqBy} from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
 
@@ -140,7 +131,7 @@
     const {t, locale }              = useI18n();
     const $toast                    = useToast();        
     const container = useAttrs().container;
-    const nationalReportStore = useNationalReport7Store();
+    const nationalReport7Store = useNationalReport7Store();
     const nationalTargets     = ref();
     const nationalIndicatorData = ref([]);
     const isBusy                = ref(true);
@@ -180,7 +171,7 @@
 
 
     function cleanDocument(){
-        const  clean = useKmStorage().cleanDocument({...nationalReportStore.nationalReportDraft});
+        const  clean = useKmStorage().cleanDocument({...nationalReport7Store.nationalReport});
         clean.sectionIII = undefined;
         return toRef(clean);
     }
@@ -225,17 +216,17 @@
         try{
             const response = await Promise.all([
                                 GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators(),
-                                nationalReportStore.loadNationalReportDraft(),
+                                nationalReport7Store.loadNationalReport(),
                                 loadNationalTargets(),
                                 loadNationalIndicatorData()
                             ]);            
             nationalTargets.value = response[2]; 
             nationalIndicatorData.value = response[3];
 
-            document.value = nationalReportStore.nationalReportDraft;
-            // sectionIII = nationalReportStore.nationalReportDraft.sectionIII;
+            document.value = nationalReport7Store.nationalReport?.body;
+            // sectionIII = nationalReport7Store.nationalReport.sectionIII;
             if(!sectionIII){
-                nationalReportStore.nationalReportDraft.sectionIII = sectionIII = toRef([]);
+                nationalReport7Store.nationalReport.sectionIII = sectionIII = toRef([]);
             }
 
             // if(!sectionIII?.length){
@@ -299,9 +290,9 @@
                 })
             })
     }
-
-    setTimeout(()=>{
-        isBusy.value = true;
-        init()
-    }, 200);
+    
+    onMounted(()=>{
+        // setTimeout(init, 200);
+        init();
+    })
 </script>

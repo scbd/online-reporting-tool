@@ -15,7 +15,7 @@ interface EDocumentInfo {
     size                    : number;
     rights                  : string[];
     charset                 : string;
-    title                   : typeof ELString;
+    title                   : ELString;
     summary                 : typeof ELString;
     metadata                : { [key: string]: string; };
     body                    : ENationalTarget7 | ENationalTarget7Mapping | object;
