@@ -9,8 +9,8 @@
             <km-spinner></km-spinner>
         </div>
         <form v-if="!nationalReport7Store.isBusy && nationalReport7Store.nationalReport" name="editForm">          
-            <nr7-workflow :focused-tab="props.workflowActiveTab" :get-document="cleanDocument" :validation-report="validationReport" 
-                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
+            <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
+                :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft">
                 <template #submission>
                     <km-form-group>
                         <div class="card">
@@ -45,7 +45,7 @@
                 <template #review>                
                     <view-nr7-section-I :identifier="nationalReport7Store.nationalReport.header.identifier" :document="nationalReport7Store.nationalReport"></view-nr7-section-I>
                 </template>
-            </nr7-workflow>
+            </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
         </form>
 
@@ -92,4 +92,17 @@
         const clean = useKmStorage().cleanDocument({...nationalReport7Store.nationalReport});
         return toRef(clean)
     }
+
+
+    // provide('kmWorkflowFunctions', {
+    //     onPreReviewDocument,
+    //     onPreSaveDraft,
+    //     onPostSaveDraft,
+    //     onPostReviewDocument,
+    //     onPostClose
+    // });
+
+    // provide("validationReview", {
+    //     hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+    // });
 </script>

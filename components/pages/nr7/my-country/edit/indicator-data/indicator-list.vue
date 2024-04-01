@@ -13,7 +13,7 @@
                     <missing-data-alert v-if="!Object.keys(indicator.nationalData||{})?.length && showMissingAlert"></missing-data-alert>    
      
                     <nr7-add-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
-                        :identifier="((indicator.nationalData||{}).header||{}).identifier" :on-post-save-draft="onAddIndicatorDataClose">
+                        :identifier="((indicator.nationalData||{}).header||{}).identifier" @on-post-save-draft="onAddIndicatorDataClose">
                     </nr7-add-indicator-data>       
                     <div v-if="indicator.nationalData">
                         <nr7-view-indicator-data :indicator-data="indicator.nationalData"></nr7-view-indicator-data>
@@ -21,7 +21,7 @@
                 </div>      
                 <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
                     <nr7-add-binary-indicator-data :indicator="indicator" container=".nr7-add-binary-indicator-data-modal"
-                        :identifier="indicator?.nationalData?.header?.identifier" :on-post-save-draft="onAddBinaryIndicatorDataClose">
+                        :identifier="indicator?.nationalData?.header?.identifier" @on-post-save-draft="onAddBinaryIndicatorDataClose">
                     </nr7-add-binary-indicator-data>   
                     <div v-if="indicator.nationalData">
                         <nr7-view-binary-indicator-data :indicator-data="indicator.nationalData" :questions="indicator?.question?.questions">

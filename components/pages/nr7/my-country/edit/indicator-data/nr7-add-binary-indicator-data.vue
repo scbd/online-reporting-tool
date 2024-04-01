@@ -85,7 +85,6 @@
     import { KmDocumentsService } from '~/services/kmDocuments';
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
     import {binaryIndicatorQuestions as binaryIndicatorSource} from '~/app-data/binary-indicator-questions.js'
-
    
     const props = defineProps({
         identifier         : {type:String, required:false},
@@ -143,6 +142,7 @@
     };
 
     const onPostSaveDraft = async (document)=>{
+        console.log(document);
         //vue prepends 'on' to all events internally
         if(!!currentVueInstance?.vnode.props?.['onOnPostSaveDraft'])
             emit('onPostSaveDraft', document);

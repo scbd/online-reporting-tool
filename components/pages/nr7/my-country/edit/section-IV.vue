@@ -9,8 +9,8 @@
             <km-spinner></km-spinner>
         </div>
         <form v-if="!isLoading" name="editForm">          
-            <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
-                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
+            <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
+                :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
                 <template #submission>
                     
                     <km-form-group>
@@ -72,4 +72,17 @@
             identifier : user.value?.government
         },
     }
+
+
+    // provide('kmWorkflowFunctions', {
+    //     onPreReviewDocument,
+    //     onPreSaveDraft,
+    //     onPostSaveDraft,
+    //     onPostReviewDocument,
+    //     onPostClose
+    // });
+
+    // provide("validationReview", {
+    //     hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+    // });
 </script>

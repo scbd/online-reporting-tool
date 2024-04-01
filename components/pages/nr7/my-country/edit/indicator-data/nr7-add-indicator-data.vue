@@ -24,7 +24,7 @@
                     <form v-if="!isLoading && document" name="editForm">
                     
                         <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
-                            :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
+                            :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft">
                             <template #submission>   
                                 <div class="mb-3">
                                     <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
