@@ -136,8 +136,6 @@
     }
 
     const onPreSaveDraft = async (document)=>{
-        console.log(document);
-        document.value.test = 'Blaise';
         return document;
     };
 
@@ -149,7 +147,6 @@
     };
     
     const onPreReviewDocument = (document)=>{
-        document.value.test = undefined;
         return document;
     }
     const onPostReviewDocument = (document, newValidationReport)=>{

@@ -20,5 +20,7 @@
    "submission"  : "Submission",
    "review"      : "Review",
    "publish"     : "Publish",
-   "introInfo"   : "This section will have a brief description to help users submit information"
+   "introInfo"   : "This section will have a brief description to help users submit information",
+
+   "confirmLeave": "Do you really want to leave? you have unsaved changes!"
 }

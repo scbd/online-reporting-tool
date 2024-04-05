@@ -15,7 +15,7 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
   },
   actions:{
     
-    async loadNationalReport(identifier:string){
+    async loadNationalReport(identifier:string, force:boolean){
         
         this.isBusy = true;
         try{
@@ -72,6 +72,9 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
         }
 
     },
+    updateNationalReport(nationalReport:EDocumentInfo){
+        this.nationalReport = nationalReport;
+    }
     // async saveSectionI(header:Object, government:Object, sectionI:Object){
     //     this.nationalReportDraft.header = header;
     //     this.nationalReportDraft.government = government;

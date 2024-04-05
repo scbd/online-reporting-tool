@@ -16,4 +16,5 @@ interface KmFormWorkflowFunctions{
     onStepChange                : Function,
     onReviewLanguageChange      : Function,
     onPreSaveDraftVersion	    : Function,
+    onGetDocumentInfo           : Function,
 }

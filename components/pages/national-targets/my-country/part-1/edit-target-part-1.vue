@@ -348,7 +348,7 @@
     import { useStorage } from '@vueuse/core'
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { EditFormUtility } from "@/services/edit-form-utility";
-    import {uniqBy} from 'lodash'
+    import {uniqBy, isEmpty, compact} from 'lodash'
 
     const props = defineProps({
         identifier         : {type: String },
@@ -391,6 +391,13 @@
 
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
+        clean.otherNationalIndicators = compact(clean.otherNationalIndicators?.map(e=>{
+            if(!isEmpty(e.value))
+                return e;
+        }));
+        if(!clean?.otherNationalIndicators?.length)
+            clean.otherNationalIndicators = undefined;
+        
         return clean
     })
 

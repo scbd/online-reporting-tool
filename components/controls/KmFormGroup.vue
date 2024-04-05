@@ -1,5 +1,5 @@
 <template>
-    <CRow class="km-form-group" :class="$attrs.class">
+    <CRow class="km-form-group mb-3">
 
         <CCol  :class="{'has-error':hasError(), 'has-help':content, 'mandatory':required}">
             
