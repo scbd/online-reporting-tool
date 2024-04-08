@@ -380,15 +380,14 @@
     const isBusy                    = ref(false);
     const validationReport          = ref({});
 
-    //Currently there is no other way but get it using currentInstance
-    const currentVueInstance        = getCurrentInstance();
+    const isEventDefined        = useHasEvents();
+    
 
     const globalTargets               = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
     const globalGoals                 = computed(()=>((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))));
     const gbfTargetConsideration      = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
     const formattedDegreeOfAlignments = computed(()=>thesaurusStore.getDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT)||[]);
-    const hasOnClose                  = computed(()=>!!currentVueInstance?.vnode.props?.['onOnClose']); //vue prepends 'on' to all events internally
-
+    
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
         clean.otherNationalIndicators = compact(clean.otherNationalIndicators?.map(e=>{
@@ -402,8 +401,8 @@
     })
 
     const onPostClose = async (document)=>{
-        
-        if(hasOnClose.value)
+                
+        if(isEventDefined('onClose'))
             emit('onClose', document);
         else{
             await useNavigateAppTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I);

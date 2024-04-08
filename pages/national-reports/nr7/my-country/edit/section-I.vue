@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <nr7-edit-section-I></nr7-edit-section-I>
+      <nr7-edit-section-I @on1-close="onClose"></nr7-edit-section-I>
     </km-suspense>
 </template>
   
@@ -18,4 +18,7 @@ const Nr7EditSectionI = defineAsyncComponent(()=>import("@/components/pages/nr7/
     }
   })
 
+    async function onClose(){
+        await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_OVERVIEW);
+    }
 </script>

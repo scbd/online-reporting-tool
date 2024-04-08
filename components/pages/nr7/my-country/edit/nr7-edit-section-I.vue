@@ -68,8 +68,7 @@
     const validationReport      = ref(null); 
     const container             = useAttrs().container;
     let document                = ref({});
-    //Currently there is no other way but get it using currentInstance
-    const currentVueInstance    = getCurrentInstance();
+    const isEventDefined        = useHasEvents();
     
 
     const sectionIComputed = computed({ 
@@ -89,10 +88,10 @@
 
     const onPostClose = async (document)=>{
         
-        if(hasOnClose.value)
+        if(isEventDefined('onClose'))
             emit('onClose', document);
         else{
-            await useNavigateAppTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I);
+            await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_OVERVIEW);
         }
     }
 

@@ -172,8 +172,7 @@
     const accordionToggle      = ref(null);
     const mouseOverTarget      = ref(null);
     const validationReport     = ref(null);
-    //Currently there is no other way but get it using currentInstance
-    const currentVueInstance        = getCurrentInstance();
+    const isEventDefined        = useHasEvents();
     
 
     const sectionIIIComputed = computed({ 
@@ -226,7 +225,7 @@
 
     const onPostClose = async (document)=>{
         
-        if(hasOnClose.value)
+        if(isEventDefined('onClose'))
             emit('onClose', document);
         else{
             await useNavigateAppTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I);

@@ -115,8 +115,7 @@
     const isBusy                    = ref(false);
     const tabPaneActiveKey          = ref(1)
 
-    //Currently there is no other way but get it using currentInstance
-    const currentVueInstance        = getCurrentInstance();
+    const isEventDefined        = useHasEvents();
 
     const nationalHeadlineIndicators        = computed(()=>globalIndicators.value.headlineIndicators?.map(mapWithNationalRecords));
     const nationalBinaryIndicators          = computed(()=>globalIndicators.value.binaryIndicators?.map(mapBinaryIndicatorWithNationalData));

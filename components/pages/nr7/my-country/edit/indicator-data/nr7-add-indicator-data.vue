@@ -116,8 +116,7 @@
     // open in a dialog mode form overview
     const emit  = defineEmits(['onClose', 'onPostSaveDraft']);
 
-    //Currently there is no other way but get it using currentInstance
-    const currentVueInstance        = getCurrentInstance();
+    const isEventDefined        = useHasEvents();
 
     const { user }        = useAuth();
     const security        = useSecurity();
@@ -151,8 +150,8 @@
     });
 
     const onPostClose = async (document)=>{
-        //vue prepends 'on' to all events internally
-        if(!!currentVueInstance?.vnode.props?.['onOnClose'])
+        
+        if(isEventDefined('onClose'))
             emit('onClose', document);
 
         showEditIndicatorDataModal.value = false;
