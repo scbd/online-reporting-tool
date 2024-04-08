@@ -79,17 +79,13 @@
     </CCard>
   
 </template>
-<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/section-II.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-II.json"></i18n>
 <script setup lang="ts">
   
     import IndicatorList from './indicator-list.vue';
-    import Nr7Workflow              from '../NR7Workflow.vue'
-    import viewNr7SectionII         from "@/components/pages/nr7/my-country/view/section-II.vue";
-    import { useRealmConfStore }    from '@/stores/realmConf';
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
     import { useRoute } from 'vue-router' 
     import { useToast } from 'vue-toast-notification';
-    import { useStorage } from '@vueuse/core'
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { KmDocumentsService } from '@/services/kmDocuments';
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';

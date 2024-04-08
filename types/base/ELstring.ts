@@ -1,4 +1,4 @@
 
-const ELString : EDictionary<String> {
+interface ELstring  extends EDictionary<String> {
     
 }

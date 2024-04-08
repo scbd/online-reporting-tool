@@ -280,11 +280,11 @@
         };
     }
 
-    function alertIfDocumentChanged(){
+    function alertIfDocumentChanged(e){
         if(originalDocument && !isEqual(originalDocument, props.document.value)){
             const answer = window.confirm(t('confirmLeave'))
             // cancel the navigation and stay on the same page
-            if (!answer) return false
+            if (answer) return false;
         }
     }
 
@@ -309,13 +309,19 @@
         return true;
     }
 
-    onMounted(() => {
+    onMounted(async() => {
         formWizard.value?.selectTab(focusedTab.value ?? 0)
 
         workflowFunctions = inject('kmWorkflowFunctions');
-        console.log('workflow form mounted')
 
-        originalDocument = cloneDeep(props.document.value);
+        // setTimeout(async() => {            
+            if(workflowFunctions.onGetDocumentInfo){
+                const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
+                originalDocument = cloneDeep(documentInfo.body);
+            }
+            else 
+                originalDocument = cloneDeep(props.document.value);
+        // }, 1000);
     })
     // same as beforeRouteLeave option with no access to `this`
     onBeforeRouteLeave((to, from) => {

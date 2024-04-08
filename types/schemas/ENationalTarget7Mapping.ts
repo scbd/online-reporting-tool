@@ -3,9 +3,9 @@ interface ENationalTarget7Mapping {
     header                    : EHeader;
     government                : ETerm;
     globalGoalOrTarget        : ETerm;
-    elementOfGlobalTargetsInfo: typeof ELString;
+    elementOfGlobalTargetsInfo: ELstring;
     referencePeriod           : TargetReferencePeriod[];
-    additionalInformation     : typeof lstring;
+    additionalInformation     : ELstring;
     additionalDocuments       : ELink[];
     notes                     : string;
 }
@@ -13,5 +13,5 @@ interface ENationalTarget7Mapping {
 interface TargetReferencePeriod {
     headlineIndicator  : EReference;
     hasReferencePeriod : boolean;
-    referencePeriodInfo: typeof lstring;
+    referencePeriodInfo: ELstring;
 }

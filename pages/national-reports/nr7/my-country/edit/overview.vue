@@ -198,7 +198,6 @@
 
     import { KmSuspense, KmLink } from "@/components/controls";
     import { SCHEMAS, ROLES } from '@/utils';
-    import EditSectionI from "@/components/pages/nr7/my-country/edit/section-I.vue";
     
     const { $appRoutes:appRoutes, $api } = useNuxtApp();
     const security                  = useSecurity();

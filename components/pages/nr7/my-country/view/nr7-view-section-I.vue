@@ -16,8 +16,7 @@
                         General
                     </div>
                     <div class="card-body">  
-                        <km-form-group v-if="document.government && document.government.identifier">
-                            <label class="form-label" for="government">Government</label>
+                        <km-form-group v-if="document.government && document.government.identifier" :caption="t('government')">
                             <km-value-term :value="document.government" :locale="selectedLocale"></km-value-term>                                    
                         </km-form-group>
                     </div>
@@ -26,8 +25,7 @@
             <km-form-group>
                 <div class="card">
                     <div class="card-body">  
-                        <km-form-group v-if="document.sectionI && document.sectionI.processUndertaken">
-                            <label class="form-label" for="targetTitle">{{t('preparationProcess')}}</label>                           
+                        <km-form-group v-if="document.sectionI && document.sectionI.processUndertaken" :caption="t('preparationProcess')">
                             <km-lstring-value type="html" :value="document.sectionI.processUndertaken" :locale="selectedLocale"></km-lstring-value> 
                         </km-form-group>
                     </div>
@@ -42,33 +40,12 @@
   
 </template>
 
-<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/section-I.json"></i18n>
-<i18n src="@/i18n/dist/components/pages/nr7/my-country/view/section-I.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-I.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/view/nr7-view-section-I.json"></i18n>
 
 <script setup>
   
-    import { KmFormGroup, KmSpinner, KmLstringValue,
-        KmLocales, KmValueTerm, KmValueBool, KmValueTerms, KmValue
-    } from "~/components/controls";
-    import { mapStores }            from 'pinia'
-    import { languages }            from '@/app-data/languages'
-    import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
-    import { useThesaurusStore }    from '@/stores/thesaurus';
-    import { useCountriesStore }    from '@/stores/countries';
-    import { useRealmConfStore }    from '@/stores/realmConf';
-    import { useRoute } from 'vue-router' 
-    import { KmDocumentDraftsService}from "@/services/kmDocumentDrafts";
-    import { KmDocumentsService } from "@/services/kmDocuments";
-    
-
-    const { user }                = useAuth();
-    const security                = useSecurity();
-    const route                   = useRoute();
-    const {t, locale}             = useI18n();
-    const thesaurusStore          = useThesaurusStore ();
-    const countriesStore          = useCountriesStore ();
-    const realmConfStore          = useRealmConfStore();
-    const {$appRoutes:appRoutes } = useNuxtApp();
+    const {t, locale}    = useI18n();
     const selectedLocale = ref(locale.value);
 
     const props = defineProps({

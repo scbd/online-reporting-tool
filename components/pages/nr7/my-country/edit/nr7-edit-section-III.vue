@@ -119,7 +119,7 @@
                     
                 </template>
                 <template #review>                
-                    <nr7-view-section-III :identifier="nationalReport7Store.nationalReport?.body?.header?.identifier" 
+                    <nr7-view-section-III :identifier="nationalReport7Store.nationalReport?.header?.identifier" 
                         :document="cleanDocument"
                         :national-targets="nationalTargetsComputed"></nr7-view-section-III>
                 </template>
@@ -132,7 +132,7 @@
     </CCard>
   
 </template>
-<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/section-III.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-III.json"></i18n>
 <script setup>
   
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
@@ -216,7 +216,7 @@
     }
 
     const cleanDocument = computed(()=>{
-        let clean = {...nationalReport7Store.nationalReport.body};
+        let clean = {...nationalReport7Store.nationalReport};
         clean.sectionIII = sectionIIIComputed.value;
 
         clean = useKmStorage().cleanDocument(clean);
@@ -304,10 +304,10 @@
             if(response[4]?.length)//there can be only binary indicator data record per government
                 nationalBinaryIndicatorData.value = response[4][0];
 
-            document.value = nationalReport7Store.nationalReport?.body;
+            document.value = nationalReport7Store.nationalReport;
 
             if(!document.value.sectionIII){
-                nationalReport7Store.nationalReport.body.sectionIII = [];
+                nationalReport7Store.nationalReport.sectionIII = [];
             }
 
             const sectionIII = document.value.sectionIII || [];
@@ -327,7 +327,7 @@
                     }
                 }
             }
-            nationalReport7Store.nationalReport.body.sectionIII = sectionIII;
+            nationalReport7Store.nationalReport.sectionIII = sectionIII;
             
             if(sectionIII?.length){
                 for (const value in nationalTargets.value) {

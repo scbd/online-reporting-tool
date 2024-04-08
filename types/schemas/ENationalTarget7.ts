@@ -2,26 +2,26 @@
 interface ENationalTarget7 {
     header                         : EHeader;
     government                     : ETerm;
-    title                          : ELString;
-    description                    : ELString;
+    title                          : ELstring;
+    description                    : ELstring;
     sequence                       : number;
     globalGoalAlignment            : ETerm[];
     globalTargetAlignment          : TargetAlignment[];
-    degreeOfAlignmentInfo          : ELString;
+    degreeOfAlignmentInfo          : ELstring;
     implementingConsiderations     : ETerm[];
-    implementingConsiderationsInfo : ELString;
-    mainPolicyOfMeasureOrActionInfo: ELString;
+    implementingConsiderationsInfo : ELstring;
+    mainPolicyOfMeasureOrActionInfo: ELstring;
     headlineIndicators             : ETerm[];
     binaryIndicators               : ETerm[];
     componentIndicators            : ETerm[];
     complementaryIndicators        : ETerm[];
     otherNationalIndicators        : NationalIndicators[];
-    nonStateActorCommitmentInfo    : ELString;
+    nonStateActorCommitmentInfo    : ELstring;
     hasNonStateActors              : boolean;
-    nonStateActorsInfo             : ELString;
+    nonStateActorsInfo             : ELstring;
     additionalImplementation       : LTerm;
-    additionalImplementationInfo   : ELString;
-    additionalInformation          : ELString;
+    additionalImplementationInfo   : ELstring;
+    additionalInformation          : ELstring;
     additionalDocuments            : ELink[];
     notes                          : string;
 }
@@ -37,5 +37,5 @@ interface TargetAlignment extends ETerm {
 interface NationalIndicators
 {
     identifier  : string;
-    value       : ELString;
+    value       : ELstring;
 }
