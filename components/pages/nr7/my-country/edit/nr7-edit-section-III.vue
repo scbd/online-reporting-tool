@@ -182,31 +182,6 @@
     });
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
 
-    const stakeholderLists = [
-        {identifier: '1', title: 'Indigenous peoples and local communities,,'},
-        {identifier: '1', title: 'Focal points for other multilateral environmental agreements,'},
-        {identifier: '1', title: 'The Protocols and SDGs,  '},
-        {identifier: '1', title: 'Subnational governments,'},
-        {identifier: '1', title: 'Cities and other local authorities,'},
-        {identifier: '1', title: 'Non-governmental organizations,'},
-        {identifier: '1', title: 'Women\'s groups, youth groups,'},
-        {identifier: '1', title: 'The business and finance community,'},
-        {identifier: '1', title: 'The scientific community,'},
-        {identifier: '1', title: 'Academia,'},
-        {identifier: '1', title: 'Faith-based organizations'},
-        {identifier: '1', title: 'Representatives of sectors related to or dependent on biodiversity,'},
-        {identifier: '1', title: 'Citizens at large,'},
-        {identifier: '1', title: 'Other stakeholders'},
-        
-    ]
-    const policyInstrumentLists = [
-        {identifier: '1', title: 'Adopted through legislation or otherwise by parliament'},
-        {identifier: '1', title: 'Adopted by Council of Ministers, Office of the President/Prime Minister or equivalent whole-of-government body'},
-        {identifier: '1', title: 'Adopted by Ministry of Environment or other sectoral ministry'},
-        {identifier: '1', title: 'Integrated into the poverty reduction strategy, sustainable development strategy, national development plan, and other related strategies or plans'},
-        {identifier: '1', title: 'Other (please specify)'},
-    ]
-
     const customLabel = ({title})=>{        
         return lstring(title, locale.value);
     }

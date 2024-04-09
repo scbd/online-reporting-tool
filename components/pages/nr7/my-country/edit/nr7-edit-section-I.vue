@@ -1,49 +1,53 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header">{{t('sectionI')}} {{t('sectionIDescription')}}</slot>
+        <slot name="header">{{t('sectionI')}} : {{t('sectionIDescription')}}</slot>
       </CCardHeader>
       <CCardBody>
 
         <div  v-if="nationalReport7Store.isBusy">
-            <km-spinner></km-spinner>
-        </div>
-        <form v-if="!nationalReport7Store.isBusy && nationalReport7Store.nationalReport" name="editForm">          
-            <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
-                :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft">
-                <template #submission>
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                General
-                            </div>
-                            <div class="card-body">  
-                                <km-form-group name="government" caption="Government" required>
-                                    <km-government v-model="nationalReport7Store.nationalReport.government"></km-government>                           
-                                </km-form-group>   
+            <km-spinner center  ></km-spinner>
+        </div>  
 
-                                <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
-                                    <km-languages v-model="nationalReport7Store.nationalReport.header.languages"></km-languages>
-                                </km-form-group>   
-                            </div>
+        <km-form-workflow v-if="!nationalReport7Store.isBusy && nationalReport7Store.nationalReport"
+            :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
+            :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft">
+            <template #submission>
+                <form  name="editForm">  
+                    <div class="card mb-3">
+                        <div class="card-header bg-secondary">
+                            General
                         </div>
-                        <div class="card" v-if="sectionIComputed">
-                            <div class="card-body">                      
-                                <km-form-group required :caption="t('preparationProcess')" name="processUndertaken">
-                                    <ul>
-                                        <li>{{ t('coordination') }}</li>
-                                        <li>{{ t('consultation') }}</li>
-                                    </ul>
-                                    <km-input-rich-lstring v-model="sectionIComputed.processUndertaken" :locales="nationalReport7Store.nationalReport.header.languages"></km-input-rich-lstring>
-                                </km-form-group>                                    
-                            </div>
+                        <div class="card-body">  
+                            <km-form-group name="government" caption="Government" required>
+                                <km-government v-model="nationalReport7Store.nationalReport.government"></km-government>                           
+                            </km-form-group>   
+
+                            <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
+                                <km-languages v-model="nationalReport7Store.nationalReport.header.languages"></km-languages>
+                            </km-form-group>   
                         </div>
-                </template>
-                <template #review>                
-                    <view-nr7-section-I :identifier="cleanDocument.header.identifier" :document="cleanDocument"></view-nr7-section-I>
-                </template>
-            </km-form-workflow>
-            <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
-        </form>
+                    </div>
+                    <div class="card" v-if="sectionIComputed">
+                        <div class="card-body">                      
+                            <km-form-group required :caption="t('preparationProcess')" name="processUndertaken">
+                                <ul>
+                                    <li>{{ t('coordination') }}</li>
+                                    <li>{{ t('consultation') }}</li>
+                                </ul>
+                                <km-input-rich-lstring v-model="sectionIComputed.processUndertaken" :locales="nationalReport7Store.nationalReport.header.languages"></km-input-rich-lstring>
+                            </km-form-group>                                    
+                        </div>
+                    </div>
+                </form>
+            </template>
+            <template #review>                
+                <nr7-view-section-I :identifier="cleanDocument.header.identifier" :document="cleanDocument"></nr7-view-section-I>
+            </template>
+        </km-form-workflow>
+
+        <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
+        
 
       </CCardBody>
     </CCard>
@@ -154,3 +158,4 @@
         init();
     })
 </script>
+
