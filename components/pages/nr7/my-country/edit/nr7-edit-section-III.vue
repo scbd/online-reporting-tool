@@ -27,13 +27,15 @@
                     <br>
                     <CAccordion always-open id="mapping-accordion">          
                         <!-- nationalTargets           -->
+                       
                         <CAccordionItem :item-key="index+1" :visible="true" 
-                            v-for="(assessment, index) in sectionIIIComputed" 
-                            :key="assessment"
+                            v-for="(assessment, index) in sectionIIIComputed" :key="assessment" 
+                            class="mb-2" :class="{'assessment-target-active' : mouseOverTarget?.identifier == assessment.target?.identifier}"
                             @mouseover="onMouseOver(assessment)" @mouseleave="onMouseleave(assessment)">
-                            <CAccordionHeader :id="'assessment-target'+assessment.identifier" class="assessment-target-accordion"
-                                :class="{'header header-sticky' : mouseOverTarget?.identifier == assessment?.identifier}">
-                                {{lstring(nationalTargets[assessment.target.identifier].title)}}         
+                            <CAccordionHeader :id="'assessment-target'+assessment.target?.identifier" 
+                                class="assessment-target-accordion"
+                                :class="{'p-0 header header-sticky' : canHeaderStick(assessment.target?.identifier)}">
+                                {{lstring(nationalTargets[assessment.target.identifier].title)}}                 
                             </CAccordionHeader>
                             <CAccordionBody> 
                                 <km-form-group>
@@ -398,8 +400,15 @@
     function onMouseleave(target){
         mouseOverTarget.value = null;
     }
-    function onMouseOver({identifier}){
-        mouseOverTarget.value = {identifier};
+    function onMouseOver({target}){
+        mouseOverTarget.value = target;
+    }
+
+    function canHeaderStick(identifier){
+        const accordionClasses = window.document.querySelector('#assessment-target'+identifier + ' button')?.className?.split(' ');
+        const isCollapsed = accordionClasses?.includes('collapsed');
+
+        return !isCollapsed && mouseOverTarget.value?.identifier == identifier
     }
 
     function arrayToObject(response){
@@ -448,5 +457,11 @@
 <style scoped>
 .assessment-target-accordion{
     top:110px;
+}
+.assessment-target-active{
+    border: 3px solid#26638e;
+}
+.accordion-header.assessment-target-accordion.header{
+    border-bottom: 3px solid#26638e;
 }
 </style>
