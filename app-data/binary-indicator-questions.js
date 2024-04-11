@@ -67,15 +67,50 @@ export const binaryIndicatorQuestions = [
     {
         "key":"binaryResponseGoalC",
         "target": "GBF-GOAL-B",
-        "binaryIndicator": "KMGBF-INDICATOR-BIN-C",
-        "title": "",
-        "questions":[
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-C-13",
+        "title": "", 
+        "questions":[ 
             {
-                "key":"",
-                "section":"goalB",
-                "number":"",
+                "key":"13_1",
+                "section":"binaryResponseTarget13",
+                "number":"13.1",
                 "type":"option",
-                "title": binaryQuestionsT.goalB_question1,
+                "title": binaryQuestionsT.target13_question_1,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"noButUnderDevelopment",
+                        "title": binaryQuestionsT.noButUnderDevelopment
+                    },
+                    {
+                        "value":"??", //value?
+                        "title": binaryQuestionsT.target13_question_1_c
+                    },
+                    {
+                        "value":"??", //value?
+                        "title": binaryQuestionsT.target13_question_1_d
+                    },
+                    {
+                        "value":"??", //value?
+                        "title": binaryQuestionsT.target13_question_1_e
+                    },
+                    {
+                        "value":"??", //value?
+                        "title": binaryQuestionsT.target13_question_1_f
+                    }
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"13_2",
+                "section":"binaryResponseTarget13",
+                "number":"13.2",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_2,
                 "multiple":false,
                 "options":[
                    {
@@ -94,15 +129,23 @@ export const binaryIndicatorQuestions = [
                         "value":"yesFully",
                         "title": binaryQuestionsT.yesFully
                     },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    },
+                    {
+                        "value":"??", //value?
+                        "title": binaryQuestionsT.digitalSequenceInformation
+                    }
                 ],
                 "mandatory":true
             },
             {
-                "key":"",
-                "section":"goalB",
-                "number":"",
+                "key":"13_3",
+                "section":"binaryResponseTarget13",
+                "number":"13.3",
                 "type":"option",
-                "title": binaryQuestionsT.goalB_question1,
+                "title": binaryQuestionsT.target13_question_3,
                 "multiple":false,
                 "options":[
                    {
@@ -120,10 +163,57 @@ export const binaryIndicatorQuestions = [
                     {
                         "value":"yesFully",
                         "title": binaryQuestionsT.yesFully
-                    },
+                    }
                 ],
                 "mandatory":true
             },
+            {
+                "key":"13_3_alt",
+                "section":"binaryResponseTarget13",
+                "number":"13.3 alt",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_3_alt,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"??", //value?
+                      "title": binaryQuestionsT.target13_question_3_alt_c
+                   },
+                   {
+                        "value":"??", //value?
+                        "title": binaryQuestionsT.target13_question_3_alt_d
+                    },
+                    {
+                        "value":"??", //value?
+                        "title": binaryQuestionsT.digitalSequenceInformation
+                    }
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"13_3_alt_bis",
+                "section":"binaryResponseTarget13",
+                "number":"13.3 alt bis",
+                "type":"string or text", //need to verify
+                "title": binaryQuestionsT.target13_question_3_alt_bis,
+                "mandatory":true
+            },
+            {
+                "key":"13_4",
+                "section":"binaryResponseTarget13",
+                "number":"13.4",
+                "type":"string or text", //need to verify
+                "title": binaryQuestionsT.target13_question_4,
+                "mandatory":true
+            },
+            {
+                "key":"13_4_alt",
+                "section":"binaryResponseTarget13",
+                "number":"13.4.alt",
+                "type":"string or text", //need to verify
+                "title": binaryQuestionsT.target13_question_4_alt,
+                "mandatory":true
+            }
         ]
     },
     {

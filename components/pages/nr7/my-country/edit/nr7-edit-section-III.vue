@@ -147,7 +147,7 @@
     import addIndicatorData from './indicator-data/nr7-add-indicator-data.vue';
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
     import ViewData         from './indicator-data/nr7-view-indicator-data.vue';
-    import {uniqBy, compact, cloneDeep } from 'lodash';
+    import _,{uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
     import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions.js'
 
@@ -168,6 +168,7 @@
     const container = useAttrs().container;
     const nationalReport7Store = useNationalReport7Store();
     const nationalTargets     = ref();
+    const gbfMissingNationalTargets = ref();
     const nationalIndicatorData = ref([]);
     const nationalBinaryIndicatorData = ref({});
     const isBusy                = ref(true);
@@ -240,7 +241,7 @@
                             return {
                                 identifier             : e.identifier,
                                 title                  : e.title,
-                                globalTargetAlignment  : e.globalTargetAlignment,
+                                globalTargetAlignment  : e.body?.globalTargetAlignment,
                                 componentIndicators    : componentIndicators    ?.flat(),
                                 complementaryIndicators: complementaryIndicators?.flat(),
                                 nationalIndicators     : e.body?.otherNationalIndicators||[],
@@ -261,6 +262,25 @@
         return [...result[0].Items,
                 ...result[1].Items.filter(e=>!result[0].Items?.find(draft=>draft.identifier == e.identifier))]
 
+    }
+
+    async function findMissingGlobalTargets(nationalTargets){
+        const globalTargets = await GbfGoalsAndTargets.loadGbfTargets()
+        const targets = _(Object.keys(nationalTargets))
+                .map(e=>{
+                    const target = nationalTargets[e];
+                    const values = target.globalTargetAlignment;
+
+                    if(Array.isArray(values))
+                        return values?.map(t=>t.identifier)
+                    
+                    return values?.identifier;
+
+                }).flattenDeep().compact().uniq().value();
+
+        return globalTargets.filter(e=>{
+            return !targets.includes(e.identifier)
+        });
     }
 
     async function init(){
@@ -321,7 +341,15 @@
                 }
                 
             }
-                       
+            
+            const missingTargets = gbfMissingNationalTargets.value = await findMissingGlobalTargets(nationalTargets.value);
+            missingTargets.forEach(e=>{
+                if(!sectionIII.find(e=>e.target?.identifier ==  e.identifier)){
+                    sectionIII.push({target : {identifier : e.identifier}})
+                    nationalTargets.value[e.identifier] = e;
+                }
+            })
+
             setTimeout(()=>accordionToggle.value.toggle(true), 500)
             
         }

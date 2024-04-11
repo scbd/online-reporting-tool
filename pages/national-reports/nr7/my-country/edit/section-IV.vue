@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <edit-section-IV></edit-section-IV>
+      <nr7-edit-section-IV></nr7-edit-section-IV>
     </km-suspense>
 </template>
   
