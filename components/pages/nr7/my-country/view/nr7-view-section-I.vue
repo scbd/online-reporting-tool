@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader v-if="identifier">
-        <slot name="header"> {{t('sectionI')}} : {{t('sectionIDescription')}}</slot>
+        <slot name="header"> {{t('sectionI')}} {{t('sectionIDescription')}}</slot>
       </CCardHeader>
       <CCardBody>
         <div v-if="document.header">

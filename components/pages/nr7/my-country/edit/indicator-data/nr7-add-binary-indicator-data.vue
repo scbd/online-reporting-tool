@@ -141,7 +141,7 @@
     const onPostSaveDraft = async (document)=>{
         console.log(document);
         //vue prepends 'on' to all events internally
-        if(!!currentVueInstance?.vnode.props?.['onOnPostSaveDraft'])
+        if(isEventDefined('onPostSaveDraft'))
             emit('onPostSaveDraft', document);
     };
     

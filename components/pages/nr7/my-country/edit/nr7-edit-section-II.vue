@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header">{{t('sectionII')}} : {{t('sectionIIDescription')}}</slot>
+        <slot name="header">{{t('sectionII')}} {{t('sectionIIDescription')}}</slot>
       </CCardHeader>
       <CCardBody>
 

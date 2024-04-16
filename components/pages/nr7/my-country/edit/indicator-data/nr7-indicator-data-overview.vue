@@ -58,22 +58,44 @@
                 </CNav>
                 <CTabContent>
                     <CTabPane role="tabpanel" aria-labelledby="home-tab" :visible="tabPaneActiveKey === 1">
-                        <indicator-list v-if="nationalHeadlineIndicators" :indicators="nationalHeadlineIndicators" show-missing-alert="true"></indicator-list>
+                        <indicator-list indicator-type="otherHeadlineIndicators" v-if="nationalHeadlineIndicators" :indicators="nationalHeadlineIndicators" show-missing-alert="true"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 2">
-                        <indicator-list v-if="nationalBinaryIndicators" :indicators="nationalBinaryIndicators" show-missing-alert="true"></indicator-list>
+                        <indicator-list indicator-type="binaryIndicators" v-if="nationalBinaryIndicators" :indicators="nationalBinaryIndicators" show-missing-alert="true"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 3">
-                        <indicator-list v-if="nationalComponentIndicators" :indicators="nationalComponentIndicators"></indicator-list>
+                        <div class="alert alert-info mt-2"  v-if="globalComponentIndicators">
+                            Would you like to provide data for other component indicators not linked to your country’s national targets?
+                            <km-select v-model="selectedComponent"
+                                :placeholder="t('componentIndicators')"
+                                :close-on-select="false"
+                                :options="globalComponentIndicators"
+                                :multiple="true"
+                                @update:modelValue="onIndicatorChange($event, 'component')">
+                            </km-select>
+                        </div>
+                        <indicator-list indicator-type="componentIndicators" v-if="nationalComponentIndicators" :indicators="nationalComponentIndicators"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="contact-tab" :visible="tabPaneActiveKey === 4">
-                        <indicator-list v-if="nationalComplementaryIndicators" :indicators="nationalComplementaryIndicators"></indicator-list>
+                        <div class="alert alert-info m-2" v-if="globalComplementaryIndicators">
+                            Would you like to provide data for other complementary indicators not linked to your country’s national targets?
+                            <km-select v-model="selectedComplementary"
+                                :placeholder="t('complementaryIndicators')"
+                                :close-on-select="false"
+                                :options="globalComplementaryIndicators"
+                                :multiple="true"
+                                @update:modelValue="onIndicatorChange($event, 'complementary')">
+                            </km-select>
+                        </div>
+                        <indicator-list indicator-type="complementaryIndicators" v-if="nationalComplementaryIndicators" :indicators="nationalComplementaryIndicators"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 5">
-                        <indicator-list v-if="otherNationalIndicators?.length" :indicators="otherNationalIndicators"></indicator-list>
+                        <indicator-list indicator-type="otherNationalIndicators" v-if="otherNationalIndicators?.length" :indicators="otherNationalIndicators"></indicator-list>
                     </CTabPane>
                 </CTabContent>
-                <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
+                <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal" message="Adding indicator to the list...">
+                   
+                </km-modal-spinner>
 
         </CCardBody>
     </CCard>
@@ -113,7 +135,10 @@
     let   nationalBinaryDatDocument = ref({});
     let   nationalTargets           = ref([]);
     const isBusy                    = ref(false);
+    const showSpinnerModal          = ref(false);
     const tabPaneActiveKey          = ref(1)
+    const selectedComplementary     = ref([]);
+    const selectedComponent         = ref([]);
 
     const isEventDefined        = useHasEvents();
 
@@ -121,18 +146,49 @@
     const nationalBinaryIndicators          = computed(()=>globalIndicators.value.binaryIndicators?.map(mapBinaryIndicatorWithNationalData));
     const nationalComponentIndicators       = computed(()=>globalIndicators.value?.componentIndicators?.filter(e=>filterNationalIndicators(e, 'componentIndicators'))?.map(mapWithNationalRecords));
     const nationalComplementaryIndicators   = computed(()=>globalIndicators.value.complementaryIndicators?.filter(e=>filterNationalIndicators(e, 'complementaryIndicators'))?.map(mapWithNationalRecords));
-    const otherNationalIndicators           = computed(()=>nationalTargets.value?.flatMap(e=>e.otherNationalIndicators)?.map(mapWithNationalRecords));
-
+    const otherNationalIndicators           = computed(()=>nationalTargets.value?.flatMap(e=>e.otherNationalIndicators)
+                                                            ?.map(e=>{
+                                                                e.title = e.value; 
+                                                                e.type  = 'national'
+                                                                return e;
+                                                            })
+                                                            ?.map(mapWithNationalRecords));
+    const globalComplementaryIndicators = computed(()=>globalIndicators.value?.complementaryIndicators?.filter(filterNationalCompIndicators));
+    const globalComponentIndicators     = computed(()=>globalIndicators.value?.componentIndicators?.filter(filterNationalComIndicators));
 
     function filterNationalIndicators(indicator, nationalIndicator){
-        return nationalTargets.value?.flatMap(e=>e[nationalIndicator]).find(e=>e.identifier == indicator.identifier)
+        const nationalIndicators = nationalTargets.value?.flatMap(e=>e[nationalIndicator])
+        
+        //verify if the COM/COP indicators is selected in National targets
+        if(nationalIndicators.find(e=>e.identifier == indicator.identifier)){
+            indicator.isNational = true;
+            return true;
+        }
+
+        // if not linked with national target check if there is national data
+        // for COM/COP as its possible that the user selected them from the additional
+        // dropdown method 
+
+        return isOtherIndicatorData(indicator);
     }
 
+    function isOtherIndicatorData(indicator){
+        return nationalIndicatorData.value?.find(e=>e.body?.indicator?.identifier == indicator.identifier)
+    }
+    function filterNationalCompIndicators(item){
+        return !item.isNational && !isOtherIndicatorData(item)
+    }
+    function filterNationalComIndicators(item){
+        return !item.isNational && !isOtherIndicatorData(item)
+    }
+    
+
     function mapWithNationalRecords(indicator){
-        const nationalData = nationalIndicatorData.value?.find(e=>e.body?.indicator?.identifier == indicator.identifier)?.body
+        const document = nationalIndicatorData.value?.find(e=>e.body?.indicator?.identifier == indicator.identifier)
         return {
             ...indicator,
-            nationalData
+            nationalData : document?.body,
+            documentInfo : document
         }
     }
 
@@ -189,20 +245,15 @@
 
     async function init(){
         isBusy.value = true;
-
-        nationalIndicatorData.value = await loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA);
-        const binaryData            = await loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA);
-        if(binaryData?.length)
-            nationalBinaryDatDocument.value= binaryData[0];
-        nationalTargets.value       = await loadNationalTargets(); 
+ 
         const indicatorResponse = await Promise.all([
                                     GbfGoalsAndTargets.loadGbfHeadlineIndicator(),
                                     GbfGoalsAndTargets.loadGbfBinaryIndicator(),
                                     GbfGoalsAndTargets.loadGbfComponentIndicator(),
                                     GbfGoalsAndTargets.loadGbfComplementaryIndicator(),
-                                    // loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
-                                    // loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA),
-                                    // loadNationalTargets()
+                                    loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
+                                    loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA),
+                                    loadNationalTargets()
                                 ]);
 
         globalIndicators.value = {
@@ -211,13 +262,56 @@
             componentIndicators     : indicatorResponse[2],
             complementaryIndicators : indicatorResponse[3],
         }
-        // nationalIndicatorData.value = indicatorResponse[4];
-        // //Get the first response as binary data can only have one record per govermnet
-        // nationalTargets.value       = indicatorResponse[5] ? indicatorResponse[5][0] : [];
+        nationalIndicatorData.value = indicatorResponse[4];
+        //Get the first response as binary data can only have one record per govermnet
+        nationalBinaryDatDocument.value = indicatorResponse[5] ? indicatorResponse[5][0] : [];
 
-        // nationalBinaryDatDocument.value    = indicatorResponse[6];
-
+        nationalTargets.value    = indicatorResponse[6];
+        
+        // selectedComplementary.value  = globalComplementaryIndicators.value.filter(e=>!e.isNational).map(e=>(e.title, e.identifier))   
+        // selectedComponent    .value  = globalComplementaryIndicators.value.filter(e=>!e.isNational).map(e=>(e.title, e.identifier))
+        
         isBusy.value = false;
+    }
+
+
+    async function onIndicatorChange(selectedItems, type){
+
+        if(!['complementary', 'component'].includes(type))
+            return;
+
+        showSpinnerModal.value = true;
+
+        try{
+            for (let i = 0; i < selectedItems.length; i++) {
+                const indicator = selectedItems[i];            
+                let existing = false;
+
+                if(type == 'component')
+                    existing = nationalComponentIndicators.value.find(e=>e.identifier == indicator) 
+                
+                if(type == 'complementary')
+                    existing = nationalComplementaryIndicators.value.find(e=>e.identifier == indicator)   
+                
+                if(!existing){
+                    const document = EditFormUtility.buildEmptyDocument(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA);
+                    document.indicator = { identifier : indicator };
+                    const documentSaveResponse = await EditFormUtility.saveDraft(document);
+                    documentSaveResponse.body = document;
+                    
+                    nationalIndicatorData.value.push(documentSaveResponse)
+                    
+                }
+            };
+            selectedComplementary.value = [];
+            selectedComponent.value = [];
+        }
+        catch(error){
+            useLogger().error(error, t('error'));
+        }
+        finally{
+            showSpinnerModal.value = false;
+        }
     }
 
     init();

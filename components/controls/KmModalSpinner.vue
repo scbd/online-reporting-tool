@@ -6,8 +6,8 @@
         <CModalBody>
             <slot>
                 <CSpinner/> 
-                <span v-if="message">{{ message }}</span>
-                <span v-if="!message">{{t('loading')}}...</span>
+                <span class="ms-1" v-if="message">{{ message }}</span>
+                <span class="ms-1" v-if="!message">{{t('loading')}}...</span>
             </slot>
         </CModalBody>           
     </CModal>

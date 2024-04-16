@@ -1,6 +1,7 @@
 <template>
     
-    <div class="d-grid justify-content-end mb-2">
+    <div class="d-flex justify-content-end mb-2">
+        <!-- <span :id="`teleport-indicator-${props.indicator.identifier}`" class="me-1"></span> -->
         <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="props.identifier" :disabled="props.disabled">
             {{ t('editIndicatorData') }}
         </CButton>
@@ -107,7 +108,6 @@
 
     const props = defineProps({
         identifier         : {type:String, required:false},
-        rawDocument        : {type: Object },
         indicator          : {type:Object, required:true},
         workflowActiveTab  : {type:Number, default:1 }
     });
@@ -127,15 +127,15 @@
     const container = useAttrs().container;
     const countryStore = useCountriesStore();
     
-    const selectedLocale = ref(locale.value);
-    const validationReport = ref(null);
-    let document = ref({});
-    let isLoading = ref(false);
+    const selectedLocale             = ref(locale.value);
+    const validationReport           = ref(null);
+    const document                   = ref({});
+    const isLoading                  = ref(false);
     const showEditIndicatorDataModal = ref(false);
-    //TODO: Temp, move to service 
+      //TODO: Temp, move to service 
     const isFetchingGlobalData = ref(false);
-    const wcmcTargets = ref([]);
-    const wcmcIndicatorData = ref([])
+    const wcmcTargets          = ref([]);
+    const wcmcIndicatorData    = ref([])
     
 
     const indicatorData = computed(()=>{
@@ -164,7 +164,7 @@
     const onPostSaveDraft = async (document)=>{
         // console.log(document);
         //vue prepends 'on' to all events internally
-        if(!!currentVueInstance?.vnode.props?.['onOnPostSaveDraft'])
+        if(isEventDefined('onPostSaveDraft'))
             emit('onPostSaveDraft', document);
     };
 

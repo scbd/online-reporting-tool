@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader v-if="identifier">
-        <slot name="header"> {{t('sectionV')}} : {{t('sectionVDescription')}}</slot>
+        <slot name="header"> {{t('sectionV')}} {{t('sectionVDescription')}}</slot>
       </CCardHeader>
       <CCardBody>
             <km-form-group v-if="document.sectionV && document.sectionV.assessmentSummaryInfo" 

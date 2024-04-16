@@ -1,5 +1,5 @@
 <template>
-    <CButton color="secondary" size="sm" v-if="hasDraft || hasPublishedVersion" 
+    <CButton color="danger" size="sm" v-if="hasDraft || hasPublishedVersion" 
         :disabled="!canDelete" @click="showDeleteConfirmation(true)">
         <font-awesome-icon icon="fa-trash" /> 
         <slot><span class="pl-1">{{t('delete')}}</span></slot>

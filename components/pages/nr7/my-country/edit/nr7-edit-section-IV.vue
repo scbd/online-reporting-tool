@@ -21,16 +21,15 @@
                        
                         <CAccordionItem :item-key="index+1" :visible="true" 
                             v-for="(assessment, index) in sectionIVComputed" :key="assessment" 
-                            class="mb-2" :class="{'assessment-target-active' : mouseOverTarget?.identifier == assessment.gbfGoal?.identifier}"
+                            class="mb-2" :class="{'assessment-target-active' : mouseOverGoal?.identifier == assessment.gbfGoal?.identifier}"
                             @mouseover="onMouseOver(assessment)" @mouseleave="onMouseleave(assessment)">
                             <CAccordionHeader :id="'assessment-target'+assessment.gbfGoal?.identifier" 
-                                class="assessment-target-accordion"
+                                class="assessment-goal-accordion"
                                 :class="{'p-0 header header-sticky' : canHeaderStick(assessment.gbfGoal?.identifier)}">
                                 {{lstring(globalGoals[assessment.gbfGoal.identifier].title)}}                 
                             </CAccordionHeader>
                             <CAccordionBody>
                                 <div >
-
                                     <km-form-group name="sdgRelationInfo" caption="Summary of national progress contributing to the global goals">
                                         <km-input-rich-lstring  :identifier="document.header.identifier" v-model="sectionIVComputed.sdgRelationInfo" 
                                         :locales="document.header.languages"></km-input-rich-lstring>
@@ -83,7 +82,10 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="alert alert-info">Do you want to provide data for Component and Complementary indicators on GBF Goals</div>
+                                        <div class="alert alert-info">
+                                            Would you like to provide data for Component and Complementary indicators on Global Biodiversity Framework (GBF) Goal 
+                                            <strong>{{lstring(globalGoals[assessment.gbfGoal.identifier].title)}}</strong>
+                                        </div>
                                         <div class="col-6">
                                             <km-form-group :caption="t('componentIndicators')">
                                                 <km-select
@@ -181,10 +183,9 @@
     const indicators          = ref({});
     const nationalTargets     = ref();
     const nationalIndicatorData = ref([]);
-    const nationalBinaryIndicatorData = ref({});
     const isBusy                = ref(true);
     const accordionToggle      = ref(null);
-    const mouseOverTarget      = ref(null);
+    const mouseOverGoal      = ref(null);
     const validationReport     = ref(null);
     const isEventDefined       = useHasEvents();
     
@@ -195,14 +196,6 @@
         }
     });
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
-
-    const complementaryIndicators = computed(()=>{
-        return Object.keys(indicators.value).filter(e=>indicators.value[e].type == 'complementary').map(e=>indicators.value[e])
-    })
-
-    const componentIndicators = computed(()=>{
-        return Object.keys(indicators.value).filter(e=>indicators.value[e].type == 'component').map(e=>indicators.value[e])
-    })
 
     const customLabel = ({title})=>{        
         return lstring(title, locale.value);
@@ -247,28 +240,6 @@
     }
     const onGetDocumentInfo = async ()=>{
         return nationalReport7Store.nationalReport;
-    }
-
-    async function loadNationalTargets(){
-
-        const response = await KmDocumentsService.loadDocuments(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`,500, undefined, 0, true)
-        const targets = await Promise.all(response?.Items?.map(async e=>{
-                            const headlineIndicators = await Promise.all(e.body?.globalGoalAlignment?.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)})||[]);
-                            const binaryIndicators   = await Promise.all(e.body?.globalGoalAlignment?.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)})||[]);
-                            const componentIndicators       = await Promise.all(e.body?.componentIndicators    ?.map(e=>{return GbfGoalsAndTargets.loadIndicator(e.identifier)})||[]);
-                            const complementaryIndicators   = await Promise.all(e.body?.complementaryIndicators?.map(e=>{return GbfGoalsAndTargets.loadIndicator(e.identifier)})||[]);
-                            return {
-                                identifier             : e.identifier,
-                                title                  : e.title,
-                                globalTargetAlignment  : e.globalTargetAlignment,
-                                componentIndicators    : componentIndicators    ?.flat(),
-                                complementaryIndicators: complementaryIndicators?.flat(),
-                                nationalIndicators     : e.body?.otherNationalIndicators||[],
-                                headlineIndicators     : headlineIndicators?.flat(),
-                                binaryIndicators       : binaryIndicators  ?.flat(),
-                            }
-                        }));
-                        return targets;
     }
 
     async function loadNationalIndicatorData(indicatorType){
@@ -328,8 +299,10 @@
             }
             else{
                 //if there are any selected COMP/COM indicators add them to the goals selected indicators list
-                nationalReport7Store.nationalReport.sectionIV?.forEach(e=>{
-                    console.log(e)
+                nationalReport7Store.nationalReport.sectionIV?.forEach(sectionItem=>{
+                    const goal = globalGoals.value[sectionItem.gbfGoal.identifier];
+                    goal.selectedComplementary  = sectionItem?.indicatorData?.complementary?.map(e=>e.indicator);
+                    goal.selectedComponent      = sectionItem?.indicatorData?.component?.map(e=>e.indicator);
                 })
             }
 
@@ -355,12 +328,13 @@
             else{
                 const nationalData = otherIndicatorData.find(e=>e.indicator.identifier == indicator)
                 if(nationalData)
-                    normalizeNationalData(indicatorTerms[indicator],indicatorTerms[indicator].type, nationalData)
+                    normalized[indicator] = normalizeNationalData(indicatorTerms[indicator],indicatorTerms[indicator].type, nationalData)
             }
         });
 
         return normalized;
     }
+
     function normalizeNationalData(indicator, type, nationalData){
         return {
             ...indicator,
@@ -394,38 +368,23 @@
             return;
 
         const isBinaryIndicator = document.body.header.schema == SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA;
-        
         if(!isBinaryIndicator){
-            nationalIndicatorData.value[document.body?.indicator?.identifier] = document.body;
+            const indicator = indicators.value[document.body?.indicator?.identifier];
+            nationalIndicatorData.value[document.body?.indicator?.identifier] = 
+                normalizeNationalData(indicator, indicator.type, document.body)
         }
         else{
-            nationalBinaryIndicatorData.value = document
-        }
-        
-        for (const value in nationalTargets.value) {
-            if (Object.hasOwnProperty.call(nationalTargets.value, value)) {
-                const target = nationalTargets.value[value];
-                target.indicators?.forEach((indicator, index)=>{
-                    if(document.body.header.schema == SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA){
-                        if(indicator.identifier == document.body.indicator.identifier){
-                            indicator.nationalData = document.body;
-                        }
-                    }
-                    else {
-                        const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator.identifier);
-                        if(binaryQuestion){
-                            const mapData = mapWithNationalBinaryData(indicator);
-                            indicator.nationalData = mapData.nationalData;
-                            
-                        }
-                    }
-                })
-            }
+            Object.keys(indicators.value)
+            .filter(e=>indicators.value[e].type == 'binary')
+            ?.forEach(e=>{
+                const indicator = indicators.value[e];
+                nationalIndicatorData.value[indicator?.identifier] = 
+                    normalizeNationalBinaryData(indicator, indicator.type, document.body);
+            })
         }
     }
 
     function onIndicatorChange(selectedItems, type, goal){
-        console.log(selectedItems, type, goal)
 
         if(!['complementary', 'component'].includes(type))
             return;
@@ -433,8 +392,12 @@
         sectionIVComputed.value
             ?.filter(e=>e.gbfGoal.identifier == goal)
             ?.forEach(e=>{
-                console.log(e.indicatorData[type])
-                const existingIndicators = e.indicatorData[type];
+
+                if(!e.indicatorData[type]){
+                    e.indicatorData[type] = [];
+                }
+
+                const existingIndicators = e.indicatorData[type]
                 selectedItems.forEach((identifier)=>{
                     if(!existingIndicators.find(e=>e.indicator.identifier == identifier.identifier))
                     existingIndicators.push({indicator : identifier})
@@ -442,18 +405,18 @@
             })
     }
 
-    function onMouseleave(target){
-        mouseOverTarget.value = null;
+    function onMouseleave(){
+        mouseOverGoal.value = null;
     }
-    function onMouseOver({target}){
-        mouseOverTarget.value = target;
+    function onMouseOver({gbfGoal}){
+        mouseOverGoal.value = gbfGoal;
     }
 
     function canHeaderStick(identifier){
         const accordionClasses = window.document.querySelector('#assessment-target'+identifier + ' button')?.className?.split(' ');
         const isCollapsed = accordionClasses?.includes('collapsed');
 
-        return !isCollapsed && mouseOverTarget.value?.identifier == identifier
+        return !isCollapsed && mouseOverGoal.value?.identifier == identifier
     }
 
     function arrayToObject(response, additionalProps = {}){
@@ -462,18 +425,6 @@
             const obj = {};
             response.forEach(e=>{
                 obj[e.identifier] = {...e, ...additionalProps };
-            });
-
-            return obj;
-        }
-    }
-
-    function mapNationalIndicatorData(response){
-
-        if(response?.length){
-            const obj = {};
-            response.forEach(e=>{
-                obj[e.body?.indicator?.identifier] = e.body;
             });
 
             return obj;
@@ -512,13 +463,13 @@
     })
 </script>
 <style scoped>
-.assessment-target-accordion{
+.assessment-goal-accordion{
     top:110px;
 }
 .assessment-target-active{
     border: 3px solid#26638e;
 }
-.accordion-header.assessment-target-accordion.header{
+.accordion-header.assessment-goal-accordion.header{
     border-bottom: 3px solid#26638e;
 }
 </style>
