@@ -174,8 +174,11 @@
             validationReport.value = {}
 
         // onPostReviewDocument
-        if(workflowFunctions?.onPostReviewDocument)
-            await workflowFunctions.onPostReviewDocument(document, validationReport);
+        if(workflowFunctions?.onPostReviewDocument){
+            const report = await workflowFunctions.onPostReviewDocument(document, validationReport);
+            if(report)
+                validationReport.value = report;
+        }
 
     }
 

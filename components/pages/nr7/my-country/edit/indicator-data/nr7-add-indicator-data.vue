@@ -1,18 +1,18 @@
 <template>
     
     <div class="d-flex justify-content-end mb-2">
-        <!-- <span :id="`teleport-indicator-${props.indicator.identifier}`" class="me-1"></span> -->
-        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="props.identifier" :disabled="props.disabled">
+        <!-- <span :id="`teleport-indicator-${indicator.identifier}`" class="me-1"></span> -->
+        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="identifier" :disabled="disabled">
             {{ t('editIndicatorData') }}
         </CButton>
-        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="!props.identifier" :disabled="props.disabled">
+        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="!identifier" :disabled="disabled">
             {{ t('addIndicatorData') }}
         </CButton>
     </div>
     <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
-                {{lstring(props.indicator.title)}}
+                {{lstring(indicator.title)}}
             </CModalTitle>
         </CModalHeader>
         <CModalBody>
@@ -24,7 +24,7 @@
                     </div>
                     <form v-if="!isLoading && document" name="editForm">
                     
-                        <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument"
+                        <km-form-workflow :focused-tab="workflowActiveTab" :document="cleanDocument"
                             :container="container">
                             <template #submission>   
                                 <div class="mb-3">
@@ -49,9 +49,12 @@
                                             Data
                                         </div>
                                         <div class="card-body">
+                                            <div class="alert alert-info">
+                                                <strong>Please note that source of data selection is disabled since its still under development.</strong>
+                                            </div>
                                             <km-form-check-group name="sourceOfData" required caption="Source of Data">
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData.value" label="Use national data set "/>
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData.value" label="Use the available data (pre-populated data)"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData.value" label="Use national data set " :disabled="true"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData.value" label="Use the available data (pre-populated data)" :disabled="!enabledIndicatorsForData[indicator.identifier]"/>
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData.value" label="No data available"/>
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData.value" label="Not relevant"/>                                            
                                             </km-form-check-group>
@@ -136,6 +139,10 @@
     const isFetchingGlobalData = ref(false);
     const wcmcTargets          = ref([]);
     const wcmcIndicatorData    = ref([])
+
+    const enabledIndicatorsForData = {
+        'GBF-INDICATOR-D.1' : true
+    }
     
 
     const indicatorData = computed(()=>{

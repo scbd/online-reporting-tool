@@ -63,7 +63,7 @@ const { indicatorData } = toRefs(props);
 function showQuestion(indicatorData, question){
 
     if(props.hideMissingResponse)
-        return indicatorData?.responses[question.key];
+        return indicatorData?.responses && indicatorData?.responses[question.key];
 
     return true;
 
@@ -77,7 +77,7 @@ function showQuestions(indicatorData, questions){
 
         if(!question.questions){
             if(props.hideMissingResponse)
-                return indicatorData?.responses[question.key];
+                return indicatorData?.responses && indicatorData?.responses[question.key];
         }
 
         return showQuestions(indicatorData, question.questions);

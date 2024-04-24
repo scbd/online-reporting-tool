@@ -3,7 +3,7 @@
       <CCardHeader>
         <slot name="header"> {{t('sectionII')}} {{t('sectionIIDescription')}}</slot>
       </CCardHeader>
-      <CCardBody>{{ sectionII }}
+      <CCardBody>
         <div v-if="sectionII">
 
             <km-form-group :caption="t('revisedNbsap')" v-if="sectionII.hasRevisedNbsap">

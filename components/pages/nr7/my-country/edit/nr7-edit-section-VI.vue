@@ -27,7 +27,7 @@
                     </km-form-group>
                 </template>
                 <template #review>                
-                    <view-nr7-section-I :identifier="document.header.identifier" :document="cleanDocument"></view-nr7-section-I>
+                    <view-nr7-section-VI :identifier="document.header.identifier" :document="cleanDocument"></view-nr7-section-VI>
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>

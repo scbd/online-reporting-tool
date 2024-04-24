@@ -10,7 +10,7 @@
             </div> -->            
             <toggle-accordion class="float-end mr-1 mb-1 btn-xs" ref="accordionToggle"
                 selector="#mapping-accordion .accordion-header button.accordion-button"
-                v-if="nationalTargets"></toggle-accordion>
+                v-if="sectionIIIComputed"></toggle-accordion>
             <br>
             <br>
             <CAccordion always-open id="mapping-accordion">

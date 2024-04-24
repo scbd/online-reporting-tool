@@ -110,7 +110,7 @@
                                                 <tr v-for="target in document.globalTargetAlignment" :key="target.identifier">
                                                     <td>
                                                         <km-form-group required :name="target.identifier+'_degreeOfAlignment'">
-                                                            <label class="control-label" :for="target.identifier+'_degreeOfAlignment'">
+                                                            <label class="form-label control-label" :for="target.identifier+'_degreeOfAlignment'" required>
                                                                 <span class="visually-hidden">{{ t('degreeOfAlignment') }} - </span>
                                                                 {{ lstring(globalTargets.find(e=>e.identifier == target.identifier).shortTitle, locale) }}
                                                                 <km-help class="ms-1 me-1" 

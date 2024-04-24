@@ -21,6 +21,12 @@
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
                 :container="container" :validate-server-draft="true">
                 <template #submission>
+                    <km-form-group name="sectionIII" class="visually-hidden">
+                        <label class="form-label control-label" for="sectionIII">
+                            <span >{{ t('sectionMandatory') }}</span>                                            
+                        </label>
+                    </km-form-group>      
+                
                     <toggle-accordion class="float-end mr-1 mb-1 btn-xs"  ref="accordionToggle"
                     selector="#mapping-accordion .accordion-header button.accordion-button" v-if="nationalTargets"></toggle-accordion>
                     <br>
@@ -41,12 +47,12 @@
                                 <km-form-group>
                                     <div class="card">
                                         <div class="card-body">
-                                            <km-form-group name="additionalInformation" caption="Please briefly describe the main actions taken to implement this national target">
+                                            <km-form-group required :name="'mainActionsInfo_'+ assessment.target?.identifier" caption="Please briefly describe the main actions taken to implement this national target">
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.mainActionsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
-                                            <km-form-group name="complementaryIndicators" caption="Please indicate the current level of progress towards this national target">
+                                            <km-form-group required :name="'levelOfProgress_'+ assessment.target?.identifier" caption="Please indicate the current level of progress towards this national target">
                                                 <km-select
-                                                    v-model="assessment.complementaryIndicators"
+                                                    v-model="assessment.levelOfProgress"
                                                     class="validationClass"
                                                     label="title"
                                                     track-by="identifier"
@@ -60,15 +66,15 @@
                                                 >
                                                 </km-select>
                                             </km-form-group>
-                                            <km-form-group name="additionalInformation" caption="Please provide a summary of progress towards this national target, including the main outcomes achieved, key challenges encountered, and different approaches that may be taken for further implementation">
+                                            <km-form-group required :name="'progressSummaryInfo_'+ assessment.target?.identifier" caption="Please provide a summary of progress towards this national target, including the main outcomes achieved, key challenges encountered, and different approaches that may be taken for further implementation">
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.progressSummaryInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
 
-                                            <km-form-group name="additionalInformation" caption="Please provide examples or cases to illustrate the effectiveness of the actions taken to implement this national assessment. If needed, provide relevant web links or attach related materials or publications">
+                                            <km-form-group required :name="'actionEffectivenessInfo_'+ assessment.target?.identifier" caption="Please provide examples or cases to illustrate the effectiveness of the actions taken to implement this national assessment. If needed, provide relevant web links or attach related materials or publications">
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.actionEffectivenessInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
 
-                                            <km-form-group name="additionalInformation" caption="Please briefly describe how the implementation of this national target relates to progress in achieving related Sustainable Development Goals and associated targets and implementation of other related agreements ">
+                                            <km-form-group required :name="'sdgRelationInfo_'+ assessment.target?.identifier" caption="Please briefly describe how the implementation of this national target relates to progress in achieving related Sustainable Development Goals and associated targets and implementation of other related agreements ">
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.sdgRelationInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
                                         </div>
@@ -220,7 +226,12 @@
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
-        validationReport.value = newValidationReport.value;
+        if(newValidationReport.value?.errors)
+            newValidationReport.value.errors = newValidationReport.value?.errors?.filter(e=>e.parameters=='sectionIII');
+
+        validationReport.value     = newValidationReport.value;
+
+        return newValidationReport.value;
     }
     
     const onPreReviewDocument = (document)=>{

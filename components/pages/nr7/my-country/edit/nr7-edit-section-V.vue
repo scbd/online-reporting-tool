@@ -16,7 +16,12 @@
                     
                     <form v-if="!isLoading && sectionVComputed" name="editForm">   
                         <div class="card mt-2">                           
-                            <div class="card-body">       
+                            <div class="card-body"> 
+                                <km-form-group name="sectionV" class="visually-hidden">
+                                    <label class="form-label control-label" for="sectionV">
+                                        <span >{{ t('sectionMandatory') }}</span>                                            
+                                    </label>
+                                </km-form-group>      
                                 <div class="alert alert-info">
                                    {{ t('introduction') }}
                                 </div>
@@ -94,7 +99,12 @@
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
-        validationReport.value = newValidationReport.value;
+        if(newValidationReport.value?.errors)
+            newValidationReport.value.errors = newValidationReport.value?.errors?.filter(e=>e.parameters=='sectionV');
+
+        validationReport.value     = newValidationReport.value;
+
+        return newValidationReport.value;
     }
     
     const onPreReviewDocument = (document)=>{

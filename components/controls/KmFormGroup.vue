@@ -37,20 +37,7 @@
     }
 
 </script>
-<style scoped>
+<style>
 
-    .km-form-group.mandatory{
-        border-left: 5px solid red;
-        padding-left: 10px;
-    }
-    .km-form-group label.required:after, .km-form-group label[required]:after {
-        color: #e32;
-        content: ' * ';
-    }
-    .km-form-group.has-help label.control-label{
-        display: unset;
-    }
-    .km-form-group .control-label{
-        font-weight: 700;
-    }
+    
 </style>
