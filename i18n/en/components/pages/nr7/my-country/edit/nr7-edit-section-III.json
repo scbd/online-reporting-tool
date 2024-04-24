@@ -5,6 +5,7 @@
     "binaryIndicators": "Binary indicator",
     "componentIndicators": "Component indicator",
     "complementaryIndicators": "Complementary indicator",
-    "nationalIndicators": "National indicator"
+    "nationalIndicators": "National indicator",
+    "sectionMandatory" : "All fields in Section III are mandatory"
 
 }

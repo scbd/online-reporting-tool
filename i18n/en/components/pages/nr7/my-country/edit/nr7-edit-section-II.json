@@ -10,5 +10,6 @@
     "stakeholders"          : "Stakeholders",
     "hasNbsapAdopted"       : "Has your country's revised or updated NBSAPs been adopted as policy or legal instruments?",
     "anticipatedNbsapAdoptionDate"  : "Please indicate the anticipated date of adoption",
-    "policyInstrument"     : "Please indicate the type of policy instrument your country's revised or updated NBSAPs has been adopted as"
+    "policyInstrument"     : "Please indicate the type of policy instrument your country's revised or updated NBSAPs has been adopted as",
+    "sectionMandatory" : "All fields in Section II are mandatory"
 }

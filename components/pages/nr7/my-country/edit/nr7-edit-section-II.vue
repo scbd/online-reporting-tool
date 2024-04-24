@@ -13,7 +13,13 @@
                 :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft">
                 <template #submission>
                     <div class="card">
-                        <div class="card-body">              
+                        <div class="card-body">    
+                            <km-form-group name="sectionII" class="visually-hidden">
+                                <label class="form-label control-label" for="sectionII">
+                                    <span >{{ t('sectionMandatory') }}</span>                                            
+                                </label>
+                            </km-form-group>      
+                                
                             <km-form-group name="hasRevisedNbsap" :caption="t('revisedNbsap')" required>    
                                 <km-form-check-item type="radio" name="hasRevisedNbsap"  for="hasRevisedNbsap" id="hasRevisedNbsapYes"       value="yes"        v-model="sectionIIComputed.hasRevisedNbsap" :label="t('yes')"/>
                                 <km-form-check-item type="radio" name="hasRevisedNbsap"  for="hasRevisedNbsap" id="hasRevisedNbsapNo"        value="no"         v-model="sectionIIComputed.hasRevisedNbsap" :label="t('no')"/>
@@ -144,7 +150,12 @@
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
-        validationReport.value = newValidationReport.value;
+        if(newValidationReport.value?.errors)
+            newValidationReport.value.errors = newValidationReport.value?.errors?.filter(e=>e.parameters=='sectionII');
+
+        validationReport.value     = newValidationReport.value;
+
+        return newValidationReport.value;
     }
     
     const onPreReviewDocument = (document)=>{

@@ -12,6 +12,12 @@
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
                 :container="container" :validate-server-draft="true">
                 <template #submission>
+                    <km-form-group name="sectionIV" class="visually-hidden">
+                        <label class="form-label control-label" for="sectionIV">
+                            <span >{{ t('sectionMandatory') }}</span>                                            
+                        </label>
+                    </km-form-group>      
+                
                     <toggle-accordion class="float-end mr-1 mb-1 btn-xs"  ref="accordionToggle"
                     selector="#mapping-accordion .accordion-header button.accordion-button"></toggle-accordion>
                     <br>
@@ -30,8 +36,13 @@
                             </CAccordionHeader>
                             <CAccordionBody>
                                 <div >
-                                    <km-form-group name="sdgRelationInfo" caption="Summary of national progress contributing to the global goals">
-                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="sectionIVComputed.sdgRelationInfo" 
+                                    {{ sectionIVComputed.summaryOfProgress }}
+                                    <km-form-group :name="'summaryOfProgress_'+ assessment.gbfGoal?.identifier" required>
+                                        <label class="form-label control-label" required :for="'summaryOfProgress_'+assessment.gbfGoal?.identifier">
+                                            Summary of national progress contributing to the global goals
+                                            <span class="visually-hidden">({{lstring(globalGoals[assessment.gbfGoal.identifier].title)}})</span>                                            
+                                        </label>
+                                        <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.summaryOfProgress" 
                                         :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                     
@@ -135,9 +146,9 @@
                     
                 </template>
                 <template #review>                
-                    <nr7-view-section-III :identifier="nationalReport7Store.nationalReport?.header?.identifier" 
-                        :document="cleanDocument"
-                        :national-targets="nationalTargetsComputed"></nr7-view-section-III>
+                    <nr7-view-section-IV :identifier="cleanDocument?.header?.identifier" 
+                        :document="cleanDocument" :global-goals="globalGoals" :indicators="indicators"
+                        :national-indicator-data="nationalIndicatorData"></nr7-view-section-IV>
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
@@ -190,11 +201,7 @@
     const isEventDefined       = useHasEvents();
     
 
-    const sectionIVComputed = computed({ 
-        get(){ 
-            return document.value.sectionIV
-        }
-    });
+    const sectionIVComputed = computed(()=>document.value.sectionIV);
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
 
     const customLabel = ({title})=>{        
@@ -207,7 +214,6 @@
     const cleanDocument = computed(()=>{
         let clean = {...nationalReport7Store.nationalReport};
         clean.sectionIV = sectionIVComputed.value;
-
         clean = useKmStorage().cleanDocument(clean);
         
         return clean;
@@ -231,8 +237,14 @@
         nationalReport7Store.updateNationalReport(document);
     }
 
-    const onPostReviewDocument = async(document, newValidationReport)=>{
-        validationReport.value = newValidationReport.value;
+    const onPostReviewDocument = async(document, newValidationReport)=>{   
+        
+        if(newValidationReport.value?.errors)
+            newValidationReport.value.errors = newValidationReport.value?.errors?.filter(e=>e.parameters=='sectionIV');
+
+        validationReport.value     = newValidationReport.value;
+
+        return newValidationReport.value;
     }
     
     const onPreReviewDocument = (document)=>{

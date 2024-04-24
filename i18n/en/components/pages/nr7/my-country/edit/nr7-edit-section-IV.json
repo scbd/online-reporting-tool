@@ -8,5 +8,6 @@
     "national": "National indicator",
 
     "complementaryIndicators" : "Complementary indicators",
-    "componentIndicators"      : "Component indicators"
+    "componentIndicators"      : "Component indicators",
+    "sectionMandatory" : "All fields in Section IV are mandatory"
 }

@@ -5,7 +5,7 @@
       </CCardHeader>
       <CCardBody>
         <div v-if="document.header">
-        
+             
             <div v-if="document.header.languages && document.header.languages.length > 1" 
                 class="d-grid d-md-flex justify-content-md-end mb-2">
                 <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>

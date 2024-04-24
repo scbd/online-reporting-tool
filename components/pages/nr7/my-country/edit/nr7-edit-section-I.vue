@@ -14,6 +14,12 @@
             :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft">
             <template #submission>
                 <form  name="editForm">  
+                    <km-form-group name="sectionI" class="visually-hidden">
+                        <label class="form-label control-label" for="sectionI">
+                            <span >{{ t('sectionMandatory') }}</span>                                            
+                        </label>
+                    </km-form-group>      
+                
                     <div class="card mb-3">
                         <div class="card-header bg-secondary">
                             General
@@ -109,7 +115,12 @@
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
-        validationReport.value = newValidationReport.value;
+        if(newValidationReport.value?.errors)
+            newValidationReport.value.errors = newValidationReport.value?.errors?.filter(e=>e.parameters=='sectionI');
+
+        validationReport.value     = newValidationReport.value;
+
+        return newValidationReport.value;
     }
     
     const onPreReviewDocument = (document)=>{
