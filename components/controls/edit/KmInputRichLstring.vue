@@ -93,8 +93,8 @@ export default {
     },
     selectedLocale : {
         get(){
-            if(this.locales.includes(this.userPreferencesStore.editorActiveLanguageTab ))
-                return this.userPreferencesStore.editorActiveLanguageTab ;
+            // if(this.locales.includes(this.userPreferencesStore.editorActiveLanguageTab ))
+            //     return this.userPreferencesStore.editorActiveLanguageTab ;
             return this.activeLocale;
         }
     }
@@ -121,7 +121,10 @@ export default {
     },
     onTabChange(locale){
         this.activeLocale = locale;
-        this.userPreferencesStore.setEditorActiveLanguageTab(locale);
+        // console.log(locale)
+        // setTimeout(() => {
+            this.userPreferencesStore.setEditorActiveLanguageTab(locale);
+        // }, 1000);
     }
   },
   mounted(){

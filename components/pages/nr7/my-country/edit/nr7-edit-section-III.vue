@@ -58,11 +58,11 @@
                                                     track-by="identifier"
                                                     value-key="identifier"
                                                     placeholder="Please indicate the current level of progress towards this national target"
-                                                    :options="[]"
-                                                    :multiple="true"
+                                                    :options="progressAssessmentLists"
                                                     :disabled="false"
                                                     :custom-label="customLabel"
                                                     :custom-selected-item="customSelectedItem"
+                                                    
                                                 >
                                                 </km-select>
                                             </km-form-group>
@@ -148,6 +148,7 @@
     import { useToast } from 'vue-toast-notification';
     import { KmDocumentsService } from '@/services/kmDocuments';
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
+    import { useThesaurusStore }    from '@/stores/thesaurus';
     
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import addIndicatorData from './indicator-data/nr7-add-indicator-data.vue';
@@ -182,6 +183,7 @@
     const mouseOverTarget      = ref(null);
     const validationReport     = ref(null);
     const isEventDefined        = useHasEvents();
+    const thesaurusStore        = useThesaurusStore ();
     
 
     const sectionIIIComputed = computed({ 
@@ -190,7 +192,8 @@
         }
     });
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
-
+    const progressAssessmentLists = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.ASSESSMENT_PROGRESS)||[]));
+    
     const customLabel = ({title})=>{        
         return lstring(title, locale.value);
     }
@@ -277,7 +280,7 @@
 
     async function findMissingGlobalTargets(nationalTargets){
         const globalTargets = await GbfGoalsAndTargets.loadGbfTargets()
-        const targets = _(Object.keys(nationalTargets))
+        const targets = _(Object.keys(nationalTargets||{}))
                 .map(e=>{
                     const target = nationalTargets[e];
                     const values = target.globalTargetAlignment;
@@ -303,9 +306,10 @@
                                 nationalReport7Store.loadNationalReport(),
                                 loadNationalTargets(),
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
-                                loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)
+                                loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA),
+                                thesaurusStore.loadDomainTerms(THESAURUS.ASSESSMENT_PROGRESS)
                             ]);            
-            nationalTargets.value = arrayToObject(response[2]); 
+            nationalTargets.value = arrayToObject(response[2]) || {}; 
             
             nationalIndicatorData.value = mapNationalIndicatorData(response[3]);
             if(response[4]?.length)//there can be only binary indicator data record per government

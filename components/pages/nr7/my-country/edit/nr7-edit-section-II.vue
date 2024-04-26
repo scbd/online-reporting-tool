@@ -9,8 +9,8 @@
             <km-spinner center></km-spinner>
         </div>        
         <form v-if="!nationalReport7Store.isBusy && sectionIIComputed" name="editForm">          
-            <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
-                :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft">
+            <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument"
+                :container="container" :validate-server-draft="true">
                 <template #submission>
                     <div class="card">
                         <div class="card-body">    
@@ -42,7 +42,8 @@
                                 <km-select v-model="sectionIIComputed.stakeholders"
                                     class="validationClass" label="title" track-by="identifier" value-key="identifier"
                                     :placeholder="t('stakeholders')" :multiple="true" :disabled="false" :options="stakeholderLists"   
-                                    :custom-label="customLabel" :custom-selected-item="customSelectedItem">
+                                    :custom-label="customLabel" :custom-selected-item="customSelectedItem"
+                                    :close-on-select="false" >
                                 </km-select>
                             </km-form-group>
 
@@ -62,6 +63,7 @@
                                 <km-select v-model="sectionIIComputed.policyInstrument"
                                     class="validationClass" label="title" track-by="identifier"
                                     value-key="identifier" :placeholder="t('policyInstrument')" :multiple="true"
+                                    :close-on-select="false" 
                                     :disabled="false" :options="policyInstrumentLists" :custom-label="customLabel"
                                     :custom-selected-item="customSelectedItem">
                                 </km-select>

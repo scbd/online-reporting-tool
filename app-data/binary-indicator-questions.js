@@ -7,7 +7,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-GOAL-B",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-B",
         "title": "",
-        "questions":[
+        "questions1":[
             {
                 "key":"b_1",
                 "section":"goalB",
@@ -69,7 +69,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-GOAL-B",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-C-13",
         "title": "", 
-        "questions":[ 
+        "questions1":[ 
             {
                 "key":"13_1",
                 "section":"binaryResponseTarget13",
@@ -346,7 +346,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-06",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-6",
         "title": "",
-        "questions":[ 
+        "questions1":[ 
             {
                 "key":"6_1",
                 "section":"binaryResponseTarget6",
@@ -408,7 +408,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-08",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-8",
         "title": "",
-        "questions":[ 
+        "questions1":[ 
             {
                 "key":"8_1",
                 "section":"binaryResponseTarget8",
@@ -532,7 +532,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-09",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-9",
         "title": "",
-        "questions":[ 
+        "questions1":[ 
             {
                 "key":"9_1",
                 "section":"binaryResponseTarget9",
@@ -673,7 +673,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-012",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-12",
         "title": "",
-        "questions":[ 
+        "questions1":[ 
             {
                 "key":"12_1",
                 "section":"binaryResponseTarget12",
@@ -735,7 +735,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-013",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-13",
         "title": "",
-        "questions":[ 
+        "questions1":[ 
             {
                 "key":"13_1",
                 "section":"binaryResponseTarget13",
@@ -887,7 +887,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-014",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-14",
         "title": "",
-        "questions":[ 
+        "questions1":[ 
             {
                 "key":"14_1",
                 "section":"binaryResponseTarget14",
@@ -1023,7 +1023,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-015",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-15",
         "title": "",
-        "questions":[
+        "questions1":[
             {
                 "key":"15_1",
                 "section":"GBF-TARGET-015",
@@ -1112,7 +1112,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-016",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-16",
         "title": "",
-        "questions":[
+        "questions1":[
             {
                 "key":"16_1",
                 "section":"GBF-TARGET-016",
@@ -1205,7 +1205,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-017",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-17",
         "title": "",
-        "questions": [
+        "questions1": [
             {
                 "key": "17_1",
                 "section": "GBF-TARGET-017",
@@ -1391,7 +1391,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-020",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-20",
         "title": "",
-        "questions": [
+        "questions1": [
             {
                 "key": "20_1",
                 "section": "GBF-TARGET-020",
@@ -1568,7 +1568,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-22",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-22",
         "title": "",
-        "questions":[
+        "questions1":[
             {
                 "key":"22_1",
                 "section":"binaryResponseTarget22",
@@ -1886,7 +1886,7 @@ export const binaryIndicatorQuestions = [
         "target": "GBF-TARGET-023",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-23",
         "title": "",
-        "questions": [
+        "questions1": [
             {
                 "key": "23_1",
                 "section": "binaryResponseTarget23",
