@@ -10,8 +10,8 @@
         </div>  
 
         <km-form-workflow v-if="!nationalReport7Store.isBusy && nationalReport7Store.nationalReport"
-            :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
-            :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft">
+            :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
+            :container="container" :validate-server-draft="true">
             <template #submission>
                 <form  name="editForm">  
                     <km-form-group name="sectionI" class="visually-hidden">
@@ -20,17 +20,17 @@
                         </label>
                     </km-form-group>      
                 
-                    <div class="card mb-3">
+                    <div class="card mb-3" v-if="document?.header">
                         <div class="card-header bg-secondary">
                             General
                         </div>
-                        <div class="card-body">  
+                        <div class="card-body">
                             <km-form-group name="government" caption="Government" required>
-                                <km-government v-model="nationalReport7Store.nationalReport.government"></km-government>                           
+                                <km-government v-model="document.government"></km-government>                           
                             </km-form-group>   
 
                             <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
-                                <km-languages v-model="nationalReport7Store.nationalReport.header.languages"></km-languages>
+                                <km-languages v-model="document.header.languages"></km-languages>
                             </km-form-group>   
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                                     <li>{{ t('coordination') }}</li>
                                     <li>{{ t('consultation') }}</li>
                                 </ul>
-                                <km-input-rich-lstring v-model="sectionIComputed.processUndertaken" :locales="nationalReport7Store.nationalReport.header.languages"></km-input-rich-lstring>
+                                <km-input-rich-lstring v-model="sectionIComputed.processUndertaken" :locales="document.header.languages"></km-input-rich-lstring>
                             </km-form-group>                                    
                         </div>
                     </div>
@@ -88,9 +88,8 @@
     });
 
     const cleanDocument = computed(()=>{
-        let clean = {...nationalReport7Store.nationalReport};
+        let clean = {...document.value};
         clean.sectionI = sectionIComputed.value;
-
         clean = useKmStorage().cleanDocument(clean);
         
         return clean;

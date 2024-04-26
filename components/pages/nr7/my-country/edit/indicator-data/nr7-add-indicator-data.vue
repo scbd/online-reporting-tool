@@ -53,15 +53,20 @@
                                                 <strong>Please note that source of data selection is disabled since its still under development.</strong>
                                             </div>
                                             <km-form-check-group name="sourceOfData" required caption="Source of Data">
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData.value" label="Use national data set " :disabled="true"/>
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData.value" label="Use the available data (pre-populated data)" :disabled="!enabledIndicatorsForData[indicator.identifier]"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData.value" label="Use national data set " :disabled="!enabledNationalData[indicator.identifier]"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData.value" label="Use the available data (pre-populated data)" :disabled="!enabledGlobalData[indicator.identifier]"/>
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData.value" label="No data available"/>
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData.value" label="Not relevant"/>                                            
                                             </km-form-check-group>
 
-                                            <km-form-group name="sourceOfDataNational" required caption="National data set" v-if="document.sourceOfData.value=='national'">
-                                                <input type="file" id="input" @change="uploadFile"/>                                                
-                                            </km-form-group>
+                                            <div v-if="document.sourceOfData.value=='national'">
+                                                <km-form-group name="sourceOfDataNational" required caption="National data set" >
+                                                    <div class="alert alert-info">
+                                                        Download sample template for the Indicator <strong>here</strong>
+                                                    </div>
+                                                    <input type="file" id="input" @change="uploadFile"/>                                                
+                                                </km-form-group>                                                
+                                            </div>
                                             <km-form-group name="sourceOfDataNational" required caption="National data set" v-if="document.sourceOfData.value=='availableDataset'">
                                         
                                                 <div class="mt-3" v-if="!isFetchingGlobalData && !wcmcIndicatorData.data?.charts?.length">
@@ -140,8 +145,15 @@
     const wcmcTargets          = ref([]);
     const wcmcIndicatorData    = ref([])
 
-    const enabledIndicatorsForData = {
+    const enabledNationalData = {
+        'GBF-INDICATOR-C.1' : true
+    }
+    const enabledGlobalData = {
         'GBF-INDICATOR-D.1' : true
+    }
+
+    const indicatorDataTemplates = {
+        'GBF-INDICATOR-C.1' : 'assets/excel-templates/GBF-INDICATOR-C.1.xlsx'
     }
     
 

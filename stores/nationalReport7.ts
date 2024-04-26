@@ -54,8 +54,8 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
                             },
                             sectionI : {},
                             sectionII : {},
-                            sectionIII : {},
-                            sectionIV : {},
+                            sectionIII : [],
+                            sectionIV : [],
                             sectionV : {},
                             annex : {}
                         }

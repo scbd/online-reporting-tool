@@ -159,11 +159,11 @@
         activeTab.value = workflowTabs.review.index;
 
         validationReport.value = { isAnalyzing:true };
-        const document = props.document;
+        const document = ref(cloneDeep(props.document.value));
 
         // onPreReviewDocument
         if(workflowFunctions?.onPreReviewDocument)
-            document.value = await workflowFunctions.onPreReviewDocument(document);
+            document.value = await workflowFunctions.onPreReviewDocument(document.value);
 
         const validationResponse = await validate(document.value)
         if(validationResponse && validationResponse?.errors?.length) {

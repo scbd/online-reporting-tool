@@ -283,7 +283,7 @@
             // nationalTargets.value = arrayToObject(response[2]); 
             nationalIndicatorData.value = normalizeIndicatorData(indicators.value , response[3][0], response[2].map(e=>e.body));
             
-            if(!nationalReport7Store.nationalReport.sectionIV){
+            if(!nationalReport7Store.nationalReport.sectionIV?.length){
                 // add all global goals and its headline and binary indicators
                 // H & B will be mandatory and COMP/COM will be optional
                 const sectionIV = [];
