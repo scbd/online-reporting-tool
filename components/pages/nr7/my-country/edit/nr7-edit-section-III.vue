@@ -376,7 +376,11 @@
     }
 
     function mapWithNationalData(indicator, type){
-        const nationalData = nationalIndicatorData.value[indicator.identifier]
+        
+        let nationalData = {}
+        if(nationalIndicatorData.value)
+            nationalData = nationalIndicatorData.value[indicator.identifier];
+        
         return {
             ...indicator,
             nationalData,

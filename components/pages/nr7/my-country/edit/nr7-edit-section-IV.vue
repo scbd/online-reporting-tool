@@ -335,7 +335,7 @@
         const normalized = {};
         Object.keys(indicatorTerms).forEach(indicator=>{
             if(~indicator?.indexOf('KMGBF-INDICATOR-BIN')){
-                normalized[indicator] = normalizeNationalBinaryData(indicatorTerms[indicator], 'binary', binaryIndicatorData.body)
+                normalized[indicator] = normalizeNationalBinaryData(indicatorTerms[indicator], 'binary', binaryIndicatorData?.body)
             }
             else{
                 const nationalData = otherIndicatorData.find(e=>e.indicator.identifier == indicator)
@@ -360,13 +360,15 @@
         const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator.identifier);
         
         if(binaryQuestion){
-            const nationalData = nationalBinaryData[binaryQuestion.key]
+            let nationalData = {}
+            if(nationalBinaryData)
+                nationalData = nationalBinaryData[binaryQuestion.key]||{};
             return {
                 ...indicator,
                 nationalData : {
                     ...nationalData,
-                    header : nationalBinaryData.header,
-                    government : nationalBinaryData.government,
+                    header : nationalBinaryData?.header,
+                    government : nationalBinaryData?.government,
                 },
                 type,
                 question:binaryQuestion
