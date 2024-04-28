@@ -11,12 +11,12 @@
                 
             </CAccordionHeader>
             <CAccordionBody  class="indicator-accordion-item-content"> 
-                
                 <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
                     
                     <missing-data-alert v-if="!Object.keys(indicator.nationalData||{})?.length && showMissingAlert"></missing-data-alert>   
                     <div class="float-end ms-1">
-                        <km-delete-record  v-if="indicator.documentInfo" :document="indicator.documentInfo">
+                        <km-delete-record  v-if="indicator.documentInfo" :document="indicator.documentInfo"
+                            @on-delete="onRecordDelete($event, indicator)">
                             <span>{{ t('deleteIndicatorData') }}</span>
                         </km-delete-record>
                     </div>
@@ -43,8 +43,7 @@
     </CAccordion>
   <!-- :on-close="onAddIndicatorDataClose" -->
 </template>
-<script setup>
-    import MissingDataAlert from './missing-data-alert.vue';
+<script setup lang="ts">
     import { makeUid }         from '@coreui/utils/src'
     import {cloneDeep} from 'lodash';
     
@@ -55,26 +54,30 @@
         showMissingAlert   : {type:String, default:false },
         indicatorType      : {type:String, required:true }, 
     }) 
+    const emit = defineEmits(['onRecordDelete'])
 
     const componentId        = makeUid();
     const accordionToggle    = shallowRef(null);
-    const canTeleport        = ref(false);
+    // const canTeleport        = ref(false);
+    const indicators         = ref(props.indicators)
     
-    const computedIndicators = computed(()=>props.indicators);
+    const computedIndicators = computed(()=>indicators.value);
     
+    //TODO : do not update the props directly,
+    // clone and modify the object.
     function onAddIndicatorDataClose(document){
         
         if(!document)
             return;
 
-        let indicator = props.indicators.value.find(e=>e.identifier == document.body?.indicator?.identifier);
+        let indicator = indicators.value.find(e=>e.identifier == document.body?.indicator?.identifier);
         indicator.nationalData = document.body;
         indicator.documentInfo = document;
     }
 
     function onAddBinaryIndicatorDataClose(document, indicator){
         //when binary data is updated, updates reference of all the indicators in the list
-        props.indicators.value.forEach(indicator=>{
+        indicators.value.forEach(indicator=>{
             if(document.body[indicator.question.key]){
                 indicator.nationalData = {
                     government : indicator.nationalData.government,
@@ -84,11 +87,21 @@
             }
         })
     }
+
+    function onRecordDelete({identifier, type}, indicator): void{
+
+        let deletedIndicator = indicators.value.find(e=>e.identifier == indicator?.identifier);
+        delete deletedIndicator.nationalData;
+        delete deletedIndicator.documentInfo;
+
+        emit('onRecordDelete', {identifier, type, indicator})
+    }
     
     onMounted(()=>{
         nextTick(()=>{
             accordionToggle.value.toggle(true)
-            setTimeout(()=>canTeleport.value = true, 500)
+            // setTimeout(()=>canTeleport.value = true, 500)
+            indicators.value = props.indicators;
         })
     })
 </script>
