@@ -6,7 +6,7 @@
             </km-form-group>
             <km-form-group caption="Data"  v-if="indicatorData.data">
                 <div class="w-100" style="overflow: auto;">
-                    <CTable responsive bordered>
+                    <!-- <CTable responsive bordered>
                         <CTableBody>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">{{t('year')}}</CTableHeaderCell>
@@ -19,7 +19,33 @@
                                 </CTableDataCell>
                             </CTableRow>
                         </CTableBody>
-                    </CTable>
+                    </CTable> -->
+                    <table class="table responsive table-bordered">
+                        <tbody>
+                        <tr>
+                            <th>Indicator</th>
+                            <th> Has disaggregation
+                                <!-- Does this data row represent a disaggregation -->
+                            </th>
+                            <th>Disaggregation</th>
+                            <th>Year</th>
+                            <th>Unit</th>
+                            <th>Unit description</th>
+                            <th>Value</th>
+                            <th>Footnote</th>
+                        </tr>
+                        <tr v-for="unit in indicatorData.data" :key="unit">
+                            <td>{{unit.indicator}}</td>
+                            <td>{{unit.hasDisaggregation}}</td>
+                            <td>{{unit.disaggregation}}</td>
+                            <td>{{unit.year}}</td>
+                            <td>{{unit.unit}}</td>
+                            <td>{{unit.unitDescription}}</td>
+                            <td>{{unit.value}}</td>
+                            <td>{{unit.footnote}}</td>
+                        </tr>
+                    </tbody>
+                    </table>
                 </div>
             </km-form-group>
 

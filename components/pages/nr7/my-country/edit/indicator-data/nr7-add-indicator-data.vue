@@ -61,8 +61,11 @@
 
                                             <div v-if="document.sourceOfData.value=='national'">
                                                 <km-form-group name="sourceOfDataNational" required caption="National data set" >
-                                                    <div class="alert alert-info">
-                                                        Download sample template for the Indicator <strong>here</strong>
+                                                    <div class="alert alert-info" v-if="indicatorDataTemplates[indicator.identifier]">
+                                                        <a :href="indicatorDataTemplates[indicator.identifier]">
+                                                            Download sample template for the Indicator 
+                                                            <font-awesome-icon icon="fa-download"></font-awesome-icon>
+                                                        </a>
                                                     </div>
                                                     <input type="file" id="input" @change="uploadFile"/>                                                
                                                 </km-form-group>                                                
@@ -149,11 +152,12 @@
         'GBF-INDICATOR-C.1' : true
     }
     const enabledGlobalData = {
-        'GBF-INDICATOR-D.1' : true
+        'GBF-INDICATOR-D.1' : true,
+        'GBF-INDICATOR-A.3' : true
     }
 
     const indicatorDataTemplates = {
-        'GBF-INDICATOR-C.1' : 'assets/excel-templates/GBF-INDICATOR-C.1.xlsx'
+        'GBF-INDICATOR-C.1' : '/excel-templates/GBF-INDICATOR-C.1.xlsx'
     }
     
 
@@ -195,24 +199,39 @@
         validationReport.value = newValidationReport.value || {};
     }
     
-    const uploadFile = (event) => {
-        const file = event.target.files[0];
-        readXlsxFile(file).then((rows) => {
-            // `rows` is an array of rows
-            // each row being an array of cells.
+    const uploadFile = async (event) => {
+        try{
+            const file = event.target.files[0];
+            const rows = await readXlsxFile(file)
+                // `rows` is an array of rows
+                // each row being an array of cells.
 
-            if(!rows[0].some(e=>['year', 'value'].includes(e.toLowerCase()))){
-                alert('invalid template, please use the system provided template');
-                return;
-            }
-            const data = [];
-            for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                data.push({year : row[0], value: row[1]})
-            }
+                if(!rows[0].some(e=>['year', 'value'].includes(e.toLowerCase()))){
+                    alert('invalid template, please use the system provided template');
+                    return;
+                }
+                const data = [];
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    data.push({
+                        indicator        : row[0],
+                        hasDisaggregation: row[1],
+                        disaggregation   : row[2],
+                        year             : row[3],
+                        unit             : row[4],
+                        unitDescription  : row[5],
+                        value            : row[6],
+                        footnote         : row[7]
+                    })
+                }
+                
+                document.value.data = data;
             
-            document.value.data = data;
-        })
+        }
+        catch(e){
+            useLogger().error(e)
+            $toast.error('Error loading file details')
+        }
     };
 
     function onSourceOfDataChange(value){
@@ -231,6 +250,7 @@
     }
 
     async function loadGlobalDataSet(){
+        try{
         wcmcIndicatorData.value = [];
         if(!document.value?.indicator?.identifier)
             return;
@@ -278,8 +298,12 @@
                     document.value.data = chart.labels.map((e, index)=>{
                                     const val = valueData?.data[index]
                                     return {
+                                        indicator : dataResponse?.data?.globallyDerivedData?.title,
+                                        hasDisaggregation : e.dataGroupName != "Aggregated" ? 'No' : 'Yes',
+                                        disaggregation    : e.dataGroupName != "Aggregated" ? 'none' : '',
                                         year : e.replace(/Baseline|\(|\)/g, ''),
-                                        value: val
+                                        value: val,
+                                        unit: dataResponse?.data?.globallyDerivedData?.type
                                     }
                                 });
 
@@ -294,6 +318,14 @@
             }
         }
         isFetchingGlobalData.value = false;
+        }
+        catch(e){
+            useLogger().error(e)
+            $toast.error('Error loading document')
+        }
+        finally{
+            isFetchingGlobalData.value = false;
+        }
     }
 
     async function loadDocument(){
@@ -317,7 +349,7 @@
         }
         catch(e){
             useLogger().error(e)
-            $toast.error('Error loading document')
+            $toast.error('Error loading loadGlobalDataSet')
         }
         finally{
             isLoading.value = false;

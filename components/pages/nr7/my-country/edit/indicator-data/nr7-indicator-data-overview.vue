@@ -58,10 +58,12 @@
                 </CNav>
                 <CTabContent>
                     <CTabPane role="tabpanel" aria-labelledby="home-tab" :visible="tabPaneActiveKey === 1">
-                        <indicator-list indicator-type="otherHeadlineIndicators" v-if="nationalHeadlineIndicators" :indicators="nationalHeadlineIndicators" show-missing-alert="true"></indicator-list>
+                        <indicator-list indicator-type="otherHeadlineIndicators" v-if="nationalHeadlineIndicators" :indicators="nationalHeadlineIndicators" 
+                            show-missing-alert="true" @on-record-delete="onRecordDelete"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 2">
-                        <indicator-list indicator-type="binaryIndicators" v-if="nationalBinaryIndicators" :indicators="nationalBinaryIndicators" show-missing-alert="true"></indicator-list>
+                        <indicator-list indicator-type="binaryIndicators" v-if="nationalBinaryIndicators" :indicators="nationalBinaryIndicators" 
+                        show-missing-alert="true" @on-record-delete="onRecordDelete"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 3">
                         <div class="alert alert-info mt-2"  v-if="globalComponentIndicators">
@@ -74,7 +76,8 @@
                                 @update:modelValue="onIndicatorChange($event, 'component')">
                             </km-select>
                         </div>
-                        <indicator-list indicator-type="componentIndicators" v-if="nationalComponentIndicators" :indicators="nationalComponentIndicators"></indicator-list>
+                        <indicator-list indicator-type="componentIndicators" v-if="nationalComponentIndicators" :indicators="nationalComponentIndicators"
+                            @on-record-delete="onRecordDelete"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="contact-tab" :visible="tabPaneActiveKey === 4">
                         <div class="alert alert-info m-2" v-if="globalComplementaryIndicators">
@@ -87,10 +90,12 @@
                                 @update:modelValue="onIndicatorChange($event, 'complementary')">
                             </km-select>
                         </div>
-                        <indicator-list indicator-type="complementaryIndicators" v-if="nationalComplementaryIndicators" :indicators="nationalComplementaryIndicators"></indicator-list>
+                        <indicator-list indicator-type="complementaryIndicators" v-if="nationalComplementaryIndicators" :indicators="nationalComplementaryIndicators"
+                            @on-record-delete="onRecordDelete"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 5">
-                        <indicator-list indicator-type="otherNationalIndicators" v-if="otherNationalIndicators?.length" :indicators="otherNationalIndicators"></indicator-list>
+                        <indicator-list indicator-type="otherNationalIndicators" v-if="otherNationalIndicators?.length" :indicators="otherNationalIndicators"
+                            @on-record-delete="onRecordDelete"></indicator-list>
                     </CTabPane>
                 </CTabContent>
                 <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal" message="Adding indicator to the list...">
@@ -104,7 +109,6 @@
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-II.json"></i18n>
 <script setup lang="ts">
   
-    import IndicatorList from './indicator-list.vue';
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
     import { useRoute } from 'vue-router' 
     import { useToast } from 'vue-toast-notification';
@@ -313,6 +317,23 @@
             showSpinnerModal.value = false;
         }
     }
+
+    function onRecordDelete({identifier, type, indicator}): void{
+        nationalIndicatorData.value.removeItem(e=>e.identifier == identifier);
+
+        const headline = nationalHeadlineIndicators.value?.find(e=>e?.identifier == indicator.identifier)
+        const component = nationalComponentIndicators.value?.find(e=>e.identifier == indicator.identifier)
+        const complementary = nationalComplementaryIndicators.value?.find(e=>e.identifier == indicator.identifier);
+        //fake update the so that computed prop can update 
+        if(headline)
+            headline.status = 'deleted';
+        if(component)
+            component.status = 'deleted';
+        if(complementary)
+            complementary.status = 'deleted';
+
+    }
+    
 
     init();
 </script>

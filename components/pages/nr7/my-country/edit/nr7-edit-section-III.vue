@@ -325,7 +325,7 @@
             if(sectionIII?.length){
                 //verify if the existing data in section iii exists in published targets
                 sectionIII.forEach((target, index)=>{
-                    if(![target.identifier])
+                    if(!nationalTargets.value[target.identifier])
                         sectionIII.splice(index, 1);
                 });
             }
@@ -344,13 +344,7 @@
                 for (const value in nationalTargets.value) {
                     if (Object.hasOwnProperty.call(nationalTargets.value, value)) {
                         const target = nationalTargets.value[value];
-                        const indicators = [
-                            ...(compact(uniqBy(target.headlineIndicators     ||[], 'identifier').map(e=>mapWithNationalData(e, 'headlineIndicators')))),
-                            ...(compact(uniqBy(target.binaryIndicators       ||[], 'identifier').map(e=>mapWithNationalBinaryData(e, 'binaryIndicators')))),
-                            ...(compact(uniqBy(target.componentIndicators    ||[], 'identifier').map(e=>mapWithNationalData(e, 'componentIndicators')))),
-                            ...(compact(uniqBy(target.complementaryIndicators||[], 'identifier').map(e=>mapWithNationalData(e, 'complementaryIndicators')))),
-                            ...(compact(uniqBy(target.nationalIndicators     ||[], 'identifier').map(e=>mapWithNationalData(e, 'nationalIndicators')))),
-                        ]
+                        const indicators = mapIndicatorsToData(target)
                         target.indicators = indicators;
                     }
                 }
@@ -359,9 +353,10 @@
             
             const missingTargets = gbfMissingNationalTargets.value = await findMissingGlobalTargets(nationalTargets.value);
             missingTargets.forEach(e=>{
-                if(!sectionIII.find(e=>e.target?.identifier ==  e.identifier)){
+                if(!sectionIII.find(sec3=>sec3.target?.identifier ==  e.identifier)){
+                    const indicators = mapIndicatorsToData({headlineIndicators:e.headlineIndicators, binaryIndicators:e.binaryIndicators})
                     sectionIII.push({target : {identifier : e.identifier}})
-                    nationalTargets.value[e.identifier] = e;
+                    nationalTargets.value[e.identifier] = {...e, indicators };
                 }
             })
 
@@ -373,6 +368,16 @@
         }
 
         isBusy.value = false;
+
+      function mapIndicatorsToData(target) {
+        return [
+          ...(compact(uniqBy(target.headlineIndicators||[], 'identifier').map(e => mapWithNationalData(e, 'headlineIndicators')))),
+          ...(compact(uniqBy(target.binaryIndicators||[], 'identifier').map(e => mapWithNationalBinaryData(e, 'binaryIndicators')))),
+          ...(compact(uniqBy(target.componentIndicators||[], 'identifier').map(e => mapWithNationalData(e, 'componentIndicators')))),
+          ...(compact(uniqBy(target.complementaryIndicators||[], 'identifier').map(e => mapWithNationalData(e, 'complementaryIndicators')))),
+          ...(compact(uniqBy(target.nationalIndicators||[], 'identifier').map(e => mapWithNationalData(e, 'nationalIndicators')))),
+        ];
+      }
     }
 
     function mapWithNationalData(indicator, type){
