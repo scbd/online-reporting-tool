@@ -1,6 +1,6 @@
 <template>
     <CModal class="show d-block" alignment="center" backdrop="static" :visible="modalProps.visible" >
-        <CModalHeader close-button="false">
+        <CModalHeader :close-button="false">
             <CModalTitle>{{modalProps.title|| t('processing')}}</CModalTitle>
         </CModalHeader>
         <CModalBody>
