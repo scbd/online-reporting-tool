@@ -116,8 +116,7 @@
 
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
-        
-        return clean
+         return clean
     });
     
     const binaryQuestion = computed(()=>{

@@ -54,16 +54,17 @@
                             </km-form-group>  
 
                             <km-form-group name="anticipatedNbsapAdoptionDate" :caption="t('anticipatedNbsapAdoptionDate')"
-                                v-if="showAnticipatedNbsapAdoptionDate" required>                                       
-                                <CFormInput type="text" id="anticipatedNbsapAdoptionDate" v-model="sectionIIComputed.anticipatedNbsapAdoptionDate"/>                             
+                                v-if="showAnticipatedNbsapAdoptionDate" required>  
+                                <div class="col-1">                                  
+                                    <date-selector class="form-control" v-model="sectionIIComputed.anticipatedNbsapAdoptionDate"></date-selector>                            
+                                </div>   
                             </km-form-group>  
 
                             <km-form-group name="policyInstrument" :caption="t('policyInstrument')"  required
                                 v-if="sectionIIComputed.hasNbsapAdopted=='yes'">  
                                 <km-select v-model="sectionIIComputed.policyInstrument"
                                     class="validationClass" label="title" track-by="identifier"
-                                    value-key="identifier" :placeholder="t('policyInstrument')" :multiple="true"
-                                    :close-on-select="false" 
+                                    value-key="identifier" :placeholder="t('policyInstrument')"
                                     :disabled="false" :options="policyInstrumentLists" :custom-label="customLabel"
                                     :custom-selected-item="customSelectedItem">
                                 </km-select>
@@ -124,7 +125,7 @@
     const stakeholderLists                  = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.STAKEHOLDERS)||[]));
     const policyInstrumentLists             = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.POLICY_INSTRUMENTS)||[]));
     const showAnticipatedNbsapDate          = computed(()=>['no', 'inProcess'].includes(sectionIIComputed.value?.hasRevisedNbsap))
-    const showAnticipatedNbsapAdoptionDate  = computed(()=>['no', 'inProcess'].includes(sectionIIComputed.value?.hasRevisedNbsap))
+    const showAnticipatedNbsapAdoptionDate  = computed(()=>['no', 'inProcess'].includes(sectionIIComputed.value?.hasNbsapAdopted))
 
     const customLabel = ({title})=>{        
         return lstring(title, locale.value);

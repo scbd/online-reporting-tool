@@ -25,7 +25,7 @@
                                 <div class="alert alert-info">
                                    {{ t('introduction') }}
                                 </div>
-                                <km-form-group required :caption="t('assessmentSummaryInfo')">                                    
+                                <km-form-group name="assessmentSummaryInfo" required :caption="t('assessmentSummaryInfo')">                                    
                                     <km-input-rich-lstring v-model="sectionVComputed.assessmentSummaryInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                 </km-form-group>                                    
                             </div>

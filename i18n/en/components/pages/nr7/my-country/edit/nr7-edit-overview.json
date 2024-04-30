@@ -1,4 +1,26 @@
 {
     "welcome" : "Welcome to your country's ({government}) 7th National Report overview. please select option to proceed.",
-    "t":""
+    "publishedState"    : "Published",
+    "draftState"    : "Draft",
+    "lockedState"    : "Draft locked",
+    "passedValidation"  : "Validation successful",    
+    "hasErrors" : "Failed Validations",
+    "validating"    : "Validating",
+
+    "validationErrorsTitle"  : "Validation errors",
+    "validationErrorsMessage": "Please ensure that all records marked in red are completed, as there is still mandatory information missing in some of your record(s).",
+    "close"                  : "Close",
+    "successfulMessage"      : "Your request to publish your country's 7th national report has been received.",
+    "successMessageNau"      : "Your request to publish will be sent to your country's NFP who has rights to publish.",
+    "successMessagePA"       : "Since there are number of records it will take few minutes to published them all.",
+    "successTitle"           : "Success",
+    "yes"                    : "Yes",
+    "no"                     : "No",
+    "confirmationMessage"    : "Are you sure you want to proceed with publishing your countries 7th national report?",
+    "confirmationTitle"      : "Confirmation",
+    "spinnerMessage"         : "Please wait while we process your request.",
+    "refresh"                : "Refresh",
+    "validate"     : "Validate",
+    "publish"     : "Publish"
+    
 }
