@@ -338,7 +338,6 @@
                     }
                 }
             }
-            nationalReport7Store.nationalReport.sectionIII = sectionIII;
             
             if(sectionIII?.length){
                 for (const value in nationalTargets.value) {
@@ -354,12 +353,17 @@
             const missingTargets = gbfMissingNationalTargets.value = await findMissingGlobalTargets(nationalTargets.value);
             missingTargets.forEach(e=>{
                 if(!sectionIII.find(sec3=>sec3.target?.identifier ==  e.identifier)){
-                    const indicators = mapIndicatorsToData({headlineIndicators:e.headlineIndicators, binaryIndicators:e.binaryIndicators})
                     sectionIII.push({target : {identifier : e.identifier}})
+                }
+                if(!nationalTargets.value[e.identifier]){
+                    const indicators = mapIndicatorsToData({
+                        headlineIndicators:e.headlineIndicators, binaryIndicators:e.binaryIndicators})
                     nationalTargets.value[e.identifier] = {...e, indicators };
                 }
             })
 
+            nationalReport7Store.nationalReport.sectionIII = sectionIII;
+            
             setTimeout(()=>accordionToggle.value.toggle(true), 500)
             
         }
