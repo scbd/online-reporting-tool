@@ -8,12 +8,25 @@
                 {{lstring(indicator.title||indicator)}}                           
             </CAccordionHeader>
             <CAccordionBody> 
-                <missing-data-alert v-if="!indicator.nationalData && showMissingAlert"></missing-data-alert>                        
-                <add-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
-                    :identifier="((indicator.nationalData||{}).header||{}).identifier" :on-post-save-draft="onAddIndicatorDataClose"
-                    ></add-indicator-data>
-                <div v-if="indicator.nationalData">
-                    <view-data :indicator-data="indicator.nationalData"></view-data>
+                
+                <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
+                    <missing-data-alert v-if="!Object.keys(indicator.nationalData||{})?.length && showMissingAlert"></missing-data-alert>    
+     
+                    <nr7-add-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
+                        :identifier="((indicator.nationalData||{}).header||{}).identifier" :on-post-save-draft="onAddIndicatorDataClose">
+                    </nr7-add-indicator-data>       
+                    <div v-if="indicator.nationalData">
+                        <nr7-view-indicator-data :indicator-data="indicator.nationalData"></nr7-view-indicator-data>
+                    </div>
+                </div>      
+                <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
+                    <nr7-add-binary-indicator-data :indicator="indicator" container=".nr7-add-binary-indicator-data-modal"
+                        :identifier="indicator?.nationalData?.header?.identifier" :on-post-save-draft="onAddBinaryIndicatorDataClose">
+                    </nr7-add-binary-indicator-data>   
+                    <div v-if="indicator.nationalData">
+                        <nr7-view-binary-indicator-data :indicator-data="indicator.nationalData" :questions="indicator?.question?.questions">
+                        </nr7-view-binary-indicator-data>
+                    </div>    
                 </div>
             </CAccordionBody>
         </CAccordionItem>
@@ -21,16 +34,10 @@
   <!-- :on-close="onAddIndicatorDataClose" -->
 </template>
 <script setup>
-  
-    import addIndicatorData from './add-data.vue';
     import MissingDataAlert from './missing-data-alert.vue';
-    import ViewData from './view-data.vue';
     import { makeUid }         from '@coreui/utils/src'
-
-    import { useAsyncState } from '@vueuse/core'
-    import { useRealmConfStore }    from '@/stores/realmConf';
     import {cloneDeep} from 'lodash';
-
+    
     const {t, locale }          = useI18n()
     const props = defineProps({
         indicators         : {type:Object, default:[] },
@@ -56,6 +63,19 @@
 
     }
 
+    function onAddBinaryIndicatorDataClose(document, indicator){
+        //when binary data is updated, updates reference of all the indicators in the list
+        lIndicators.value.forEach(indicator=>{
+            if(document.body[indicator.question.key]){
+                indicator.nationalData = {
+                    government : indicator.nationalData.government,
+                    header : indicator.nationalData.header,
+                    ...(document.body[indicator.question.key]||{})
+                }
+            }
+        })
+    }
+    
     onMounted(()=>{
         nextTick(()=>accordionToggle.value.toggle(true))
     })
