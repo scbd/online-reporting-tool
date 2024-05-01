@@ -60,5 +60,4 @@ const {locale, t} = useI18n();
 const { indicatorData } = toRefs(props);
 </script>
 
-<style scoped></style>
 
