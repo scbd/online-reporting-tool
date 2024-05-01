@@ -130,7 +130,7 @@
                         <km-form-group v-if="viewDocument.otherNationalIndicators">
                             <label class="form-label" for="otherNationalIndicators">{{t('nationalIndicators')}}</label>       
                             <div v-for="otherIndicator in viewDocument.otherNationalIndicators" :key="otherIndicator" class="mb-1">
-                                <km-lstring-value type="html" :value="otherIndicator" :locale="selectedLocale"></km-lstring-value>
+                                <km-lstring-value type="html" :value="otherIndicator.value" :locale="selectedLocale"></km-lstring-value>
                             </div>
                         </km-form-group>
                     </div>
