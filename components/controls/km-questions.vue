@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
     import { flattenObject } from "~/utils/helpers";
-const attrs = useAttrs();
+
     const model = defineModel<Array<Object>>({required:true});
     const props = defineProps({
         questions : {type:Object as PropType<Question[]>}
