@@ -10,7 +10,7 @@
         </div>
         <form v-if="!isLoading" name="editForm">          
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
-                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
+                :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft"  :validate-server-draft="true">
                 <template #submission>
                     
                     <km-form-group>
