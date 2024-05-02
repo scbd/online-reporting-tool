@@ -1,17 +1,18 @@
 <template>
     
-    <div class="d-grid justify-content-end mb-2">
-        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="props.identifier" :disabled="props.disabled">
+    <div class="d-flex justify-content-end mb-2">
+        <!-- <span :id="`teleport-indicator-${indicator.identifier}`" class="me-1"></span> -->
+        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="identifier" :disabled="disabled">
             {{ t('editIndicatorData') }}
         </CButton>
-        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="!props.identifier" :disabled="props.disabled">
+        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="!identifier" :disabled="disabled">
             {{ t('addIndicatorData') }}
         </CButton>
     </div>
     <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
-                {{lstring(props.indicator.title)}}
+                {{lstring(indicator.title)}}
             </CModalTitle>
         </CModalHeader>
         <CModalBody>
@@ -23,8 +24,8 @@
                     </div>
                     <form v-if="!isLoading && document" name="editForm">
                     
-                        <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
-                            :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft">
+                        <km-form-workflow :focused-tab="workflowActiveTab" :document="cleanDocument"
+                            :container="container">
                             <template #submission>   
                                 <div class="mb-3">
                                     <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
@@ -48,16 +49,27 @@
                                             Data
                                         </div>
                                         <div class="card-body">
+                                            <div class="alert alert-info">
+                                                <strong>Please note that source of data selection is disabled since its still under development.</strong>
+                                            </div>
                                             <km-form-check-group name="sourceOfData" required caption="Source of Data">
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData.value" label="Use national data set "/>
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData.value" label="Use the available data (pre-populated data)"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData.value" label="Use national data set " :disabled="!enabledNationalData[indicator.identifier]"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData.value" label="Use the available data (pre-populated data)" :disabled="!enabledGlobalData[indicator.identifier]"/>
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData.value" label="No data available"/>
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData.value" label="Not relevant"/>                                            
                                             </km-form-check-group>
 
-                                            <km-form-group name="sourceOfDataNational" required caption="National data set" v-if="document.sourceOfData.value=='national'">
-                                                <input type="file" id="input" @change="uploadFile"/>                                                
-                                            </km-form-group>
+                                            <div v-if="document.sourceOfData.value=='national'">
+                                                <km-form-group name="sourceOfDataNational" required caption="National data set" >
+                                                    <div class="alert alert-info" v-if="indicatorDataTemplates[indicator.identifier]">
+                                                        <a :href="indicatorDataTemplates[indicator.identifier]">
+                                                            Download sample template for the Indicator 
+                                                            <font-awesome-icon icon="fa-download"></font-awesome-icon>
+                                                        </a>
+                                                    </div>
+                                                    <input type="file" id="input" @change="uploadFile"/>                                                
+                                                </km-form-group>                                                
+                                            </div>
                                             <km-form-group name="sourceOfDataNational" required caption="National data set" v-if="document.sourceOfData.value=='availableDataset'">
                                         
                                                 <div class="mt-3" v-if="!isFetchingGlobalData && !wcmcIndicatorData.data?.charts?.length">
@@ -82,6 +94,10 @@
                                     </div> 
                                 </div>                                 
                             </template>
+                            <template #review>
+                                <nr7-view-indicator-data :indicator-data="document">
+                                </nr7-view-indicator-data>
+                            </template>
                         </km-form-workflow>
                     </form>
 
@@ -91,11 +107,8 @@
     </CModal>
 </template>
 
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-add-indicator-data.json"></i18n>
 <script setup>
-  
-    import { KmInputRichLstring, KmSelect, KmFormGroup, KmValidationErrors,KmGovernment, KmLanguages,
-        KmFormCheckGroup, KmFormCheckItem, KmInputLstring,KmSpinner, KmFormWorkflow
-    } from "~/components/controls";
     import { useToast } from 'vue-toast-notification';
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
@@ -106,12 +119,15 @@
 
     const props = defineProps({
         identifier         : {type:String, required:false},
-        rawDocument        : {type: Object },
         indicator          : {type:Object, required:true},
-        workflowActiveTab  : {type:Number, default:1 },
-        onClose            : {type:Function, required:false},
-        onPostSaveDraft    : {type:Function, required:false},
-    }) 
+        workflowActiveTab  : {type:Number, default:1 }
+    });
+
+    // These emits are used by base view when the form is 
+    // open in a dialog mode form overview
+    const emit  = defineEmits(['onClose', 'onPostSaveDraft']);
+
+    const isEventDefined        = useHasEvents();
 
     const { user }        = useAuth();
     const security        = useSecurity();
@@ -122,15 +138,30 @@
     const container = useAttrs().container;
     const countryStore = useCountriesStore();
     
-    const selectedLocale = ref(locale.value);
-    const validationReport = ref(null);
-    let document = ref({});
-    let isLoading = ref(false);
+    const selectedLocale             = ref(locale.value);
+    const validationReport           = ref(null);
+    const document                   = ref({});
+    const isLoading                  = ref(false);
     const showEditIndicatorDataModal = ref(false);
-    //TODO: Temp, move to service 
+      //TODO: Temp, move to service 
     const isFetchingGlobalData = ref(false);
-    const wcmcTargets = ref([]);
-    const wcmcIndicatorData = ref([])
+    const wcmcTargets          = ref([]);
+    const wcmcIndicatorData    = ref([])
+
+    const enabledNationalData = {
+        'GBF-INDICATOR-C.1' : true,
+        'GBF-INDICATOR-D.1' : true,
+    }
+    const enabledGlobalData = {
+        'GBF-INDICATOR-C.1' : true,
+        'GBF-INDICATOR-D.1' : true,
+        'GBF-INDICATOR-A.3' : true
+    }
+
+    const indicatorDataTemplates = {
+        'GBF-INDICATOR-C.1' : '/excel-templates/GBF-INDICATOR-C.1.xlsx',
+        'GBF-INDICATOR-D.1' : '/excel-templates/GBF-INDICATOR-D.1.xlsx'
+    }
     
 
     const indicatorData = computed(()=>{
@@ -138,72 +169,73 @@
         return { data, dataSources, description, indicatorProviders };        
     });
   
-    if(props.rawDocument){
-        document.value = cloneDeep({...props.rawDocument});
-    }
-    else{
-        document.value = emptyDocument();
-        //TODO:validate if there is a mapping record for the given target and load it instead
-    }
-    if(!document.value.sourceOfData)
-        document.value.sourceOfData = {};
-
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
         
         return clean
     });
 
-    function onGetDocument(){
-        return cleanDocument;
-    }
-
-    const onClose = async (document)=>{
-        if(props.onClose)
-            props.onClose(document);
+    const onPostClose = async (document)=>{
+        
+        if(isEventDefined('onClose'))
+            emit('onClose', document);
 
         showEditIndicatorDataModal.value = false;
     }
 
+    const onPreSaveDraft = async (document)=>{
+        return document;
+    };
+
     const onPostSaveDraft = async (document)=>{
-        if(props.onPostSaveDraft)
-            props.onPostSaveDraft(document)
+        // console.log(document);
+        //vue prepends 'on' to all events internally
+        if(isEventDefined('onPostSaveDraft'))
+            emit('onPostSaveDraft', document);
+    };
+
+    const onPreReviewDocument = (document)=>{
+        return document;
     }
-    function emptyDocument(){        
-
-        return {
-            header : {
-                schema : SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA,
-                identifier : useGenerateUUID(),
-                languages  : EditFormUtility.getPreferredEditLanguages()
-            },        
-            government : {
-                identifier : user.value?.government
-            },
-            indicator : {
-                identifier: props.indicator.identifier
-            }
-        }
+    
+    const onPostReviewDocument = (document, newValidationReport)=>{
+        validationReport.value = newValidationReport.value || {};
     }
+    
+    const uploadFile = async (event) => {
+        try{
+            const file = event.target.files[0];
+            const rows = await readXlsxFile(file)
+                // `rows` is an array of rows
+                // each row being an array of cells.
 
-    const uploadFile = (event) => {
-        const file = event.target.files[0];
-        readXlsxFile(file).then((rows) => {
-            // `rows` is an array of rows
-            // each row being an array of cells.
-
-            if(!rows[0].some(e=>['year', 'value'].includes(e.toLowerCase()))){
-                alert('invalid template, please use the system provided template');
-                return;
-            }
-            const data = [];
-            for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                data.push({year : row[0], value: row[1]})
-            }
+                if(!rows[0].some(e=>['year', 'value'].includes(e.toLowerCase()))){
+                    alert('invalid template, please use the system provided template');
+                    return;
+                }
+                const data = [];
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    data.push({
+                        indicatorCode    : row[0],
+                                      // : row[1] is indicator description
+                        hasDisaggregation: row[2],
+                        disaggregation   : row[3],
+                        year             : row[4],
+                        unit             : row[5],
+                        unitDescription  : row[6],
+                        value            : row[7],
+                        footnote         : row[8]
+                    })
+                }
+                
+                document.value.data = data;
             
-            document.value.data = data;
-        })
+        }
+        catch(e){
+            useLogger().error(e)
+            $toast.error('Error loading file details')
+        }
     };
 
     function onSourceOfDataChange(value){
@@ -218,9 +250,11 @@
 
     function showEditIndicatorData(target){        
         showEditIndicatorDataModal.value = true;
+        loadDocument()
     }
 
     async function loadGlobalDataSet(){
+        try{
         wcmcIndicatorData.value = [];
         if(!document.value?.indicator?.identifier)
             return;
@@ -252,37 +286,91 @@
 
         if(document.value?.indicator?.identifier){
             const indicator = wcmcTargets.value.find(e=>e.cbdIndicator?.identifier == document.value?.indicator?.identifier);
-            const body ={
-                indicator: indicator.indicatorId,
-                country  : country.code3
-            }
-            const dataResponse = await useAPIFetch('/target-tracker/country-indicator-data', {body, method:'POST' });
-            wcmcIndicatorData.value = dataResponse;
+            if(indicator){
+                const body ={
+                    indicator: indicator.indicatorId,
+                    country  : country.code3
+                }
+                const dataResponse = await useAPIFetch('/target-tracker/country-indicator-data', {body, method:'POST' });
+                wcmcIndicatorData.value = dataResponse;
 
-            const globalData = dataResponse?.data?.charts?.filter(e=>e.tabType == 'GloballyDerived')
-            if(globalData?.length) {
-                const chart = globalData[0];
-                const valueData = chart.datasets.find(e=>e.derived == "Global");
-                
-                document.value.data = chart.labels.map((e, index)=>{
-                                const val = valueData?.data[index]
-                                return {
-                                    year : e.replace(/Baseline|\(|\)/g, ''),
-                                    value: val
-                                }
-                            });
+                const globalData = dataResponse?.data?.charts?.filter(e=>e.tabType == 'GloballyDerived')
+                if(globalData?.length) {
+                    const chart = globalData[0];
+                    const valueData = chart.datasets.find(e=>e.derived == "Global");
+                    
+                    document.value.data = chart.labels.map((e, index)=>{
+                                    const val = valueData?.data[index]
+                                    return {
+                                        indicatorCode : indicator?.cbdIndicator?.identifier?.replace(/gbf\-indicator\-/i, ''),//dataResponse?.data?.globallyDerivedData?.title,
+                                        hasDisaggregation : e.dataGroupName != "Aggregated" ? 'No' : 'Yes',
+                                        disaggregation    : e.dataGroupName != "Aggregated" ? 'none' : '',
+                                        year : e.replace(/Baseline|\(|\)/g, ''),
+                                        value: val,
+                                        unit: dataResponse?.data?.globallyDerivedData?.valueSuffix
+                                    }
+                                });
 
-                
-                const globallyDerivedData = dataResponse?.data?.globallyDerivedData;
-                if(globallyDerivedData){
-                    document.value.dataSources = globallyDerivedData.dataSources;
-                    document.value.description = globallyDerivedData.description
-                    document.value.indicatorProviders = globallyDerivedData.indicatorProviders
+                    
+                    const globallyDerivedData = dataResponse?.data?.globallyDerivedData;
+                    if(globallyDerivedData){
+                        document.value.dataSources = globallyDerivedData.dataSources?.length ? globallyDerivedData.dataSources : undefined;
+                        document.value.description = globallyDerivedData.description
+                        document.value.indicatorProviders = globallyDerivedData.indicatorProviders?.length ? globallyDerivedData.indicatorProviders : undefined
+                    }
                 }
             }
         }
         isFetchingGlobalData.value = false;
+        }
+        catch(e){
+            useLogger().error(e)
+            $toast.error('Error loading document')
+        }
+        finally{
+            isFetchingGlobalData.value = false;
+        }
     }
+
+    async function loadDocument(){
+        try{
+            isLoading.value = true;
+            if(props.identifier){
+                const documentInfo = await EditFormUtility.load(props.identifier, SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA)
+                document.value = documentInfo.body;
+            }
+            else{
+                document.value = EditFormUtility.buildEmptyDocument(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA,
+                {
+                    indicator : {
+                        identifier: props.indicator.identifier
+                    }
+                });
+                //TODO:validate if there is a mapping record for the given target and load it instead
+            }
+            if(!document.value.sourceOfData)
+                document.value.sourceOfData = {};            
+        }
+        catch(e){
+            useLogger().error(e)
+            $toast.error('Error loading loadGlobalDataSet')
+        }
+        finally{
+            isLoading.value = false;
+        }
+    }
+
+    provide('kmWorkflowFunctions', {
+        onPreReviewDocument,
+        onPreSaveDraft,
+        onPostSaveDraft,
+        onPostReviewDocument,
+        onPostClose
+    });
+
+    provide("validationReview", {
+        hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+    });
 
 </script>
 <style>

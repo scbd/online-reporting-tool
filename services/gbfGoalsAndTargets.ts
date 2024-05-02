@@ -3,7 +3,7 @@ import { useThesaurusStore } from '@/stores/thesaurus';
 class GBFGoalsAndTargets{
 
     defaultFields:Array<string> = [ 'identifier', 'title', 'narrowerTerms1', 
-                                    'headlineIndicators', 'componentIndicators', 'complementaryIndicators']
+                                    'headlineIndicators', 'binaryIndicators', 'componentIndicators', 'complementaryIndicators']
 
     constructor(){
 
@@ -45,7 +45,38 @@ class GBFGoalsAndTargets{
         const response = await Promise.all([GbfGoalsAndTargets.loadGbfGoalsAndTargets([]),
                                 GbfGoalsAndTargets.loadGbfHeadlineIndicator(''),
                                 GbfGoalsAndTargets.loadGbfComponentIndicator(''),
-                                GbfGoalsAndTargets.loadGbfComplementaryIndicator('')
+                                GbfGoalsAndTargets.loadGbfComplementaryIndicator(''),
+                                GbfGoalsAndTargets.loadGbfBinaryIndicator('')
+                            ]);
+        const goalsAndTargets = response[0];
+
+        const goalPromise = goalsAndTargets?.map(async target=>{
+            const response = await Promise.all([
+                                this.loadGbfHeadlineIndicator(target.identifier),
+                                this.loadGbfComponentIndicator(target.identifier),
+                                this.loadGbfComplementaryIndicator(target.identifier),
+                                this.loadGbfBinaryIndicator(target.identifier)
+                            ])
+            target.headlineIndicators       = response[0];
+            target.componentIndicators      = response[1];
+            target.complementaryIndicators  = response[2];
+            target.binaryIndicators         = response[3];
+        })
+
+        await Promise.all(goalPromise);
+
+        if(fields?.length){
+            return mapFields(goalsAndTargets, fields);
+        }
+        return goalsAndTargets;
+    }
+
+    async loadGbfGoalsWithIndicators(fields:Array<string> = this.defaultFields){
+        const response = await Promise.all([GbfGoalsAndTargets.loadGbfGoals([]),
+                                GbfGoalsAndTargets.loadGbfHeadlineIndicator(''),
+                                GbfGoalsAndTargets.loadGbfComponentIndicator(''),
+                                GbfGoalsAndTargets.loadGbfComplementaryIndicator(''),
+                                GbfGoalsAndTargets.loadGbfBinaryIndicator('')
                             ]);
         const goalsAndTargets = response[0];
 

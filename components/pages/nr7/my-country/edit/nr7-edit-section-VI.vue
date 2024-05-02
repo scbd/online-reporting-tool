@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header">Section V. Conclusions on the national implementation of the Convention and the Kunming-Montreal Global Biodiversity Framework</slot>
+        <slot name="header"> NR7 Section VI</slot>
       </CCardHeader>
       <CCardBody>
 
@@ -9,8 +9,8 @@
             <km-spinner></km-spinner>
         </div>
         <form v-if="!isLoading" name="editForm">          
-            <km-form-workflow :focused-tab="props.workflowActiveTab" :get-document="onGetDocument" :validation-report="validationReport" 
-                :container="container" :on-pre-close="onClose" :on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
+            <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
+                :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
                 <template #submission>
                     
                     <km-form-group>
@@ -27,7 +27,7 @@
                     </km-form-group>
                 </template>
                 <template #review>                
-                    <view-nr7-section-I :identifier="document.header.identifier" :document="cleanDocument"></view-nr7-section-I>
+                    <view-nr7-section-VI :identifier="document.header.identifier" :document="cleanDocument"></view-nr7-section-VI>
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-  
+
     // import viewTarget               from "./view-target-part-2.vue";
     import { useRealmConfStore }    from '@/stores/realmConf';
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
@@ -72,4 +72,17 @@
             identifier : user.value?.government
         },
     }
+
+
+    // provide('kmWorkflowFunctions', {
+    //     onPreReviewDocument,
+    //     onPreSaveDraft,
+    //     onPostSaveDraft,
+    //     onPostReviewDocument,
+    //     onPostClose
+    // });
+
+    // provide("validationReview", {
+    //     hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+    // });
 </script>

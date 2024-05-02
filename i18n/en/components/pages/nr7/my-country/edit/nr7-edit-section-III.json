@@ -1,0 +1,11 @@
+{
+    "sectionIII":"Section III",
+    "sectionIIIDescription":"Status of the revised or updated national biodiversity strategies and action plans (NBSAPs) in the light of the Kunming-Montreal Global Biodiversity Framework ",
+    "headlineIndicators": "Headline indicator",
+    "binaryIndicators": "Binary indicator",
+    "componentIndicators": "Component indicator",
+    "complementaryIndicators": "Complementary indicator",
+    "nationalIndicators": "National indicator",
+    "sectionMandatory" : "All fields in Section III are mandatory"
+
+}

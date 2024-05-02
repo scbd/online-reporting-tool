@@ -1,13 +1,13 @@
 <template>
     <CModal class="show d-block" alignment="center" backdrop="static" :visible="modalProps.visible" >
-        <CModalHeader close-button="false">
+        <CModalHeader :close-button="false">
             <CModalTitle>{{modalProps.title|| t('processing')}}</CModalTitle>
         </CModalHeader>
         <CModalBody>
             <slot>
                 <CSpinner/> 
-                <span v-if="message">{{ message }}</span>
-                <span v-if="!message">{{t('loading')}}...</span>
+                <span class="ms-1" v-if="message">{{ message }}</span>
+                <span class="ms-1" v-if="!message">{{t('loading')}}...</span>
             </slot>
         </CModalBody>           
     </CModal>

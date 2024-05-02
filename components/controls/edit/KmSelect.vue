@@ -16,106 +16,93 @@
       :disabled="disabled"
       @search-change="onEventTextChange"
       
-      :custom-label="customLabel"
+      :custom-label="customLabelFn"
       :allow-empty="allowEmpty"
       deselect-label="Can't remove this value"
     > 
       <slot name="clear">
         <template slot="clear">
-          <div
-            v-if="selectItems.length && !disabled"
-            class="multiselect__clear"
-            @mousedown.prevent.stop="selectItems = null; $emit('change', null)"
-          />
+            <div v-if="selectItems.length && !disabled" class="multiselect__clear"
+                @mousedown.prevent.stop="selectItems = null; $emit('change', null)">
+            </div>          
         </template>
       </slot>     
     </VueMultiselect>
 </template>
 
-<script>  
+<script setup lang="ts">  
 
 import VueMultiselect from 'vue-multiselect';
 import { isEqual } from 'lodash'
 import { asArray } from '@/utils/helpers';
 
-export default {
-  name      : 'KmSelect',
-  components: { VueMultiselect },
-  props     : {
-    modelValue: {
-      type    : [ String, Array, Object ],
-      required: true,
-      default() {
-        return [];
-      },
-    },
-    options      : { type: Array, required: true },
-    multiple     : { type: Boolean, default: false },
-    trackBy      : { type: String },
-    label        : { type: String },
-    valueKey     : { type: String, required: true},
-    searchable   : { type: Boolean, default: true },
-    clearOnSelect: { type: Boolean, default: true },
-    placeholder  : { type: String,  default: 'Select option' },
-    closeOnSelect: { type: Boolean, default: true },
-    customLabel  : {
-      type: Function,
-      default (option, label) {
-        // if (isEmpty(option)) return ''
-        return label ? option[label] : option
-      }
-    },
-    customSelectedItem  : {
-      type: Function,
-      default (item) {
-        return item;
-      }
-    },
-    groupValues  : { type: String },
-    groupLabel   : {  type: String },
-    groupSelect  : {  type: Boolean, default: false },
-    openDirection: { type: String, default: 'below' },
-    isValid      : {
-      type   : [ Boolean, Function ],
-      default: null,
-    },
-    disabled    : { type: Boolean, default: false },
-    allowEmpty  : { type: Boolean, default: true },
-  },
-  data(){
-    return {
-    }
-  },
-  computed: {
-    selectItems: {
+
+    const emit = defineEmits(['update:modelValue'])
+    const props = defineProps({
+        modelValue: {
+        type    : [ String, Array, Object ],
+        required: true,
+        default() {
+            return [];
+        },
+        },
+        options      : { type: Array, required: true },
+        multiple     : { type: Boolean, default: false },
+        trackBy      : { type: String, default: 'identifier'  },
+        label        : { type: String, default: 'title' },
+        valueKey     : { type: String, default: 'identifier' },
+        searchable   : { type: Boolean, default: true },
+        clearOnSelect: { type: Boolean, default: true },
+        placeholder  : { type: String,  default: 'Select option' },
+        closeOnSelect: { type: Boolean, default: true },
+        customLabel  : { type: Function },//avoid default so that
+        customSelectedItem  : {
+        type: Function,
+        default (item) {
+            return item;
+        }
+        },
+        groupValues  : { type: String },
+        groupLabel   : {  type: String },
+        groupSelect  : {  type: Boolean, default: false },
+        openDirection: { type: String, default: 'below' },
+        isValid      : {
+        type   : [ Boolean, Function ],
+        default: null,
+        },
+        disabled    : { type: Boolean, default: false },
+        allowEmpty  : { type: Boolean, default: true },
+    });
+
+    const selectItems = computed({
       get() {
-        return asArray(this.modelValue).map((value) => {
-          return this.options?.find((option) => {
-            const customSelectedItem = this.customSelectedItem(option[this.valueKey], option);
+        return asArray(props.modelValue).map((value) => {
+          return props.options?.find((option) => {
+            const customSelectedItem = props.customSelectedItem(option[props.valueKey], option);
             
             return isEqual(customSelectedItem, value);
           })
         });
       },
       set(events) {
-        let ids = asArray(events).map((event) => this.customSelectedItem(event[this.valueKey], event));
+        let ids = asArray(events).map((event) => props.customSelectedItem(event[props.valueKey], event));
         
-        this.$emit('update:model-value', this.multiple ? ids : ids[0]);
-      },
+        emit('update:model-value', props.multiple ? ids : ids[0]);
+      }
+    })
+
+    const {locale} = useI18n();
+
+    function onEventTextChange(...args){
+      emit('search-change', ...args)
     }
-  },
-  methods: {
-    onEventTextChange(...args){
-      this.$emit('search-change', ...args)
-    },
-    fetchOptions(){
-      this.options = this.optionsFn();
-    }    
-  },
-  mounted(){
     
-  },
-  emits:['update:modelValue']
-};
+    function customLabelFn(option, label) {
+        if(props.customLabel)
+            return props.customLabel(option, label);
+
+        return lstring(option[label]||option, locale)
+    }
 </script>
+
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

@@ -6,6 +6,7 @@
         value-key="code"
         :options="formattedLanguages"
         :multiple="true"
+        :close-on-select="false" 
         :allow-empty="false"     
         :placeholder="t('languageOfRecord')"
         @update:modelValue="onChange">

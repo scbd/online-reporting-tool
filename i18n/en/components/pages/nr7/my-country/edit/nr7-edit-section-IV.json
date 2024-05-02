@@ -1,0 +1,13 @@
+{
+    "sectionIV":"Section IV",
+    "sectionIVDescription":"Assessment of national progress towards the goals and targets of the Kunming-Montreal Global Biodiversity Framework",
+    "headline": "Headline indicator",
+    "binary": "Binary indicator",
+    "component": "Component indicator",
+    "complementary": "Complementary indicator",
+    "national": "National indicator",
+
+    "complementaryIndicators" : "Complementary indicators",
+    "componentIndicators"      : "Component indicators",
+    "sectionMandatory" : "All fields in Section IV are mandatory"
+}

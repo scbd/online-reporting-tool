@@ -19,7 +19,7 @@ class editFormUtility{
     //==================================
     //
     //==================================
-    load(identifier:string, expectedSchema:string) {
+    load(identifier:string, expectedSchema:string):EDocumentInfo {
 
         const { $api } = useNuxtApp();
         const $kmStorageApi = $api.kmStorage

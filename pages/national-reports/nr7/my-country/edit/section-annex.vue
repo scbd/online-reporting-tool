@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <edit-section-annex></edit-section-annex>
+      <nr7-edit-section-annex></nr7-edit-section-annex>
     </km-suspense>
 </template>
   
@@ -8,7 +8,6 @@
 
 import { KmSuspense } from "@/components/controls";
 import { SCHEMAS, ROLES } from '@/utils';
-import EditSectionAnnex from "@/components/pages/nr7/my-country/edit/section-annex.vue";
 
   definePageMeta({
     auth:true,
