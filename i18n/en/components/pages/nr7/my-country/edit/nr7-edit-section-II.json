@@ -5,10 +5,11 @@
     "yes"                   : "Yes",
     "no"                    : "No",
     "inProcess"             : "In Process",
-    "indicateCompletionDate": "Please indicate the anticipated date of completion of the revision or updating of the NBSAP",
+    "anticipatedNbsapDate": "Please indicate the anticipated date of completion of the revision or updating of the NBSAP",
     "stakeholderEngagement" : "Did your country involve and engage stakeholders in revising or updating NBSAPs?",
     "stakeholders"          : "Stakeholders",
     "hasNbsapAdopted"       : "Has your country's revised or updated NBSAPs been adopted as policy or legal instruments?",
-    "indicateAdoptionDate"  : "Please indicate the anticipated date of adoption",
-    "policyInstrument"     : "Please indicate the type of policy instrument your country's revised or updated NBSAPs has been adopted as"
+    "anticipatedNbsapAdoptionDate"  : "Please indicate the anticipated date of adoption",
+    "policyInstrument"     : "Please indicate the type of policy instrument your country's revised or updated NBSAPs has been adopted as",
+    "sectionMandatory" : "All fields in Section II are mandatory"
 }

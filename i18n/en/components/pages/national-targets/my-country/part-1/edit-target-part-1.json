@@ -42,7 +42,7 @@
     "commitmentsAndActors":"please indicate which commitment(s) and which actor(s)",
     "meansToImplement":"Means to implementation and barriers to implementation",
     "additionalMeanOfImplementation":"Please indicate if additional means of implementation are needed for the attainment of this national target.",
-    "YesMeansOfImplementation":"Yes (Additional means of implementation are needed for the attainment of this national target)",
+    "yesMeansOfImplementation":"Yes (Additional means of implementation are needed for the attainment of this national target)",
     "noMeansOfImplementation":"No (Means of implementation available)",
     "other":"Other",
     "pleaseExplain":"Please explain (Additional means of implementation are needed for the attainment of this national target)",

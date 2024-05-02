@@ -42,7 +42,7 @@
   "commitmentsAndActors": "Veuillez indiquer quel engagement(s) et quel acteur(s)",
   "meansToImplement": "Moyens de mettre en oeuvre et barrières pour la mise en oeuvre",
   "additionalMeanOfImplementation": "Veuillez indiquer si des moyens supplémentaires de mise en oeuvre sont requis pour atteindre cet objectif national",
-  "YesMeansOfImplementation": "Oui (Des moyens supplémentaires de mise en oeuvre sont requis pour atteindre cet objectif national)",
+  "yesMeansOfImplementation": "Oui (Des moyens supplémentaires de mise en oeuvre sont requis pour atteindre cet objectif national)",
   "noMeansOfImplementation": "Non (Moyens de mise en oeuvre disponibles)",
   "other": "Autre",
   "pleaseExplain": "Veuillez expliquer (des moyens supplémentaires de mise en oeuvre sont requis pour atteindre cet objectif national)",

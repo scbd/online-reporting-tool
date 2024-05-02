@@ -1,1 +1,12 @@
-{}
+{
+    "national"          : "Use national data set",
+    "availableDataset"  : "Use the available data (pre-populated data)",
+    "noData"            : "No data available",
+    "notRelevant"       : "Not relevant",
+    "sourceOfData"      : "Source of Data",
+    "year"              : "Year",
+    "value"             : "Value",
+    "globalSourceOfData": "Global source of data",
+    "indicatorProviders": "Indicator providers",
+    "comments"          : "Comments"
+}

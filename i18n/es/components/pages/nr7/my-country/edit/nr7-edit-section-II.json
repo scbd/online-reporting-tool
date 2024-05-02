@@ -5,10 +5,10 @@
   "yes": "Sí",
   "no": "No",
   "inProcess": "En proceso",
-  "indicateCompletionDate": "Sírvase indicar la fecha prevista de finalización de la revisión o actualización de la EPANDB.",
+  "anticipatedNbsapDate": "Sírvase indicar la fecha prevista de finalización de la revisión o actualización de la EPANDB.",
   "stakeholderEngagement": "¿Su país ha comprometido la participación de interesados directos en la revisión o actualización de las EPANDB?",
   "stakeholders": "Interesados directos",
   "hasNbsapAdopted": "¿Las EPANDB revisadas o actualizadas de su país se han aprobado como una medida de política o un instrumento jurídico?",
-  "indicateAdoptionDate": "Sírvase indicar la fecha prevista de aprobación.",
+  "anticipatedNbsapAdoptionDate": "Sírvase indicar la fecha prevista de aprobación.",
   "policyInstrument": "Sírvase indicar el tipo de instrumento político que su país ha aprobado de conformidad con las EPANDB revisadas o actualizadas."
 }
