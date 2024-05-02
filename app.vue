@@ -6,6 +6,8 @@
 </template>
 <script lang="ts">
 import { SocketIOService } from '@/services/socket-io';
+import '@/utils/prototypes.js';
+
 
 export default defineComponent({
     
