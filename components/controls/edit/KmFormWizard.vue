@@ -106,7 +106,8 @@ export default {
 
 .km-nav-wizard ul.nav-pills>li:not(:last-child) a:after {
     right: -20px;
-    border-color: transparent transparent transparent #eee
+    border-color: transparent transparent transparent #eee;
+    z-index: 0;
 }
 
 .km-nav-wizard ul.nav-pills>li:not(:first-child) a:before,
@@ -118,33 +119,38 @@ export default {
     height: 0;
     border-style: solid;
     border-width: 20px 0 20px 20px;
-    z-index: 150
+    /* z-index: 150 */
 }
 
 .km-nav-wizard ul.nav-pills>li:not(:first-child) a:before {
     left: -20px;
-    border-color: #eee #eee #eee transparent
+    border-color: #eee #eee #eee transparent;
+    z-index: 0;
 }
 
 .km-nav-wizard ul.nav-pills>li:hover:not(:last-child) a:after {
-    border-color: transparent transparent transparent #aaa
+    border-color: transparent transparent transparent #aaa;
+    z-index: 0;
 }
 
 .km-nav-wizard ul.nav-pills>li:hover:not(:first-child) a:before {
-    border-color: #aaa #aaa #aaa transparent
+    border-color: #aaa #aaa #aaa transparent;
+    z-index: 0;
 }
 
 .km-nav-wizard ul.nav-pills>li:hover a {
     background-color: #aaa;
-    color: #fff
+    color: #fff;z-index: 0;
 }
 
 .km-nav-wizard ul.nav-pills>li.active:not(:last-child) a:after {
-    border-color: transparent transparent transparent #428bca
+    border-color: transparent transparent transparent #428bca;
+    z-index: 0;
 }
 
 .km-nav-wizard ul.nav-pills>li.active:not(:first-child) a:before {
-    border-color: #428bca #428bca #428bca transparent
+    border-color: #428bca #428bca #428bca transparent;
+    z-index: 0;
 }
 
 .km-nav-wizard ul.nav-pills>li.active a {

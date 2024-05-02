@@ -216,7 +216,7 @@ export default {
         this.$emit('onEditorInput', event, editor);     
     },
     onEditorDestroy( editor ) {
-      // console.debug( 'Editor destroyed.', { editor } );
+    //   console.debug( 'Editor destroyed.', { editor } );
         this.$emit('onEditorDestroy', editor);
     },
     onFileUpload(params){
@@ -224,7 +224,8 @@ export default {
     },
     getEditorConfig(){
         const self = this;
-        return {        
+        return { 
+            removePlugins: ["MediaEmbedToolbar"],       
             language: {
             ui: this.locale,
             content: this.locale
@@ -233,7 +234,6 @@ export default {
                 items: [
                 'heading',
                 'fontSize',
-                'fontColor',
                 '|',
                 'bold',
                 'italic',
@@ -251,7 +251,6 @@ export default {
                 'insertTable',
                 '|',
                 'imageInsert',
-                'mediaEmbed',
                 '|',
                 'horizontalLine',
                 '|',
@@ -266,37 +265,12 @@ export default {
             alignment: {
             options: ['left', 'right', 'center', 'justify'],
             },
-            fontColor: {
-            colors: [
-                {
-                color: 'hsl(0, 0%, 0%)',
-                label: 'Black',
-                },
-                {
-                color: 'hsl(0, 0%, 30%)',
-                label: 'Dim grey',
-                },
-                {
-                color: 'hsl(0, 0%, 60%)',
-                label: 'Grey',
-                },
-                {
-                color: 'hsl(0, 0%, 90%)',
-                label: 'Light grey',
-                },
-                {
-                color: 'hsl(0, 0%, 100%)',
-                label: 'White',
-                hasBorder: true,
-                },
-            ],
-            },
             list: {
-            properties: {
-                styles: true,
-                startIndex: true,
-                reversed: true,
-            },
+                properties: {
+                    styles: true,
+                    startIndex: true,
+                    reversed: true,
+                },
             },
             image: {
             styles: ['alignCenter', 'alignLeft', 'alignRight'],
@@ -384,81 +358,11 @@ export default {
             ],
             },
             wordCount: {
-            onUpdate: function(stats){
-                // console.log(stats)
-                self.wordCount = stats.words
-            },
-            },
-            mediaEmbed: {
-            previewsInData: false,
-            removeProviders: ['youtube'],
-            extraProviders: [
-                {
-                name: 'youtubePlaylist',
-                url: [/^youtube\.com\/embed\/videoseries\?list=([\w-]+)/],
-                html: (match) => {
-                    const id = match[1]
-
-                    return (
-                    '<div style="position: relative; padding-bottom: 100%; height: 0; padding-bottom: 56.2493%;">' +
-                    `<iframe src="https://www.youtube.com/embed/videoseries?list=${id}" ` +
-                    'style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" ' +
-                    'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>' +
-                    '</iframe>' +
-                    '</div>'
-                    )
+                onUpdate: function(stats){
+                    // console.log(stats)
+                    self.wordCount = stats.words
                 },
-                },
-                {
-                name: 'youtube',
-                url: [
-                    /^(?:m\.)?youtube\.com\/watch\?v=([\w-]+)/,
-                    /^(?:m\.)?youtube\.com\/v\/([\w-]+)/,
-                    /^youtube\.com\/embed\/([\w-]+)/,
-                    /^youtu\.be\/([\w-]+)/,
-                ],
-                html: (match) => {
-                    const id = match[1]
-
-                    return (
-                    '<div style="position: relative; padding-bottom: 100%; height: 0; padding-bottom: 56.2493%;">' +
-                    `<iframe src="https://www.youtube.com/embed/${id}" ` +
-                    'style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" ' +
-                    'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>' +
-                    '</iframe>' +
-                    '</div>'
-                    )
-                },
-                },
-                {
-                name: 'customEmbed',
-                url: [
-                    /cdn\.knightlab\.com\/libs\/timeline3\/.*/,
-                    /uploads\.knightlab\.com\/storymapjs\/.*/,
-                    /cdn\.knightlab\.com\/libs\/juxtapose\/.*/,
-                    /uploads\.knightlab\.com\/scenevr\/.*/,
-                    /cdn\.knightlab\.com\/libs\/storyline\/.*/,
-                    /theydrawit\.mucollective\.co\/vis\/.*/,
-                    /youtube\.com\/embed\/videoseries.*/,
-                ],
-                html: function (id) {
-                    return (
-                    '<figure class="media">' +
-                    '	<oembed url="' +
-                    id.input +
-                    '">' +
-                    '<a href="' +
-                    id.input +
-                    '">' +
-                    id.input +
-                    '</a>' +
-                    '	</oembed>' +
-                    '</figure>'
-                    )
-                },
-                },
-            ],
-            },
+            }
         }
     },
   },
