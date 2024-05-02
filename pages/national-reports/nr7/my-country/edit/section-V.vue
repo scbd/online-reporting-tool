@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <edit-section-V></edit-section-V>
+      <nr7-edit-section-V></nr7-edit-section-V>
     </km-suspense>
 </template>
   
@@ -8,7 +8,6 @@
 
 import { KmSuspense } from "@/components/controls";
 import { SCHEMAS, ROLES } from '@/utils';
-import EditSectionV from "@/components/pages/nr7/my-country/edit/section-V.vue";
 
   definePageMeta({
     auth:true,

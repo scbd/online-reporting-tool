@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <edit-section-II></edit-section-II>
+      <nr7-edit-section-II></nr7-edit-section-II>
     </km-suspense>
 </template>
   
@@ -8,7 +8,8 @@
 
 import { KmSuspense } from "@/components/controls";
 import { SCHEMAS, ROLES } from '@/utils';
-import EditSectionII from "@/components/pages/nr7/my-country/edit/section-II.vue";
+
+const Nr7EditSectionII = defineAsyncComponent(()=>import("@/components/pages/nr7/my-country/edit/nr7-edit-section-II.vue"))
 
   definePageMeta({
     auth:true,
