@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import editFormUtility from './edit-form-utility'
 
 class kmDocumentDrafts {
 
@@ -29,6 +30,20 @@ class kmDocumentDrafts {
         return data;
 
       };
+    }
+
+    async bulkPublish(realm, schemas,  identifiers){
+        const res = await useAPIFetch(`/api/v2023/documents/bulk/publish`,{
+            method: 'POST',
+            query : {
+                realm
+            },
+            body:{
+                schemas,
+                identifiers
+            }
+        });
+        return res;
     }
 }
 

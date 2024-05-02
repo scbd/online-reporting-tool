@@ -24,6 +24,20 @@ ul.header-nav li.nav-item:hover{
  .km-value-ml-html.ck-content ul:first{
     padding-left: 10px;
 }
+.km-form-group .mandatory{
+    border-left: 5px solid red;
+    padding-left: 10px;
+}
+.km-form-group label.required:after, .km-form-group label[required]:after {
+    color: #e32;
+    content: ' * ';
+}
+.km-form-group.has-help label.control-label{
+    display: unset;
+}
+.km-form-group .control-label{
+    font-weight: 700;
+}
  
  font-awesome-icon{
     padding-right: 5px;
@@ -37,17 +51,20 @@ ul.header-nav li.nav-item:hover{
 }
 
 .has-error .form-control,
-.has-error .multiselect .multiselect__tags {
-    border-color: #a94442;
+.has-error .multiselect .multiselect__tags,
+.has-error .ck.ck-editor__main {
+    border-color: #a94442!important;
     -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
     box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
 }
-
+.has-error .ck.ck-editor__main{
+    border: 1px solid;
+}
 .has-error .input-group-text,
 .has-error .multiselect .multiselect__tags {
     color: #a94442;
     background-color: #f2dede;
-    border-color: #a94442;
+    border-color: #a94442!important;
 }
 
 .dim-section{
