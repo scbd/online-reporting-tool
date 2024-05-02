@@ -47,9 +47,10 @@
 
     function removeItem(item, index){
         binding.value?.splice(index, 1)
+        emitChange();
     }
 
-    function emitChange(value){
+    function emitChange(value=undefined){
         const clean = removeEmpty(binding.value);
         emit('update:modelValue', clean?.map(mapItem));
         if(binding.value?.length){

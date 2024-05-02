@@ -110,7 +110,7 @@
                                                 <tr v-for="target in document.globalTargetAlignment" :key="target.identifier">
                                                     <td>
                                                         <km-form-group required :name="target.identifier+'_degreeOfAlignment'">
-                                                            <label class="control-label" :for="target.identifier+'_degreeOfAlignment'">
+                                                            <label class="form-label control-label" :for="target.identifier+'_degreeOfAlignment'" required>
                                                                 <span class="visually-hidden">{{ t('degreeOfAlignment') }} - </span>
                                                                 {{ lstring(globalTargets.find(e=>e.identifier == target.identifier).shortTitle, locale) }}
                                                                 <km-help class="ms-1 me-1" 
@@ -208,6 +208,7 @@
                                             :placeholder="t('componentIndicators')"
                                             :options="componentIndicators"
                                             :multiple="true"
+                                            :close-on-select="false" 
                                             :disabled="false"
                                             :custom-label="customLabel"
                                             :custom-selected-item="customSelectedItem"
@@ -224,6 +225,7 @@
                                             :placeholder="t('complementaryIndicators')"
                                             :options="complementaryIndicators"
                                             :multiple="true"
+                                            :close-on-select="false" 
                                             :disabled="false"
                                             :custom-label="customLabel"
                                             :custom-selected-item="customSelectedItem"
@@ -348,7 +350,7 @@
     import { useStorage } from '@vueuse/core'
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { EditFormUtility } from "@/services/edit-form-utility";
-    import {uniqBy} from 'lodash'
+    import {uniqBy, isEmpty, compact} from 'lodash'
 
     const props = defineProps({
         identifier         : {type: String },
@@ -380,23 +382,29 @@
     const isBusy                    = ref(false);
     const validationReport          = ref({});
 
-    //Currently there is no other way but get it using currentInstance
-    const currentVueInstance        = getCurrentInstance();
+    const isEventDefined        = useHasEvents();
+    
 
     const globalTargets               = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
     const globalGoals                 = computed(()=>((thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name))));
     const gbfTargetConsideration      = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_TARGETS_CONSIDERATIONS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
     const formattedDegreeOfAlignments = computed(()=>thesaurusStore.getDomainTerms(THESAURUS.GBF_DEGREE_OF_ALIGNMENT)||[]);
-    const hasOnClose                  = computed(()=>!!currentVueInstance?.vnode.props?.['onOnClose']); //vue prepends 'on' to all events internally
-
+    
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
+        clean.otherNationalIndicators = compact(clean.otherNationalIndicators?.map(e=>{
+            if(!isEmpty(e.value))
+                return e;
+        }));
+        if(!clean?.otherNationalIndicators?.length)
+            clean.otherNationalIndicators = undefined;
+        
         return clean
     })
 
     const onPostClose = async (document)=>{
-        
-        if(hasOnClose.value)
+                
+        if(isEventDefined('onClose'))
             emit('onClose', document);
         else{
             await useNavigateAppTo(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I);
