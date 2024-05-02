@@ -15,10 +15,10 @@ interface EDocumentInfo {
     size                    : number;
     rights                  : string[];
     charset                 : string;
-    title                   : typeof ELString;
-    summary                 : typeof ELString;
+    title                   : ELstring;
+    summary                 : ELstring;
     metadata                : { [key: string]: string; };
-    body                    : ENationalTarget7 | ENationalTarget7Mapping | object;
+    body                    : ENationalTarget7 | ENationalTarget7Mapping | ENationalReport7 |object;
     workingDocumentID       : number | null;
     workingDocumentCreatedOn: Date | null;
     workingDocumentCreatedBy: EUserInfo;
@@ -26,8 +26,8 @@ interface EDocumentInfo {
     workingDocumentUpdatedBy: EUserInfo;
     workingDocumentSize     : number | null;
     workingDocumentOwner    : string;
-    workingDocumentTitle    : typeof ELString;
-    workingDocumentSummary  : typeof ELString;
+    workingDocumentTitle    : ELstring;
+    workingDocumentSummary  : ELstring;
     workingDocumentMetadata : { [key: string]: string; };
     workingDocumentBody     : ENationalTarget7 | ENationalTarget7Mapping | object;
     workingDocumentLock     : ELockInfo;

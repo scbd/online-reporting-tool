@@ -1,9 +1,9 @@
 
 class ETerm{
-    title : typeof ELString;
+    title : ELstring;
     identifier:String;
 
-    constructor( title : typeof ELString, identifier:String){
+    constructor( title : ELstring, identifier:String){
         this.title      = title;
         this.identifier = identifier;
     }
