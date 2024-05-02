@@ -85,7 +85,6 @@
     import { KmDocumentsService } from '~/services/kmDocuments';
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
     import {binaryIndicatorQuestions as binaryIndicatorSource} from '~/app-data/binary-indicator-questions.js'
-
    
     const props = defineProps({
         identifier         : {type:String, required:false},
@@ -97,8 +96,7 @@
     // open in a dialog mode form overview
     const emit  = defineEmits(['onClose', 'onPostSaveDraft'])
 
-    //Currently there is no other way but get it using currentInstance
-    const currentVueInstance        = getCurrentInstance();
+    const isEventDefined        = useHasEvents();
    
     const binaryIndicatorQuestions = reactive(cloneDeep(binaryIndicatorSource));
     const { user }                = useAuth();
@@ -118,8 +116,7 @@
 
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
-        
-        return clean
+         return clean
     });
     
     const binaryQuestion = computed(()=>{
@@ -128,8 +125,8 @@
     })
 
     const onPostClose = async (document)=>{
-        //vue prepends 'on' to all events internally
-        if(!!currentVueInstance?.vnode.props?.['onOnClose'])
+        
+        if(isEventDefined('onClose'))
             emit('onClose', document);
 
         showEditIndicatorDataModal.value = false;
@@ -137,19 +134,17 @@
     }
 
     const onPreSaveDraft = async (document)=>{
-        console.log(document);
-        document.value.test = 'Blaise';
         return document;
     };
 
     const onPostSaveDraft = async (document)=>{
+        console.log(document);
         //vue prepends 'on' to all events internally
-        if(!!currentVueInstance?.vnode.props?.['onOnPostSaveDraft'])
+        if(isEventDefined('onPostSaveDraft'))
             emit('onPostSaveDraft', document);
     };
     
     const onPreReviewDocument = (document)=>{
-        document.value.test = undefined;
         return document;
     }
     const onPostReviewDocument = (document, newValidationReport)=>{
