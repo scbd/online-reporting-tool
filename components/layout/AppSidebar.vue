@@ -1,19 +1,25 @@
 <template>
   <CSidebar
+    class="border-end"
+    colorScheme="dark"
     position="fixed"
     :unfoldable="userPreferences.sidebarUnfoldable"
     :visible="userPreferences.sidebarVisible"
     @visible-change="(event) =>{}"
   >
-    <CSidebarBrand>
-        <img src="https://chm.cbd.int/app/img/cbd-logo-en.svg" role="img" custom-class-name="sidebar-brand-full" height="35">
-        <CTooltip content="On-line Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
-            <template #toggler="{ on }">
-                <span class="brand-name" v-on="on">CHM - ORT</span>
-            </template>
-        </CTooltip>
+    <CSidebarHeader class="border-bottom">
+        <!-- <a href="/"> -->
+        <CSidebarBrand>
+            <img src="https://chm.cbd.int/app/img/cbd-logo-en.svg" role="img" custom-class-name="sidebar-brand-full" height="35">
+            <CTooltip content="Online Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
+                <template #toggler="{ on }">
+                    <span class="align-bottom ms-1 fs-4" v-on="on">CHM - ORT</span>
+                </template>
+            </CTooltip>
+        </CSidebarBrand>
+        <!-- </a> -->
      
-    </CSidebarBrand>     
+    </CSidebarHeader>     
     <CSidebarNav>
       <KmNavLink :to="localePath('/dashboard')" icon="cil-speedometer" :title="t('menuDashboard')"></KmNavLink>      
       <!-- <li class="nav-title" v-if="menuAccess[appRoutes.NATIONAL_TARGETS]">
@@ -78,9 +84,11 @@
         
       </CNavGroup>
     </CSidebarNav>
-    <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">   
-        <span class="app-version" v-if="TAG||COMMIT">Ver {{ TAG||COMMIT.substring(0, 20) }}</span>    
-    </CSidebarToggler>
+    <CSidebarFooter class="border-top d-none d-lg-flex">
+        <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">   
+            <span class="app-version" v-if="TAG||COMMIT">Ver {{ TAG||COMMIT.substring(0, 20) }}</span>    
+        </CSidebarToggler>
+    </CSidebarFooter>
   </CSidebar>
 </template>
 
