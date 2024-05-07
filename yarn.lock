@@ -1848,6 +1848,15 @@
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-11.1.0.tgz#a104f33c899a15f3b28d3eb7b20738501a3a5035"
   integrity sha512-P6dk79QYA6sKQnghrUz/1tHi0n9mrb/iO1WTMk/ElLmTyNqgDeSZ3wcDf6fRBGzRJbeG1dxzEOvLENMjr+E3fg==
   dependencies:
+    "@vueuse/core" "10.9.0"
+    "@vueuse/shared" "10.9.0"
+    vue-demi ">=0.14.7"
+
+"@vueuse/core@10.9.0", "@vueuse/core@^10.2.1", "@vueuse/core@^10.9.0":
+  version "10.9.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.9.0.tgz#7d779a95cf0189de176fee63cee4ba44b3c85d64"
+  integrity sha512-/1vjTol8SXnx6xewDEKfS0Ra//ncg4Hb0DaZiwKf7drgfMsKFExQ+FnnENcN6efPen+1kIzhLQoGSy0eDUVOMg==
+  dependencies:
     "@types/web-bluetooth" "^0.0.20"
     "@vueuse/metadata" "11.1.0"
     "@vueuse/shared" "11.1.0"
@@ -3984,6 +3993,11 @@ minizlib@^2.1.1:
     minipass "^3.0.0"
     yallist "^4.0.0"
 
+mitt@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/mitt/-/mitt-2.1.0.tgz#f740577c23176c6205b121b2973514eade1b2230"
+  integrity sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==
+
 mitt@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.1.tgz#ea36cf0cc30403601ae074c8f77b7092cdab36d1"
@@ -5097,6 +5111,13 @@ shell-quote@^1.8.1:
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.8.1.tgz#6dbf4db75515ad5bac63b4f1894c3a154c766680"
   integrity sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==
 
+shiki@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/shiki/-/shiki-1.3.0.tgz#3eda35cb49f6f0a98525e9da48fc072e6c655a3f"
+  integrity sha512-9aNdQy/etMXctnPzsje1h1XIGm9YfRcSksKOGqZWXA/qP9G18/8fpz5Bjpma8bOgz3tqIpjERAd6/lLjFyzoww==
+  dependencies:
+    "@shikijs/core" "1.3.0"
+
 signal-exit@^3.0.0, signal-exit@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
@@ -5883,6 +5904,15 @@ vue-toast-notification@^3.1.1:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/vue-toast-notification/-/vue-toast-notification-3.1.3.tgz#cdaef11cbe4045f3ea9d3ea5c814fa0333610dd1"
   integrity sha512-XNyWqwLIGBFfX5G9sK+clq3N3IPlhDjzNdbZaXkEElcotPlWs0wWZailk1vqhdtLYT/93Y4FHAVuzyatLmPZRA==
+
+vue-virtual-scroller@2.0.0-beta.8:
+  version "2.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/vue-virtual-scroller/-/vue-virtual-scroller-2.0.0-beta.8.tgz#eeceda57e4faa5ba1763994c873923e2a956898b"
+  integrity sha512-b8/f5NQ5nIEBRTNi6GcPItE4s7kxNHw2AIHLtDp+2QvqdTjVN0FgONwX9cr53jWRgnu+HRLPaWDOR2JPI5MTfQ==
+  dependencies:
+    mitt "^2.1.0"
+    vue-observe-visibility "^2.0.0-alpha.1"
+    vue-resize "^2.0.0-alpha.1"
 
 vue3-loading-overlay@^0.0.0:
   version "0.0.0"
