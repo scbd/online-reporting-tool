@@ -1,6 +1,6 @@
 <template>
-  <CHeader position="sticky" class="mb-4">
-    <CContainer fluid>
+  <CHeader position="sticky" :class="headerClassNames">
+    <CContainer class="border-bottom px-4" fluid>
       <CHeaderToggler class="ps-1" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">
         <CIcon icon="cil-menu" size="lg" />
       </CHeaderToggler>
@@ -58,36 +58,73 @@
             <AppHeaderDropdownAccnt />
           </span>
         </CNavItem>
+        <CNavItem>
+            <CDropdown variant="nav-item" placement="bottom-end">
+            <CDropdownToggle :caret="false">
+                <CIcon title="Dark" v-if="colorMode === 'dark'" icon="cil-moon" size="lg" />
+                <CIcon title="Light" v-else-if="colorMode === 'light'" :icon="cilSun" size="lg" />
+                <CIcon title="Auto" v-else :icon="cilContrast" size="lg" />
+            </CDropdownToggle>
+            <CDropdownMenu>
+                <CDropdownItem
+                :active="colorMode === 'light'"
+                class="d-flex align-items-center"
+                component="button"
+                type="button"
+                @click="setColorMode('light')"
+                >
+                <CIcon class="me-2" :icon="cilSun" size="lg" /> Light
+                </CDropdownItem>
+                <CDropdownItem
+                :active="colorMode === 'dark'"
+                class="d-flex align-items-center"
+                component="button"
+                type="button"
+                @click="setColorMode('dark')"
+                >
+                <CIcon class="me-2" icon="cil-moon" size="lg" /> Dark
+                </CDropdownItem>
+                <CDropdownItem
+                :active="colorMode === 'auto'"
+                class="d-flex align-items-center"
+                component="button"
+                type="button"
+                @click="setColorMode('auto')"
+                >
+                <CIcon class="me-2" :icon="cilContrast" size="lg" /> Auto
+                </CDropdownItem>
+            </CDropdownMenu>
+            </CDropdown>
+            
+        </CNavItem>
       </CHeaderNav>
     </CContainer>
-    <CHeaderDivider />
-    <CContainer fluid>
+    <CContainer class="px-4" fluid>
       <AppBreadcrumb />
     </CContainer>
   </CHeader>
 </template>
 
 <i18n src="@/i18n/dist/components/layout/AppHeader.json"></i18n>
-<script>
+<script setup lang="ts">
+
 import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt'
 import { logo } from '@/assets/brand/logo'
 import { languages } from '@/app-data/languages'
 import { useUserPreferencesStore } from '@/stores/userPreferences';
+import { useColorModes } from '@coreui/vue'
 
-export default {
-  name: 'AppHeader',
-  components: {
-    AppBreadcrumb,
-    AppHeaderDropdownAccnt,
-  },
-  setup() {
-    
+import { cilSun, cilContrast } from '@coreui/icons';
+
+    console.log(cilSun)
     const { setLocale, } = useI18n()
     const switchLocalePath = useSwitchLocalePath();
     const { t } = useI18n()
     const userPreferences = useUserPreferencesStore();
-    
+    const headerClassNames = ref('mb-4 p-0')
+    const { colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
+
     async function switchLocale (locale){
       setLocale(locale);
       const newLocalePath = switchLocalePath(locale);
@@ -95,7 +132,14 @@ export default {
       await useNavigateAppTo(newLocalePath);
     }
 
-    return { logo, t, languages, switchLocale, userPreferences }
-  },
-}
+    onMounted(() => {
+        document.addEventListener('scroll', () => {
+            if (document.documentElement.scrollTop > 0) {
+            headerClassNames.value = 'mb-4 p-0 shadow-sm'
+            } else {
+            headerClassNames.value = 'mb-4 p-0'
+            }
+        })
+    })
+
 </script>
