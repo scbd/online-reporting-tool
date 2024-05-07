@@ -1,5 +1,7 @@
 <template>
   <CSidebar
+    class="border-end"
+    colorScheme="dark"
     position="fixed"
     :unfoldable="userPreferences.sidebarUnfoldable"
     :visible="userPreferences.sidebarVisible"
@@ -14,7 +16,7 @@
         </CTooltip>
       <CCloseButton class="d-lg-none" dark @click="userPreferences.setSidebarVisible()" />
      
-    </CSidebarBrand>     
+    </CSidebarHeader>     
     <CSidebarNav>
       <KmNavLink :to="localePath('/dashboard')" icon="cil-speedometer" :title="t('menuDashboard')"></KmNavLink>      
       <!-- <li class="nav-title" v-if="menuAccess[appRoutes.NATIONAL_TARGETS]">
