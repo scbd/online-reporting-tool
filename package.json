@@ -47,5 +47,8 @@
     "vue-toast-notification": "^3.1.1",
     "vue3-loading-overlay": "^0.0.0",
     "webui-popover": "^1.2.18"
-  }
+  },
+  "resolutions": {
+    "string-width": "4.2.3"
+ }
 }
