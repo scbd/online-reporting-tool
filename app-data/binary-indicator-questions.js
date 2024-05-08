@@ -1,5 +1,5 @@
 
-import binaryQuestionsT from '../i18n/en/app-data/binary-indicator-questions.json' assert { type: "json" };;
+import binaryQuestionsT from '../i18n/en/app-data/binary-indicator-questions.json' with { type: "json" };;
 
 export const binaryIndicatorQuestions = [
     {
