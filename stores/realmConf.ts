@@ -128,12 +128,11 @@ export const useRealmConfStore = defineStore('realmConf', {
         if(!this.realmConf?.realm){
             const { $api } = useNuxtApp();
             const a = useNuxtApp();
-            console.log($api,a)
+                        
             if(!$api){
-                // console.log('sleeping for 1 sec', useNuxtApp())
                 if(retry > 3)
                     return;
-                await sleep(1000);
+                await sleep(500);
                 return this.loadRealmConf(retry+1);
             }
             else{
