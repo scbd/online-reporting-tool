@@ -392,6 +392,7 @@
     
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
+        
         clean.otherNationalIndicators = compact(clean.otherNationalIndicators?.map(e=>{
             if(!isEmpty(e.value))
                 return e;
@@ -524,7 +525,21 @@
             //initialize for local use
             document.value.government = document.value?.government || {};
             document.value.additionalImplementation = document.value?.additionalImplementation || {};
+            
+            if(document.value.otherNationalIndicators?.length){
+                //convert old national targets to new schema definition  {identifier, value}
+                document.value.otherNationalIndicators = document.value.otherNationalIndicators?.map(e=>{
+                    if(!e.identifier){
+                        return {
+                            identifier :  useGenerateUUID(),
+                            value : e
+                        }
+                    }
 
+                    return e;
+                });
+            }
+            
             if(user?.value?.isAuthenticated){
                 document.value.government.identifier = document.value?.government?.identifier || user.value.government
 
@@ -543,9 +558,7 @@
     }
 
     onMounted(() => {
-        init();
-
-        console.log(useAttrs())
+        init();       
     })
     
     
