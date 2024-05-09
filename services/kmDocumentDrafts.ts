@@ -45,6 +45,14 @@ class kmDocumentDrafts {
         });
         return res;
     }
+
+    async saveDraftVersion(identifier, document){
+                
+        const { $api } = useNuxtApp();
+        const  data = await $api.kmStorage.drafts.saveDraftVersion(identifier, document);
+        
+        return data;
+    }
 }
 
 export const KmDocumentDraftsService = new kmDocumentDrafts();

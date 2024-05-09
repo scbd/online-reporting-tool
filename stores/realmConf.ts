@@ -123,14 +123,17 @@ export const useRealmConfStore = defineStore('realmConf', {
     }
   },
   actions:{
-    async loadRealmConf(){
+    async loadRealmConf(retry = 0){
         const realHost = useRuntimeConfig().public.REALM_CONF_HOST;
         if(!this.realmConf?.realm){
             const { $api } = useNuxtApp();
+            const a = useNuxtApp();
+                        
             if(!$api){
-                // console.log('sleeping for 1 sec', useNuxtApp())
-                await sleep(1000);
-                return this.loadRealmConf();
+                if(retry > 3)
+                    return;
+                await sleep(500);
+                return this.loadRealmConf(retry+1);
             }
             else{
                 const realmConf = await $api.realmConfiguration.getRealmConfigurationByHost(realHost);

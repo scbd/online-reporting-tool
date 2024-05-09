@@ -80,7 +80,7 @@
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';    
 
 
-    const rowsPerPage              = UTILS.ROWS_PER_PAGE;
+    const rowsPerPage              = UTILS.ROWS_PER_PAGE_300;
     const { t, locale }            = useI18n();
     const { $appRoutes:appRoutes } = useNuxtApp();
     const stateTargetWorkflow      = useStorage('ort-target-workflow', { batchId : undefined });

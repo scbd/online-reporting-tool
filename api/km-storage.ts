@@ -13,6 +13,7 @@ const  serviceUrls = {
   draftSecurityUrl      (identifier, operation){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/securities/${encodeURIComponent(operation)}` },
   draftLockUrl          (identifier, lockID)   { return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/locks/${encodeURIComponent(lockID)}` },
   documentVersionUrl    (identifier)           { return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions` },
+  saveDraftVersionUrl   (identifier)           { return `/api/v2018/temporary-documents/${encodeURIComponent(identifier)}` },
 }
 export default class KmStorageApi extends ApiBase
 {
@@ -132,6 +133,11 @@ class KmDraftsApi extends ApiBase
     const data = await useAPIFetch( serviceUrls.draftUrl(identifier), { body, method:'put', params });
     return data;
   }
+  async saveDraftVersion(identifier, body, params){    
+    const data = await useAPIFetch( serviceUrls.saveDraftVersionUrl(identifier), { body, method:'put', params });
+    return data;
+  }
+
   async delete(identifier, params){
     const data =  await useAPIFetch(serviceUrls.draftUrl(identifier),  { method:'delete', params })
                   

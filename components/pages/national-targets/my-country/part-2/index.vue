@@ -145,7 +145,7 @@
     
     import { sortBy } from "lodash";
 
-    const rowsPerPage = 300; // UTILS.ROWS_PER_PAGE;
+    const rowsPerPage = UTILS.ROWS_PER_PAGE_300;
     const { $appRoutes:appRoutes } = useNuxtApp();
     const route    = useRoute();
     const localePath  = useLocalePath()

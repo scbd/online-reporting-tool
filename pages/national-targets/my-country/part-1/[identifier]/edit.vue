@@ -5,10 +5,6 @@
 </template>
   
 <script setup lang="ts">
-import { KmSuspense } from "@/components/controls";
-      import { SCHEMAS, ROLES } from '@/utils';
-import EditTargetPart1 from "@/components/pages/national-targets/my-country/part-1/edit-target-part-1.vue";
-
   definePageMeta({
     auth:true,
     schema:'nationalTarget7',
