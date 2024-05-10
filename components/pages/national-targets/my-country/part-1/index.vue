@@ -47,34 +47,30 @@
             </thead>
             <tbody>
                 <tr v-for="(draft,  index) in nationalTargets" :key="draft.identifier">
-                <th scope="row">{{ index+1 }}</th>
-                <td>{{lstring(draft.workingDocumentTitle||draft.title, locale)}}</td>
-                <td>
-                    <ul v-if="getAlignedGoalsOrTargets(draft.workingDocumentBody||draft.body)?.length">
-                    <li v-for="target in getAlignedGoalsOrTargets(draft.workingDocumentBody||draft.body)" :key="target.identifier">
-                        <a v-if="target.identifier.startsWith('GBF-GOAL')" href="https://www.cbd.int/gbf/goals/" target="_blank">{{ target.identifier }}</a> 
-                        <a v-if="target.identifier.startsWith('GBF-TARGET')" :href="`https://www.cbd.int/gbf/targets/${getTargetNumber(target.identifier)}`" target="_blank">{{ target.identifier }}</a> 
-                    </li>
-                    </ul>
-                </td>
-                <td>
-                    <div v-if="draft.workingDocumentBody"><CBadge color="dark">Draft</CBadge></div>
-                    <div v-if="!draft.workingDocumentBody"><CBadge color="success">Published</CBadge></div>
-                    <div v-if="draft.workingDocumentLock"><CBadge color="danger">{{t('locked')}}</CBadge></div>
-                </td>
-                <td>
-                    {{formatDate(draft.updatedOn)}}<br/>
-                    {{ draft.updatedBy.firstName }} {{ draft.updatedBy.lastName }}
-                </td>
-                <td>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, draft)" title="View"></km-link>
-                    <CButton color="secondary" size="sm" :disabled="!canEdit || draft.workingDocumentLock" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
-                        <font-awesome-icon icon="fa-edit" /> Edit
-                    </CButton>
-                    <km-delete-record :document="draft" @on-delete="onRecordDelete"></km-delete-record>
-                    </div>
-                </td>
+                    <th scope="row" >{{ index+1 }}</th>
+                    <td scope="row" class="col-5">{{lstring(draft.workingDocumentTitle||draft.title, locale)}}</td>
+                    <td>
+                        <goal-target-list :goal-targets="getAlignedGoalsOrTargets(draft.workingDocumentBody||draft.body)">
+                        </goal-target-list>                           
+                    </td>
+                    <td>
+                        <div v-if="draft.workingDocumentBody"><CBadge color="dark">Draft</CBadge></div>
+                        <div v-if="!draft.workingDocumentBody"><CBadge color="success">Published</CBadge></div>
+                        <div v-if="draft.workingDocumentLock"><CBadge color="danger">{{t('locked')}}</CBadge></div>
+                    </td>
+                    <td>
+                        {{formatDate(draft.updatedOn)}}<br/>
+                        {{ draft.updatedBy.firstName }} {{ draft.updatedBy.lastName }}
+                    </td>
+                    <td>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, draft)" title="View"></km-link>
+                        <CButton color="secondary" size="sm" :disabled="!canEdit || draft.workingDocumentLock" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
+                            <font-awesome-icon icon="fa-edit" /> Edit
+                        </CButton>
+                        <km-delete-record :document="draft" @on-delete="onRecordDelete"></km-delete-record>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
             </table>

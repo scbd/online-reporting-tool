@@ -4,6 +4,7 @@
           <div class="card mt-3">
             <div class="card-header bg-secondary">
                 {{t('nationalTargets')}}
+                <strong v-if="nationalTargetRecords?.length" >({{ nationalTargetRecords?.length }})</strong>
             </div>
             <div class="card-body"> 
                 <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
@@ -14,7 +15,8 @@
           
           <div class="card mt-3">
             <div class="card-header bg-secondary">
-                {{t('globalMapping')}}
+                {{t('globalMapping')}} 
+                <strong v-if="nationalMappingRecords?.length" >({{ nationalMappingRecords?.length }})</strong>
             </div>
             <div class="card-body">      
                 <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>      
