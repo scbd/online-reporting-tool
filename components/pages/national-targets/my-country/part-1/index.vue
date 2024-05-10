@@ -4,21 +4,35 @@
           <slot name="header"> <font-awesome-icon icon="fa fa-arrows-down-to-people" /> {{t('title')}} </slot>
         </CCardHeader>
         <CCardBody>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            
-                <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" :title="t('goToOverview')" 
-                            role="button" class="btn btn-secondary" 
-                            icon="fa-wand-magic-sparkles">
-                </km-link> 
+            <CRow>
+                <CCol col="12" sm="3" md="6"  xs="6">
+                    <km-document-count :published-count="publishedNationalTargets?.length"
+                    :draft-count="draftNationalTargets?.length"
+                    :request-count="requestCount">
+                    </km-document-count>         
+                </CCol>                                                   
+                <CCol col="12" sm="9" md="6" xs="6">
+                    <CCallout color="secondary">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                
+                    <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" :title="t('goToOverview')" 
+                                role="button" class="btn btn-secondary" 
+                                icon="fa-wand-magic-sparkles">
+                    </km-link> 
 
-                <CButton @click="loadRecords()" color="secondary">
-                    <font-awesome-icon icon="fa-arrows-rotate"/>
-                    {{t('refresh')}}
-                </CButton>
-                <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
-                    <font-awesome-icon icon="fa-plus"/> {{t('submitNewTarget')}}
-                </CButton>
-            </div>
+                    <CButton @click="loadRecords()" color="secondary">
+                        <font-awesome-icon icon="fa-arrows-rotate"/>
+                        {{t('refresh')}}
+                    </CButton>
+                    <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
+                        <font-awesome-icon icon="fa-plus"/> {{t('submitNewTarget')}}
+                    </CButton>
+                    </div>
+                </CCallout>
+                </CCol>
+            </CRow>
+                                              
+
             <km-spinner v-if="isLoadingRecords" center ></km-spinner>
             <table class="table" v-if="nationalTargets?.length">
             <thead>
@@ -98,6 +112,10 @@
             ...publishedNationalTargets.value
         ]
     });
+
+    const requestCount = computed(()=>
+        draftNationalTargets.value?.filter(e=>e.workingDocumentLock)?.length
+    )
 
     function navigationUrl(route:String, draft:Object){
          
