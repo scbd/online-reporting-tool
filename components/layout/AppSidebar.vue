@@ -3,7 +3,7 @@
     position="fixed"
     :unfoldable="userPreferences.sidebarUnfoldable"
     :visible="userPreferences.sidebarVisible"
-    @visible-change="(event) =>{}"
+    @visible-change="(value) => userPreferences.setSidebarVisible(value)"
   >
     <CSidebarBrand>
         <img src="https://chm.cbd.int/app/img/cbd-logo-en.svg" role="img" custom-class-name="sidebar-brand-full" height="35">
@@ -12,6 +12,7 @@
                 <span class="brand-name" v-on="on">CHM - ORT</span>
             </template>
         </CTooltip>
+      <CCloseButton class="d-lg-none" dark @click="userPreferences.setSidebarVisible()" />
      
     </CSidebarBrand>     
     <CSidebarNav>
@@ -78,7 +79,7 @@
         
       </CNavGroup>
     </CSidebarNav>
-    <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">   
+    <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable()">   
         <span class="app-version" v-if="TAG||COMMIT">Ver {{ TAG||COMMIT.substring(0, 20) }}</span>    
     </CSidebarToggler>
   </CSidebar>
