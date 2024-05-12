@@ -5,7 +5,7 @@
     position="fixed"
     :unfoldable="userPreferences.sidebarUnfoldable"
     :visible="userPreferences.sidebarVisible"
-    @visible-change="(event) =>{}"
+    @visible-change="(value) => userPreferences.setSidebarVisible(value)"
   >
     <CSidebarHeader class="border-bottom">
         <!-- <a href="/"> -->
@@ -18,6 +18,7 @@
             </CTooltip>
         </CSidebarBrand>
         <!-- </a> -->
+      <CCloseButton class="d-lg-none" dark @click="userPreferences.setSidebarVisible()" />
      
     </CSidebarHeader>     
     <CSidebarNav>
@@ -85,7 +86,7 @@
       </CNavGroup>
     </CSidebarNav>
     <CSidebarFooter class="border-top d-none d-lg-flex">
-        <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">   
+        <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable()">   
             <span class="app-version" v-if="TAG||COMMIT">Ver {{ TAG||COMMIT.substring(0, 20) }}</span>    
         </CSidebarToggler>
     </CSidebarFooter>

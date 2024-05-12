@@ -25,11 +25,10 @@ export const useUserPreferencesStore = defineStore('userPreferences', {
             this.editorActiveLanguageTab = lang;
         },
         setSidebarVisible(visible:boolean){
-            this.sidebarVisible = visible;
-            this.sidebarUnfoldable = false
+            this.sidebarVisible = visible !== undefined ? visible : !this.sidebarVisible;
         },
-        setSidebarUnfoldable(unfoldable:boolean){
-            this.sidebarUnfoldable = unfoldable;
+        setSidebarUnfoldable(){
+            this.sidebarUnfoldable = !this.sidebarUnfoldable;
         },
     },
     persist: {
