@@ -1,7 +1,7 @@
 <template>
   <CHeader position="sticky" :class="headerClassNames">
     <CContainer class="border-bottom px-4" fluid>
-      <CHeaderToggler class="ps-1" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">
+      <CHeaderToggler class="ps-1" @click="userPreferences.setSidebarVisible()">
         <CIcon icon="cil-menu" size="lg" />
       </CHeaderToggler>
       <CHeaderBrand class="mx-auto d-none" to="/">
