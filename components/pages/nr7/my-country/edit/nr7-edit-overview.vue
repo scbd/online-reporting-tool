@@ -393,18 +393,21 @@
     import { useStorage } from '@vueuse/core'
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
+    import { useRealmConfStore } from '@/stores/realmConf';
 
 
     const { $appRoutes:appRoutes, $api } = useNuxtApp();
-    const { user } = useAuth()
+    const { user }              = useAuth()
     const {t, locale }          = useI18n(); 
-    const security              = useSecurity();  
+    const security              = useSecurity();
+    const isEventDefined        = useHasEvents();  
+    const { container }         = useAttrs();
     const nationalReport7Store  = useNationalReport7Store();
+    const realmConfStore        = useRealmConfStore();
+    const realmConf             = realmConfStore.realmConf;
     const isBusy                = ref(true);
     const validationReport      = ref(null); 
-    const container             = useAttrs().container;
     const document              = ref({});
-    const isEventDefined        = useHasEvents();
     const nrProgress            = ref({});
     const draftRecords          = ref([]);
     const draftNr7Document      = ref({});
@@ -538,7 +541,7 @@
         
         try{ 
 
-            // await onValidate();
+            await onValidate();
             const hasValidationErrors = [draftNr7Document.value, ...(draftRecords.value||[])].some(e=>e.errors);
             
             if(hasValidationErrors){
@@ -557,8 +560,8 @@
 
             showSpinnerDialog.value = true;
             isPublishing.value = true;
-            // const result = await KmDocumentDraftsService.bulkPublish([SCHEMAS.NATIONAL_REPORT_7])
-            // console.log(result);
+            const result = await KmDocumentDraftsService.bulkPublish(realmConf.realm, [SCHEMAS.NATIONAL_REPORT_7])
+            console.log(result);
             //save batch id from api to local storage
             // result.batchId
 
@@ -660,7 +663,11 @@
     }
 
     async function loadOpenWorkflow(lockedRecord: any, iteration:number=0) {
-        const workflowId=lockedRecord.workingDocumentLock.lockID.replace('workflow-', '');
+        const workflowId=lockedRecord?.workingDocumentLock?.lockID?.replace('workflow-', '');
+        
+        if(!workflowId)
+            return;
+
         const workflow=await $api.kmWorkflows.getWorkflow(workflowId);
         if(workflow) {
             if(!workflow?.activities?.length && iteration < 5){
