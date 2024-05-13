@@ -363,7 +363,11 @@
     }
 
 async function loadOpenWorkflow(lockedRecord: any, iteration:number=0) {
-  const workflowId=lockedRecord.workingDocumentLock.lockID.replace('workflow-', '');
+  const workflowId=lockedRecord?.workingDocumentLock?.lockID?.replace('workflow-', '');
+
+  if(!workflowId)
+    return;
+
   const workflow=await $api.kmWorkflows.getWorkflow(workflowId);
   if(workflow) {
     if(!workflow?.activities?.length && iteration < 5){
