@@ -191,7 +191,7 @@
 
     const sectionIIIComputed = computed({ 
         get(){ 
-            return document.value.sectionIII
+            return sortBy(document.value.sectionIII, 'targetType').reverse()
         }
     });
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
