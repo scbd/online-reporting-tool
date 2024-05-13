@@ -34,6 +34,8 @@
                                               
 
             <km-spinner v-if="isLoadingRecords" center ></km-spinner>
+            <div class="table-responsive">
+
             <table class="table" v-if="nationalTargets?.length">
             <thead>
                 <tr>
@@ -74,7 +76,7 @@
                 </tr>
             </tbody>
             </table>
-          
+            </div>
         </CCardBody>
       
       </CCard> 
