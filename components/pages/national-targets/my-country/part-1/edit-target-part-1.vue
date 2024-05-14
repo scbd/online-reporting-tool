@@ -112,15 +112,15 @@
                                                         <km-form-group required :name="target.identifier+'_degreeOfAlignment'">
                                                             <label class="form-label control-label" :for="target.identifier+'_degreeOfAlignment'" required>
                                                                 <span class="visually-hidden">{{ t('degreeOfAlignment') }} - </span>
-                                                                {{ lstring(globalTargets.find(e=>e.identifier == target.identifier).shortTitle, locale) }}
+                                                                {{ lstring(globalTargets.find(e=>e.identifier == target.identifier)?.shortTitle, locale) }}
                                                                 <km-help class="ms-1 me-1" 
-                                                                    :title="lstring(globalTargets.find(e=>e.identifier == target.identifier).shortTitle)">
+                                                                    :title="lstring(globalTargets.find(e=>e.identifier == target.identifier)?.shortTitle)">
                                                                     <template #content>
-                                                                        <strong>{{ lstring(globalTargets.find(e=>e.identifier == target.identifier).title)}}</strong>
+                                                                        <strong>{{ lstring(globalTargets.find(e=>e.identifier == target.identifier)?.title)}}</strong>
                                                                         <div>
                                                                             <i>
                                                                                 <small>
-                                                                                {{lstring(globalTargets.find(e=>e.identifier == target.identifier).longDescription)}}
+                                                                                {{lstring(globalTargets.find(e=>e.identifier == target.identifier)?.longDescription)}}
                                                                                 </small>
                                                                             </i>
                                                                         </div>
@@ -392,6 +392,7 @@
     
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
+        
         clean.otherNationalIndicators = compact(clean.otherNationalIndicators?.map(e=>{
             if(!isEmpty(e.value))
                 return e;
@@ -477,8 +478,12 @@
             additionalImplementation : {}
             
         }
+        
         if(route?.query?.globalTarget){
-           emptyDoc.globalTargetAlignment = [{ identifier : route.query.globalTarget }];
+            if(/^GBF\-GOAL\-/i.test(route.query.globalTarget))
+                emptyDoc.globalGoalAlignment = [{ identifier : route.query.globalTarget }];
+            else
+                emptyDoc.globalTargetAlignment = [{ identifier : route.query.globalTarget }];
         }
 
         return emptyDoc
@@ -520,7 +525,21 @@
             //initialize for local use
             document.value.government = document.value?.government || {};
             document.value.additionalImplementation = document.value?.additionalImplementation || {};
+            
+            if(document.value.otherNationalIndicators?.length){
+                //convert old national targets to new schema definition  {identifier, value}
+                document.value.otherNationalIndicators = document.value.otherNationalIndicators?.map(e=>{
+                    if(!e.identifier){
+                        return {
+                            identifier :  useGenerateUUID(),
+                            value : e
+                        }
+                    }
 
+                    return e;
+                });
+            }
+            
             if(user?.value?.isAuthenticated){
                 document.value.government.identifier = document.value?.government?.identifier || user.value.government
 
@@ -539,9 +558,7 @@
     }
 
     onMounted(() => {
-        init();
-
-        console.log(useAttrs())
+        init();       
     })
     
     

@@ -41,7 +41,8 @@
                             <CAccordionHeader :id="'assessment-target'+assessment.target?.identifier" 
                                 class="assessment-target-accordion"
                                 :class="{'p-0 header header-sticky' : canHeaderStick(assessment.target?.identifier)}">
-                                {{lstring(nationalTargets[assessment.target.identifier].title)}}                 
+                                {{lstring(nationalTargets[assessment.target.identifier]?.title)}}  
+                                <strong v-if="assessment.targetType" class="ms-1">({{ capitalCase(assessment.targetType) }})</strong>
                             </CAccordionHeader>
                             <CAccordionBody> 
                                 <km-form-group>
@@ -74,7 +75,7 @@
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.actionEffectivenessInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
 
-                                            <km-form-group required :name="'sdgRelationInfo_'+ assessment.target?.identifier" caption="Please briefly describe how the implementation of this national target relates to progress in achieving related Sustainable Development Goals and associated targets and implementation of other related agreements ">
+                                            <km-form-group :name="'sdgRelationInfo_'+ assessment.target?.identifier" caption="Please briefly describe how the implementation of this national target relates to progress in achieving related Sustainable Development Goals and associated targets and implementation of other related agreements ">
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.sdgRelationInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
                                         </div>
@@ -143,12 +144,14 @@
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-III.json"></i18n>
 <script setup>
   
+    import { capitalCase } from 'change-case';
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
     import { useRoute } from 'vue-router' 
     import { useToast } from 'vue-toast-notification';
     import { KmDocumentsService } from '@/services/kmDocuments';
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     import { useThesaurusStore }    from '@/stores/thesaurus';
+    import { sortBy } from "lodash";
     
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import addIndicatorData from './indicator-data/nr7-add-indicator-data.vue';
@@ -188,7 +191,7 @@
 
     const sectionIIIComputed = computed({ 
         get(){ 
-            return document.value.sectionIII
+            return sortBy(document.value.sectionIII, 'targetType').reverse()
         }
     });
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
@@ -323,22 +326,39 @@
 
             const sectionIII = document.value.sectionIII || [];
             if(sectionIII?.length){
+                
                 //verify if the existing data in section iii exists in published targets
-                sectionIII.forEach((target, index)=>{
-                    if(!nationalTargets.value[target.identifier])
-                        sectionIII.splice(index, 1);
+                sectionIII.removeItem((section, index)=>{
+                    
+                    if(!section.targetType){
+                        if(section.target.identifier.startsWith('GBF-'))
+                            section.targetType = 'global'
+                        else
+                            section.targetType = 'national';
+                    }
+
+                    if(section.targetType == 'national' && !nationalTargets.value[section.target.identifier])
+                       return true
+                    else if(section.targetType == 'global'){
+                        // remove global indicators from list, there is possibility that new national target 
+                        // may have been added aligned with this global one
+                        const {target, targetType, others} = section;
+                        if(Object.keys(others||{})?.length == 0)
+                        return true
+                    }
                 });
             }
 
+            //Add any new national targets to the list
             for (const target in nationalTargets.value) {
                 if (Object.hasOwnProperty.call(nationalTargets.value, target)) {
                     const element = nationalTargets.value[target];
                     if(!sectionIII.find(e=>e.target?.identifier ==  element.identifier)){
-                        sectionIII.push({target : {identifier : element.identifier}})
+                        sectionIII.push({target : {identifier : element.identifier}, targetType:'national'})
                     }
                 }
             }
-            
+            // Map all national targets to indicator data
             if(sectionIII?.length){
                 for (const value in nationalTargets.value) {
                     if (Object.hasOwnProperty.call(nationalTargets.value, value)) {
@@ -349,16 +369,29 @@
                 }
                 
             }
-            
+            // Any global target which are not aligned with any national targets, countries will assess against those global targets
             const missingTargets = gbfMissingNationalTargets.value = await findMissingGlobalTargets(nationalTargets.value);
             missingTargets.forEach(e=>{
                 if(!sectionIII.find(sec3=>sec3.target?.identifier ==  e.identifier)){
-                    sectionIII.push({target : {identifier : e.identifier}})
+                    sectionIII.push({target : {identifier : e.identifier}, targetType:'global'})
                 }
                 if(!nationalTargets.value[e.identifier]){
                     const indicators = mapIndicatorsToData({
                         headlineIndicators:e.headlineIndicators, binaryIndicators:e.binaryIndicators})
                     nationalTargets.value[e.identifier] = {...e, indicators };
+                }
+            });
+
+            // add any global targets to list of national targets temporarily to display titles on the grid.
+            const globalTargets = await GbfGoalsAndTargets.loadGbfTargets()
+            sectionIII.filter(e=>e.target?.targetType == 'global' || e.target?.identifier.startsWith('GBF-'))
+            .forEach(e=>{
+                if(!nationalTargets.value[e.target.identifier]){
+                    const globalTarget = globalTargets.find(g=>g.identifier == e.target?.identifier)
+                    const indicators = mapIndicatorsToData({
+                        headlineIndicators:globalTarget.headlineIndicators, binaryIndicators:globalTarget.binaryIndicators})
+
+                    nationalTargets.value[globalTarget.identifier] = {...globalTarget, indicators };
                 }
             })
 

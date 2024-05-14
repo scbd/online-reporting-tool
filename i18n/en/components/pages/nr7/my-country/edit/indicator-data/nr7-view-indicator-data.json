@@ -7,6 +7,6 @@
     "year"              : "Year",
     "value"             : "Value",
     "globalSourceOfData": "Global source of data",
-    "indicatorProviders": "Indicator providers",
+    "globalIndicatorProviders": "Indicator providers",
     "comments"          : "Comments"
 }

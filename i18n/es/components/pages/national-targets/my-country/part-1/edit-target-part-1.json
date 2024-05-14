@@ -42,7 +42,7 @@
   "commitmentsAndActors": "Sírvase indicar cuál(es) es/son el/los compromiso(s) y quiénes son los actor(es)",
   "meansToImplement": "Medios y obstáculos para la aplicación",
   "additionalMeanOfImplementation": "Sírvase indicar si se necesitan medios adicionales para la aplicación a fin de lograr esta meta nacional.",
-  "YesMeansOfImplementation": "Sí (Se necesitan medios adicionales para la aplicación a fin de lograr esta meta nacional)",
+  "yesMeansOfImplementation": "Sí (Se necesitan medios adicionales para la aplicación a fin de lograr esta meta nacional)",
   "noMeansOfImplementation": "No (Medios para la aplicación disponibles)",
   "other": "Otros",
   "pleaseExplain": "Explicación (Se necesitan medios adicionales para la aplicación a fin de lograr esta meta nacional)",

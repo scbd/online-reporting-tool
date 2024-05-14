@@ -1,4 +1,4 @@
-import {uniqBy} from 'lodash'
+import {uniqBy, cloneDeep} from 'lodash'
 
 export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], nationalMappings: any[])=>{
     
@@ -44,15 +44,23 @@ export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], 
 
 export function getAlignedGoalsOrTargets(document:ENationalTarget7|ENationalTarget7Mapping){
 
+    let list = []
     if(document?.header.schema == SCHEMAS.NATIONAL_TARGET_7){
-        return [
+        list = [
             ...(document.globalGoalAlignment ||[]),
             ...(document.globalTargetAlignment||[])
         ]
     }
     else if(document?.header.schema == SCHEMAS.NATIONAL_TARGET_7_MAPPING){
-        return [document.globalGoalOrTarget]
+        list = [document.globalGoalOrTarget]
     }
 
-    return [];
+    list = cloneDeep(list);
+
+    return list?.map(e=>{
+        return {
+            ...e,
+            shortIdentifier : e.identifier.replace(/gbf\-/i, '')
+        }
+    });
 }

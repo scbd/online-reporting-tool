@@ -53,13 +53,13 @@
                                                 <strong>Please note that source of data selection is disabled since its still under development.</strong>
                                             </div>
                                             <km-form-check-group name="sourceOfData" required caption="Source of Data">
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData.value" label="Use national data set " :disabled="!enabledNationalData[indicator.identifier]"/>
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData.value" label="Use the available data (pre-populated data)" :disabled="!enabledGlobalData[indicator.identifier]"/>
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData.value" label="No data available"/>
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData.value" label="Not relevant"/>                                            
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData" label="Use national data set " :disabled="!enabledNationalData[indicator.identifier]"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData" label="Use the available data (pre-populated data)" :disabled="!enabledGlobalData[indicator.identifier]"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData" label="No data available"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData" label="Not relevant"/>                                            
                                             </km-form-check-group>
 
-                                            <div v-if="document.sourceOfData.value=='national'">
+                                            <div v-if="document.sourceOfData=='national'">
                                                 <km-form-group name="sourceOfDataNational" required caption="National data set" >
                                                     <div class="alert alert-info" v-if="indicatorDataTemplates[indicator.identifier]">
                                                         <a :href="indicatorDataTemplates[indicator.identifier]">
@@ -70,7 +70,7 @@
                                                     <input type="file" id="input" @change="uploadFile"/>                                                
                                                 </km-form-group>                                                
                                             </div>
-                                            <km-form-group name="sourceOfDataNational" required caption="National data set" v-if="document.sourceOfData.value=='availableDataset'">
+                                            <km-form-group name="sourceOfDataNational" required caption="National data set" v-if="document.sourceOfData=='availableDataset'">
                                         
                                                 <div class="mt-3" v-if="!isFetchingGlobalData && !wcmcIndicatorData.data?.charts?.length">
                                                     <CAlert color="danger" class="d-flex align-items-center">
@@ -87,7 +87,7 @@
                                                 <view-data :indicator-data="indicatorData" v-if="indicatorData"></view-data>
                                             </div>
 
-                                            <km-form-group v-if="document.sourceOfData.value" name="comments" caption="Comments">
+                                            <km-form-group v-if="document.sourceOfData" name="comments" caption="Comments">
                                                 <km-input-rich-lstring v-model="document.comments" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>         
                                         </div>
@@ -149,26 +149,32 @@
     const wcmcIndicatorData    = ref([])
 
     const enabledNationalData = {
-        'GBF-INDICATOR-C.1' : true
+        'GBF-INDICATOR-C.1' : true,
+        'GBF-INDICATOR-D.1' : true,
     }
     const enabledGlobalData = {
+        'GBF-INDICATOR-C.1' : true,
         'GBF-INDICATOR-D.1' : true,
         'GBF-INDICATOR-A.3' : true
     }
 
     const indicatorDataTemplates = {
-        'GBF-INDICATOR-C.1' : '/excel-templates/GBF-INDICATOR-C.1.xlsx'
+        'GBF-INDICATOR-C.1' : '/excel-templates/GBF-INDICATOR-C.1.xlsx',
+        'GBF-INDICATOR-D.1' : '/excel-templates/GBF-INDICATOR-D.1.xlsx'
     }
     
 
     const indicatorData = computed(()=>{
-        const { data, dataSources, description, indicatorProviders } = document.value
-        return { data, dataSources, description, indicatorProviders };        
+        const { data, globalDataSources, globalDescription, globalIndicatorProviders } = document.value
+        return { data, globalDataSources, globalDescription, globalIndicatorProviders };        
     });
   
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
         
+        clean.dataSources = undefined;
+        clean.description = undefined;
+        clean.indicatorProviders = undefined;
         return clean
     });
 
@@ -214,13 +220,13 @@
                 for (let i = 1; i < rows.length; i++) {
                     const row = rows[i];
                     data.push({
-                        indicator        : row[0],
-                        hasDisaggregation: row[1],
-                        disaggregation   : row[2],
-                        year             : row[3],
-                        unit             : row[4],
-                        unitDescription  : row[5],
-                        value            : row[6],
+                        indicatorCode    : row[0],
+                                      // : row[1] is indicator globalDescription
+                        hasDisaggregation: row[2] == 'no' ? 'false' :  true,
+                        disaggregation   : row[3],
+                        year             : Number(row[4]),
+                        unit             : row[5],
+                        value            : parseFloat(row[6]),
                         footnote         : row[7]
                     })
                 }
@@ -236,9 +242,9 @@
 
     function onSourceOfDataChange(value){
         document.value.data = undefined;
-        document.value.dataSources = undefined;
-        document.value.description = undefined;
-        document.value.indicatorProviders = undefined;
+        document.value.globalDataSources = undefined;
+        document.value.globalDescription = undefined;
+        document.value.globalIndicatorProviders = undefined;
         if(value == 'availableDataset'){
             loadGlobalDataSet()
         }
@@ -298,21 +304,26 @@
                     document.value.data = chart.labels.map((e, index)=>{
                                     const val = valueData?.data[index]
                                     return {
-                                        indicator : dataResponse?.data?.globallyDerivedData?.title,
-                                        hasDisaggregation : e.dataGroupName != "Aggregated" ? 'No' : 'Yes',
+                                        indicatorCode : indicator?.cbdIndicator?.identifier?.replace(/gbf\-indicator\-/i, ''),//dataResponse?.data?.globallyDerivedData?.title,
+                                        hasDisaggregation : e.dataGroupName != "Aggregated" ? false : true,
                                         disaggregation    : e.dataGroupName != "Aggregated" ? 'none' : '',
-                                        year : e.replace(/Baseline|\(|\)/g, ''),
-                                        value: val,
-                                        unit: dataResponse?.data?.globallyDerivedData?.type
+                                        year : Number(e.replace(/Baseline|\(|\)/g, '')),
+                                        value: parseFloat(val),
+                                        unit: dataResponse?.data?.globallyDerivedData?.valueSuffix
                                     }
                                 });
 
                     
                     const globallyDerivedData = dataResponse?.data?.globallyDerivedData;
                     if(globallyDerivedData){
-                        document.value.dataSources = globallyDerivedData.dataSources;
-                        document.value.description = globallyDerivedData.description
-                        document.value.indicatorProviders = globallyDerivedData.indicatorProviders
+
+                        if(globallyDerivedData.globalDataSources?.length)
+                            document.value.globalDataSources =  globallyDerivedData.globalDataSources.map(e=>({name:e.title, url:e.link}));
+
+                        if(globallyDerivedData.globalIndicatorProviders?.length)
+                            document.value.globalIndicatorProviders =  globallyDerivedData.globalIndicatorProviders.map(e=>({name:e.title, url:e.link}))
+
+                        document.value.globalDescription = globallyDerivedData.globalDescription
                     }
                 }
             }
@@ -343,9 +354,7 @@
                     }
                 });
                 //TODO:validate if there is a mapping record for the given target and load it instead
-            }
-            if(!document.value.sourceOfData)
-                document.value.sourceOfData = {};            
+            }       
         }
         catch(e){
             useLogger().error(e)

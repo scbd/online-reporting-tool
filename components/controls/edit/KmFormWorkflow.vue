@@ -121,16 +121,22 @@
     	validateServerDraft         : { type:Boolean, required:false, default:false  }
     });
     
-    let originalDocument = null
     const container     = useAttrs().container ?? 'body,html';
     const {t }          = useI18n();
     const $toast        = useToast();
+    const { user }      = useAuth();
+    const { $api }      = useNuxtApp();
+
     const formWizard       = ref(null);
     const validationReport = ref({});
-    const activeTab      = ref(null);
-    let workflowFunctions;
+    const activeTab      = ref(null);   
     const showOverwriteConfirmation = ref(false);
     const { isRevealed, reveal, confirm, cancel, onConfirm,  onCancel, } = useConfirmDialog();
+
+    let originalDocument = null
+    let workflowFunctions;
+    let saveDraftVersionTimer;
+    let previousDraftVersion;
 
     const workflowTabs = {
         // use individual compute so that on language change the text is updated
@@ -234,7 +240,6 @@
             if(!document)
                 throw "Invalid document";
 
-            const { $api } = useNuxtApp();
             const data     = await $api.kmStorage.documents.validate(document);
 
             return data;
@@ -312,19 +317,53 @@
         return true;
     }
 
+    async function saveDraftVersion(){
+        // console.log(new Date())
+        let document = props.document.value;
+
+        if(workflowFunctions.onPreSaveDraftVersion){
+            document = await workflowFunctions.onPreSaveDraftVersion(document);
+        }
+
+        if(document && !isEqual(document, previousDraftVersion)){
+            const userId      = user.value.userID;
+            const identifier  = document.header.identifier;
+            const schema      = document.header.schema;
+            const key         = `${schema}_${identifier}_${userId}`;
+
+
+            try {
+                const result         = await KmDocumentDraftsService.saveDraftVersion(key, document);
+                previousDraftVersion = document;
+                saveDraftVersionTimer = setTimeout(saveDraftVersion, 1000 * 60 * 10);
+            }
+            catch(err){
+                useError().error(err);
+                saveDraftVersionTimer = setTimeout(saveDraftVersion, 1000*5);
+            }
+            finally{
+            };
+        }
+        else{
+            saveDraftVersionTimer = setTimeout(saveDraftVersion, 1000 * 60 * 10);
+        }
+    }
+
     onMounted(async() => {
         formWizard.value?.selectTab(focusedTab.value ?? 0)
 
         workflowFunctions = inject('kmWorkflowFunctions');
 
-        // setTimeout(async() => {            
-            if(workflowFunctions.onGetDocumentInfo){
-                const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
-                originalDocument = cloneDeep(documentInfo.body);
-            }
-            else 
-                originalDocument = cloneDeep(props.document.value);
-        // }, 1000);
+        if(workflowFunctions.onGetDocumentInfo){
+            const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
+            originalDocument = cloneDeep(documentInfo.body);
+        }
+        else 
+            originalDocument = cloneDeep(props.document.value);
+        
+        //start save draft version 10 sec later
+        saveDraftVersionTimer = setTimeout(saveDraftVersion, 10000)
+            
     })
     // same as beforeRouteLeave option with no access to `this`
     onBeforeRouteLeave((to, from) => {
@@ -334,7 +373,11 @@
         window.onbeforeunload = alertIfDocumentChanged
     });
     onUnmounted(() => {
-        window.onbeforeunload = null
+        window.onbeforeunload = null;
+
+        if(saveDraftVersionTimer)
+            clearTimeout(saveDraftVersionTimer);
+
     });
 
 </script>

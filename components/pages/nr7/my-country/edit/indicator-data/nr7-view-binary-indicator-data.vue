@@ -85,6 +85,3 @@ function showQuestions(indicatorData, questions){
 }
 
 </script>
-
-<style scoped></style>
-

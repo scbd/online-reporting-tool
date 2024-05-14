@@ -5,7 +5,7 @@
       </CCardHeader>
       <CCardBody>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <NuxtLink to="/national-targets/new">
+          <NuxtLink :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_OVERVIEW">
             <CButton color="secondary" size="sm">
               <CIcon icon="addthis"/>NR7 All reports
             </CButton>

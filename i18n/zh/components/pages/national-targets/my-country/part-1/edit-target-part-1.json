@@ -42,7 +42,7 @@
   "commitmentsAndActors": "请注明哪些承诺和哪些行为者",
   "meansToImplement": "实施手段和实施障碍",
   "additionalMeanOfImplementation": "请说明为实现这一国家具体目标是否需要更多的实施手段。",
-  "YesMeansOfImplementation": "是（为实现这一国家具体目标，需要更多的实施手段）",
+  "yesMeansOfImplementation": "是（为实现这一国家具体目标，需要更多的实施手段）",
   "noMeansOfImplementation": "否（有可用实施手段）",
   "other": "其他",
   "pleaseExplain": "请解释（为实现这一国家具体目标，需要更多的实施手段）",

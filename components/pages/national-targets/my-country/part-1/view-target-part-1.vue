@@ -175,7 +175,7 @@
                                 {{t('additionalMeanOfImplementation')}}</label>                                    
                             <!-- TODO move to thesaurus -->
                             <km-value>
-                                <span v-if="viewDocument.additionalImplementation.identifier == 'additionalImplementationRequired'"  >{{t('YesMeansOfImplementation')}}</span>
+                                <span v-if="viewDocument.additionalImplementation.identifier == 'additionalImplementationRequired'"  >{{t('yesMeansOfImplementation')}}</span>
                                 <span v-if="viewDocument.additionalImplementation.identifier == 'additionalImplementationAvailable'" >{{t('noMeansOfImplementation')}}</span>
                                 <span v-if="viewDocument.additionalImplementation.identifier == 'additionalImplementationOther'"     >{{t('other')}}</span>
                             </km-value>                                    

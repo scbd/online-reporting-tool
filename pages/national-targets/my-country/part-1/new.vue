@@ -4,23 +4,12 @@
   </km-suspense>
 </template>
   
-  <script>
+<script setup lang="ts">
   
-    import { SCHEMAS, ROLES } from '@/utils';
-  import { KmSuspense } from "@/components/controls";
-  import EditTargetPart1 from "@/components/pages/national-targets/my-country/part-1/edit-target-part-1.vue";
-  export default {
-    components: {
-      EditTargetPart1
-    },
-    setup(){
-
-      definePageMeta({
-          auth:true,
-          schema:'nationalTarget7',
-          roles:[...ROLES.ALL_NATIONAL_USERS],
-      })
-    }
-  }
-  </script>
+    definePageMeta({
+        auth:true,
+        schema:'nationalTarget7',
+        roles:[...ROLES.ALL_NATIONAL_USERS],
+    })
+</script>
   

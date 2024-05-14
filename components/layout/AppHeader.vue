@@ -1,14 +1,14 @@
 <template>
   <CHeader position="sticky" class="mb-4">
     <CContainer fluid>
-      <CHeaderToggler class="ps-1" @click="userPreferences.setSidebarUnfoldable(!userPreferences.sidebarUnfoldable)">
+      <CHeaderToggler class="ps-1" @click="userPreferences.setSidebarVisible()">
         <CIcon icon="cil-menu" size="lg" />
       </CHeaderToggler>
-      <CHeaderBrand class="mx-auto d-lg-none" to="/">
+      <CHeaderBrand class="mx-auto d-none" to="/">
         <CIcon :icon="logo" height="48" alt="Logo" />
       </CHeaderBrand>
-      <CHeaderNav class="d-none d-md-flex me-auto">
-        <CNavItem>
+      <CHeaderNav class="me-auto">
+        <CNavItem class="d-none d-md-flex">
           <NuxtLink class="nav-link" :to="localePath('/dashboard')"> {{t('menuDashboard')}}</NuxtLink>
         </CNavItem>
         <CNavItem>
@@ -21,7 +21,7 @@
           {{t('menu7Nr')}} 
           </NuxtLink>
         </CNavItem>
-        <CNavItem>
+        <CNavItem  class="d-none d-md-flex">
           <NuxtLink class="nav-link" target="_blank" href="https://chm.cbd.int">
             CHM
           </NuxtLink>

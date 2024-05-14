@@ -1,4 +1,5 @@
 <template>
+    
     <div :id="$attrs.id" class="mb-2">
         <CRow v-for="(item, index) in binding" :key="item">
             <CCol md="11">
