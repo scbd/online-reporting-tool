@@ -43,6 +43,7 @@
     "pinia": "^2.1.4",
     "read-excel-file": "^5.6.1",
     "socket.io-client": "^4.7.2",
+    "v-onboarding": "^2.8.1",
     "vue-multiselect": "^3.0.0-beta.2",
     "vue-toast-notification": "^3.1.1",
     "vue3-loading-overlay": "^0.0.0",
@@ -50,5 +51,5 @@
   },
   "resolutions": {
     "string-width": "4.2.3"
- }
+  }
 }
