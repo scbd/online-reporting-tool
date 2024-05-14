@@ -105,3 +105,8 @@ ul.header-nav li.nav-item:hover{
     padding: 0.5rem;
     margin: 0;
 }
+
+
+[data-v-onboarding-wrapper] [data-popper-placement]{
+    z-index: 10000 !important;
+}

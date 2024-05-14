@@ -27,7 +27,7 @@
         <KmNavLink  icon="fa-solid fa-list"         target="_blank" :to="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport`" :title="t('menuNbsapsAll')"></KmNavLink>
         <KmNavLink  icon="fa-solid fa-flag" target="_blank" :to="`https://chm.cbd.int/${$i18n.locale}/submit/nationalReport?type=nbsap`" :title="t('menuNbsapsMyCountry')"></KmNavLink>
       </CNavGroup>
-      <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_TARGETS)">
+      <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_TARGETS)"  id="sideNav">
         <template #togglerContent>
             {{ t('menuNationalTargets') }}
         </template>

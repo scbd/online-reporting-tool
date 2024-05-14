@@ -1,9 +1,13 @@
 <template>
+   
   <div>
-    <user-profile-info class="mb-2"></user-profile-info>
-    <CRow>
+    <div class="col-12" style="height:0px" id="welcome"></div>
+    <on-boarding v-if="onBoardingSteps" teleport-to="#takeTourTeleport" :steps="onBoardingSteps"></on-boarding>
+    <user-profile-info class="mb-2" id="userProfile"></user-profile-info>
+    <div class="d-none" ></div>
+    <CRow >
       <!-- <template> -->
-        <CCol md="12">
+        <CCol md="12" id="recentlyPublished">
           <div class="alert alert-success" role="alert">
             <div  v-if="publishedRecords?.length">
                 <h4 class="alert-heading">{{t('recentPublish')}}</h4>
@@ -182,7 +186,6 @@ import { KmLink } from "@/components/controls";
 
         const { $appRoutes:appRoutes } = useNuxtApp();
 
-
         const searchQuery = {
             rows:10,
             q : `_state_s: public AND 
@@ -218,6 +221,19 @@ import { KmLink } from "@/components/controls";
                 }
             })
         })
+
+        const onBoardingSteps = [
+            { attachTo: { element: '#welcome' }, content: { title: t('tourWelcomeTitle'), description: t("tourWelcomeContent") } },
+            { attachTo: { element: '#userProfile' },        content: { title: t('userInfoTitle'), description: t("userInfoContent") } },
+            { attachTo: { element: '#userGovernment' },        content: { title: t('governmentTitle'), description: t("governmentContent") } },
+            { attachTo: { element: '#userRoles' },        content: { title: t('rolesTitle'), description: t("rolesContent") } },
+            { attachTo: { element: '#recentlyPublished' },        content: { title: t('recentlyPublishedTitle'), description: t("recentlyPublishedContent") } },
+            { attachTo: { element: '#topNav' },        content: { title: t('topNavigationTitle'), description: t("topNavigationContent") } },
+            { attachTo: { element: '#sideNav' },        content: { title: t('sidebarNavTitle'), description: t("sidebarNavContent") } },
+            { attachTo: { element: '#languages' },        content: { title: t('languageChangeTitle'), description: t("languageChangeContent") } },
+            { attachTo: { element: '#slaask-button-cross' },        content: { title: t('needHelpTitle'), description: t("needHelpContent") } }
+                        
+        ]
 
         function schemaCount(currVal, schema){
                 return currVal.pivot.find(e=>e.value == schema)?.count||0

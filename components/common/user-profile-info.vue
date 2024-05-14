@@ -18,11 +18,11 @@
                                 </td>
                                 <td class="fw-medium">: {{ user.email }}</td>
                             </tr>
-                            <tr>
+                            <tr id="userGovernment">
                                 <td>
                                     <label>{{ t('countryAffiliation') }}</label>
                                 </td>
-                                <td class="fw-medium" v-if="user.government">: 
+                                <td class="fw-medium" v-if="user.government" >: 
                                     <!-- <a class="text-decoration-none" rel="noopener" translation-url href="https://ch/countries/{{user.government | uppercase}}" ng-bind="userCountry|term"></a> -->
                                     <km-term :value="user.government" :locale="locale"></km-term>
                                 </td>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-md-6 cp-header">
                         <table>
-                            <tr>
+                            <tr  id="userRoles">
                                 <td>
                                     <label>{{ t('roles') }}</label>
                                 </td>
