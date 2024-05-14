@@ -7,7 +7,7 @@
       <CHeaderBrand class="mx-auto d-none" to="/">
         <CIcon :icon="logo" height="48" alt="Logo" />
       </CHeaderBrand>
-      <CHeaderNav class="me-auto">
+      <CHeaderNav class="me-auto" id="topNav">
         <CNavItem class="d-none d-md-flex">
           <NuxtLink class="nav-link" :to="localePath('/dashboard')"> {{t('menuDashboard')}}</NuxtLink>
         </CNavItem>
@@ -39,7 +39,7 @@
           </NuxtLink>
         </CNavItem> -->
         <CNavItem>
-          <span class="nav-link">
+          <span class="nav-link" id="languages">
             <CDropdown variant="nav-item">
               <CDropdownToggle placement="bottom-end" class="py-0" :caret="true">
                 <font-awesome-icon icon="fa-solid fa-language" /> {{languages[$i18n.locale]}} 
