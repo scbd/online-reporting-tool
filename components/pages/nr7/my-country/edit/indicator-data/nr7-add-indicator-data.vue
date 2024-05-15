@@ -120,7 +120,8 @@
     const props = defineProps({
         identifier         : {type:String, required:false},
         indicator          : {type:Object, required:true},
-        workflowActiveTab  : {type:Number, default:1 }
+        workflowActiveTab  : {type:Number, default:1 },
+        disabled           : {type:Boolean, default:false}
     });
 
     // These emits are used by base view when the form is 

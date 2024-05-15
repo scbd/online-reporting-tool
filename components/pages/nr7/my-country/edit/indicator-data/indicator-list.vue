@@ -17,11 +17,10 @@
                     <div class="float-end ms-1">
                         <km-delete-record  v-if="indicator.documentInfo" :document="indicator.documentInfo"
                             @on-delete="onRecordDelete($event, indicator)">
-                            <span>{{ t('deleteIndicatorData') }}</span>
                         </km-delete-record>
                     </div>
 
-                    <nr7-add-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
+                    <nr7-add-indicator-data :indicator="indicator"
                         :identifier="((indicator.nationalData||{}).header||{}).identifier" @on-post-save-draft="onAddIndicatorDataClose">
                     </nr7-add-indicator-data>       
 
