@@ -6,6 +6,10 @@
       <CCardBody>
         <div v-if="sectionII">
 
+            <div v-if="document.header.languages && document.header.languages.length > 1" 
+                class="d-grid d-md-flex justify-content-md-end mb-2">
+                <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
+            </div>
             <km-form-group :caption="t('revisedNbsap')" v-if="sectionII.hasRevisedNbsap">
                 <km-lstring-value :value="t(sectionII.hasRevisedNbsap)" :locale="selectedLocale"></km-lstring-value>                                    
             </km-form-group>

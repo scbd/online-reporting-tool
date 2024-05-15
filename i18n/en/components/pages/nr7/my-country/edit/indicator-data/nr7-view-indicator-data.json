@@ -8,5 +8,7 @@
     "value"             : "Value",
     "globalSourceOfData": "Global source of data",
     "globalIndicatorProviders": "Indicator providers",
-    "comments"          : "Comments"
+    "comments"          : "Comments",
+    "yes"               : "Yes",
+    "no"                : "No"
 }
