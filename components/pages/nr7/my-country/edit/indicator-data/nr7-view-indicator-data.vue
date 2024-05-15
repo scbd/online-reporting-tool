@@ -2,7 +2,7 @@
     <!-- <CCard> -->
         <!-- <CCardBody v-if="indicatorData"> -->
             <km-form-group v-if="indicatorData.sourceOfData" :caption="t('sourceOfData')">
-                <km-value>{{ t(indicatorData.sourceOfData?.value) }}</km-value>
+                <km-value>{{ t(indicatorData.sourceOfData) }}</km-value>
             </km-form-group>
             <km-form-group caption="Data"  v-if="indicatorData.data">
                 <div class="w-100" style="overflow: auto;">
@@ -35,7 +35,7 @@
                         </tr>
                         <tr v-for="unit in indicatorData.data" :key="unit">
                             <td>{{unit.indicatorCode}}</td>
-                            <td>{{unit.hasDisaggregation}}</td>
+                            <td>{{unit.hasDisaggregation ? t('yes') : t('no')}}</td>
                             <td>{{unit.disaggregation}}</td>
                             <td>{{unit.year}}</td>
                             <td>{{unit.unit}}</td>
@@ -47,19 +47,19 @@
                 </div>
             </km-form-group>
 
-            <km-form-group v-if="indicatorData.dataSources" :caption="t('globalSourceOfData')">
-                <km-value v-for="source in indicatorData.dataSources" :key="source" class="mt-1">
+            <km-form-group v-if="indicatorData.globalDataSources" :caption="t('globalSourceOfData')">
+                <km-value v-for="source in indicatorData.globalDataSources" :key="source" class="mt-1">
                     <a :href="source.link" target="_blank">{{ source.title }}</a>
                 </km-value>
             </km-form-group>
-            <km-form-group v-if="indicatorData.indicatorProviders" :caption="t('indicatorProviders')">
-                <km-value v-for="source in indicatorData.indicatorProviders" :key="source" class="mt-1">
+            <km-form-group v-if="indicatorData.globalIndicatorProviders" :caption="t('globalIndicatorProviders')">
+                <km-value v-for="source in indicatorData.globalIndicatorProviders" :key="source" class="mt-1">
                     <a :href="source.link" target="_blank">{{ source.title }}</a>
                 </km-value>
             </km-form-group>
-            <!-- <km-form-group v-if="indicatorData.description">
-                <label class="form-check-label">Description</label>
-                <km-value>{{ indicatorData.description }}</km-value>
+            <!-- <km-form-group v-if="indicatorData.globalDescription">
+                <label class="form-check-label">globalDescription</label>
+                <km-value>{{ indicatorData.globalDescription }}</km-value>
             </km-form-group> -->
             <km-form-group v-if="indicatorData.comments" class="mt-1" :caption="t('comments')">
                 <km-lstring-value type="html" :value="indicatorData.comments"

@@ -31,14 +31,14 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
                         $orderby  : 'updatedOn desc',
                         body      : true
                     };
-                    const existingDraft = await $api.kmStorage.drafts.query(queryParams);
+                    const existingDraft = await $api.kmStorage.drafts.query({...queryParams});
                     if(existingDraft?.Items?.length){
-                        nationalReport = this.updateNationalReport(existingDraft.Items[0]);
+                        this.updateNationalReport(existingDraft.Items[0]);
                         return;
                     }
-                    const existingDocument = await $api.kmStorage.documents.query(queryParams);
+                    const existingDocument = await $api.kmStorage.documents.query({...queryParams});
                     if(existingDocument?.Items?.length){
-                        nationalReport = this.updateNationalReport(existingDocument.Items[0]);
+                        this.updateNationalReport(existingDocument.Items[0]);
                         return;
                     }
                     

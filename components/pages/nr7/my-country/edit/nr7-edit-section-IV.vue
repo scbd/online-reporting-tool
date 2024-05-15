@@ -66,8 +66,7 @@
                                                             v-if="!Object.keys(nationalIndicatorData[data.indicator.identifier]?.nationalData||{})?.length">
                                                         </missing-data-alert>    
                                         
-                                                        <nr7-add-indicator-data :indicator="data.indicator" 
-                                                            :raw-document="nationalIndicatorData[data.indicator.identifier]?.nationalData" 
+                                                        <nr7-add-indicator-data :indicator="data.indicator"                                                              
                                                             :identifier="nationalIndicatorData[data.indicator.identifier]?.nationalData?.header?.identifier" 
                                                             @on-post-save-draft="onAddIndicatorDataClose">
                                                         </nr7-add-indicator-data>       

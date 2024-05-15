@@ -67,6 +67,8 @@
                                             <CCardTitle>{{lstring(getIndicator(indicator.headlineIndicator).title)}}</CCardTitle>
                                             <hr/>
                                             <CCardText>
+                                                <div class="table-responsive">
+
                                                 <table class="table" v-if="indicator.headlineIndicator">
                                                     <tr>
                                                         <td>   
@@ -84,7 +86,8 @@
                                                             </km-form-group>                                     
                                                         </td>
                                                     </tr> 
-                                                </table>                                                
+                                                </table>   
+                                                </div>                                             
                                             </CCardText>
 
                                         </CCardBody>

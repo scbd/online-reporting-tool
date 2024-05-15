@@ -7,13 +7,20 @@
 
             <!-- <div v-if="nationalReport7Store.isBusy || isBusy">
                 <km-spinner></km-spinner>
-            </div> -->            
-            <toggle-accordion class="float-end mr-1 mb-1 btn-xs" ref="accordionToggle"
-                selector="#mapping-accordion .accordion-header button.accordion-button"
-                v-if="sectionIIIComputed"></toggle-accordion>
+            </div> -->   
+            <div class="float-end">
+                <span v-if="document.header.languages && document.header.languages.length > 1" 
+                    class="justify-content-md-end mb-2 me-1">
+                    <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
+                </span>          
+                <toggle-accordion ref="accordionToggle"
+                    selector="#mapping-accordion .accordion-header button.accordion-button"
+                    v-if="sectionIIIComputed"></toggle-accordion>
+            </div>
             <br>
             <br>
             <CAccordion always-open id="mapping-accordion">
+               
                 <!-- nationalTargets           -->
                 <CAccordionItem :item-key="index + 1" :visible="true"
                     v-for="(assessment, index) in sectionIIIComputed" :key="assessment"
@@ -26,31 +33,31 @@
                     <CAccordionBody v-if="nationalTargets[assessment.target.identifier]">
                         <div class="card1">
                             <div class="card-body1">
-                                <km-form-group name="additionalInformation" v-if="assessment.mainActionsInfo"
+                                <km-form-group name="mainActionsInfo" v-if="assessment.mainActionsInfo"
                                     caption="Please briefly describe the main actions taken to implement this national target">
                                     <km-lstring-value type="html" :value="assessment.mainActionsInfo"
-                                        :locales="document.header.languages"></km-lstring-value>
+                                        :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
-                                <km-form-group name="complementaryIndicators" v-if="assessment.complementaryIndicators"
-                                    caption="Please indicate the current level of progress towards this national target">
-                                    {{assessment.complementaryIndicators}}
+                                <km-form-group name="levelOfProgress" v-if="assessment.levelOfProgress"
+                                    caption="Please indicate the current level of progress towards this national target">                                    
+                                    <km-value-term :value="assessment.levelOfProgress" :locale="selectedLocale"></km-value-term>                                    
                                 </km-form-group>
-                                <km-form-group name="additionalInformation" v-if="assessment.progressSummaryInfo"
+                                <km-form-group name="progressSummaryInfo" v-if="assessment.progressSummaryInfo"
                                     caption="Please provide a summary of progress towards this national target, including the main outcomes achieved, key challenges encountered, and different approaches that may be taken for further implementation">
                                     <km-lstring-value type="html" :value="assessment.progressSummaryInfo"
-                                        :locales="document.header.languages"></km-lstring-value>
+                                        :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
 
-                                <km-form-group name="additionalInformation" v-if="assessment.actionEffectivenessInfo"
+                                <km-form-group name="actionEffectivenessInfo" v-if="assessment.actionEffectivenessInfo"
                                     caption="Please provide examples or cases to illustrate the effectiveness of the actions taken to implement this national assessment. If needed, provide relevant web links or attach related materials or publications">
                                     <km-lstring-value type="html" :value="assessment.actionEffectivenessInfo"
-                                        :locales="document.header.languages"></km-lstring-value>
+                                        :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
 
-                                <km-form-group name="additionalInformation" v-if="assessment.sdgRelationInfo"
+                                <km-form-group name="sdgRelationInfo" v-if="assessment.sdgRelationInfo"
                                     caption="Please briefly describe how the implementation of this national target relates to progress in achieving related Sustainable Development Goals and associated targets and implementation of other related agreements ">
                                     <km-lstring-value type="html" :value="assessment.sdgRelationInfo"
-                                        :locales="document.header.languages"></km-lstring-value>
+                                        :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
                             </div>
                         </div>
@@ -116,6 +123,7 @@
     const accordionToggle      = ref(null);
     const mouseOverTarget      = ref(null);
 
+    const selectedLocale = ref(locale.value);
     const sectionIIIComputed = computed(()=>{
         return props.document?.sectionIII || [];
     })

@@ -6,8 +6,13 @@
               <CCol :sm="6">
                 <CCard>
                   <CCardBody>
-                    <CCardTitle>{{t('partI')}}</CCardTitle>
-                    <CCardText>{{t('nationalTarget')}}</CCardText>
+                    <CCardTitle>{{t('partI')}} {{t('nationalTarget')}}</CCardTitle>
+                    <CCardText> 
+                        <km-document-count :published-count="userRecords.publishedNationalTargets?.length"
+                            :draft-count="userRecords.draftNationalTargets?.length"
+                            :request-count="userRecords.requestedNationalTargets?.length"></km-document-count>                     
+                       
+                    </CCardText>
                     <div class="d-grid gap-1 d-flex">
                         <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I" :title="t('goToPartI')" 
                             role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>
@@ -25,8 +30,12 @@
               <CCol :sm="6">
                 <CCard>
                   <CCardBody>
-                    <CCardTitle>{{t('partII')}}</CCardTitle>
-                    <CCardText>{{t('nationalMapping')}} </CCardText>
+                    <CCardTitle>{{t('partII')}} {{t('nationalMapping')}}</CCardTitle>
+                    <CCardText> 
+                        <km-document-count :published-count="userRecords.publishedNationalMappings?.length"
+                            :draft-count="userRecords.draftNationalMappings?.length"
+                            :request-count="userRecords.requestedNationalMappings?.length"></km-document-count>                                            
+                    </CCardText>                    
                     <div class="d-grid gap-1 d-flex">
                         <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II" title="Go to Part II" 
                             role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>  
@@ -219,7 +228,7 @@
     const validation = defineAsyncComponent(()=>import("@/components/pages/national-targets/my-country/validation.vue"));
 
     let globalTargets               = undefined;
-    let userRecords                 = {}
+    let userRecords                 = ref({})
     const { $appRoutes:appRoutes, $api } = useNuxtApp();
     const validationRef             = ref(null);
     const showPublishBtn            = ref(true);
@@ -260,7 +269,7 @@
         
         try{
             await onValidate();
-            const hasValidationErrors = [...(userRecords.draftNationalTargets||[]), ...(userRecords.draftNationalMappings||[])].some(e=>e.errors);
+            const hasValidationErrors = [...(userRecords.value.draftNationalTargets||[]), ...(userRecords.value.draftNationalMappings||[])].some(e=>e.errors);
             
             if(hasValidationErrors){
                 showValidationErrorDialog.value = true;
@@ -272,7 +281,7 @@
 
             //verify user has submitted national targets for all Global Indicators
             //and show dialog and move next step if he still wants to proceed
-            const userNationalTargets = [...(userRecords.draftNationalTargets||[]), ...(userRecords.publishedNationalTargets||[])]
+            const userNationalTargets = [...(userRecords.value.draftNationalTargets||[]), ...(userRecords.value.publishedNationalTargets||[])]
             
             const missingTargets = await findMissingGlobalTargets(userNationalTargets, ['globalTargetAlignment', 'globalGoalAlignment'] );
             if(missingTargets?.length){
@@ -287,7 +296,7 @@
 
             //verify user has submitted extra info (part II) for all  Global Indicators
             //and show dialog and move next step if he still wants to proceed
-            const userNationalMappings = [...(userRecords.draftNationalMappings||[]), ...(userRecords.publishedNationalMappings||[])]
+            const userNationalMappings = [...(userRecords.value.draftNationalMappings||[]), ...(userRecords.value.publishedNationalMappings||[])]
             const missingMappings = await findMissingGlobalTargets(userNationalMappings, ['globalGoalOrTarget'] );
             if(missingMappings?.length){
                 const userResponse = await showMissingTargetsDialog(SCHEMAS.NATIONAL_TARGET_7_MAPPING, missingMappings);
@@ -327,6 +336,7 @@
 
     async function onRecordsLoad(records:object){
         isLoading.value = false;
+        userRecords.value = records;
         if(!records.draftNationalTargets?.length && !records.draftNationalMappings?.length){
             showPublishBtn.value = false;
         }
@@ -353,7 +363,11 @@
     }
 
 async function loadOpenWorkflow(lockedRecord: any, iteration:number=0) {
-  const workflowId=lockedRecord.workingDocumentLock.lockID.replace('workflow-', '');
+  const workflowId=lockedRecord?.workingDocumentLock?.lockID?.replace('workflow-', '');
+
+  if(!workflowId)
+    return;
+
   const workflow=await $api.kmWorkflows.getWorkflow(workflowId);
   if(workflow) {
     if(!workflow?.activities?.length && iteration < 5){
@@ -381,7 +395,7 @@ async function loadOpenWorkflow(lockedRecord: any, iteration:number=0) {
     }
 
     function onValidationFinished(records:object){
-        userRecords = records;
+        userRecords.value = records;
     }
 
     async function findMissingGlobalTargets(nationalTargets, fields: Array<string>){

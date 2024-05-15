@@ -1,4 +1,6 @@
 <template>
+    <div class="table-responsive">
+
     <table class="table" v-if="nationalRecords?.length">
         <thead>
             <tr>
@@ -52,6 +54,7 @@
             </tr>
         </tbody>
     </table>
+    </div>
 </template>
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/record-list.json"></i18n>
 <script setup lang="ts">
