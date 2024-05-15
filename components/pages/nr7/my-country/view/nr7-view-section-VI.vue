@@ -4,6 +4,10 @@
         <slot name="header"> {{t('sectionV')}} {{t('sectionVDescription')}}</slot>
       </CCardHeader>
       <CCardBody>
+            <div v-if="document.header.languages && document.header.languages.length > 1" 
+                class="d-grid d-md-flex justify-content-md-end mb-2">
+                <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
+            </div>
             <km-form-group v-if="document.sectionV && document.sectionV.assessmentSummaryInfo" 
                 :caption="t('assessmentSummaryInfo')">
                 <km-lstring-value type="html" :value="document.sectionV.assessmentSummaryInfo" :locale="selectedLocale"></km-lstring-value> 

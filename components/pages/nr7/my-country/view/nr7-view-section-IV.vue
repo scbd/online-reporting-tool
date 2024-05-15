@@ -11,6 +11,10 @@
             <br>
 
             <CAccordion always-open id="mapping-accordion">      
+                <div v-if="document.header.languages && document.header.languages.length > 1" 
+                    class="d-grid d-md-flex justify-content-md-end mb-2">
+                    <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
+                </div>
                 <CAccordionItem :item-key="index+1" :visible="true" 
                     v-for="(assessment, index) in sectionIVComputed" :key="assessment" 
                     class="mb-2" :class="{'assessment-target-active' : mouseOverGoal?.identifier == assessment.gbfGoal?.identifier}"
