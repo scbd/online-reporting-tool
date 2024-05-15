@@ -2,12 +2,15 @@
     <div class="col-12" style="height:0px" id="tourWelcome">
         <!-- Dummy div to show a welcome message on each screen -->
     </div>
-    <div  v-if="steps?.length && isReady">
-        <Teleport to="#takeTourTeleport" >
+    <div  v-if="steps?.length && isReady" >
+        <Teleport to="#takeTourTeleport">
             <Transition>
-            <a class="text-dark me-md-1" rel="noopener" href="#" @click.prevent="startTour()">
+            <a class="text-dark me-md-1 d-none d-sm-block" rel="noopener" href="#" @click.prevent="startTour()">
                 <font-awesome-icon icon="person-chalkboard" />
-                <span class="ms-1">Take a tour</span>
+                <span class="ms-1">
+                    Take a tour
+                    <strong v-if="pageTitle">({{ pageTitle }})</strong>
+                </span>
             </a></Transition>
         </Teleport>
     </div>
@@ -20,7 +23,8 @@
 
     defineProps({
         steps : {type:Array, required:true},
-        teleportTo: {type:String}
+        teleportTo: {type:String},
+        pageTitle : {type:String}
     })
     const emit = defineEmits(['onTourStart','onTourEnd'])
 

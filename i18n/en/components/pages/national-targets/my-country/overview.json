@@ -30,7 +30,7 @@
     "goToPartI"              : "Go to Part I",
     "submitNewTarget"        : "Submit new target",
     "globalTargets"          : "Global Targets",
-
+    "tourTitle"              : "Overview",
     "tourWelcomeTitle"     : "National targets overview",
     "tourWelcomeContent"   : "The National targets overview screen will give you an overview of both the sections under the national targets and allows you validate and publish all information.",
     "partITitle"           : "Part I National Target",

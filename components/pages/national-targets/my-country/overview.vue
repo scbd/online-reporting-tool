@@ -1,6 +1,6 @@
 <template>
     <div>
-        <on-boarding v-if="onBoardingSteps" teleport-to="#takeTourTeleport" 
+        <on-boarding v-if="onBoardingSteps" teleport-to="#takeTourTeleport" :page-title="t('tourTitle')" 
             :steps="onBoardingSteps" @on-tour-start="onTourStart" @on-tour-end="onTourEnd"></on-boarding>
         <div class="justify-content-center">
             <CRow>

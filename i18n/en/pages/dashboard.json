@@ -18,6 +18,7 @@
     "type":   "Type",
     "publishedOn" : "Published on",
     
+    "tourTitle"               : "Dashboard",
     "tourWelcomeTitle"        : "Welcome to the Online Reporting Tool",
     "tourWelcomeContent"      : "The online reporting tool provides the modality for submitting national targets, as per Annex 1 of decision 15/6",
     "userInfoTitle"           : "Your personal information",

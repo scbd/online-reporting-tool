@@ -1,7 +1,8 @@
 <template>
    
   <div>
-    <on-boarding v-if="onBoardingSteps" teleport-to="#takeTourTeleport" :steps="onBoardingSteps"></on-boarding>
+    <on-boarding v-if="onBoardingSteps" teleport-to="#takeTourTeleport" :steps="onBoardingSteps"
+        :page-title="t('tourTitle')"></on-boarding>
     <user-profile-info class="mb-2" id="userProfile"></user-profile-info>
     <div class="d-none" ></div>
     <CRow >
