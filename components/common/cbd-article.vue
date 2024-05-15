@@ -31,7 +31,7 @@ export default {
     // components : { cbdAddNewArticle },
     props: {
         hideCoverImage  : { type: Boolean, required: false, default:false        },
-        showEdit        : { type: Boolean, required: false, default:undefined    },
+        showEdit        : { type: Boolean, required: false, default:true         },
         article         : { type: Object,  required: false, default:undefined    },
         query           : { type: Object,  required: true                        },
         tags 		    : { type: Array  , required: false, default:[]           }, // [] of tag id's
@@ -42,7 +42,7 @@ export default {
     },
     setup(){
         const { t } = useI18n();
-
+        const {user} = useAuth();
         return { t };
     },
     data() {
