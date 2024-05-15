@@ -301,12 +301,20 @@
         if(props.validateServerDraft.value){
             if(workflowFunctions.onGetDocumentInfo){
                 const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
-                const serverDraft  = await KmDocumentDraftsService.loadDraftDocument(props.document.value.header.identifier);
+                try{
+                    const serverDraft  = await KmDocumentDraftsService.loadDraftDocument(props.document.value.header.identifier);
 
-                if(moment(serverDraft.updatedOn).isAfter(moment(documentInfo.updatedOn))){
-                    showOverwriteConfirmation.value = true;
-                    const { data } = await reveal(); 
-                    return data.confirm;
+                    if(moment(serverDraft.updatedOn).isAfter(moment(documentInfo.updatedOn))){
+                        showOverwriteConfirmation.value = true;
+                        const { data } = await reveal(); 
+                        return data.confirm;
+                    }
+                }
+                catch(e){
+                    if(e.status == 404)
+                        return true; //if draft not found 
+
+                    throw e
                 }
             }
             else{

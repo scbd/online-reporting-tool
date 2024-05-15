@@ -101,7 +101,7 @@
                                             <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
                                                 <missing-data-alert v-if="!Object.keys(indicator.nationalData||{})?.length"></missing-data-alert>    
                                 
-                                                <nr7-add-indicator-data :indicator="indicator" :raw-document="indicator.nationalData" 
+                                                <nr7-add-indicator-data :indicator="indicator" 
                                                     :identifier="((indicator.nationalData||{}).header||{}).identifier" @on-post-save-draft="onAddIndicatorDataClose">
                                                 </nr7-add-indicator-data>       
                                                 <div v-if="indicator.nationalData">
@@ -191,7 +191,7 @@
 
     const sectionIIIComputed = computed({ 
         get(){ 
-            return sortBy(document.value.sectionIII, 'targetType').reverse()
+            return document.value.sectionIII
         }
     });
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
@@ -325,6 +325,7 @@
             }
 
             const sectionIII = document.value.sectionIII || [];
+            
             if(sectionIII?.length){
                 
                 //verify if the existing data in section iii exists in published targets
@@ -342,10 +343,11 @@
                     else if(section.targetType == 'global'){
                         // remove global indicators from list, there is possibility that new national target 
                         // may have been added aligned with this global one
-                        const {target, targetType, others} = section;
+                        const {target, targetType, ...others} = section;
                         if(Object.keys(others||{})?.length == 0)
                         return true
                     }
+                    return false;
                 });
             }
 
