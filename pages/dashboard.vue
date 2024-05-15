@@ -1,7 +1,6 @@
 <template>
    
   <div>
-    <div class="col-12" style="height:0px" id="welcome"></div>
     <on-boarding v-if="onBoardingSteps" teleport-to="#takeTourTeleport" :steps="onBoardingSteps"></on-boarding>
     <user-profile-info class="mb-2" id="userProfile"></user-profile-info>
     <div class="d-none" ></div>
@@ -223,15 +222,15 @@ import { KmLink } from "@/components/controls";
         })
 
         const onBoardingSteps = [
-            { attachTo: { element: '#welcome' }, content: { title: t('tourWelcomeTitle'), description: t("tourWelcomeContent") } },
+            { attachTo: { element: '#tourWelcome' },            content: { title: t('tourWelcomeTitle'), description: t("tourWelcomeContent") } },
             { attachTo: { element: '#userProfile' },        content: { title: t('userInfoTitle'), description: t("userInfoContent") } },
-            { attachTo: { element: '#userGovernment' },        content: { title: t('governmentTitle'), description: t("governmentContent") } },
-            { attachTo: { element: '#userRoles' },        content: { title: t('rolesTitle'), description: t("rolesContent") } },
-            { attachTo: { element: '#recentlyPublished' },        content: { title: t('recentlyPublishedTitle'), description: t("recentlyPublishedContent") } },
-            { attachTo: { element: '#topNav' },        content: { title: t('topNavigationTitle'), description: t("topNavigationContent") } },
-            { attachTo: { element: '#sideNav' },        content: { title: t('sidebarNavTitle'), description: t("sidebarNavContent") } },
-            { attachTo: { element: '#languages' },        content: { title: t('languageChangeTitle'), description: t("languageChangeContent") } },
-            { attachTo: { element: '#slaask-button-cross' },        content: { title: t('needHelpTitle'), description: t("needHelpContent") } }
+            { attachTo: { element: '#userGovernment' },     content: { title: t('governmentTitle'), description: t("governmentContent") } },
+            { attachTo: { element: '#userRoles' },          content: { title: t('rolesTitle'), description: t("rolesContent") } },
+            { attachTo: { element: '#recentlyPublished' },  content: { title: t('recentlyPublishedTitle'), description: t("recentlyPublishedContent") } },
+            { attachTo: { element: '#topNav' },             content: { title: t('topNavigationTitle'), description: t("topNavigationContent") } },
+            { attachTo: { element: '#sideNav' },            content: { title: t('sidebarNavTitle'), description: t("sidebarNavContent") } },
+            { attachTo: { element: '#languages' },          content: { title: t('languageChangeTitle'), description: t("languageChangeContent") } },
+            { attachTo: { element: '#slaask-button-cross' },content: { title: t('needHelpTitle'), description: t("needHelpContent") } }
                         
         ]
 

@@ -6,7 +6,7 @@
             :class="{'active' : item.active}">{{ item.text }}
         </NuxtLink>        
     </CBreadcrumb>
-
+    
     <span class="float-end" id="takeTourTeleport"></span>
 </template>
 
