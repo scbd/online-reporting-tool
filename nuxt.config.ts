@@ -6,7 +6,11 @@ import { fileURLToPath } from 'node:url'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    devtools: { enabled: true },  
+    devtools: { enabled: true }, 
+    sourcemap: {
+        server: true,
+        client: true
+    }, 
     ssr:false,
     nitro: {
         storage: {
@@ -61,7 +65,9 @@ export default defineNuxtConfig({
         },
     },
     vite: {
-    
+        build: {
+            sourcemap: 'inline'
+        },
         resolve: {
             alias: {
                 'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
