@@ -180,7 +180,7 @@
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
-        validationReport.value = newValidationReport.value;
+        validationReport.value = newValidationReport;
     }
     
     function onFileUpload({file, locale}){

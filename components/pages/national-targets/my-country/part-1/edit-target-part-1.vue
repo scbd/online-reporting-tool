@@ -417,7 +417,7 @@
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
-        validationReport.value = newValidationReport.value;
+        validationReport.value = newValidationReport;
     }
 
     const onGoalsAndTargetSelected = async (selected, type)=>{

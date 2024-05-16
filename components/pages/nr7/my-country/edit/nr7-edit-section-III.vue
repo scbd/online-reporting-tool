@@ -232,12 +232,14 @@
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
-        if(newValidationReport.value?.errors)
-            newValidationReport.value.errors = newValidationReport.value?.errors?.filter(e=>e.parameters=='sectionIII');
+        validationReport.value     = cloneDeep(newValidationReport);
 
-        validationReport.value     = newValidationReport.value;
+        if(validationReport.value?.errors)
+            validationReport.value.errors = validationReport.value?.errors?.filter(e=>e.parameters=='sectionIII');
 
-        return newValidationReport.value;
+
+        return validationReport.value;
+        
     }
     
     const onPreReviewDocument = (document)=>{
