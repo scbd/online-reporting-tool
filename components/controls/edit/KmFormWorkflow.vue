@@ -112,6 +112,7 @@
     import { scrollToElement } from '@/utils';
     import { useRealmConfStore } from '@/stores/realmConf';
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
+    import { useAppStateStore } from '@/stores/appState';
 
 
     const definedProps = defineProps({
@@ -126,6 +127,7 @@
     const $toast        = useToast();
     const { user }      = useAuth();
     const { $api }      = useNuxtApp();
+    const appState      = useAppStateStore();
 
     const formWizard       = ref(null);
     const validationReport = ref({});
@@ -344,6 +346,9 @@
                 const result         = await KmDocumentDraftsService.saveDraftVersion(key, document);
                 previousDraftVersion = document;
                 saveDraftVersionTimer = setTimeout(saveDraftVersion, 1000 * 60 * 10);
+
+                appState.setBackupSpinner(true);
+                setTimeout(()=>appState.setBackupSpinner(false), 5000)
             }
             catch(err){
                 useError().error(err);
