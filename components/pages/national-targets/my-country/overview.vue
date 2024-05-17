@@ -1,24 +1,26 @@
 <template>
     <div>
+        <on-boarding v-if="onBoardingSteps" teleport-to="#takeTourTeleport" :page-title="t('tourTitle')" 
+            :steps="onBoardingSteps" @on-tour-start="onTourStart" @on-tour-end="onTourEnd"></on-boarding>
         <div class="justify-content-center">
-            
             <CRow>
-              <CCol :sm="6">
+              <CCol :sm="6" id="partITour">
                 <CCard>
                   <CCardBody>
-                    <CCardTitle>{{t('partI')}} {{t('nationalTarget')}}</CCardTitle>
+                    <CCardTitle >{{t('partI')}} {{t('nationalTarget')}}</CCardTitle>
                     <CCardText> 
-                        <km-document-count :published-count="userRecords.publishedNationalTargets?.length"
+                        <km-document-count id="partICountsTour" :published-count="userRecords.publishedNationalTargets?.length"
                             :draft-count="userRecords.draftNationalTargets?.length"
                             :request-count="userRecords.requestedNationalTargets?.length"></km-document-count>                     
                        
                     </CCardText>
                     <div class="d-grid gap-1 d-flex">
                         <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I" :title="t('goToPartI')" 
-                            role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>
+                           id="partIGoToTour" role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>
                         <km-link :disabled="disableActions" :to="useLocalePath()(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW)" :title="t('submitNewTarget')" 
-                            role="button" class="btn btn-secondary" icon="fa-plus"></km-link>
-                        <CButton :disabled="disableActions"  @click="onValidate('partI')" color="secondary">
+                           id="partISubmitTour" role="button" class="btn btn-secondary" icon="fa-plus"></km-link>
+                        <CButton :disabled="disableActions"  @click="onValidate('partI')" color="secondary"
+                            id="partIValidateTour">
                             <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             {{t('validatePartI')}}
@@ -27,19 +29,20 @@
                   </CCardBody>
                 </CCard>
               </CCol>
-              <CCol :sm="6">
+              <CCol :sm="6" id="partIITour">
                 <CCard>
                   <CCardBody>
                     <CCardTitle>{{t('partII')}} {{t('nationalMapping')}}</CCardTitle>
                     <CCardText> 
-                        <km-document-count :published-count="userRecords.publishedNationalMappings?.length"
+                        <km-document-count id="partIICountsTour" :published-count="userRecords.publishedNationalMappings?.length"
                             :draft-count="userRecords.draftNationalMappings?.length"
                             :request-count="userRecords.requestedNationalMappings?.length"></km-document-count>                                            
                     </CCardText>                    
                     <div class="d-grid gap-1 d-flex">
                         <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II" title="Go to Part II" 
-                            role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>  
-                        <CButton :disabled="disableActions" @click="onValidate('partII')" color="secondary">
+                            id="partIIGoToTour" role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>  
+                        <CButton :disabled="disableActions" @click="onValidate('partII')" color="secondary"
+                            id="partIIValidateTour">
                             <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             {{t('validatePartII')}}
@@ -52,17 +55,17 @@
                 <CCard>
                   <CCardBody>
                     <div class=" float-end d-grid gap-1 d-flex">
-                        <CButton :disabled="disableActions || !showPublishBtn" @click="onPublish()" color="secondary">
+                        <CButton id="publishTour" :disabled="disableActions || !showPublishBtn" @click="onPublish()" color="secondary">
                             <c-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                             {{t('publish')}}
                         </CButton>
-                        <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
+                        <CButton id="validateTour" :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
                             <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
                             <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             {{t('validatePartIAndPartII')}}
                         </CButton>
-                        <CButton @click="onRefresh()" color="secondary" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
+                        <CButton id="refreshTour" @click="onRefresh()" color="secondary" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
                             <font-awesome-icon icon="fa-arrows-rotate" :spin="isLoading"/>
                             {{t('refresh')}}
                         </CButton>
@@ -77,6 +80,8 @@
             <CRow>
                 <CCol>
                     <km-suspense>
+                        <tour-dummy-table v-if="tourStarted" id="partI" title="National targets"></tour-dummy-table>
+                        <tour-dummy-table v-if="tourStarted" id="partII" title="Global Goal/Targets mapping "></tour-dummy-table>
                         <validation ref="validationRef" @on-records-load="onRecordsLoad" @on-validation-finished="onValidationFinished"
                             @on-record-status-change="onRecordStatusChange"></validation>
                     </km-suspense>
@@ -243,6 +248,7 @@
     const showValidationErrorDialog = ref(false);
     const missingTargets            = ref({});
     const openWorkflow              = ref(null);
+    const tourStarted               = ref(false);
 
     const security                  = useSecurity();
     const { t }                     = useI18n();
@@ -250,6 +256,26 @@
 
     const disableActions = computed(()=>isLoading.value || isValidating.value || isPublishing.value || !!stateTargetWorkflow.value.batchId)
     
+    const onBoardingSteps = [
+        { attachTo: { element: '#tourWelcome' },           content: { title: t('tourWelcomeTitle')     , description: t('tourWelcomeContent') } },
+        { attachTo: { element: '#partITour' },                 content: { title: t('partITitle')           , description: t('partIContent') } },
+        { attachTo: { element: '#partICountsTour' },           content: { title: t('partICountsTitle')     , description: t('partICountsContent') } },
+        { attachTo: { element: '#partIGoToTour' },             content: { title: t('partIGoToTitle')       , description: t('partIGoToContent') } },
+        { attachTo: { element: '#partISubmitTour' },           content: { title: t('partISubmitTitle')     , description: t('partISubmitContent') } },
+        { attachTo: { element: '#partIValidateTour' },         content: { title: t('partIValidateTitle')   , description: t('partIValidateContent') } },
+        { attachTo: { element: '#partIITour' },                content: { title: t('partIITitle')          , description: t('partIIContent') } },
+        { attachTo: { element: '#partIICountsTour' },          content: { title: t('partIICountsTitle')    , description: t('partIICountsContent') } },
+        { attachTo: { element: '#partIIGoToTour' },            content: { title: t('partIIGoToTitle')      , description: t('partIIGoToContent') } },
+        { attachTo: { element: '#partIIValidateTour' },        content: { title: t('partIIValidateTitle')  , description: t('partIIValidateContent') } },
+        { attachTo: { element: '#publishTour' },               content: { title: t('publishTitle')         , description: t('publishContent') } },
+        { attachTo: { element: '#validateTour' },              content: { title: t('validateTitle')        , description: t('validateContent') } },
+        { attachTo: { element: '#refreshTour' },               content: { title: t('refreshTitle')         , description: t('refreshContent') } },
+        { attachTo: { element: '#partICountTour' },            content: { title: t('partICountTitle')      , description: t('partICountContent') } },
+        { attachTo: { element: '.national-target-list #linkedGbfTour' },        content: { title: t('partILinkedGbfTitle')  , description: t('partILinkedGbfContent') } },
+        { attachTo: { element: '.national-target-list #recordStatusTour' },           content: { title: t('partIStatusTitle')     , description: t('partIStatusContent') } },
+        { attachTo: { element: '#partIICountTour' },           content: { title: t('partIICountTitle')     , description: t('partIICountContent') } },
+    ];
+
     async function onValidate(type:string = undefined){
 
         isValidating.value = true;
@@ -362,24 +388,24 @@
         }
     }
 
-async function loadOpenWorkflow(lockedRecord: any, iteration:number=0) {
-  const workflowId=lockedRecord?.workingDocumentLock?.lockID?.replace('workflow-', '');
+    async function loadOpenWorkflow(lockedRecord: any, iteration:number=0) {
+        const workflowId=lockedRecord?.workingDocumentLock?.lockID?.replace('workflow-', '');
 
-  if(!workflowId)
-    return;
+        if(!workflowId)
+            return;
 
-  const workflow=await $api.kmWorkflows.getWorkflow(workflowId);
-  if(workflow) {
-    if(!workflow?.activities?.length && iteration < 5){
-        await sleep(2000);
-        return loadOpenWorkflow(lockedRecord, iteration+1)
+        const workflow=await $api.kmWorkflows.getWorkflow(workflowId);
+        if(workflow) {
+            if(!workflow?.activities?.length && iteration < 5){
+                await sleep(2000);
+                return loadOpenWorkflow(lockedRecord, iteration+1)
+            }
+            else{
+                openWorkflow.value=workflow;
+                stateTargetWorkflow.value.batchId=undefined;
+            }
+        }
     }
-    else{
-        openWorkflow.value=workflow;
-        stateTargetWorkflow.value.batchId=undefined;
-    }
-  }
-}
 
     async function onWorkflowAction(actionData){
         // console.log(actionData);
@@ -396,6 +422,14 @@ async function loadOpenWorkflow(lockedRecord: any, iteration:number=0) {
 
     function onValidationFinished(records:object){
         userRecords.value = records;
+    }
+
+    function onTourStart(){
+        tourStarted.value = true
+    }
+
+    function onTourEnd(){
+        tourStarted.value = false
     }
 
     async function findMissingGlobalTargets(nationalTargets, fields: Array<string>){

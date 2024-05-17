@@ -16,5 +16,25 @@
     "title":"Title",
     "country" : "Country",
     "type":   "Type",
-    "publishedOn" : "Published on"      
+    "publishedOn" : "Published on",
+    
+    "tourTitle"               : "Dashboard",
+    "tourWelcomeTitle"        : "Welcome to the Online Reporting Tool",
+    "tourWelcomeContent"      : "The online reporting tool provides the modality for submitting national targets, as per Annex 1 of decision 15/6",
+    "userInfoTitle"           : "Your personal information",
+    "userInfoContent"         : "View and update your profile details.",
+    "governmentTitle"         : "Country affiliation",
+    "governmentContent"       : "Country affiliation is required to access submission section of the ORT",
+    "rolesTitle"              : "Role(s)",
+    "rolesContent"            : "Users need National Focal Point, Publishing Authority, or National Authorized User roles to access the submission section.",
+    "recentlyPublishedTitle"  : "Recently Published",
+    "recentlyPublishedContent": "This section displays most recent information",
+    "topNavigationTitle"      : "Navigation",
+    "topNavigationContent"    : "Quick links for easy access",
+    "sidebarNavTitle"         : "Side navigation",
+    "sidebarNavContent"       : "Allows access to all navigation option(s), hide it for extra space (use < icon at the bottom of the section)",
+    "languageChangeTitle"     : "Language",
+    "languageChangeContent"   : "The ORT is available in all six UN languages, Change to your preferred language.",
+    "needHelpTitle"           : "Need more help?",
+    "needHelpContent"         : "Use the Chat feature for additional support."
 }
