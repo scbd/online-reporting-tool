@@ -2,7 +2,10 @@
     <CCard>
         <CCardHeader>Knowledge base</CCardHeader>
         <CCardBody>
-           Welcome to ORT knowledge base!
+            <div class="text-center border-bottom-1">
+                <h5>Welcome to ORT knowledge base!</h5>
+            </div>
+           <article-list></article-list>
         </CCardBody>
    </CCard>
 </template>
