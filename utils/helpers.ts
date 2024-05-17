@@ -109,3 +109,12 @@ export const  flattenObject = function(obj, parentKey = '') {
 
     return flattened;
 }
+
+
+export function mapObjectId(id){
+    return isObjectId(id)? { $oid: id } : id
+}
+
+export function isObjectId(id){
+    return /^[a-f0-9]{24}/i.test(id);
+}
