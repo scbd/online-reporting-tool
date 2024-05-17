@@ -131,6 +131,7 @@
 
         showEditIndicatorDataModal.value = false;
         customValidationErrors.value = null;
+        validationReport.value = {}
     }
 
     const onPreSaveDraft = async (document)=>{
@@ -148,9 +149,8 @@
         return document;
     }
     const onPostReviewDocument = (document, newValidationReport)=>{
-        console.log(document, validationReport);
 
-        validationReport.value = newValidationReport.value || {};
+        validationReport.value = cloneDeep(newValidationReport || {});
 
         if(!validationReport.value?.errors){
 

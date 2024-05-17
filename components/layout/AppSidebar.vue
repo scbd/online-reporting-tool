@@ -78,9 +78,15 @@
         </CNavGroup>          
         
       </CNavGroup>
-    </CSidebarNav>
-    <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable()">   
-        <span class="app-version" v-if="TAG||COMMIT">Ver {{ TAG||COMMIT.substring(0, 20) }}</span>    
+    </CSidebarNav> 
+    <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable()"> 
+        <div class="app-version">
+          Ver {{ TAG||COMMIT.substring(0, 20) }}      
+          <span class="ms-3" v-if="appState.showBackupSpinner">
+            <CSpinner color="success" variant="grow" class="me-1" size="sm"/>
+            <CSpinner color="info" variant="grow" size="sm"/>
+          </span>    
+        </div>     
     </CSidebarToggler>
   </CSidebar>
 </template>
@@ -90,6 +96,7 @@
 
 import { useRealmConfStore }    from '@/stores/realmConf';
 import { useUserPreferencesStore } from '@/stores/userPreferences';
+import { useAppStateStore } from '@/stores/appState';
 import { KmNavLink } from '@/components/controls';
 import { useRoute } from 'vue-router';
 
@@ -106,6 +113,7 @@ export default {
     const localePath  = useLocalePath()
     const { loadRealmConf } = useRealmConfStore();
     const userPreferences = useUserPreferencesStore();
+    const appState        = useAppStateStore();
     const { t } = useI18n()
     const route = useRoute();
     
@@ -142,7 +150,8 @@ export default {
       t,
       isChildRouteActive,
       isDevelopment,
-      userPreferences, TAG, COMMIT
+      userPreferences, TAG, COMMIT,
+      appState
     }
   },
 }

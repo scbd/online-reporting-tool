@@ -112,6 +112,7 @@
     import { scrollToElement } from '@/utils';
     import { useRealmConfStore } from '@/stores/realmConf';
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
+    import { useAppStateStore } from '@/stores/appState';
 
 
     const definedProps = defineProps({
@@ -126,6 +127,7 @@
     const $toast        = useToast();
     const { user }      = useAuth();
     const { $api }      = useNuxtApp();
+    const appState      = useAppStateStore();
 
     const formWizard       = ref(null);
     const validationReport = ref({});
@@ -165,13 +167,13 @@
         activeTab.value = workflowTabs.review.index;
 
         validationReport.value = { isAnalyzing:true };
-        const document = ref(cloneDeep(props.document.value));
+        let document = cloneDeep(props.document.value);
 
         // onPreReviewDocument
         if(workflowFunctions?.onPreReviewDocument)
-            document.value = await workflowFunctions.onPreReviewDocument(document.value);
+            document = await workflowFunctions.onPreReviewDocument(document);
 
-        const validationResponse = await validate(document.value)
+        const validationResponse = await validate(document)
         if(validationResponse && validationResponse?.errors?.length) {
             validationReport.value = {...validationResponse};
             // $scope.tab = "review";
@@ -181,7 +183,7 @@
 
         // onPostReviewDocument
         if(workflowFunctions?.onPostReviewDocument){
-            const report = await workflowFunctions.onPostReviewDocument(document, validationReport);
+            const report = await workflowFunctions.onPostReviewDocument(document, validationReport.value);
             if(report)
                 validationReport.value = report;
         }
@@ -191,19 +193,19 @@
     async function onSaveDraft(){
         try{
             validationReport.value = { isSaving:true };
-            const document = props.document//document;
+            let document = cloneDeep(props.document.value)//document;
 
             // onPreSaveDraft
             if(workflowFunctions?.onPreSaveDraft)
-                document.value = await workflowFunctions.onPreSaveDraft(document);
+                document = await workflowFunctions.onPreSaveDraft(document);
 
             const hasChangedAndOverwrite = await validateIfServerHasChanged()
             if(!hasChangedAndOverwrite)
                 return;
 
             // save document
-            const documentSaveResponse = await EditFormUtility.saveDraft(document.value);
-            originalDocument = { ...(document.value) }
+            const documentSaveResponse = await EditFormUtility.saveDraft(document);
+            originalDocument = { ...(document) }
 
             // onPostSaveDraft
             if(workflowFunctions.onPostSaveDraft)
@@ -327,7 +329,7 @@
 
     async function saveDraftVersion(){
         // console.log(new Date())
-        let document = props.document.value;
+        let document = cloneDeep(props.document.value);
 
         if(workflowFunctions.onPreSaveDraftVersion){
             document = await workflowFunctions.onPreSaveDraftVersion(document);
@@ -344,6 +346,9 @@
                 const result         = await KmDocumentDraftsService.saveDraftVersion(key, document);
                 previousDraftVersion = document;
                 saveDraftVersionTimer = setTimeout(saveDraftVersion, 1000 * 60 * 10);
+
+                appState.setBackupSpinner(true);
+                setTimeout(()=>appState.setBackupSpinner(false), 5000)
             }
             catch(err){
                 useError().error(err);
@@ -358,6 +363,11 @@
     }
 
     onMounted(async() => {
+        validationReport.value = {}; 
+        originalDocument = null
+        saveDraftVersionTimer = null;
+        previousDraftVersion = null;
+        
         formWizard.value?.selectTab(focusedTab.value ?? 0)
 
         workflowFunctions = inject('kmWorkflowFunctions');
