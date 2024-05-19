@@ -4,9 +4,12 @@
           <slot name="header"> <font-awesome-icon icon="fa fa-arrows-down-to-people" /> {{t('title')}} </slot>
         </CCardHeader>
         <CCardBody>
+            <on-boarding v-if="onBoardingSteps" teleport-to="#takeTourTeleport" :page-title="t('title')" 
+            :steps="onBoardingSteps" @on-tour-start="onTourStart" @on-tour-end="onTourEnd"></on-boarding>
+        
             <CRow>
                 <CCol col="12" sm="3" md="6"  xs="6">
-                    <km-document-count :published-count="publishedNationalTargets?.length"
+                    <km-document-count id="partICountsTour" :published-count="publishedNationalTargets?.length"
                     :draft-count="draftNationalTargets?.length"
                     :request-count="requestCount">
                     </km-document-count>         
@@ -16,15 +19,16 @@
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 
                     <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" :title="t('goToOverview')" 
-                                role="button" class="btn btn-secondary" 
+                                role="button" class="btn btn-secondary" id="partIGoToOverview"
                                 icon="fa-wand-magic-sparkles">
                     </km-link> 
 
-                    <CButton @click="loadRecords()" color="secondary">
+                    <CButton @click="loadRecords()" color="secondary" id="partIRefreshTour">
                         <font-awesome-icon icon="fa-arrows-rotate"/>
                         {{t('refresh')}}
                     </CButton>
-                    <CButton color="secondary" size="sm" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
+                    <CButton color="secondary" size="sm" id="partISubmitTour"
+                        @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW, {})">
                         <font-awesome-icon icon="fa-plus"/> {{t('submitNewTarget')}}
                     </CButton>
                     </div>
@@ -32,7 +36,8 @@
                 </CCol>
             </CRow>
                                               
-
+            <tour-dummy-table v-if="tourStarted" id="nationalRecords"></tour-dummy-table>
+                        
             <km-spinner v-if="isLoadingRecords" center ></km-spinner>
             <div class="table-responsive">
 
@@ -99,6 +104,24 @@
     const draftNationalTargets     = ref([]);
     const publishedNationalTargets = ref([]);
     const isLoadingRecords         = ref(false);
+    const tourStarted               = ref(false);
+
+    const onBoardingSteps = [
+        { attachTo: { element: '#tourWelcome' },               content: { title: t('tourWelcomeTitle')     , description: t('tourWelcomeContent') } },
+        { attachTo: { element: '#partICountsTour' },           content: { title: t('partICountsTitle')     , description: t('partICountsContent') } },
+        { attachTo: { element: '#partIGoToOverview' },             content: { title: t('partIGoToOverviewTitle')       , description: t('partIGoToOverviewContent') } },
+        { attachTo: { element: '#partIRefreshTour' },               content: { title: t('partIRefreshTitle')         , description: t('partIRefreshContent') } },
+        { attachTo: { element: '#partISubmitTour' },           content: { title: t('partISubmitTitle')     , description: t('partISubmitContent') } },
+        { attachTo: { element: '.national-target-list #record' },        content: { title: t('partINationalTargetRecordTitle')  , description: t('partINationalTargetRecordContent') } },
+        { attachTo: { element: '.national-target-list #linkedGbfTour' },        content: { title: t('partILinkedGbfTitle')  , description: t('partILinkedGbfContent') } },
+        
+        { attachTo: { element: '.national-target-list #recordStatusTour' },           content: { title: t('partIStatusTitle')     , description: t('partIStatusContent') } },
+        { attachTo: { element: '.national-target-list #viewRecordTour' },           content: { title: t('partIViewTitle')     , description: t('partIViewContent') } },
+        { attachTo: { element: '.national-target-list #editRecordTour' },           content: { title: t('partIEditTitle')     , description: t('partIEditContent') } },
+        { attachTo: { element: '.national-target-list #deleteRecordTour' },           content: { title: t('partIDeleteTitle')     , description: t('partIDeleteContent') } },
+        
+        
+    ];
 
     const canEdit = computed(()=>{
         return !stateTargetWorkflow.value.batchId
@@ -157,6 +180,14 @@
         }
         
         draftNationalTargets.value     = draftNationalTargets.value.filter(e=>e.identifier != identifier)
+    }
+
+    function onTourStart(){
+        tourStarted.value = true
+    }
+
+    function onTourEnd(){
+        tourStarted.value = false
     }
 
     loadRecords();
