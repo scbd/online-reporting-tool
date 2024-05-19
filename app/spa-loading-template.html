@@ -11,6 +11,14 @@
   <div class="loader-line-mask">
     <div class="loader-line"></div>
   </div>
+<div class="slowLoadingMessage">
+    <div id="message1" style="display: none;">Please hold on while we load all required files form the server</div>
+    <div id="message2" style="display: none;">Its taking longer then usual, please hold on for some more time</div>
+    <div id="message3" style="display: none;">
+      The loading has not finished yet, you can try to reload the page<br>
+      <button class="btn btn-success" onclick="window.location.reload()">Reload</button>
+    </div>
+</div>
 </div>
 <style>
   body {
@@ -78,4 +86,34 @@
       transform: rotate(360deg);
     }
   }
+
+  .slowLoadingMessage{
+    position: fixed;
+    top: 62%;
+    color: #009b48;
+    font-family: Arial, sans-serif;
+    font-size: medium;
+    left: 35%;
+  }
 </style>
+<script type="module">
+  const sleep = (timeout)=>new Promise((resolve) => setTimeout(resolve, timeout));
+
+  const message1 = document.getElementById('message1');
+  await sleep(5000);
+  message1.style.display = 'block';
+
+  const message2 = document.getElementById('message2');
+  await sleep(5000);
+  message1.style.display = 'none';
+  message2.style.display = 'block';
+
+  const message3 = document.getElementById('message3');
+  await sleep(10000);
+  message1.style.display = 'none';
+  message2.style.display = 'none';
+  message3.style.display = 'block';
+
+
+</script>
+
