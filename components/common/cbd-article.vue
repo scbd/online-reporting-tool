@@ -3,7 +3,7 @@
    <div style="border:none;margin-top:10px">
         <div v-if="!loading">
             <div v-if="!hideCoverImage && viewArticle && viewArticle.coverImage && viewArticle.coverImage.url">
-                <cbd-article-cover-image :cover-image="viewArticle.coverImage"></cbd-article-cover-image>
+                <cbd-article-cover-image :cover-image="viewArticle.coverImage" :cover-image-size="coverImageSize"></cbd-article-cover-image>
             </div>    
             <cbd-add-new-view-article v-if="hasEditRights" 
                 :tags="tags" :admin-tags="adminTags" :custom-tags="customTags" :id="(viewArticle||{})._id" :target="target"
@@ -38,6 +38,7 @@ export default {
         customTags 	    : { type: Array  , required: false, default:[]           }, // [] of customTag id's
         adminTags 	    : { type: Array  , required: false, default:[]           }, // [] of adminTag text
         target          : { type: String , required: false, default: '_self'     },
+        coverImageSize   : { type: String, required: false, default: '800x800'   },
     },
     setup(){
         const { t } = useI18n();
