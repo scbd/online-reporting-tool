@@ -20,10 +20,10 @@
                         {{lstring(document.workingDocumentTitle||document.title, locale)}}
                     </slot>
                 </td>                                
-                <td class="w-15">
+                <td class="w-15" id="linkedGbfTour">
                     <goal-target-list :goal-targets="getAlignedGoalsOrTargets(document.workingDocumentBody||document.body)"></goal-target-list>   
                 </td>                   
-                <td>
+                <td id="recordStatusTour">
                     <CBadge color="info" v-if="document.isValidating">
                             <km-spinner :message="t('validating')"></km-spinner>
                     </CBadge>
