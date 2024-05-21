@@ -31,7 +31,7 @@ export default {
     // components : { cbdAddNewArticle },
     props: {
         hideCoverImage  : { type: Boolean, required: false, default:false        },
-        showEdit        : { type: Boolean, required: false, default:undefined    },
+        showEdit        : { type: Boolean, required: false, default:true         },
         article         : { type: Object,  required: false, default:undefined    },
         query           : { type: Object,  required: true                        },
         tags 		    : { type: Array  , required: false, default:[]           }, // [] of tag id's
@@ -42,6 +42,7 @@ export default {
     },
     setup(){
         const { t } = useI18n();
+        const {user} = useAuth();
 
         return { t };
     },
@@ -57,22 +58,26 @@ export default {
         viewArticle (){return this.article || this.remoteArticle }
     },
     mounted() {
+
+        const security = useSecurity();
         if(!this.viewArticle)
             this.loadArticle();
+
+        if(this.showEdit || this.showEdit == 'true' || this.hasOwnProperty(this.showEdit)){
+            this.hasEditRights = security.isInRoles(['oasisArticleEditor', 'Administrator']);
+        }
     },
     methods: {
         async loadArticle() {
             try{
+
                 const { $api } = useNuxtApp()
-                const security = useSecurity();
                 this.loading = true;
                 const query = this.query;
                 const articles = await $api.articles.queryArticles(query)
      
                 if(articles.length){
                     this.remoteArticle = articles[0];
-
-                    this.preProcessOEmbed();
 
                     if(this.remoteArticle.coverImage?.url){
                         //sometime the file name has space/special chars, use new URL's href prop which encodes the special chars
@@ -82,15 +87,16 @@ export default {
                         this.remoteArticle.coverImage.url_1200  = this.remoteArticle.coverImage.url.replace(/attachments\.cbd\.int\//, '$&1200x600/')
                     }
 
-                    this.$emit('load', { ...this.remoteArticle });   
+                    this.$emit('load', { ...this.remoteArticle });  
+                    
+                    setTimeout(() => {                        
+                        this.preProcessOEmbed();
+                    }, 1000);
                 }
                 else {
                     this.$emit('load');
                 }
 
-                if(this.showEdit || this.showEdit == 'true' || this.hasOwnProperty(this.showEdit)){
-                    this.hasEditRights = security.isInRoles(['oasisArticleEditor', 'Administrator']);
-                }
             }
             catch(e){
                 useLogger().error(e, 'Error loading article')
@@ -107,11 +113,15 @@ export default {
                 .forEach(async function(element) {
                     var url = element.attributes.url.value;
                     var params = {
-                        url : encodeURI(url),
+                        url : encodeURI(url)                        
+                    }
+
+                    if(/app\.tango\.us\/app\/workflow\/.*/.test(url)){
+                        params.height = '1500px'
                     }
 
                     const response = await useAPIFetch('/api/v2020/oembed', {method:'GET', query:params});                    
-                    var embedHtml = '<div class="ck-media__wrapper" style="width:100%">' + response.data.html +'</div>'
+                    var embedHtml = '<div class="ck-media__wrapper" style="width:100%">' + response.html +'</div>'
                     element.insertAdjacentHTML("afterend", embedHtml);
                     
                 });

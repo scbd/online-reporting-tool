@@ -26,6 +26,12 @@
             CHM
           </NuxtLink>
         </CNavItem>
+        <CNavItem>
+          <NuxtLink class="nav-link" :to="localePath('/knowledge-base')">
+            <font-awesome-icon icon="fa-solid fa-circle-question" />
+          {{t('menuHelp')}} 
+          </NuxtLink>
+        </CNavItem>
       </CHeaderNav>
       <CHeaderNav>
         <!-- <CNavItem>
