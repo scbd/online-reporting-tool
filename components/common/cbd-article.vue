@@ -3,14 +3,11 @@
    <div style="border:none;margin-top:10px">
         <div v-if="!loading">
             <div v-if="!hideCoverImage && viewArticle && viewArticle.coverImage && viewArticle.coverImage.url">
-                <cbd-viewArticle-cover-image cover-image="viewArticle.coverImage"></cbd-viewArticle-cover-image>
-            </div>
-        
-            <!-- <div v-if="hasEditRights" class="pull-right">    
-                <cbd-add-new-viewArticle :tags="tags" :admin-tags="adminTags" :custom-tags="customTags" :id="(viewArticle||{})._id" :target="target"
-                    class="btn btn-default"></cbd-add-new-viewArticle>
-                <br/>    
-            </div> -->
+                <cbd-article-cover-image :cover-image="viewArticle.coverImage" :cover-image-size="coverImageSize"></cbd-article-cover-image>
+            </div>    
+            <cbd-add-new-view-article v-if="hasEditRights" 
+                :tags="tags" :admin-tags="adminTags" :custom-tags="customTags" :id="(viewArticle||{})._id" :target="target"
+                class="btn btn-secondary float-end"></cbd-add-new-view-article>
             <div v-if="viewArticle" v-html="lstring(viewArticle.content, $locale)" class="ck-content"></div>
             <div v-if="!viewArticle" class="ck-content">
                 <slot name="missingArticle">
@@ -41,6 +38,7 @@ export default {
         customTags 	    : { type: Array  , required: false, default:[]           }, // [] of customTag id's
         adminTags 	    : { type: Array  , required: false, default:[]           }, // [] of adminTag text
         target          : { type: String , required: false, default: '_self'     },
+        coverImageSize   : { type: String, required: false, default: '800x800'   },
     },
     setup(){
         const { t } = useI18n();
