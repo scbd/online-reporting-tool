@@ -201,7 +201,7 @@
     }
     
     const onPostReviewDocument = (document, newValidationReport)=>{
-        validationReport.value = newValidationReport.value || {};
+        validationReport.value = cloneDeep(newValidationReport);
     }
     
     const uploadFile = async (event) => {
