@@ -99,20 +99,25 @@
 <script type="module">
   const sleep = (timeout)=>new Promise((resolve) => setTimeout(resolve, timeout));
 
+  await sleep(5000);
   const message1 = document.getElementById('message1');
-  await sleep(5000);
-  message1.style.display = 'block';
+  if(message1)
+    message1.style.display = 'block';
 
+  await sleep(5000);
   const message2 = document.getElementById('message2');
-  await sleep(5000);
-  message1.style.display = 'none';
-  message2.style.display = 'block';
+  if(message2){
+    message1.style.display = 'none';
+    message2.style.display = 'block';
+  }
 
-  const message3 = document.getElementById('message3');
   await sleep(10000);
-  message1.style.display = 'none';
-  message2.style.display = 'none';
-  message3.style.display = 'block';
+  const message3 = document.getElementById('message3');
+  if(message3){
+    message1.style.display = 'none';
+    message2.style.display = 'none';
+    message3.style.display = 'block';
+  }
 
 
 </script>
