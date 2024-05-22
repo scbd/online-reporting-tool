@@ -180,7 +180,7 @@
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
-        validationReport.value = newValidationReport;
+        validationReport.value     = cloneDeep(newValidationReport);
     }
     
     function onFileUpload({file, locale}){

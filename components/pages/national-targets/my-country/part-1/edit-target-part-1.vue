@@ -417,7 +417,7 @@
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
-        validationReport.value = newValidationReport;
+        validationReport.value     = cloneDeep(newValidationReport);
     }
 
     const onGoalsAndTargetSelected = async (selected, type)=>{
