@@ -8,7 +8,8 @@ import { fileURLToPath } from 'node:url'
 export default defineNuxtConfig({
     devtools: { enabled: true }, 
     sourcemap: {
-        client: true
+        client: true,
+        server:true
     }, 
     ssr:false,
     nitro: {
