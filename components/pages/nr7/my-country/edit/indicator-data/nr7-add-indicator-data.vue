@@ -1,5 +1,4 @@
 <template>
-    
     <div class="d-flex justify-content-end mb-2">
         <!-- <span :id="`teleport-indicator-${indicator.identifier}`" class="me-1"></span> -->
         <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="identifier" :disabled="disabled">
@@ -84,7 +83,7 @@
                                             </km-form-group>
 
                                             <div class="mt-3 mb-3" v-if="indicatorData?.data">
-                                                <view-data :indicator-data="indicatorData" v-if="indicatorData"></view-data>
+                                                <nr7-view-indicator-data :indicator-data="indicatorData"></nr7-view-indicator-data>
                                             </div>
 
                                             <km-form-group v-if="document.sourceOfData" name="comments" caption="Comments">
@@ -113,7 +112,6 @@
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import readXlsxFile from 'read-excel-file';
-    import ViewData from './nr7-view-indicator-data.vue';
     import {cloneDeep} from 'lodash';
     import { useCountriesStore } from '@/stores/countries';
 
@@ -318,13 +316,14 @@
                     const globallyDerivedData = dataResponse?.data?.globallyDerivedData;
                     if(globallyDerivedData){
 
-                        if(globallyDerivedData.globalDataSources?.length)
-                            document.value.globalDataSources =  globallyDerivedData.globalDataSources.map(e=>({name:e.title, url:e.link}));
+                        if(globallyDerivedData.dataSources?.length)
+                            document.value.globalDataSources =  globallyDerivedData.dataSources.map(e=>({name:e.title, url:e.link}));
 
-                        if(globallyDerivedData.globalIndicatorProviders?.length)
-                            document.value.globalIndicatorProviders =  globallyDerivedData.globalIndicatorProviders.map(e=>({name:e.title, url:e.link}))
+                        if(globallyDerivedData.indicatorProviders?.length)
+                            document.value.globalIndicatorProviders =  globallyDerivedData.indicatorProviders.map(e=>({name:e.title, url:e.link}))
 
-                        document.value.globalDescription = globallyDerivedData.globalDescription
+                        document.value.globalDescription = globallyDerivedData.description
+                        console.log(document.value)
                     }
                 }
             }
