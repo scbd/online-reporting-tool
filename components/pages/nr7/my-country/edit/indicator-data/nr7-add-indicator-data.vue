@@ -1,11 +1,10 @@
 <template>
-    
     <div class="d-flex justify-content-end mb-2">
         <!-- <span :id="`teleport-indicator-${indicator.identifier}`" class="me-1"></span> -->
-        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="identifier" :disabled="disabled">
+        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-show="identifier" :disabled="disabled">
             {{ t('editIndicatorData') }}
         </CButton>
-        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-if="!identifier" :disabled="disabled">
+        <CButton color="primary" size="sm" @click="showEditIndicatorData(target)" v-show="!identifier" :disabled="disabled">
             {{ t('addIndicatorData') }}
         </CButton>
     </div>
@@ -58,10 +57,9 @@
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData" label="No data available"/>
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData" label="Not relevant"/>                                            
                                             </km-form-check-group>
-
-                                            <div v-if="document.sourceOfData=='national'">
+                                            <div v-show="document.sourceOfData=='national'">
                                                 <km-form-group name="sourceOfDataNational" required caption="National data set" >
-                                                    <div class="alert alert-info" v-if="indicatorDataTemplates[indicator.identifier]">
+                                                    <div class="alert alert-info" v-show="indicatorDataTemplates[indicator.identifier]">
                                                         <a :href="indicatorDataTemplates[indicator.identifier]">
                                                             Download sample template for the Indicator 
                                                             <font-awesome-icon icon="fa-download"></font-awesome-icon>
@@ -70,24 +68,24 @@
                                                     <input type="file" id="input" @change="uploadFile"/>                                                
                                                 </km-form-group>                                                
                                             </div>
-                                            <km-form-group name="sourceOfDataNational" required caption="National data set" v-if="document.sourceOfData=='availableDataset'">
+                                            <km-form-group name="availableDataset" required caption="Global data set" v-show="document.sourceOfData=='availableDataset'">
                                         
-                                                <div class="mt-3" v-if="!isFetchingGlobalData && !wcmcIndicatorData.data?.charts?.length">
+                                                <div class="mt-3" v-show="!isFetchingGlobalData && !wcmcIndicatorData.data?.charts?.length">
                                                     <CAlert color="danger" class="d-flex align-items-center">
                                                         <font-awesome-icon icon="fa-solid fa-info"/>
                                                         No global data found for this Indicator.
                                                     </CAlert>
                                                 </div>
-                                                <div class="mt-3" v-if="isFetchingGlobalData">
+                                                <div class="mt-3" v-show="isFetchingGlobalData">
                                                     <km-spinner></km-spinner>
                                                 </div>
                                             </km-form-group>
 
-                                            <div class="mt-3 mb-3" v-if="indicatorData?.data">
-                                                <view-data :indicator-data="indicatorData" v-if="indicatorData"></view-data>
+                                            <div class="mt-3 mb-3" v-show="indicatorData?.data">
+                                                <nr7-view-indicator-data :indicator-data="indicatorData"></nr7-view-indicator-data>
                                             </div>
 
-                                            <km-form-group v-if="document.sourceOfData" name="comments" caption="Comments">
+                                            <km-form-group v-show="document.sourceOfData" name="comments" caption="Comments">
                                                 <km-input-rich-lstring v-model="document.comments" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>         
                                         </div>
@@ -113,7 +111,6 @@
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import readXlsxFile from 'read-excel-file';
-    import ViewData from './nr7-view-indicator-data.vue';
     import {cloneDeep} from 'lodash';
     import { useCountriesStore } from '@/stores/countries';
 
@@ -203,7 +200,7 @@
     }
     
     const onPostReviewDocument = (document, newValidationReport)=>{
-        validationReport.value = newValidationReport.value || {};
+        validationReport.value = cloneDeep(newValidationReport);
     }
     
     const uploadFile = async (event) => {
@@ -318,13 +315,14 @@
                     const globallyDerivedData = dataResponse?.data?.globallyDerivedData;
                     if(globallyDerivedData){
 
-                        if(globallyDerivedData.globalDataSources?.length)
-                            document.value.globalDataSources =  globallyDerivedData.globalDataSources.map(e=>({name:e.title, url:e.link}));
+                        if(globallyDerivedData.dataSources?.length)
+                            document.value.globalDataSources =  globallyDerivedData.dataSources.map(e=>({name:e.title, url:e.link}));
 
-                        if(globallyDerivedData.globalIndicatorProviders?.length)
-                            document.value.globalIndicatorProviders =  globallyDerivedData.globalIndicatorProviders.map(e=>({name:e.title, url:e.link}))
+                        if(globallyDerivedData.indicatorProviders?.length)
+                            document.value.globalIndicatorProviders =  globallyDerivedData.indicatorProviders.map(e=>({name:e.title, url:e.link}))
 
-                        document.value.globalDescription = globallyDerivedData.globalDescription
+                        document.value.globalDescription = globallyDerivedData.description
+                        console.log(document.value)
                     }
                 }
             }
