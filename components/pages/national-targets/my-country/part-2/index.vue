@@ -28,7 +28,7 @@
                 <km-spinner v-if="isBusy" center></km-spinner>
                 
                 <CAccordion always-open id="mapping-accordion">   
-                    <tour-dummy-national-mapping></tour-dummy-national-mapping>                 
+                    <!-- <tour-dummy-national-mapping></tour-dummy-national-mapping>                  -->
                     <CAccordionItem :item-key="index+1" :visible="true" v-for="(target, index) in computedTargets" :key="target">
                         <CAccordionHeader :id="'gbfTarget'+target.identifier">
                             {{lstring(target.title)}}                           
