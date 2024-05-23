@@ -64,11 +64,10 @@ export default {
         description: t('description')
     })
 
-    async function initializeSlaask(){
+    async function initializeSlaask(counter=1){
 
         await sleep(500)
         const { user } = useAuth();
-
         if(window._slaask){
             if (user?.value?.isAuthenticated && window. _slaask) {
                 window._slaask.identify(user.name, {
@@ -87,12 +86,11 @@ export default {
                 window._slaask.init('ae83e21f01860758210a799872e12ac4');
             }
         }
+        else{
+            if(counter < 10)
+                setTimeout(()=>initializeSlaask(counter+1), 500)
+        }
     }
   }
 }
 </script>
-<style scoped>
-  AppFooter{
-    
-  }
-</style>
