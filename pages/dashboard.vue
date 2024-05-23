@@ -2,7 +2,8 @@
    
   <div>
     <on-boarding v-if="onBoardingSteps" teleport-to="#takeTourTeleport" :steps="onBoardingSteps"
-        :page-title="t('tourTitle')"></on-boarding>
+        :page-title="t('tourTitle')" @on-tour-start="onTourStart" @on-tour-end="onTourEnd"></on-boarding>
+    <tour-dummy-user-profile v-if="!user && tourStarted"></tour-dummy-user-profile>
     <user-profile-info class="mb-2" id="userProfile"></user-profile-info>
     <div class="d-none" ></div>
     <CRow >
@@ -176,15 +177,16 @@ import { useRealmConfStore } from '@/stores/realmConf';
 import { facets } from '@/services/solr';
 import { KmLink } from "@/components/controls";
 
+        const {user} = useAuth();
         const { t }  = useI18n();
         definePageMeta({
             auth:false
         })
-      
         const realmConfStore  = useRealmConfStore();
         const realmConf = realmConfStore.realmConf;
 
         const { $appRoutes:appRoutes } = useNuxtApp();
+        const tourStarted               = ref(false);
 
         const searchQuery = {
             rows:10,
@@ -237,6 +239,14 @@ import { KmLink } from "@/components/controls";
 
         function schemaCount(currVal, schema){
                 return currVal.pivot.find(e=>e.value == schema)?.count||0
+        }
+
+        function onTourStart(){
+            tourStarted.value = true
+        }
+
+        function onTourEnd(){
+            tourStarted.value = false
         }
 </script>
 

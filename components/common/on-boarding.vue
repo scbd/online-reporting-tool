@@ -19,7 +19,10 @@
 
 <script setup lang="ts">
     import { VOnboardingWrapper, useVOnboarding } from 'v-onboarding'
-    import 'v-onboarding/dist/style.css'
+    import 'v-onboarding/dist/style.css';
+    import tourDummyTable  from '@/components/tour-dummy-views/tour-dummy-table.vue'; 
+    import tourDummyNationalMapping from '@/components/tour-dummy-views/tour-dummy-national-mapping.vue';
+    import tourDummyUserProfile from '@/components/tour-dummy-views/tour-dummy-user-profile.vue';
 
     defineProps({
         steps : {type:Array, required:true},
