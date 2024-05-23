@@ -68,7 +68,6 @@ export default {
 
         await sleep(500)
         const { user } = useAuth();
-
         if(window._slaask){
             if (user?.value?.isAuthenticated && window. _slaask) {
                 window._slaask.identify(user.name, {
