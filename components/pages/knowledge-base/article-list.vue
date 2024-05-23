@@ -1,14 +1,17 @@
 <template>
     <div>
         <km-spinner v-if="loading" center></km-spinner>
-        <cbd-add-new-view-article class="float-end btn btn-primary" :admin-tags="adminTags"></cbd-add-new-view-article>
+        <!-- <cbd-add-new-view-article class="float-end btn btn-primary" :admin-tags="adminTags"></cbd-add-new-view-article> -->
         <div class="alert alert-info mt-5" v-if="!loading && !articles?.length">No articles available</div>
         <div v-if="articles.length" class="mt-3">
-            <CRow>
-                <CCol :sm="3" v-for="article in articles" :key="article">
-                    <CCard style="width: 18rem">
+            <!-- <CRow> -->
+                <div class="grid" data-masonry>
+                <div class="grid-sizer"></div>
+                <div class="grid-item m-1" v-for="article in articles" :key="article">
+                    <CCard>
                             <nuxt-link href="#" :to="'/knowledge-base/articles/' + article._id">
-                                <cbd-article-cover-image :cover-image="article.coverImage" v-if="article.coverImage" />
+                                <cbd-article-cover-image :cover-image="article.coverImage"
+                                 v-if="article.coverImage" cover-image-size="600x400" />
                             </nuxt-link>
                             <CCardBody >
                                 <CCardTitle class="text-decoration-none">{{lstring(article.title)}}</CCardTitle>
@@ -21,8 +24,8 @@
                             </CCardFooter>
                         <!--  -->
                     </CCard>
-                </CCol>
-            </CRow>
+                </div></div>
+            <!-- </CRow> -->
         </div>
     </div>
 </template>
@@ -30,6 +33,7 @@
 <script setup lang="ts">
 
     import { useRealmConfStore } from '@/stores/realmConf';
+    import Masonry from 'masonry-layout'
 
     const {t} = useI18n();
     const realmConfStore  = useRealmConfStore();
@@ -61,6 +65,15 @@
 
             articles.value = await $api.articles.queryArticles({ "ag" : JSON.stringify(ag)});
 
+            nextTick(()=>{
+                const grid = document.querySelector("[data-masonry]");
+                new Masonry(grid, {
+                    itemSelector: '.grid-item',
+                    // columnWidth: '.grid-sizer',
+                    columnWidth: 50,
+                    percentPosition: true,
+                });
+            })
         }
         catch(e){
             useLogger().error(e, 'Error loading knowledge base articles');
@@ -77,4 +90,17 @@
 
 <style scoped>
 
+.grid-sizer,
+.grid-item {
+  width: 33.333%;
+}
+
+.grid-item {
+  float: left;
+}
+
+.grid-item img {
+  display: block;
+  max-width: 100%;
+}
 </style>

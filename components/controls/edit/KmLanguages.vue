@@ -23,7 +23,7 @@
         </km-form-check-group>
     </km-form-group>
     <km-form-group name="otherLanguages" class="mt-2"  :caption="t('otherLanguage')" v-if="otherLanguageOption">
-        <km-select
+        <km-select v-if="formattedOtherLanguages?.length"
             v-model="otherSelectedLanguages"
             label="title"
             track-by="code"
@@ -34,6 +34,7 @@
             :placeholder="t('otherLanguageOfRecord')"
             @update:modelValue="onChange">
         </km-select>
+        <km-spinner size="lg" v-if="!formattedOtherLanguages?.length"></km-spinner>
     </km-form-group>
 </template>
 
@@ -70,7 +71,7 @@
         otherLanguages = otherLanguages
                             .filter(e=>!isUNLanguage(e.identifier.replace('lang-', '')))
                             .map(e=>{ 
-                                return { code : e.identifier.replace('lang-', ''), title : lstring(e.title)}
+                                return { code : e.identifier.replace('lang-', ''), title : lstring(e.title, locale)}
                             });
         return sortBy(otherLanguages, 'title')
     });

@@ -1,7 +1,7 @@
 <template>
     <div class="image-credit-wrapper"  v-if="coverImage.url">    
        <div :class="'img cover-image cover-image-position-' + (coverImage.position||'center') + ' cover-image-size-' + (coverImage.size||'cover')" 
-           v-if="coverImage.url_1200||coverImage.url" :style="'background-image: url(' + cssEscapeUrl(coverImage.url_1200||coverImage.url) + ');'">
+           v-if="coverImageUrl" :style="'background-image: url(' + cssEscapeUrl(coverImageUrl) + ');'">
        </div>    
        <span class="image-credit" v-if="coverImage.credits">{{coverImage.credits}}</span>
        <slot></slot>
@@ -9,14 +9,25 @@
 </template>
 
 <script setup lang="ts">
-    const { coverImage } = defineProps({
-       coverImage: { type: Object, required: true }
+    const props = defineProps({
+       coverImage: { type: Object, required: true },
+       coverImageSize : { type : String, default:'1280x720'}
     });
    
-   const cssEscapeUrl = function(url) {
-       return cssEscape(url);
-   }
-   //  const cssEscapeUrl = (url) => cssEscape(url);
+    const coverImageUrl = computed(()=>{
+        return getSizedImage(props.coverImage?.url, props.coverImageSize);
+    })
+
+    const cssEscapeUrl = function(url) {
+        return cssEscape(url);
+    }
+
+
+    const getSizedImage = function (url, size){
+        return url && url
+        .replace(/attachments.cbd.int\//, '$&'+size+'/')
+        .replace(/\.s3-website-us-east-1\.amazonaws\.com\//, '$&'+size+'/')
+    };
 
 </script>
 <style scoped>

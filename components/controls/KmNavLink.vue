@@ -23,6 +23,10 @@ export default defineComponent({
         const localePath  = useLocalePath();
 
         const to = computed(()=>{
+
+            if(/http(s)?\:\/\//.test(props?.to))
+                return props.to;
+
             return localePath(props.to)
         });
         const title = computed(()=>props.title);
