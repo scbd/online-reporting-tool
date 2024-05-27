@@ -1,0 +1,150 @@
+﻿@media print {
+    a[href]:after {
+        content: '' !important;
+    }
+    .report-record,
+    .document-languages,
+    .expander,
+    .fa-chevron-circle-up,
+    .fa-external-link-square,
+    .fa-external-link {
+        display: none;
+    }
+    body,
+    #htmlContent,
+    #htmlContentHeader,
+    #htmlContentFooter,
+    #schemaView {
+        background-color: #fff!important;
+    }
+    address.km-value,
+    div.km-value,
+    span.km-value,
+    ul.km-value>li,
+    ol.km-value>li {
+        background-color: #f5f5f5!important;
+        border: 1px solid #ccc!important;
+        border: 1px solid rgba(0, 0, 0, 0.15)!important;
+    }
+    #htmlContentFooter {
+        margin-top: 20px;
+    }
+    .panel-heading.bg-blue > .color-white, .panel-heading.bg-blue > h4, #Record h4 {
+        color: #111!important;
+    }
+}
+
+ nav, .navbar.navbar-portal, #PortalLinks1, .footer, .slaask-button, 
+ body.print .hide-on-print, body.print .expander, body.print .pdf-download-buttons,body.print .compare-buttons, body.print .compare-message,
+ body.print i[class*="bi-"], body.print  i[class*="fa-"],
+.slaask-alert-overlay, .slaask-alert,.lang-alert,
+.bch-header, #reference-records-table, .animated-container,
+scbd-header, bch-header, bch-footer, absch-header, absch-footer, scbd-footer  {
+    display: none!important
+}
+.training-bg {
+    background: none
+}
+html, body, .container-full {
+    background: #fff;
+}
+#page-content-wrapper,
+.container-full.page-content,
+#wrapper .container-full{
+    margin: 0px!important;
+    padding:0px!important;
+}
+.container-full.page-content .container,
+#wrapper .container-full .container{
+    width           : 100%!important;
+    padding-right   : 0px!important;
+    padding-left    : 0px!important;
+    margin-top      : 0px!important;
+    margin-left     : 0px!important;
+}
+
+/* for prince pdf */
+@page{
+    
+    @font-face {
+        font-family: "bootstrap-icons";
+        src: url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/fonts/bootstrap-icons.woff2") format("woff2"),
+        url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/fonts/bootstrap-icons.woff") format("woff");       
+    }
+
+    @font-face {
+        font-family: "FontAwesome";
+        src: url("https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0") format("woff");
+        font-weight: normal;
+        font-style: normal;
+    }
+
+}
+
+body{
+    margin:20px;
+    margin-top: -30px;
+}
+#printContentHeader .unep-logo {
+    padding-top: 10px;
+    height: 80px;
+    display: block;
+    margin: 0 auto;
+}
+
+#printContentHeader .cbd-logo {
+    height: 70px;
+    display: block;
+    margin: 0 auto;
+}
+
+#printContentHeader .un-logo {
+    height: 80px;
+    padding-top: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+@media print {
+    #printContentHeader .image-row {
+        padding-top: 10px;
+    }
+    #printContentHeader .unep-logo {
+        height: 60px;
+    }
+    #printContentHeader .cbd-logo {
+        height: 50px;
+    }
+    #printContentHeader .un-logo {
+        height: 60px;
+    }
+}
+@media (max-width:768px) {
+    #printContentHeader .unep-logo {
+        height: 40px;
+        padding-top: 0px;
+    }
+    #printContentHeader .cbd-logo {
+        height: 40px;
+    }
+    #printContentHeader .un-logo {
+        height: 40px;
+    }
+}
+#printContentHeader .image-row{
+    padding-bottom:10px;
+    border-bottom:1px solid #ddd;   
+    display: table;
+    width: 100%;
+    margin: auto;
+}
+
+@media (max-width:768px) {
+    body{
+        padding:20px;
+    }
+}
+
+body.print .page-content {
+    background-color: #fff;
+}
