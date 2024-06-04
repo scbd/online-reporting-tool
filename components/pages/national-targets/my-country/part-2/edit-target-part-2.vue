@@ -114,7 +114,8 @@
     import { useStorage } from '@vueuse/core'
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
-
+    import {cloneDeep} from 'lodash';
+    
     const props = defineProps({
         identifier         : {type:String, required:false},
         rawDocument        : {type: Object },

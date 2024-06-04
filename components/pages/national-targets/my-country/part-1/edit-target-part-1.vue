@@ -350,7 +350,7 @@
     import { useStorage } from '@vueuse/core'
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { EditFormUtility } from "@/services/edit-form-utility";
-    import {uniqBy, isEmpty, compact} from 'lodash'
+    import {uniqBy, isEmpty, compact, cloneDeep} from 'lodash'
 
     const props = defineProps({
         identifier         : {type: String },
