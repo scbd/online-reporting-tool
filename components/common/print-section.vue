@@ -2,25 +2,26 @@
     
     <button :disabled="!element" type="button" class="btn btn-primary" 
         @click="onPrintDocument" >
+        
         <font-awesome-icon icon="print"></font-awesome-icon> {{ t('print') }}
         <km-modal-spinner :visible="isPrinting" class="text-dark"
             title="Printing" :message="t('preparePrinting')"></km-modal-spinner>
-    <div id="advancePrint" class=" d-none h-0">
-        <div class="cbd-user-print" v-if="isPrinting">
-            <print-header></print-header>
-            <div id="cbd-user-print-section" >
-                <div v-html="userPrintHtml"></div>
+
+        <div id="advancePrint" class=" d-none h-0">
+            <div class="cbd-user-print" v-if="isPrinting">
+                <print-header></print-header>
+                <div id="cbd-user-print-section" >
+                    <div v-html="userPrintHtml"></div>
+                </div>
+                <print-footer></print-footer>
             </div>
-            <print-footer></print-footer>
         </div>
-    </div>
     </button>  
 
 </template>
 <i18n src="@/i18n/dist/components/common/print-section.json"></i18n>
 <script setup lang="ts">
-    // import { useVueToPrint } from "vue-to-print";
-    // import $ from 'jquery';
+
     const props = defineProps({
         element : {type: String, required:true},
         title   : {type: String, required:true},

@@ -1,6 +1,9 @@
 <template>
     <km-suspense>
-      <view-target-part-2 v-if="identifier" :identifier="identifier"></view-target-part-2>
+      <view-actions print-selector=".print-section"></view-actions>
+      <div class="print-section">
+        <view-target-part-2 v-if="identifier" :identifier="identifier"></view-target-part-2>
+      </div>
     </km-suspense>
 
 </template>
