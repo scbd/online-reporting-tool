@@ -51,7 +51,7 @@
                     <slot name="submission"></slot>
                 </tab-content>
                 <tab-content :title="workflowTabs.review.title" :is-active="activeTab == workflowTabs.review.index || isPrinting">
-                    <div :class="{'h-0' : isPrinting}">
+                    <div>
                         <div class="print-section">
                             <slot name="review"></slot>
                         </div> 
@@ -424,10 +424,6 @@
     }
     .form-wizard-vue .fw-body-content{
         padding:5px;
-    }
-    .h-0{
-        height: 0px!important;
-        overflow: scroll;
     }
 </style>
   

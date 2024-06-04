@@ -1,7 +1,7 @@
 <template>
     <CCard>
-      <CCardHeader v-if="identifier">
-        <slot name="header"> {{t('nationalTarget')}} </slot>
+      <CCardHeader>
+         {{t('nationalTarget')}}
       </CCardHeader>
       <CCardBody>
        
