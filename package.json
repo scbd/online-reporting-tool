@@ -42,6 +42,7 @@
     "mitt": "^3.0.1",
     "moment": "^2.29.4",
     "pinia": "^2.1.4",
+    "print-this": "^2.0.0",
     "read-excel-file": "^5.6.1",
     "socket.io-client": "^4.7.2",
     "v-onboarding": "^2.8.1",

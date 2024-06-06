@@ -13,8 +13,9 @@
                             <CButton @click="onReviewDocument()" color="primary" class="me-md-2" :disabled="isBusy">
                                 {{t('review')}}
                             </CButton>
-                            <!-- <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton> 
-                            <CButton @click="printDocument()" color="dark" class="me-md-2">Print</CButton>  -->
+                            <!-- <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton>   -->
+                            <print-section  class="me-md-2 btn-secondary" element=".print-section" 
+                                @on-print-document="onPrintDocument" @on-after-print="onAfterPrint"></print-section> 
                             <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                         </div>
                     </CCol>
@@ -49,8 +50,12 @@
                 <tab-content :title="workflowTabs.submission.title" v-show="activeTab == workflowTabs.submission.index" :is-active="true">
                     <slot name="submission"></slot>
                 </tab-content>
-                <tab-content :title="workflowTabs.review.title" :is-active="activeTab == workflowTabs.review.index">
-                    <slot name="review"></slot>
+                <tab-content :title="workflowTabs.review.title" :is-active="activeTab == workflowTabs.review.index || isPrinting">
+                    <div>
+                        <div class="print-section">
+                            <slot name="review"></slot>
+                        </div> 
+                    </div>
                 </tab-content>
                 <!-- <tab-content :title="workflowTabs.publish.title" :is-active="activeTab == workflowTabs.publish.index">
                     <slot name="publish"></slot>
@@ -69,8 +74,9 @@
                         <div class="action-buttons float-end">
                             <CButton @click="onSaveDraft()" color="primary" class="me-md-2">{{t('saveDraft')}}</CButton> 
                             <CButton @click="onReviewDocument()" color="primary" class="me-md-2" >{{t('review')}}</CButton>
-                            <!-- <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton> 
-                            <CButton @click="printDocument()" color="dark" class="me-md-2">Print</CButton>  -->
+                            <!-- <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton>   -->
+                            <print-section  class="me-md-2 btn-secondary" element=".print-section" 
+                                @on-print-document="onPrintDocument" @on-after-print="onAfterPrint"></print-section> 
                             <CButton @click="onClose()" color="danger" class="me-md-2">{{t('close')}}</CButton>
                         </div>
                     </CCol>
@@ -128,7 +134,8 @@
     const { user }      = useAuth();
     const { $api }      = useNuxtApp();
     const appState      = useAppStateStore();
-
+    
+    const isPrinting       = ref(false);
     const formWizard       = ref(null);
     const validationReport = ref({});
     const activeTab      = ref(null);   
@@ -220,6 +227,14 @@
         finally{
             validationReport.value = { };
         }
+    }
+
+    function onPrintDocument(){
+        isPrinting.value = true
+    }
+
+    function onAfterPrint(){
+        isPrinting.value = false;
     }
 
     async function onClose(){
