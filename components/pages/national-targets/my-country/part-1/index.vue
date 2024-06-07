@@ -44,7 +44,6 @@
             <table class="table" v-if="nationalTargets?.length">
             <thead>
                 <tr>
-                <th scope="col">#</th>
                 <th scope="col">Title</th>
                 <th scope="col">GBF goals and targets</th>
                 <th scope="col">Status</th>
@@ -54,7 +53,6 @@
             </thead>
             <tbody>
                 <tr v-for="(draft,  index) in nationalTargets" :key="draft.identifier">
-                    <th scope="row" >{{ index+1 }}</th>
                     <td scope="row" class="col-5">{{lstring(draft.workingDocumentTitle||draft.title, locale)}}</td>
                     <td>
                         <goal-target-list :goal-targets="getAlignedGoalsOrTargets(draft.workingDocumentBody||draft.body)">
