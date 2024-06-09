@@ -16,9 +16,9 @@
     </small> -->
     <km-form-group name="otherLanguageOption" class="mt-2"  :caption="t('otherLanguageInfo')">                                    
         <km-form-check-group>
-            <km-form-check-item inline type="radio" name="otherLanguageOption"  for="otherLanguageOption" id="otherLanguageOptionYes" 
+            <km-form-check-item :inline="true" type="radio" name="otherLanguageOptionRadio"  for="otherLanguageOptionRadio" id="otherLanguageOptionYes" 
                 :value="true"  v-model="otherLanguageOption" :label="t('yes')" @update:modelValue="onOtherLanguage"/>
-            <km-form-check-item inline type="radio" name="otherLanguageOption"  for="otherLanguageOption" id="otherLanguageOptionNo"  
+            <km-form-check-item :inline="true" type="radio" name="otherLanguageOptionRadio"  for="otherLanguageOptionRadio" id="otherLanguageOptionNo"  
             :value="false" v-model="otherLanguageOption" :label="t('no')" @update:modelValue="onOtherLanguage"/>
         </km-form-check-group>
     </km-form-group>
