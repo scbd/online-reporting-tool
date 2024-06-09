@@ -11,7 +11,7 @@
             </CTooltip> -->
             {{lstring(getTerm(locale).title||locale)}}
             <strong v-if="locales?.length > 1" >
-              <CTooltip :content="`Has ${getWordCount(locale)} words`" trigger="hover">
+              <CTooltip :content="`${t('wordCount')} ${getWordCount(locale)}`" trigger="hover">
                   <template #toggler="{ on }">
                       <span v-on="on">
                         ({{ getWordCount(locale) }})
@@ -32,7 +32,7 @@
     </CTabContent>
   </div>
 </template>
-
+<i18n src="@/i18n/dist/components/controls/edit/KmInputRichLstring.json"></i18n>
 <script>
 import $ from 'jquery';
 import { makeUid } from '@coreui/utils/src'
@@ -90,6 +90,13 @@ export default {
         }
         this.loadLanguages()
     }
+  },
+  setup(props) {
+    const {t} = useI18n();
+
+    return {
+      t
+    };
   },
   computed:{
     userLocales : {
@@ -156,7 +163,11 @@ export default {
   },
   mounted(){
     
-    this.activeLocale = this.locales[0];
+    const { locale} = useI18n();
+    if(this.locales?.find(e=>e==locale.value))
+      this.activeLocale = locale.value;
+    else
+      this.activeLocale = this.locales[0];
 
     if(this.modelValue){
         this.binding = {...this.modelValue||{}};
