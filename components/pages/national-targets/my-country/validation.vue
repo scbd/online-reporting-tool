@@ -98,6 +98,7 @@
     const publishedNationalMappings = ref<EDocumentInfo[]>([]);
     const editDocument              = ref<ENationalTarget7|ENationalTarget7>();
     const showEditDocumentModal     = ref(false);
+    const showValidationMessageModal= ref(false);
 
     const disableActions = computed(()=>!!stateTargetWorkflow.value?.batchId)
     const nationalTargetRecords = computed(()=>{

@@ -42,7 +42,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(document,  index) in nationalRecordsFiltered" :key="document.identifier" :class="{'bg-danger':document.errors}">
+            <tr v-for="(document,  index) in nationalRecordsFiltered" :key="document.identifier" :class="{'table-danger':document.errors}">
                 <td class="w-50">
                     <slot name="recordTitle" :document="document">
                         {{lstring(document.workingDocumentTitle||document.title, locale)}}

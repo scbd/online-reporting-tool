@@ -203,10 +203,16 @@
                 </CModalTitle>
             </CModalHeader>
             <CModalBody>
-                    <CAlert color="danger" class="d-flex align-items-center">
+                    <CAlert color="danger" class="d-flex align-items-center" v-if="hasValidationErrors">
                         <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
                         <span class="p-2">                                
                             {{t('validationErrorsMessage')}}
+                        </span>
+                    </CAlert>
+                    <CAlert color="success" class="d-flex align-items-center" v-if="!hasValidationErrors">
+                        <font-awesome-icon icon="fa-solid fa-check" size="2x"/>
+                        <span class="p-2">                                
+                            {{t('validationSuccessMessage')}}
                         </span>
                     </CAlert>
             </CModalBody>
@@ -249,6 +255,7 @@
     const missingTargets            = ref({});
     const openWorkflow              = ref(null);
     const tourStarted               = ref(false);
+    const hasValidationErrors       = ref(false);
 
     const security                  = useSecurity();
     const { t }                     = useI18n();
@@ -279,19 +286,28 @@
     async function onValidate(type:string = undefined){
 
         isValidating.value = true;
-        
+        hasValidationErrors.value = false;
         try{
             await validationRef.value.validate(type);
+            const hasValidationErrors = [...(userRecords.value.draftNationalTargets||[]), ...(userRecords.value.draftNationalMappings||[])].some(e=>e.errors);
+            
+            if(hasValidationErrors){
+                hasValidationErrors.value = true;
+            }
+                showValidationErrorDialog.value = true;
         }
         catch(e){
             useLogger().error(e);
         }
-        isValidating.value = false;
+        finally{
+            isValidating.value = false;
+        }
     }
 
     async function onPublish(){
         
         isPublishing.value = true;
+        hasValidationErrors.value = false;
         
         try{
             await onValidate();
