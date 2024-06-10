@@ -1,6 +1,36 @@
 <template>
-    <div class="table-responsive">
-
+        <button class="btn btn-danger btn-sm float-end" @click="clearFilters">clear Filters</button>
+        <div id="filters" class="row">
+            <div class="col-md-4"  v-if="recordTitles?.length">
+                <km-form-group :caption="t('filterByTitle')">
+                    <km-select
+                        v-model="selectedTitles"
+                        class="validationClass"
+                        label="title"
+                        track-by="identifier"
+                        value-key="identifier"
+                        :options="recordTitles"
+                        :multiple="true"
+                        :close-on-select="false"
+                        :custom-label="customLabel"
+                        :custom-selected-item="customSelectedItem">
+                    </km-select>
+                </km-form-group>
+            </div>
+            <div class="col-md-4">
+                <km-form-group :caption="t('filterByGlobalTargets')">
+                    <gbf-targets v-model="selectedGlobalTargets" :multiple="true"></gbf-targets>
+                </km-form-group>
+            </div>
+            <div class="col-md-4">
+                <km-form-group :caption="t('filterByGlobalGoals')">
+                    <gbf-goals v-model="selectedGlobalGoals" :multiple="true"></gbf-goals>
+                </km-form-group>
+            </div>
+        </div>
+        <div class="table-responsive">
+      
+        
     <table class="table" v-if="nationalRecords?.length">
         <thead>
             <tr>
@@ -12,7 +42,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(document,  index) in nationalRecords" :key="document.identifier" :class="{'bg-danger':document.errors}">
+            <tr v-for="(document,  index) in nationalRecordsFiltered" :key="document.identifier" :class="{'bg-danger':document.errors}">
                 <td class="w-50">
                     <slot name="recordTitle" :document="document">
                         {{lstring(document.workingDocumentTitle||document.title, locale)}}
@@ -22,9 +52,8 @@
                     <goal-target-list :goal-targets="getAlignedGoalsOrTargets(document.workingDocumentBody||document.body)"></goal-target-list>   
                 </td>                   
                 <td id="recordStatusTour">
-                    <CBadge color="info" v-if="document.isValidating">
-                            <km-spinner :message="t('validating')"></km-spinner>
-                    </CBadge>
+                    <km-spinner message=" " color="info"  v-if="document.isValidating"></km-spinner>
+                    <CBadge color="info" v-if="document.isValidating">{{ t('validating') }}</CBadge>
                     <CBadge color="warning" v-if="!document.isValidating && document.errors">
                         {{t('hasErrors')}} ({{ document.errors.length }})
                     </CBadge>
@@ -55,9 +84,10 @@
     </div>
 </template>
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/record-list.json"></i18n>
+
 <script setup lang="ts">
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';  
-
+    
     const props = defineProps({
         nationalRecords: { type: Array<EDocumentInfo>, required: true },
         viewRoute      : { type:String, require:true }
@@ -66,7 +96,43 @@
     const emit = defineEmits(['onEditRecord', 'onDeleteRecord', 'onRecordStatusChange'])
 
     const { t, locale } = useI18n();
-    const { nationalRecords } = toRefs(props);
+    const selectedGlobalTargets = ref([]);
+    const selectedGlobalGoals   = ref([]);
+    const selectedTitles        = ref([]);
+
+    const recordTitles = computed(()=>{
+        const list =    props.nationalRecords?.map(e=>{
+                            return { title : e.workingDocumentTitle||e.title, identifier: e.identifier }
+                        })
+        if(list?.length)
+            return sortBy(list, 'title')
+    })
+
+    const nationalRecordsFiltered = computed(()=>{
+        return props.nationalRecords
+                ?.filter(e=>{
+                    if(selectedTitles.value?.length){
+                        return selectedTitles.value.find(s=>s.identifier == e.identifier)
+                    }
+                    return e;
+                })
+                ?.filter(e=>{ 
+                    if(selectedGlobalTargets.value?.length){
+                        let targets = (e.workingDocumentBody||e.body)
+                        targets = targets?.globalTargetAlignment || [targets.globalGoalOrTarget] ||[];
+                        return targets.find(t=>selectedGlobalTargets.value.find(s=>s.identifier == t?.identifier))
+                    }
+                    return e;                    
+                })
+                ?.filter(e=>{ 
+                    if(selectedGlobalGoals.value?.length){
+                        let goals = (e.workingDocumentBody||e.body)
+                        goals     = goals?.globalGoalAlignment || [goals.globalGoalOrTarget] ||[];
+                        return goals.find(t=>selectedGlobalGoals.value.find(s=>s.identifier == t?.identifier))
+                    }
+                    return e;                    
+                })
+    })
 
 
     function navigationUrl(document){
@@ -103,6 +169,12 @@
 
     const onRecordStatusChange = ({workflowActivity, identifier, schema, newDocument})=>{
         emit('onRecordStatusChange', {workflowActivity, identifier, schema, newDocument})
+    }
+
+    const clearFilters = ()=>{
+        selectedGlobalTargets.value = [];
+        selectedTitles       .value = [];
+        selectedGlobalGoals.value   = [];
     }
 </script>
 

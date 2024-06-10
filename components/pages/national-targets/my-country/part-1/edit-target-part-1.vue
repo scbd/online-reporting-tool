@@ -73,21 +73,9 @@
                                     <km-form-group :caption="t('targetsAlignment')" required name="globalTargetAlignment">
                                         <div class="row">
                                             <div class="col-11">
-                                                <km-select
-                                                    v-model="selectedGlobalTargets"
-                                                    class="validationClass"
-                                                    label="shortTitle"
-                                                    track-by="identifier"
-                                                    value-key="identifier"
-                                                    :placeholder="t('globalTargets')"
-                                                    :options="globalTargets"
-                                                    :multiple="true"
-                                                    :close-on-select="false"
-                                                    @update:modelValue="onGoalsAndTargetSelected($event, 'targets')"
-                                                    :custom-label="customShortLabel"
-                                                    :custom-selected-item="customSelectedItem"
-                                                >
-                                                </km-select>
+                                                <gbf-targets @update:modelValue="onGoalsAndTargetSelected($event, 'targets')"
+                                                    v-model="selectedGlobalTargets" :multiple="true" class="validationClass"
+                                                    :placeholder="t('globalTargets')"></gbf-targets>
                                             </div>
                                             <div class="col-1">                                                
                                                 <button type="button" class="btn btn-secondary btn-xs" @click="showAllTargets">{{t('listTargets')}}</button>

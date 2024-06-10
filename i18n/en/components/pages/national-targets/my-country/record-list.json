@@ -7,5 +7,8 @@
     "edit":"Edit",    
     "passedValidation"  : "Validation successful",    
     "hasErrors" : "Failed Validations",
-    "validating"    : "Validating..."
+    "validating"    : "Validating...",
+    "filterByTitle": "Filter by title",
+    "filterByGlobalTargets": "Filter by global targets",
+    "filterByGlobalGoals": "Filter by global goals"
 }
