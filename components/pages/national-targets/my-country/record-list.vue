@@ -4,7 +4,6 @@
     <table class="table" v-if="nationalRecords?.length">
         <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">{{t('title')}}</th>
                 <th scope="col">{{t('gbfGoals')}}</th>
                 <th scope="col">{{t('status')}}</th>
@@ -14,7 +13,6 @@
         </thead>
         <tbody>
             <tr v-for="(document,  index) in nationalRecords" :key="document.identifier" :class="{'bg-danger':document.errors}">
-                <th scope="row">{{ index+1 }}</th>
                 <td class="w-50">
                     <slot name="recordTitle" :document="document">
                         {{lstring(document.workingDocumentTitle||document.title, locale)}}

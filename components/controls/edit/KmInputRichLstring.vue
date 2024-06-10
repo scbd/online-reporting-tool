@@ -10,6 +10,15 @@
                 </template>
             </CTooltip> -->
             {{lstring(getTerm(locale).title||locale)}}
+            <strong v-if="locales?.length > 1" >
+              <CTooltip :content="`${t('wordCount')} ${getWordCount(locale)}`" trigger="hover">
+                  <template #toggler="{ on }">
+                      <span v-on="on">
+                        ({{ getWordCount(locale) }})
+                      </span>
+                  </template>
+              </CTooltip>
+            </strong>
         </CNavLink>
       </CNavItem>
     </CNav>
@@ -17,12 +26,13 @@
       <CTabPane role="tabpanel" :aria-labelledby="`tabContent-${locale}-${uid}`" v-for="locale in locales" :key="locale" 
         :visible="selectedLocale === locale" :id="`lstringTabContent-${uid}`">       
         <km-ck-editor v-if="selectedLocale==locale" v-model="binding[selectedLocale]" :identifier="identifier"
-            :locale="selectedLocale" @update:modelValue="onChange" @onFileUpload="onFileUpload"></km-ck-editor>     
+            :locale="selectedLocale" @update:modelValue="onChange" @onFileUpload="onFileUpload"
+            @on-word-count-change="onOnWordCountChange"></km-ck-editor>     
       </CTabPane>
     </CTabContent>
   </div>
 </template>
-
+<i18n src="@/i18n/dist/components/controls/edit/KmInputRichLstring.json"></i18n>
 <script>
 import $ from 'jquery';
 import { makeUid } from '@coreui/utils/src'
@@ -62,7 +72,8 @@ export default {
         activeLocale : '',
         uid : makeUid(),
         tabPaneActiveKey:1,
-        userPreferencesStore : useUserPreferencesStore()
+        userPreferencesStore : useUserPreferencesStore(),
+        wordCount:{}
     };
   },
   watch:{
@@ -79,6 +90,13 @@ export default {
         }
         this.loadLanguages()
     }
+  },
+  setup(props) {
+    const {t} = useI18n();
+
+    return {
+      t
+    };
   },
   computed:{
     userLocales : {
@@ -125,11 +143,31 @@ export default {
         // setTimeout(() => {
             this.userPreferencesStore.setEditorActiveLanguageTab(locale);
         // }, 1000);
+    },
+    onOnWordCountChange(wordCount){
+      this.wordCount[this.selectedLocale] = wordCount
+    },
+    getWordCount(locale){
+      if(!this.locales?.length)
+        return 0;
+
+      if(this.wordCount[locale] > 0)
+        return this.wordCount[locale];
+
+      if(this.binding[locale]?.length){
+        const text = $(this.binding[locale]).text()
+        return text?.split(/\s+/)?.length || 0;
+      }
+      return 0;
     }
   },
   mounted(){
     
-    this.activeLocale = this.locales[0];
+    const { locale} = useI18n();
+    if(this.locales?.find(e=>e==locale.value))
+      this.activeLocale = locale.value;
+    else
+      this.activeLocale = this.locales[0];
 
     if(this.modelValue){
         this.binding = {...this.modelValue||{}};

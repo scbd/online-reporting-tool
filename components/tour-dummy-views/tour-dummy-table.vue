@@ -8,7 +8,6 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">Title</th>
                             <th scope="col">GBF goal(s) and target(s)</th>
                             <th scope="col">Status</th>
@@ -18,7 +17,6 @@
                     </thead>
                     <tbody>
                         <tr class="" id="record">
-                            <th scope="row">1</th>
                             <td class="w-50">Dummy record to showcase tour function</td>
                             <td class="w-15" id="linkedGbfTour">
                                 <div data-v-e9d13614="">
