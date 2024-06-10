@@ -2,7 +2,8 @@
     <div class="km-spinner" :class="{'d-flex justify-content-center' : alignCenter}">
         <slot>
             <!-- <font-awesome-icon icon="yin-yang" spin size="xl" ></font-awesome-icon> -->
-            <CSpinner  size="sm" variant="grow" v-bind="attrs"/> 
+            <img src="/cbd-gbf-logo.jpeg" class="rotate" width="35" height="35" />
+            <!-- <CSpinner  size="sm" variant="grow" v-bind="attrs"/>  -->
             <span class="ms-1" v-if="message">{{ message }}</span>
             <span class="ms-1" v-if="!message">{{t('loading')}}...</span>
         </slot>
@@ -23,5 +24,18 @@ import { useI18n } from 'vue-i18n';
     
 </script>
 
-<style>
+<style scoped>
+    .rotate {
+        animation: rotation 3s infinite linear;
+    }
+
+    @keyframes rotation {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(359deg);
+        }
+    }
+
 </style>
