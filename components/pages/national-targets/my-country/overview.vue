@@ -22,7 +22,7 @@
                         <CButton :disabled="disableActions"  @click="onValidate('partI')" color="secondary"
                             id="partIValidateTour">
                             <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
-                            <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                            <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                             {{t('validatePartI')}}
                         </CButton>
                     </div>
@@ -43,7 +43,7 @@
                             id="partIIGoToTour" role="button" class="btn btn-secondary" icon="fa-square-up-right"></km-link>  
                         <CButton :disabled="disableActions" @click="onValidate('partII')" color="secondary"
                             id="partIIValidateTour">
-                            <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                            <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                             <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             {{t('validatePartII')}}
                         </CButton>
@@ -56,12 +56,12 @@
                   <CCardBody>
                     <div class=" float-end d-grid gap-1 d-flex">
                         <CButton id="publishTour" :disabled="disableActions || !showPublishBtn" @click="onPublish()" color="secondary">
-                            <c-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                            <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                             <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                             {{t('publish')}}
                         </CButton>
                         <CButton id="validateTour" :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
-                            <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                            <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                             <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                             {{t('validatePartIAndPartII')}}
                         </CButton>
@@ -283,7 +283,7 @@
         { attachTo: { element: '#partIICountTour' },           content: { title: t('partIICountTitle')     , description: t('partIICountContent') } },
     ];
 
-    async function onValidate(type:string = undefined){
+    async function onValidate(type:string = undefined, showMessage = true){
 
         isValidating.value = true;
         hasValidationErrors.value = false;
@@ -294,6 +294,7 @@
             if(hasValidationErrors){
                 hasValidationErrors.value = true;
             }
+            if(showMessage)
                 showValidationErrorDialog.value = true;
         }
         catch(e){
@@ -310,7 +311,7 @@
         hasValidationErrors.value = false;
         
         try{
-            await onValidate();
+            await onValidate(undefined, false);
             const hasValidationErrors = [...(userRecords.value.draftNationalTargets||[]), ...(userRecords.value.draftNationalMappings||[])].some(e=>e.errors);
             
             if(hasValidationErrors){

@@ -7,7 +7,7 @@
                     <CCol class="col-12">
                         <div class="action-buttons float-end mb-1">
                             <CButton @click="onSaveDraft()" color="primary" class="me-md-2" :disabled="isBusy">
-                            <c-spinner v-if="validationReport.isSaving" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                            <km-spinner v-if="validationReport.isSaving" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 {{t('saveDraft')}}
                             </CButton> 
                             <CButton @click="onReviewDocument()" color="primary" class="me-md-2" :disabled="isBusy">

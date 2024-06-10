@@ -2,7 +2,7 @@
     <div class="km-spinner" :class="{'d-flex justify-content-center' : alignCenter}">
         <slot>
             <!-- <font-awesome-icon icon="yin-yang" spin size="xl" ></font-awesome-icon> -->
-            <img src="/cbd-gbf-logo.jpeg" class="rotate" width="35" height="35" />
+            <img src="/cbd-gbf-logo.jpeg" class="rotate" width="25" height="25" />
             <!-- <CSpinner  size="sm" variant="grow" v-bind="attrs"/>  -->
             <span class="ms-1" v-if="message">{{ message }}</span>
             <span class="ms-1" v-if="!message">{{t('loading')}}...</span>
