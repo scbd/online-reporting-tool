@@ -72,16 +72,15 @@
                                                 <table class="table" v-if="indicator.headlineIndicator">
                                                     <tr>
                                                         <td>   
-                                                            
                                                             <km-form-group name="hasReferencePeriod" required :caption="t('referencePeriodForIndicators')">
                                                                 <km-form-check-group>
-                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodYes'+ indicator.headlineIndicator.identifier"  :value="true"  v-model="indicator.hasReferencePeriod" :label="t('yes')"/>
-                                                                    <km-form-check-item inline type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  for="hasReferencePeriod" :id="'hasReferencePeriodNo' + indicator.headlineIndicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" :label="t('no')"
+                                                                    <km-form-check-item :inline="true" type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  :for="'hasReferencePeriod' + indicator.headlineIndicator.identifier" :id="'hasReferencePeriodYes'+ indicator.headlineIndicator.identifier"  :value="true"  v-model="indicator.hasReferencePeriod" :label="t('yes')"/>
+                                                                    <km-form-check-item :inline="true" type="radio" :name="'hasReferencePeriod' + indicator.headlineIndicator.identifier"  :for="'hasReferencePeriod' + indicator.headlineIndicator.identifier" :id="'hasReferencePeriodNo' + indicator.headlineIndicator.identifier"  :value="false" v-model="indicator.hasReferencePeriod" :label="t('no')"
                                                                         @update:modelValue="()=>indicator.referencePeriodInfo=undefined"/>
                                                                 </km-form-check-group>
                                                             </km-form-group> 
 
-                                                            <km-form-group v-if="indicator.hasReferencePeriod" name="referencePeriodInfo" :caption="t('explain')" required>
+                                                            <km-form-group v-if="indicator.hasReferencePeriod" name="referencePeriodInfo" :caption="t('explain')" required>                                                                
                                                                 <km-input-rich-lstring @onFileUpload="onFileUpload"  :identifier="document.header.identifier" v-model="indicator.referencePeriodInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                                             </km-form-group>                                     
                                                         </td>

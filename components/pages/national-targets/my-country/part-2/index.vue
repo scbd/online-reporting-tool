@@ -8,14 +8,45 @@
             <div class="mt-1">
 
                 <CRow class="mb-2">
-                    <CCol :sm="6" class="d-grid gap-1 d-md-flex">
-                        <label>{{t('filter')}} </label>
-                        <select v-model="filterBy" class="form-select" style="width:30%">
-                            <option disabled value="">{{t('selectOne')}}</option>
-                            <option v-for="filter in filters" :value="filter.value" :key="filter.value">{{ filter.title }}</option>
-                        </select>
+                    <CCol class="d-grid gap-1 d-md-flex col-md-9">
+                        <div class="col-md-3">
+                            <km-form-group :caption="t('filter')">
+                           
+                            <div class="multiselect">
+                            <select v-model="filterBy" class="form-select select-filter">
+                                <option disabled value="">{{t('selectOne')}}</option>
+                                <option v-for="filter in filters" :value="filter.value" :key="filter.value">{{ filter.title }}</option>
+                            </select> </div>
+                            </km-form-group>
+                        </div>
+                        <div class="col-md-3"  v-if="nationalTargets?.length">
+                            <km-form-group :caption="t('filterByTitle')">
+                                <km-select
+                                    v-model="filterByNationalTarget"
+                                    class="validationClass"
+                                    label="title"
+                                    track-by="identifier"
+                                    value-key="identifier"
+                                    :options="nationalTargets"
+                                    :multiple="true"
+                                    :close-on-select="false"
+                                    :custom-label="customLabel"
+                                    :custom-selected-item="customSelectedItem">
+                                </km-select>
+                            </km-form-group>
+                        </div>
+                        <div class="col-md-3">
+                            <km-form-group :caption="t('filterByGlobalTargets')">
+                                <gbf-targets v-model="filterByGlobalTargets" :multiple="true"></gbf-targets>
+                            </km-form-group>
+                        </div>
+                        <div class="col-md-3">
+                            <km-form-group :caption="t('filterByGlobalGoals')">
+                                <gbf-goals v-model="filterByGlobalGoals" :multiple="true"></gbf-goals>
+                            </km-form-group>
+                        </div>
                     </CCol>
-                    <CCol :sm="6" class="float-end">
+                    <CCol class="float-end col-md-3">
                         <div class="d-grid gap-1 d-md-flex justify-content-end mb-2">
                             <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY" :title="t('overview')" 
                                 role="button" class="btn btn-sm btn-secondary" icon="fa-wand-magic-sparkles">
@@ -157,8 +188,12 @@
     const gbfGoalAndTargetList = ref(null);
     const showEditMappingModal = ref(false);
     const editMappingTarget    = ref(null);
-    const filterBy             = ref(null);
+    const filterBy             = ref('all');
     const accordionToggle      = ref(null);
+    const filterByGlobalTargets = ref([]);
+    const filterByGlobalGoals   = ref([]);
+    const filterByNationalTarget= ref([]);
+    const userNationalTargets   = ref([]);
 
     const EditTargetPart2 = defineAsyncComponent(() =>
         import('./edit-target-part-2.vue')
@@ -184,7 +219,34 @@
             else if(filterBy.value == 'hasTarget')
                 list = list.filter(e=>e.nationalTargets?.length);
         }
+        list = list
+                ?.filter(e=>{
+                    if(filterByNationalTarget.value?.length){
+                        return e.nationalTargets.find(t=>filterByNationalTarget.value.find(s=>s.identifier == t.identifier))
+                    }
+                    return e;
+                })
+                ?.filter(e=>{ 
+                    if(filterByGlobalTargets.value?.length){                        
+                        return filterByGlobalTargets.value.find(s=>s.identifier == e.identifier)
+                    }
+                    return e;                    
+                })
+                ?.filter(e=>{ 
+                    if(filterByGlobalGoals.value?.length){
+                        return filterByGlobalGoals.value.find(s=>s.identifier == e.identifier)
+                    }
+                    return e;                    
+                })
         return sortBy(list, 'identifier');
+    })
+
+    const nationalTargets = computed(()=>{
+        const list =    userNationalTargets.value?.map(e=>{
+                            return { title : e.workingDocumentTitle||e.title, identifier: e.identifier }
+                        })
+        if(list?.length)
+            return sortBy(list, 'title')
     })
 
     onMounted(() => {
@@ -237,7 +299,8 @@
             let targets            = [...response[0]];
             const nationalTargets  = response[1]
             const nationalMappings = response[2];
-            
+            userNationalTargets.value = nationalTargets;
+
             targets = buildTargetMatrix(targets, nationalTargets, nationalMappings);
             gbfGoalAndTargetList.value = sortBy(targets, 'identifier');
             
@@ -281,3 +344,8 @@
     }
 
 </script>
+<style scoped>
+    .select-filter{
+        min-height: 43px;
+    }
+</style>

@@ -111,3 +111,16 @@ function normalizeText(text) {
   if(!entry.zh) entry.zh = entry.en;
   return entry;
 }
+
+
+export const customLabel = (option, locale)=>{        
+  return lstring(option?.title, locale);
+}
+
+export const customShortLabel = (option, locale)=>{        
+  return lstring(option?.shortTitle, locale);
+}
+
+export const customSelectedItem = (item)=>{
+  return { identifier : item };
+}

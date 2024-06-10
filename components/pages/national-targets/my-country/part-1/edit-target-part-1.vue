@@ -73,21 +73,9 @@
                                     <km-form-group :caption="t('targetsAlignment')" required name="globalTargetAlignment">
                                         <div class="row">
                                             <div class="col-11">
-                                                <km-select
-                                                    v-model="selectedGlobalTargets"
-                                                    class="validationClass"
-                                                    label="shortTitle"
-                                                    track-by="identifier"
-                                                    value-key="identifier"
-                                                    :placeholder="t('globalTargets')"
-                                                    :options="globalTargets"
-                                                    :multiple="true"
-                                                    :close-on-select="false"
-                                                    @update:modelValue="onGoalsAndTargetSelected($event, 'targets')"
-                                                    :custom-label="customShortLabel"
-                                                    :custom-selected-item="customSelectedItem"
-                                                >
-                                                </km-select>
+                                                <gbf-targets @update:modelValue="onGoalsAndTargetSelected($event, 'targets')"
+                                                    v-model="selectedGlobalTargets" :multiple="true" class="validationClass"
+                                                    :placeholder="t('globalTargets')"></gbf-targets>
                                             </div>
                                             <div class="col-1">                                                
                                                 <button type="button" class="btn btn-secondary btn-xs" @click="showAllTargets">{{t('listTargets')}}</button>
@@ -131,7 +119,7 @@
                                                     </td>
                                                     <td>
                                                         <km-form-check-group v-if="target.degreeOfAlignment" class="mb-0">
-                                                            <km-form-check-item v-for="degree in formattedDegreeOfAlignments" :key="degree" inline type="radio" 
+                                                            <km-form-check-item v-for="degree in formattedDegreeOfAlignments" :key="degree" :inline="true" type="radio" 
                                                             :name="target.identifier+'_degreeOfAlignment'"  :for="target.identifier+'_degreeOfAlignment'" 
                                                             :id="target.identifier+'_degreeOfAlignment'+degree.identifier" :value="degree.identifier"  
                                                             v-model="target.degreeOfAlignment.identifier" :label="lstring(degree.title)" />
@@ -252,8 +240,8 @@
                                     <km-form-group name="hasNonStateActors"  :caption="t('anyOverlaps')">
                                         
                                         <km-form-check-group>
-                                            <km-form-check-item inline type="radio" name="hasNonStateActors"  for="hasNonStateActors" id="hasNonStateActorsYes" :value="true"  v-model="document.hasNonStateActors" :label="t('yes')"/>
-                                            <km-form-check-item inline type="radio" name="hasNonStateActors"  for="hasNonStateActors" id="hasNonStateActorsNo"  :value="false" v-model="document.hasNonStateActors" :label="t('no')"/>
+                                            <km-form-check-item :inline="true" type="radio" name="hasNonStateActors"  for="hasNonStateActors" id="hasNonStateActorsYes" :value="true"  v-model="document.hasNonStateActors" :label="t('yes')"/>
+                                            <km-form-check-item :inline="true" type="radio" name="hasNonStateActors"  for="hasNonStateActors" id="hasNonStateActorsNo"  :value="false" v-model="document.hasNonStateActors" :label="t('no')"/>
                                         </km-form-check-group>
                                     </km-form-group> 
                                     <km-form-group v-if="document.hasNonStateActors==true" 

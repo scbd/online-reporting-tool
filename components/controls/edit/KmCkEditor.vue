@@ -361,6 +361,7 @@ export default {
                 onUpdate: function(stats){
                     // console.log(stats)
                     self.wordCount = stats.words
+                    self.$emit('onWordCountChange', stats.words);
                 },
             }
         }
@@ -382,7 +383,8 @@ export default {
         ...this.config
     }    
   },
-  emits:['update:modelValue','onEditorReady', 'onEditorFocus', 'onEditorBlur', 'onEditorInput', 'onFileUpload', 'onEditorDestroy']
+  emits:['update:modelValue','onEditorReady', 'onEditorFocus', 'onEditorBlur', 'onEditorInput', 
+        'onFileUpload', 'onEditorDestroy', 'onWordCountChange']
 }
 </script>
 <style>

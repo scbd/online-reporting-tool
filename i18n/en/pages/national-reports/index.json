@@ -11,7 +11,9 @@
     "noReferencePeriod":"No reference period",
     "otherIndicators": "Other indicators linked in the national target(s) for this global Goal/Target",
 
-    "filter":"Filter",
+    "filter":"Filter by status",
+    "filterByGlobalTargets": "Filter by global targets",
+    "filterByGlobalGoals": "Filter by global goals",
     "selectOne":"Please select one",
     "overview":"Go to Overview",
     "addEditMapping":"Click the Add/Edit mapping button to edit this section"

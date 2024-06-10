@@ -20,12 +20,12 @@
               <div class="card-body">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
-                        <c-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                        <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                         <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                         {{t('publish')}}
                     </CButton>
                     <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
-                        <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                        <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"  message=" "></km-spinner>
                         <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                         {{t('validate')}}
                     </CButton>
@@ -292,12 +292,12 @@
                     <CCardBody>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
-                                <c-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                                <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                                 {{t('publish')}}
                             </CButton>
                             <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
-                                <c-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"></c-spinner>
+                                <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                                 {{t('validate')}}
                             </CButton>
