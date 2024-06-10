@@ -39,47 +39,9 @@
             <tour-dummy-table v-if="tourStarted" id="nationalRecords"></tour-dummy-table>
                         
             <km-spinner v-if="isLoadingRecords" center ></km-spinner>
-            <div class="table-responsive">
-
-            <table class="table" v-if="nationalTargets?.length">
-            <thead>
-                <tr>
-                <th scope="col">Title</th>
-                <th scope="col">GBF goals and targets</th>
-                <th scope="col">Status</th>
-                <th scope="col">Updated on</th>
-                <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(draft,  index) in nationalTargets" :key="draft.identifier">
-                    <td scope="row" class="col-5">{{lstring(draft.workingDocumentTitle||draft.title, locale)}}</td>
-                    <td>
-                        <goal-target-list :goal-targets="getAlignedGoalsOrTargets(draft.workingDocumentBody||draft.body)">
-                        </goal-target-list>                           
-                    </td>
-                    <td>
-                        <div v-if="draft.workingDocumentBody"><CBadge color="dark">Draft</CBadge></div>
-                        <div v-if="!draft.workingDocumentBody"><CBadge color="success">Published</CBadge></div>
-                        <div v-if="draft.workingDocumentLock"><CBadge color="danger">{{t('locked')}}</CBadge></div>
-                    </td>
-                    <td>
-                        {{formatDate(draft.updatedOn)}}<br/>
-                        {{ draft.updatedBy.firstName }} {{ draft.updatedBy.lastName }}
-                    </td>
-                    <td>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <km-link color="secondary"  class="btn-sm btn btn-secondary" icon="fa-search" :to="navigationUrl(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW, draft)" title="View"></km-link>
-                        <CButton color="secondary" size="sm" :disabled="!canEdit || draft.workingDocumentLock" @click="navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)">
-                            <font-awesome-icon icon="fa-edit" /> Edit
-                        </CButton>
-                        <km-delete-record :document="draft" @on-delete="onRecordDelete"></km-delete-record>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-            </table>
-            </div>
+            <record-list class="national-target-list" v-if="nationalTargets?.length" :national-records="nationalTargets" 
+                :view-route="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW"
+                @on-delete-record="onRecordDelete" @on-edit-record="onEditRecord" ></record-list>        
         </CCardBody>
       
       </CCard> 
@@ -186,6 +148,9 @@
 
     function onTourEnd(){
         tourStarted.value = false
+    }
+    async function onEditRecord(draft){
+        await navigateToPage(appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT, draft)
     }
 
     loadRecords();
