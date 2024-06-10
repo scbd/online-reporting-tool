@@ -1,5 +1,6 @@
 <div class="loader-circle">
     <div class="loader-content">
+      <img src="/cbd-gbf-logo.jpeg" class="rotate" width="280px" height="280px" />
         <div class="leaf">
             <img src="https://attachments.cbd.int/cbd-leaf-green.svg" />
         </div>
@@ -21,6 +22,19 @@
 </div>
 </div>
 <style>
+   .rotate {
+        animation: rotation 3s infinite linear;
+    }
+
+    @keyframes rotation {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(359deg);
+        }
+    }
+    
   body {
     background: #FFF;
   }
@@ -44,13 +58,13 @@
   .loader-content .leaf{
     position: absolute;
     left: 35%;
-    top: 2%;
+    top: -40%;
   }
 
   .loader-content .text{
     position: absolute;
     left: 15%;
-    top: 45%;
+    top: 105%;
   }
   .loader-content .text .app-name{
     font-size: larger;
@@ -89,7 +103,7 @@
 
   .slowLoadingMessage{
     position: fixed;
-    top: 62%;
+    top: 65%;
     color: #009b48;
     font-family: Arial, sans-serif;
     font-size: medium;
