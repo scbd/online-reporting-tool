@@ -86,7 +86,7 @@
                                             </div>
 
                                             <km-form-group v-show="document.sourceOfData" name="comments" caption="Comments">
-                                                <km-input-rich-lstring v-model="document.comments" :locales="document.header.languages"></km-input-rich-lstring>
+                                                <km-input-rich-lstring v-model="document.comments" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
                                             </km-form-group>         
                                         </div>
                                     </div> 
