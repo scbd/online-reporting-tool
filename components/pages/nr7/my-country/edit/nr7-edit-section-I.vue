@@ -41,7 +41,7 @@
                                     <li>{{ t('coordination') }}</li>
                                     <li>{{ t('consultation') }}</li>
                                 </ul>
-                                <km-input-rich-lstring v-model="sectionIComputed.processUndertaken" :locales="document.header.languages"></km-input-rich-lstring>
+                                <km-input-rich-lstring v-model="sectionIComputed.processUndertaken" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
                             </km-form-group>                                    
                         </div>
                     </div>
