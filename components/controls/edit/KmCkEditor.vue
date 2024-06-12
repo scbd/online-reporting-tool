@@ -2,11 +2,15 @@
   <div>
     <div style="border: 1px solid #eee" v-if="editorConfig" class="vld-parent">
         <overlay-loading :active="isUploadingFile" 
-        :can-cancel="false" background-color="rgb(9 9 9)"
-        :is-full-page="false">
-        <km-spinner size="lg" 
-            :message="t('uploadingFile')"></km-spinner>
-    </overlay-loading>
+            :can-cancel="false" background-color="rgb(9 9 9)"
+            :is-full-page="false">
+            <km-spinner size="lg" :message="t('uploadingFile')"></km-spinner>
+        </overlay-loading>
+        <overlay-loading :active="!identifier" background-color="rgb(9 9 9)" :is-full-page="false">
+            <CAlert class="m-2" color="danger">
+              <strong>Missing identifier for this field, please provide identifier to use this control</strong> 
+            </CAlert>
+        </overlay-loading>
 
         <ckeditor
           tag-name="textarea"
