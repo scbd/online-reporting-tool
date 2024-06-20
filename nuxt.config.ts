@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     sourcemap: {
         client: true
     }, 
-    ssr:false,
+    ssr:true,
     nitro: {
         storage: {
             ".data:auth": { driver: "fs", base: "./.data/auth" },
@@ -21,7 +21,7 @@ export default defineNuxtConfig({
         './config'
     ],
     modules: [
-        '@nuxtjs/i18n-edge',
+        '@nuxtjs/i18n',
         '@pinia/nuxt',
         '@pinia-plugin-persistedstate/nuxt',
         'nuxt-gtag'

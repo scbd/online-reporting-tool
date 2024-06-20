@@ -14,10 +14,13 @@
 </template>
 
 <script setup>
-import 'webui-popover';
-import 'webui-popover/dist/jquery.webui-popover.css'
-import $ from 'jquery'
+let $;
 
+if(process.client){
+        import('webui-popover')
+        import('webui-popover/dist/jquery.webui-popover.css')
+    $ = import('jquery')
+}
     const helpAnchor = ref(null);
     const $attrs = useAttrs();
     const slots  = useSlots();

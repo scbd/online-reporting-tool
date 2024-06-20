@@ -12,11 +12,11 @@
    export default {
        name:'cbdAddNewArticle',
        props: {
-           tags 		: { type: Array  , required: false, default:[]           }, // [] of tag id's
-           customTags 	: { type: Array  , required: false, default:[]           }, // [] of customTag id's
-           adminTags 	: { type: Array  , required: false, default:[]           }, // [] of adminTag text
-           target      : { type: String , required: false, default: '_blank'    },
-           id          : { type: String , required: false, default: undefined   },
+           tags      : { type: Array  , required: false, default:[]           },   // [] of tag id's
+           customTags: { type: Array  , required: false, default:[]           },   // [] of customTag id's
+           adminTags : { type: Array  , required: false, default:[]           },   // [] of adminTag text
+           target    : { type: String , required: false, default: '_blank'    },
+           id        : { type: String , required: false, default: undefined   },
        },
        computed: {
            newArticleUrl : function(){
