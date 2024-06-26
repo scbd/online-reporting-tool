@@ -20,7 +20,7 @@
                             </div>
                             <div class="card-body">                      
                                 <km-form-group required caption="Elements of the global targets addressed by national targets" name="elementOfGlobalTargetsInfo">
-                                    <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages"></km-input-rich-lstring>
+                                    <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
                                 </km-form-group>                                    
                             </div>
                         </div>

@@ -57,7 +57,8 @@
                                         </CCard>
                                     </div> 
                                     <div class="mt-3">
-                                        <km-additional-information v-model="document[binaryQuestion.key].comments" :locales="document.header.languages">
+                                        <km-additional-information v-model="document[binaryQuestion.key].comments" :locales="document.header.languages"
+                                            :identifier="cleanDocument?.header?.identifier">
                                             {{t('comments')}}
                                         </km-additional-information>
                                     </div>

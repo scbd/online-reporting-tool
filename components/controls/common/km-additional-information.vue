@@ -6,7 +6,7 @@
             </div>
             <div class="card-body">                      
                 <km-form-group caption="" name="anyOtherInformation">
-                    <km-input-rich-lstring v-model="model" :locales="locales"></km-input-rich-lstring>
+                    <km-input-rich-lstring v-model="model" :locales="locales" :identifier="identifier"></km-input-rich-lstring>
                 </km-form-group>                                    
             </div>
         </div>
@@ -19,7 +19,8 @@
     const model = defineModel({required:true, type:Object})
 
     const props = defineProps({
-        locales : { type: Array<String>, required:true }
+        locales : { type: Array<String>, required:true },
+        identifier : { type: String, required:true }
     })
 
 </script>
