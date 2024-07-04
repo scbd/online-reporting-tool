@@ -50,7 +50,7 @@ async function createLocaleFile(enFile){
             // console.log(langFilePath)
             const hashData = compareKeyHashes(enData, data||{})
             return {
-              [locale] : { ...(data||{}), ...hashData}
+              [locale] : { ...hashData } //{ ...(data||{}), ...hashData}
             }
           });
     
@@ -148,8 +148,8 @@ function compareKeyHashes(baseMessages, localizedMessages) {
   Object.entries(localizedMessages).filter(([, value]) => !!value).forEach(([key]) => {
     delete baseMessages[key];
   });
-
-  return baseMessages;
+  return localizedMessages;
+  // return baseMessages;
 }
 
 async function getAllDirectoryFiles(dir, options) {
