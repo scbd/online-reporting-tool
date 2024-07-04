@@ -289,9 +289,9 @@
         hasValidationErrors.value = false;
         try{
             await validationRef.value.validate(type);
-            const hasValidationErrors = [...(userRecords.value.draftNationalTargets||[]), ...(userRecords.value.draftNationalMappings||[])].some(e=>e.errors);
+            const hasAnyValidationErrors = [...(userRecords.value.draftNationalTargets||[]), ...(userRecords.value.draftNationalMappings||[])].some(e=>e.errors);
             
-            if(hasValidationErrors){
+            if(hasAnyValidationErrors){
                 hasValidationErrors.value = true;
             }
             if(showMessage)
