@@ -1,1 +1,11 @@
-{}
+{
+  "wordCount": "عدد الكلمات",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.394Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "wordCount": "9c715f0e523e7e1d00d538db7b78615b"
+    }
+  }
+}

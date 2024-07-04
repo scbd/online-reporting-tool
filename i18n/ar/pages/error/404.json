@@ -1,6 +1,17 @@
 {
   "errorCode": "404",
-  "errorHeading": "معذرة!  أنت في الصفحة الخطأ. ",
+  "errorHeading": "معذرة! أنت في الصفحة الخطأ.",
   "errorMessage": "لم نجد الصفحة التي تبحث عنها.",
-  "backHome": "الرجوع إلى الصفحة الأساسية"
+  "backHome": "الرجوع إلى الصفحة الأساسية",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.465Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "errorCode": "4f4adcbf8c6f66dcfc8a3282ac2bf10a",
+      "errorHeading": "61ed7feef4a22d85156bc8cf8a5de719",
+      "errorMessage": "f2fbecfb4e1f8fd471dcc0881d8518f1",
+      "backHome": "241cc23d593b169c3db310eb316e3c1f"
+    }
+  }
 }
