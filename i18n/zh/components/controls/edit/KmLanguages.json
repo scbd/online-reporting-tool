@@ -5,5 +5,19 @@
   "otherLanguageInfo": "是否希望以其他语言提交此信息？",
   "otherLanguage": "其他语言？",
   "yes": "是",
-  "no": "否"
+  "no": "否",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.451Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "languageOfRecord": "66537dd560a586bd83b752d7c2517781",
+      "minOneLanguage": "7fcfab8c1dd5805c18e077c53bad2aeb",
+      "otherLanguageOfRecord": "14e4c10b6f4973c5b9be49a31ab22f84",
+      "otherLanguageInfo": "c31530792ddfa9591abea85636377447",
+      "otherLanguage": "61edfdcb456b4d0324f094b1aa826a24",
+      "yes": "93cba07454f06a4a960172bbd6e2a435",
+      "no": "bafd7322c6e97d25b6299b5d6fe8920b"
+    }
+  }
 }

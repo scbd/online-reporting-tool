@@ -1,3 +1,11 @@
 {
-  "noRecords": "没有要显示的记录！"
+  "noRecords": "没有要显示的记录！",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.453Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "noRecords": "666a9d169ef9dfe0370d4c4434a92105"
+    }
+  }
 }
