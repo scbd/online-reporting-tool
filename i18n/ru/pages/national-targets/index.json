@@ -1,4 +1,13 @@
 {
   "nationalTargets": "Национальные целевые задачи",
-  "submitNew": "Представить новую задачу"
+  "submitNew": "Представить новую задачу",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.456Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "nationalTargets": "0a4aed0e778cd5ae82ec7544b518bedb",
+      "submitNew": "bb7870b2521f859d7a79847384d6670b"
+    }
+  }
 }

@@ -12,5 +12,26 @@
   "referencePeriodForIndicators": "Есть ли исходный период, который относится к основному индикатору?",
   "explain": "Просьба пояснить",
   "yes": "Да",
-  "no": "Нет"
+  "no": "Нет",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.455Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "title": "12d178276504426e998daa443906b26c",
+      "governmentAndLanguages": "00196a85b00e7e2a17724bb3bc95b82a",
+      "government": "18450de39aceed82b26abe218d377740",
+      "clickToChange": "a6d183b5892ebeba07874c9391f460ef",
+      "submissionLanguage": "602b7ef0a2530a7c497820e902dcc982",
+      "linkedTargets": "e2792c77a9cecd5e1957c8fb209e0d80",
+      "elementsOfTargets": "701e50b992e95c5f4404cd1c83a1097b",
+      "elementsAddressed": "ced107f9f85be1984a5a39464d3f4828",
+      "aspectsOfTargets": "66e0fd20c20631b87bd755d1bfe7ca8a",
+      "referencePeriod": "0d45e36c08077188c077cac5204fc264",
+      "referencePeriodForIndicators": "32f871a5458b7d8ea46acc527849dbf1",
+      "explain": "9f736a0dcd66f4581f67d26d1d392d88",
+      "yes": "93cba07454f06a4a960172bbd6e2a435",
+      "no": "bafd7322c6e97d25b6299b5d6fe8920b"
+    }
+  }
 }
