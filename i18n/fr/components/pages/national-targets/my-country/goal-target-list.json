@@ -1,1 +1,12 @@
-{}
+{
+  "showAll": "Montrer tout",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.421Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "showAll": "eb92025cb8c66f1850c13a9b602a1856",
+      "showLess": "131b815eb0d535d6e9697e4378f4b5ac"
+    }
+  }
+}
