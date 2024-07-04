@@ -9,5 +9,23 @@
   "moreInfo": "más información sobre este mensaje,",
   "youCan": "puede",
   "clickHere": "hacer clic aquí",
-  "message": "Mensaje:"
+  "message": "Mensaje:",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.451Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "error": "902b0d55fddef6f8d651fe1035b7d4bd",
+      "sorryForError": "163dc8e3e5100378855e34392c4a4e41",
+      "weUnderstand": "f5e75565bf926e31735a36481b48f513",
+      "doNotHesitate": "90454d10f82f5fa1f0fcdff413e4c182",
+      "contact": "158539f14fcf555e464778544b473f59",
+      "furtherQuestion": "ca070af50715e79e78465a9b1e057f06",
+      "wouldLike": "8f786fb6448ae70b0d1d283d9512ef03",
+      "moreInfo": "d98e67b1981382fcb9547d208bbcf4a7",
+      "youCan": "638bbc9a6a540e35e06bafd3a05bd385",
+      "clickHere": "a4ea91cd0d1ea33d8113457644dd6157",
+      "message": "940663fd4428d2c86f9a4780b6574028"
+    }
+  }
 }
