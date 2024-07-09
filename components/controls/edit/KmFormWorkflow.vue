@@ -14,6 +14,8 @@
                                 {{t('review')}}
                             </CButton>
                             <!-- <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton>   -->
+                            <pdf-section  class="me-md-2 btn-secondary" element=".print-section" :title="printTitle"  
+                            @on-pdf-document="onPrintDocument" @on-after-pdf="onAfterPrint"></pdf-section>
                             <print-section  class="me-md-2 btn-secondary" element=".print-section" 
                                 @on-print-document="onPrintDocument" @on-after-print="onAfterPrint"></print-section> 
                             <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
@@ -75,6 +77,8 @@
                             <CButton @click="onSaveDraft()" color="primary" class="me-md-2">{{t('saveDraft')}}</CButton> 
                             <CButton @click="onReviewDocument()" color="primary" class="me-md-2" >{{t('review')}}</CButton>
                             <!-- <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton>   -->
+                            <pdf-section  class="me-md-2 btn-secondary" element=".print-section" :title="printTitle" 
+                            @on-pdf-document="onPrintDocument" @on-after-pdf="onAfterPrint" ></pdf-section>
                             <print-section  class="me-md-2 btn-secondary" element=".print-section" 
                                 @on-print-document="onPrintDocument" @on-after-print="onAfterPrint"></print-section> 
                             <CButton @click="onClose()" color="danger" class="me-md-2">{{t('close')}}</CButton>
@@ -129,7 +133,7 @@
     });
     
     const container     = useAttrs().container ?? 'body,html';
-    const {t }          = useI18n();
+    const {t , locale}  = useI18n();
     const $toast        = useToast();
     const { user }      = useAuth();
     const { $api }      = useNuxtApp();
@@ -158,7 +162,13 @@
     let { focusedTab, tab, ...props } = toRefs(definedProps);
         
     const isBusy = computed(()=>validationReport.value?.isSaving || validationReport.value?.isAnalyzing);
+    const printTitle = computed(()=>{
+        let title = lstring(props.document.value?.title||'', locale);
+        if(title?.trim() == '')
+            title = `${props.document.value?.header?.schema?.toLowerCase()}`;
 
+        return `${title}-draft`;
+    })
     const onChangeCurrentTab = (index)=>{
         
         activeTab.value = index;
