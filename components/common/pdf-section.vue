@@ -74,7 +74,7 @@
         // console.log(html);
         try{
             const captchaToken = await $recaptcha.getRecaptchaToken();
-            const res = await useAPIFetch('http://localhost:8000/api/v2017/generate-pdf', 
+            const res = await useAPIFetch('/api/v2017/generate-pdf', 
                 { 
                     method:'POST', 
                     body : { html }, 
@@ -100,12 +100,8 @@
                 tempLink.href = url;
                 tempLink.setAttribute("download", downloadFileName.value);
 
-                // Append the <a> element to the body and click it to trigger the download
-                document.body.appendChild(tempLink);
                 tempLink.click();
 
-                // Clean up the temporary elements and URL
-                document.body.removeChild(tempLink);
                 window.URL.revokeObjectURL(url);
         }
         catch(e){
