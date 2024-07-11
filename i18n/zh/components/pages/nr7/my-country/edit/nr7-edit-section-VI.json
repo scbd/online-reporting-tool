@@ -1,4 +1,13 @@
 {
   "sectionII": "第二部分",
-  "sectionIIDescription": "根据昆明-蒙特利尔全球生物多样性框架修订或更新国家生物多样性战略和行动计划的状况 "
+  "sectionIIDescription": "根据昆明-蒙特利尔全球生物多样性框架修订或更新国家生物多样性战略和行动计划的状况 ",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.434Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "sectionII": "a487ef3cd0fee355fefe3fedbb85bb01",
+      "sectionIIDescription": "7bc04f6a1770ae34e5dff0f399339034"
+    }
+  }
 }

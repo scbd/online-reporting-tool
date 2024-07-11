@@ -5,5 +5,19 @@
   "clearCacheInfo": "Si vous rencontrez des problèmes, il est recommandé de vider ce cache.",
   "clearAll": "Tout effacer",
   "clear": "Effacer",
-  "cache": "cache"
+  "cache": "cache",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.459Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "settings": "f4f70727dc34561dfde1a3c529b6205c",
+      "browserCache": "9143d16b854704cbea4f7b2941786f81",
+      "cacheInfo": "89204a7bd8934d6c884456a7c5a523ba",
+      "clearCacheInfo": "41813a21e1cbadc7de02bd423e0bb1a0",
+      "clearAll": "e77fef0167598bb39846637ac3915f4e",
+      "clear": "dc30bc0c7914db5918da4263fce93ad2",
+      "cache": "0fea6a13c52b4d4725368f24b045ca84"
+    }
+  }
 }

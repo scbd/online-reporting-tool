@@ -10,5 +10,24 @@
   "draftRecord": "记录草稿",
   "deleteDraft": "删除草稿",
   "deleteDraftInfo": "删除记录草稿不会影响已发布记录。",
-  "deleteError": "删除记录时出错"
+  "deleteError": "删除记录时出错",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.45Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "deleteConfirmationTitle": "9e365dd1fae1b9ecae5a1d220a5fe86f",
+      "deleteConfirmMessage": "48533a048ce11993c8b819750645d749",
+      "cancel": "ea4788705e6873b424c65e91c2846b19",
+      "delete": "f2a6c498fb90ee345d997f888fce3b18",
+      "deleteSuccessfully": "4295d353a27af771b0fe99d94c2265a8",
+      "publishedRecord": "2ffef3d3bc3dd69be273d859c8800273",
+      "deletePublished": "a967e3ff6d217fa72ac1c5c763885f4d",
+      "deletePublishedInfo": "ee0882bde908e6c6a904ed98e48eadac",
+      "draftRecord": "5d19c63c08e71606d0504d3aaf9db728",
+      "deleteDraft": "d6108412cc88d6ae4ac931fcbf7bba77",
+      "deleteDraftInfo": "03c71a4fa3d0864c22420e7059d90492",
+      "deleteError": "dc16b14e229b032d87983f7016655abe"
+    }
+  }
 }

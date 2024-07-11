@@ -6,6 +6,22 @@
   "elementsOfTargets": "全球国家目标的要素",
   "addressedElements": "国家具体目标所涉及的全球目标要素",
   "referencePeriod": "参照期",
-  "referencePeriodForIndicators": "是否有与标题指标相关的参照期？",
-  "explain": "请解释"
+  "referencePeriodForIndicator": "是否有与标题指标相关的参照期？",
+  "explain": "请解释",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.397Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "title": "95a4422dccb74a8be9cade479b9ca8c6",
+      "general": "0db377921f4ce762c62526131097968f",
+      "government": "18450de39aceed82b26abe218d377740",
+      "linkedTarget": "0cd0c4782649b46ade12afa2f7335343",
+      "elementsOfTargets": "701e50b992e95c5f4404cd1c83a1097b",
+      "addressedElements": "c9ff6648902c39c6e653aa9c48ff65e3",
+      "referencePeriod": "0d45e36c08077188c077cac5204fc264",
+      "referencePeriodForIndicator": "32f871a5458b7d8ea46acc527849dbf1",
+      "explain": "9f736a0dcd66f4581f67d26d1d392d88"
+    }
+  }
 }

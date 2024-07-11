@@ -1,4 +1,13 @@
 {
   "sectionII": "Section II",
-  "sectionIIDescription": "Le statut des stratégies et plans d'action révisés ou mis à jour (SPANB) à la lumière du Cadre mondial de la biodiversité Kunming-Montréal. "
+  "sectionIIDescription": "Le statut des stratégies et plans d'action révisés ou mis à jour (SPANB) à la lumière du Cadre mondial de la biodiversité Kunming-Montréal. ",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.434Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "sectionII": "a487ef3cd0fee355fefe3fedbb85bb01",
+      "sectionIIDescription": "7bc04f6a1770ae34e5dff0f399339034"
+    }
+  }
 }

@@ -2,6 +2,19 @@
   "sectionI": "Section I",
   "sectionIDescription": "Bref aperçu du processus de préparation du rapport",
   "preparationProcess": "Veuillez décrire brièvement le processus entrepris pour la préparation de ce rapport (les réponses peuvent inclure les éléments suivants)",
-  "coordination": "Les mécanismes de coordination et la méthodologie pour la collecte et la validation de données employés (le cas échéant) ainsi que les défis clés rencontrés; ",
-  "consultation": "Les consultations entreprises à différents niveaux pour préparer ce rapport, impliquant et engageant différentes parties prenantes, en prenant compte des circonstances nationales. "
+  "coordination": "Les mécanismes de coordination et la méthodologie pour la collecte et la validation de données employés (le cas échéant) ainsi que les défis clés rencontrés;",
+  "consultation": "Les consultations entreprises à différents niveaux pour préparer ce rapport, impliquant et engageant différentes parties prenantes, en prenant compte des circonstances nationales.",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.43Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "sectionI": "6914d052dd6321ed110176026903becd",
+      "sectionIDescription": "64b4e786cecb7f5008b67378bc132957",
+      "preparationProcess": "9e1bf6126378c7c403a3de8a30f69c46",
+      "coordination": "6d128b26a0a49dedceed5a9f56715def",
+      "consultation": "a2993576e55818e97fcab14983f2f319",
+      "sectionMandatory": "3d3e416af01ddbdd3a8609c2ea6680ab"
+    }
+  }
 }

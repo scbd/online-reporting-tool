@@ -1,5 +1,15 @@
 {
   "locked": "Verrouillé",
   "published": "Publié",
-  "draft": "Brouillon"
+  "draft": "Brouillon",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.46Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "locked": "d0f2e5376298c880665077b565ffd7dd",
+      "published": "9b9d8a976b42e0bd66381797644943d5",
+      "draft": "f03ab16cd58372c77ba45a3d9a5a1cb9"
+    }
+  }
 }

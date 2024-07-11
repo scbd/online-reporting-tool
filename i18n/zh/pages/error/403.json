@@ -2,5 +2,16 @@
   "errorCode": "403",
   "errorHeading": "已禁止",
   "errorMessage": "您无权访问或查看此资源",
-  "backHome": "返回首页"
+  "backHome": "返回首页",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.465Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "errorCode": "bbf94b34eb32268ada57a3be5062fe7d",
+      "errorHeading": "722969577a96ca3953e84e3d949dee81",
+      "errorMessage": "d20acaa4c3d13f626922765aecb41895",
+      "backHome": "241cc23d593b169c3db310eb316e3c1f"
+    }
+  }
 }

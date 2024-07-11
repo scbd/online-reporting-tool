@@ -1,6 +1,17 @@
 {
   "errorCode": "500",
   "errorHeading": "Oups! Un problème est survenu.",
-  "errorMessage": "La page que vous cherchez est temporairement indisponible.  Veuillez essayer de nouveau.",
-  "backHome": "Retour à l’accueil"
+  "errorMessage": "La page que vous cherchez est temporairement indisponible. Veuillez essayer de nouveau.",
+  "backHome": "Retour à l’accueil",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.466Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "errorCode": "cee631121c2ec9232f3a2f028ad5c89b",
+      "errorHeading": "02cf591aaf7d244fdf1b4e287ecfa863",
+      "errorMessage": "0f555ab2bc6357fd01deb6701ccc7460",
+      "backHome": "241cc23d593b169c3db310eb316e3c1f"
+    }
+  }
 }

@@ -6,5 +6,20 @@
   "hasErrors": "No pudo realizarse la validación",
   "validating": "Validando",
   "nationalTargets": "Metas nacionales",
-  "globalMapping": "Correspondencias con los Objetivos y las Metas mundiales"
+  "globalMapping": "Correspondencias con los Objetivos y las Metas mundiales",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.447Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "publishedState": "9b9d8a976b42e0bd66381797644943d5",
+      "draftState": "f03ab16cd58372c77ba45a3d9a5a1cb9",
+      "lockedState": "39485d47a2524e88a917f3d8bdd7196d",
+      "passedValidation": "b2a97ba1150b313c0a5673334571a272",
+      "hasErrors": "7ce566811655aedfaf524bde4e32f575",
+      "validating": "c423b2af9f3f373c6576a8512645da9b",
+      "nationalTargets": "c950e570c20e4ee5b489666258ef17d8",
+      "globalMapping": "f1041ff3867edd9bde4a57a81ae6a002"
+    }
+  }
 }

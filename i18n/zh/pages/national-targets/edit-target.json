@@ -1,5 +1,15 @@
 {
   "additionalImplementationRequire": "为实现这一国家具体目标，需要更多的实施手段",
   "additionalImplementationAvailable": "可用的实施手段",
-  "additionalImplementationOther": "其他"
+  "additionalImplementationOther": "其他",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.455Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "additionalImplementationRequire": "b551d8e9b60fb9a70e516ed7afb69572",
+      "additionalImplementationAvailable": "efb722d5e0d35e1e2d25cc0207b99662",
+      "additionalImplementationOther": "6311ae17c1ee52b36e68aaf4ad066387"
+    }
+  }
 }

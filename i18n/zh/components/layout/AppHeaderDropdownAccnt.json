@@ -1,4 +1,13 @@
 {
   "settings": "设置",
-  "signIn": "登录"
+  "signIn": "登录",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.452Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "settings": "f4f70727dc34561dfde1a3c529b6205c",
+      "signIn": "b6d4223e60986fa4c9af77ee5f7149c5"
+    }
+  }
 }

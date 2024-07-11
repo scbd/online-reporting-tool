@@ -1,3 +1,11 @@
 {
-  "errorMessage": "Su país no ha presentado metas nacionales para este(estos) Objetivo(s) o Meta(s) mundial(es)."
+  "errorMessage": "Su país no ha presentado metas nacionales para este(estos) Objetivo(s) o Meta(s) mundial(es).",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.453Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "errorMessage": "473522f2d167b6b683fc148a6ce9e696"
+    }
+  }
 }
