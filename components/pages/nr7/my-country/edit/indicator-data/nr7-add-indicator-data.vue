@@ -322,7 +322,6 @@
                             document.value.globalIndicatorProviders =  globallyDerivedData.indicatorProviders.map(e=>({name:e.title, url:e.link}))
 
                         document.value.globalDescription = globallyDerivedData.description
-                        console.log(document.value)
                     }
                 }
             }

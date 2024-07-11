@@ -27,7 +27,6 @@
     }
   })
   const onDocumentLoad = (document)=>{
-    console.log(document)
     record.value = document;
   }
 </script>

@@ -18,7 +18,6 @@
   const record = ref(null);
 
   const onDocumentLoad = (document)=>{
-    console.log(document)
     record.value = document;
   }
 </script>
