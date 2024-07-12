@@ -3,6 +3,7 @@ export default defineNuxtConfig({
         public:{
             ACCOUNTS_HOST_URL : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL || 'https://accounts.cbddev.xyz',
             API_URL           : process.env.NUXT_PUBLIC_API_URL           || 'https://api.cbddev.xyz',
+            API_DIRECT_URL    : process.env.NUXT_PUBLIC_API_URL           || 'https://api-direct.cbd.int',
             REALM_CONF_HOST   : process.env.NUXT_PUBLIC_REALM_CONF_HOST   || 'ort.cbddev.xyz',
             CAPTCHA_V2_BADGE_KEY: process.env.CAPTCHA_V2_BADGE_KEY        || '*******',
             TAG               : '',

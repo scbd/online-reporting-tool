@@ -15,6 +15,17 @@ export const useLogger = ()=>{
     }
 }
 
+export const isDevelopment = ()=>{
+    const { ACCOUNTS_HOST_URL } = useRuntimeConfig().public;
+
+    return ACCOUNTS_HOST_URL.indexOf('accounts.cbddev.xyz')>=0
+}
+
+export const isProduction = ()=>{
+    const { ACCOUNTS_HOST_URL } = useRuntimeConfig().public;
+    
+    return ACCOUNTS_HOST_URL.indexOf('accounts.cbd.int')>=0
+}
 
 function error(appError, userMessage){
 
