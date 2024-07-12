@@ -74,7 +74,13 @@
         // console.log(html);
         try{
             const captchaToken = await $recaptcha.getRecaptchaToken();
-            const res = await useAPIFetch('/api/v2017/generate-pdf', 
+
+            //incase of production use api-direct endpoint for pdf
+            let baseUrl = '';
+            if(isProduction())
+                baseUrl = useRuntimeConfig().public.API_DIRECT_URL||'';
+
+            const res = await useAPIFetch(`${baseUrl}/api/v2017/generate-pdf/`, 
                 { 
                     method:'POST', 
                     body : { html }, 
