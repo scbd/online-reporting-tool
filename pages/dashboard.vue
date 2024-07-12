@@ -176,6 +176,7 @@ import UserProfileInfo  from "@/components/common/user-profile-info.vue"
 import { useRealmConfStore } from '@/stores/realmConf';
 import { facets } from '@/services/solr';
 import { KmLink } from "@/components/controls";
+import { useI18n } from "vue-i18n";
 
         const {user} = useAuth();
         const { t }  = useI18n();

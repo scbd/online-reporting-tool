@@ -2,19 +2,21 @@ import  { useRuntimeConfig, useAppConfig } from '#app';
 import { setUserToken } from '../utils';
 import { SocketIOService } from '@/services/socket-io';
 
-export const useAuth = () => useNuxtApp().$auth
+export const useAuth = () => useNuxtApp().$auth||{}
 
 export const useAuthConf = () => {
-    const conf = useRuntimeConfig();
+    // const conf = useRuntimeConfig();
 
-    const strategy = conf.public.auth.stratagey;
-    const strategyConf = { ...conf.public.auth.strategies[strategy] };
-    const { redirect } = conf.public.auth;
-    return {
-        ...strategyConf,
-        redirect,
-        accountsHostUrl : conf.public.ACCOUNTS_HOST_URL
-    }
+    // const strategy = conf.public.auth.stratagey;
+    // const strategyConf = { ...conf.public.auth.strategies[strategy] };
+    // const { redirect } = conf.public.auth;
+    // return {
+    //     ...strategyConf,
+    //     redirect,
+    //     accountsHostUrl : conf.public.ACCOUNTS_HOST_URL
+    // }
+
+    return {}
 }
 
 export const authRedirectToLogin = async (from:string) => {

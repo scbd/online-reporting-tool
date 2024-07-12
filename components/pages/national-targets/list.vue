@@ -14,6 +14,7 @@
 import searchResult from '@/components/controls/search/search-result.vue';
 import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';
+import { useI18n } from 'vue-i18n';
 
     const { t } = useI18n();
     const realmConfStore  = useRealmConfStore();

@@ -85,9 +85,10 @@ export function facetsToObject(solrArray, facetFields) {
 export async function facets(searchQuery:Object){
 
     const result = await useAPIFetch('/api/v2013/index/select', {method:'POST', body : searchQuery})
+    console.log(result)
+    if(result){
+        const facetResult = facetsToObject(result.facet_counts.facet_fields, searchQuery['facet.field']);
 
-    const facetResult = facetsToObject(result.facet_counts.facet_fields, searchQuery['facet.field']);
-
-    return { facets : facetResult, facetPivot : result.facet_counts.facet_pivot, docs : result.response.docs }
-
+        return { facets : facetResult, facetPivot : result.facet_counts.facet_pivot, docs : result.response.docs }
+    }
 }

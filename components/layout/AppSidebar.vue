@@ -1,8 +1,8 @@
 <template>
   <CSidebar
     position="fixed"
-    :unfoldable="userPreferences.sidebarUnfoldable"
-    :visible="userPreferences.sidebarVisible"
+    :unfoldable="userPreferences?.sidebarUnfoldable"
+    :visible="userPreferences?.sidebarVisible"
     @visible-change="(value) => userPreferences.setSidebarVisible(value)"
   >
     <CSidebarBrand>
@@ -82,7 +82,7 @@
     <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable()"> 
         <div class="app-version">
           Ver {{ TAG||COMMIT.substring(0, 20) }}      
-          <span class="ms-3" v-if="appState.showBackupSpinner">
+          <span class="ms-3" v-if="appState?.showBackupSpinner">
             <CSpinner color="success" variant="grow" class="me-1" size="sm"/>
             <CSpinner color="info" variant="grow" size="sm"/>
           </span>    

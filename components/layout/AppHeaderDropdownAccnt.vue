@@ -27,16 +27,18 @@ import { useRoute } from 'vue-router';
 //   setup() {
     const { t } = useI18n();
     const route = useRoute();
-    const user  = useAuth().user;
+    const user  = useAuth()?.user;
     const accountsUrl = useRuntimeConfig().public.ACCOUNTS_HOST_URL;
-console.log(t('signIn'));
 
     const logout = async ()=>{
       await authLogout()
-      window.location.reload()
+      window?.location?.reload()
     }
 
     const returnUrl = computed(()=>{
+      if(!window?.location?.href)
+        return '/';
+      
         const url = new URL(window.location.href);
         url.path = route.path;
         return url.href;
