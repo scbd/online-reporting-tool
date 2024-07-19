@@ -139,6 +139,7 @@
     const isLoading = ref(false);
     const documentLoadError = ref(null); 
     const validationReport  = ref({}); 
+    let isNewDocument       = false;
 
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
@@ -160,6 +161,9 @@
                 })
             });  
         }
+        if(!clean.referencePeriod?.length)
+            clean.referencePeriod = undefined;
+        
         return clean
     });
 
@@ -172,10 +176,11 @@
     })
 
     const onPostClose = async (document)=>{
-        emit('onClose', document);
+        emit('onClose', isNewDocument ? undefined : document);
     }
 
     const onPostSaveDraft = async (document)=>{
+        isNewDocument = false;
         emit('onPostSaveDraft', document);
     }
 
@@ -235,6 +240,7 @@
             }
             else{
                 document.value = emptyDocument();
+                isNewDocument = true;
                 //validate if there is a mapping record for the given target and load it instead
             }
         }
