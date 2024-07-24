@@ -1,0 +1,15 @@
+{
+  "published": "Publié",
+  "draft": "Brouillon",
+  "requested": "Demandé",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.42Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "published": "9b9d8a976b42e0bd66381797644943d5",
+      "draft": "f03ab16cd58372c77ba45a3d9a5a1cb9",
+      "requested": "fcdf8a82eba24e303b63b2e49a507ecb"
+    }
+  }
+}

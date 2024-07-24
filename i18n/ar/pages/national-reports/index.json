@@ -12,5 +12,28 @@
   "filter": "فلتر التصفية",
   "selectOne": "يرجى تحديد أحد فلاتر التصفية",
   "overview": "الانتقال إلى المعلومات العامة",
-  "addEditMapping": "اضغط فوق زر \"إضافة/تعديل علاقة ارتباط\" لتعديل هذا القسم"
+  "addEditMapping": "اضغط فوق زر \"إضافة/تعديل علاقة ارتباط\" لتعديل هذا القسم",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.393Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "headerTitle": "cf4a1e5f33756d455211d6c326ff0950",
+      "editMapping": "9e3622422a8079c477a1b38a39247380",
+      "addMapping": "7712beb92a85e717c47186b4b991941e",
+      "linkedTargetsTitle": "f0477c425af60cbce7970b2dbc1fccd6",
+      "elementsOfInfo": "626e2e83dfd440921c8ff0cc04b506cf",
+      "headlineIndicators": "10bbb9ed7c1c1439be043f02d029a24f",
+      "referencePeriod": "5088829e17e25074de6f23455f9330b9",
+      "hasReferencePeriod": "26c170951588a32ad14d559a4ca28ae5",
+      "noReferencePeriod": "4ee4c37e5dead504297b9c9aaa6ac168",
+      "otherIndicators": "b49c5b08989141759f5bad8ca6df1ab0",
+      "filter": "5dd5cd6670a0fc8e47a47aa94d27b8b2",
+      "filterByGlobalTargets": "3d6579e1ec96888dc4552f8cc9bb9d02",
+      "filterByGlobalGoals": "22137392498eb907a4e32e976721e194",
+      "selectOne": "d3edcd6e9775351c33eee922e57a074e",
+      "overview": "4d0f98578ddd1db2b9bea9e5cf5603d1",
+      "addEditMapping": "8c1cc3b429f3851894aea041312ee1fe"
+    }
+  }
 }

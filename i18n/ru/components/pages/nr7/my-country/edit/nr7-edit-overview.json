@@ -1,1 +1,47 @@
-{}
+{
+  "publishedState": "Опубликовано",
+  "draftState": "Черновик",
+  "lockedState": "Черновик заблокирован",
+  "passedValidation": "Проверка выполнена успешно",
+  "hasErrors": "Неудавшиеся проверки",
+  "validating": "Проверка",
+  "validationErrorsTitle": "Ошибки проверки",
+  "close": "Закрыть",
+  "successMessageNau": "Ваш запрос на публикацию будет направлен НКЦ вашей страны, обладающему правами на публикацию.",
+  "successMessagePA": "Поскольку имеется несколько записей, для публикации всех записей потребуется несколько минут.",
+  "successTitle": "Успех",
+  "yes": "Да",
+  "no": "Нет",
+  "confirmationTitle": "Подтверждение",
+  "spinnerMessage": "Подождите, пока выполняется обработка вашего запроса.",
+  "refresh": "Обновить",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.43Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "welcome": "4a214db9505651cdb374c8a7b9972a8f",
+      "publishedState": "9b9d8a976b42e0bd66381797644943d5",
+      "draftState": "f03ab16cd58372c77ba45a3d9a5a1cb9",
+      "lockedState": "39485d47a2524e88a917f3d8bdd7196d",
+      "passedValidation": "b2a97ba1150b313c0a5673334571a272",
+      "hasErrors": "7ce566811655aedfaf524bde4e32f575",
+      "validating": "c423b2af9f3f373c6576a8512645da9b",
+      "validationErrorsTitle": "bad0d8a56996a16e9cdac5335080e167",
+      "validationErrorsMessage": "7bca19bdc0480a7411f440cd7512cc33",
+      "close": "d3d2e617335f08df83599665eef8a418",
+      "successfulMessage": "4d37d02c7eca17fd2a99c9fc0f6d057f",
+      "successMessageNau": "9987c062560fefb15804fa85dfddb8b0",
+      "successMessagePA": "85f984bcf1c7c9167cdfa144177d43f4",
+      "successTitle": "505a83f220c02df2f85c3810cd9ceb38",
+      "yes": "93cba07454f06a4a960172bbd6e2a435",
+      "no": "bafd7322c6e97d25b6299b5d6fe8920b",
+      "confirmationMessage": "ffb54f8147a5de5686300a058029fefe",
+      "confirmationTitle": "f4d1ea475eaa85102e2b4e6d95da84bd",
+      "spinnerMessage": "511464d5806b2e2503e85842851aeb1b",
+      "refresh": "63a6a88c066880c5ac42394a22803ca6",
+      "validate": "ad3d06d03d94223fa652babc913de686",
+      "publish": "110a4b01beabd53b661a47d4b44bd7a8"
+    }
+  }
+}

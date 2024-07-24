@@ -1,10 +1,25 @@
 {
   "publishedState": "已发布",
-  "draftState": "草稿",
+  "draftState": "草案",
   "lockedState": "草稿已上锁",
   "passedValidation": "验证成功",
   "hasErrors": "验证失败",
   "validating": "正在验证",
   "nationalTargets": "国家具体目标",
-  "globalMapping": "全球目标/具体目标对应关系"
+  "globalMapping": "全球目标/具体目标对应关系",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.447Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "publishedState": "9b9d8a976b42e0bd66381797644943d5",
+      "draftState": "f03ab16cd58372c77ba45a3d9a5a1cb9",
+      "lockedState": "39485d47a2524e88a917f3d8bdd7196d",
+      "passedValidation": "b2a97ba1150b313c0a5673334571a272",
+      "hasErrors": "7ce566811655aedfaf524bde4e32f575",
+      "validating": "c423b2af9f3f373c6576a8512645da9b",
+      "nationalTargets": "c950e570c20e4ee5b489666258ef17d8",
+      "globalMapping": "f1041ff3867edd9bde4a57a81ae6a002"
+    }
+  }
 }

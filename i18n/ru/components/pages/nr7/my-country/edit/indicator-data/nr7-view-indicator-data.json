@@ -1,0 +1,25 @@
+{
+  "year": "Год",
+  "comments": "Замечания",
+  "yes": "Да",
+  "no": "Нет",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.422Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "national": "8eac8b2343f0718cb0783c926b091c93",
+      "availableDataset": "52a8ba5d68f6ed51e36101841337d41f",
+      "noData": "efba20a02ee4c1c0f9ca2ce2b5f92b0d",
+      "notRelevant": "7de54f74a4ff5a6a6715c2da30153b0c",
+      "sourceOfData": "79410a9a5a577ea03e4dccc6d23e7c24",
+      "year": "537c66b24ef5c83b7382cdc3f34885f2",
+      "value": "689202409e48743b914713f96d93947c",
+      "globalSourceOfData": "530820492cacb2059883a79862020aab",
+      "globalIndicatorProviders": "6b22f7500bb6eaaf1b49b641467eaec6",
+      "comments": "8413c683b4b27cc3f4dbd4c90329d8ba",
+      "yes": "93cba07454f06a4a960172bbd6e2a435",
+      "no": "bafd7322c6e97d25b6299b5d6fe8920b"
+    }
+  }
+}

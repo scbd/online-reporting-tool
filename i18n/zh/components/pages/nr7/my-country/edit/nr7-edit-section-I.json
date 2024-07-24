@@ -3,5 +3,18 @@
   "sectionIDescription": "报告编写过程简述",
   "preparationProcess": "请简要说明编写本报告的过程（答复可包括以下内容）",
   "coordination": "采用的数据收集和验证协调机制与方法（如适用）以及遇到的主要挑战；",
-  "consultation": "为编写本报告，与各个层面的不同利益攸关方开展了磋商，并结合国情。"
+  "consultation": "为编写本报告，与各个层面的不同利益攸关方开展了磋商，并结合国情。",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.43Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "sectionI": "6914d052dd6321ed110176026903becd",
+      "sectionIDescription": "64b4e786cecb7f5008b67378bc132957",
+      "preparationProcess": "9e1bf6126378c7c403a3de8a30f69c46",
+      "coordination": "6d128b26a0a49dedceed5a9f56715def",
+      "consultation": "a2993576e55818e97fcab14983f2f319",
+      "sectionMandatory": "3d3e416af01ddbdd3a8609c2ea6680ab"
+    }
+  }
 }

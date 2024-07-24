@@ -3,5 +3,19 @@
   "menuDashboard": "Информационная панель",
   "menuNationalTargets": "Национальные задачи",
   "menu7Nr": "7-й национальный доклад",
-  "menuSearch": "Поиск "
+  "menuSearch": "Поиск",
+  "menuHelp": "Помощь",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.409Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "languages": "3a08e2e340ab29fd9263af48193cbf8e",
+      "menuDashboard": "2938c7f7e560ed972f8a4f68e80ff834",
+      "menuNationalTargets": "0a4aed0e778cd5ae82ec7544b518bedb",
+      "menu7Nr": "f8005bb5b61d52ab71cc606e0e242ff0",
+      "menuSearch": "13348442cc6a27032d2b4aa28b75a5d3",
+      "menuHelp": "6a26f548831e6a8c26bfbbd9f6ec61e0"
+    }
+  }
 }

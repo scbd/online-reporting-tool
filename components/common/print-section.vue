@@ -44,7 +44,7 @@
         await sleep(200);
 
         $('.cbd-user-print').printThis({
-            debug:false,
+            debug:true,
             printContainer:true,
             importCSS:true,
             importStyle : true,

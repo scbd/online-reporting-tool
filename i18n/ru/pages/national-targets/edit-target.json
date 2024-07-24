@@ -1,5 +1,15 @@
 {
   "additionalImplementationRequire": "Дополнительные средства осуществления для выполнения этой национальной задачи",
   "additionalImplementationAvailable": "Имеющиеся средства осуществления",
-  "additionalImplementationOther": "Прочее"
+  "additionalImplementationOther": "Прочее",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.455Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "additionalImplementationRequire": "b551d8e9b60fb9a70e516ed7afb69572",
+      "additionalImplementationAvailable": "efb722d5e0d35e1e2d25cc0207b99662",
+      "additionalImplementationOther": "6311ae17c1ee52b36e68aaf4ad066387"
+    }
+  }
 }

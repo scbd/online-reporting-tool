@@ -1,4 +1,19 @@
 {
   "sectionIII": "القسم الثالث",
-  "sectionIIIDescription": "حالة الاستراتيجيات وخطط العمل الوطنية المُنقّحة أو المُحدَّثة للتنوع البيولوجي في ضوء إطار كونمينغ - مونتريال العالمي للتنوع البيولوجي "
+  "sectionIIIDescription": "حالة الاستراتيجيات وخطط العمل الوطنية المُنقّحة أو المُحدَّثة للتنوع البيولوجي في ضوء إطار كونمينغ - مونتريال العالمي للتنوع البيولوجي ",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.432Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "sectionIII": "6d8d71a1d4966fa7d55b3f417aabcf93",
+      "sectionIIIDescription": "7bc04f6a1770ae34e5dff0f399339034",
+      "headlineIndicators": "e9b33db600c2013f126c0c12a89951e6",
+      "binaryIndicators": "860c3577217a5c56d8495e4d5743c653",
+      "componentIndicators": "bd827b2f0065b0277f73c9f336937f6b",
+      "complementaryIndicators": "11bf6fee07e05362947b4738357f3f92",
+      "nationalIndicators": "53f52d0fa4c6d3f25025adcec4b6c33f",
+      "sectionMandatory": "9baf09ee056e7ef26d97d5ac8ff9fbff"
+    }
+  }
 }

@@ -2,5 +2,16 @@
   "errorCode": "500",
   "errorHeading": "¡Uy! ¡Hubo un problema!",
   "errorMessage": "La página que busca no está disponible temporariamente. Intente nuevamente",
-  "backHome": "Volver al inicio"
+  "backHome": "Volver al inicio",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.466Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "errorCode": "cee631121c2ec9232f3a2f028ad5c89b",
+      "errorHeading": "02cf591aaf7d244fdf1b4e287ecfa863",
+      "errorMessage": "0f555ab2bc6357fd01deb6701ccc7460",
+      "backHome": "241cc23d593b169c3db310eb316e3c1f"
+    }
+  }
 }

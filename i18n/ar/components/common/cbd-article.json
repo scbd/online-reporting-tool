@@ -1,4 +1,13 @@
 {
   "noInformation": "لا توجد معلومات متاحة حاليًا لهذا القسم.",
-  "loading": "محتوى القسم قيد التحميل"
+  "loading": "محتوى القسم قيد التحميل",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.448Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "noInformation": "10a9ef005da5b9ab7d7a0a003225ae16",
+      "loading": "a2b842ed3308f472a23e37510c0a7f86"
+    }
+  }
 }

@@ -1,1 +1,11 @@
-{}
+{
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.428Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "editIndicatorData": "55b8d5841eba3b51fbf02399345b1462",
+      "addIndicatorData": "f807e4bb8b926adf9cf418417f49c245"
+    }
+  }
+}

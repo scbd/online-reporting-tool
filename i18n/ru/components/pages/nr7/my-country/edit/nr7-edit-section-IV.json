@@ -1,4 +1,22 @@
 {
-  "sectionII": "Раздел II",
-  "sectionIIDescription": "Статус пересмотренных или обновленных национальных стратегий и планов по сохранению биоразнообразия (НСПДСБ) в свете Куньминско-Монреальской глобальной рамочной программы в области биоразнообразия "
+  "sectionIV": "Раздел IV",
+  "complementaryIndicators": "Дополнительные индикаторы",
+  "componentIndicators": "Компонентные индикаторы",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.433Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "sectionIV": "bc1239ab99573e1d5e1a59d2ecefdabf",
+      "sectionIVDescription": "afcd3986b6f567ffc9d5ba35615866fe",
+      "headline": "e9b33db600c2013f126c0c12a89951e6",
+      "binary": "860c3577217a5c56d8495e4d5743c653",
+      "component": "bd827b2f0065b0277f73c9f336937f6b",
+      "complementary": "11bf6fee07e05362947b4738357f3f92",
+      "national": "53f52d0fa4c6d3f25025adcec4b6c33f",
+      "complementaryIndicators": "48041098bef85726387d524ace8cd8d5",
+      "componentIndicators": "17b02bb8c66a01e8cfb0c3d39ac60716",
+      "sectionMandatory": "27efe5ff380b72963339c0d2a1cf764f"
+    }
+  }
 }

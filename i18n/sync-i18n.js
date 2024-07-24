@@ -3,6 +3,7 @@ import path from 'path';
 import assert, { match } from 'assert';
 import * as url from 'url';
 import {readJson} from 'fs-extra';
+import crypto       from 'crypto';
 
 const __dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
 const __rootDirname =  url.fileURLToPath(new url.URL('../', import.meta.url));
@@ -44,11 +45,14 @@ async function createLocaleFile(enFile){
     const locale = locales[i];
 
     const langFilePath = enFile.replace(/\/en\//, `/${locale}/`);
-    const taskPromise = readJsonFile(langFilePath).then((data)=>{      
-      return {
-        [locale] : {...enData, ...(data||{})}
-      }
-    });
+    const taskPromise = readJsonFile(langFilePath)
+          .then((data)=>{ 
+            // console.log(langFilePath)
+            const hashData = compareKeyHashes(enData, data||{})
+            return {
+              [locale] : { ...hashData } //{ ...(data||{}), ...hashData}
+            }
+          });
     
     localeFilePromises.push(taskPromise);
 
@@ -109,6 +113,44 @@ function remove_linebreaks(str) {
     return str.replace(/[\r\n]+/gm, " ");
 }
 
+// Remove from existing & valid keys in the localizedVersion from the base version; 
+function compareKeyHashes(baseMessages, localizedMessages) {
+
+  baseMessages = { ...baseMessages }; // copy
+
+  const meta = localizedMessages['#meta']
+  if(meta?.hashes){
+    delete localizedMessages['#meta'];
+
+    Object.entries(localizedMessages).filter(([, value]) => !!value)
+      .forEach(([key]) => {
+        
+          //if the key has hash only then continue with locale else use english
+          if(baseMessages[key] && meta.hashes[key]){
+            let enHash;
+            const enText = baseMessages[key];
+            
+            if(meta.algorithm =='md5'){
+              enHash = crypto.createHash('md5').update(enText).digest("hex");
+            }
+
+            //if locale hash matches the english text has then use locale text else english
+            if(enHash?.length && meta.hashes[key] == enHash){
+              delete baseMessages[key];
+            }
+            else{
+              delete localizedMessages[key];
+            }
+          }
+      });
+  }
+
+  Object.entries(localizedMessages).filter(([, value]) => !!value).forEach(([key]) => {
+    delete baseMessages[key];
+  });
+  return localizedMessages;
+  // return baseMessages;
+}
 
 async function getAllDirectoryFiles(dir, options) {
   options = options || {};

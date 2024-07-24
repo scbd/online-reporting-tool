@@ -10,5 +10,25 @@
   "stakeholders": "利益攸关方",
   "hasNbsapAdopted": "贵国经修订或更新的国家生物多样性战略和行动计划是否已作为政策或法律文书获得通过？",
   "anticipatedNbsapAdoptionDate": "请注明预计的通过日期",
-  "policyInstrument": "请指出贵国经修订或更新的国家生物多样性战略和行动计划作为哪类政策工具获通过"
+  "policyInstrument": "请指出贵国经修订或更新的国家生物多样性战略和行动计划作为哪类政策工具获通过",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.431Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "sectionII": "a487ef3cd0fee355fefe3fedbb85bb01",
+      "sectionIIDescription": "7bc04f6a1770ae34e5dff0f399339034",
+      "revisedNbsap": "83c69c3506bc65450f4910096248d846",
+      "yes": "93cba07454f06a4a960172bbd6e2a435",
+      "no": "bafd7322c6e97d25b6299b5d6fe8920b",
+      "inProcess": "9fb5548f959676ee7edc3c48425a1503",
+      "anticipatedNbsapDate": "1c4df9d948fd090d82faf01ac121ec49",
+      "stakeholderEngagement": "c8230e3c5e6d11ee4e79a77fae5445e6",
+      "stakeholders": "e4329f5201e6a6ac67c7341830dd8ef6",
+      "hasNbsapAdopted": "80091fc894992b3582e93defcc8d4d5a",
+      "anticipatedNbsapAdoptionDate": "9e09f9cd43300022a073a5dbead245ae",
+      "policyInstrument": "8cfa7d66a04056955347050e6ceb63b6",
+      "sectionMandatory": "a140135677946ee5ca09ad3d792c0311"
+    }
+  }
 }

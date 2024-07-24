@@ -10,6 +10,7 @@
                 </CContainer>
             </div>
             <AppFooter class="m-0 p-0"/>      
+            <div id="g-recaptcha"></div>
         </div>
     </div>
 </template>
@@ -56,6 +57,12 @@ export default {
                 callback: () => { 
                     initializeSlaask();
                 }
+            },
+            {
+                hid: 'recaptcha',
+                src : 'https://www.recaptcha.net/recaptcha/api.js',
+                defer: true,
+                callback: () => { }
             }
         ]
     });
@@ -94,3 +101,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+
+/* Since its not required on all pages, hide it and show only when required */
+#g-recaptcha{
+    display: none;
+}
+
+</style>

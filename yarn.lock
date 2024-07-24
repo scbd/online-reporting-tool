@@ -2075,6 +2075,11 @@ async@^3.2.4:
   resolved "https://registry.yarnpkg.com/async/-/async-3.2.5.tgz#ebd52a8fdaf7a2289a24df399f8d8485c8a46b66"
   integrity sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==
 
+async@~0.2.9:
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
+  integrity sha512-eAkdoKxU6/LkKDBzLpT+t6Ff5EtfSF4wx1WfJiPEEV7WNLnDaRXk0oVysiEPm262roaachGexwUv94WhSgN5TQ==
+
 autoprefixer@^10.4.17:
   version "10.4.17"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.17.tgz#35cd5695cbbe82f536a50fa025d561b01fdec8be"
@@ -2949,6 +2954,11 @@ escape-html@~1.0.3:
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==
 
+escape-regexp@~0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/escape-regexp/-/escape-regexp-0.0.1.tgz#f44bda12d45bbdf9cb7f862ee7e4827b3dd32254"
+  integrity sha512-jVgdsYRa7RKxTT6MKNC3gdT+BF0Gfhpel19+HMRZJC2L0PufB0XOBuXBoXj29NKHwuktnAXd1Z1lyiH/8vOTpw==
+
 escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
@@ -3177,6 +3187,17 @@ fs-extra@^11.1.0, fs-extra@^11.1.1, fs-extra@^11.2.0:
     graceful-fs "^4.2.0"
     jsonfile "^6.0.1"
     universalify "^2.0.0"
+
+fs-finder@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/fs-finder/-/fs-finder-1.8.1.tgz#106fea8aa89d0af343360663d5855862cae1b874"
+  integrity sha512-h3Qd/VsxlruI7jSVg/6aasgMuVIyKvoibTfZG45F2AEKYdLWWk/UTxHi5J1TcbzMOXvljuJ2zSinHcQZkC8oeA==
+  dependencies:
+    async "~0.2.9"
+    escape-regexp "~0.0.1"
+    moment "~2.5.0"
+    operator-compare "~1.0.1"
+    q "~1.0.0"
 
 fs-minipass@^2.0.0:
   version "2.1.0"
@@ -4207,6 +4228,11 @@ moment@^2.29.4:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.30.1.tgz#f8c91c07b7a786e30c59926df530b4eac96974ae"
   integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
 
+moment@~2.5.0:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.5.1.tgz#7146a3900533064ca799d5e792f4e480ee0e82bc"
+  integrity sha512-t+5ruKya8ZqxINueV7dkx2n7CQhZi0mPLUjjt6bqtZj2WzH8DuiIpUGFHMIOCzCq+TT8FAEaVQ0ttF3vKuM2bw==
+
 mri@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mri/-/mri-1.2.0.tgz#6721480fec2a11a4889861115a48b6cbe7cc8f0b"
@@ -4675,6 +4701,11 @@ opencollective-postinstall@^2.0.2:
   resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
   integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
 
+operator-compare@~1.0.1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/operator-compare/-/operator-compare-1.0.3.tgz#8d06d094bc1b83a607fc9c9f3800447886591af9"
+  integrity sha512-u5npWIi8efVLeoKpYAU+3kg3B9bHNO425iA+doNg8bIQ38b18/6rxFsi2o760fmymfjheVBlvfjQr5AGrhZETg==
+
 outlayer@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/outlayer/-/outlayer-2.1.1.tgz#29863b6de10ea5dadfffcadfa0d728907387e9a2"
@@ -5128,6 +5159,11 @@ protocols@^2.0.0, protocols@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/protocols/-/protocols-2.0.1.tgz#8f155da3fc0f32644e83c5782c8e8212ccf70a86"
   integrity sha512-/XJ368cyBJ7fzLMwLKv1e4vLxOju2MNAIokcr7meSaNcVbWz/CPcW22cP04mwxOErdA5mwjA8Q6w/cdAQxVn7Q==
+
+q@~1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/q/-/q-1.0.1.tgz#11872aeedee89268110b10a718448ffb10112a14"
+  integrity sha512-18MnBaCeBX9sLRUdtxz/6onlb7wLzFxCylklyO8n27y5JxJYaGLPu4ccyc5zih58SpEzY8QmfwaWqguqXU6Y+A==
 
 queue-microtask@^1.2.2:
   version "1.2.3"

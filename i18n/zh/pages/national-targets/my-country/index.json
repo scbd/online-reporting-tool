@@ -1,3 +1,11 @@
 {
-  "title": "国家具体目标概述"
+  "title": "国家具体目标概述",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.457Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "title": "e52fd8f40af977e30c08380d9c343e46"
+    }
+  }
 }

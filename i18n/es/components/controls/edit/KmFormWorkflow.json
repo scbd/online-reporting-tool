@@ -18,5 +18,33 @@
   "submission": "Presentación",
   "review": "Revisión",
   "publish": "Publicar",
-  "introInfo": "En esta se sección se presentará una breve descripción de ayuda a los usuarios para la presentación de la información."
+  "introInfo": "En esta se sección se presentará una breve descripción de ayuda a los usuarios para la presentación de la información.",
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.426Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "close": "d3d2e617335f08df83599665eef8a418",
+      "saveDraft": "5778e182c50cbba1d86e14690c8aa35c",
+      "preview": "31fde7b05ac8952dacf4af8a704074ec",
+      "draftSaveMessage": "69d3ca573bdca44606d24806654d77c4",
+      "closeWithoutSaving": "a7c6698cae2e3826b0a893bb69396838",
+      "publishRequested": "532ea7e1838301161b2a9903ab52c8c7",
+      "recordPublished": "17e4d24bc0bfaeef645d2c662507debb",
+      "areYouSure": "380f73c4cdf3697e112369eec9d6172e",
+      "anyChange": "0a87d31793a6cd993ee49b68e8da846d",
+      "btnCloseWithoutSaving": "717c1fef51b5dcf9c4e9e5c31b7df1e2",
+      "exit": "fef46e5063ce3dc78b8ae64fa474241d",
+      "stay": "82af62013488c2fdb0985a57b9b181e3",
+      "submissionForm": "0649300a67dfb2fe0c4310a840ad9ebd",
+      "intro": "1cad35d4b3b9f624f82dbf237daaf188",
+      "form": "d359c6df99b25183d81f7d728b71de0e",
+      "introduction": "0b79795d3efc95b9976c7c5b933afce2",
+      "submission": "d79b6cd01b0b63ce32cb7fbf088484fd",
+      "review": "457dd55184faedb7885afd4009d70163",
+      "publish": "110a4b01beabd53b661a47d4b44bd7a8",
+      "introInfo": "b4255e76a40621b717c74277e10a0825",
+      "confirmLeave": "19c8be59a3523b2e5da6df387ecabd90"
+    }
+  }
 }

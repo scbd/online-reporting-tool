@@ -139,8 +139,7 @@
         return document;
     };
 
-    const onPostSaveDraft = async (document)=>{
-        console.log(document);
+    const onPostSaveDraft = async (document)=>{       
         //vue prepends 'on' to all events internally
         if(isEventDefined('onPostSaveDraft'))
             emit('onPostSaveDraft', document);

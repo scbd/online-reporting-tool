@@ -1,0 +1,11 @@
+{
+  "#meta": {
+    "hashedOn": "2024-07-04T14:56:10.443Z",
+    "algorithm": "md5",
+    "branch": "2024.26.0",
+    "hashes": {
+      "editBinaryIndicatorData": "25e42091b87abf6689d3104b6f8eaf80",
+      "addBinaryIndicatorData": "1a8e79b4b970350be1daa12618a42d93"
+    }
+  }
+}
