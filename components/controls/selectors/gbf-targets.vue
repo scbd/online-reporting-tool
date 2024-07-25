@@ -21,6 +21,9 @@
     const thesaurusStore= useThesaurusStore ();
     const globalTargets = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
     
+    onMounted(() => {
+        thesaurusStore.loadDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS)
+    })
 </script>
 
 <style scoped>

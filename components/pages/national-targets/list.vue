@@ -1,9 +1,9 @@
 <template>
     <div>
-        <km-spinner v-if="loading" center></km-spinner>
         <div class="search">
-            <overlay-loading :active="loading" :can-cancel="false" background-color="rgb(9 9 9)"
-                :is-full-page="false">
+            <search-filters @on-filter-change="onFilterChange"></search-filters>
+            <!-- <overlay-loading :active="loading" :can-cancel="false" background-color="rgb(9 9 9)"
+                :is-full-page="false"> -->
 
                 <div>
                     <NuxtLink :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary float-end">
@@ -13,9 +13,10 @@
                     :currentPage="currentPage" @on-page-change="onPageChange" @on-records-per-page-changed="onRecordsPerPageChanged"  ></pagination>
                 </div>
 
+                <km-spinner v-if="loading" center></km-spinner>
                 <search-result v-if="documents?.length" :documents="documents"></search-result>
 
-            </overlay-loading>
+            <!-- </overlay-loading> -->
         </div>
 
         <CAlert color="info" class="d-flex align-items-center" 
@@ -32,8 +33,10 @@
 import searchResult from '@/components/controls/search/search-result.vue';
 import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';
+import { andOr, queryIndex } from '@/services/solr'
+import { compact } from 'lodash';
 
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const realmConfStore  = useRealmConfStore();
     const realmConf = realmConfStore.realmConf; 
     const documents = ref([]);
@@ -41,6 +44,7 @@ import { SCHEMAS } from '@/utils';
     const recordsPerPage = ref(UTILS.ROWS_PER_PAGE_25);
     const currentPage = ref(1);
     const recordCount = ref(0);
+    const filters     = ref({});
 
     function onPageChange(page:Number){
         currentPage.value = page;
@@ -52,19 +56,49 @@ import { SCHEMAS } from '@/utils';
         loadRecords();
     }
 
+    function onFilterChange(newFilters:Object){
+        
+        filters.value = newFilters;
+        loadRecords();
+    }
+
     async function loadRecords(){
         loading.value = true;
-        const searchQuery = {
-            rows: recordsPerPage.value,
-            q    : `_state_s: public AND schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:${realmConf.realm}`,
-            sort : "updatedDate_dt desc",
-            start: (currentPage.value -1 ) * recordsPerPage.value
-        }
-        const result = await useAPIFetch('/api/v2013/index/select', {method:'POST', body : searchQuery})
-        loading.value = false;
-        documents.value = result.response.docs;
-        recordCount.value = result.response.numFound;
+        currentPage.value = 1;
+        const queries:Array<String> = [];
+        queries.push(`schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING})`);
 
+        queries.push(buildArrayQuery('headlineIndicators_ss', filters.value.headlineIndicators));
+        queries.push(buildArrayQuery('componentIndicators_ss', filters.value.componentIndicators));    
+        queries.push(buildArrayQuery('complementaryIndicators_ss', filters.value.complementaryIndicators));
+        queries.push(buildArrayQuery('binaryIndicators_ss', filters.value.binaryIndicators)); 
+
+        queries.push(buildArrayQuery('globalTargetAlignment_ss', filters.value.globalTargets));          
+        queries.push(buildArrayQuery('globalGoalAlignment_ss', filters.value.globalGoals)); 
+
+        queries.push(buildArrayQuery('government_s', filters.value.countries));              
+        queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));
+        
+
+        const searchQuery = {
+            rowsPerPage: recordsPerPage.value,
+            query: andOr(compact(queries), 'AND'),
+            sort : "updatedDate_dt desc",
+            start: (currentPage.value -1 ) * recordsPerPage.value,
+            additionalFields :['globalTargetAlignment_EN_ss','globalGoalOrTarget_EN_s']
+        }
+        const result = await queryIndex(searchQuery, locale);
+
+        loading.value = false;
+        documents.value = result.docs;
+        recordCount.value = result.numFound;
+
+    }
+
+    function buildArrayQuery(field:string, items:Array<String>){
+        if(items?.length){
+            return `${field} : (${items.join(' ')})`;
+        }
     }
 
     onMounted(()=>{
