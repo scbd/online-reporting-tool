@@ -1,0 +1,16 @@
+{
+    "first": "First",
+    "last": "Last",
+    "prev": "Prev",
+    "next": "Next",
+    "pagination": "Pagination",
+
+    "twentyFive" : "25",
+    "fifty" : "50",
+    "oneHundred": "100",
+    "twoHundred": "200",
+    "threeHundred": "300",
+    "of":"of",
+    "itemsPerPage" : "Rows per page",
+    "total":"Total:"
+}

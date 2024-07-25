@@ -3,13 +3,7 @@
       <CCardHeader>
         <slot name="header"> <CIcon name="cil-grid" /> {{ t('nationalTargets') }} </slot>
       </CCardHeader>
-      <CCardBody>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-          <NuxtLink :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary">
-              <font-awesome-icon icon="fa-plus"></font-awesome-icon> {{ t('submitNew') }}
-          </NuxtLink>
-        </div>
-
+      <CCardBody>        
         <km-suspense>
             <national-target-list></national-target-list>
         </km-suspense>
@@ -30,8 +24,4 @@
         schema:SCHEMAS.NATIONAL_TARGET_7,
         roles:[...ROLES.ALL_NATIONAL_USERS],
     })
-    const navigateToPage = async (url:string)=>{
-      await useNavigateAppTo(url);
-    }
-    
   </script>

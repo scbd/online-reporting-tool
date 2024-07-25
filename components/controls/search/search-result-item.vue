@@ -1,5 +1,5 @@
 <template>
-    <km-link :to="viewUrl(document)" class="unset-anchor search-item" title="">
+    <km-link :to="viewUrl(document)" :target="linkTarget" class="unset-anchor search-item" title="">
         <CCard class="mb-3 border-left-3 border-left-info">
             <CCardBody>
                 <CCardTitle>{{document.title_EN_s}}</CCardTitle>
@@ -27,7 +27,8 @@
     import KmLink from '../KmLink.vue';
     import { SCHEMAS } from '@/utils';
     const props = defineProps({
-        document : {type:Object, required:true}
+        document : {type:Object, required:true},
+        linkTarget : {type:String, default:'_blank'}
     });
 
     const { $appRoutes:appRoutes } = useNuxtApp();
