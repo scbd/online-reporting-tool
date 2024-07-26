@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="search">
-            <search-filters @on-filter-change="onFilterChange"></search-filters>
+            <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes"></search-filters>
             <!-- <overlay-loading :active="loading" :can-cancel="false" background-color="rgb(9 9 9)"
                 :is-full-page="false"> -->
 
@@ -45,6 +45,7 @@ import { compact } from 'lodash';
     const currentPage = ref(1);
     const recordCount = ref(0);
     const filters     = ref({});
+    const recordTypes = [SCHEMAS.NATIONAL_TARGET_7, SCHEMAS.NATIONAL_TARGET_7_MAPPING];
 
     function onPageChange(page:Number){
         currentPage.value = page;
@@ -66,7 +67,8 @@ import { compact } from 'lodash';
         loading.value = true;
         currentPage.value = 1;
         const queries:Array<String> = [];
-        queries.push(`schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING})`);
+
+        queries.push(buildArrayQuery('schema_s', filters.value.recordTypes?.length ? filters.value.recordTypes : recordTypes));
 
         queries.push(buildArrayQuery('headlineIndicators_ss', filters.value.headlineIndicators));
         queries.push(buildArrayQuery('componentIndicators_ss', filters.value.componentIndicators));    
@@ -77,7 +79,7 @@ import { compact } from 'lodash';
         queries.push(buildArrayQuery('globalGoalAlignment_ss', filters.value.globalGoals)); 
 
         queries.push(buildArrayQuery('government_s', filters.value.countries));              
-        queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));
+        queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
         
 
         const searchQuery = {

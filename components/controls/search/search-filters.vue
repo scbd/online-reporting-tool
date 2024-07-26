@@ -1,12 +1,17 @@
 <template>
     <div>
-        <CButton @click="showFilters = !showFilters" color="secondary" class="mb-1">
-            <font-awesome-icon icon="fa-filter"></font-awesome-icon>
-            {{ !showFilters ? t('showFilter') : t('hideFilter') }}
-        </CButton>
         <CCollapse :visible="showFilters" class="mb-2">
             <CCard body-wrapper>
                 <div id="filters" class="row p-2">
+                    <div class="col-md-4" v-if="schemaTypeLists?.length">
+                        <km-form-group :caption="t('filterByRecordType')">
+                            <km-select v-if="countries" v-model="selectedRecordType" label="title"
+                                track-by="identifier" value-key="identifier" :options="schemaTypeLists"
+                                :close-on-select="false" :custom-label="customShortLabel($event, locale)"
+                                :custom-selected-item="customSelectedItem" multiple="true" @update:modelValue="onFilterChange">
+                            </km-select>
+                        </km-form-group>
+                    </div>
                     <div class="col-md-4">
                         <km-form-group :caption="t('filterByGlobalTargets')">
                             <gbf-targets v-model="selectedGlobalTargets" :multiple="true" @update:modelValue="onFilterChange"></gbf-targets>
@@ -42,6 +47,10 @@
                 </div>
             </CCard>
         </CCollapse>
+        <CButton @click="showFilters = !showFilters" color="secondary" class="mb-1 float-start">
+            <font-awesome-icon icon="fa-filter"></font-awesome-icon>
+            {{ !showFilters ? t('showFilter') : t('hideFilter') }}
+        </CButton>
 
     </div>
 </template>
@@ -49,26 +58,46 @@
 <script setup lang="ts">
 
 import { useThesaurusStore } from '@/stores/thesaurus';
+import { useRealmConfStore } from '@/stores/realmConf';
 
 const emit = defineEmits(['onFilterChange'])
+const props = defineProps({
+    schemaTypes : {type:Array<String>, default:undefined}
+})
 
-const { t, locale } = useI18n();
+const { t, locale }  = useI18n();
 const thesaurusStore = useThesaurusStore();
+const realmConfStore = useRealmConfStore();
+const realmConf      = realmConfStore.realmConf;
 
-const showFilters = ref(false);
-
-const headlineIndicators = ref([]);
-const componentIndicators = ref([]);
+const showFilters             = ref(false);
+const headlineIndicators      = ref([]);
+const componentIndicators     = ref([]);
 const complementaryIndicators = ref([]);
-const binaryIndicators = ref([]);
-const selectedGlobalTargets = ref([]);
-const selectedGlobalGoals = ref([]);
-const selectedCountries = ref([]);
-const selectedRegions = ref([]);
+const binaryIndicators        = ref([]);
+const selectedGlobalTargets   = ref([]);
+const selectedGlobalGoals     = ref([]);
+const selectedCountries       = ref([]);
+const selectedRegions         = ref([]);
+const selectedRecordType      = ref([]);
 
-const countries = computed(() => (thesaurusStore.getDomainTerms(THESAURUS.COUNTRIES) || []).sort((a, b) => a.name.localeCompare(b.name)));
-const regions = computed(() => ((thesaurusStore.getDomainTerms(THESAURUS.REGIONS) || []).sort((a, b) => a.name.localeCompare(b.name))));
+const countries       = computed(() => (thesaurusStore.getDomainTerms(THESAURUS.COUNTRIES) || []).sort((a, b) => a.name.localeCompare(b.name)));
+const regions         = computed(() => ((thesaurusStore.getDomainTerms(THESAURUS.REGIONS) || []).sort((a, b) => a.name.localeCompare(b.name))));
+const schemaTypeLists = computed(()=>{
+    return props.schemaTypes?.map((schema)=>{
+        if(realmConf.schemas[schema]){
+            return {
+                identifier : schema,
+                title : realmConf.schemas[schema].title
+            }
+        }
 
+        return {
+            identifier : schema,
+            title : { en : schema }
+        }
+    })
+})
 const clearFilters = () => {
     selectedGlobalTargets.value = [];
     selectedGlobalGoals.value = [];
@@ -78,6 +107,7 @@ const clearFilters = () => {
     binaryIndicators.value = [];
     selectedCountries.value = [];
     selectedRegions.value = [];
+    selectedRecordType.value    = [];
 
     onFilterChange()
 }
@@ -91,6 +121,7 @@ function onFilterChange(){
         globalGoals            : selectedGlobalGoals.value?.map(e=>e.identifier),
         countries              : selectedCountries.value?.map(e=>e.identifier),
         regions                : selectedRegions.value?.map(e=>e.identifier),
+        recordTypes            : selectedRecordType.value?.map(e=>e.identifier),
     }
 
     emit('onFilterChange', filters);
