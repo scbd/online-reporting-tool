@@ -4,14 +4,21 @@
             <CCardBody>
                 <CCardTitle>{{document.recTitle}}</CCardTitle>
                 <CCardText>
-                    <div v-html="document.recSummary"></div>
-                    <span v-for="(target, index) in document.globalTargetAlignment_EN_ss" :key="target">
-                        <strong class="text-muted">{{ target }}</strong>
-                        <span class="m-2" v-if="index < document.globalTargetAlignment_EN_ss.length-1">|</span>
-                    </span>
-                    <span v-if="document.globalGoalOrTarget_EN_s">
-                        <strong class="text-muted">{{ document.globalGoalOrTarget_EN_s }}</strong>
-                    </span>
+                    <div class="limited-text" v-html="document.recSummary"></div>
+                    <div class="mt-2">
+                        <span v-for="(target, index) in document.globalTargetAlignment_ss" :key="target">
+                            <strong class="text-muted">{{ target }}</strong>
+                            <span class="m-2" v-if="index < document.globalTargetAlignment_ss.length-1">|</span>
+                        </span>
+                        <span v-for="(target, index) in document.globalGoalAlignment_ss" :key="target">
+                            <span class="m-2" v-if="document.globalTargetAlignment_ss.length">|</span>
+                            <strong class="text-muted">{{ target }}</strong>
+                            <span class="m-2" v-if="index < document.globalGoalAlignment_ss.length-1">|</span>
+                        </span>
+                        <span v-if="document.globalGoalOrTarget_s">
+                            <strong class="text-muted">{{ document.globalGoalOrTarget_s }}</strong>
+                        </span>
+                    </div>
                 </CCardText>
                 <CCardText>
                     <small class="me-2 fs-6">{{document.schema_EN_s}}</small>|
@@ -51,4 +58,11 @@
     .search-item .card:hover{
         background-color: #eee;
     }
+
+    .limited-text {
+     display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;  /* Number of lines displayed before it truncate */
+     overflow: hidden;
+}
 </style>

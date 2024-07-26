@@ -6,5 +6,6 @@
     "filterByGlobalTargets":"Global targets",
     "filterByGlobalGoals":"Global goals",
     "filterByCountries":"Countries",
-    "filterByRegions":"Regions"
+    "filterByRegions":"Regions",
+    "filterByRecordType": "Record Type"
 }

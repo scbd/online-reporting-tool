@@ -1,11 +1,11 @@
 <template>
     <div>
-        <CCollapse :visible="showFilters" class="mb-2">
+        <CCollapse visible="true" class="mb-2">
             <CCard body-wrapper>
                 <div id="filters" class="row p-2">
                     <div class="col-md-4" v-if="schemaTypeLists?.length">
                         <km-form-group :caption="t('filterByRecordType')">
-                            <km-select v-if="countries" v-model="selectedRecordType" label="title"
+                            <km-select v-if="countries" v-model="selectedRecordTypes" label="title"
                                 track-by="identifier" value-key="identifier" :options="schemaTypeLists"
                                 :close-on-select="false" :custom-label="customShortLabel($event, locale)"
                                 :custom-selected-item="customSelectedItem" multiple="true" @update:modelValue="onFilterChange">
@@ -47,10 +47,10 @@
                 </div>
             </CCard>
         </CCollapse>
-        <CButton @click="showFilters = !showFilters" color="secondary" class="mb-1 float-start">
+        <!-- <CButton @click="showFilters = !showFilters" color="secondary" class="mb-1 float-start">
             <font-awesome-icon icon="fa-filter"></font-awesome-icon>
             {{ !showFilters ? t('showFilter') : t('hideFilter') }}
-        </CButton>
+        </CButton> -->
 
     </div>
 </template>
@@ -65,6 +65,8 @@ const props = defineProps({
     schemaTypes : {type:Array<String>, default:undefined}
 })
 
+const router = useRouter()
+const route = useRoute()
 const { t, locale }  = useI18n();
 const thesaurusStore = useThesaurusStore();
 const realmConfStore = useRealmConfStore();
@@ -79,7 +81,7 @@ const selectedGlobalTargets   = ref([]);
 const selectedGlobalGoals     = ref([]);
 const selectedCountries       = ref([]);
 const selectedRegions         = ref([]);
-const selectedRecordType      = ref([]);
+const selectedRecordTypes      = ref([]);
 
 const countries       = computed(() => (thesaurusStore.getDomainTerms(THESAURUS.COUNTRIES) || []).sort((a, b) => a.name.localeCompare(b.name)));
 const regions         = computed(() => ((thesaurusStore.getDomainTerms(THESAURUS.REGIONS) || []).sort((a, b) => a.name.localeCompare(b.name))));
@@ -107,12 +109,13 @@ const clearFilters = () => {
     binaryIndicators.value = [];
     selectedCountries.value = [];
     selectedRegions.value = [];
-    selectedRecordType.value    = [];
+    selectedRecordTypes.value    = [];
 
     onFilterChange()
 }
 
 function onFilterChange(){
+console.log(selectedGlobalTargets.value)
     const filters = {
         componentIndicators    : componentIndicators.value?.map(e=>e.identifier),
         complementaryIndicators: complementaryIndicators.value?.map(e=>e.identifier),
@@ -121,16 +124,52 @@ function onFilterChange(){
         globalGoals            : selectedGlobalGoals.value?.map(e=>e.identifier),
         countries              : selectedCountries.value?.map(e=>e.identifier),
         regions                : selectedRegions.value?.map(e=>e.identifier),
-        recordTypes            : selectedRecordType.value?.map(e=>e.identifier),
+        recordTypes            : selectedRecordTypes.value?.map(e=>e.identifier),
     }
-
+    router.push({
+        path : route.fullPath,
+        query : { 
+            componentIndicators    : filters.componentIndicators,
+            complementaryIndicators: filters.complementaryIndicators,
+            binaryIndicators       : filters.binaryIndicators,
+            globalTargets          : filters.globalTargets,
+            globalGoals            : filters.globalGoals,
+            countries              : filters.countries,
+            regions                : filters.regions,
+            recordTypes            : filters.recordTypes,
+        }
+    });
     emit('onFilterChange', filters);
 }
 
 onMounted(() => {
     thesaurusStore.loadDomainTerms(THESAURUS.COUNTRIES)
-    thesaurusStore.loadDomainTerms(THESAURUS.REGIONS)
+    thesaurusStore.loadDomainTerms(THESAURUS.REGIONS);
+
+    mapQueryString('componentIndicators', componentIndicators);
+    mapQueryString('complementaryIndicators', complementaryIndicators);
+    mapQueryString('binaryIndicators', binaryIndicators);
+    mapQueryString('globalTargets', selectedGlobalTargets);
+    mapQueryString('globalGoals', selectedGlobalGoals);
+    mapQueryString('countries', selectedCountries);
+    mapQueryString('regions', selectedRegions);
+    mapQueryString('recordTypes', selectedRecordTypes);
+
+    onFilterChange();
 })
+
+function mapQueryString(queryName:string, refVariable:object){
+
+    let queryValue = route?.query[queryName];
+    if(queryValue){
+        if(typeof queryValue == 'string')
+            queryValue = [queryValue];
+
+        refVariable.value = queryValue.map(e=>({identifier:e}));
+
+        showFilters.value = true
+    }
+}
 </script>
 
 <style scoped></style>~/styles/stores/thesaurus
