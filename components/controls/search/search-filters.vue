@@ -59,6 +59,8 @@
 
 import { useThesaurusStore } from '@/stores/thesaurus';
 import { useRealmConfStore } from '@/stores/realmConf';
+import { useRoute, useRouter } from 'vue-router';
+
 
 const emit = defineEmits(['onFilterChange'])
 const props = defineProps({
@@ -115,7 +117,6 @@ const clearFilters = () => {
 }
 
 function onFilterChange(){
-console.log(selectedGlobalTargets.value)
     const filters = {
         componentIndicators    : componentIndicators.value?.map(e=>e.identifier),
         complementaryIndicators: complementaryIndicators.value?.map(e=>e.identifier),
@@ -126,6 +127,7 @@ console.log(selectedGlobalTargets.value)
         regions                : selectedRegions.value?.map(e=>e.identifier),
         recordTypes            : selectedRecordTypes.value?.map(e=>e.identifier),
     }
+    
     router.push({
         path : route.fullPath,
         query : { 
@@ -172,4 +174,4 @@ function mapQueryString(queryName:string, refVariable:object){
 }
 </script>
 
-<style scoped></style>~/styles/stores/thesaurus
+<style scoped></style>
