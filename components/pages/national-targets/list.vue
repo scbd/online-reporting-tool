@@ -57,14 +57,13 @@ import { compact } from 'lodash';
     }
 
     function onFilterChange(newFilters:Object){
-        
+        currentPage.value = 1;
         filters.value = newFilters;
         loadRecords();
     }
 
     async function loadRecords(){
         loading.value = true;
-        currentPage.value = 1;
         const queries:Array<String> = [];
 
         queries.push(buildArrayQuery('schema_s', filters.value.recordTypes?.length ? filters.value.recordTypes : recordTypes));
@@ -80,7 +79,6 @@ import { compact } from 'lodash';
         queries.push(buildArrayQuery('government_s', filters.value.countries));              
         queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
         
-
         const searchQuery = {
             rowsPerPage: recordsPerPage.value,
             query: andOr(compact(queries), 'AND'),
