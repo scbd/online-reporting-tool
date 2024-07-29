@@ -1,21 +1,29 @@
 <template>
-    <km-link :to="viewUrl(document)" class="unset-anchor search-item" title="">
+    <km-link :to="viewUrl(document)" :target="linkTarget" class="unset-anchor search-item" title="">
         <CCard class="mb-3 border-left-3 border-left-info">
             <CCardBody>
-                <CCardTitle>{{document.title_EN_s}}</CCardTitle>
+                <CCardTitle>{{document.recTitle}}</CCardTitle>
                 <CCardText>
-                    <span v-for="(target, index) in document.globalTargetAlignment_EN_ss" :key="target">
-                        <strong class="text-muted">{{ target }}</strong>
-                        <span class="m-2" v-if="index < document.globalTargetAlignment_EN_ss.length-1">|</span>
-                    </span>
-                    <span v-if="document.globalGoalOrTarget_EN_s">
-                        <strong class="text-muted">{{ document.globalGoalOrTarget_EN_s }}</strong>
-                    </span>
+                    <div class="limited-text" v-html="document.recSummary"></div>
+                    <div class="mt-2">
+                        <span v-for="(target, index) in document.globalTargetAlignment_ss" :key="target">
+                            <strong class="text-muted">{{ target }}</strong>
+                            <span class="m-2" v-if="index < document.globalTargetAlignment_ss.length-1">|</span>
+                        </span>
+                        <span v-for="(target, index) in document.globalGoalAlignment_ss" :key="target">
+                            <span class="m-2" v-if="document.globalTargetAlignment_ss.length">|</span>
+                            <strong class="text-muted">{{ target }}</strong>
+                            <span class="m-2" v-if="index < document.globalGoalAlignment_ss.length-1">|</span>
+                        </span>
+                        <span v-if="document.globalGoalOrTarget_s">
+                            <strong class="text-muted">{{ document.globalGoalOrTarget_s }}</strong>
+                        </span>
+                    </div>
                 </CCardText>
                 <CCardText>
                     <small class="me-2 fs-6">{{document.schema_EN_s}}</small>|
                     <small class="me-2 fs-6">{{document.government_EN_s}}</small>|
-                    <small class="me-2 fs-6">{{formatDate(document.updatedDate_dt)}}</small>
+                    <small class="me-2 fs-6">{{formatDate(document.recDate)}}</small>
                     
                 </CCardText>
             </CCardBody>
@@ -27,7 +35,8 @@
     import KmLink from '../KmLink.vue';
     import { SCHEMAS } from '@/utils';
     const props = defineProps({
-        document : {type:Object, required:true}
+        document : {type:Object, required:true},
+        linkTarget : {type:String, default:'_blank'}
     });
 
     const { $appRoutes:appRoutes } = useNuxtApp();
@@ -49,4 +58,11 @@
     .search-item .card:hover{
         background-color: #eee;
     }
+
+    .limited-text {
+     display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;  /* Number of lines displayed before it truncate */
+     overflow: hidden;
+}
 </style>

@@ -318,8 +318,14 @@
     function alertIfDocumentChanged(e){
         if(originalDocument && !isEqual(originalDocument, props.document.value)){
             const answer = window.confirm(t('confirmLeave'))
+            
             // cancel the navigation and stay on the same page
+            //if not e then the call is from onBeforeRouteLeave else its from browser
+            if(!e) return answer;
+
             if (answer) return false;
+
+            return answer;
         }
     }
 
@@ -410,7 +416,7 @@
     })
     // same as beforeRouteLeave option with no access to `this`
     onBeforeRouteLeave((to, from) => {
-        alertIfDocumentChanged();
+        return alertIfDocumentChanged();
     })
     onBeforeMount(() => {
         window.onbeforeunload = alertIfDocumentChanged

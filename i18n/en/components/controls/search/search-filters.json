@@ -1,0 +1,11 @@
+{
+    "clearFilter" : "Clear filter",
+    "showFilter" : "Show filter",
+    "hideFilter" : "Hide filter",
+
+    "filterByGlobalTargets":"Global targets",
+    "filterByGlobalGoals":"Global goals",
+    "filterByCountries":"Countries",
+    "filterByRegions":"Regions",
+    "filterByRecordType": "Record Type"
+}

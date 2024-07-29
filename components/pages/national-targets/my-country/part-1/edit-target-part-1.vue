@@ -85,7 +85,7 @@
 
                                     </km-form-group>
                                     
-                                    <km-form-group required :caption="t('degreeOfAlignment')" name="degreeOfAlignment" v-if="document?.globalTargetAlignment?.length">                                        
+                                    <km-form-group :caption="t('degreeOfAlignment')" name="degreeOfAlignment" v-if="document?.globalTargetAlignment?.length">                                        
                                         
                                         <table class="table table-bordered">                                            
                                             <tbody>
@@ -97,8 +97,8 @@
                                                 </tr>
                                                 <tr v-for="target in document.globalTargetAlignment" :key="target.identifier">
                                                     <td>
-                                                        <km-form-group required :name="target.identifier+'_degreeOfAlignment'">
-                                                            <label class="form-label control-label" :for="target.identifier+'_degreeOfAlignment'" required>
+                                                        <km-form-group :name="target.identifier+'_degreeOfAlignment'">
+                                                            <label class="form-label control-label" :for="target.identifier+'_degreeOfAlignment'">
                                                                 <span class="visually-hidden">{{ t('degreeOfAlignment') }} - </span>
                                                                 {{ lstring(globalTargets.find(e=>e.identifier == target.identifier)?.shortTitle, locale) }}
                                                                 <km-help class="ms-1 me-1" 

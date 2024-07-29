@@ -18,7 +18,8 @@
 
             <!-- </overlay-loading> -->
         </div>
-        <CAlert color="info" class="d-flex align-items-center mt-5" 
+
+        <CAlert color="info" class="d-flex align-items-center" 
             v-if="!loading && !documents?.length">
             <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
             <div class="p-2">
@@ -32,7 +33,7 @@
 import searchResult from '@/components/controls/search/search-result.vue';
 import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';
-import { andOr, queryIndex, escape } from '@/services/solr'
+import { andOr, queryIndex } from '@/services/solr'
 import { compact } from 'lodash';
 
     const { t, locale } = useI18n();
@@ -57,13 +58,14 @@ import { compact } from 'lodash';
     }
 
     function onFilterChange(newFilters:Object){
-        currentPage.value = 1;
+        
         filters.value = newFilters;
         loadRecords();
     }
 
     async function loadRecords(){
         loading.value = true;
+        currentPage.value = 1;
         const queries:Array<String> = [];
 
         queries.push(buildArrayQuery('schema_s', filters.value.recordTypes?.length ? filters.value.recordTypes : recordTypes));
@@ -79,12 +81,13 @@ import { compact } from 'lodash';
         queries.push(buildArrayQuery('government_s', filters.value.countries));              
         queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
         
+
         const searchQuery = {
             rowsPerPage: recordsPerPage.value,
             query: andOr(compact(queries), 'AND'),
             sort : "updatedDate_dt desc",
             start: (currentPage.value -1 ) * recordsPerPage.value,
-            additionalFields :['globalTargetAlignment_ss','globalGoalOrTarget_s','globalGoalAlignment_ss']
+            additionalFields :['globalTargetAlignment_EN_ss','globalGoalOrTarget_EN_s']
         }
         const result = await queryIndex(searchQuery, locale);
 
@@ -96,12 +99,12 @@ import { compact } from 'lodash';
 
     function buildArrayQuery(field:string, items:Array<String>){
         if(items?.length){
-            return `${field} : (${items.map(escape).join(' ')})`;
+            return `${field} : (${items.join(' ')})`;
         }
     }
 
     onMounted(()=>{
-        // loadRecords();
+        loadRecords();
     })
 
 </script>

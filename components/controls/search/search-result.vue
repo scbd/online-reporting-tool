@@ -1,6 +1,6 @@
 <template>
     <div v-for="document in documents" :key="document.id">
-        <search-result-item :document="document"></search-result-item>
+        <search-result-item :document="document" link-target="linkTarget"></search-result-item>
     </div>
 </template>
 
@@ -8,7 +8,8 @@
     import searchResultItem from './search-result-item.vue';
 
     const props = defineProps({
-        documents : {type:Array<Object>, required:true}
+        documents : {type:Array<Object>, required:true},
+        linkTarget : {type:String, default:'_blank'}
     })
 </script>
 
