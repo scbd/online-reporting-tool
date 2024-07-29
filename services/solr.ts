@@ -86,7 +86,7 @@ export function facetsToObject(solrArray, facetFields) {
     facetFields.forEach(function(field){
         if (solrArray){
             var mField = field.replace(/{.*}/, ''); //remove tags(${!ex=xxx}) is specified in field names
-            for (var i = 0; i < solrArray[mField].length; i += 2) {
+            for (var i = 0; i < solrArray[mField]?.length; i += 2) {
                 if(!facets[mField])
                     facets[mField] = {};
                 facets[mField][solrArray[mField][i]] = solrArray[mField][i + 1];
@@ -137,8 +137,11 @@ export async function queryIndex(searchQuery:Object, locale){
         queryListParameters['hl.snippets'] = 5;
         queryListParameters['hl.fl']= searchQuery.highlightFields||'text_EN_txt';
     }
+
     if(searchQuery.facet){
         queryListParameters.facet = true
+        queryListParameters['facet.sort'] = 'index' //alphabetically sorted
+        queryListParameters['facet.query']  = searchQuery.query,
         queryListParameters['facet.field']  = searchQuery.facetFields
         queryListParameters['facet.mincount'] = 1,
         queryListParameters['facet.limit'] =  512
@@ -156,7 +159,7 @@ export async function queryIndex(searchQuery:Object, locale){
 
     if(searchQuery.facet){ /// Normalize Facets   
 
-        const facetResult = facetsToObject(result.facet_counts.facet_fields, searchQuery['facet.field']);
+        const facetResult = facetsToObject(result.facet_counts.facet_fields, queryListParameters['facet.field']);
         searchResult.facets = facetResult;
         searchResult.facetPivot = result.facet_counts.facet_pivot;
     }

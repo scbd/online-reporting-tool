@@ -3,6 +3,7 @@ export const appRoutes = {
     DASHBOARD                   : '/dashboard',
     NATIONAL_TARGETS              : '/national-targets',
 
+    NATIONAL_TARGETS_ANALYZER               : '/national-targets/analyzer',
     NATIONAL_TARGETS_MY_COUNTRY             : '/national-targets/my-country',
     NATIONAL_TARGETS_MY_COUNTRY_PART_I      : '/national-targets/my-country/part-1',
     NATIONAL_TARGETS_MY_COUNTRY_PART_I_EDIT : '/national-targets/my-country/part-1/:identifier/edit',
