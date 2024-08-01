@@ -112,7 +112,6 @@
         </CAlert>
     </div>
 </template>
-<i18n src="@/i18n/dist/components/pages/national-targets/list.json"></i18n>
 <script setup lang="ts">
 import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';
