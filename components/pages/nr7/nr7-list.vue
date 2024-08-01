@@ -9,7 +9,6 @@
         </CAlert>
     </div>
 </template>
-<i18n src="@/i18n/dist/components/pages/national-targets/list.json"></i18n>
 <script setup lang="ts">
 import searchResult from '@/components/controls/search/search-result.vue';
 import { useRealmConfStore } from '@/stores/realmConf';
