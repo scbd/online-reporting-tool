@@ -32,7 +32,7 @@
             {{ t('menuNationalTargets') }}
         </template>
         <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS]" :to="appRoutes.NATIONAL_TARGETS" icon="cil-list" :title="t('menuAllTargets')"></KmNavLink>        
-        <KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_ANALYZER]" :to="appRoutes.NATIONAL_TARGETS_ANALYZER" icon="cil-speedometer" :title="t('menuAnalyzeTargets')"></KmNavLink>
+        <!--<KmNavLink v-if="menuAccess[appRoutes.NATIONAL_TARGETS_ANALYZER]" :to="appRoutes.NATIONAL_TARGETS_ANALYZER" icon="cil-speedometer" :title="t('menuAnalyzeTargets')"></KmNavLink>-->
         <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)">
           <template #togglerContent>
             <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
