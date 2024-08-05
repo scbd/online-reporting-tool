@@ -50,7 +50,7 @@ export default defineNuxtConfig({
         // },
         // strictMessage: false,
         // escapeHtml:true,
-        // strategy: "prefix",
+        strategy: "prefix_and_default",
         vueI18n: './i18n.config.ts'
     },
     vue: {  

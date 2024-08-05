@@ -16,7 +16,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     addRouteMiddleware("customRoutes", async (to, from) => {                
             const matchedRoute = findMatchingRoute($appRoutes, to, from);
             if(matchedRoute){
-                console.log(matchedRoute)
                 return useNavigateAppTo(matchedRoute);
             }
         }, 
