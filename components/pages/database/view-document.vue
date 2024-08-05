@@ -69,11 +69,11 @@
         isLoading.value = true;
         try{
             if(route.query?.draft == 'true' || route.query.hasOwnProperty('draft')){
-                const draftRecord = await KmDocumentDraftsService.loadDraftDocument(route.params.identifier);
+                const draftRecord = await KmDocumentDraftsService.loadDraftDocument(identifier || route.params.identifier);
                 lDocument.value = draftRecord.body;
             }
             else{
-                const record = await KmDocumentsService.loadDocument(route.params.identifier);
+                const record = await KmDocumentsService.loadDocument(identifier || route.params.identifier);
                 lDocument.value = record.body;
             }
         }

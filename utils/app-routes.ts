@@ -1,7 +1,8 @@
 export const appRoutes = {
 
-    DASHBOARD                   : '/dashboard',
-    NATIONAL_TARGETS              : '/national-targets',
+    DASHBOARD                    : '/dashboard',
+    NATIONAL_TARGETS             : '/national-targets',
+    DATABASE                     : '/database/:identifier',
 
     NATIONAL_TARGETS_ANALYZER               : '/national-targets/analyzer',
     NATIONAL_TARGETS_MY_COUNTRY             : '/national-targets/my-country',

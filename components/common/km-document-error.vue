@@ -4,6 +4,9 @@
             <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
             <div v-if="documentError==404">
                 {{t('notFound')}}
+                <span class="col-12 ps-1 pt-2" v-if="security.role.isAdministrator() ">
+                    <a :href="`${$route.path}?draft=true`">Load Draft (Admin only)</a>
+                </span>
             </div>
             <div v-else-if="documentError==401 || documentError==403">
                 {{t('notAuthorized')}}
@@ -19,6 +22,8 @@
 
 <script setup lang="ts">
     const { locale, t } = useI18n();
+    const security      = useSecurity();
+    
     const props = defineProps({
                         documentError : { type:Object, required:true}
                     });
