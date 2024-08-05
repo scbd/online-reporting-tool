@@ -14,6 +14,7 @@
 <script setup lang="ts">
 
     import { useThesaurusStore }    from '@/stores/thesaurus';
+    import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
 
     const model = defineModel()
 
@@ -22,7 +23,7 @@
     const globalGoals = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)||[]).sort((a,b)=>a.name.localeCompare(b.name)));
     
     onMounted(() => {
-        thesaurusStore.loadDomainTerms(THESAURUS.GBF_GLOBAL_GOALS)
+        GbfGoalsAndTargets.loadGbfGoals()
     })
 </script>
 
