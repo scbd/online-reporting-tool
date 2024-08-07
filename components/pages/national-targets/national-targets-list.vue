@@ -1,14 +1,18 @@
 <template>
     <div>
         <div class="search">
-            <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes"></search-filters>
+            <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes">
+                <template #action-buttons>                    
+                    <export :search-query="searchQuery" schema="nationalTarget7"></export>
+                    <NuxtLink :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary float-end">
+                        <font-awesome-icon icon="fa-plus"></font-awesome-icon> {{ t('submitNew') }}
+                    </NuxtLink>
+                </template>
+            </search-filters>
             <!-- <overlay-loading :active="loading" :can-cancel="false" background-color="rgb(9 9 9)"
                 :is-full-page="false"> -->
 
                 <div>
-                    <NuxtLink :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary float-end">
-                        <font-awesome-icon icon="fa-plus"></font-awesome-icon> {{ t('submitNew') }}
-                    </NuxtLink>
                     <pagination v-if="recordCount > 0" :recordCount="recordCount"  :recordsPerPage="recordsPerPage"
                     :currentPage="currentPage" @on-page-change="onPageChange" @on-records-per-page-changed="onRecordsPerPageChanged"  ></pagination>
                 </div>
@@ -32,7 +36,7 @@
 import SearchFilters from '@/components/controls/search/search-filters.vue'
 import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';
-import { andOr, queryIndex, escape } from '@/services/solr'
+import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
 import { compact } from 'lodash';
 
     const { t, locale } = useI18n();
@@ -45,6 +49,7 @@ import { compact } from 'lodash';
     const recordCount = ref(0);
     const filters     = ref({});
     const recordTypes = [SCHEMAS.NATIONAL_TARGET_7, SCHEMAS.NATIONAL_TARGET_7_MAPPING];
+    const searchQuery = ref({});
 
     function onPageChange(page:Number){
         currentPage.value = page;
@@ -79,14 +84,14 @@ import { compact } from 'lodash';
         queries.push(buildArrayQuery('government_s', filters.value.countries));              
         queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
         
-        const searchQuery = {
+        searchQuery.value = {
             rowsPerPage: recordsPerPage.value,
             query: andOr(compact(queries), 'AND'),
             sort : "updatedDate_dt desc",
             start: (currentPage.value -1 ) * recordsPerPage.value,
             additionalFields :['globalTargetAlignment_ss','globalGoalOrTarget_s','globalGoalAlignment_ss']
         }
-        const result = await queryIndex(searchQuery, locale);
+        const result = await queryIndex(parseSolrQuery(searchQuery.value, locale));
 
         loading.value = false;
         documents.value = result.docs;
