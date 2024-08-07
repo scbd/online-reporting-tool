@@ -1,5 +1,6 @@
 import { RouteLocationRaw } from "vue-router";
 import { NavigateToOptions } from '#imports'
+import { useRealmConfStore } from '@/stores/realmConf';
 
 export const useNavigateAppTo = (to:RouteLocationRaw, options?: NavigateToOptions | undefined) =>{ 
     
@@ -35,4 +36,11 @@ export const useResolveAccountsHostUrl = function(url:string){
         return `${accountsHostUrl}${url}`
 
     return url;
+}
+
+export const useRealm = function(){
+
+    const realmConfStore  = useRealmConfStore();
+    
+    return realmConfStore.realmConf; 
 }
