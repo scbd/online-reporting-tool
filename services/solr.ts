@@ -12,7 +12,8 @@ var searchDefaults = {
     // groupField  : 'government_s',
     // groupLimit  : 100000,
     fieldQuery  : [],
-    query       : "''"
+    query       : "''",
+    sort        : 'updatedDate_dt desc'
 }
 
 export function escape(value) {
@@ -107,12 +108,33 @@ export async function facets(searchQuery:Object){
 
 }
 
-export async function queryIndex(searchQuery:Object, locale){
+export async function queryIndex(searchQuery:Object){
+    
+    const result = await useAPIFetch('/api/v2013/index/select', {method:'POST', body : searchQuery})
+
+    const searchResult = { 
+        docs : result.response.docs,
+        numFound : result.response.numFound
+    }
+
+    if(searchQuery.facet){ /// Normalize Facets   
+
+        const facetResult = facetsToObject(result.facet_counts.facet_fields, queryListParameters['facet.field']);
+        searchResult.facets = facetResult;
+        searchResult.facetPivot = result.facet_counts.facet_pivot;
+    }
+
+    return searchResult;
+
+}
+
+
+export function parseSolrQuery(searchQuery:Object, locale:String){
 
     const realmConfStore  = useRealmConfStore();
     const realmConf = realmConfStore.realmConf;
 
-    _.defaults(searchQuery, searchDefaults);
+    _.defaults(searchQuery, {...searchDefaults});
 
     if(searchQuery.additionalFields)
         searchQuery.fields += ',' + searchQuery.additionalFields; 
@@ -150,20 +172,7 @@ export async function queryIndex(searchQuery:Object, locale){
             queryListParameters['facet.pivot']  = searchQuery.pivotFacetFields;
     }
 
-    const result = await useAPIFetch('/api/v2013/index/select', {method:'POST', body : queryListParameters})
-
-    const searchResult = { 
-        docs : result.response.docs,
-        numFound : result.response.numFound
-    }
-
-    if(searchQuery.facet){ /// Normalize Facets   
-
-        const facetResult = facetsToObject(result.facet_counts.facet_fields, queryListParameters['facet.field']);
-        searchResult.facets = facetResult;
-        searchResult.facetPivot = result.facet_counts.facet_pivot;
-    }
-
-    return searchResult;
+    return queryListParameters;
 
 }
+
