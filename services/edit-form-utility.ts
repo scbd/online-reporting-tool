@@ -45,9 +45,9 @@ class editFormUtility{
                                                 : $kmStorageApi.drafts.canCreate(info.identifier, {metadata });
 
                 return securityPromise.then(
-                    function(isAllowed) {
+                    function({isAllowed}) {
                         if (!isAllowed)
-                            throw { data: { error: "Not allowed" }, status: "notAuthorized" };
+                            throw { data: { error: "Not allowed" }, status: 403 };
 
                         var documentPromise = hasDraft ? $kmStorageApi.drafts.get(identifier)
                                                         : $kmStorageApi.documents.get(identifier);
@@ -153,10 +153,10 @@ class editFormUtility{
 
             return qCanWrite;
 
-        }).then(function(canWrite) {
+        }).then(function({isAllowed}) {
 
-            if(!canWrite)
-                throw { error : "Not allowed" };
+            if(!isAllowed)
+                throw { data: { error: "Not allowed" }, status: 403 };
 
             //Save document
             if(schema == 'contact')
@@ -194,10 +194,10 @@ class editFormUtility{
 
             return qCanWrite;
 
-        }).then(function(canWrite) {
+        }).then(function({isAllowed}) {
 
-            if(!canWrite)
-                throw { error : "Not allowed" };
+            if(!isAllowed)
+                throw { data: { error: "Not allowed" }, status: 403 };
 
             //Save draft
             return $kmStorageApi.drafts.put(identifier, document);
@@ -303,7 +303,7 @@ class editFormUtility{
         return useAPIFetch("/api/v2013/workflows",{ body, method:'POST'})
 	}
 
-    private getDocumentMetadata(document:any){
+    getDocumentMetadata(document:any){
 
         const realmConfStore  = useRealmConfStore();
         const realmConf = realmConfStore.realmConf;
