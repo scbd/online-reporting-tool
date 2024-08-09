@@ -105,6 +105,22 @@
                 <CButton color="secondary" @click="confirm({confirm:false})">{{t('cancel')}}</CButton>
             </CModalFooter>
         </CModal>
+        
+        <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {isEditAllowed=false}" 
+            :visible="!isEditAllowed" >
+            <CModalHeader :close-button="false">
+                <CModalTitle>
+                    {{ t('unauthorizedAccess') }}
+                </CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+                <km-document-error document-error="403"></km-document-error>        
+                
+            </CModalBody>
+            <CModalFooter>
+                <CButton color="danger" @click="onClose">{{t('close')}}</CButton>
+            </CModalFooter>
+        </CModal>
     </div>
 
 </template>
@@ -143,6 +159,7 @@
     const formWizard       = ref(null);
     const validationReport = ref({});
     const activeTab      = ref(null);   
+    const isEditAllowed      = ref(true);
     const showOverwriteConfirmation = ref(false);
     const { isRevealed, reveal, confirm, cancel, onConfirm,  onCancel, } = useConfirmDialog();
 
@@ -393,6 +410,24 @@
         }
     }
 
+    async function verifyUserCanAccess(){
+
+        const $kmStorageApi = $api.kmStorage
+
+        const metadata   = EditFormUtility.getDocumentMetadata(props.document.value);
+        const identifier = props.document.value?.header?.identifier;
+
+        const exists     = await EditFormUtility.documentExists(identifier);
+
+        const qCanWrite  = exists  ? $kmStorageApi.drafts.canUpdate(identifier, { metadata })
+                                : $kmStorageApi.drafts.canCreate(identifier, { metadata });
+
+        const { isAllowed } = await qCanWrite;
+
+        return isAllowed;
+
+    }
+
     onMounted(async() => {
         validationReport.value = {}; 
         originalDocument = null
@@ -410,8 +445,11 @@
         else 
             originalDocument = cloneDeep(props.document.value);
         
-        //start save draft version 10 sec later
-        saveDraftVersionTimer = setTimeout(saveDraftVersion, 10000)
+        isEditAllowed.value = await verifyUserCanAccess();
+        if(isEditAllowed.value){
+            //start save draft version 10 sec later
+            saveDraftVersionTimer = setTimeout(saveDraftVersion, 10000);
+        }
             
     })
     // same as beforeRouteLeave option with no access to `this`

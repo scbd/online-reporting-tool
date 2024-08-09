@@ -22,5 +22,6 @@
    "publish"     : "Publish",
    "introInfo"   : "This section will have a brief description to help users submit information",
 
-   "confirmLeave": "Do you really want to leave? you have unsaved changes!"
+   "confirmLeave": "Do you really want to leave? you have unsaved changes!",
+   "unauthorizedAccess" : "Unauthorized access"
 }
