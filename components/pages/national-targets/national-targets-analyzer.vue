@@ -11,7 +11,13 @@
                             General count
                         </CCardHeader>
                         <CCardBody>   
-                            <CRow>
+                            <div class="row">
+                                <div class="col-sm-7">                                    
+                                    <un-map :colors="['#3c4b64']"></un-map>
+                                </div>
+                                <div class="col-sm-5">                                    
+                                
+                            <CRow>                               
                                 <CCol :sm="3">
                                     <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
                                         <template #text>Total records</template>
@@ -25,22 +31,23 @@
                                 <CCol :sm="3">
                                     <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
                                         <template #text>Number of Countries</template>
-                                        <template #value>{{ Object.keys(facets.government_EN_s).length }}</template>
+                                        <template #value>{{ Object.keys(facets.government_EN_s).length || 0 }}</template>
                                     </CWidgetStatsB>
                                 </CCol>
                                 <CCol :sm="3">
                                     <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
                                         <template #text>Total National Targets (Part I)</template>
-                                        <template #value>{{ facets.schema_s.nationalTarget7 }}</template>
+                                        <template #value>{{ facets.schema_s.nationalTarget7 || 0 }}</template>
                                     </CWidgetStatsB>
                                 </CCol>
                                 <CCol :sm="3">
                                     <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
                                         <template #text>Total National Target Mappings (Part II)</template>
-                                        <template #value>{{ facets.schema_s.nationalTarget7Mapping }}</template>
+                                        <template #value>{{ facets.schema_s.nationalTarget7Mapping || 0 }}</template>
                                     </CWidgetStatsB>
                                 </CCol>
-                            </CRow>
+                            </CRow></div>
+                            </div>
                         </CCardBody>
                     </CCard>
                     
@@ -117,9 +124,11 @@ import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';
 import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
 import { compact } from 'lodash';
+import { useCountriesStore }    from '@/stores/countries';
 
     const { t, locale } = useI18n();
     const realmConfStore  = useRealmConfStore();
+    const countriesStore  = useCountriesStore ();
     const realmConf = realmConfStore.realmConf; 
     const facets = ref([]);
     const facetPivot = ref([]);
@@ -193,7 +202,15 @@ import { compact } from 'lodash';
     }
 
     onMounted(()=>{
+        countriesStore.loadCountries();
         // loadRecords();
+        provide(UNMapActionsKey, {
+            onSetLayerColor : (color:String)=>{
+                return facetPivot.value['government_EN_s,schema_s'].map(e=>{
+                    return countriesStore.countries.find(c=>c.name.en == e.value)?.code3
+                }).filter(e=>e)
+            }
+        })
     })
 
 </script>
