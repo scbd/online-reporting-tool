@@ -26,6 +26,12 @@
             CHM
           </NuxtLink>
         </CNavItem>
+        <CNavItem  class="d-none d-md-flex">
+          <NuxtLink class="nav-link" target="_blank" href="https://chm.cbd.int/management/national-users">
+            <font-awesome-icon icon="users-line" />
+            National users
+          </NuxtLink>
+        </CNavItem>           
         <CNavItem>
           <NuxtLink class="nav-link" :to="localePath('/knowledge-base')">
             <font-awesome-icon icon="fa-solid fa-circle-question" />
