@@ -17,6 +17,7 @@ export const THESAURUS = {
     ASSESSMENT_PROGRESS         : 'EF99BEFD-5070-41C4-91F0-C051B338EEA6',
     COUNTRIES                   : 'countries',
     REGIONS                     : 'regions',
+    CBD_REGIONAL_GROUPS         : 'E6566232-EE63-4C7B-AF8B-46A26CC295A5'
 }
 
 export const ROLES = {
