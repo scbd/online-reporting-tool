@@ -3,6 +3,6 @@ export default defineI18nConfig(() => ({
         strictMessage: false,
     },
     legacy: false,
-    messages: {    }
+    fallbackLocale: 'en',
 }))
   

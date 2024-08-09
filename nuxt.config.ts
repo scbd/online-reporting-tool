@@ -30,7 +30,7 @@ export default defineNuxtConfig({
         // 'bootstrap/dist/css/bootstrap.css'
         '@fortawesome/fontawesome-svg-core/styles.css'
     ],
-    i18n: {
+    i18n: {       
         locales: [
             { code: 'ar', iso: 'ar-SA',  dir: 'rtl' },
             { code: 'en', iso: 'en-US',             },
@@ -40,10 +40,9 @@ export default defineNuxtConfig({
             { code: 'zh', iso: 'zh-CN',             },
         ],
         defaultLocale: 'en',
-        fallbackLocale: 'en',
-        locale: 'en',
         detectBrowserLanguage : {
             alwaysRedirect: true,
+            fallbackLocale: 'en'
         },
         // precompile: {
         //     strictMessage: false,
@@ -51,7 +50,7 @@ export default defineNuxtConfig({
         // strictMessage: false,
         // escapeHtml:true,
         strategy: "prefix_and_default",
-        vueI18n: './i18n.config.ts'
+        vueI18n: './config/i18n.config.ts'
     },
     vue: {  
         compilerOptions: {
