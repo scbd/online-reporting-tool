@@ -174,7 +174,7 @@
                 config.responseType = "blob";
             }
             // since the download api does not provide numFound, query index
-            const downloadRecordsPromise  = useAPIFetch(`http://localhost:8000/api/v2022/documents/schemas/${encodeURIComponent(props.schema)}/download`, 
+            const downloadRecordsPromise  = useAPIFetch(`/api/v2022/documents/schemas/${encodeURIComponent(props.schema)}/download`, 
                                             {
                                                 method:'POST', 
                                                 body : {
