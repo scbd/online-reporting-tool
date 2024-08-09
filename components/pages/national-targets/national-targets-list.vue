@@ -4,7 +4,10 @@
             <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes">
                 <template #action-buttons>                    
                     <export :search-query="searchQuery" schema="nationalTarget7"></export>
-                    <NuxtLink :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary float-end">
+                    <NuxtLink :to="appRoutes.NATIONAL_TARGETS_ANALYZER" class="btn btn-secondary btn-sm ms-1">
+                        <font-awesome-icon icon="chart-pie"></font-awesome-icon> {{ t('analyzer') }}
+                    </NuxtLink>
+                    <NuxtLink :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary btn-sm float-end">
                         <font-awesome-icon icon="fa-plus"></font-awesome-icon> {{ t('submitNew') }}
                     </NuxtLink>
                 </template>
