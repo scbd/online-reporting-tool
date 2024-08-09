@@ -1,3 +1,5 @@
 {
-    "noRecords":"There are no records to display!"
+    "noRecords":"There are no records to display!",
+    "analyzer": "Analyzer",
+    "submitNew" : "Submit new target"
 }

@@ -115,7 +115,7 @@
 <script setup lang="ts">
 import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';
-import { andOr, queryIndex, escape } from '@/services/solr'
+import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
 import { compact } from 'lodash';
 
     const { t, locale } = useI18n();
@@ -164,7 +164,7 @@ import { compact } from 'lodash';
             facetFields : ['schema_s', 'government_EN_s', 'government_REL_ss','all_terms_ss', 'globalTargetAlignment_ss','globalGoalOrTarget_s','globalGoalAlignment_ss'],
             pivotFacetFields: ['government_EN_s,schema_s'],// 'schema_s,government_EN_s,globalTargetAlignment_ss'
         }
-        const result = await queryIndex(searchQuery, locale);
+        const result = await queryIndex(parseSolrQuery(searchQuery, locale));
 
         loading.value = false;
         recordCount.value = result.numFound;
@@ -180,8 +180,6 @@ import { compact } from 'lodash';
                 }
             });
         })
-
-        console.log(facets, facetPivot);
     }
 
     function buildArrayQuery(field:string, items:Array<String>){
