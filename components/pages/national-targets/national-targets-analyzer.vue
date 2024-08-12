@@ -245,7 +245,8 @@
                                             <tbody>
                                                     <tr v-for="party in analyzedCounts.progressInTargets.gbfTargetsByParty" :key="party">
                                                         <td>
-                                                            <img :src="`https://www.cbd.int/gbf/images/targets/target-${party.target.replace('GBF-TARGET-', '')}.png`" height="25">
+                                                            <img v-if="~party.target.indexOf('GBF-TARGET-')" :src="`https://www.cbd.int/gbf/images/targets/target-${party.target.replace('GBF-TARGET-', '')}.png`" height="25">
+                                                            <img v-if="~party.target.indexOf('GBF-GOAL-')" :src="`/cbd-gbf-logo.jpeg`" height="25" class="ps-3">
                                                             {{ party.target }}
                                                         </td>
                                                         <td>
@@ -264,7 +265,39 @@
                         </CRow>
                     </CCardBody>
                 </CCard>
-
+                <CCard class="mb-3">
+                    <CCardHeader>
+                        Progress in monitoring
+                    </CCardHeader>
+                    <CCardBody>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Number of Parties that have identified any indicators</th>
+                                    <th>Target count</th>
+                                    <th>Party count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Component indicators</td>
+                                    <td>{{ analyzedCounts.progressInMonitoring.componentIndicators.partyCount }}</td>
+                                    <td>{{ analyzedCounts.progressInMonitoring.componentIndicators.targetCount }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Complimentary indicators</td>
+                                    <td>{{ analyzedCounts.progressInMonitoring.complementaryIndicators.partyCount }}</td>
+                                    <td>{{ analyzedCounts.progressInMonitoring.complementaryIndicators.targetCount }}</td>
+                                </tr>
+                                <tr>
+                                    <td>National indicators</td>
+                                    <td>{{ analyzedCounts.progressInMonitoring.nationalIndicators.partyCount }}</td>
+                                    <td>{{ analyzedCounts.progressInMonitoring.nationalIndicators.targetCount }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </CCardBody>
+                </CCard>
                 <CCard>
                     <CCardHeader>
                         Country Count
@@ -387,9 +420,9 @@ import { useCountriesStore }    from '@/stores/countries';
             });
         })
 
-        console.log(facetPivot, facets)
         const newCounts = {};
         newCounts.progressInTargets = buildProgressInTargetCounts(facets.value, facetPivot.value)
+        newCounts.progressInMonitoring = buildProgressInMonitoringCounts(facets.value, facetPivot.value)
         analyzedCounts.value = newCounts;
         
     }
@@ -461,11 +494,36 @@ import { useCountriesStore }    from '@/stores/countries';
 
         progressInTargets.gbfTargetsByParty = [...gbfGoalPercentByParty, ...gbfTargetPercentByParty]
 
-
-
-
-        console.log(progressInTargets)
         return progressInTargets;
+    }
+
+    function buildProgressInMonitoringCounts(facets, facetsPivot){
+        
+        const hasComponentIndicatorsFacet      =  facetsPivot['government_EN_s,componentIndicators_EN_ss'];
+        const hasComplementaryIndicatorsFacet  =  facetsPivot['government_EN_s,complementaryIndicators_EN_ss'];
+        const hasOtherNationalIndicatorsFacet  =  facetsPivot['government_EN_s,hasOtherNationalIndicators_b'];
+        
+        const progressInMonitoring = {};
+
+        const hasComponentIndicators = hasComponentIndicatorsFacet.filter(e=>e.pivot?.length);
+        progressInMonitoring.componentIndicators = {
+            partyCount : hasComponentIndicators.length,
+            targetCount: hasComponentIndicators.reduce((prev, item)=>prev + item.count, 0)
+        }
+
+        const hasComplementaryIndicators = hasComplementaryIndicatorsFacet.filter(e=>e.pivot?.length);
+        progressInMonitoring.complementaryIndicators = {
+            partyCount : hasComplementaryIndicators.length,
+            targetCount: hasComplementaryIndicators.reduce((prev, item)=>prev + item.count, 0)
+        }
+
+        const hasOtherNationalIndicators = hasOtherNationalIndicatorsFacet.filter(e=>e.pivot.find(p=>p.value == true));
+        progressInMonitoring.nationalIndicators = {
+            partyCount : hasOtherNationalIndicators.length,
+            targetCount: hasOtherNationalIndicators.reduce((prev, item)=>prev + item.count, 0)
+        }
+
+        return progressInMonitoring;
     }
 
     function findCountryByName(name:String){
