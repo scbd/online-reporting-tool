@@ -319,7 +319,7 @@ class editFormUtility{
         
         if(!metadata.government){
             const { user } = useAuth();
-            metadata.government = user?.government;
+            metadata.government = user.value?.government;
         }
 
         return metadata;
