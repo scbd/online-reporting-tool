@@ -3,7 +3,7 @@
         <CCollapse visible="true" class="mb-2">
             <CCard body-wrapper>
                 <div id="filters" class="row p-2">
-                    <div class="col-md-4" v-if="schemaTypeLists?.length">
+                    <div class="col-md-4" v-if="schemaTypeLists?.length" id="filterByRecordType">
                         <km-form-group :caption="t('filterByRecordType')">
                             <km-select v-if="countries" v-model="selectedRecordTypes" label="title"
                                 track-by="identifier" value-key="identifier" :options="schemaTypeLists"
@@ -12,18 +12,18 @@
                             </km-select>
                         </km-form-group>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="filterByGlobalTargets">
                         <km-form-group :caption="t('filterByGlobalTargets')">
                             <gbf-targets v-model="selectedGlobalTargets" :multiple="true" @update:modelValue="onFilterChange"></gbf-targets>
                         </km-form-group>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="filterByGlobalGoals">
                         <km-form-group :caption="t('filterByGlobalGoals')">
                             <gbf-goals v-model="selectedGlobalGoals" :multiple="true" @update:modelValue="onFilterChange"></gbf-goals>
                         </km-form-group>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="filterByCountries">
                         <km-form-group :caption="t('filterByCountries')">
                             <km-select v-if="countries" v-model="selectedCountries" label="title"
                                 track-by="identifier" value-key="identifier" :options="countries"
@@ -32,7 +32,7 @@
                             </km-select>
                         </km-form-group>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="filterByRegions">
                         <km-form-group :caption="t('filterByRegions')">
                             <km-select v-if="regions" v-model="selectedRegions" label="title" track-by="identifier"
                                 value-key="identifier" :options="regions" :close-on-select="false"
