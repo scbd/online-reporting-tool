@@ -37,9 +37,11 @@
                                     {{t('linkedTargets')}}
                                 </CCardHeader>
                                 <CCardBody>
-                                    <div  class="ps-2" v-for="(target, index) in nationalTargets" :key="target.identifier">
-                                        {{index+1}}. {{lstring(target.title)}}
-                                    </div>
+                                    <ul class="list-group">
+                                    <li  class="list-group-item" v-for="(target, index) in nationalTargets" :key="target.identifier">
+                                        {{lstring(target.title)}}
+                                    </li>
+                                    </ul>
                                 </CCardBody>
                             </CCard>                            
                         </km-form-group>
@@ -193,18 +195,10 @@
     }
 
     function emptyDocument(){
-        
-        return {
-            header : {
-                schema : SCHEMAS.NATIONAL_TARGET_7_MAPPING,
-                identifier : useGenerateUUID(),
-                languages  : EditFormUtility.getPreferredEditLanguages()
-            },        
-            government : {
-                identifier : user.value?.government
-            },
+
+        const additionalProps = {
             globalGoalOrTarget : {
-                identifier: props.globalGoalOrTarget
+                identifier  : props.globalGoalOrTarget
             },
             referencePeriod :   headlineIndicators.value?.map(indicator => {
                                     return {
@@ -213,6 +207,10 @@
                                     }
                                 })
         }
+        const emptyDoc = EditFormUtility.buildEmptyDocument(SCHEMAS.NATIONAL_TARGET_7_MAPPING, additionalProps);
+
+        return emptyDoc
+        
     }
 
     async function loadHeadlineIndicators(globalTarget){

@@ -454,27 +454,20 @@
     }
 
     function emptyDocument(){
-        const emptyDoc = {
-            header : {
-                schema : SCHEMAS.NATIONAL_TARGET_7,
-                identifier : useGenerateUUID(),
-                languages  : EditFormUtility.getPreferredEditLanguages()
-            },        
-            government : {
-                identifier : undefined
-            },
+
+        const additionalProps = {
             additionalImplementation : {}
-            
         }
-        
         if(route?.query?.globalTarget){
             if(/^GBF\-GOAL\-/i.test(route.query.globalTarget))
-                emptyDoc.globalGoalAlignment = [{ identifier : route.query.globalTarget }];
+                additionalProps.globalGoalAlignment = [{ identifier : route.query.globalTarget }];
             else
-                emptyDoc.globalTargetAlignment = [{ identifier : route.query.globalTarget }];
+                additionalProps.globalTargetAlignment = [{ identifier : route.query.globalTarget }];
         }
+        
+        const emptyDoc = EditFormUtility.buildEmptyDocument(SCHEMAS.NATIONAL_TARGET_7, additionalProps);
 
-        return emptyDoc
+        return emptyDoc;
     }
 
     function showAllTargets(){

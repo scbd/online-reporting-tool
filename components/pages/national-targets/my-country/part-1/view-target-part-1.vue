@@ -269,7 +269,7 @@
             if(route.query?.draft == 'true' || route.query?.draft === null){
                 const draftRecord = await KmDocumentDraftsService.loadDraftDocument(route.params.identifier);
                 lDocument.value = draftRecord.body;
-                emit('onDocumentLoad', record.body);
+                emit('onDocumentLoad', draftRecord.body);
             }
             else{
                 const record = await KmDocumentsService.loadDocument(route.params.identifier);
