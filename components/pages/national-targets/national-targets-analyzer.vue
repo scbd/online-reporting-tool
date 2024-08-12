@@ -265,6 +265,7 @@
                         </CRow>
                     </CCardBody>
                 </CCard>
+
                 <CCard class="mb-3">
                     <CCardHeader>
                         Progress in monitoring
@@ -274,8 +275,8 @@
                             <thead>
                                 <tr>
                                     <th>Number of Parties that have identified any indicators</th>
-                                    <th>Target count</th>
                                     <th>Party count</th>
+                                    <th>Target count</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -298,6 +299,40 @@
                         </table>
                     </CCardBody>
                 </CCard>
+                
+
+                <CCard class="mb-3">
+                    <CCardHeader>
+                        Progress in ambition/relevance 
+                    </CCardHeader>
+                    <CCardBody>
+                        <!-- For each GBF target, how many countries have set at least one national target that has -->
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>GBF target</th>
+                                    <th>High</th>
+                                    <th>Medium</th>
+                                    <th>Low</th>
+                                    <th>None</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr v-for="target in analyzedCounts.relevanceMonitoring" :key="target">
+                                    <td>{{ target.name }}</td>
+                                    <td>{{ target?.high?.length }}</td>
+                                    <td>{{ target?.medium?.length }}</td>
+                                    <td>{{ target?.low?.length }}</td>
+                                    <td>{{ target?.none?.length }}</td>
+                                    <td>{{ target?.high?.length + target?.medium?.length + target?.low?.length+ target?.none?.length }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </CCardBody>
+                </CCard>
+
                 <CCard>
                     <CCardHeader>
                         Country Count
@@ -347,6 +382,7 @@ import { SCHEMAS } from '@/utils';
 import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
 import { compact } from 'lodash';
 import { useCountriesStore }    from '@/stores/countries';
+import { THESAURUS_TERMS } from '~/utils/constants';
 
     const { t, locale } = useI18n();
     const realmConfStore  = useRealmConfStore();
@@ -400,7 +436,8 @@ import { useCountriesStore }    from '@/stores/countries';
                                 'globalTargetAlignment_ss,government_EN_s', 'globalGoalAlignment_ss,government_EN_s',
                                 'government_EN_s,complementaryIndicators_EN_ss', 'government_EN_s,componentIndicators_EN_ss',
                                 'degreeOfAlignment_EN_ss,government_EN_s',
-                                'government_EN_s,hasNonStateActors_b', 'government_EN_s,hasOtherNationalIndicators_b'
+                                'government_EN_s,hasNonStateActors_b', 'government_EN_s,hasOtherNationalIndicators_b',
+                                'government_EN_s,degreeOfAlignmentByTarget_ss'
             ],// 'schema_s,government_EN_s,globalTargetAlignment_ss'
         }
         const result = await queryIndex(parseSolrQuery(searchQuery, locale));
@@ -421,8 +458,9 @@ import { useCountriesStore }    from '@/stores/countries';
         })
 
         const newCounts = {};
-        newCounts.progressInTargets = buildProgressInTargetCounts(facets.value, facetPivot.value)
-        newCounts.progressInMonitoring = buildProgressInMonitoringCounts(facets.value, facetPivot.value)
+        newCounts.progressInTargets = buildProgressInTargetCounts(facets.value, facetPivot.value);
+        newCounts.progressInMonitoring = buildProgressInMonitoringCounts(facets.value, facetPivot.value);
+        newCounts.relevanceMonitoring  = buildRelevanceMonitoring(facets, facetPivot.value);
         analyzedCounts.value = newCounts;
         
     }
@@ -524,6 +562,60 @@ import { useCountriesStore }    from '@/stores/countries';
         }
 
         return progressInMonitoring;
+    }
+
+    function buildRelevanceMonitoring(facets, facetsPivot){
+        const relevanceProgress = {};
+        const relevanceByParty  =  facetsPivot['government_EN_s,degreeOfAlignmentByTarget_ss'];
+        const formatRegex = /(GBF-TARGET-[0-9]{2})\-([a-z0-9\-]+)/i;
+
+        relevanceByParty.map(e=>{
+            // console.log(e)
+            e.pivot.map(p=>{
+                const country = e.value
+                const match = p.value.match(formatRegex);
+                if(match.length==3){
+                    const gbfTarget = match[1];
+                    const degreeOfAlignment = match[2]
+                    // console.log(match);
+                    if(!relevanceProgress[gbfTarget])
+                        relevanceProgress[gbfTarget] = { countries  : {}}
+
+                    if(!relevanceProgress[gbfTarget].countries[country])
+                        relevanceProgress[gbfTarget].countries[country] = degreeOfAlignment // degree of alignment High/medium/low
+                    else{
+                        //pick highest in order of High, medium, low, none
+                        const currentDegreeOfAlignment = relevanceProgress[gbfTarget].countries[country];
+
+                        if([degreeOfAlignment, currentDegreeOfAlignment].includes(THESAURUS_TERMS.HIGH))
+                            relevanceProgress[gbfTarget].countries[country] = THESAURUS_TERMS.HIGH;
+
+                        else if([degreeOfAlignment, currentDegreeOfAlignment].includes(THESAURUS_TERMS.MEDIUM))
+                            relevanceProgress[gbfTarget].countries[country] = THESAURUS_TERMS.MEDIUM;
+
+                        else if([degreeOfAlignment, currentDegreeOfAlignment].includes(THESAURUS_TERMS.LOW))
+                            relevanceProgress[gbfTarget].countries[country] = THESAURUS_TERMS.LOW;
+
+                        else if([degreeOfAlignment, currentDegreeOfAlignment].includes(THESAURUS_TERMS.NONE))
+                            relevanceProgress[gbfTarget].countries[country] = THESAURUS_TERMS.NONE;
+                    }
+                }
+            })
+        })
+
+        return Object.keys(relevanceProgress)
+            .map(key=>{
+                const target        = relevanceProgress[key];       
+                const countries     = Object.keys(target.countries)
+                    target.high   = countries.filter(country=>target.countries[country] == THESAURUS_TERMS.HIGH);
+                    target.medium = countries.filter(country=>target.countries[country] == THESAURUS_TERMS.MEDIUM);
+                    target.low    = countries.filter(country=>target.countries[country] == THESAURUS_TERMS.LOW);
+                    target.none   = countries.filter(country=>target.countries[country] == THESAURUS_TERMS.NONE);
+                    target.name   = key
+                return target;
+            })
+            .sort((a,b)=>a.name.localeCompare(b.name))
+
     }
 
     function findCountryByName(name:String){
