@@ -71,7 +71,7 @@
                                         <div class="progress my-2" style="height: 4px;"></div>
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered table-striped1 table-hover">
                                                     <thead>
                                                         <tr>
                                                             <th>Number of Parties by CBD regional groups</th>
@@ -86,7 +86,7 @@
                                                                     lstring(region.title) }}</div>
                                                                 <div v-if="region.showCountries"
                                                                     :rowspan="analyzedCounts.progressInTargets.oneTargetByCbdRegions.length">
-                                                                    <table class="table table-bordered">
+                                                                    <table class="table table-bordered table-striped1 table-hover">
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>{{ lstring(region.title) }}</th>
@@ -184,7 +184,7 @@
                                         </div>
                                         <div class="progress my-2" style="height: 4px;"></div>
                                         <div style="height: 300px;overflow: scroll;">
-                                        <table class="table table-bordered" >
+                                        <table class="table table-bordered table-striped1 table-hover" >
                                             <thead>
                                                 <tr>
                                                     <th>Country</th>
@@ -211,7 +211,7 @@
                                         </div>
                                         <div class="progress my-2" style="height: 4px;"></div>
                                         <div style="height: 300px;overflow: scroll;">
-                                        <table class="table table-bordered" >
+                                        <table class="table table-bordered table-striped1 table-hover" >
                                             <thead>
                                                 <tr>
                                                     <th>Country</th>
@@ -234,7 +234,7 @@
                                         For each GBF target, percent of countries that have a national target which has been mapped to it
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-bordered" >
+                                        <table class="table table-bordered table-striped1 table-hover" >
                                             <thead>
                                                 <tr>
                                                     <th>Target</th>
@@ -271,7 +271,7 @@
                         Progress in monitoring
                     </CCardHeader>
                     <CCardBody>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped1 table-hover">
                             <thead>
                                 <tr>
                                     <th>Number of Parties that have identified any indicators</th>
@@ -307,7 +307,7 @@
                     </CCardHeader>
                     <CCardBody>
                         <!-- For each GBF target, how many countries have set at least one national target that has -->
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped1 table-hover">
                             <thead>
                                 <tr>
                                     <th>GBF target</th>
@@ -341,21 +341,36 @@
                         <CRow>
                             <CCol :sm="12">
 
-                                
-                                <table class="table table-bordered" >
+                                <table class="table table-bordered table-striped1 table-hover" >
                                     <thead>
                                         <tr>
-                                            <th>Country</th>
-                                            <th>Count</th>
+                                            <th rowspan="2">Country</th>
+                                            <th rowspan="2">Count</th>
+                                            <th colspan="4">Goals</th>
+                                            <th colspan="23">Targets</th>
+                                        </tr>
+                                        <tr>                                            
+                                            <th v-for="range in ['A', 'B', 'C', 'D']" :key="range">
+                                                {{ range }}
+                                            </th>
+                                            <th v-for="range in [...Array(23).keys()]" :key="range">
+                                                {{ range+1 }}
+                                            </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                            <tr v-for="(country) in facetPivot['government_EN_s,schema_s']" :key="country">
+                                    <tbody>                                        
+                                            <tr v-for="(country) in facetPivot['government_EN_s,globalTargetAlignment_ss']" :key="country">
                                                 <td>
                                                     {{ country.value }}
                                                 </td>
                                                 <td>
-                                                    {{country.countrySchemaCount[0].value}}
+                                                    {{country.count}}
+                                                </td>
+                                                <td v-for="range in ['A', 'B', 'C', 'D']" :key="range">
+                                                   {{ facetPivot['government_EN_s,globalGoalAlignment_ss'].find(e=>e.value == country.value)?.pivot?.find(e=>e.value == `GBF-GOAL-${range}`)?.count || 0 }}
+                                                </td>
+                                                <td v-for="range in [...Array(23).keys()]" :key="range">
+                                                   {{ country.pivot.find(e=>e.value == `GBF-TARGET-${range+1 > 9 ? range+1 : '0'+(range+1)}`)?.count || 0 }}
                                                 </td>
                                             </tr>
                                     </tbody>
@@ -432,7 +447,8 @@ import { THESAURUS_TERMS } from '~/utils/constants';
             facet : true,
             facetFields : [ 'schema_s', 'government_EN_s', 'government_REL_ss','all_terms_ss', 'globalTargetAlignment_ss',
                             'globalGoalOrTarget_s','globalGoalAlignment_ss'],
-            pivotFacetFields: [ 'government_EN_s,schema_s', 'schema_s,government_REL_ss', 'government_EN_s,globalTargetAlignment_ss',
+            pivotFacetFields: [ 'government_EN_s,schema_s', 'schema_s,government_REL_ss', 
+                                'government_EN_s,globalTargetAlignment_ss','government_EN_s,globalGoalAlignment_ss',
                                 'globalTargetAlignment_ss,government_EN_s', 'globalGoalAlignment_ss,government_EN_s',
                                 'government_EN_s,complementaryIndicators_EN_ss', 'government_EN_s,componentIndicators_EN_ss',
                                 'degreeOfAlignment_EN_ss,government_EN_s',
