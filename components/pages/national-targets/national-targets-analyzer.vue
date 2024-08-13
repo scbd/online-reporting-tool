@@ -590,7 +590,7 @@ import { THESAURUS_TERMS } from '~/utils/constants';
             e.pivot.map(p=>{
                 const country = e.value
                 const match = p.value.match(formatRegex);
-                if(match.length==3){
+                if(match?.length==3){
                     const gbfTarget = match[1];
                     const degreeOfAlignment = match[2]
                     // console.log(match);
