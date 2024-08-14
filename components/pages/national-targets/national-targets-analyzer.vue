@@ -321,7 +321,9 @@
                             <tbody>
                                 
                                 <tr v-for="target in analyzedCounts.relevanceMonitoring" :key="target">
-                                    <td>{{ target.name }}</td>
+                                    <td>
+                                        <img :src="`https://www.cbd.int/gbf/images/targets/target-${target.name.replace('GBF-TARGET-', '')}.png`" height="25">
+                                        {{ target.name }}</td>
                                     <td>{{ target?.high?.length }}</td>
                                     <td>{{ target?.medium?.length }}</td>
                                     <td>{{ target?.low?.length }}</td>
@@ -333,6 +335,80 @@
                     </CCardBody>
                 </CCard>
 
+                <!-- Progress in Section C -->
+                <CCard class="mb-3">
+                    <CCardHeader>
+                        Progress in Section C
+                    </CCardHeader>
+                    <CCardBody>
+                        <!-- 14. Average number of elements of Section C that Parties say have been considered in developing their NBSAP -->
+                        <div class="fs-4 fw-semibold">{{ analyzedCounts.sectionC.avgByParty }}</div>
+                        <div class="text-uppercase fw-semibold small text-medium-emphasis">
+                            Average number of elements of Section C that Parties say have been considered in developing their NBSAP
+                        </div>
+                        <div class="progress my-2" style="height: 4px;"></div>
+                        <div style="height: 300px;overflow: scroll;">
+                            <table class="table table-bordered table-striped1 table-hover" >
+                                <thead>
+                                    <tr>
+                                        <th>Country</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr v-for="country in analyzedCounts.sectionC.countries" :key="country">
+                                            <td>
+                                                {{ country.value }}
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </CCardBody>
+                </CCard>
+
+                <!-- Non-state actors -->
+                <CCard class="mb-3">
+                    <CCardHeader>
+                        Non-state actor
+                    </CCardHeader>
+                    <CCardBody>
+                        <!-- 16. Number of countries with non-state actor commitments by target -->
+                        <div class="fs-4 fw-semibold">{{ analyzedCounts.nonStateActors.partyCount }}</div>
+                        <div class="text-uppercase fw-semibold small text-medium-emphasis">
+                            Average number of elements of Section C that Parties say have been considered in developing their NBSAP
+                        </div>
+                        <div class="progress my-2" style="height: 4px;"></div>
+
+                        <!-- 16. Number of countries with non-state actor commitments by target -->                       
+                        <table class="table table-bordered table-striped1 table-hover">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">
+                                        <div class="text-uppercase fw-semibold small text-medium-emphasis">
+                                            Number of countries with non-state actor commitments by target
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>GBF target</th>
+                                    <th colspan="2">Countries</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr v-for="target in analyzedCounts.nonStateActors.nonStateActorsByTargets" :key="target">
+                                    <td>
+                                        <img :src="`https://www.cbd.int/gbf/images/targets/target-${target.value.replace('GBF-TARGET-', '')}.png`" height="25">
+                                        {{ target.value }}</td>
+                                    <td>{{ target?.pivot?.length }}</td>
+                                    <td>{{ target.pivot.map(e=>e.value).join(', ') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </CCardBody>
+                </CCard>
+
+                <!-- General country count by GBF Targets -->
                 <CCard>
                     <CCardHeader>
                         Country Count
@@ -453,7 +529,9 @@ import { THESAURUS_TERMS } from '~/utils/constants';
                                 'government_EN_s,complementaryIndicators_EN_ss', 'government_EN_s,componentIndicators_EN_ss',
                                 'degreeOfAlignment_EN_ss,government_EN_s',
                                 'government_EN_s,hasNonStateActors_b', 'government_EN_s,hasOtherNationalIndicators_b',
-                                'government_EN_s,degreeOfAlignmentByTarget_ss'
+                                'government_EN_s,degreeOfAlignmentByTarget_ss',
+                                'government_EN_s,implementingConsiderations_EN_ss',
+                                'hasNonStateActors_b,globalTargetAlignment_ss,government_EN_s'
             ],// 'schema_s,government_EN_s,globalTargetAlignment_ss'
         }
         const result = await queryIndex(parseSolrQuery(searchQuery, locale));
@@ -474,9 +552,11 @@ import { THESAURUS_TERMS } from '~/utils/constants';
         })
 
         const newCounts = {};
-        newCounts.progressInTargets = buildProgressInTargetCounts(facets.value, facetPivot.value);
-        newCounts.progressInMonitoring = buildProgressInMonitoringCounts(facets.value, facetPivot.value);
-        newCounts.relevanceMonitoring  = buildRelevanceMonitoring(facets, facetPivot.value);
+        newCounts.progressInTargets     = buildProgressInTargetCounts(facets.value, facetPivot.value);
+        newCounts.progressInMonitoring  = buildProgressInMonitoringCounts(facets.value, facetPivot.value);
+        newCounts.relevanceMonitoring   = buildRelevanceMonitoringCounts(facets, facetPivot.value);
+        newCounts.sectionC              = buildSectionCCounts(facets, facetPivot.value);
+        newCounts.nonStateActors        = buildNonStateActorsCounts(facets, facetPivot.value);
         analyzedCounts.value = newCounts;
         
     }
@@ -580,7 +660,7 @@ import { THESAURUS_TERMS } from '~/utils/constants';
         return progressInMonitoring;
     }
 
-    function buildRelevanceMonitoring(facets, facetsPivot){
+    function buildRelevanceMonitoringCounts(facets, facetsPivot){
         const relevanceProgress = {};
         const relevanceByParty  =  facetsPivot['government_EN_s,degreeOfAlignmentByTarget_ss'];
         const formatRegex = /(GBF-TARGET-[0-9]{2})\-([a-z0-9\-]+)/i;
@@ -632,6 +712,35 @@ import { THESAURUS_TERMS } from '~/utils/constants';
             })
             .sort((a,b)=>a.name.localeCompare(b.name))
 
+    }
+
+    function buildSectionCCounts(facets, facetsPivot){
+        const sectionC = {};
+        const sectionCConsiderations  =  facetsPivot['government_EN_s,implementingConsiderations_EN_ss'];
+        
+        //14. Average number of elements of Section C that Parties say have been considered in developing their NBSAP
+        const sectionCCount         = (sectionCConsiderations.map(e=>e.pivot?.length||0)).reduce((prevCount, country)=>country + prevCount, 0)
+        
+        sectionC.avgByParty  = Math.floor(sectionCCount / sectionCConsiderations.length);
+        sectionC.countries  = sectionCConsiderations;
+
+        return sectionC;
+
+    }
+    function buildNonStateActorsCounts(facets, facetsPivot){
+        const nonStateActors                = {};
+        const hasNonStateActorFacets        =  facetsPivot['government_EN_s,hasNonStateActors_b'];
+        const nonStateActorByTargetsFacets  =  facetsPivot['hasNonStateActors_b,globalTargetAlignment_ss,government_EN_s'];
+        
+        //15. Number of countries that have included non-state actor commitments in their target submission
+        const hasNonStateActorCount = hasNonStateActorFacets.filter(e=>e.pivot.find(p=>p.value == true));
+        nonStateActors.partyCount = hasNonStateActorCount.length;
+        nonStateActors.targetCount= hasNonStateActorCount.reduce((prev, item)=>prev + item.count, 0);
+
+        //16. Number of countries with non-state actor commitments by target
+        nonStateActors.nonStateActorsByTargets  = nonStateActorByTargetsFacets.find(e=>e.value == true)?.pivot;
+
+        return nonStateActors;
     }
 
     function findCountryByName(name:String){
