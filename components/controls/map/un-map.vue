@@ -136,7 +136,7 @@
             }
         });
         var popup = new window.mapboxgl.Popup({
-            closeButton: false,
+            closeButton: true,
             closeOnClick: false
         });
 
@@ -231,7 +231,24 @@
                                 'fill-color': color
                             }
                         }
-                        map.addLayer(coloredCountries);
+                        const border = {
+                            id: 'bnda_border',
+                            type: 'line',
+                            source: 'v',
+                            'source-layer': 'bnda',
+                            maxzoom: 4,
+                            minzoom: 0,
+                            filter: [
+                                'any',
+                                ['in', 'ISO3CD', ...colorCountries]
+                            ],
+                            paint: {
+                                'line-color': ['rgb', 77, 77, 77],
+                                'line-width': 0.2
+                            }
+                        }
+                        map.addLayer(coloredCountries);                       
+                        map.addLayer(border);
                     }
                 });
             }
