@@ -30,7 +30,7 @@
                                     </CCol> -->
                                     <CCol :sm="6">
                                         <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
-                                            <template #text>Countries with at least 1 national target
+                                            <template #text>Parties with at least 1 national target
                                             </template>
                                             <template #value>{{ Object.keys(facets.government_EN_s).length || 0
                                                 }}</template>
@@ -67,7 +67,7 @@
                                         <div class="fs-4 fw-semibold">
                                             {{analyzedCounts.progressInTargets.oneTargetByParty}}</div>
                                         <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                                            Number of countries that have set at least one national target
+                                            Number of Parties that have set at least one national target
                                         </div>
                                         <div class="progress my-2" style="height: 4px;"></div>
                                         <div class="row">
@@ -75,8 +75,8 @@
                                                 <table class="table table-bordered table-striped1 table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th>Number of countries by CBD regional groups</th>
-                                                            <th>Country count</th>
+                                                            <th>Number of Parties by CBD regional groups</th>
+                                                            <th>Party count</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -113,7 +113,7 @@
                                                             <td>
                                                                 <button class="btn btn-sm btn-secondary float-end"
                                                                     @click="region.showCountries=!region.showCountries">
-                                                                    Show countries
+                                                                    Show parties
                                                                 </button>
                                                             </td>
 
@@ -131,7 +131,7 @@
                             <CCol :sm="4">
                                 <div class="card mb-4">
                                     <div class="card-header fw-semibold small text-medium-emphasis ">
-                                        <span class="float-start1">Average number of national targets set by a country</span>
+                                        <span class="float-start1">Average number of national targets set by a Party</span>
                                         <span class="fs-4 fw-semibold position-relative d-flex justify-content-center align-items-center">
                                             {{ analyzedCounts.progressInTargets.avgByNationalTargets }} 
                                         </span>
@@ -154,7 +154,7 @@
                             <CCol :sm="4">
                                 <div class="card mb-4">
                                     <div class="card-header fw-semibold small text-medium-emphasis ">
-                                        <span class="float-start1">Average number of GBF targets covered by a country </span>
+                                        <span class="float-start1">Average number of GBF targets covered by a Party </span>
                                         <span class="fs-4 fw-semibold position-relative d-flex justify-content-center align-items-center">
                                             {{ analyzedCounts.progressInTargets.avgByGbfTargets }} 
                                         </span>
@@ -181,14 +181,14 @@
                                         <div class="fs-4 fw-semibold">
                                             {{analyzedCounts.progressInTargets.partiesWithAllGbfTargets.length}}</div>
                                         <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                                            Number of countries that have set national targets for every GBF target 
+                                            Number of Parties that have set national targets for every GBF target 
                                         </div>
                                         <div class="progress my-2" style="height: 4px;"></div>
-                                        <div style="height: 300px;overflow: scroll;">
+                                        <div style="max-height:300px;overflow: scroll;" v-if="analyzedCounts.progressInTargets.partiesWithAllGbfTargets.length">
                                         <table class="table table-bordered table-striped1 table-hover" >
                                             <thead>
                                                 <tr>
-                                                    <th>Country</th>
+                                                    <th>Party</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -208,14 +208,14 @@
                                         <div class="fs-4 fw-semibold">
                                             {{analyzedCounts.progressInTargets.partiesWith17AndMoreGbfTargets.length}}</div>
                                         <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                                            Number of countries that have set national targets for more than 75% of the GBF targets  
+                                            Number of Parties that have set national targets for more than 75% of the GBF targets  
                                         </div>
                                         <div class="progress my-2" style="height: 4px;"></div>
-                                        <div style="height: 300px;overflow: scroll;">
+                                        <div style="max-height:300px;overflow: scroll;" v-if="analyzedCounts.progressInTargets.partiesWith17AndMoreGbfTargets.length">
                                         <table class="table table-bordered table-striped1 table-hover" >
                                             <thead>
                                                 <tr>
-                                                    <th>Country</th>
+                                                    <th>Party</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -232,7 +232,7 @@
                             <CCol :sm="12">
                                 <div class="card mb-3">
                                     <div class="card-header">
-                                        For each GBF target, percent of countries that have a national target which has been mapped to it
+                                        For each GBF target, percent of parties that have a national target which has been mapped to it
                                     </div>
                                     <div class="card-body">
                                         <table class="table table-bordered table-striped1 table-hover" >
@@ -275,8 +275,8 @@
                         <table class="table table-bordered table-striped1 table-hover">
                             <thead>
                                 <tr>
-                                    <th>Number of countries that have identified any indicators</th>
-                                    <th>country count</th>
+                                    <th>Number of Parties that have identified any indicators</th>
+                                    <th>Party count</th>
                                     <th>Target count</th>
                                 </tr>
                             </thead>
@@ -307,7 +307,7 @@
                         Progress in ambition/relevance 
                     </CCardHeader>
                     <CCardBody>
-                        <!-- For each GBF target, how many countries have set at least one national target that has -->
+                        <!-- For each GBF target, how many parties have set at least one national target that has -->
                         <table class="table table-bordered table-striped1 table-hover">
                             <thead>
                                 <tr>
@@ -342,17 +342,17 @@
                         Progress in Section C
                     </CCardHeader>
                     <CCardBody>
-                        <!-- 14. Average number of elements of Section C that countries say have been considered in developing their NBSAP -->
-                        <div class="fs-4 fw-semibold">{{ analyzedCounts.sectionC.avgByParty }}</div>
+                        <!-- 14. Average number of elements of Section C that Parties say have been considered in developing their NBSAP -->
+                        <div class="fs-4 fw-semibold">{{ analyzedCounts.sectionC.avgByParty || 0 }}</div>
                         <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                            Average number of elements of Section C that countries say have been considered in developing their NBSAP
+                            Average number of elements of Section C that Parties say have been considered in developing their NBSAP
                         </div>
                         <div class="progress my-2" style="height: 4px;"></div>
-                        <div style="height: 300px;overflow: scroll;">
+                        <div style="max-height:300px;overflow: scroll;" v-if="analyzedCounts.sectionC.avgByParty">
                             <table class="table table-bordered table-striped1 table-hover" >
                                 <thead>
                                     <tr>
-                                        <th>Country</th>
+                                        <th>Party</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -373,26 +373,26 @@
                         Non-state actor
                     </CCardHeader>
                     <CCardBody>
-                        <!-- 16. Number of countries with non-state actor commitments by target -->
-                        <div class="fs-4 fw-semibold">{{ analyzedCounts.nonStateActors.partyCount }}</div>
+                        <!-- 16. Number of parties with non-state actor commitments by target -->
+                        <div class="fs-4 fw-semibold">{{ analyzedCounts.nonStateActors.partyCount || 0 }}</div>
                         <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                            Average number of elements of Section C that countries say have been considered in developing their NBSAP
+                            Average number of elements of Section C that Parties say have been considered in developing their NBSAP
                         </div>
                         <div class="progress my-2" style="height: 4px;"></div>
 
-                        <!-- 16. Number of countries with non-state actor commitments by target -->                       
-                        <table class="table table-bordered table-striped1 table-hover">
+                        <!-- 16. Number of parties with non-state actor commitments by target -->                       
+                        <table class="table table-bordered table-striped1 table-hover" v-if="analyzedCounts.nonStateActors.partyCount">
                             <thead>
                                 <tr>
                                     <th colspan="3">
                                         <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                                            Number of countries with non-state actor commitments by target
+                                            Number of parties with non-state actor commitments by target
                                         </div>
                                     </th>
                                 </tr>
                                 <tr>
                                     <th>GBF target</th>
-                                    <th colspan="2">Countries</th>
+                                    <th colspan="2">Parties</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -409,10 +409,10 @@
                     </CCardBody>
                 </CCard>
 
-                <!-- General country count by GBF Targets -->
+                <!-- General party count by GBF Targets -->
                 <CCard>
                     <CCardHeader>
-                        Country Count
+                        Party Count
                     </CCardHeader>
                     <CCardBody>
                         <CRow>
@@ -421,7 +421,7 @@
                                 <table class="table table-bordered table-striped1 table-hover" >
                                     <thead>
                                         <tr>
-                                            <th rowspan="2">Country</th>
+                                            <th rowspan="2">Party</th>
                                             <th rowspan="2">Count</th>
                                             <th colspan="4">Goals</th>
                                             <th colspan="23">Targets</th>
@@ -512,7 +512,7 @@ import { THESAURUS_TERMS } from '~/utils/constants';
         queries.push(buildArrayQuery('globalTargetAlignment_ss', filters.value.globalTargets));          
         queries.push(buildArrayQuery('globalGoalAlignment_ss', filters.value.globalGoals)); 
 
-        queries.push(buildArrayQuery('government_EN_s', filters.value.countries));              
+        queries.push(buildArrayQuery('government_s', filters.value.countries));              
         queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
         
         const searchQuery = {
@@ -581,13 +581,13 @@ import { THESAURUS_TERMS } from '~/utils/constants';
         const targetsByParty     =  facetsPivot['government_EN_s,globalTargetAlignment_ss'];
         const gbfTargetsByParty  =  facetsPivot['globalTargetAlignment_ss,government_EN_s'];
         const gbfGoalsByParty    =  facetsPivot['globalGoalAlignment_ss,government_EN_s'];
-        const numberOfCountries  =  Object.keys(facets.government_EN_s).length;
+        const numberOfCountries  =  Object.keys(facets.government_EN_s||{}).length;
 
-        //1.	Number of countries that have set at least one national target [visualise by region (per “CBD” region]
+        //1.	Number of Parties that have set at least one national target [visualise by region (per “CBD” region]
         progressInTargets.oneTargetByParty = Object.keys(facets?.government_EN_s||{}).length;
         progressInTargets.oneTargetByCbdRegions = cbdGroups.map(e=>{
 
-            const nationalTargets = schemaRegionCounts.pivot.find(r=>r.value == e.identifier)?.count;
+            const nationalTargets = schemaRegionCounts?.pivot?.find(r=>r.value == e.identifier)?.count;
             const countries       =   Object.keys(facets?.government_EN_s||{})
                                         .filter(c=>{
                                             const country = findCountryByName(c)
@@ -597,24 +597,26 @@ import { THESAURUS_TERMS } from '~/utils/constants';
             return {...e, nationalTargets, countries };
         });
 
-        //2.	Average number of national targets set by a country (total targets / total number of parties = unweighted mean) and the range [min and max]
-        progressInTargets.avgByNationalTargets = Math.floor((facets.schema_s[SCHEMAS.NATIONAL_TARGET_7] ||0) / progressInTargets.oneTargetByParty);
-        progressInTargets.avgByNationalTargetsMin = Math.min(...Object.values(facets?.government_EN_s||{}));
-        progressInTargets.avgByNationalTargetsMax = Math.max(...Object.values(facets?.government_EN_s||{}));
+        //2.	Average number of national targets set by a Party (total targets / total number of parties = unweighted mean) and the range [min and max]
+        if(facets?.schema_s){
+            progressInTargets.avgByNationalTargets = Math.floor((facets?.schema_s[SCHEMAS.NATIONAL_TARGET_7] ||0) / progressInTargets.oneTargetByParty);
+            progressInTargets.avgByNationalTargetsMin = Math.min(...Object.values(facets?.government_EN_s||{}));
+            progressInTargets.avgByNationalTargetsMax = Math.max(...Object.values(facets?.government_EN_s||{}));
+        }
 
-        //3.	Average number of GBF targets covered by a country and the range [min and max number of GBF targets covered]
+        //3.	Average number of GBF targets covered by a Party and the range [min and max number of GBF targets covered]
         const gbfCountryCounts   = (targetsByParty.map(e=>e.pivot.length))
         const gbfAllCountryCount = gbfCountryCounts.reduce((prevCount, country)=>country + prevCount, 0)
         progressInTargets.avgByGbfTargets   = Math.floor(gbfAllCountryCount / progressInTargets.oneTargetByParty);
         progressInTargets.avgByGbfTargetsMin = Math.min(...gbfCountryCounts);
         progressInTargets.avgByGbfTargetsMax = Math.max(...gbfCountryCounts);
 
-        //4.	Number of countries that have set national targets for every GBF target  
+        //4.	Number of Parties that have set national targets for every GBF target  
         progressInTargets.partiesWithAllGbfTargets   = targetsByParty.filter(e=>e.pivot.length==23).map(e=>e.value)
-        //5.	Number of countries that have set national targets for more than 75% of the GBF targets
+        //5.	Number of Parties that have set national targets for more than 75% of the GBF targets
         progressInTargets.partiesWith17AndMoreGbfTargets   = targetsByParty.filter(e=>e.pivot.length>16).map(e=>e.value)
 
-        //6.	For each GBF target, percent of countries that have a national target which has been mapped to it. [divide by countries that have submitted and not all countries]
+        //6.	For each GBF target, percent of parties that have a national target which has been mapped to it. [divide by parties that have submitted and not all parties]
         const gbfTargetPercentByParty = gbfTargetsByParty.map(e=>({
             target:e.value, 
             percent : roundDecimal((e.pivot.length*100)/numberOfCountries),
@@ -717,11 +719,11 @@ import { THESAURUS_TERMS } from '~/utils/constants';
 
     function buildSectionCCounts(facets, facetsPivot){
         const sectionC = {};
-        const sectionCConsiderations  =  facetsPivot['government_EN_s,implementingConsiderations_EN_ss'];
+        const sectionCConsiderations  =  facetsPivot['government_EN_s,implementingConsiderations_EN_ss'].filter(e=>e.pivot);
         
-        //14. Average number of elements of Section C that countries say have been considered in developing their NBSAP
+        //14. Average number of elements of Section C that Parties say have been considered in developing their NBSAP
         const sectionCCount         = (sectionCConsiderations.map(e=>e.pivot?.length||0)).reduce((prevCount, country)=>country + prevCount, 0)
-        
+        if(sectionCCount > 0)
         sectionC.avgByParty  = Math.floor(sectionCCount / sectionCConsiderations.length);
         sectionC.countries  = sectionCConsiderations;
 
