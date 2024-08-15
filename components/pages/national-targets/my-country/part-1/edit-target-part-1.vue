@@ -131,7 +131,7 @@
                                         <small id="emailHelp" class="form-text text-muted">
                                             <span :class="{'text-success font-weight-bold': (document.degreeOfAlignment||{}).identifier=='AABF237C-F906-40D2-9595-5226C8B18A58'}">{{t('high')}}</span>
                                             <span :class="{'text-warning font-weight-bold': (document.degreeOfAlignment||{}).identifier=='68197B76-67B4-40AD-BB14-A8C340E1320B'}">{{t('medium')}}</span>
-                                            <span :class="{'text-danger font-weight-bold': (document.degreeOfAlignment||{}).identifier=='9668759B-3653-4994-A917-3F039B0BAA5C'}" >{{t('low')}}</span>
+                                            <span :class="{'text-danger font-weight-bold': (document.degreeOfAlignment||{}).identifier =='9668759B-3653-4994-A917-3F039B0BAA5C'}" >{{t('low')}}</span>
                                         </small>
                                     </km-form-group>    
                                     

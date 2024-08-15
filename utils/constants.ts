@@ -17,6 +17,14 @@ export const THESAURUS = {
     ASSESSMENT_PROGRESS         : 'EF99BEFD-5070-41C4-91F0-C051B338EEA6',
     COUNTRIES                   : 'countries',
     REGIONS                     : 'regions',
+    CBD_REGIONAL_GROUPS         : 'E6566232-EE63-4C7B-AF8B-46A26CC295A5'
+}
+
+export const THESAURUS_TERMS = {
+    HIGH    : 'AABF237C-F906-40D2-9595-5226C8B18A58',
+    MEDIUM  : '68197B76-67B4-40AD-BB14-A8C340E1320B',
+    LOW     : '9668759B-3653-4994-A917-3F039B0BAA5C',
+    NONE    : 'none'
 }
 
 export const ROLES = {
