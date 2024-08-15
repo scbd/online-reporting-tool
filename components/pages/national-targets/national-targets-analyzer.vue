@@ -13,7 +13,7 @@
                     <CCardBody>
                         <div class="row">
                             <div class="col-sm-7">
-                                <un-map :colors="['#3c4b64']"></un-map>
+                                <un-map :colors="['#2c9844']"></un-map>
                             </div>
                             <div class="col-sm-5">
 
