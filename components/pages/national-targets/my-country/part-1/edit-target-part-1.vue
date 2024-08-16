@@ -4,7 +4,7 @@
         <slot name="header">{{t('nationalTarget')}} </slot>
       </CCardHeader>
       <CCardBody>
-            <km-form-workflow v-if="!isBusy" :focused-tab="props.workflowActiveTab" :document="cleanDocument"  
+            <km-form-workflow v-if="!isBusy && cleanDocument?.header" :focused-tab="props.workflowActiveTab" :document="cleanDocument"  
             :container="container">
                 <template v-slot:submission>   
                     <form name="editForm">    
@@ -361,7 +361,7 @@
     const container                 = useAttrs().container;
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
     const showGlobalTargetsModal    = ref(false);
-    const document                  = ref(emptyDocument());
+    const document                  = ref();
     const headlineIndicators        = ref(null);
     const componentIndicators       = ref(null);
     const complementaryIndicators   = ref(null);
@@ -387,7 +387,6 @@
         }));
         if(!clean?.otherNationalIndicators?.length)
             clean.otherNationalIndicators = undefined;
-        
         return clean
     })
 
@@ -498,6 +497,8 @@
                 const documentInfo = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
                 document.value = documentInfo.body;
             }
+            else 
+                document.value = emptyDocument();
 
             if(document.value.globalTargetAlignment?.length){
                 selectedGlobalTargets.value = document.value.globalTargetAlignment?.filter(e=>e.identifier.startsWith('GBF-T'))?.map(e=>{return { identifier : e.identifier }});        
