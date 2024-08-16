@@ -1,21 +1,26 @@
 <template>
     <div>
         <div class="search">
-            <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes"></search-filters>
+            <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes" v-show="!query.embed"></search-filters>
 
             <km-spinner v-if="loading" center></km-spinner>
 
-            <div v-if="!loading && Object.keys(facets)?.length">
-                <CCard class="mb-3">
+            <div v-if="!loading && Object.keys(facets)?.length">              
+
+                <CCard class="mb-3" v-if="canShowGeneralCount">
                     <CCardHeader>
                         General count
+                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" :to="generalCountShareUrl">
+                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+                            Share          
+                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <div class="row">
-                            <div class="col-sm-7">
+                            <div class="col-sm-10">
                                 <un-map :colors="['#2c9844']"></un-map>
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-2">
 
                                 <CRow>
                                     <!-- <CCol :sm="4">
@@ -28,7 +33,7 @@
                                             </template>
                                         </CWidgetStatsB>
                                     </CCol> -->
-                                    <CCol :sm="6">
+                                    <CCol :sm="12">
                                         <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
                                             <template #text>Parties with at least 1 national target
                                             </template>
@@ -36,7 +41,7 @@
                                                 }}</template>
                                         </CWidgetStatsB>
                                     </CCol>
-                                    <CCol :sm="6">
+                                    <CCol :sm="12">
                                         <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
                                             <template #text>National Targets (Part I)</template>
                                             <template #value>{{ facets.schema_s.nationalTarget7 || 0 }}</template>
@@ -55,9 +60,15 @@
                     </CCardBody>
                 </CCard>
 
-                <CCard class="mb-3">
+                <CCard class="mb-3" v-if="canShowTargetProgress">
                     <CCardHeader>
                         Progress in target setting
+
+                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
+                            :to="targetProgressShareUrl">
+                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+                            Share          
+                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <CRow>
@@ -267,9 +278,14 @@
                     </CCardBody>
                 </CCard>
 
-                <CCard class="mb-3">
+                <CCard class="mb-3" v-if="canShowMonitoringProgress">
                     <CCardHeader>
                         Progress in monitoring
+                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
+                            :to="monitoringProgressShareUrl">
+                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+                            Share          
+                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <table class="table table-bordered table-striped1 table-hover">
@@ -302,9 +318,14 @@
                 </CCard>
                 
 
-                <CCard class="mb-3">
+                <CCard class="mb-3" v-if="canShowRelevanceProgress">
                     <CCardHeader>
                         Progress in ambition/relevance 
+                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
+                            :to="relevanceProgressShareUrl">
+                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+                            Share          
+                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <!-- For each GBF target, how many parties have set at least one national target that has -->
@@ -337,9 +358,14 @@
                 </CCard>
 
                 <!-- Progress in Section C -->
-                <CCard class="mb-3">
+                <CCard class="mb-3" v-if="canShowSectionCProgress">
                     <CCardHeader>
                         Progress in Section C
+                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
+                            :to="sectionCProgressShareUrl">
+                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+                            Share          
+                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <!-- 14. Average number of elements of Section C that Parties say have been considered in developing their NBSAP -->
@@ -368,9 +394,14 @@
                 </CCard>
 
                 <!-- Non-state actors -->
-                <CCard class="mb-3">
+                <CCard class="mb-3" v-if="canShowNonStateProgress">
                     <CCardHeader>
                         Non-state actor
+                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
+                            :to="nonStateProgressShareUrl">
+                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+                            Share          
+                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <!-- 16. Number of parties with non-state actor commitments by target -->
@@ -410,9 +441,14 @@
                 </CCard>
 
                 <!-- General party count by GBF Targets -->
-                <CCard>
+                <CCard v-if="canShowPartyCounts">
                     <CCardHeader>
                         Party Count
+                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
+                            :to="partyCountsShareUrl">
+                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+                            Share          
+                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <CRow>
@@ -475,11 +511,15 @@ import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
 import { compact } from 'lodash';
 import { useCountriesStore }    from '@/stores/countries';
 import { THESAURUS_TERMS } from '~/utils/constants';
+import {useRoute} from 'vue-router';
+import {stringifyQuery} from 'ufo'
+
 
     const { t, locale } = useI18n();
     const realmConfStore  = useRealmConfStore();
     const countriesStore  = useCountriesStore ();
     const thesaurusStore  = useThesaurusStore ();
+    const { query }       = useRoute();
     const realmConf = realmConfStore.realmConf; 
     const facets = ref([]);
     const facetPivot = ref([]);
@@ -491,13 +531,35 @@ import { THESAURUS_TERMS } from '~/utils/constants';
 
     const recordTypes = [SCHEMAS.NATIONAL_TARGET_7];//, SCHEMAS.NATIONAL_TARGET_7_MAPPING];
 
-    const countryFacets = computed(()=>facets.value?.schema_s)
+    const countryFacets             = computed(()=>facets.value?.schema_s)
+    const canShowGeneralCount       = computed(()=>!query.embed || (query.embed && query.share.includes('general-count')));
+    const canShowTargetProgress     = computed(()=>!query.embed || (query.embed && query.share.includes('target-progress')));
+    const canShowMonitoringProgress = computed(()=>!query.embed || (query.embed && query.share.includes('monitoring-progress')));
+    const canShowRelevanceProgress  = computed(()=>!query.embed || (query.embed && query.share.includes('relevance-progress')));
+    const canShowSectionCProgress   = computed(()=>!query.embed || (query.embed && query.share.includes('section-c-progress')));
+    const canShowNonStateProgress   = computed(()=>!query.embed || (query.embed && query.share.includes('non-state-progress')));
+    const canShowPartyCounts        = computed(()=>!query.embed || (query.embed && query.share.includes('party-count')));
+
+    const generalCountShareUrl       = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=general-count&${filterParams.value}`)
+    const targetProgressShareUrl     = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=target-progress&${filterParams.value}`)
+    const monitoringProgressShareUrl = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=monitoring-progress&${filterParams.value}`)
+    const relevanceProgressShareUrl  = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=relevance-progress&${filterParams.value}`)
+    const sectionCProgressShareUrl   = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=section-c-progress&${filterParams.value}`)
+    const nonStateProgressShareUrl   = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=non-state-progress&${filterParams.value}`)
+    const partyCountsShareUrl        = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=party-count&${filterParams.value}`)
+    const filterParams               = computed(()=>stringifyQuery(filters.value))
+
+
+
+
+
+
 
     function onFilterChange(newFilters:Object){
         filters.value = newFilters;
         loadRecords();
     }
-
+    
     async function loadRecords(){
         loading.value = true;
         const queries:Array<String> = [];

@@ -128,10 +128,10 @@ function onFilterChange(){
         regions                : selectedRegions.value?.map(e=>e.identifier),
         recordTypes            : selectedRecordTypes.value?.map(e=>e.identifier),
     }
-    
     router.push({
         path : route.fullPath,
         query : { 
+            ...route.query,
             componentIndicators    : filters.componentIndicators,
             complementaryIndicators: filters.complementaryIndicators,
             binaryIndicators       : filters.binaryIndicators,

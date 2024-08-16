@@ -1,42 +1,35 @@
 <template>
-    <div>    
-        <AppSidebar />
-        <div class="wrapper d-flex flex-column min-vh-100 bg-light">
-            <AppHeader />
+    <div>   
+        <AppSidebar v-if="!query?.embed" />
+        <div class="wrapper d-flex flex-column" :class="{'bg-light min-vh-100' : !query?.embed}">
+            <AppHeader  v-if="!query?.embed" />
             <div class="body flex-grow-1 px-3">
                 <CContainer fluid>
                 <router-view />
                 <slot name="error"></slot>
                 </CContainer>
             </div>
-            <AppFooter class="m-0 p-0"/>      
+            <AppFooter class="m-0 p-0" v-if="!query?.embed" />      
             <div id="g-recaptcha"></div>
         </div>
     </div>
 </template>
 <i18n src="@/i18n/dist/layouts/default.json"></i18n>
-<script>
+<script setup lang="ts">
 import { CContainer } from '@coreui/vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppSidebar from '@/components/layout/AppSidebar.vue'
+import {useRoute} from 'vue-router';
 
-export default {
-  name: 'DefaultLayout',
-  components: {
-    AppFooter,
-    AppHeader,
-    AppSidebar,
-    CContainer,
-  },
-  setup(){
     const head = useLocaleHead({
       addDirAttribute: true,      // Adds dir
       addSeoAttributes: true,     // Adds lang
     })
     const { locale, t } = useI18n();
     const config = useRuntimeConfig();
-
+    const { query }  = useRoute();
+    
     //Enable google tracking in production only
     if(config?.public?.ACCOUNTS_HOST_URL.indexOf('accounts.cbd.int')>=0){
         const { gtag, grantConsent, revokeConsent } = useGtag()
@@ -55,7 +48,8 @@ export default {
                 src : 'https://cdn.slaask.com/chat.js',
                 defer: true,
                 callback: () => { 
-                    initializeSlaask();
+                    if(!query.embed)
+                        initializeSlaask();
                 }
             },
             {
@@ -98,8 +92,7 @@ export default {
                 setTimeout(()=>initializeSlaask(counter+1), 500)
         }
     }
-  }
-}
+
 </script>
 <style scoped>
 
