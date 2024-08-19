@@ -4,10 +4,10 @@
         <slot name="header"> 
           <font-awesome-icon :icon="['fas', 'chart-simple']" /> 
           {{ t('nationalTargetsAnalyzer') }} 
-          <a class="float-end" v-if="query.embed" :href="`https://ort.cbd.int`">
+          <a class="float-end" v-if="query.embed" :href="realm.baseURL">
             <CTooltip content="SCBD Online Reporting Tool" trigger="hover">
                 <template #toggler="{ on }">
-                    <span v-on="on"><strong>ORT</strong></span>
+                    <span v-on="on"><strong>{{realm.displayName}}</strong></span>
                 </template>
             </CTooltip>            
           </a>
@@ -26,6 +26,7 @@
     import {useRoute} from 'vue-router';
     const { t }     = useI18n();
     const { query } = useRoute();
+    const realm     = useRealm()
     
     definePageMeta({
         auth:false,
