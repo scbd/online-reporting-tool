@@ -1,7 +1,17 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> <CIcon name="cil-grid" /> {{ t('nationalTargetsAnalyzer') }} </slot>
+        <slot name="header"> 
+          <font-awesome-icon :icon="['fas', 'chart-simple']" /> 
+          {{ t('nationalTargetsAnalyzer') }} 
+          <a class="float-end" v-if="query.embed" :href="realm.baseURL">
+            <CTooltip content="SCBD Online Reporting Tool" trigger="hover">
+                <template #toggler="{ on }">
+                    <span v-on="on"><strong>{{realm.displayName}}</strong></span>
+                </template>
+            </CTooltip>            
+          </a>
+        </slot>
       </CCardHeader>
       <CCardBody>        
         <km-suspense>
@@ -10,12 +20,15 @@
       </CCardBody>
     </CCard>
   </template>
-  
+  <i18n src="@/i18n/dist/pages/national-targets/analyzer.json"></i18n>
   <script setup lang="ts">
 
-    const { t }  = useI18n();
+    import {useRoute} from 'vue-router';
+    const { t }     = useI18n();
+    const { query } = useRoute();
+    const realm     = useRealm()
+    
     definePageMeta({
         auth:false,
-        schema:SCHEMAS.NATIONAL_TARGET_7
     })
   </script>
