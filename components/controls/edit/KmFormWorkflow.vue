@@ -413,11 +413,11 @@
     async function verifyUserCanAccess(){
 
         const $kmStorageApi = $api.kmStorage
-
+        
         const metadata   = EditFormUtility.getDocumentMetadata(props.document.value);
         const identifier = props.document.value?.header?.identifier;
 
-        const exists     = await EditFormUtility.documentExists(identifier);
+        const exists     = await EditFormUtility.draftExists(identifier);
 
         const qCanWrite  = exists  ? $kmStorageApi.drafts.canUpdate(identifier, { metadata })
                                 : $kmStorageApi.drafts.canCreate(identifier, { metadata });
@@ -437,18 +437,22 @@
         formWizard.value?.selectTab(focusedTab.value ?? 0)
 
         workflowFunctions = inject('kmWorkflowFunctions');
-
-        if(workflowFunctions.onGetDocumentInfo){
-            const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
-            originalDocument = cloneDeep(documentInfo.body);
+        try{
+            if(workflowFunctions.onGetDocumentInfo){
+                const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
+                originalDocument = cloneDeep(documentInfo.body);
+            }
+            else 
+                originalDocument = cloneDeep(props.document.value);
+            
+            isEditAllowed.value = await verifyUserCanAccess();
+            if(isEditAllowed.value){
+                //start save draft version 10 sec later
+                saveDraftVersionTimer = setTimeout(saveDraftVersion, 1000 * 10);
+            }
         }
-        else 
-            originalDocument = cloneDeep(props.document.value);
-        
-        isEditAllowed.value = await verifyUserCanAccess();
-        if(isEditAllowed.value){
-            //start save draft version 10 sec later
-            saveDraftVersionTimer = setTimeout(saveDraftVersion, 10000);
+        catch(e){
+            useLogger().error(e, 'Error loading edit form.')
         }
             
     })
