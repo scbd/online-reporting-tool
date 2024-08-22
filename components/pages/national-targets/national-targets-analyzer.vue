@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="analyzer">
         <div class="search">
             <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes" v-show="!query.embed"></search-filters>
 
@@ -835,7 +835,7 @@ import {stringifyQuery} from 'ufo'
 </script>
 
 <style>
-    #filterByRecordType{
+    #analyzer .search #filterByRecordType{
         display: none;
     }
 </style>
