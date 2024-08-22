@@ -51,6 +51,10 @@ function findMatchingRoute($appRoutes, to, from){
             query  : ['documentID'],
             url    : $appRoutes.DATABASE.replace(':identifier', ':documentID')
         },
+        searchView : {
+            regex  :  /search\/(\/([A-Za-z0-9]+))?/i,
+            url    : $appRoutes.NATIONAL_TARGETS
+        },
     }
     
     for (const route in customUrlRegex) {
