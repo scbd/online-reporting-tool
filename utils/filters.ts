@@ -1,15 +1,24 @@
 import moment from 'moment';
 import { useI18n } from 'vue-i18n'
 
-export function formatDate(datetime, format) {
+export function formatDate(datetime, format, local) {
     if (format === undefined)
         format = 'DD MMM YYYY  HH:mm';
 
-    return formatMomentDate(datetime, 'format',format);
+    if(!local)
+      return formatMomentDate(datetime, 'format',format);
+
+    return formatMomentLocalDate(datetime, 'format', format)
 }
 export function formatMomentDate(datetime, method, arg1, arg2, arg3) {
     if(datetime)
         return moment.utc(datetime)[method](arg1, arg2, arg3);    
+}
+
+export function formatMomentLocalDate(datetime, method, arg1, arg2, arg3) {
+    if(datetime){
+        return moment(datetime).local()[method](arg1, arg2, arg3);
+    }
 }
 export function lstring(ltext, locale) {
   

@@ -200,7 +200,7 @@
                 // Create a temporary <a> element to trigger the download
                 const tempLink = document.createElement("a");
                 tempLink.href = url;
-                tempLink.setAttribute("download", props.fileName||`ort-data.${format}`);
+                tempLink.setAttribute("download", props.fileName||`ort-data-${formatDate(new Date(), "DD-MMM-YYYY_HH:mm", true)}.${format}`);
 
                 tempLink.click();
 

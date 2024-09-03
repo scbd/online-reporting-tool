@@ -7,7 +7,7 @@
                     <CCol class="col-12">
                         <div class="action-buttons float-end mb-1">
                             <CButton @click="onSaveDraft()" color="primary" class="me-md-2" :disabled="isBusy">
-                            <km-spinner v-if="validationReport.isSaving" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
+                                <km-spinner v-if="validationReport.isSaving" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 {{t('saveDraft')}}
                             </CButton> 
                             <CButton @click="onReviewDocument()" color="primary" class="me-md-2" :disabled="isBusy">
@@ -74,14 +74,19 @@
                     </CCol>   
                     <CCol class="col-12">
                         <div class="action-buttons float-end">
-                            <CButton @click="onSaveDraft()" color="primary" class="me-md-2">{{t('saveDraft')}}</CButton> 
-                            <CButton @click="onReviewDocument()" color="primary" class="me-md-2" >{{t('review')}}</CButton>
+                            <CButton @click="onSaveDraft()" color="primary" class="me-md-2" :disabled="isBusy">
+                                <km-spinner v-if="validationReport.isSaving" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
+                                {{t('saveDraft')}}
+                            </CButton> 
+                            <CButton @click="onReviewDocument()" color="primary" class="me-md-2" :disabled="isBusy">
+                                {{t('review')}}
+                            </CButton>
                             <!-- <CButton @click="shareDocument()" color="dark" class="me-md-2">Share</CButton>   -->
-                            <pdf-section  class="me-md-2 btn-secondary" element=".print-section" :title="printTitle" 
-                            @on-pdf-document="onPrintDocument" @on-after-pdf="onAfterPrint" ></pdf-section>
+                            <pdf-section  class="me-md-2 btn-secondary" element=".print-section" :title="printTitle"  
+                            @on-pdf-document="onPrintDocument" @on-after-pdf="onAfterPrint"></pdf-section>
                             <print-section  class="me-md-2 btn-secondary" element=".print-section" 
                                 @on-print-document="onPrintDocument" @on-after-print="onAfterPrint"></print-section> 
-                            <CButton @click="onClose()" color="danger" class="me-md-2">{{t('close')}}</CButton>
+                            <CButton @click="onClose()" color="danger" class="me-md-2" :disabled="isBusy">{{t('close')}}</CButton>
                         </div>
                     </CCol>
                 
