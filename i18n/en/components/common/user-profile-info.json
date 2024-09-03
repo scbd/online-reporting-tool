@@ -13,5 +13,6 @@
     "roles": "Role(s)",
     "nauHelp": "National Authorized User (NAUs) can create draft national records and submit them to the Publishing Authority to verify and publish.",
     "updateProfile": "Update profile",
-    "updatePassword": "Update password"
+    "updatePassword": "Update password",
+    "subscribeToEmailAlerts" : "Subscribe to email alerts"
 }

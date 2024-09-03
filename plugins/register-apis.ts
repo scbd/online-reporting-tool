@@ -7,6 +7,8 @@ import KmWorkflowsApi         from '@/api/km-workflows'
 import RealmConfigurationApi  from '@/api/realm-configuration'
 import SolrIndexApi           from '~/api/solr-index'
 import ThesaurusApi           from '~/api/thesaurus'
+import SubscriptionApi        from '~/api/subscription'
+import UserSettingApi         from '~/api/user-setting'
 
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -18,6 +20,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   const realmConfiguration = new RealmConfigurationApi({});
   const solrIndex          = new SolrIndexApi         ({});
   const thesaurus          = new ThesaurusApi         ({});
+  const subscription       = new SubscriptionApi      ({});
+  const userSetting        = new UserSettingApi       ({});
+  
   
   const api = {
     articles          ,
@@ -27,6 +32,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     realmConfiguration,
     solrIndex         ,
     thesaurus         ,
+    subscription      ,
+    userSetting       ,
   }
   
   return {

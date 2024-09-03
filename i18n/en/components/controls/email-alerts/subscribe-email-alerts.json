@@ -1,0 +1,15 @@
+{
+    "modalTitle" : "Add edit subscription",
+    "close" : "Close",
+    "save" : "Save",
+    "addAlert" : "Add Alert",
+    "edit" : "Edit", 
+    "delete" : "Delete",
+    "title":"Title",
+    "confirmDeleteTitle":"Confirm delete",
+    "confirmDeleteTitleMessage":"Are you sure you want to delete this email alert?",
+    "confirmDeleteProcessing":"Deleting email alert",
+    "yes":"Yes",
+    "no":"No"
+
+}
