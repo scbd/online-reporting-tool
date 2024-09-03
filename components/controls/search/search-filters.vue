@@ -65,7 +65,8 @@ import { useRoute, useRouter } from 'vue-router';
 
 const emit = defineEmits(['onFilterChange'])
 const props = defineProps({
-    schemaTypes : {type:Array<String>, default:undefined}
+    schemaTypes : { type:Array<String>, default:undefined},
+    updateUrl   : { type:Boolean, default : true}
 })
 
 const router = useRouter()
@@ -103,6 +104,7 @@ const schemaTypeLists = computed(()=>{
         }
     })
 })
+
 const clearFilters = () => {
     selectedGlobalTargets.value = [];
     selectedGlobalGoals.value = [];
@@ -128,35 +130,61 @@ function onFilterChange(){
         regions                : selectedRegions.value?.map(e=>e.identifier),
         recordTypes            : selectedRecordTypes.value?.map(e=>e.identifier),
     }
-    router.push({
-        path : route.fullPath,
-        query : { 
-            ...route.query,
-            componentIndicators    : filters.componentIndicators,
-            complementaryIndicators: filters.complementaryIndicators,
-            binaryIndicators       : filters.binaryIndicators,
-            globalTargets          : filters.globalTargets,
-            globalGoals            : filters.globalGoals,
-            countries              : filters.countries,
-            regions                : filters.regions,
-            recordTypes            : filters.recordTypes,
-        }
-    });
+
+    if(props.updateUrl){
+        router.push({
+            path : route.fullPath,
+            query : { 
+                ...route.query,
+                componentIndicators    : filters.componentIndicators,
+                complementaryIndicators: filters.complementaryIndicators,
+                binaryIndicators       : filters.binaryIndicators,
+                globalTargets          : filters.globalTargets,
+                globalGoals            : filters.globalGoals,
+                countries              : filters.countries,
+                regions                : filters.regions,
+                recordTypes            : filters.recordTypes,
+            }
+        });
+    }
+    
     emit('onFilterChange', filters);
 }
 
 onMounted(() => {
+    const mapSelectedFilters = inject('mapSelectedFilters');
+
     thesaurusStore.loadDomainTerms(THESAURUS.COUNTRIES)
     thesaurusStore.loadDomainTerms(THESAURUS.REGIONS);
 
-    mapQueryString('componentIndicators', componentIndicators);
-    mapQueryString('complementaryIndicators', complementaryIndicators);
-    mapQueryString('binaryIndicators', binaryIndicators);
-    mapQueryString('globalTargets', selectedGlobalTargets);
-    mapQueryString('globalGoals', selectedGlobalGoals);
-    mapQueryString('countries', selectedCountries);
-    mapQueryString('regions', selectedRegions);
-    mapQueryString('recordTypes', selectedRecordTypes);
+    const filters = {
+        'componentIndicators'   :  componentIndicators,
+        'complementaryIndicators'   :  complementaryIndicators,
+        'binaryIndicators'  :  binaryIndicators,
+        'globalTargets' :  selectedGlobalTargets,
+        'globalGoals'   :  selectedGlobalGoals,
+        'countries' :  selectedCountries,
+        'regions'   :  selectedRegions,
+        'recordTypes'   :  selectedRecordTypes,
+    }
+    if(props.updateUrl){
+        for (const filter in filters) {
+            if (Object.prototype.hasOwnProperty.call(filters, filter)) {
+                const element = filters[filter];
+                mapQueryString(filter, element);
+                
+            }
+        }
+    }
+    if(mapSelectedFilters){
+        for (const filter in filters) {
+            if (Object.prototype.hasOwnProperty.call(filters, filter)) {
+                const refProp = filters[filter];
+                refProp.value = mapSelectedFilters(filter)||[];
+                
+            }
+        }
+    }
 
     onFilterChange();
 })
