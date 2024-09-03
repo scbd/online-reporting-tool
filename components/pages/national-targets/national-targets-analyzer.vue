@@ -547,10 +547,10 @@
                                                     {{country.count}}
                                                 </td>
                                                 <td v-for="range in ['A', 'B', 'C', 'D']" :key="range">
-                                                   {{ facetPivot['government_EN_s,globalGoalAlignment_ss'].find(e=>e.value == country.value)?.pivot?.find(e=>e.value == `GBF-GOAL-${range}`)?.count || 0 }}
+                                                   {{ facetPivot['government_EN_s,globalGoalAlignment_ss']?.find(e=>e.value == country.value)?.pivot?.find(e=>e.value == `GBF-GOAL-${range}`)?.count || 0 }}
                                                 </td>
                                                 <td v-for="range in [...Array(23).keys()]" :key="range">
-                                                   {{ country.pivot.find(e=>e.value == `GBF-TARGET-${range+1 > 9 ? range+1 : '0'+(range+1)}`)?.count || 0 }}
+                                                   {{ country.pivot?.find(e=>e.value == `GBF-TARGET-${range+1 > 9 ? range+1 : '0'+(range+1)}`)?.count || 0 }}
                                                 </td>
                                             </tr>
                                     </tbody>
@@ -711,7 +711,7 @@ import {stringifyQuery} from 'ufo'
         const progressInTargets = {};
         const cbdGroups = [...thesaurusStore.getDomainTerms(THESAURUS.CBD_REGIONAL_GROUPS)];
 
-        const schemaRegionCounts =  facetsPivot['schema_s,government_REL_ss'].find(e=>e.value == SCHEMAS.NATIONAL_TARGET_7);
+        const schemaRegionCounts =  facetsPivot['schema_s,government_REL_ss']?.find(e=>e.value == SCHEMAS.NATIONAL_TARGET_7);
         const targetsByParty     =  facetsPivot['government_EN_s,globalTargetAlignment_ss'];
         const gbfTargetsByParty  =  facetsPivot['globalTargetAlignment_ss,government_EN_s'];
         const gbfGoalsByParty    =  facetsPivot['globalGoalAlignment_ss,government_EN_s'];
@@ -745,21 +745,21 @@ import {stringifyQuery} from 'ufo'
         }
 
         //3.	Average number of GBF targets covered by a Party and the range [min and max number of GBF targets covered]
-        const gbfCountryCounts   = (targetsByParty.map(e=>e.pivot.length))
+        const gbfCountryCounts   = (targetsByParty.map(e=>e.pivot?.length))
         const gbfAllCountryCount = gbfCountryCounts.reduce((prevCount, country)=>country + prevCount, 0)
         progressInTargets.avgByGbfTargets   = Math.ceil(gbfAllCountryCount / progressInTargets.oneTargetByParty);
         progressInTargets.avgByGbfTargetsMin = Math.min(...gbfCountryCounts);
         progressInTargets.avgByGbfTargetsMax = Math.max(...gbfCountryCounts);
 
         //4.	Number of Parties that have set national targets for every GBF target  
-        progressInTargets.partiesWithAllGbfTargets   = targetsByParty.filter(e=>e.pivot.length==23).map(e=>e.value)
+        progressInTargets.partiesWithAllGbfTargets   = targetsByParty.filter(e=>e.pivot?.length==23).map(e=>e.value)
         //5.	Number of Parties that have set national targets for more than 75% of the GBF targets
-        progressInTargets.partiesWith17AndMoreGbfTargets   = targetsByParty.filter(e=>e.pivot.length>16).map(e=>e.value)
+        progressInTargets.partiesWith17AndMoreGbfTargets   = targetsByParty.filter(e=>e.pivot?.length>16).map(e=>e.value)
 
         //6.	For each GBF target, percent of parties that have a national target which has been mapped to it. [divide by parties that have submitted and not all parties]
         const gbfTargetPercentByParty = gbfTargetsByParty.map(e=>({
             target:e.value, 
-            percent : roundDecimal((e.pivot.length*100)/numberOfCountries),
+            percent : roundDecimal((e.pivot?.length*100)/numberOfCountries),
             targetCount: e.count
         }));
 

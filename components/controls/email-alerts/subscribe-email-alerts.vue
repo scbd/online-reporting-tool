@@ -235,8 +235,6 @@
             loading.value = true;
             const currentSubscription = dirtySubscription.value;
 
-            console.log(currentSubscription)
-
             if(Object.keys(currentSubscription||{})?.length){
 
                 if(!currentSubscription.queryTitle?.length)
