@@ -37,7 +37,7 @@
                                         <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
                                             <template #text>Parties with at least 1 national target
                                             </template>
-                                            <template #value>{{ Object.keys(facets.government_EN_s).length || 0
+                                            <template #value>{{ Object.keys(facets.government_s).length || 0
                                                 }}</template>
                                         </CWidgetStatsB>
                                     </CCol>
@@ -91,11 +91,9 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr v-for="region in analyzedCounts.progressInTargets.oneTargetByCbdRegions"
-                                                            :key="region">
+                                                        <tr v-for="region in analyzedCounts.progressInTargets.oneTargetByCbdRegions" :key="region">
                                                             <td>
-                                                                <div v-if="!region.showCountries">{{
-                                                                    lstring(region.title) }}</div>
+                                                                <div v-if="!region.showCountries">{{lstring(region.title) }}</div>
                                                                 <div v-if="region.showCountries"
                                                                     :rowspan="analyzedCounts.progressInTargets.oneTargetByCbdRegions.length">
                                                                     <table class="table table-bordered table-striped1 table-hover">
@@ -109,11 +107,10 @@
                                                                             <tr v-for="country in region.countries"
                                                                                 :key="country">
                                                                                 <td>
-                                                                                    {{country}}
+                                                                                    {{lstring(findCountry(country)?.name, locale)}}
                                                                                 </td>
                                                                                 <td>
-                                                                                    {{ facets.government_EN_s[country]
-                                                                                    }}
+                                                                                    {{ facets.government_s[country]}}
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>
@@ -127,7 +124,11 @@
                                                                     Show parties
                                                                 </button>
                                                             </td>
-
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Total</td>
+                                                            <td>{{ analyzedCounts.progressInTargets.oneTargetByCbdRegions?.reduce((prev, item)=>prev+item.countries.length, 0) }}</td>
+                                                            <td></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -205,7 +206,7 @@
                                             <tbody>
                                                     <tr v-for="country in analyzedCounts.progressInTargets.partiesWithAllGbfTargets" :key="country">
                                                         <td>
-                                                            {{ country }}
+                                                            {{lstring(findCountry(country)?.name, locale)}}
                                                         </td>
                                                     </tr>
                                             </tbody>
@@ -232,7 +233,7 @@
                                             <tbody>
                                                     <tr v-for="country in analyzedCounts.progressInTargets.partiesWith17AndMoreGbfTargets" :key="country">
                                                         <td>
-                                                            {{ country }}
+                                                            {{lstring(findCountry(country)?.name, locale)}}
                                                         </td>
                                                     </tr>
                                             </tbody>
@@ -368,28 +369,93 @@
                         </km-link>
                     </CCardHeader>
                     <CCardBody>
-                        <!-- 14. Average number of elements of Section C that Parties say have been considered in developing their NBSAP -->
-                        <div class="fs-4 fw-semibold">{{ analyzedCounts.sectionC.avgByParty || 0 }}</div>
-                        <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                            Average number of elements of Section C that Parties say have been considered in developing their NBSAP
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- 14. Average number of elements of Section C that Parties say have been considered in developing their NBSAP -->
+                                        <div class="fs-4 fw-semibold">{{ analyzedCounts.sectionC.avgByParty || 0 }}</div>
+                                        <div class="text-uppercase fw-semibold small text-medium-emphasis">
+                                            Average number of elements of Section C that Parties say have been considered in developing their NBSAP
+                                        </div>
+                                        <div class="progress my-2" style="height: 4px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- 14. Average number of elements of Section C that Parties say have been considered in developing their NBSAP -->
+                                        <div class="fs-4 fw-semibold">{{ analyzedCounts.sectionC.countries.length || 0 }}</div>
+                                        <div class="text-uppercase fw-semibold small text-medium-emphasis">
+                                            Number of Parties that have elements of Section C that have been considered in developing their NBSAP
+                                        </div>
+                                        <div class="progress my-2" style="height: 4px;"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="progress my-2" style="height: 4px;"></div>
-                        <div style="max-height:300px;overflow: scroll;" v-if="analyzedCounts.sectionC.avgByParty">
+                        
+                        <div style="max-height:300px;overflow: scroll;" class="mb-2 border border-secondary" v-if="analyzedCounts.sectionC.avgByParty">
                             <table class="table table-bordered table-striped1 table-hover" >
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>Party</th>
+                                        <th>No. of elements included in Section C</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                        <tr v-for="country in analyzedCounts.sectionC.countries" :key="country">
+                                        <tr v-for="(country, index) in analyzedCounts.sectionC.countries" :key="country">
+                                            <td>{{index+1}}</td>
                                             <td>
-                                                {{ country.value }}
+                                                {{lstring(findCountry(country.value)?.name, locale)}}
                                             </td>
+                                            <td>{{ country?.pivot?.length }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>Total</td>
+                                            <td>{{ analyzedCounts.sectionC.countries?.reduce((prev, item)=>prev+item.pivot.length, 0) }}</td>
                                         </tr>
                                 </tbody>
                             </table>
                         </div>
+                        <CCol :sm="12">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        For each GBF target, elements of Section C that Parties say have been considered in developing their NBSAP
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered table-striped1 table-hover" >
+                                            <thead>
+                                                <tr>
+                                                    <th>Target</th>
+                                                    <th>Percent</th>
+                                                    <th>National targets that include Section C</th>
+                                                    <th>Total national targets</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr v-for="party in analyzedCounts.sectionC.sectionCByGbfTargetPercent" :key="party">
+                                                        <td>
+                                                            <img v-if="~party.target.indexOf('GBF-TARGET-')" :src="`https://www.cbd.int/gbf/images/targets/target-${party.target.replace('GBF-TARGET-', '')}.png`" height="25">
+                                                            <img v-if="~party.target.indexOf('GBF-GOAL-')" :src="`/cbd-gbf-logo.jpeg`" height="25" class="ps-3">
+                                                            {{ party.target }}
+                                                        </td>
+                                                        <td>
+                                                            {{ party.percent }} %
+                                                        </td>
+                                                        <td>
+                                                            {{ party.targetCount }}
+                                                        </td>
+                                                        <td>{{ party.totalTargets }}</td>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </CCol>
                     </CCardBody>
                 </CCard>
 
@@ -407,7 +473,7 @@
                         <!-- 16. Number of parties with non-state actor commitments by target -->
                         <div class="fs-4 fw-semibold">{{ analyzedCounts.nonStateActors.partyCount || 0 }}</div>
                         <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                            Average number of elements of Section C that Parties say have been considered in developing their NBSAP
+                            Number of countries that have included non-state actor commitments in their target submission
                         </div>
                         <div class="progress my-2" style="height: 4px;"></div>
 
@@ -433,7 +499,10 @@
                                         <img :src="`https://www.cbd.int/gbf/images/targets/target-${target.value.replace('GBF-TARGET-', '')}.png`" height="25">
                                         {{ target.value }}</td>
                                     <td>{{ target?.pivot?.length }}</td>
-                                    <td>{{ target.pivot.map(e=>e.value).join(', ') }}</td>
+                                    <td>
+                                        
+                                        {{ target.pivot.map(e=>lstring(findCountry(e.value)?.name, locale)).join(', ') }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -472,18 +541,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>                                        
-                                            <tr v-for="(country) in facetPivot['government_EN_s,globalTargetAlignment_ss']" :key="country">
+                                            <tr v-for="(country) in facetPivot['government_s,globalTargetAlignment_ss']" :key="country">
                                                 <td>
-                                                    {{ country.value }}
+                                                    {{lstring(findCountry(country.value)?.name, locale)}}
                                                 </td>
                                                 <td>
                                                     {{country.count}}
                                                 </td>
                                                 <td v-for="range in ['A', 'B', 'C', 'D']" :key="range">
-                                                   {{ facetPivot['government_EN_s,globalGoalAlignment_ss'].find(e=>e.value == country.value)?.pivot?.find(e=>e.value == `GBF-GOAL-${range}`)?.count || 0 }}
+                                                   {{ facetPivot['government_s,globalGoalAlignment_ss']?.find(e=>e.value == country.value)?.pivot?.find(e=>e.value == `GBF-GOAL-${range}`)?.count || 0 }}
                                                 </td>
                                                 <td v-for="range in [...Array(23).keys()]" :key="range">
-                                                   {{ country.pivot.find(e=>e.value == `GBF-TARGET-${range+1 > 9 ? range+1 : '0'+(range+1)}`)?.count || 0 }}
+                                                   {{ country.pivot?.find(e=>e.value == `GBF-TARGET-${range+1 > 9 ? range+1 : '0'+(range+1)}`)?.count || 0 }}
                                                 </td>
                                             </tr>
                                     </tbody>
@@ -549,12 +618,6 @@ import {stringifyQuery} from 'ufo'
     const partyCountsShareUrl        = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=party-count&${filterParams.value}`)
     const filterParams               = computed(()=>stringifyQuery(filters.value))
 
-
-
-
-
-
-
     function onFilterChange(newFilters:Object){
         filters.value = newFilters;
         loadRecords();
@@ -577,6 +640,14 @@ import {stringifyQuery} from 'ufo'
         queries.push(buildArrayQuery('government_s', filters.value.countries));              
         queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
         
+        const gbfTargetsSectionCQuery = {
+            query: andOr(compact([...queries, 'implementingConsiderations_EN_ss:*']), 'AND'),
+            "facet":true,
+            facetFields: ["globalTargetAlignment_ss"],
+            rowsPerPage: 0,
+        }
+        const sectionCGbfFacets = await  queryIndex(parseSolrQuery(gbfTargetsSectionCQuery, locale));
+        
         const searchQuery = {
             rowsPerPage: 0,
             query: andOr(compact(queries), 'AND'),
@@ -584,18 +655,21 @@ import {stringifyQuery} from 'ufo'
             start: 0,
             additionalFields :['globalTargetAlignment_ss','globalGoalOrTarget_s','globalGoalAlignment_ss'],
             facet : true,
-            facetFields : [ 'schema_s', 'government_EN_s', 'government_REL_ss','all_terms_ss', 'globalTargetAlignment_ss',
-                            'globalGoalOrTarget_s','globalGoalAlignment_ss'],
-            pivotFacetFields: [ 'government_EN_s,schema_s', 'schema_s,government_REL_ss', 
-                                'government_EN_s,globalTargetAlignment_ss','government_EN_s,globalGoalAlignment_ss',
-                                'globalTargetAlignment_ss,government_EN_s', 'globalGoalAlignment_ss,government_EN_s',
-                                'government_EN_s,complementaryIndicators_EN_ss', 'government_EN_s,componentIndicators_EN_ss',
-                                'degreeOfAlignment_EN_ss,government_EN_s',
-                                'government_EN_s,hasNonStateActors_b', 'government_EN_s,hasOtherNationalIndicators_b',
-                                'government_EN_s,degreeOfAlignmentByTarget_ss',
-                                'government_EN_s,implementingConsiderations_EN_ss',
-                                'hasNonStateActors_b,globalTargetAlignment_ss,government_EN_s'
-            ],// 'schema_s,government_EN_s,globalTargetAlignment_ss'
+            //'all_terms_ss', 'globalTargetAlignment_ss', 'globalGoalOrTarget_s','globalGoalAlignment_ss',
+            facetFields : [ 'schema_s', 'government_s', 'government_REL_ss', 'implementingConsiderations_EN_ss'],
+            pivotFacetFields: [ 'government_s,schema_s', 'schema_s,government_REL_ss', 
+                                'government_s,globalTargetAlignment_ss',
+                                'government_s,globalGoalAlignment_ss',
+                                'globalTargetAlignment_ss,government_s', 'globalGoalAlignment_ss,government_s',
+                                'government_s,complementaryIndicators_EN_ss', 'government_s,componentIndicators_EN_ss',
+                                'degreeOfAlignment_EN_ss,government_s',
+                                'government_s,hasNonStateActorCommitmentInfo_b', 
+                                'government_s,hasOtherNationalIndicators_b',
+                                'government_s,degreeOfAlignmentByTarget_ss',
+                                'government_s,implementingConsiderations_EN_ss',
+                                'globalTargetAlignment_ss,implementingConsiderations_EN_ss',
+                                'hasNonStateActorCommitmentInfo_b,globalTargetAlignment_ss,government_s'
+            ],// 'schema_s,government_s,globalTargetAlignment_ss'
         }
         const result = await queryIndex(parseSolrQuery(searchQuery, locale));
 
@@ -604,7 +678,7 @@ import {stringifyQuery} from 'ufo'
         facets.value = result.facets;
         facetPivot.value = result.facetPivot;
 
-        facetPivot.value['government_EN_s,schema_s'].forEach(e=>{            
+        facetPivot.value['government_s,schema_s'].forEach(e=>{            
             
             e.countrySchemaCount = e.pivot.map(p=>{
                 return {
@@ -617,9 +691,9 @@ import {stringifyQuery} from 'ufo'
         const newCounts = {};
         newCounts.progressInTargets     = buildProgressInTargetCounts(facets.value, facetPivot.value);
         newCounts.progressInMonitoring  = buildProgressInMonitoringCounts(facets.value, facetPivot.value);
-        newCounts.relevanceMonitoring   = buildRelevanceMonitoringCounts(facets, facetPivot.value);
-        newCounts.sectionC              = buildSectionCCounts(facets, facetPivot.value);
-        newCounts.nonStateActors        = buildNonStateActorsCounts(facets, facetPivot.value);
+        newCounts.relevanceMonitoring   = buildRelevanceMonitoringCounts(facets.value, facetPivot.value);
+        newCounts.sectionC              = buildSectionCCounts(facets.value, facetPivot.value, sectionCGbfFacets.facets['globalTargetAlignment_ss']);
+        newCounts.nonStateActors        = buildNonStateActorsCounts(facets.value, facetPivot.value);
         analyzedCounts.value = newCounts;
         
     }
@@ -639,49 +713,55 @@ import {stringifyQuery} from 'ufo'
         const progressInTargets = {};
         const cbdGroups = [...thesaurusStore.getDomainTerms(THESAURUS.CBD_REGIONAL_GROUPS)];
 
-        const schemaRegionCounts =  facetsPivot['schema_s,government_REL_ss'].find(e=>e.value == SCHEMAS.NATIONAL_TARGET_7);
-        const targetsByParty     =  facetsPivot['government_EN_s,globalTargetAlignment_ss'];
-        const gbfTargetsByParty  =  facetsPivot['globalTargetAlignment_ss,government_EN_s'];
-        const gbfGoalsByParty    =  facetsPivot['globalGoalAlignment_ss,government_EN_s'];
-        const numberOfCountries  =  Object.keys(facets.government_EN_s||{}).length;
+        const schemaRegionCounts =  facetsPivot['schema_s,government_REL_ss']?.find(e=>e.value == SCHEMAS.NATIONAL_TARGET_7);
+        const targetsByParty     =  facetsPivot['government_s,globalTargetAlignment_ss'];
+        const gbfTargetsByParty  =  facetsPivot['globalTargetAlignment_ss,government_s'];
+        const gbfGoalsByParty    =  facetsPivot['globalGoalAlignment_ss,government_s'];
+        const numberOfCountries  =  Object.keys(facets.government_s||{}).length;
 
         //1.	Number of Parties that have set at least one national target [visualise by region (per “CBD” region]
-        progressInTargets.oneTargetByParty = Object.keys(facets?.government_EN_s||{}).length;
+        progressInTargets.oneTargetByParty = Object.keys(facets?.government_s||{}).length;
         progressInTargets.oneTargetByCbdRegions = cbdGroups.map(e=>{
 
             const nationalTargets = schemaRegionCounts?.pivot?.find(r=>r.value == e.identifier)?.count;
-            const countries       =   Object.keys(facets?.government_EN_s||{})
+            const countries       =   Object.keys(facets?.government_s||{})
                                         .filter(c=>{
-                                            const country = findCountryByName(c)
+                                            const country = findCountry(c)
                                             return e.narrowerTerms.includes(country?.code?.toLowerCase())
                                         });
 
             return {...e, nationalTargets, countries };
         });
 
+        //For debugging when country code do not have title
+        // var count = progressInTargets.oneTargetByCbdRegions.map(e=>e.countries).flat()        
+        // const mCountries       =   Object.keys(facets?.government_s||{})
+        //                             .filter(c=>!count.includes(c));
+        // console.log(mcountries)
+
         //2.	Average number of national targets set by a Party (total targets / total number of parties = unweighted mean) and the range [min and max]
         if(facets?.schema_s){
-            progressInTargets.avgByNationalTargets = Math.floor((facets?.schema_s[SCHEMAS.NATIONAL_TARGET_7] ||0) / progressInTargets.oneTargetByParty);
-            progressInTargets.avgByNationalTargetsMin = Math.min(...Object.values(facets?.government_EN_s||{}));
-            progressInTargets.avgByNationalTargetsMax = Math.max(...Object.values(facets?.government_EN_s||{}));
+            progressInTargets.avgByNationalTargets = Math.ceil((facets?.schema_s[SCHEMAS.NATIONAL_TARGET_7] ||0) / progressInTargets.oneTargetByParty);
+            progressInTargets.avgByNationalTargetsMin = Math.min(...Object.values(facets?.government_s||{}));
+            progressInTargets.avgByNationalTargetsMax = Math.max(...Object.values(facets?.government_s||{}));
         }
 
         //3.	Average number of GBF targets covered by a Party and the range [min and max number of GBF targets covered]
-        const gbfCountryCounts   = (targetsByParty.map(e=>e.pivot.length))
+        const gbfCountryCounts   = (targetsByParty.map(e=>e.pivot?.length))
         const gbfAllCountryCount = gbfCountryCounts.reduce((prevCount, country)=>country + prevCount, 0)
-        progressInTargets.avgByGbfTargets   = Math.floor(gbfAllCountryCount / progressInTargets.oneTargetByParty);
+        progressInTargets.avgByGbfTargets   = Math.ceil(gbfAllCountryCount / progressInTargets.oneTargetByParty);
         progressInTargets.avgByGbfTargetsMin = Math.min(...gbfCountryCounts);
         progressInTargets.avgByGbfTargetsMax = Math.max(...gbfCountryCounts);
 
         //4.	Number of Parties that have set national targets for every GBF target  
-        progressInTargets.partiesWithAllGbfTargets   = targetsByParty.filter(e=>e.pivot.length==23).map(e=>e.value)
+        progressInTargets.partiesWithAllGbfTargets   = targetsByParty.filter(e=>e.pivot?.length==23).map(e=>e.value)
         //5.	Number of Parties that have set national targets for more than 75% of the GBF targets
-        progressInTargets.partiesWith17AndMoreGbfTargets   = targetsByParty.filter(e=>e.pivot.length>16).map(e=>e.value)
+        progressInTargets.partiesWith17AndMoreGbfTargets   = targetsByParty.filter(e=>e.pivot?.length>16).map(e=>e.value)
 
         //6.	For each GBF target, percent of parties that have a national target which has been mapped to it. [divide by parties that have submitted and not all parties]
         const gbfTargetPercentByParty = gbfTargetsByParty.map(e=>({
             target:e.value, 
-            percent : roundDecimal((e.pivot.length*100)/numberOfCountries),
+            percent : roundDecimal((e.pivot?.length*100)/numberOfCountries),
             targetCount: e.count
         }));
 
@@ -698,9 +778,9 @@ import {stringifyQuery} from 'ufo'
 
     function buildProgressInMonitoringCounts(facets, facetsPivot){
         
-        const hasComponentIndicatorsFacet      =  facetsPivot['government_EN_s,componentIndicators_EN_ss'];
-        const hasComplementaryIndicatorsFacet  =  facetsPivot['government_EN_s,complementaryIndicators_EN_ss'];
-        const hasOtherNationalIndicatorsFacet  =  facetsPivot['government_EN_s,hasOtherNationalIndicators_b'];
+        const hasComponentIndicatorsFacet      =  facetsPivot['government_s,componentIndicators_EN_ss'];
+        const hasComplementaryIndicatorsFacet  =  facetsPivot['government_s,complementaryIndicators_EN_ss'];
+        const hasOtherNationalIndicatorsFacet  =  facetsPivot['government_s,hasOtherNationalIndicators_b'];
         
         const progressInMonitoring = {};
 
@@ -727,11 +807,10 @@ import {stringifyQuery} from 'ufo'
 
     function buildRelevanceMonitoringCounts(facets, facetsPivot){
         const relevanceProgress = {};
-        const relevanceByParty  =  facetsPivot['government_EN_s,degreeOfAlignmentByTarget_ss'];
+        const relevanceByParty  =  facetsPivot['government_s,degreeOfAlignmentByTarget_ss'];
         const formatRegex = /(GBF-TARGET-[0-9]{2})\-([a-z0-9\-]+)/i;
 
         relevanceByParty.map(e=>{
-            // console.log(e)
             e.pivot.map(p=>{
                 const country = e.value
                 const match = p.value.match(formatRegex);
@@ -779,26 +858,40 @@ import {stringifyQuery} from 'ufo'
 
     }
 
-    function buildSectionCCounts(facets, facetsPivot){
+    function buildSectionCCounts(facets, facetsPivot, sectionCGbfFacets){
         const sectionC = {};
-        const sectionCConsiderations  =  facetsPivot['government_EN_s,implementingConsiderations_EN_ss'].filter(e=>e.pivot);
-        
+        const sectionCConsiderations  =  facetsPivot['government_s,implementingConsiderations_EN_ss'].filter(e=>e.pivot);        
+        const sectionCByTargets       =  facetsPivot['globalTargetAlignment_ss,implementingConsiderations_EN_ss']
+                                                .filter(e=>e.pivot?.length);
+
         //14. Average number of elements of Section C that Parties say have been considered in developing their NBSAP
         const sectionCCount         = (sectionCConsiderations.map(e=>e.pivot?.length||0)).reduce((prevCount, country)=>country + prevCount, 0)
+        
         if(sectionCCount > 0)
-        sectionC.avgByParty  = Math.floor(sectionCCount / sectionCConsiderations.length);
+            sectionC.avgByParty  = Math.ceil(sectionCCount / sectionCConsiderations.length);
         sectionC.countries  = sectionCConsiderations;
 
+        //no_of_targets_that_have_section_c_for_gbf_target/total_national_targets_for_gbf_target*100
+        const numberOfCountries  =  Object.keys(facets.government_s||{}).length;
+        sectionC.sectionCByGbfTargetPercent = sectionCByTargets.map(e=>{
+            return ({
+                target:e.value, 
+                percent : roundDecimal((sectionCGbfFacets[e.value]*100)/e.count),
+                targetCount: sectionCGbfFacets[e.value],
+                totalTargets:e.count,
+                rows:e.pivot
+            })
+        });
         return sectionC;
 
     }
     function buildNonStateActorsCounts(facets, facetsPivot){
         const nonStateActors                = {};
-        const hasNonStateActorFacets        =  facetsPivot['government_EN_s,hasNonStateActors_b'];
-        const nonStateActorByTargetsFacets  =  facetsPivot['hasNonStateActors_b,globalTargetAlignment_ss,government_EN_s'];
+        const hasNonStateActorFacets        =  facetsPivot['government_s,hasNonStateActorCommitmentInfo_b'];
+        const nonStateActorByTargetsFacets  =  facetsPivot['hasNonStateActorCommitmentInfo_b,globalTargetAlignment_ss,government_s'];
         
         //15. Number of countries that have included non-state actor commitments in their target submission
-        const hasNonStateActorCount = hasNonStateActorFacets.filter(e=>e.pivot.find(p=>p.value == true));
+        const hasNonStateActorCount = hasNonStateActorFacets.filter(e=>e.pivot?.length);
         nonStateActors.partyCount = hasNonStateActorCount.length;
         nonStateActors.targetCount= hasNonStateActorCount.reduce((prev, item)=>prev + item.count, 0);
 
@@ -808,8 +901,8 @@ import {stringifyQuery} from 'ufo'
         return nonStateActors;
     }
 
-    function findCountryByName(name:String){
-        return countriesStore.countries.find(c=>c.name.en == name)
+    function findCountry(name:String){
+        return countriesStore.countries.find(c=>c.name.en == name || c.code == name?.toUpperCase())
     }
 
     const roundDecimal = (num) => Math.round(num * 100 + Number.EPSILON ) / 100;
@@ -819,8 +912,8 @@ import {stringifyQuery} from 'ufo'
         // loadRecords();
         provide(UNMapActionsKey, {
             onSetLayerColor : (color:String)=>{
-                return facetPivot.value['government_EN_s,schema_s'].map(e=>{
-                    return findCountryByName(e.value)?.code3
+                return facetPivot.value['government_s,schema_s'].map(e=>{
+                    return findCountry(e.value)?.code3
                 }).filter(e=>e)
             }
         })
@@ -835,7 +928,7 @@ import {stringifyQuery} from 'ufo'
 </script>
 
 <style>
-    #analyzer .search #filterByRecordType{
+    /* #analyzer .search #filterByRecordType{
         display: none;
-    }
+    } */
 </style>

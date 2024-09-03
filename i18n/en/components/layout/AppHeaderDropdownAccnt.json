@@ -1,4 +1,6 @@
 {
     "settings":"Settings",
-    "signIn":"Sign in"
+    "signIn":"Sign in",
+    "emailAlerts": "Email Alerts",
+    "profile": "Profile"
 }

@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> 
+        <template #header> 
           <font-awesome-icon :icon="['fas', 'chart-simple']" /> 
           {{ t('nationalTargetsAnalyzer') }} 
           <a class="float-end" v-if="query.embed" :href="realm.baseURL">
@@ -11,7 +11,7 @@
                 </template>
             </CTooltip>            
           </a>
-        </slot>
+        </template>
       </CCardHeader>
       <CCardBody>        
         <km-suspense>

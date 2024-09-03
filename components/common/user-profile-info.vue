@@ -101,6 +101,12 @@
                                 </td>
                                 <td></td>
                             </tr>
+                            <tr>
+                                <td></td>
+                                <td colspan="2">
+                                    <km-link to="/users/email-alerts" :title="t('subscribeToEmailAlerts')" icon="fa-envelope"></km-link>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
