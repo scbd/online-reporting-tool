@@ -48,7 +48,7 @@
         userSettings.value.alertFrequency = frequency;
         userSettings.value.userId         = userSettingKey;
         if(userSettings.value._id)
-            await $api.userSetting.update(user.value.userID, userSettings.value);
+            await $api.userSetting.update(userSettingKey, userSettings.value);
         else
             await $api.userSetting.add(userSettings.value);
     }
