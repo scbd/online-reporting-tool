@@ -6,7 +6,8 @@
     import { useCountriesStore }    from '@/stores/countries';
 
     const props = defineProps({
-        colors : {type:Array, default : ['#52489C']}
+        colors : { type:Array, default : ['#52489C']},
+        zoom   : { type:Number, default : 0.8 }
     });
 
     const mapActions = inject(UNMapActionsKey);
@@ -14,7 +15,8 @@
 
     const countriesStore = useCountriesStore ();
     const {t, locale }   = useI18n();
-
+    const route          = useRoute()
+        
     let map;
 
     useHead({
@@ -39,7 +41,7 @@
 
         map = new window.mapboxgl.Map({
             container: 'map',
-            attributionControl: true, hash: true, renderWorldCopies: false, maxZoom: 3, zoom: 0.8,
+            attributionControl: true, hash: true, renderWorldCopies: false, maxZoom: 3, zoom: props.zoom,
             style: {
                 version: 8,
                 sources: {
