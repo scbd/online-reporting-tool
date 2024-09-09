@@ -18,7 +18,7 @@
                     <CCardBody>
                         <div class="row">
                             <div class="col-sm-10">
-                                <un-map :colors="['#2c9844']"></un-map>
+                                <un-map :colors="['#2c9844']" :zoom="Number(query.zoom||0.8)"></un-map>
                             </div>
                             <div class="col-sm-2">
 
