@@ -8,7 +8,6 @@ export const downloadSchemas = {
             messages,
             useScope:'local'
         })
-        
         return {	
             "nationalTarget7" : {
                 "publishedOn"                       : t("publishedOn"),
@@ -33,8 +32,8 @@ export const downloadSchemas = {
                "nonStateActorCommitmentInfo"        : t("listOfNonStateActors"),
                "hasNonStateActors"                  : t("anyOverlaps"),
                "nonStateActorsInfo"                 : t("commitmentsAndActors"),
-               "additionalImplementation"           : t("additionalMeanOfImplementation"),
-               "additionalImplementationCustomValue": t("pleaseExplain"),
+               "additionalImplementation"           : t("additionalImplementation"),
+               "additionalImplementationCustomValue": t("additionalImplementationCustomValue"),
                "additionalImplementationInfo"       : t("additionalExplanation"),
                "additionalInformation"              : t("relevantInformation"),
             }

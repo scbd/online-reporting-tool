@@ -12,7 +12,7 @@
             <CModalBody>               
 
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-8">
                         <div class="form-group color-black">
                             {{ t('downloadFormat') }}
                             <span class="radio" style="display: initial;">
@@ -24,7 +24,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <span class="float-end" style="padding-top: 20px;">
                             {{ t('recordsFound') }}: <strong>{{ numFound }}</strong>
                         </span>
