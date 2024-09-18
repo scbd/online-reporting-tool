@@ -50,10 +50,34 @@ import { useRoute } from 'vue-router'
                     let fullPath = route.fullPath;
                     
                     pageBreadcrumbsConf?.skip?.forEach(element => {
-                    fullPath = fullPath.replace(`/${route.params[element]}`, '');
+                        fullPath = fullPath.replace(`/${route.params[element]}`, '');
                     });
-                    const text  = capitalCase(routeName);
-                    const to    = index ? `/${paths.splice(0, index + 1).join('/')}` : `/${routeName}`;
+                    let text  = capitalCase(routeName);
+                    let to    = index ? `/${paths.splice(0, index + 1).join('/')}` : `/${routeName}`;
+                        to    = to.replace('()', '');// last params have ();
+
+                    
+                    const paramName = routeName.replace(/[:\(\)]/g, '');
+                    pageBreadcrumbsConf?.replaceText?.forEach(e=>{
+                        const key = Object.keys(e)[0]
+                        if(key == routeName)
+                            text = e[key];
+                    });                    
+                        
+                    if(~routeName?.indexOf(':')){
+
+                        if(route.params[paramName]){
+                            
+                            text = route.params[paramName];
+
+                            for (const param in route.params) {
+                                if (Object.prototype.hasOwnProperty.call(route.params, param)) {
+                                    to   = to.replace(`:${param.replace('()', '')}`, route.params[param])
+                                }
+                            }
+                            
+                        }
+                    }
                     
                     const crumb = { text, to, active: to === fullPath, };
 
