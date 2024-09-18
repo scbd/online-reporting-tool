@@ -67,7 +67,9 @@ const emit = defineEmits(['onFilterChange'])
 const props = defineProps({
     schemaTypes : { type:Array<String>, default:undefined},
     updateUrl   : { type:Boolean, default : true}
-})
+});
+
+defineExpose({setFilter})
 
 const router = useRouter()
 const route = useRoute()
@@ -104,6 +106,17 @@ const schemaTypeLists = computed(()=>{
         }
     })
 })
+
+const filters : { [key:string] : any } = {
+    'componentIndicators'   :  componentIndicators,
+    'complementaryIndicators'   :  complementaryIndicators,
+    'binaryIndicators'  :  binaryIndicators,
+    'globalTargets' :  selectedGlobalTargets,
+    'globalGoals'   :  selectedGlobalGoals,
+    'countries' :  selectedCountries,
+    'regions'   :  selectedRegions,
+    'recordTypes'   :  selectedRecordTypes,
+}
 
 const clearFilters = () => {
     selectedGlobalTargets.value = [];
@@ -151,22 +164,20 @@ function onFilterChange(){
     emit('onFilterChange', filters);
 }
 
+function setFilter(filter : string, values: string[]){
+    if(filters[filter]){
+        const refProp = filters[filter];
+        refProp.value = values.map(e=>({identifier:e}));
+        onFilterChange();
+    }
+}
+
 onMounted(() => {
     const mapSelectedFilters = inject('mapSelectedFilters');
 
     thesaurusStore.loadDomainTerms(THESAURUS.COUNTRIES)
     thesaurusStore.loadDomainTerms(THESAURUS.REGIONS);
 
-    const filters = {
-        'componentIndicators'   :  componentIndicators,
-        'complementaryIndicators'   :  complementaryIndicators,
-        'binaryIndicators'  :  binaryIndicators,
-        'globalTargets' :  selectedGlobalTargets,
-        'globalGoals'   :  selectedGlobalGoals,
-        'countries' :  selectedCountries,
-        'regions'   :  selectedRegions,
-        'recordTypes'   :  selectedRecordTypes,
-    }
     if(props.updateUrl){
         for (const filter in filters) {
             if (Object.prototype.hasOwnProperty.call(filters, filter)) {
