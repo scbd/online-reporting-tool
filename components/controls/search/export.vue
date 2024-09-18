@@ -1,6 +1,6 @@
 <template>
     <span>
-        <a rel="noopener" href="#" class="ms-1 btn btn-success btn-sm text-decoration-none" @click="openDialog">
+        <a rel="noopener" href="#" class="ms-1 btn btn-success btn-sm text-decoration-none" @click="openExportModal">
             <font-awesome-icon icon="fa fa-download"></font-awesome-icon>
             {{ t('exportButton') }}
         </a>
@@ -12,7 +12,7 @@
             <CModalBody>               
 
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-8">
                         <div class="form-group color-black">
                             {{ t('downloadFormat') }}
                             <span class="radio" style="display: initial;">
@@ -24,7 +24,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <span class="float-end" style="padding-top: 20px;">
                             {{ t('recordsFound') }}: <strong>{{ numFound }}</strong>
                         </span>
@@ -98,7 +98,7 @@
         fileName: { type: String },
         searchQuery : { type:Object, required:true},
         schema:      { type: String, required : true },
-    })
+    });
 
     const downloadSchemasRef = downloadSchemas.schemas;
 
@@ -113,10 +113,9 @@
     const downloadFormat  = ref('xlsx');
 
 
-    const openDialog = async () => {
+    const openExportModal = async () => {
         showExportModal.value = true        
-        await exportRecords({ listType: 'initial', format: 'json' });
-        
+        await exportRecords({ listType: 'initial', format: 'json' });        
     }
     
     const closeDialog = () => {
@@ -219,6 +218,9 @@
             loading.value = false;
         }
     }
+
+
+    defineExpose({openExportModal})
 </script>
 
 
