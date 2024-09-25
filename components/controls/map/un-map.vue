@@ -38,7 +38,7 @@
         if(!window.mapboxgl){
             await sleep(500)
         }
-
+        if(!window.mapboxgl)return;
         map = new window.mapboxgl.Map({
             container: 'map',
             attributionControl: true, hash: true, renderWorldCopies: false, maxZoom: 3, zoom: props.zoom,
@@ -263,7 +263,8 @@
     })
 
     onUnmounted(() => {
-        map.remove();
+        if(window.mapboxgl)
+            map.remove();
     })
 </script>
 
