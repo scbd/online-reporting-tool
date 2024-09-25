@@ -1,34 +1,98 @@
 <template>
     <CCard>
       <CCardHeader>
-        <template #header> 
           <font-awesome-icon :icon="['fas', 'chart-simple']" /> 
           {{ t('nationalTargetsAnalyzer') }} 
-          <a class="float-end" v-if="query.embed" :href="realm.baseURL">
-            <CTooltip content="SCBD Online Reporting Tool" trigger="hover">
+          <km-link class="float-end" v-if="query.embed" :to="realm.baseURL">
+            <CTooltip :content="t('ortTip')" trigger="hover">
                 <template #toggler="{ on }">
                     <span v-on="on"><strong>{{realm.displayName}}</strong></span>
                 </template>
             </CTooltip>            
-          </a>
-        </template>
-      </CCardHeader>
+          </km-link>
+          <button class="float-end btn btn-secondary btn-sm" @click="()=>showSharableSectionModal=true"
+            v-if="!query.embed" :to="ShareAllUrl">
+              <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+              {{t('share')}}          
+          </button>
+      </CCardHeader>  
       <CCardBody>        
         <km-suspense>
             <national-targets-analyzer></national-targets-analyzer>
         </km-suspense>
       </CCardBody>
     </CCard>
+
+    <CModal  class="show d-block" alignment="center" backdrop="static" 
+        @close="() => {showSharableSectionModal=false;sharableCheckedItems=[]}" :visible="showSharableSectionModal" >
+        <CModalHeader :close-button="false">
+            <CModalTitle>
+                {{ t('shareAnalyzerHeader') }}
+            </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <div class="alert alert-info">{{t('shareMessage')}}</div>
+            <ul class="list-group">
+                <li class="list-group-item" v-for="(item, key) in sharableSections" :key="item">
+                    <km-checkbox :id="key"  @update:checked="checkShareItem(key, $event)">{{ item }}</km-checkbox>
+                </li>
+            </ul>
+        </CModalBody>
+        <CModalFooter>
+            <km-link target="_blank" class="float-end btn btn-secondary" :to="ShareAllUrl">
+                <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+                {{t('getShareLink')}}
+            </km-link>
+            <CButton color="secondary" @click="showSharableSectionModal=false;sharableCheckedItems=[]">{{t('close')}}</CButton>
+        </CModalFooter>
+    </CModal>  
   </template>
   <i18n src="@/i18n/dist/pages/national-targets/analyzer.json"></i18n>
   <script setup lang="ts">
 
     import {useRoute} from 'vue-router';
+    import {stringifyQuery} from 'ufo'
     const { t }     = useI18n();
     const { query } = useRoute();
+    const route     = useRoute();
     const realm     = useRealm()
+
+    const showSharableSectionModal = ref(false);
+    const sharableCheckedItems = ref([]);
+    const sharableSections = {
+        'general-count'          : t('general-count'),
+        'target-progress-regions': t('target-progress-regions'),
+        'target-progress-parties': t('target-progress-parties'),
+        'monitoring-progress'    : t('monitoring-progress'),
+        'relevance-progress'     : t('relevance-progress'),
+        'section-c-progress'     : t('section-c-progress'),
+        'non-state-progress'     : t('non-state-progress'),
+        'party-count'            : t('party-count'),
+    }
     
     definePageMeta({
         auth:false,
     })
+    const ShareAllUrl = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&type=national-target-analyzer&share=${sharableCheckedItems.value}&${stringifyQuery(route.query||{})}`)
+
+
+    function checkShareItem(item:string, checked:boolean){
+        
+        if(checked)
+          sharableCheckedItems.value.push(item)
+        else
+          sharableCheckedItems.value = sharableCheckedItems.value.filter(e=>e!= item);
+    }
+    
   </script>
+
+  <style>
+    .embed .container-fluid{
+      padding-right: 0px!important; 
+      padding-left: 0px!important;
+    }
+    .embed  .body.flex-grow-1.px-3 {
+      padding-right: 0px!important;
+      padding-left: 0px!important;
+    }
+  </style>
