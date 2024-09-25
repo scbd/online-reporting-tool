@@ -2,8 +2,8 @@
 
     <div class="form-check">
         <input @input="(event) => $emit('update:checked', event.target.checked)" type="checkbox" 
-        :checked="checked" :id="fieldId" class="form-check-input" />
-        <label :for="fieldId" class="form-check-label">            
+        :checked="checked" :id="id" class="form-check-input" />
+        <label :for="id" class="form-check-label">            
             <slot>
                 {{ label }}
             </slot>  
@@ -15,7 +15,7 @@
 export default {
     props: {
         label: String,
-        fieldId: {
+        id: {
             type: String,
             required: true,
         },
