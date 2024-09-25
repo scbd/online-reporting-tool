@@ -1,5 +1,4 @@
 var widgetDocument = document || {}
-console.log(widgetDocument)
 var origin = findOrigin() || "https://ort.cbddev.xyz"
 
 function embedIFrame(widget, options) {
