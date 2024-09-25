@@ -84,7 +84,7 @@ async function copyFolderFiles(sourceRootPath, source, lang, destination){
             
         if(stats.isFile()){
             const destinationFileName = `${destination}/${lang}${filepath.replace(sourceRootPath, '').replace('/online-reporting-tool/i18n/en', '')}`
-            console.log(destinationFileName)
+            console.info(destinationFileName)
 
             const dirName = path.dirname(destinationFileName);
             const destStats = await fs.stat(filepath);

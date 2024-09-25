@@ -3,7 +3,7 @@
         <AppSidebar v-if="!query?.embed" />
         <div class="wrapper d-flex flex-column" :class="{'bg-light min-vh-100' : !query?.embed}">
             <AppHeader  v-if="!query?.embed" />
-            <div class="body flex-grow-1 px-3">
+            <div class="body flex-grow-1 px-3" id="page-content-wrapper">
                 <CContainer fluid>
                 <router-view />
                 <slot name="error"></slot>
@@ -12,6 +12,7 @@
             <AppFooter class="m-0 p-0" v-if="!query?.embed" />      
             <div id="g-recaptcha"></div>
         </div>
+        <resize-event></resize-event>
     </div>
 </template>
 <i18n src="@/i18n/dist/layouts/default.json"></i18n>
@@ -40,15 +41,19 @@ import {useRoute} from 'vue-router';
         htmlAttrs: {
             lang : ()=>locale.value,
             dir  : ()=>locale.value === 'ar' ? 'rtl' : 'ltr',
+
+        },
+        bodyAttrs:{
+            class:()=>query?.embed == 'true' ? 'embed' : ''
         },
         titleTemplate: (titleChunk)=>(titleChunk ? `${titleChunk} - ` : '') + t('title'),
         script:[
             {
                 hid: 'slaask',
                 src : 'https://cdn.slaask.com/chat.js',
-                defer: true,
-                callback: () => { 
-                    if(!query.embed)
+                defer: true, 
+                onload: () => { 
+                    if(!query?.embed)
                         initializeSlaask();
                 }
             },
@@ -93,6 +98,7 @@ import {useRoute} from 'vue-router';
         }
     }
 
+        
 </script>
 <style scoped>
 

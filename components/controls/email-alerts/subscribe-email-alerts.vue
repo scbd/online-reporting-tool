@@ -140,7 +140,6 @@
     }
 
     function editSubscription(subscription:Subcription){
-        console.log(subscription)
         dirtySubscription.value = cloneDeep(subscription);
         showModal.value = true;
     }
