@@ -1,6 +1,6 @@
 <template>
     <div class="km-multi-checkbox flex flex-col items-start justify-center w-64 border-2 p-8 rounded-lg">
-        <km-checkbox :field-id="option[optionValueField] + makeUid()" v-for="option in options" :key="option"
+        <km-checkbox :id="option[optionValueField] + makeUid()" v-for="option in options" :key="option"
             :checked="modelValue && modelValue.find(e=>e[optionValueField] == option[optionValueField])"
             @update:checked="check(option[optionValueField], $event)"> 
             {{ lstring(option[optionTitleField]) }}
