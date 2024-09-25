@@ -10,10 +10,6 @@
                 <CCard class="mb-3" v-if="canShowGeneralCount">
                     <CCardHeader>
                         General count
-                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" :to="generalCountShareUrl">
-                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
-                            Share          
-                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <div class="row">
@@ -60,15 +56,9 @@
                     </CCardBody>
                 </CCard>
 
-                <CCard class="mb-3" v-if="canShowTargetProgress">
+                <CCard class="mb-3" v-if="canShowTargetProgressByRegions">
                     <CCardHeader>
-                        Progress in target setting
-
-                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
-                            :to="targetProgressShareUrl">
-                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
-                            Share          
-                        </km-link>
+                        Progress in target setting (by regions)
                     </CCardHeader>
                     <CCardBody>
                         <CRow>
@@ -139,8 +129,16 @@
                                 </div>
                             </CCol>
                         </CRow>
-                        <CRow>
-                            <CCol :sm="4">
+                    </CCardBody>
+                </CCard>
+
+                <CCard class="mb-3" v-if="canShowTargetProgressByParties">
+                    <CCardHeader>
+                        Progress in target setting (by parties)
+                    </CCardHeader>
+                    <CCardBody>
+                       <CRow>
+                            <CCol :sm="6">
                                 <div class="card mb-4">
                                     <div class="card-header fw-semibold small text-medium-emphasis ">
                                         <span class="float-start1">Average number of national targets set by a Party</span>
@@ -163,7 +161,7 @@
                                 
                             </CCol>
 
-                            <CCol :sm="4">
+                            <CCol :sm="6">
                                 <div class="card mb-4">
                                     <div class="card-header fw-semibold small text-medium-emphasis ">
                                         <span class="float-start1">Average number of GBF targets covered by a Party </span>
@@ -282,11 +280,6 @@
                 <CCard class="mb-3" v-if="canShowMonitoringProgress">
                     <CCardHeader>
                         Progress in monitoring
-                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
-                            :to="monitoringProgressShareUrl">
-                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
-                            Share          
-                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <table class="table table-bordered table-striped1 table-hover">
@@ -321,12 +314,7 @@
 
                 <CCard class="mb-3" v-if="canShowRelevanceProgress">
                     <CCardHeader>
-                        Progress in ambition/relevance 
-                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
-                            :to="relevanceProgressShareUrl">
-                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
-                            Share          
-                        </km-link>
+                        Progress in ambition/relevance
                     </CCardHeader>
                     <CCardBody>
                         <!-- For each GBF target, how many parties have set at least one national target that has -->
@@ -362,11 +350,6 @@
                 <CCard class="mb-3" v-if="canShowSectionCProgress">
                     <CCardHeader>
                         Progress in Section C
-                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
-                            :to="sectionCProgressShareUrl">
-                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
-                            Share          
-                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <div class="row mb-2">
@@ -463,11 +446,6 @@
                 <CCard class="mb-3" v-if="canShowNonStateProgress">
                     <CCardHeader>
                         Non-state actor
-                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
-                            :to="nonStateProgressShareUrl">
-                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
-                            Share          
-                        </km-link>
                     </CCardHeader>
                     <CCardBody>
                         <!-- 16. Number of parties with non-state actor commitments by target -->
@@ -512,12 +490,7 @@
                 <!-- General party count by GBF Targets -->
                 <CCard v-if="canShowPartyCounts">
                     <CCardHeader>
-                        Party Count
-                        <km-link target="_blank" class="float-end btn btn-secondary btn-sm" v-if="!query.embed" 
-                            :to="partyCountsShareUrl">
-                            <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
-                            Share          
-                        </km-link>
+                        Party count
                     </CCardHeader>
                     <CCardBody>
                         <CRow>
@@ -528,15 +501,15 @@
                                         <tr>
                                             <th rowspan="2">Party</th>
                                             <th rowspan="2">Count</th>
-                                            <th colspan="4">Goals</th>
-                                            <th colspan="23">Targets</th>
+                                            <th :colspan="partyCountGoalColumnRange?.length"   v-if="partyCountGoalColumnRange?.length">Goals</th>
+                                            <th :colspan="partyCountTargetColumnRange?.length" v-if="partyCountTargetColumnRange?.length">Targets</th>
                                         </tr>
                                         <tr>                                            
-                                            <th v-for="range in ['A', 'B', 'C', 'D']" :key="range">
-                                                {{ range }}
+                                            <th v-for="range in partyCountGoalColumnRange" :key="range">
+                                                {{ range.title }}
                                             </th>
-                                            <th v-for="range in [...Array(23).keys()]" :key="range">
-                                                {{ range+1 }}
+                                            <th v-for="range in partyCountTargetColumnRange" :key="range">
+                                                {{ range.title }}
                                             </th>
                                         </tr>
                                     </thead>
@@ -548,11 +521,11 @@
                                                 <td>
                                                     {{country.count}}
                                                 </td>
-                                                <td v-for="range in ['A', 'B', 'C', 'D']" :key="range">
-                                                   {{ facetPivot['government_s,globalGoalAlignment_ss']?.find(e=>e.value == country.value)?.pivot?.find(e=>e.value == `GBF-GOAL-${range}`)?.count || 0 }}
+                                                <td v-for="range in partyCountGoalColumnRange" :key="range">
+                                                   {{ facetPivot['government_s,globalGoalAlignment_ss']?.find(e=>e.value == country.value)?.pivot?.find(e=>e.value == range.name)?.count || 0 }}
                                                 </td>
-                                                <td v-for="range in [...Array(23).keys()]" :key="range">
-                                                   {{ country.pivot?.find(e=>e.value == `GBF-TARGET-${range+1 > 9 ? range+1 : '0'+(range+1)}`)?.count || 0 }}
+                                                <td v-for="range in partyCountTargetColumnRange" :key="range">
+                                                   {{ country.pivot?.find(e=>e.value == range.name)?.count || 0 }}
                                                 </td>
                                             </tr>
                                     </tbody>
@@ -569,9 +542,10 @@
             <div class="p-2">
                 {{t('noRecords')}}
             </div>
-        </CAlert>
+        </CAlert>      
     </div>
 </template>
+<i18n src="@/i18n/dist/components/pages/national-targets/national-targets-analyzer.json"></i18n>
 <script setup lang="ts">
 import { useThesaurusStore }    from '@/stores/thesaurus';
 import { useRealmConfStore } from '@/stores/realmConf';
@@ -581,7 +555,6 @@ import { compact } from 'lodash';
 import { useCountriesStore }    from '@/stores/countries';
 import { THESAURUS_TERMS } from '~/utils/constants';
 import {useRoute} from 'vue-router';
-import {stringifyQuery} from 'ufo'
 
 
     const { t, locale } = useI18n();
@@ -597,26 +570,41 @@ import {stringifyQuery} from 'ufo'
     const filters     = ref({});
     const showAllCountries = ref(false);
     const analyzedCounts = ref({});
-
     const recordTypes = [SCHEMAS.NATIONAL_TARGET_7];//, SCHEMAS.NATIONAL_TARGET_7_MAPPING];
+        
+    const canShowGeneralCount            = computed(()=>canShowSection('general-count'));
+    const canShowTargetProgressByRegions = computed(()=>canShowSection('target-progress-regions'));
+    const canShowTargetProgressByParties = computed(()=>canShowSection('target-progress-parties'));
+    const canShowMonitoringProgress      = computed(()=>canShowSection('monitoring-progress'));
+    const canShowRelevanceProgress       = computed(()=>canShowSection('relevance-progress'));
+    const canShowSectionCProgress        = computed(()=>canShowSection('section-c-progress'));
+    const canShowNonStateProgress        = computed(()=>canShowSection('non-state-progress'));
+    const canShowPartyCounts             = computed(()=>canShowSection('party-count'));
 
-    const countryFacets             = computed(()=>facets.value?.schema_s)
-    const canShowGeneralCount       = computed(()=>!query.embed || (query.embed && query.share.includes('general-count')));
-    const canShowTargetProgress     = computed(()=>!query.embed || (query.embed && query.share.includes('target-progress')));
-    const canShowMonitoringProgress = computed(()=>!query.embed || (query.embed && query.share.includes('monitoring-progress')));
-    const canShowRelevanceProgress  = computed(()=>!query.embed || (query.embed && query.share.includes('relevance-progress')));
-    const canShowSectionCProgress   = computed(()=>!query.embed || (query.embed && query.share.includes('section-c-progress')));
-    const canShowNonStateProgress   = computed(()=>!query.embed || (query.embed && query.share.includes('non-state-progress')));
-    const canShowPartyCounts        = computed(()=>!query.embed || (query.embed && query.share.includes('party-count')));
+    const partyCountGoalColumnRange       = computed(()=>{
+        const goals     = ['A', 'B', 'C', 'D' ].map(e=>({name:`GBF-GOAL-${e}`, title : e}));
+        return goals.filter(canDisplayTarget)
+    });
+    const partyCountTargetColumnRange       = computed(()=>{
+        const targets   = [...Array(23).keys()].map(e=>({name:`GBF-TARGET-${e+1 > 9 ? e+1 : '0'+(e+1)}`, title : e+1}));
+        return targets.filter(canDisplayTarget)
+    })
 
-    const generalCountShareUrl       = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=general-count&${filterParams.value}`)
-    const targetProgressShareUrl     = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=target-progress&${filterParams.value}`)
-    const monitoringProgressShareUrl = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=monitoring-progress&${filterParams.value}`)
-    const relevanceProgressShareUrl  = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=relevance-progress&${filterParams.value}`)
-    const sectionCProgressShareUrl   = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=section-c-progress&${filterParams.value}`)
-    const nonStateProgressShareUrl   = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=non-state-progress&${filterParams.value}`)
-    const partyCountsShareUrl        = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&share=party-count&${filterParams.value}`)
-    const filterParams               = computed(()=>stringifyQuery(filters.value))
+    const canShowSection = (section:string) : boolean =>{
+        return !query.embed || (!!query.embed && (!query.share || query.share.includes(section)));
+    }
+
+    const canDisplayTarget          = (target : Object)=>{    
+        const filterValues = [...filters.value.globalTargets, ...filters.value.globalGoals].flat();
+        //  && query['single-target-only']
+        if(filterValues.length){
+            //different facets have diff name based on the query.
+            const targetName = target?.name||target?.value||target?.target;
+            return (filterValues.includes(targetName));
+        }
+
+        return true;
+    }
 
     function onFilterChange(newFilters:Object){
         filters.value = newFilters;
@@ -694,6 +682,15 @@ import {stringifyQuery} from 'ufo'
         newCounts.relevanceMonitoring   = buildRelevanceMonitoringCounts(facets.value, facetPivot.value);
         newCounts.sectionC              = buildSectionCCounts(facets.value, facetPivot.value, sectionCGbfFacets.facets['globalTargetAlignment_ss']);
         newCounts.nonStateActors        = buildNonStateActorsCounts(facets.value, facetPivot.value);
+        
+        result.facetPivot['government_s,globalTargetAlignment_ss'] = result.facetPivot['government_s,globalTargetAlignment_ss']
+                .map(e=>{
+                    e.name = lstring(findCountry(e.value)?.name, locale);  
+                    return e
+                })
+                .sort((a,b)=>{
+                    return a.name.localeCompare(b.name);
+                })
         analyzedCounts.value = newCounts;
         
     }
@@ -771,8 +768,8 @@ import {stringifyQuery} from 'ufo'
             targetCount: e.count
         }));
 
-        progressInTargets.gbfTargetsByParty = [...gbfGoalPercentByParty, ...gbfTargetPercentByParty]
-
+        progressInTargets.gbfTargetsByParty = [...gbfGoalPercentByParty, ...gbfTargetPercentByParty].filter(canDisplayTarget)
+        
         return progressInTargets;
     }
 
@@ -854,6 +851,7 @@ import {stringifyQuery} from 'ufo'
                     target.name   = key
                 return target;
             })
+            .filter(canDisplayTarget)
             .sort((a,b)=>a.name.localeCompare(b.name))
 
     }
@@ -881,7 +879,8 @@ import {stringifyQuery} from 'ufo'
                 totalTargets:e.count,
                 rows:e.pivot
             })
-        });
+        })
+        .filter(canDisplayTarget);
         return sectionC;
 
     }
@@ -896,7 +895,7 @@ import {stringifyQuery} from 'ufo'
         nonStateActors.targetCount= hasNonStateActorCount.reduce((prev, item)=>prev + item.count, 0);
 
         //16. Number of countries with non-state actor commitments by target
-        nonStateActors.nonStateActorsByTargets  = nonStateActorByTargetsFacets.find(e=>e.value == true)?.pivot;
+        nonStateActors.nonStateActorsByTargets  = nonStateActorByTargetsFacets.find(e=>e.value == true)?.pivot.filter(canDisplayTarget);
 
         return nonStateActors;
     }
