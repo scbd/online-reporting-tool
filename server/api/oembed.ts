@@ -16,7 +16,7 @@ export default defineEventHandler((event)=>{
                     globalGoals  : parsedUrl.searchParams.get('globalGoals'),
                     countries    : parsedUrl.searchParams.get('countries'),
                     regions      : parsedUrl.searchParams.get('regions'),
-                    shareBlocks  : parsedUrl.searchParams.get('shareBlocks'),
+                    share  : parsedUrl.searchParams.get('share'),
                 }
     params      = _.omitBy(params, e => e == null);
 

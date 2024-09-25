@@ -110,9 +110,9 @@ function initWidget() {
           iframeSrc += `&region=${regions.join("&region=")}`
         }
 
-        if (widget.dataset.shareBlocks) {
-          var shareBlocks = widget.dataset.shareBlocks.split(/;|,|\s/)
-          iframeSrc += `&share=${shareBlocks.join("&share=")}`
+        if (widget.dataset.share) {
+          var share = widget.dataset.share.split(/;|,|\s/)
+          iframeSrc += `&share=${share.join("&share=")}`
         }
 
         var options = {
