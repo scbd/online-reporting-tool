@@ -101,7 +101,7 @@
       const originUrl = config.public.API_URL.replace('api', 'ort');
       const url = `${originUrl}${ShareAllUrl.value}`;
 
-      const oembedResponse = await useAPIFetch('/api/oembed', { query : {url}});
+      const oembedResponse = await useAPIFetch('/oembed', { query : {url}});
        embedCode.value = `
                           ${oembedResponse.resources?.map(e=>`<script asycn="true" type="text/javascript" src="${e.src}"><\/script>`)}
                           ${oembedResponse.html}
