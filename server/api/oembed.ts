@@ -5,7 +5,7 @@ export default defineEventHandler((event)=>{
     const {url}     = getQuery(event)    
     const parsedUrl = new URL(url);
 
-    if(!/cbd.int$/.test(parsedUrl.hostname) && !/cbddev.xyz$/.test(parsedUrl.hostname)){
+    if(!/ort\.cbd\.int$/.test(parsedUrl.hostname) && !/ort\.cbddev\.xyz$/.test(parsedUrl.hostname)){
         return setResponseStatus(event, HTTP_STATUS.BAD_REQUEST,'Only ORT domain is allowed.');
     }
 
@@ -22,8 +22,10 @@ export default defineEventHandler((event)=>{
 
     // if param is not provided then the widget script will not render so fallback to geneal iframe 
     // widget script will set the height of the iframe to the height of the page
-    if(!params.type)
-        return;
+    if(!params.type){
+        params.type = 'url';
+        params.url  = parsedUrl.toString();
+    }
     
     const oEmbedResponse = {
         url,
