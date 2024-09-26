@@ -77,7 +77,8 @@ function initWidget() {
       var locale = (widget.dataset||{}).locale || "en"
 
       var urlMapping = {
-        "national-target-analyzer": "/national-targets/analyzer"
+        "national-target-analyzer": "/national-targets/analyzer",
+        "url"                     : 'raw'
       }
       var type = getAttributeValue(widget, "type")
 
@@ -85,9 +86,20 @@ function initWidget() {
         var width = getAttributeValue(widget, "width") || "100%"
         var height = getAttributeValue(widget, "height") || "500"
 
-        var iframeSrc = `${origin}/${locale}`
+        var iframeSrc = `${origin}/${locale}`;
+        if(urlMapping[type] == 'raw'){
 
-        iframeSrc += `${urlMapping[type]}?embed=true`
+          var rawUrl = getAttributeValue(widget, "url");
+          var parsedRawUrl = new URL(rawUrl);
+
+          if(!/ort\.cbd\.int$/.test(parsedRawUrl.hostname) && !/ort\.cbddev\.xyz$/.test(parsedRawUrl.hostname)){
+              throw new Error('Only ORT domain is allowed.');
+          }
+
+          iframeSrc = parsedRawUrl.toString();
+        }
+        else
+          iframeSrc += `${urlMapping[type]}?embed=true`
 
         if (widget.dataset.recordTypes) {
           var recordTypes = widget.dataset.recordTypes.split(/;|,|\s/)
@@ -110,9 +122,9 @@ function initWidget() {
           iframeSrc += `&region=${regions.join("&region=")}`
         }
 
-        if (widget.dataset.shareBlocks) {
-          var shareBlocks = widget.dataset.shareBlocks.split(/;|,|\s/)
-          iframeSrc += `&share=${shareBlocks.join("&share=")}`
+        if (widget.dataset.share) {
+          var share = widget.dataset.share.split(/;|,|\s/)
+          iframeSrc += `&share=${share.join("&share=")}`
         }
 
         var options = {

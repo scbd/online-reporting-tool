@@ -51,3 +51,7 @@ export const UTILS = {
     ROWS_PER_PAGE_300 : 300,
     CACHE_TIMEOUT : 1000 * 60 * 5 // 5 minutes
 }
+export const HTTP_STATUS = {
+    BAD_REQUEST : 400,
+    INTERNAL_SERVER_ERROR : 500
+}

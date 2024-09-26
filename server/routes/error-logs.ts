@@ -1,3 +1,5 @@
+
+import { HTTP_STATUS } from '~/utils';
 export default defineEventHandler((event) => {
     try{
         const conf = useRuntimeConfig();
@@ -11,10 +13,7 @@ export default defineEventHandler((event) => {
     }
     catch(e){
         console.error(e)
-        throw createError({
-            statusCode: 500,
-            statusMessage: 'Failed to  log error.',
-          }) 
+        throw setResponseStatus(event, HTTP_STATUS.INTERNAL_SERVER_ERROR, 'Failed to  log error.'); 
     }
     
   })

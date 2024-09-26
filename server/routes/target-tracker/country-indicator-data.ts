@@ -1,4 +1,5 @@
 
+import { HTTP_STATUS } from '~/utils';
 export default defineEventHandler(async (event) => {
     try{
         const requestBody = await readBody(event)
@@ -7,10 +8,7 @@ export default defineEventHandler(async (event) => {
     }
     catch(e){
         console.error(e)
-        throw createError({
-            statusCode: 500,
-            statusMessage: 'Failed to  query the target tracker API.',
-          }) 
+        throw setResponseStatus(event, HTTP_STATUS.INTERNAL_SERVER_ERROR, 'Failed to  query the target tracker API.');
     }
     
   })

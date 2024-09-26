@@ -13,5 +13,6 @@
     "section-c-progress"  : "Progress in Section C", 
     "non-state-progress"  : "Non-state actor",
     "party-count" : "Party count",
-    "ortTip" : "SCBD Online Reporting Tool"
+    "ortTip" : "SCBD Online Reporting Tool",
+    "embedCode" : "Show embed code"
 }
