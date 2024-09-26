@@ -24,7 +24,7 @@
     </CCard>
 
     <CModal  class="show d-block" alignment="center" backdrop="static" 
-        @close="() => {showSharableSectionModal=false;sharableCheckedItems=[]}" :visible="showSharableSectionModal" >
+        @close="closeDialog" :visible="showSharableSectionModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 {{ t('shareAnalyzerHeader') }}
@@ -37,13 +37,17 @@
                     <km-checkbox :id="key"  @update:checked="checkShareItem(key, $event)">{{ item }}</km-checkbox>
                 </li>
             </ul>
+            <div v-if="embedCode" class="mt-2 alert alert-secondary">
+              <code>{{ embedCode }}</code>
+            </div>
         </CModalBody>
         <CModalFooter>
+          <CButton color="secondary" @click="showEmbedCode">{{t('embedCode')}}</CButton>
             <km-link target="_blank" class="float-end btn btn-secondary" :to="ShareAllUrl">
                 <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
                 {{t('getShareLink')}}
             </km-link>
-            <CButton color="secondary" @click="showSharableSectionModal=false;sharableCheckedItems=[]">{{t('close')}}</CButton>
+            <CButton color="secondary" @click="closeDialog">{{t('close')}}</CButton>
         </CModalFooter>
     </CModal>  
   </template>
@@ -59,6 +63,7 @@
 
     const showSharableSectionModal = ref(false);
     const sharableCheckedItems = ref([]);
+    const embedCode            = ref();
     const sharableSections = {
         'general-count'          : t('general-count'),
         'target-progress-regions': t('target-progress-regions'),
@@ -77,11 +82,30 @@
 
 
     function checkShareItem(item:string, checked:boolean){
-        
+        embedCode.value = null;
         if(checked)
           sharableCheckedItems.value.push(item)
         else
           sharableCheckedItems.value = sharableCheckedItems.value.filter(e=>e!= item);
+    }
+    
+    function closeDialog(){
+      showSharableSectionModal.value=false;
+      sharableCheckedItems.value=[];
+      embedCode.value = null;
+    }
+
+    async function showEmbedCode(){
+      
+      const config = useRuntimeConfig();
+      const originUrl = config.public.API_URL.replace('api', 'ort');
+      const url = `${originUrl}${ShareAllUrl.value}`;
+
+      const oembedResponse = await useAPIFetch('/api/oembed', { query : {url}});
+       embedCode.value = `
+                          ${oembedResponse.resources?.map(e=>`<script asycn="true" type="text/javascript" src="${e.src}"><\/script>`)}
+                          ${oembedResponse.html}
+                        `
     }
     
   </script>
