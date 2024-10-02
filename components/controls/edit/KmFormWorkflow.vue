@@ -59,9 +59,13 @@
                         </div> 
                     </div>
                 </tab-content>
-                <!-- <tab-content :title="workflowTabs.publish.title" :is-active="activeTab == workflowTabs.publish.index">
+                <tab-content v-if="$slots.publish" :title="workflowTabs.publish.title" :is-active="activeTab == workflowTabs.publish.index">
+                    <CButton @click="onPublish()" color="success" class="me-md-2 btn-lg" :disabled="isBusy" v-if="!validationReport?.errors?.length">
+                        <km-spinner v-if="validationReport.isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
+                        {{t('publish')}}
+                    </CButton> 
                     <slot name="publish"></slot>
-                </tab-content> -->
+                </tab-content>
                 
                 <CRow class="mt-3" v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
                     <CCol class="col-12">
@@ -126,6 +130,54 @@
                 <CButton color="danger" @click="onClose">{{t('close')}}</CButton>
             </CModalFooter>
         </CModal>
+        <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {showConfirmDialog=false}" :visible="showConfirmDialog" >
+            <CModalHeader :close-button="false">
+                <CModalTitle class="bg-red">
+                    {{t('confirmationTitle')}}
+                </CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+                {{t('confirmationMessage')}}                
+            </CModalBody>
+            <CModalFooter>
+                <CButton @click="confirmationDialogProceed()" color="success">{{t('yes')}}</CButton>
+                <CButton @click="confirmationDialogClose()" color="danger">{{t('no')}}</CButton>
+            </CModalFooter>
+        </CModal>
+
+        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showSuccessDialog=false}" :visible="showSuccessDialog" >
+            <CModalHeader :close-button="false">
+                <CModalTitle>
+                    {{t('successTitle')}}
+                </CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+                <CAlert color="success" class="d-flex">
+                    <font-awesome-icon icon="fa-solid fa-check" size="2x"/>
+                    <div class="p-2">         
+                        {{t('successfulMessage')}}
+                        <strong>
+                            <div v-if="security.role.isNationalAuthorizedUser(documentSchema)">               
+                                {{t('successMessageNau')}}
+                            </div>
+                            <div v-if="security.role.isPublishingAuthority(documentSchema)">               
+                                {{t('successMessagePA')}}
+                            </div>
+                        </strong>
+                    </div>
+                </CAlert>
+                <CAlert color="info" class="d-flex mt-2" v-if="$slots.additionalSuccessMessage">
+                    <font-awesome-icon icon="fa-solid fa-exclamation" size="2x"/>
+                    <span class="p-2">       
+                        <slot name="additionalSuccessMessage">         
+                        </slot>             
+                    </span>
+                </CAlert>
+            </CModalBody>
+            <CModalFooter>
+                <CButton @click="successDialogClose()" color="secondary">{{t('close')}}</CButton>
+            </CModalFooter>
+        </CModal>
     </div>
 
 </template>
@@ -157,6 +209,7 @@
     const {t , locale}  = useI18n();
     const $toast        = useToast();
     const { user }      = useAuth();
+    const security      = useSecurity();
     const { $api }      = useNuxtApp();
     const appState      = useAppStateStore();
     
@@ -167,6 +220,10 @@
     const isEditAllowed      = ref(true);
     const showOverwriteConfirmation = ref(false);
     const { isRevealed, reveal, confirm, cancel, onConfirm,  onCancel, } = useConfirmDialog();
+
+    const showConfirmDialog         = ref(false);
+    const showSuccessDialog         = ref(false);
+    const confirmationPromise       = ref(null);
 
     let originalDocument = null
     let workflowFunctions;
@@ -183,19 +240,32 @@
 
     let { focusedTab, tab, ...props } = toRefs(definedProps);
         
-    const isBusy = computed(()=>validationReport.value?.isSaving || validationReport.value?.isAnalyzing);
+    const isBusy = computed(()=>validationReport.value?.isSaving || validationReport.value?.isAnalyzing || validationReport.value?.isPublishing);
     const printTitle = computed(()=>{
         let title = lstring(props.document.value?.title||'', locale);
         if(title?.trim() == '')
             title = `${props.document.value?.header?.schema?.toLowerCase()}`;
 
         return `${title}-draft`;
-    })
-    const onChangeCurrentTab = (index)=>{
-        
+    });
+    const documentSchema = computed(()=>props.document.value?.header?.schema);
+
+    const onChangeCurrentTab = async (index)=>{
+        if(index == activeTab.value)
+            return;
         activeTab.value = index;
-        if([workflowTabs.review.index, workflowTabs.publish.index].includes(activeTab.value)){
+        if([workflowTabs.review.index].includes(activeTab.value)){
             onReviewDocument(true);
+        }
+        else if(workflowTabs.publish.index == activeTab.value){
+            await onReviewDocument(true)
+            if(validationReport.value?.errors?.length){
+                formWizard.value?.selectTab(workflowTabs.review.index)
+            }
+            else{
+                activeTab.value = workflowTabs.publish.index;
+                formWizard.value?.selectTab(workflowTabs.publish.index)
+            }
         }
     }    
 
@@ -232,28 +302,49 @@
     async function onSaveDraft(){
         try{
             validationReport.value = { isSaving:true };
-            let document = cloneDeep(props.document.value)//document;
-
-            // onPreSaveDraft
-            if(workflowFunctions?.onPreSaveDraft)
-                document = await workflowFunctions.onPreSaveDraft(document);
-
-            const hasChangedAndOverwrite = await validateIfServerHasChanged()
-            if(!hasChangedAndOverwrite)
-                return;
-
-            // save document
-            const documentSaveResponse = await EditFormUtility.saveDraft(document);
-            originalDocument = { ...(document) }
-
-            // onPostSaveDraft
-            if(workflowFunctions.onPostSaveDraft)
-                await workflowFunctions.onPostSaveDraft({...documentSaveResponse, body:{...originalDocument}});
-
+            await saveDraft();
             $toast.success(t('draftSaveMessage'), {position:'top-right'});  
         }
         catch(e){
             $toast.error('Error saving draft record', {position:'top-right'}); 
+            useLogger().error(e)
+        }
+        finally{
+            validationReport.value = { };
+        }
+    }
+
+    async function onPublish(){
+        try{
+
+            //show user final confirmation
+            const confirmationResponse = await showConfirmation();
+            confirmationPromise.value = null;
+            showConfirmDialog.value = false;
+            if(confirmationResponse == 'close'){
+                return;
+            }
+
+            validationReport.value = { isSaving:true, isPublishing:true };
+            const { document, documentSaveResponse } = await saveDraft(); 
+            validationReport.value.isSaving          = false;
+
+            // onPrePublish
+            if(workflowFunctions?.onPrePublish)
+                document = await workflowFunctions.onPrePublish(document);
+
+            // save document
+            const documentPublishResponse = await EditFormUtility.publishDraft(document);
+
+            // onPostPublish
+            if(workflowFunctions.onPostPublish)
+                await workflowFunctions.onPostPublish({...documentPublishResponse, body:{...originalDocument}});
+
+            showSuccessDialog.value = true;
+            $toast.success(t('successfulMessage'), {position:'top-right'});  
+        }
+        catch(e){
+            $toast.error('Error publishing record', {position:'top-right'}); 
             useLogger().error(e)
         }
         finally{
@@ -297,6 +388,28 @@
             useLogger().error(e);
             $toast.error('Error occurred while validating your record, please save your data and try again.')
         }
+    }
+
+    async function saveDraft(){
+        let document = cloneDeep(props.document.value)//document;
+
+        // onPreSaveDraft
+        if(workflowFunctions?.onPreSaveDraft)
+            document = await workflowFunctions.onPreSaveDraft(document);
+
+        const hasChangedAndOverwrite = await validateIfServerHasChanged()
+        if(!hasChangedAndOverwrite)
+            return;
+
+        // save document
+        const documentSaveResponse = await EditFormUtility.saveDraft(document);
+        originalDocument = { ...(document) }
+
+        // onPostSaveDraft
+        if(workflowFunctions.onPostSaveDraft)
+            await workflowFunctions.onPostSaveDraft({...documentSaveResponse, body:{...originalDocument}});
+
+        return { document, documentSaveResponse };
     }
 
     async function onJumpTo(field) {
@@ -431,6 +544,27 @@
 
         return isAllowed;
 
+    }
+    
+    async function showConfirmation(){
+        const dialogPromise = new Promise(async function (resolvePromise,reject){
+            showConfirmDialog.value = true;
+            confirmationPromise.value = resolvePromise;
+        })
+
+        return dialogPromise;
+    }
+
+    async function confirmationDialogClose(){
+        confirmationPromise.value('close')
+    }
+    async function confirmationDialogProceed(){
+        confirmationPromise.value('proceed')
+    }
+
+    function successDialogClose(){
+        showSuccessDialog.value = false;
+        onClose()
     }
 
     onMounted(async() => {
