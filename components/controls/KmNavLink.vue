@@ -2,8 +2,10 @@
     <CNavItem >
         <!-- isActve{{ route.path }} {{ to }} @click="useNavigateAppTo(to)" href="#" -->        
         <km-link class="nav-link" :to="to" :class="{'active' : route.path === to}" :target="target" :title="title">
-            <CIcon v-if="icon && ~icon.indexOf('cil-')" :icon="icon" class="nav-icon" /> 
-            <font-awesome-icon  v-if="icon && ~icon.indexOf('fa-')" class="menu-icon" :icon="'fa-solid ' + icon" />
+            <slot name="icon">
+                <CIcon v-if="icon && ~icon.indexOf('cil-')" :icon="icon" class="nav-icon" /> 
+                <font-awesome-icon  v-if="icon && ~icon.indexOf('fa-')" class="menu-icon" :icon="'fa-solid ' + icon" />
+            </slot>
             {{title}}
         </km-link> 
     </CNavItem>
