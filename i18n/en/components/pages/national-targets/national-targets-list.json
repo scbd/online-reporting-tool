@@ -2,9 +2,9 @@
     "noRecords":"There are no records to display!",
     "analyzer": "Analyzer",
     "submitNew" : "Submit new target",
-    "yes":"Apply the Record Type filter",
+    "yes":"Apply",
     "no":"Cancel",
-    "exportFilterRequired":"The export is currently limited to National Targets records. Please ensure the Record Type filter is set to National Target.",
+    "exportFilterRequired":"The export is currently limited to a single record type. Please select a Record Type from the list.",
     "exportFilterHeader": "Filter records",
     "exportButton" : "Export"
 
