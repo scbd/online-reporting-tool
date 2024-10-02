@@ -7,7 +7,7 @@
     auth: false,
     roles : [],
     breadcrumbs : {
-        replaceText : [{'gbf' : 'Global Biodiversity Framework'}]
+        replaceCrumbs : [{'gbf' : 'Global Biodiversity Framework'}]
     }
   });
 </script>
