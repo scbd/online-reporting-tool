@@ -113,19 +113,16 @@
                     </div>
                     <div class="card-body row text-center">
                     <div class="col">
-                        <div class="text-value-lg">{{nrCount}}</div>
+                        <div class="text-value-lg">{{nbsapCount}}</div>
                         <div class="text-uppercase text-muted small">
                             {{t('nbsaps')}}
                         </div>
                     </div>
-                    <div
-                        class="c-vr text-value-lg"
-                        style="width: unset; background-color: unset"
-                    >
-                    {{t('by')}}
+                    <div class="c-vr text-value-lg" style="width: unset; background-color: unset">
+                        {{t('by')}}
                     </div>
                     <div class="col">
-                        <div class="text-value-lg">{{nrCountryCount}}</div>
+                        <div class="text-value-lg">{{nbsapCount}}</div>
                         <div class="text-uppercase text-muted small">{{t('countries')}}</div>
                     </div>
                     </div>
@@ -191,8 +188,11 @@ import { KmLink } from "@/components/controls";
         const searchQuery = {
             rows:10,
             q : `_state_s: public AND 
-                    ((schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:${realmConf.realm}) OR 
-                     (schema_s : (${SCHEMAS.NATIONAL_REPORT_6}) AND realm_ss:${realmConf.realm.replace('ORT', 'CHM')}))`,
+                    (
+                     (schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:${realmConf.realm}) OR 
+                     (schema_s : (${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true) AND realm_ss:${realmConf.realm}) OR 
+                     (schema_s : (${SCHEMAS.NATIONAL_REPORT_6}) AND realm_ss:${realmConf.realm.replace('ORT', 'CHM')})
+                    )`,
             facet: true,
             'facet.field': ['schema_s', 'government_EN_s'],
             'facet.pivot' : "government_EN_s,schema_s",
@@ -205,12 +205,12 @@ import { KmLink } from "@/components/controls";
         const nr7Count       = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7)), 0))
         const nr7TargetCount = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7)), 0))
         const nr6Count       = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6)), 0))
-        const nrCount        = computed(()=>20)//countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT)  ), 0))
+        const nbsapCount        = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)  ), 0))
               
         const nr7CountryCount       = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7) > 0 ? 1 : 0), 0))
         const nr7TargetCountryCount = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7) > 0 ? 1 : 0), 0))
         const nr6CountryCount       = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6) > 0 ? 1 : 0), 0))
-        const nrCountryCount        = computed(()=>20)//countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT)   > 0 ? 1 : 0), 0))
+        const nbsapCountryCount     = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)   > 0 ? 1 : 0), 0))
       
         const publishedRecords = computed(()=>{ 
             return searchFacets.docs?.map(e=> {
