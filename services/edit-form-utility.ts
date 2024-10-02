@@ -116,6 +116,27 @@ class editFormUtility{
     //==================================
     //
     //==================================
+    publishDraft(document:Object, additionalInfo:ELstring) {
+
+        const { $api } = useNuxtApp();
+        const $kmStorageApi = $api.kmStorage
+        
+        const identifier = document.header.identifier;
+        const metadata   = this.getDocumentMetadata(document);
+
+        return this.draftExists(identifier).then(
+            function(hasDraft) {
+                const schema = document.header.schema;
+                //need to use PUT if the document is already published, pass undefined for identifier otherwise
+                if(hasDraft)
+                    return $kmStorageApi.drafts.publishDraftPut(schema, identifier, document, additionalInfo);
+                else  
+                    return $kmStorageApi.drafts.publishDraftPost(schema, identifier, document, additionalInfo);                    
+            });
+    }
+    //==================================
+    //
+    //==================================
     documentExists(identifier) {
 
         const { $api } = useNuxtApp();
