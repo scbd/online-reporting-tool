@@ -23,5 +23,15 @@
    "introInfo"   : "This section will have a brief description to help users submit information",
 
    "confirmLeave": "Do you really want to leave? you have unsaved changes!",
-   "unauthorizedAccess" : "Unauthorized access"
+   "unauthorizedAccess" : "Unauthorized access",
+
+   "yes"                     : "Yes",
+    "no"                     : "No",
+    "confirmationMessage"    : "Are you sure you want to proceed with publishing this record?",
+    "confirmationTitle"      : "Confirmation",
+    "successfulMessage"      : "Your request to publish has been received.",
+    "successMessageNau"      : "Your request to publish will be sent to your country's NFP who has rights to publish.",
+    "successMessagePA"       : "The publishing process will take a few minutes to complete and for the content to appear in the search results.",
+    "successTitle"           : "Success"
+    
 }
