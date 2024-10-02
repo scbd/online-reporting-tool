@@ -124,7 +124,7 @@ async function checkUserAccess(options:any) {
     }
 
     // verify user has government
-    if(schemaRoles && !authUser?.government){
+    if(schemaRoles?.length && !authUser?.government){
         return false;
     }
 
