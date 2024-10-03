@@ -17,6 +17,6 @@
           skip : ['identifier']
         }
     })
-    route.meta.breadcrumbs.replaceCrumbs = [ {'nbsaps' : lstring(schema?.title, locale)} ]
+    // route.meta.breadcrumbs.replaceCrumbs = [ {'nbsaps' : lstring(schema?.title, locale)} ]
 </script>
   

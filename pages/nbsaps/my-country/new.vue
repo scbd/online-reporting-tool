@@ -15,8 +15,8 @@
         roles:[...ROLES.ALL_NATIONAL_USERS],
         breadcrumbs : {}
     });
-    
-    route.meta.breadcrumbs.replaceCrumb = [ {'nbsaps' : lstring(schema?.title, locale)} ];
+
+    // route.meta.breadcrumbs.replaceCrumb = [ {'nbsaps' : lstring(schema?.title, locale)} ];
 
 </script>
   
