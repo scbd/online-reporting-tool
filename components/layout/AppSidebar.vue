@@ -20,12 +20,16 @@
       <!-- <li class="nav-title" v-if="menuAccess[appRoutes.NATIONAL_TARGETS]">
         {{t('menuNbsaps')}}
       </li> -->
-      <CNavGroup :visible="isChildRouteActive(appRoutes.NBSAPS)">
+      <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_REPORTS_NBSAP)">
         <template #togglerContent>
             {{ t('menuNbsaps') }}
         </template>
-        <KmNavLink  icon="fa-solid fa-list"         target="_blank" :to="`https://chm.cbd.int/${$i18n.locale}/database?schema_s=nationalReport`" :title="t('menuNbsapsAll')"></KmNavLink>
-        <KmNavLink  icon="fa-solid fa-flag" target="_blank" :to="`https://chm.cbd.int/${$i18n.locale}/submit/nationalReport?type=nbsap`" :title="t('menuNbsapsMyCountry')"></KmNavLink>
+        <KmNavLink  icon="cil-list" :to="appRoutes.NATIONAL_REPORTS_NBSAP" :title="t('menuNbsapsAll')"></KmNavLink>
+        <KmNavLink  :to="appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_LIST" :title="t('menuNbsapsMyCountry')">
+          <template #icon>
+            <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
+          </template>
+        </KmNavLink>
       </CNavGroup>
       <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_TARGETS)"  id="sideNav">
         <template #togglerContent>
