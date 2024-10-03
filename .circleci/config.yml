@@ -1,12 +1,9 @@
 version: 2
 
 _defaults: &defaults
-  # docker:
-  #   - image: docker:17.05.0-ce
   machine:
     enabled: true
-    # Use Ubuntu 20.04
-    image: ubuntu-2004:202201-02
+    image: default
   working_directory: ~/scbd/online-reporting-tool
   parallelism: 1
 
