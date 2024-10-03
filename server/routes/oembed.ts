@@ -2,7 +2,11 @@ import _ from 'lodash';
 import { HTTP_STATUS } from '~/utils';
 export default defineEventHandler((event)=>{
     
-    const {url}     = getQuery(event)    
+    const {url}     = getQuery(event);
+    
+    if(!url)
+        return setResponseStatus(event, HTTP_STATUS.BAD_REQUEST,'\'url\' param is missing.');
+    
     const parsedUrl = new URL(url);
 
     if(!/ort\.cbd\.int$/.test(parsedUrl.hostname) && !/ort\.cbddev\.xyz$/.test(parsedUrl.hostname)){
