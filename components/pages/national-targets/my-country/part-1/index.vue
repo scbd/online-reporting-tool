@@ -39,9 +39,9 @@
             <tour-dummy-table v-if="tourStarted" id="nationalRecords"></tour-dummy-table>
                         
             <km-spinner v-if="isLoadingRecords" center ></km-spinner>
-            <record-list class="national-target-list" v-if="nationalTargets?.length" :national-records="nationalTargets" 
+            <country-record-type-records class="national-target-list" v-if="nationalTargets?.length" :national-records="nationalTargets" 
                 :view-route="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW"
-                @on-delete-record="onRecordDelete" @on-edit-record="onEditRecord" ></record-list>        
+                @on-delete-record="onRecordDelete" @on-edit-record="onEditRecord" ></country-record-type-records>        
         </CCardBody>
       
       </CCard> 

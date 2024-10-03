@@ -14,7 +14,12 @@ export const appRoutes = {
     NATIONAL_TARGETS_MY_COUNTRY_PART_II_EDIT: '/national-targets/my-country/part-2/:identifier/edit',
     NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW: '/national-targets/my-country/part-2/:identifier/view',
     
-    NATIONAL_REPORTS_NBSAP      : 'https://chm.cbd.int/database?schema_s=nationalReport',
+    NATIONAL_REPORTS_NBSAP                      : '/nbsaps',
+    NATIONAL_REPORTS_NBSAP_MY_COUNTRY_LIST      : '/nbsaps/my-country',
+    NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW      : '/nbsaps/my-country/:identifier/view',
+    NATIONAL_REPORTS_NBSAP_MY_COUNTRY_EDIT      : '/nbsaps/my-country/:identifier/edit',
+    NATIONAL_REPORTS_NBSAP_MY_COUNTRY_NEW       : '/nbsaps/my-country/new',
+
     NATIONAL_REPORTS            : '/national-reports',
     NATIONAL_REPORTS_NR6        : 'https://chm.cbd.int/database?schema_s=nationalReport6',
     NATIONAL_REPORTS_NR7        : '/national-reports/nr7',

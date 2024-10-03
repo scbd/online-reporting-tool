@@ -163,7 +163,7 @@
         </CModal>
         <km-modal-spinner :visible="showSpinnerDialog" :message="t('spinnerMessage')"></km-modal-spinner>
 
-        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showConfirmDialog=false}" :visible="showSuccessDialog" >
+        <CModal  class="show d-block" size="xl" alignment="center" backdrop="static" @close="() => {showSuccessDialog=false}" :visible="showSuccessDialog" >
             <CModalHeader :close-button="false">
                 <CModalTitle>
                     {{t('successTitle')}}
