@@ -8,8 +8,8 @@
             </div>
             <div class="card-body"> 
                 <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>
-                <record-list class="national-target-list" v-if="nationalTargetRecords?.length" :national-records="nationalTargetRecords" :view-route="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW"
-                @on-delete-record="onDeleteRecord" @on-edit-record="onEditRecord" @on-record-status-change="onRecordStatusChange"></record-list>        
+                <country-record-type-records class="national-target-list" v-if="nationalTargetRecords?.length" :national-records="nationalTargetRecords" :view-route="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW"
+                @on-delete-record="onDeleteRecord" @on-edit-record="onEditRecord" @on-record-status-change="onRecordStatusChange"></country-record-type-records>        
             </div>
           </div>
           
@@ -20,13 +20,13 @@
             </div>
             <div class="card-body">      
                 <div v-if="isLoadingRecords" class="d-flex justify-content-center m-1"><km-spinner ></km-spinner></div>      
-                <record-list class="national-mapping-list"
+                <country-record-type-records class="national-mapping-list"
                     v-if="nationalMappingRecords?.length" :national-records="nationalMappingRecords" :view-route="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW"
                     @on-delete-record="onDeleteRecord" @on-edit-record="onEditRecord" @on-record-status-change="onRecordStatusChange">
                     <template #recordTitle="{document}">
                         <km-term :value="document.body.globalGoalOrTarget" :locale="locale"></km-term>          
                     </template>
-                </record-list>        
+                </country-record-type-records>        
             </div>
           </div>
 
@@ -70,7 +70,7 @@
     import { useStorage } from '@vueuse/core';
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';  
-    import recordList from "./record-list.vue";
+    import recordList from "../../../controls/my-country/record-list.vue";
 
 
                     defineExpose({ validate, refresh, setProcessingStatus });
