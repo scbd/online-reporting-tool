@@ -47,7 +47,7 @@
   
   <script setup >
     import { defineEmits, ref, computed } from "vue"; 
-    import { languages } from '~/app-data/languages';
+    import { languages } from '@/app-data/languages';
     
     //TODO: use km-form-control when its available   
     //TODO: upload file, uploading process bar, error msg , showing file.size 
