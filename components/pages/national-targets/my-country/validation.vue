@@ -70,7 +70,6 @@
     import { useStorage } from '@vueuse/core';
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';  
-    import recordList from "./record-list.vue";
 
 
                     defineExpose({ validate, refresh, setProcessingStatus });
