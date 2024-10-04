@@ -1,1 +1,8 @@
-{}
+{
+    "noRecords":"There are no records to display!",
+    "yes":"Apply",
+    "no":"Cancel",
+    "exportFilterRequired":"The export is currently limited to a single record type. Please select a Record Type from the list.",
+    "exportFilterHeader": "Filter records",
+    "exportButton" : "Export"
+}

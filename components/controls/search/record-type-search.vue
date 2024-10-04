@@ -5,14 +5,11 @@
                 :show-record-type="showRecordType"  :show-targets="showTargets" :show-goals="showGoals"
                 :show-countries="showCountries" :show-regions="showRegions">
                 <template #action-buttons>                    
-                    <slot name="actionButtons"></slot>
+                    <slot name="action-buttons"></slot>
                     <a rel="noopener" href="#" class="ms-1 btn btn-success btn-sm text-decoration-none" @click="onOpenExportDialog">
                         <font-awesome-icon icon="fa fa-download"></font-awesome-icon>
                         {{ t('exportButton') }}
-                    </a>
-                    <!-- <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" class="btn btn-secondary btn-sm float-end">
-                        <font-awesome-icon icon="fa-plus"></font-awesome-icon> {{ t('submitNew') }}
-                    </km-link> -->
+                    </a>                   
                 </template>
             </search-filters>
             <div style="height:0;width:0;overflow: hidden;">
@@ -63,14 +60,12 @@
         </CModal>
     </div>
 </template>
-<i18n src="@/i18n/dist/components/pages/national-targets/national-targets-list.json"></i18n>
+<i18n src="@/i18n/dist/components/controls/search/record-type-search.json"></i18n>
 <script setup lang="ts">
 
     import { useRealmConfStore } from '@/stores/realmConf';
     import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
     import { compact } from 'lodash';
-    import { useRoute } from 'vue-router';
-    import {stringifyQuery} from 'ufo'
 
     const props = defineProps({
         recordTypes : {type:Array<String>, required:true},
@@ -83,7 +78,6 @@
 
     const { t, locale } = useI18n();
     const realmConfStore  = useRealmConfStore();
-    const route = useRoute()
     const realmConf = realmConfStore.realmConf; 
     const documents = ref([]);
     const loading = ref(false);
@@ -97,9 +91,6 @@
     const isExportDialogRevealed = ref(false);
     const exportSelectedSchema = ref();
 
-    const analyzerUrl = computed(()=>{
-        return `${appRoutes.NATIONAL_TARGETS_ANALYZER}?${stringifyQuery(route.query||{})}`;
-    });
     const schemaTypeLists = computed(()=>{
         return props.recordTypes?.map((schema)=>{
             if(realmConf.schemas[schema]){
