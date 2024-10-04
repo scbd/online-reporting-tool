@@ -44,3 +44,11 @@ export const useRealm = function(){
     
     return realmConfStore.realmConf; 
 }
+export const useGetRealmSchema = function(schema:String){
+
+    if(schema){
+        const realm = useRealm(); 
+        return realm.schemas[schema];
+    }
+
+}
