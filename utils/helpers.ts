@@ -97,6 +97,22 @@ export const isWorkFlowCreatedByMe = function(workflow){
     return workflow && workflow.createdBy == user.value.userID;
 }
 
+export const resolveSchemaViewRoute = function(schema:String, identifier){
+
+    const schemaDetails = useGetRealmSchema(schema);
+
+    if(schemaDetails){
+        let url = ''
+        if(schema == SCHEMAS.NATIONAL_TARGET_7)
+            url = appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_VIEW;
+        else if(schema == SCHEMAS.NATIONAL_TARGET_7_MAPPING)
+            url = appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW;
+        else if(schema == SCHEMAS.NATIONAL_NBSAP)
+            url = appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW;
+            
+        return url.replace(':identifier', identifier);
+    }
+}
 
 export const  flattenObject = function(obj, parentKey = '') {
     let flattened = {};
