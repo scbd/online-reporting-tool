@@ -61,14 +61,14 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6" v-if="document.startDate">
+                            <div class="col-md-6" v-if="viewDocument.startDate">
                                 <km-form-group name="startDate" :caption="t('startDate')">
-                                    <km-value :value="document.startDate" :locale="selectedLocale"></km-value>    
+                                    <km-value :value="viewDocument.startDate" :locale="selectedLocale"></km-value>    
                                 </km-form-group>
                             </div>
-                            <div class="col-md-6" v-if="document.endDate">
+                            <div class="col-md-6" v-if="viewDocument.endDate">
                                 <km-form-group name="endDate" :caption="t('endDate')">
-                                    <km-value :value="document.endDate" :locale="selectedLocale"></km-value>  
+                                    <km-value :value="viewDocument.endDate" :locale="selectedLocale"></km-value>  
                                 </km-form-group>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                             </div>
                             <div class="col-md-6" v-if="viewDocument.adoptionDate">
                                 <km-form-group name="adoptionDate" :caption="t('adoptionDate')"  :data-content="t('adoptionYear')">                                                
-                                    <km-value :value="document.adoptionDate" :locale="selectedLocale"></km-value>   
+                                    <km-value :value="viewDocument.adoptionDate" :locale="selectedLocale"></km-value>   
                                 </km-form-group>
                             </div>
                         </div>

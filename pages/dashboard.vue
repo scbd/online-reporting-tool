@@ -6,6 +6,16 @@
     <tour-dummy-user-profile v-if="!user && tourStarted"></tour-dummy-user-profile>
     <user-profile-info class="mb-2" id="userProfile"></user-profile-info>
     <div class="d-none" ></div>
+    <CCard class="mb-2" :class="!hasWorkflowRequest ? 'visually-hidden' : ''" v-if="user?.userID">
+        <CCardHeader>{{t('workflowRequestsTitle')}}</CCardHeader>
+        
+        <CCardBody>
+            <div class="alert alert-info">
+                {{ t('workflowAlert') }}
+            </div>
+            <workflow-requests @on-load="onWorkflowRequestsLoad"></workflow-requests>
+        </CCardBody>
+    </CCard>
     <CRow >
       <!-- <template> -->
         <CCol md="12" id="recentlyPublished">
@@ -184,36 +194,24 @@ import { KmLink } from "@/components/controls";
 
         const { $appRoutes:appRoutes } = useNuxtApp();
         const tourStarted               = ref(false);
+        const hasWorkflowRequest        = ref(false);
+        const isLoading                 = ref(true);
+        let countryFacets               = ref();
+        let searchFacets                = ref();
 
-        const searchQuery = {
-            rows:10,
-            q : `_state_s: public AND 
-                    (
-                     (schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:${realmConf.realm}) OR 
-                     (schema_s : (${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true) AND realm_ss:${realmConf.realm}) OR 
-                     (schema_s : (${SCHEMAS.NATIONAL_REPORT_6}) AND realm_ss:${realmConf.realm.replace('ORT', 'CHM')})
-                    )`,
-            facet: true,
-            'facet.field': ['schema_s', 'government_EN_s'],
-            'facet.pivot' : "government_EN_s,schema_s",
-            sort: "updatedDate_dt desc",
-            fl: "id, identifier_s,government_EN_t, title_EN_t, schema_EN_t,submittedDate_dt,schema_s, url_ss"
-        }
-        const searchFacets = await facets(searchQuery)
-        const countryFacets = searchFacets.facetPivot['government_EN_s,schema_s'];
 
-        const nr7Count       = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7)), 0))
-        const nr7TargetCount = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7)), 0))
-        const nr6Count       = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6)), 0))
-        const nbsapCount        = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)  ), 0))
+        const nr7Count       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7)), 0))
+        const nr7TargetCount = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7)), 0))
+        const nr6Count       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6)), 0))
+        const nbsapCount        = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)  ), 0))
               
-        const nr7CountryCount       = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7) > 0 ? 1 : 0), 0))
-        const nr7TargetCountryCount = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7) > 0 ? 1 : 0), 0))
-        const nr6CountryCount       = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6) > 0 ? 1 : 0), 0))
-        const nbsapCountryCount     = computed(()=>countryFacets?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)   > 0 ? 1 : 0), 0))
+        const nr7CountryCount       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7) > 0 ? 1 : 0), 0))
+        const nr7TargetCountryCount = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7) > 0 ? 1 : 0), 0))
+        const nr6CountryCount       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6) > 0 ? 1 : 0), 0))
+        const nbsapCountryCount     = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)   > 0 ? 1 : 0), 0))
       
         const publishedRecords = computed(()=>{ 
-            return searchFacets.docs?.map(e=> {
+            return searchFacets.value?.docs?.map(e=> {
                 return {
                     country:e.government_EN_t, title: e.title_EN_t, type:e.schema_EN_t,
                     identifier: e.identifier_s, publishedOn:e.submittedDate_dt,
@@ -236,6 +234,34 @@ import { KmLink } from "@/components/controls";
                         
         ]
 
+        async function loadFacets(){
+            try{
+                const searchQuery = {
+                    rows:10,
+                    q : `_state_s: public AND 
+                            (
+                            (schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:${realmConf.realm}) OR 
+                            (schema_s : (${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true) AND realm_ss:${realmConf.realm}) OR 
+                            (schema_s : (${SCHEMAS.NATIONAL_REPORT_6}) AND realm_ss:${realmConf.realm.replace('ORT', 'CHM')})
+                            )`,
+                    facet: true,
+                    'facet.field': ['schema_s', 'government_EN_s'],
+                    'facet.pivot' : "government_EN_s,schema_s",
+                    sort: "updatedDate_dt desc",
+                    fl: "id, identifier_s,government_EN_t, title_EN_t, schema_EN_t,submittedDate_dt,schema_s, url_ss"
+                }
+                searchFacets.value  = await facets(searchQuery)
+                countryFacets.value = searchFacets.value?.facetPivot['government_EN_s,schema_s'];
+
+            }
+            catch(e){
+                useLogger().error(e, 'Error loading home page facets')
+            }
+            finally{
+                isLoading.value = false;
+            }
+        }
+
         function schemaCount(currVal, schema){
                 return currVal.pivot.find(e=>e.value == schema)?.count||0
         }
@@ -247,6 +273,12 @@ import { KmLink } from "@/components/controls";
         function onTourEnd(){
             tourStarted.value = false
         }
+
+        function onWorkflowRequestsLoad(requests){
+            hasWorkflowRequest.value = requests?.length ? true : false
+        }
+
+        onMounted(loadFacets)
 </script>
 
 <style scoped>

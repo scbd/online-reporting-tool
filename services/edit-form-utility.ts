@@ -127,7 +127,6 @@ class editFormUtility{
         return this.draftExists(identifier).then(
             function(hasDraft) {
                 const schema = document.header.schema;
-                //need to use PUT if the document is already published, pass undefined for identifier otherwise
                 if(hasDraft)
                     return $kmStorageApi.drafts.publishDraftPut(schema, identifier, document, additionalInfo);
                 else  

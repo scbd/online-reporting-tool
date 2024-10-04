@@ -8,9 +8,15 @@ export default class KmWorkflowsApi extends ApiBase
     }
     
     
-    async getWorkflowHistory(params)  {
-        
-        const data =  await useAPIFetch(`/api/v2013/workflows`, { method:'get', params })                
+    async getWorkflows(q:object, { count, length, skip, sort } = {}) {
+        const query = {
+            q: JSON.stringify(q),
+            l: length,
+            s: sort,
+            sk: skip,
+            c: count
+        }
+        const data =  await useAPIFetch(`/api/v2013/workflows`, { method:'get', query })                
         return data;
     }
 

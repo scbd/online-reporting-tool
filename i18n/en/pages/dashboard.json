@@ -36,5 +36,8 @@
     "languageChangeTitle"     : "Language",
     "languageChangeContent"   : "The ORT is available in all six UN languages, Change to your preferred language.",
     "needHelpTitle"           : "Need more help?",
-    "needHelpContent"         : "Use the Chat feature for additional support."
+    "needHelpContent"         : "Use the Chat feature for additional support.",
+    
+    "workflowRequestsTitle":"Workflow requests",
+    "workflowAlert":"The following records require your action or you have requested action."
 }
