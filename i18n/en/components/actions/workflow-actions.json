@@ -34,5 +34,6 @@
     "isDeleteRecord": "Are you sure you want to delete this record?",
     "deleteRecord": "Delete record",
     "approvalProcessing": "Please wait while we process your approval action",
-    "cancellationProcessing": "Please wait while we process your cancellation request"
+    "cancellationProcessing": "Please wait while we process your cancellation request",
+    "requestAssignedTo": "The request is currently assigned to."
 }

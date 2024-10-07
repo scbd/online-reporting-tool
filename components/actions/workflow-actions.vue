@@ -51,15 +51,15 @@
                     <span> {{t('cancelRequest')}}</span>
                 </button>
             </div>
-            <div v-if="security.role.isAdministrator() ">
+            <div v-if="isWorkFlowCreatedByMe(workflow) || activity.assignedTo_info?.length > 1">
                 <br />
-                <strong>{{t('workFlowAssign')}} {{formatDate(activity.createdOn)}}</strong> ({{t('visible')}})
-                <span class="badge bg-secondary">
+                <strong>{{t('workFlowAssign')}}</strong>
+                <span class="badge bg-secondary" v-if="security.role.isAdministrator()">
                     {{workflow.workflowAge.age}} {{workflow.workflowAge.type}}
                 </span>
                 <table class="table table-bordered mt-2" width="100%">
                     <tr v-for=" user  in  activity.assignedTo_info " :key=" user ">
-                        <td>{{ user.userID }}</td>
+                        <td v-if="security.role.isAdministrator()">{{ user.userID }}</td>
                         <td class="ps-2" >{{ user.firstName + ' ' + user.lastName }}</td>
                         <td class="ps-2">{{ user.email }}</td>
                     </tr>
@@ -149,7 +149,7 @@
     const { $api }      = useNuxtApp();
     const security      = useSecurity();
     const { t, locale } = useI18n();
-    const $toast        = useToast();
+    const $toast        = useToast({position:'top-right'});
     const activeDialog  = ref({name:'', data:[], processing:false, rejectReason:undefined});
     const { isRevealed, reveal, confirm, cancel, onConfirm,  onCancel, } = useConfirmDialog();
 

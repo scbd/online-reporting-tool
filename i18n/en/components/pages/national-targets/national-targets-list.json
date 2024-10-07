@@ -1,11 +1,4 @@
 {
-    "noRecords":"There are no records to display!",
     "analyzer": "Analyzer",
-    "submitNew" : "Submit new target",
-    "yes":"Apply",
-    "no":"Cancel",
-    "exportFilterRequired":"The export is currently limited to a single record type. Please select a Record Type from the list.",
-    "exportFilterHeader": "Filter records",
-    "exportButton" : "Export"
-
+    "submitNew" : "Submit new target"    
 }

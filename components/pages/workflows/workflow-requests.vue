@@ -37,8 +37,10 @@
                 </td>
                 <td>{{ formatDate(workflow.workflowExpiryDate) }}</td>
                 <td>
-                    <a class="btn btn-success" 
-                        :href="`${resolveSchemaViewRoute(workflow.data.metadata.schema, workflow.data.identifier)}?draft=true&workflowId=${workflow._id}`">View request</a>
+                    <km-link class="btn btn-success" 
+                        :to="`${resolveSchemaViewRoute(workflow.data.metadata.schema, workflow.data.identifier)}?draft=true&workflowId=${workflow._id}`">
+                        View request
+                    </km-link>
                 </td>
             </tr>
         </tbody>
@@ -62,7 +64,14 @@
         const expired = moment.utc(new Date()).subtract("12", "weeks");
         const query = {
             $and : [
-                { "activities.assignedTo"  : user.value.userID } ,
+                // { "activities.assignedTo"  : user.value.userID } ,
+                {
+                    $or:[
+                            {"createdBy": user.value.userID}, 
+                            {"activities.assignedTo": user.value.userID},
+                            {"data.metadata.government": user.value.government}
+                        ] 
+                },
                 { "closedOn"               : { $exists : false } },
                 { "batchId"                : { $exists : false } },                
                 { "data.realm"             : realm.realm },
