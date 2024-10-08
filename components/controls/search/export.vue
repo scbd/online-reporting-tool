@@ -53,12 +53,12 @@
                                         <tr v-for="(row, index) in downloadDocs" :key="index">
                                             <td v-for="(field, key) in schemaFields" :key="index">
                                                 <span v-if="typeof row[key] == 'string'">
-                                                    <span v-html="formatString(row[key])"></span>
+                                                    <span v-html="formatString(row[key]?.url||row[key])"></span>
                                                 </span>
                                                 <span v-if="Array.isArray(row[key])">
                                                     <ul class="p-0 list-inline">
                                                         <li v-for="item in row[key]" :key="item">
-                                                            <span v-html="formatString(item)"></span>
+                                                            <span v-html="formatString(item?.url|| item)"></span>
                                                         </li>
                                                     </ul>
                                                 </span>
@@ -129,14 +129,14 @@
         if (!text)
             return;
 
-        if (text.startsWith('http')) {
+        if (text?.startsWith('http')) {
             if (text.length > 35)
                 return `<a target="_blank" href="${text}">${text.substr(0, 35)}...</a>`
 
             return `<a target="_blank" href="${text}">${text}...</a>`
         }
 
-        if (text.length > 50 && !text.startsWith('<a'))
+        if (text?.length > 50 && !text.startsWith('<a'))
             return text.substr(0, 50) + '...';
 
         return text;
@@ -172,6 +172,9 @@
                 // config.responseType = "arraybuffer"
                 config.responseType = "blob";
             }
+
+            schemaFields.value = downloadSchemasRef[props.schema]||[];
+
             // since the download api does not provide numFound, query index
             const downloadRecordsPromise  = useAPIFetch(`/api/v2022/documents/schemas/${encodeURIComponent(props.schema)}/download`, 
                                             {

@@ -26,6 +26,17 @@
     "listOfNonStateActors"            : "Non-state commitments",
     "anyOverlaps"                     : "Overlaps or links",
     "commitmentsAndActors"            : "Commitment(s) and actor(s)",
-    "relevantInformation"             : "Any other information"
+    "relevantInformation"             : "Any other information",
+    "elementOfGlobalTargetsInfo"      : "Elements of the global targets addressed by national targets",
+    "isGbfAligned"                     : "submission in alignment with KMGBF",
+    "jurisdiction"                     : "Level of application",
+    "startDate"                        : "Implementation Period From",
+    "endDate"                          : "Implementation Period To",
+    "statusOfTheDocument"              : "Status of the document",
+    "adoptionDate"                     : "Date of completion and adoption",
+    "approvedStatus"                   : "Status of approved document",
+    "approvingBody"                    : "Approving body",
+    "approvingBodyInfo"                : "Approving body information",
+    "documentLinks"                    : "NBSAP document(s) and websites, links or other relevant document(s)"
     
 }

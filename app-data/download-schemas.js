@@ -10,7 +10,7 @@ export const downloadSchemas = {
         })
         return {	
             "nationalTarget7" : {
-                "publishedOn"                       : t("publishedOn"),
+               "publishedOn"                       : t("publishedOn"),
                "recordUrl"                          : t("url"),
                "uniqueId"                           : t("uniqueId"),
                "government"                         : t("government"),
@@ -36,6 +36,33 @@ export const downloadSchemas = {
                "additionalImplementationCustomValue": t("additionalImplementationCustomValue"),
                "additionalImplementationInfo"       : t("additionalExplanation"),
                "additionalInformation"              : t("relevantInformation"),
+            },
+            "nationalTarget7Mapping" : {
+                "publishedOn"                        : t("publishedOn"),
+                "recordUrl"                          : t("url"),
+                "uniqueId"                           : t("uniqueId"),
+                "government"                         : t("government"),
+                "title"                              : t("title"),
+                "elementOfGlobalTargetsInfo"         : t("elementOfGlobalTargetsInfo")                
+            },
+            "nbsap" : {
+                "publishedOn"                       : t("publishedOn"),
+                "recordUrl"                          : t("url"),
+                "uniqueId"                           : t("uniqueId"),
+                "government"                         : t("government"),
+                "title"                              : t("title"),
+                "summary"                        : t("summary"),
+                "isGbfAligned"        : t("isGbfAligned"),
+                "jurisdiction"        : t("jurisdiction"),
+                "startDate"           : t("startDate"),
+                "endDate"             : t("endDate"),
+                "statusOfTheDocument" : t("statusOfTheDocument"),
+                "adoptionDate"        : t("adoptionDate"),
+                "approvedStatus"      : t("approvedStatus"),
+                "approvingBody"       : t("approvingBody"),
+                "approvingBodyInfo"   : t("approvingBodyInfo"),
+                "documentLinks.url"       : t("documentLinks"),
+                "relevantInformation" : t("relevantInformation"),
             }
         }
     }
