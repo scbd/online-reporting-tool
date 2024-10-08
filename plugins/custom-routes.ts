@@ -16,7 +16,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     addRouteMiddleware("customRoutes", async (to, from) => {                
             const matchedRoute = findMatchingRoute($appRoutes, to, from);
             if(matchedRoute){
-                return useNavigateAppTo(matchedRoute);
+                
+                return useNavigateAppTo(matchedRoute, { external: true });
             }
         }, 
         { global: true }
@@ -54,6 +55,10 @@ function findMatchingRoute($appRoutes, to, from){
         searchView : {
             regex  :  /search\/(\/([A-Za-z0-9]+))?/i,
             url    : $appRoutes.NATIONAL_TARGETS
+        },
+        workflowRequests : {
+            regex  :  /\/management\/requests(\/([A-Za-z0-9]+))?/i,
+            url    : $appRoutes.WORKFLOWS_REQUESTS
         },
     }
     
