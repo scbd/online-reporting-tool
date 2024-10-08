@@ -130,11 +130,15 @@
 
     async function init(){
         try{
-            isLoadingRecords.value = true;        
+            isLoadingRecords.value = true;    
+            let query = '';
+            if(user.value?.government)
+                query = ` and owner eq 'country:${user.value.government}'` ; 
+
             const response = await Promise.all([
                 GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators(), 
-                loadNationalRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`, draftNationalTargets, publishedNationalTargets), 
-                loadNationalRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}')`, draftNationalMappings, publishedNationalMappings)
+                loadNationalRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}' ${query})`, draftNationalTargets, publishedNationalTargets), 
+                loadNationalRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}' ${query})`, draftNationalMappings, publishedNationalMappings)
             ]);
             targetMapping = buildTargetMatrix(response[0], draftNationalTargets.value, draftNationalMappings.value)
             $emits('onRecordsLoad', {

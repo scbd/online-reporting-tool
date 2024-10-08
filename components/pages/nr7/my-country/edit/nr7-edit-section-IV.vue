@@ -256,7 +256,9 @@
 
     async function loadNationalIndicatorData(indicatorType){
 
-        const query = `(type eq '${indicatorType}')`;
+        let query = `(type eq '${indicatorType}')`;
+        if(user.value?.government)
+            query += ` and owner eq 'country:${user.value.government}'` ;
 
         const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,500, 'updatedOn desc', 0, true),
                             KmDocumentsService.loadDocuments(query,500, 'updatedOn desc', 0, true)]);  

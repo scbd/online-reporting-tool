@@ -24,8 +24,11 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
                 let nationalReport: EDocumentInfo | undefined = undefined;
                 if(!identifier){
                     
+                    let query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+                    if(user.value?.government)
+                        query += ` and owner eq 'country:${user.value.government}'` ;
                     const queryParams = {
-                        $filter   : `(type eq '${SCHEMAS.NATIONAL_REPORT_7}')`,
+                        $filter   : query,
                         $top      : 1,
                         $skip     : 0,
                         $orderby  : 'updatedOn desc',

@@ -638,7 +638,9 @@
     
     async function loadDraftRecords(schema:String){
 
-        const query = `(type eq '${schema}')`;
+        let query = `(type eq '${schema}')`;
+        if(user.value?.government)
+            query += ` and owner eq 'country:${user.value.government}'` ;
 
         const result = await KmDocumentDraftsService.loadDraftDocuments(query,500, 'updatedOn desc', 0, true);  
 
