@@ -4,7 +4,7 @@
             <CCardBody>
                 <CCardTitle>{{document.recTitle}}</CCardTitle>
                 <CCardText>
-                    <div class="limited-text" v-html="document.recSummary"></div>
+                    <div class="limited-text">{{ document.recSummary }}</div>
                     <div class="mt-2">
                         <span v-for="(target, index) in document.globalTargetAlignment_ss" :key="target">
                             <strong class="text-muted">{{ target }}</strong>
