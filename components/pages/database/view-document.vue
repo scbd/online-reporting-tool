@@ -9,6 +9,8 @@
                     :document="viewDocument"></view-target-part-1>
                 <view-target-part-2 v-if="viewDocument && viewDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7_MAPPING" 
                     :document="viewDocument"></view-target-part-2>
+                <view-nbsap v-if="viewDocument && viewDocument.header.schema == SCHEMAS.NATIONAL_NBSAP" 
+                    :document="viewDocument"></view-nbsap>
             </km-suspense>
 
             <div v-if="!viewDocument && !isLoading &&  documentLoadError">
