@@ -132,7 +132,7 @@
                         {{t('by')}}
                     </div>
                     <div class="col">
-                        <div class="text-value-lg">{{nbsapCount}}</div>
+                        <div class="text-value-lg">{{nbsapCountryCount}}</div>
                         <div class="text-uppercase text-muted small">{{t('countries')}}</div>
                     </div>
                     </div>

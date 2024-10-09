@@ -13,10 +13,10 @@
                     </CCardHeader>
                     <CCardBody>
                         <div class="row">
-                            <div class="col-sm-10">
+                            <div class="col-sm-12 col-lg-10">
                                 <un-map :colors="['#2c9844']" :zoom="Number(query.zoom||0.8)"></un-map>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-12 col-lg-2 mt-xs-1">
 
                                 <CRow>
                                     <!-- <CCol :sm="4">
@@ -317,6 +317,10 @@
                         Progress in ambition/relevance
                     </CCardHeader>
                     <CCardBody>
+                        <div class="alert alert-info">
+                            Degree of alignment as reported by Parties.
+                            The number of national targets, as reporting by Parties, with high, medium, low with this GBF target.
+                        </div>
                         <!-- For each GBF target, how many parties have set at least one national target that has -->
                         <table class="table table-bordered table-striped1 table-hover">
                             <thead>
@@ -325,7 +329,7 @@
                                     <th>High</th>
                                     <th>Medium</th>
                                     <th>Low</th>
-                                    <th>None</th>
+                                    <th>Not reported</th>
                                     <th>Total</th>
                                 </tr>
                             </thead>
@@ -491,6 +495,9 @@
                 <CCard v-if="canShowPartyCounts">
                     <CCardHeader>
                         Party count
+                        <export class="float-end" :search-query="exportSearchQuery" :schema="SCHEMAS.NATIONAL_TARGET_7">
+                            <template #exportTitle> Export national targets</template>
+                        </export>
                     </CCardHeader>
                     <CCardBody>
                         <CRow>
@@ -500,11 +507,11 @@
                                     <thead>
                                         <tr>
                                             <th rowspan="2">Party</th>
-                                            <th rowspan="2">Count</th>
-                                            <th :colspan="partyCountGoalColumnRange?.length"   v-if="partyCountGoalColumnRange?.length">Goals</th>
-                                            <th :colspan="partyCountTargetColumnRange?.length" v-if="partyCountTargetColumnRange?.length">Targets</th>
+                                            <th rowspan="2">Number of national targets reported</th>
+                                            <th :colspan="partyCountGoalColumnRange?.length"   v-if="partyCountGoalColumnRange?.length && partyCountTargetColumnRange?.length + partyCountGoalColumnRange?.length > 1">KMGBF Goal(s)</th>
+                                            <th :colspan="partyCountTargetColumnRange?.length" v-if="partyCountTargetColumnRange?.length && partyCountTargetColumnRange?.length + partyCountGoalColumnRange?.length > 1">KMGBF Target(s)</th>
                                         </tr>
-                                        <tr>                                            
+                                        <tr v-if="partyCountTargetColumnRange?.length + partyCountGoalColumnRange?.length > 1">                                            
                                             <th v-for="range in partyCountGoalColumnRange" :key="range">
                                                 {{ range.title }}
                                             </th>
@@ -516,17 +523,21 @@
                                     <tbody>                                        
                                             <tr v-for="(country) in facetPivot['government_s,globalTargetAlignment_ss']" :key="country">
                                                 <td>
-                                                    {{lstring(findCountry(country.value)?.name, locale)}}
+                                                    <km-link :to="`${$appRoutes.NATIONAL_TARGETS}?countries=${country.value}`">
+                                                        {{lstring(findCountry(country.value)?.name, locale)}}
+                                                    </km-link>
                                                 </td>
                                                 <td>
                                                     {{country.count}}
                                                 </td>
-                                                <td v-for="range in partyCountGoalColumnRange" :key="range">
-                                                   {{ facetPivot['government_s,globalGoalAlignment_ss']?.find(e=>e.value == country.value)?.pivot?.find(e=>e.value == range.name)?.count || 0 }}
-                                                </td>
-                                                <td v-for="range in partyCountTargetColumnRange" :key="range">
-                                                   {{ country.pivot?.find(e=>e.value == range.name)?.count || 0 }}
-                                                </td>
+                                                <template  v-if="partyCountTargetColumnRange?.length + partyCountGoalColumnRange?.length > 1">
+                                                    <td v-for="range in partyCountGoalColumnRange" :key="range">
+                                                    {{ facetPivot['government_s,globalGoalAlignment_ss']?.find(e=>e.value == country.value)?.pivot?.find(e=>e.value == range.name)?.count || 0 }}
+                                                    </td>
+                                                    <td v-for="range in partyCountTargetColumnRange" :key="range">
+                                                    {{ country.pivot?.find(e=>e.value == range.name)?.count || 0 }}
+                                                    </td>
+                                                </template>
                                             </tr>
                                     </tbody>
                                 </table>
@@ -570,6 +581,7 @@ import {useRoute} from 'vue-router';
     const filters     = ref({});
     const showAllCountries = ref(false);
     const analyzedCounts = ref({});
+    const exportSearchQuery = ref();
     const recordTypes = [SCHEMAS.NATIONAL_TARGET_7];//, SCHEMAS.NATIONAL_TARGET_7_MAPPING];
         
     const canShowGeneralCount            = computed(()=>canShowSection('general-count'));
@@ -585,7 +597,7 @@ import {useRoute} from 'vue-router';
         const goals     = ['A', 'B', 'C', 'D' ].map(e=>({name:`GBF-GOAL-${e}`, title : e}));
         return goals.filter(canDisplayTarget)
     });
-    const partyCountTargetColumnRange       = computed(()=>{
+    const partyCountTargetColumnRange     = computed(()=>{
         const targets   = [...Array(23).keys()].map(e=>({name:`GBF-TARGET-${e+1 > 9 ? e+1 : '0'+(e+1)}`, title : e+1}));
         return targets.filter(canDisplayTarget)
     })
@@ -634,6 +646,8 @@ import {useRoute} from 'vue-router';
             facetFields: ["globalTargetAlignment_ss"],
             rowsPerPage: 0,
         }
+
+
         const sectionCGbfFacets = await  queryIndex(parseSolrQuery(gbfTargetsSectionCQuery, locale));
         
         const searchQuery = {
@@ -675,6 +689,13 @@ import {useRoute} from 'vue-router';
                 }
             });
         })
+
+        exportSearchQuery.value = {
+            query: andOr(compact(queries), 'AND'),
+            rowsPerPage: result.facets?.schema_s?.nationalTarget7,
+            sort : "updatedDate_dt desc",
+            additionalFields :['globalTargetAlignment_ss','globalGoalOrTarget_s','globalGoalAlignment_ss']
+        }
 
         const newCounts = {};
         newCounts.progressInTargets     = buildProgressInTargetCounts(facets.value, facetPivot.value);
