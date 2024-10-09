@@ -182,6 +182,7 @@
     const route    = useRoute();
     const localePath  = useLocalePath()
     const { t, locale }       = useI18n(); 
+    const { user }            = useAuth();
     const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
 
     const isBusy = ref(false);
@@ -289,11 +290,13 @@
     async function init(){
         try{
             isBusy.value = true;            
-
+            let query = ''
+            if(user.value?.government)
+                query = ` and owner eq 'country:${user.value.government}'` ;
             const response = await Promise.all([
                 GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators(), 
-                loadRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`), 
-                loadRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}')`)
+                loadRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}') ${query}`), 
+                loadRecords(`(type eq '${SCHEMAS.NATIONAL_TARGET_7_MAPPING}') ${query}`)
             ]);
 
             let targets            = [...response[0]];

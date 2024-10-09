@@ -60,6 +60,7 @@
     const rowsPerPage              = UTILS.ROWS_PER_PAGE_300;
     const { t, locale }            = useI18n();
     const { $appRoutes:appRoutes } = useNuxtApp();
+    const { user }                 = useAuth();
     const stateTargetWorkflow      = useStorage('ort-target-workflow', { batchId : undefined });
     const draftNationalTargets     = ref([]);
     const publishedNationalTargets = ref([]);
@@ -120,7 +121,10 @@
     async function loadRecords(){
         try{
             isLoadingRecords.value = true;
-            const query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+            let query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+
+            if(user.value?.government)
+                query += ` and owner eq 'country:${user.value.government}'` ;
 
             const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
                                 KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)]);  

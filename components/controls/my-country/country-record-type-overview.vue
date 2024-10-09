@@ -64,6 +64,7 @@
     const rowsPerPage              = UTILS.ROWS_PER_PAGE_300;
     const { t, locale }            = useI18n();
     const { $appRoutes:appRoutes } = useNuxtApp();
+    const { user }                 = useAuth();
     const draftNationalRecords     = ref<EDocumentInfo[]>([]);
     const publishedNationalRecords = ref([]);
     const isLoadingRecords         = ref(false);
@@ -102,7 +103,10 @@
     async function loadRecords(){
         try{
             isLoadingRecords.value = true;
-            const query = `(type eq '${props.schema}')`
+            let query = `(type eq '${props.schema}')`
+
+            if(user.value?.government)
+                query += ` and owner eq 'country:${user.value.government}'` ;
 
             const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
                                 KmDocumentsService.loadDocuments(query,rowsPerPage, 'updatedOn desc', 0, true)]);  

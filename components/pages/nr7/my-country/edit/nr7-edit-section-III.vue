@@ -250,8 +250,10 @@
     }
 
     async function loadNationalTargets(){
-
-        const response = await KmDocumentsService.loadDocuments(`(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`,500, undefined, 0, true)
+        let query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+        if(user.value?.government)
+            query += ` and owner eq 'country:${user.value.government}'` ;
+        const response = await KmDocumentsService.loadDocuments(query, 500, undefined, 0, true)
         const targets = await Promise.all(response?.Items?.map(async e=>{
                             const headlineIndicators = await Promise.all(getAlignedGoalsOrTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfHeadlineIndicator(e.identifier)})||[]);
                             const binaryIndicators   = await Promise.all(getAlignedGoalsOrTargets(e.body)?.map(e=>{return GbfGoalsAndTargets.loadGbfBinaryIndicator(e.identifier)})||[]);
@@ -273,7 +275,9 @@
 
     async function loadNationalIndicatorData(indicatorType){
 
-        const query = `(type eq '${indicatorType}')`;
+        let query = `(type eq '${indicatorType}')`;
+        if(user.value?.government)
+            query += ` and owner eq 'country:${user.value.government}'` ;
 
         const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,500, 'updatedOn desc', 0, true),
                             KmDocumentsService.loadDocuments(query,500, 'updatedOn desc', 0, true)]);  

@@ -13,7 +13,7 @@
                 </template>
             </search-filters>
             <div style="height:0;width:0;overflow: hidden;">
-                <export ref="exportDialogRef" :search-query="searchQuery" schema="nationalTarget7"></export>
+                <export ref="exportDialogRef" :search-query="searchQuery" :schema="exportSelectedSchema?.identifier"></export>
             </div>
             <!-- <overlay-loading :active="loading" :can-cancel="false" background-color="rgb(9 9 9)"
                 :is-full-page="false"> -->
@@ -89,7 +89,7 @@
     const exportDialogRef = ref();
     const searchFilterRef = ref();
     const isExportDialogRevealed = ref(false);
-    const exportSelectedSchema = ref();
+    const exportSelectedSchema = ref({identifier:props.recordTypes[0]});
 
     const schemaTypeLists = computed(()=>{
         return props.recordTypes?.map((schema)=>{
@@ -126,10 +126,13 @@
     function onOpenExportDialog(){
 
         if(props.recordTypes?.length == 1 || filters.value?.recordTypes?.length == 1){
+            
+            exportSelectedSchema.value = {identifier : filters.value?.recordTypes?.length ? filters.value?.recordTypes[0] : props.recordTypes[0] }
+            
+            console.log(exportSelectedSchema)
             exportDialogRef.value.openExportModal();
             return;
         }
-
         isExportDialogRevealed.value = true;
     }
 
@@ -139,7 +142,7 @@
         await sleep(200)
         exportDialogRef.value.openExportModal();
         isExportDialogRevealed.value = false;
-        exportSelectedSchema.value = null;
+        // exportSelectedSchema.value = null;
     }
 
     function closeExport(){

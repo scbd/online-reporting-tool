@@ -8,8 +8,7 @@
         <div  v-if="nationalReport7Store.isBusy">
             <km-spinner center  ></km-spinner>
         </div>  
-
-        <km-form-workflow v-if="!nationalReport7Store.isBusy && nationalReport7Store.nationalReport"
+        <km-form-workflow v-if="!isBusy && !nationalReport7Store.isBusy && sectionIComputed"
             :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
             :container="container" :validate-server-draft="true">
             <template #submission>
@@ -81,11 +80,7 @@
     const isEventDefined        = useHasEvents();
     
 
-    const sectionIComputed = computed({ 
-        get(){ 
-            return document.value.sectionI
-        }
-    });
+    const sectionIComputed = computed(()=>document.value?.sectionI);
 
     const cleanDocument = computed(()=>{
         let clean = {...document.value};
@@ -141,6 +136,7 @@
                 nationalReport7Store.nationalReport.sectionI = {};
             }                   
             document.value = cloneDeep(nationalReport7Store.nationalReport);
+            console.log(document.value)
         }
         catch(e){
             useLogger().error(e,  'Error loading Section I')
