@@ -3,7 +3,7 @@
       <CCardHeader>
           <font-awesome-icon :icon="['fas', 'chart-simple']" /> 
           {{ t('nationalTargetsAnalyzer') }} 
-          <km-link class="float-end" v-if="query.embed" :to="realm.baseURL">
+          <km-link class="float-end" v-if="query.embed" :to="realm.baseURL" target="_blank">
             <CTooltip :content="t('ortTip')" trigger="hover">
                 <template #toggler="{ on }">
                     <span v-on="on"><strong>{{realm.displayName}}</strong></span>
