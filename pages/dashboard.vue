@@ -32,35 +32,8 @@
               <km-link :to="appRoutes.NATIONAL_TARGETS_MY_COUNTRY">{{t('clickHere')}}</km-link> {{t('toBegin')}}
             </p>
           </div>
-        </CCol>
-        <CCol md="3" sm="6">            
-            <km-link :to="appRoutes.NATIONAL_REPORTS_NR6" class="unset-anchor" target="_blank">
-                <div class="card">
-                    <div class="card-header content-center text-white p-2 bg-success">
-                    <span height="52" class="my-4">{{t('6Nr')}}</span>
-                    </div>
-                    <div class="card-body row text-center">
-                    <div class="col">
-                        <div class="text-value-lg">{{nr6Count}}</div>
-                        <div class="text-uppercase text-muted small">
-                            {{t('6Nr')}}
-                        </div>
-                    </div>
-                    <div
-                        class="c-vr text-value-lg"
-                        style="width: unset; background-color: unset"
-                    >
-                    {{t('by')}}
-                    </div>
-                    <div class="col">
-                        <div class="text-value-lg">{{nr6CountryCount}}</div>
-                        <div class="text-uppercase text-muted small">{{t('countries')}}</div>
-                    </div>
-                    </div>
-                </div>
-            </km-link>
-        </CCol>
-        <CCol md="3" sm="6">
+        </CCol>       
+        <CCol md="4" sm="6">
             <km-link :to="appRoutes.NATIONAL_REPORTS_NR7" class="unset-anchor">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
@@ -87,7 +60,7 @@
                 </div>
             </km-link>
         </CCol>
-        <CCol md="3" sm="6">
+        <CCol md="4" sm="6">
             <km-link :to="appRoutes.NATIONAL_TARGETS" class="unset-anchor">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
@@ -114,7 +87,7 @@
                 </div>
             </km-link>
         </CCol>
-        <CCol md="3" sm="6">
+        <CCol md="4" sm="6">
 
             <km-link :to="appRoutes.NATIONAL_REPORTS_NBSAP" class="unset-anchor">
                 <div class="card">
@@ -241,8 +214,7 @@ import { KmLink } from "@/components/controls";
                     q : `_state_s: public AND 
                             (
                             (schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:${realmConf.realm}) OR 
-                            (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true AND realm_ss:${realmConf.realm}) OR
-                            (schema_s : ${SCHEMAS.NATIONAL_REPORT_6} AND realm_ss:${realmConf.realm.replace('ORT', 'CHM')})
+                            (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true AND realm_ss:${realmConf.realm})                            
                             )`,
                     facet: true,
                     'facet.field': ['schema_s', 'government_EN_s'],
