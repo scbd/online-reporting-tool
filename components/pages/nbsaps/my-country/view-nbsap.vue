@@ -63,12 +63,12 @@
                         <div class="row">
                             <div class="col-md-6" v-if="viewDocument.startDate">
                                 <km-form-group name="startDate" :caption="t('startDate')">
-                                    <km-value :value="viewDocument.startDate" :locale="selectedLocale"></km-value>    
+                                    <km-value :value="formatDate(viewDocument.startDate, 'DD MMM YYYY')" :locale="selectedLocale"></km-value>    
                                 </km-form-group>
                             </div>
                             <div class="col-md-6" v-if="viewDocument.endDate">
                                 <km-form-group name="endDate" :caption="t('endDate')">
-                                    <km-value :value="viewDocument.endDate" :locale="selectedLocale"></km-value>  
+                                    <km-value :value="formatDate(viewDocument.endDate, 'DD MMM YYYY')" :locale="selectedLocale"></km-value>  
                                 </km-form-group>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                             </div>
                             <div class="col-md-6" v-if="viewDocument.adoptionDate">
                                 <km-form-group name="adoptionDate" :caption="t('adoptionDate')"  :data-content="t('adoptionYear')">                                                
-                                    <km-value :value="viewDocument.adoptionDate" :locale="selectedLocale"></km-value>   
+                                    <km-value :value="formatDate(viewDocument.adoptionDate, 'DD MMM YYYY')" :locale="selectedLocale"></km-value>   
                                 </km-form-group>
                             </div>
                         </div>
