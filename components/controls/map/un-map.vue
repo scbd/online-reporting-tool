@@ -1,13 +1,15 @@
-<template>    
-    <div id="map"></div>
+<template>
+    <div id="map" :class="{ 'no-height d-none':imageUrl}"></div>
+    <img :src="imageUrl" v-if="imageUrl" class="img-fluid map">
 </template>
 
 <script setup lang="ts">
     import { useCountriesStore }    from '@/stores/countries';
 
     const props = defineProps({
-        colors : { type:Array, default : ['#52489C']},
-        zoom   : { type:Number, default : 0.8 }
+        countryColors : { type:Array<CountryColor>, required:true},
+        zoom   : { type:Number, default : 0.8 },
+        screenshotOnly: { type:Boolean, default : false },
     });
 
     const mapActions = inject(UNMapActionsKey);
@@ -16,6 +18,8 @@
     const countriesStore = useCountriesStore ();
     const {t, locale }   = useI18n();
     const route          = useRoute()
+
+    const imageUrl = ref();
         
     let map;
 
@@ -34,7 +38,7 @@
     })
 
     async function initMap(){
-
+        
         if(!window.mapboxgl){
             await sleep(500)
         }
@@ -213,10 +217,13 @@
             
             map.addControl(new mapboxgl.NavigationControl());   
             
-            if(mapActions){
-                props.colors?.forEach(color => {
+            if(props.countryColors?.length){
+
+                const colors = [...new Set(props.countryColors?.map(e=>e.color))];
+
+                colors?.forEach(color => {
                     
-                    const colorCountries = mapActions.onSetLayerColor(color)
+                    const colorCountries = props.countryColors?.filter(e=>e.color == color).map(e=>e.code3)
                     if(colorCountries?.length){
                         const coloredCountries = {
                             id: 'coloredCountries',
@@ -254,26 +261,54 @@
                     }
                 });
             }
+            if(props.zoom)
+                map.setZoom(props.zoom);
+            
+            if(props.screenshotOnly){
+                
+                setTimeout(() => {
+                    takeScreenshot(map).then((data)=>{
+                        imageUrl.value = data
+                        console.log(imageUrl)
+                        map.remove();
+                        map = undefined;
+                    });
+                    
+                }, 300);
+            }
+
         });
     }
-
+    function takeScreenshot(map) {
+        return new Promise(function(resolve, reject) {
+            map.once("render", function() {
+            resolve(map.getCanvas().toDataURL());
+            });
+            /* trigger render */
+            map.setBearing(map.getBearing());
+        })
+    }
     onMounted(()=>{
         countriesStore.loadCountries()
         initMap()
     })
 
     onUnmounted(() => {
-        if(window.mapboxgl)
+        console.log(map)
+        if(window.mapboxgl && map )
             map.remove();
     })
 </script>
 
 <style scoped>
-    #map {
+    #map, .map {
         /* position: absolute; */
         height: 500px;
         width: 100%;
         border: 1px solid #eee;
         visibility: unset;
+    }
+    .no-height{
+        height: 0px!important;
     }
 </style>
