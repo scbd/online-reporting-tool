@@ -1,13 +1,6 @@
 <template>
-    <!-- <div class="card">
-        <div class="card-header">
-            <slot name="title"></slot>
-        </div>
-        <div class="card-body"> -->
-            <un-map v-if="countryColors?.length" :countryColors="countryColors" 
-                :zoom="0.4" :screenshot-only="true"></un-map>
-        <!-- </div>
-    </div> -->
+    <un-map v-if="countryColors?.length" :countryColors="countryColors" 
+        :zoom="0.4" :screenshot-only="true"></un-map>
 </template>
 
 <script setup lang="ts">
@@ -42,9 +35,6 @@
                                     color : CBD_GREEN
                                 }
                             })
-        console.log(Object.entries(facetResponse.facets.government_s).map(([key, val])=>{
-                                    return countriesStore.countries.find(c=>c.code == key?.toUpperCase())?.code
-                            }));
     })
 
 </script>

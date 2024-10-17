@@ -268,8 +268,7 @@
                 
                 setTimeout(() => {
                     takeScreenshot(map).then((data)=>{
-                        imageUrl.value = data
-                        console.log(imageUrl)
+                        imageUrl.value = data;
                         map.remove();
                         map = undefined;
                     });
@@ -294,7 +293,6 @@
     })
 
     onUnmounted(() => {
-        console.log(map)
         if(window.mapboxgl && map )
             map.remove();
     })
@@ -303,7 +301,7 @@
 <style scoped>
     #map, .map {
         /* position: absolute; */
-        height: 500px;
+        height: 400px;
         width: 100%;
         border: 1px solid #eee;
         visibility: unset;

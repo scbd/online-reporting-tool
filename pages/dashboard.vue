@@ -18,7 +18,7 @@
     </CCard>
     <CRow >
       <!-- <template> -->
-        <CCol md="12" id="recentlyPublished">
+        <CCol md="12" id="recentlyPublished" >
           <div class="alert alert-success" role="alert">
             <div  v-if="publishedRecords?.length">
                 <h4 class="alert-heading">{{t('recentPublish')}}</h4>
@@ -33,7 +33,7 @@
             </p>
           </div>
         </CCol>       
-        <CCol md="4" sm="6">
+        <CCol md="6" sm="6" v-if="!true">
             <km-link :to="appRoutes.NATIONAL_REPORTS_NR7" class="unset-anchor">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
@@ -60,62 +60,84 @@
                 </div>
             </km-link>
         </CCol>
-        <CCol md="4" sm="6">
-            <km-link :to="appRoutes.NATIONAL_TARGETS" class="unset-anchor">
+        <CCol md="6" sm="6">
+            
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
-                    <span height="52" class="my-4">{{t('nationalTargets')}}</span>
-                    </div>
-                    <div class="card-body row text-center">
-                    <div class="col">
-                        <div class="text-value-lg">{{nr7TargetCount}}</div>
-                        <div class="text-uppercase text-muted small">
-                            {{t('nationalTargets')}}
-                        </div>
-                    </div>
-                    <div
-                        class="c-vr text-value-lg"
-                        style="width: unset; background-color: unset"
-                    >
-                    {{t('by')}}
-                    </div>
-                    <div class="col">
-                        <div class="text-value-lg">{{ nr7TargetCountryCount }}</div>
-                        <div class="text-uppercase text-muted small">{{t('countries')}}</div>
-                    </div>
-                    </div>
-                </div>
-            </km-link>
-        </CCol>
-        <CCol md="4" sm="6">
+                        <span height="52" class="my-4">{{t('nationalTargets')}}</span>
 
-            <km-link :to="appRoutes.NATIONAL_REPORTS_NBSAP" class="unset-anchor">
-                <div class="card">
-                    <div class="card-header content-center text-white p-2 bg-success">
-                    <span height="52" class="my-4">{{t('nbsapsFull')}}</span>
+                        <km-link title="Analyzer" :to="`${appRoutes.NATIONAL_TARGETS_ANALYZER}`" class="btn btn-secondary btn-sm ms-1 float-end">
+                            <font-awesome-icon icon="fa-chart-pie"></font-awesome-icon>
+                        </km-link>
                     </div>
                     <div class="card-body row text-center">
-                    <div class="col">
-                        <div class="text-value-lg">{{nbsapCount}}</div>
-                        <div class="text-uppercase text-muted small">
-                            {{t('nbsaps')}}
+                        <div class="col">
+                            <div class="text-value-lg">{{nr7TargetCount}}</div>
+                            <div class="text-uppercase text-muted small">
+                                {{t('nationalTargets')}}
+                            </div>
+                        </div>
+                        <div
+                            class="c-vr text-value-lg"
+                            style="width: unset; background-color: unset"
+                        >
+                        {{t('by')}}
+                        </div>
+                        <div class="col">
+                            <div class="text-value-lg">{{ nr7TargetCountryCount }}</div>
+                            <div class="text-uppercase text-muted small">{{t('countries')}}</div>
                         </div>
                     </div>
-                    <div class="c-vr text-value-lg" style="width: unset; background-color: unset">
-                        {{t('by')}}
-                    </div>
-                    <div class="col">
-                        <div class="text-value-lg">{{nbsapCountryCount}}</div>
-                        <div class="text-uppercase text-muted small">{{t('countries')}}</div>
-                    </div>
+                    <div class="card-body row text-center">
+                        <hr/>
+                        <km-link :to="appRoutes.NATIONAL_TARGETS" class="unset-anchor">
+                            <government-facet-map :query="nationalTargetsFacetQuery">
+                                <template #title>{{t('nationalTargets')}}</template>
+                            </government-facet-map>
+                        </km-link>
                     </div>
                 </div>
-            </km-link>
+        </CCol>
+        <CCol md="6" sm="6">
+
+            
+                <div class="card">
+                    <div class="card-header content-center text-white p-2 bg-success">
+                        <span height="52" class="my-4">{{t('nbsapsFull')}}</span>
+                        <km-link title="Analyzer" :to="`${appRoutes.NATIONAL_REPORTS_NBSAP_ANALYZER}`" 
+                        class="btn btn-secondary btn-sm ms-1 float-end">
+                            <font-awesome-icon icon="fa-chart-pie"></font-awesome-icon>
+                        </km-link>
+                    </div>
+                    <div class="card-body row text-center">
+                        <div class="col">
+                            <div class="text-value-lg">{{nbsapCount}}</div>
+                            <div class="text-uppercase text-muted small">
+                                {{t('nbsaps')}}
+                            </div>
+                        </div>
+                        <div class="c-vr text-value-lg" style="width: unset; background-color: unset">
+                            {{t('by')}}
+                        </div>
+                        <div class="col">
+                            <div class="text-value-lg">{{nbsapCountryCount}}</div>
+                            <div class="text-uppercase text-muted small">{{t('countries')}}</div>
+                        </div>
+                    </div>
+                    <div class="card-body row text-center">
+                        <hr/>
+                        <km-link :to="appRoutes.NATIONAL_REPORTS_NBSAP" class="unset-anchor">
+                            <government-facet-map :query="nbsapFacetQuery">
+                                <template #title>{{t('nbsapsFull')}}</template>
+                            </government-facet-map>
+                        </km-link>
+                    </div>
+                </div>
         </CCol>
         
       <!-- </template> -->
     </CRow>
-    <CRow class="mt-5">
+    <CRow class="mt-3">
       <CCol md="12">
         <CCard>
           <CCardHeader> {{t('latestRecords')}} </CCardHeader>
@@ -154,7 +176,7 @@
 <script setup>
 import UserProfileInfo  from "@/components/common/user-profile-info.vue"
 import { useRealmConfStore } from '@/stores/realmConf';
-import { facets } from '@/services/solr';
+import { facets,andOr } from '@/services/solr';
 import { KmLink } from "@/components/controls";
 
         const {user} = useAuth();
@@ -171,17 +193,20 @@ import { KmLink } from "@/components/controls";
         const isLoading                 = ref(true);
         let countryFacets               = ref();
         let searchFacets                = ref();
-
+        let nbsapFacets                 = ref();
+        const nbsapFacetQuery           = andOr([`schema_s:${SCHEMAS.NATIONAL_NBSAP}`, `isGbfAligned_b:true`, `realm_ss:${realmConf.realm}`])
+        const nationalTargetsFacetQuery = andOr([`schema_s:${SCHEMAS.NATIONAL_TARGET_7}`, `realm_ss:${realmConf.realm}`])
+        
 
         const nr7Count       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7)), 0))
         const nr7TargetCount = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7)), 0))
         const nr6Count       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6)), 0))
-        const nbsapCount        = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)  ), 0))
+        const nbsapCount        = computed(()=>nbsapFacets.value?.facets?.schema_s?.nbsap)
               
         const nr7CountryCount       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7) > 0 ? 1 : 0), 0))
         const nr7TargetCountryCount = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7) > 0 ? 1 : 0), 0))
         const nr6CountryCount       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6) > 0 ? 1 : 0), 0))
-        const nbsapCountryCount     = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)   > 0 ? 1 : 0), 0))
+        const nbsapCountryCount     = computed(()=>Object.keys(nbsapFacets.value?.facets?.government_s||{})?.length)
       
         const publishedRecords = computed(()=>{ 
             return searchFacets.value?.docs?.map(e=> {
@@ -211,19 +236,31 @@ import { KmLink } from "@/components/controls";
             try{
                 const searchQuery = {
                     rows:10,
-                    q : `_state_s: public AND 
+                    q : `_state_s: public AND realm_ss:${realmConf.realm} AND 
                             (
-                            (schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}) AND realm_ss:${realmConf.realm}) OR 
-                            (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true AND realm_ss:${realmConf.realm})                            
+                            (schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING} ${SCHEMAS.NATIONAL_NBSAP})) OR 
+                            (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true)                            
                             )`,
                     facet: true,
-                    'facet.field': ['schema_s', 'government_EN_s'],
-                    'facet.pivot' : "government_EN_s,schema_s",
+                    'facet.mincount': 1,
+                    'facet.field': ['schema_s', 'government_s'],
+                    'facet.pivot' : "government_s,schema_s",
                     sort: "updatedDate_dt desc",
                     fl: "id, identifier_s,government_EN_t, title_EN_t, schema_EN_t,submittedDate_dt,schema_s, url_ss"
                 }
-                searchFacets.value  = await facets(searchQuery)
-                countryFacets.value = searchFacets.value?.facetPivot['government_EN_s,schema_s'];
+                const nbsapFacetQuery = {
+                    rows:0,
+                    q : `_state_s: public AND realm_ss:${realmConf.realm} AND (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true)`,
+                    facet: true,
+                    'facet.mincount': 1,
+                    'facet.field': ['schema_s', 'government_s']
+                }
+                const [facetResult, nbsapFacetResult] = await Promise.all([await facets(searchQuery), await facets(nbsapFacetQuery)])
+                
+                searchFacets.value  = facetResult;
+                nbsapFacets.value   = nbsapFacetResult;
+                if(searchFacets.value?.facetPivot)
+                    countryFacets.value = searchFacets.value?.facetPivot['government_s,schema_s'];
 
             }
             catch(e){
