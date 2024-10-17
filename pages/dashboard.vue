@@ -33,7 +33,7 @@
             </p>
           </div>
         </CCol>       
-        <CCol md="6" sm="6" v-if="!true">
+        <CCol lg="12" xl="6" v-if="!true">
             <km-link :to="appRoutes.NATIONAL_REPORTS_NR7" class="unset-anchor">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
@@ -60,17 +60,22 @@
                 </div>
             </km-link>
         </CCol>
-        <CCol md="6" sm="6">
+        <CCol lg="12" xl="6">
             
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
                         <span height="52" class="my-4">{{t('nationalTargets')}}</span>
 
+                        <km-link title="Analyzer" :to="`${appRoutes.NATIONAL_TARGETS}`" 
+                            class="btn btn-secondary btn-sm ms-1 float-end">
+                            <font-awesome-icon icon="fa-search"></font-awesome-icon>
+                        </km-link>
                         <km-link title="Analyzer" :to="`${appRoutes.NATIONAL_TARGETS_ANALYZER}`" class="btn btn-secondary btn-sm ms-1 float-end">
                             <font-awesome-icon icon="fa-chart-pie"></font-awesome-icon>
                         </km-link>
                     </div>
                     <div class="card-body row text-center">
+                        <p>In alignment with KMGBF</p>
                         <div class="col">
                             <div class="text-value-lg">{{nr7TargetCount}}</div>
                             <div class="text-uppercase text-muted small">
@@ -90,7 +95,7 @@
                     </div>
                     <div class="card-body row text-center">
                         <hr/>
-                        <km-link :to="appRoutes.NATIONAL_TARGETS" class="unset-anchor">
+                        <km-link :to="appRoutes.NATIONAL_TARGETS_ANALYZER" class="unset-anchor">
                             <government-facet-map :query="nationalTargetsFacetQuery">
                                 <template #title>{{t('nationalTargets')}}</template>
                             </government-facet-map>
@@ -98,18 +103,23 @@
                     </div>
                 </div>
         </CCol>
-        <CCol md="6" sm="6">
+        <CCol lg="12" xl="6">
 
             
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
                         <span height="52" class="my-4">{{t('nbsapsFull')}}</span>
+                        <km-link title="Analyzer" :to="`${appRoutes.NATIONAL_REPORTS_NBSAP}`" 
+                            class="btn btn-secondary btn-sm ms-1 float-end">
+                            <font-awesome-icon icon="fa-search"></font-awesome-icon>
+                        </km-link>
                         <km-link title="Analyzer" :to="`${appRoutes.NATIONAL_REPORTS_NBSAP_ANALYZER}`" 
-                        class="btn btn-secondary btn-sm ms-1 float-end">
+                            class="btn btn-secondary btn-sm ms-1 float-end">
                             <font-awesome-icon icon="fa-chart-pie"></font-awesome-icon>
                         </km-link>
                     </div>
                     <div class="card-body row text-center">
+                        <p>In alignment with KMGBF</p>
                         <div class="col">
                             <div class="text-value-lg">{{nbsapCount}}</div>
                             <div class="text-uppercase text-muted small">
@@ -126,7 +136,7 @@
                     </div>
                     <div class="card-body row text-center">
                         <hr/>
-                        <km-link :to="appRoutes.NATIONAL_REPORTS_NBSAP" class="unset-anchor">
+                        <km-link :to="appRoutes.NATIONAL_REPORTS_NBSAP_ANALYZER" class="unset-anchor">
                             <government-facet-map :query="nbsapFacetQuery">
                                 <template #title>{{t('nbsapsFull')}}</template>
                             </government-facet-map>
