@@ -14,9 +14,9 @@
                     <td  class="align-middle" >
                         <span> {{languages[item.language]}}  </span>    
                     </td>        
-                    <td  class="align-middle" >                                 
+                    <td  class="align-middle" >    
                         <a :href="item.url" target="_blank" >
-                            {{item.name}} 
+                            {{item.name||item.url}} 
                         </a>
                     </td>   
                     <td  class="align-middle" >                                   

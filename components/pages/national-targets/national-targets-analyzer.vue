@@ -14,7 +14,7 @@
                     <CCardBody>
                         <div class="row">
                             <div class="col-sm-12 col-lg-10">
-                                <un-map :colors="['#2c9844']" :zoom="Number(query.zoom||0.8)"></un-map>
+                                <un-map :country-colors="countryColors" :zoom="Number(query.zoom||0.8)"></un-map>
                             </div>
                             <div class="col-sm-12 col-lg-2 mt-xs-1">
 
@@ -582,6 +582,7 @@ import {useRoute} from 'vue-router';
     const showAllCountries = ref(false);
     const analyzedCounts = ref({});
     const exportSearchQuery = ref();
+    const countryColors     = ref();
     const recordTypes = [SCHEMAS.NATIONAL_TARGET_7];//, SCHEMAS.NATIONAL_TARGET_7_MAPPING];
         
     const canShowGeneralCount            = computed(()=>canShowSection('general-count'));
@@ -690,6 +691,15 @@ import {useRoute} from 'vue-router';
             });
         })
 
+        countryColors.value = result.facetPivot['government_s,schema_s']
+                .map(e=>{
+                    return {
+                        code3 : findCountry(e.value)?.code3,
+                        color : CBD_GREEN
+                    }
+                })
+                .filter(e=>e);
+        
         exportSearchQuery.value = {
             query: andOr(compact(queries), 'AND'),
             rowsPerPage: result.facets?.schema_s?.nationalTarget7,
@@ -927,17 +937,6 @@ import {useRoute} from 'vue-router';
 
     const roundDecimal = (num) => Math.round(num * 100 + Number.EPSILON ) / 100;
     
-
-    onMounted(async()=>{;
-        // loadRecords();
-        provide(UNMapActionsKey, {
-            onSetLayerColor : (color:String)=>{
-                return facetPivot.value['government_s,schema_s'].map(e=>{
-                    return findCountry(e.value)?.code3
-                }).filter(e=>e)
-            }
-        })
-    })
 
 
     await Promise.all([

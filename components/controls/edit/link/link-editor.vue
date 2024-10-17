@@ -68,7 +68,6 @@
       emit("onClose");  
     }  
     const save = () =>{  
-        console.log('hi')
       checkValidation.value=true; 
       if (isUrlValid.value && isLangValid.value){   
         const newLink = { "url": link.value.url , "name": link.value.name , "language": link.value.language  };
