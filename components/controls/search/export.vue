@@ -1,9 +1,11 @@
 <template>
     <span>
-        <a rel="noopener" href="#" class="ms-1 btn btn-success btn-sm text-decoration-none" @click="openExportModal">
+        <button type="button" class="ms-1 btn btn-success btn-sm text-decoration-none" @click="openExportModal">
             <font-awesome-icon icon="fa fa-download"></font-awesome-icon>
-            {{ t('exportButton') }}
-        </a>
+            <slot name="exportTitle" >
+                {{ t('exportButton') }}
+            </slot>
+        </button>
         <CModal class="show d-block global-target-modal" :size="container? 'lg' : 'xl'" scrollable="true" alignment="center" 
             :visible="showExportModal"  @close="closeDialog">
             <CModalHeader>

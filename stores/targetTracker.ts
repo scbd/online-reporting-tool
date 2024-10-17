@@ -62,7 +62,7 @@ export const useThesaurusStore = defineStore('targetTracker', {
     },
   },
   persist: {
-      storage: persistedState.localStorage, //TODO : switch to localStorage,
+      storage: persistedState.sessionStorage, //TODO : switch to localStorage,
     //   beforeRestore: (ctx) => {
     //     console.log(`about to restore '${ctx.store.$id}'`)
     //   },

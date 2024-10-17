@@ -18,7 +18,7 @@
       </CCardHeader>  
       <CCardBody>        
         <km-suspense>
-            <national-targets-analyzer></national-targets-analyzer>
+            <nbsap-analyzer></nbsap-analyzer>
         </km-suspense>
       </CCardBody>
     </CCard>
@@ -51,7 +51,7 @@
         </CModalFooter>
     </CModal>  
   </template>
-  <i18n src="@/i18n/dist/pages/national-targets/analyzer.json"></i18n>
+  <i18n src="@/i18n/dist/pages/nbsaps/analyzer.json"></i18n>
   <script setup lang="ts">
 
     import {useRoute} from 'vue-router';
@@ -66,19 +66,15 @@
     const embedCode            = ref();
     const sharableSections = {
         'general-count'          : t('general-count'),
-        'target-progress-regions': t('target-progress-regions'),
-        'target-progress-parties': t('target-progress-parties'),
-        'monitoring-progress'    : t('monitoring-progress'),
-        'relevance-progress'     : t('relevance-progress'),
-        'section-c-progress'     : t('section-c-progress'),
-        'non-state-progress'     : t('non-state-progress'),
-        'party-count'            : t('party-count'),
+        'map'                    : t('map'),
+        'regions'                : t('regions'),
+        'parties'                : t('parties'),
     }
     
     definePageMeta({
         auth:false,
     })
-    const ShareAllUrl = computed(()=>`${appRoutes.NATIONAL_TARGETS_ANALYZER}?embed=true&type=national-target-analyzer&share=${sharableCheckedItems.value}&${stringifyQuery(route.query||{})}`)
+    const ShareAllUrl = computed(()=>`${appRoutes.NATIONAL_REPORTS_NBSAP_ANALYZER}?embed=true&type=nbsap-analyzer&share=${sharableCheckedItems.value}&${stringifyQuery(route.query||{})}`)
 
 
     function checkShareItem(item:string, checked:boolean){

@@ -78,6 +78,7 @@ function initWidget() {
 
       var urlMapping = {
         "national-target-analyzer": "/national-targets/analyzer",
+        "nbsap"                   : "/nbsaps/analyzer",
         "url"                     : 'raw'
       }
       var type = getAttributeValue(widget, "type")

@@ -69,7 +69,7 @@
                     $or:[
                             {"createdBy": user.value.userID}, 
                             {"activities.assignedTo": user.value.userID},
-                            {"data.metadata.government": user.value.government}
+                            // {"data.metadata.government": user.value.government}
                         ] 
                 },
                 { "closedOn"               : { $exists : false } },

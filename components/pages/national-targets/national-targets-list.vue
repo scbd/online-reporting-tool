@@ -22,9 +22,10 @@
     const recordTypes = [SCHEMAS.NATIONAL_TARGET_7, SCHEMAS.NATIONAL_TARGET_7_MAPPING];
     const {t} = useI18n();
     const route = useRoute();
+    const { $appRoutes } = useNuxtApp();
 
     const analyzerUrl = computed(()=>{
-        return `${appRoutes.NATIONAL_TARGETS_ANALYZER}?${stringifyQuery(route.query||{})}`;
+        return `${$appRoutes.NATIONAL_TARGETS_ANALYZER}?${stringifyQuery(route.query||{})}`;
     });
 
 </script>

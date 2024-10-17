@@ -69,3 +69,5 @@ export const HTTP_STATUS = {
     BAD_REQUEST : 400,
     INTERNAL_SERVER_ERROR : 500
 }
+
+export const CBD_GREEN = '#2c9844';

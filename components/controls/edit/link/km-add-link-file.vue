@@ -76,13 +76,13 @@
         links.value.splice(index, 1);  
     }
 
-    function onLinkEditorClose(newValue) {    
+    function onLinkEditorClose(newValue) {   
         if(Object.keys(newValue).length ==0) {     
             return;
         } 
         else{
-            if(editedLinkIndex<0) {                        
-                links.value.push(newValue);
+            if(editedLinkIndex<0) {  
+                links.value = [...links.value, newValue]; 
             } 
             else {        
                 links.value[editedLinkIndex]=newValue;

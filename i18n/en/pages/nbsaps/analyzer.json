@@ -1,0 +1,14 @@
+{
+    "nationalTargetsAnalyzer" : "NBSAP analyzer",
+    "getShareLink":"Get share link",
+    "close" : "Close",
+    "shareMessage":"Check individual section to share or click on Get share link to share all",
+    "shareAnalyzerHeader" : "Share national report analyzer",
+    "share" : "Share",
+    "general-count" : "General count",
+    "map" : "Map",
+    "regions" : "Progress by CBD regions",
+    "parties" : "Progress by parties",
+    "ortTip" : "SCBD Online Reporting Tool",
+    "embedCode" : "Show embed code"
+}
