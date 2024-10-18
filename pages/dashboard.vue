@@ -248,13 +248,12 @@ import { KmLink } from "@/components/controls";
                     rows:10,
                     q : `_state_s: public AND realm_ss:${realmConf.realm} AND 
                             (
-                            (schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING} ${SCHEMAS.NATIONAL_NBSAP})) OR 
-                            (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true)                            
+                            (schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}))
                             )`,
                     facet: true,
                     'facet.mincount': 1,
                     'facet.field': ['schema_s', 'government_s'],
-                    'facet.pivot' : "government_s,schema_s",
+                    'facet.pivot' : ["government_s,schema_s"],
                     sort: "updatedDate_dt desc",
                     fl: "id, identifier_s,government_EN_t, title_EN_t, schema_EN_t,submittedDate_dt,schema_s, url_ss"
                 }
