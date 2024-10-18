@@ -163,9 +163,10 @@ export function parseSolrQuery(searchQuery: Object, locale: String) {
         queryListParameters.facet = true
         queryListParameters['facet.sort'] = 'index' //alphabetically sorted
         queryListParameters['facet.query'] = searchQuery.query,
-            queryListParameters['facet.field'] = searchQuery.facetFields
-        queryListParameters['facet.mincount'] = 1,
-            queryListParameters['facet.limit'] = 512
+        queryListParameters['facet.field'] = searchQuery.facetFields;
+        queryListParameters['facet.mincount'] = searchQuery.facetMinCount||1;
+        queryListParameters['facet.pivot.mincount'] = searchQuery.facetMinCount||1;
+        queryListParameters['facet.limit'] = 512;
 
         if (searchQuery.pivotFacetFields)
             queryListParameters['facet.pivot'] = searchQuery.pivotFacetFields;

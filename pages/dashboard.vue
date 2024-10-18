@@ -186,7 +186,7 @@
 <script setup>
 import UserProfileInfo  from "@/components/common/user-profile-info.vue"
 import { useRealmConfStore } from '@/stores/realmConf';
-import { facets,andOr } from '@/services/solr';
+import { facets,andOr,parseSolrQuery } from '@/services/solr';
 import { KmLink } from "@/components/controls";
 
         const {user} = useAuth();
@@ -246,26 +246,24 @@ import { KmLink } from "@/components/controls";
             try{
                 const searchQuery = {
                     rows:10,
-                    q : `_state_s: public AND realm_ss:${realmConf.realm} AND 
-                            (
-                            (schema_s : (${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}))
-                            )`,
+                    q : `realm_ss:${realmConf.realm} AND 
+                        (schema_s:(${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}))`,
                     facet: true,
-                    'facet.mincount': 1,
-                    'facet.field': ['schema_s', 'government_s'],
-                    'facet.pivot' : ["government_s,schema_s"],
+                    facetMinCount: 1,
+                    facetFields: ['schema_s', 'government_s'],
+                    pivotFacetFields : ["government_s,schema_s" ],
                     sort: "updatedDate_dt desc",
-                    fl: "id, identifier_s,government_EN_t, title_EN_t, schema_EN_t,submittedDate_dt,schema_s, url_ss"
+                    fields: "id, identifier_s,government_EN_t, title_EN_t, schema_EN_t,submittedDate_dt,schema_s, url_ss"
                 }
+                //TODO remove second query
                 const nbsapFacetQuery = {
                     rows:0,
-                    q : `_state_s: public AND realm_ss:${realmConf.realm} AND (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true)`,
+                    query : `_state_s: public AND realm_ss:${realmConf.realm} AND (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true)`,
                     facet: true,
-                    'facet.mincount': 1,
-                    'facet.field': ['schema_s', 'government_s']
+                    facetMinCount: 1,
+                    facetFields: ['schema_s', 'government_s']
                 }
-                const [facetResult, nbsapFacetResult] = await Promise.all([await facets(searchQuery), await facets(nbsapFacetQuery)])
-                
+                const [facetResult, nbsapFacetResult] = await Promise.all([await facets(parseSolrQuery(searchQuery)), await facets(parseSolrQuery(nbsapFacetQuery))])
                 searchFacets.value  = facetResult;
                 nbsapFacets.value   = nbsapFacetResult;
                 if(searchFacets.value?.facetPivot)
