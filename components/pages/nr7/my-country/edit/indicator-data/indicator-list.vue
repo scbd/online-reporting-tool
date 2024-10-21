@@ -35,6 +35,7 @@
                     <div v-if="indicator.nationalData">
                         <nr7-view-binary-indicator-data :indicator-data="indicator.nationalData" :questions="indicator?.question?.questions">
                         </nr7-view-binary-indicator-data>
+                        
                     </div>    
                 </div>
             </CAccordionBody>
