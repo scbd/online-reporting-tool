@@ -219,7 +219,7 @@
                 </div>
                 </div>
             </CCol>
-            <CCol md="4" class="mt-2">
+            <CCol md="4" class="mt-2 d-none" >
                 <div class="card">
                 <div class="card-body">
                     <div class="h4 m-0">Annex</div>
@@ -529,8 +529,8 @@
         if(document.sectionV?.assessmentSummaryInfo)
             progress.sectionV = 100;
 
-        if(document.annex?.additionalInformation)
-            progress.sectionAnnex = 100;
+        // if(document.annex?.additionalInformation)
+        //     progress.sectionAnnex = 100;
         
         
         nrProgress.value = progress

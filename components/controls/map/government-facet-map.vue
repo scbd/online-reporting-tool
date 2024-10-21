@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 
-    import { facets } from '@/services/solr';
+    import { facets,parseSolrQuery } from '@/services/solr';
     import { useCountriesStore }    from '@/stores/countries';
 
     const props = defineProps({
@@ -22,13 +22,12 @@
         const searchQuery = {
             rows            : 0,
             facet           : true,
-            'facet.field'   : 'government_s',
-            'facet.query'   : props.query,
-            'facet.mincount': 1,
-            q               : props.query
+            facetFields     : 'government_s',
+            facetMinCount   : 1,
+            query           : props.query
         }
         
-        const facetResponse = await facets(searchQuery)
+        const facetResponse = await facets(parseSolrQuery(searchQuery))
         countryColors.value = Object.entries(facetResponse.facets.government_s).map(([key, val])=>{
                                     return {
                                     code3 : countriesStore.countries.find(c=>c.code == key?.toUpperCase())?.code3,
