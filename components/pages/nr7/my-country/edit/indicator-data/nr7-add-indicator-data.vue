@@ -52,15 +52,15 @@
                                                 <strong>Please note that source of data selection is disabled since its still under development.</strong>
                                             </div>
                                             <km-form-check-group name="sourceOfData" required caption="Source of Data">
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData" label="Use national data set " :disabled="!enabledNationalData[indicator.identifier]"/>
-                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData" label="Use the available data (pre-populated data)" :disabled="!enabledGlobalData[indicator.identifier]"/>
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData" label="Use national data set " />
+                                                <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData" label="Use the available data (pre-populated data)" />
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData" label="No data available"/>
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData" label="Not relevant"/>                                            
                                             </km-form-check-group>
                                             <div v-show="document.sourceOfData=='national'">
                                                 <km-form-group name="sourceOfDataNational" required caption="National data set" >
-                                                    <div class="alert alert-info" v-show="indicatorDataTemplates[indicator.identifier]">
-                                                        <a :href="indicatorDataTemplates[indicator.identifier]">
+                                                    <div class="alert alert-info" >
+                                                        <a :href="indicatorDataTemplates" target="_blank">
                                                             Download sample template for the Indicator 
                                                             <font-awesome-icon icon="fa-download"></font-awesome-icon>
                                                         </a>
@@ -146,20 +146,7 @@
     const wcmcTargets          = ref([]);
     const wcmcIndicatorData    = ref([])
 
-    const enabledNationalData = {
-        'GBF-INDICATOR-C.1' : true,
-        'GBF-INDICATOR-D.1' : true,
-    }
-    const enabledGlobalData = {
-        'GBF-INDICATOR-C.1' : true,
-        'GBF-INDICATOR-D.1' : true,
-        'GBF-INDICATOR-A.3' : true
-    }
-
-    const indicatorDataTemplates = {
-        'GBF-INDICATOR-C.1' : '/excel-templates/GBF-INDICATOR-C.1.xlsx',
-        'GBF-INDICATOR-D.1' : '/excel-templates/GBF-INDICATOR-D.1.xlsx'
-    }
+    const indicatorDataTemplates = '/excel-templates/GBF-INDICATORS-DATA.xlsx'
     
 
     const indicatorData = computed(()=>{
