@@ -9,7 +9,8 @@
             <km-spinner></km-spinner>
         </div>
         <form v-if="!isLoading" name="editForm">          
-            <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
+            <km-form-workflow v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport"
+            :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
                 :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
                 <template #submission>
                     
