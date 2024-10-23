@@ -39,6 +39,7 @@
     "change-case": "^5.4.4",
     "fs-finder": "^1.8.1",
     "change-case": "^5.4.4",
+    "fs-finder": "^1.8.1",
     "jquery": "^3.7.0",
     "lodash": "^4.17.21",
     "masonry-layout": "^4.2.2",
