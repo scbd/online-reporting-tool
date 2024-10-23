@@ -16,7 +16,7 @@
         </CTooltip>
       <CCloseButton class="d-lg-none" dark @click="userPreferences.setSidebarVisible()" />
      
-    </CSidebarHeader>     
+    </CSidebarBrand>     
     <CSidebarNav>
       <KmNavLink :to="localePath('/dashboard')" icon="cil-speedometer" :title="t('menuDashboard')"></KmNavLink>      
       <!-- <li class="nav-title" v-if="menuAccess[appRoutes.NATIONAL_TARGETS]">
