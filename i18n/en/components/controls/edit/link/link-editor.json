@@ -1,7 +1,6 @@
 {
     "editingLink": "Editing link",
-    "pleaseProvideWebsite": "Please provide the URL of the website (e.g.",
-    "nameOfTheWebsite": "and the name of the website (e.g. 'The Convention on Biological Diversity').",
+    "pleaseProvideWebsite": "Please provide the URL of the website (e.g. https://www.cbd.int ) and the name of the website (e.g. 'The Convention on Biological Diversity').",
     "url": "Url",
     "protocolIsRequired": "Protocol is required",
     "pleaseProvideValidUrl": "Please provide valid URL",

@@ -9,8 +9,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                        <div class="alert alert-info">{{ t('pleaseProvideWebsite') }}
-                            <a rel="noopener" translation-url target="_blank" href="http://www.cbd.int">https://www.cbd.int</a> ){{ t('nameOfTheWebsite') }}
+                        <div class="alert alert-info">
+                            {{ t('pleaseProvideWebsite') }}
                         </div>                  
                         <form>
                         <div class="mb-3" >
