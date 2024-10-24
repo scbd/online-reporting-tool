@@ -1,13 +1,13 @@
 <template>
     <a :href="newArticleUrl" :target="target">
        <slot>
-           <span v-if="!id"><i class="fa fa-plus"></i> Add Content</span>
-           <span v-if="id" ><i class="fa fa-edit"></i> Edit Content</span>
+           <span v-if="!id"><i class="fa fa-plus"></i> {{ t('addContent')}}</span>
+           <span v-if="id" ><i class="fa fa-edit"></i> {{ t('editContent')}}</span>
            
        </slot>
    </a>
 </template>
-
+<i18n src="@/i18n/dist/components/common/cbd-add-new-view-article.json"></i18n>
 <script>
    export default {
        name:'cbdAddNewArticle',
@@ -18,6 +18,10 @@
            target      : { type: String , required: false, default: '_blank'    },
            id          : { type: String , required: false, default: undefined   },
        },
+       setup(){
+            const { t } = useI18n();
+            return { t };
+        },
        computed: {
            newArticleUrl : function(){
 

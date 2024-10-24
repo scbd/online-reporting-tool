@@ -1,20 +1,24 @@
 ﻿<template>
     <div id="printContentFooter">
-        <legend class="mt-0">Further Information</legend>
+        <legend class="mt-0">{{ t('furtherInformation')}}</legend>
         <div class="row top-border">
             <div class="clearfix"></div>
             <div class="col-8 fs-small-8">
-                Questions about the Online Reporting Tool may be directed to the Secretariat of the Convention on Biological Diversity.           
+                {{ t('questionsAboutOrt')}}           
             </div>
             <div class="col-4 fs-small-8">
-                <strong>Secretariat of the Convention on Biological Diversity</strong>
-                <br/> 413 rue Saint-Jacques, suite 800
-                <br/> Montreal, Québec, H2Y 1N9
-                <br/> Canada
-                <br/> Fax: +1 514 288-6588
-                <br/> Email: secretariat@cbd.int
+                <strong>{{ t('scbd')}}</strong>
+                <br/> {{ t('saintJacques')}}
+                <br/> {{ t('montreal')}}
+                <br/> {{ t('canada')}}
+                <br/> {{ t('fax')}}
+                <br/> {{ t('email')}} secretariat@cbd.int
 
             </div>
         </div>
     </div>
 </template>
+<i18n src="@/i18n/dist/components/common/print-footer.json"></i18n>
+<script  lang="ts" setup>
+    const {t} = useI18n();
+</script>

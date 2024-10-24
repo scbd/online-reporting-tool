@@ -8,7 +8,7 @@
             <a class="text-dark me-md-1 d-none d-sm-block" rel="noopener" href="#" @click.prevent="startTour()">
                 <font-awesome-icon icon="person-chalkboard" />
                 <span class="ms-1">
-                    Take a tour
+                    {{ t('takeTour')}}
                     <strong v-if="pageTitle">({{ pageTitle }})</strong>
                 </span>
             </a></Transition>
@@ -16,7 +16,7 @@
     </div>
     <VOnboardingWrapper ref="wrapper" :steps="steps" @finish="onTourEnd" @exit="onTourEnd" />
 </template>
-
+<i18n src="@/i18n/dist/components/common/on-boarding.json"></i18n>
 <script setup lang="ts">
     import { VOnboardingWrapper, useVOnboarding } from 'v-onboarding'
     import 'v-onboarding/dist/style.css';
@@ -34,7 +34,8 @@
     const isReady = ref(false);    
     const wrapper = ref(null)
     const { start, goToStep, finish } = useVOnboarding(wrapper);
-
+    const { t } = useI18n();
+    
     function startTour(){
         emit('onTourStart')
         start();
