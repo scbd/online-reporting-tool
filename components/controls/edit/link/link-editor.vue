@@ -3,48 +3,48 @@
         <div class="modal-dialog" role="document" >
             <div class="modal-content">
                 <div class="modal-header">     
-                    <h3 class="modal-title"><slot name="modalTitle">Editing link</slot></h3>  
+                    <h3 class="modal-title"><slot name="modalTitle">{{ t('editingLink') }}</slot></h3>  
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"  @click="close" >
                     <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                        <div class="alert alert-info">Please provide the URL of the website (e.g.
-                            <a rel="noopener" translation-url target="_blank" href="http://www.cbd.int">https://www.cbd.int</a> )and the name of the website (e.g. "The Convention on Biological Diversity").
+                        <div class="alert alert-info">
+                            {{ t('pleaseProvideWebsite') }}
                         </div>                  
                         <form>
                         <div class="mb-3" >
-                            <label class="col-form-label" for="url">Url <span class="text-danger"> *</span></label><br/>
-                            <small class="help-block">Protocol is required (https:// or http://)</small>                                
+                            <label class="col-form-label" for="url">{{ t('Url') }} <span class="text-danger"> *</span></label><br/>
+                            <small class="help-block">{{ t('protocolIsRequired') }} (https:// or http://)</small>                                
                             <input class="form-control"  id ="url" v-model="link.url" type="url"  placeholder=" https://www." />
-                            <p v-if=" checkValidation &&  !isUrlValid"  ><span class="text-danger"> Please provide valid URL</span></p>
+                            <p v-if=" checkValidation &&  !isUrlValid"  ><span class="text-danger"> {{ t('pleaseProvideValidUrl') }}</span></p>
                         </div>
                         <div class="mb-3" >
-                            <label for="name" class="col-form-label" >Name</label>
-                            <input class="form-control" id="name" v-model="link.name" type="text"  placeholder="example:SCBD website" />
+                            <label for="name" class="col-form-label" >{{ t('name') }}</label>
+                            <input class="form-control" id="name" v-model="link.name" type="text"  :placeholder="t('scbdWebsite')"  />
                         </div>
                         <div class="mb-3">
-                            <label for="language" class="col-form-label">Language <span class="text-danger"> *</span></label>   
+                            <label for="language" class="col-form-label">{{ t('language') }} <span class="text-danger"> *</span></label>   
                                 <select class="form-select"  name="language" id="language" v-model="link.language"> 
                                 <option v-for="(language, key) in languages" :value="key" :key="key">{{ language }}</option> 
                             </select>
-                            <p v-if="checkValidation && !isLangValid"  ><span class="text-danger"> Please select Language </span></p>
+                            <p v-if="checkValidation && !isLangValid"  ><span class="text-danger"> {{ t('pleaseSelectLanguage') }} </span></p>
                         </div>
                         </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="close" >Cancel</button>
-                    <button type="button" class="btn btn-primary  " @click="save" >Save</button>  
+                    <button type="button" class="btn btn-secondary" @click="close" > {{ t('cancel') }}</button>
+                    <button type="button" class="btn btn-primary  " @click="save" > {{ t('save') }}</button>  
                 </div>    
             </div>        
         </div>
     </div>     
   </template>
-  
+  <i18n src="@/i18n/dist/components/controls/edit/link/link-editor.json"></i18n>
   <script setup >
     import { defineEmits, ref, computed } from "vue"; 
     import { languages } from '@/app-data/languages';
-    
+     const {t} = useI18n();
     //TODO: use km-form-control when its available    
     
     const modalOpen = ref(false) ;

@@ -8,7 +8,7 @@
         </overlay-loading>
         <overlay-loading :active="!identifier" background-color="rgb(9 9 9)" :is-full-page="false">
             <CAlert class="m-2" color="danger">
-              <strong>Missing identifier for this field, please provide identifier to use this control</strong> 
+              <strong> {{ t('missingIdentifier') }}</strong> 
             </CAlert>
         </overlay-loading>
 

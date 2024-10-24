@@ -1,1 +1,12 @@
-{}
+{
+    "uploadingFile": "Uploading File",
+    "error": "An error has occured",
+    "fileName": "File name",
+    "uploading": "Uploading",
+    "language": "Language",
+    "tags": "Tags",
+    "cancel": "Cancel",
+    "save": "Save",
+    "sCBDWebsite": "example:SCBD website",
+    "example": "example:"
+}

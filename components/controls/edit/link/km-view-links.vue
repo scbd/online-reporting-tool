@@ -3,9 +3,9 @@
         <table class="table table-bordered" v-if="links?.length"> 
             <thead class="table-light">
                 <tr>
-                    <th>Language</th>
-                    <th>Url</th>
-                    <th>Tags</th>
+                    <th>{{ t('language') }}  </th>
+                    <th>{{ t('url') }}  </th>
+                    <th>{{ t('tags') }}  </th>
                     <th v-if="canEdit"></th>
                 </tr>
             </thead>
@@ -33,11 +33,11 @@
         </table> 
     </div>
 </template>
-
+<i18n src="@/i18n/dist/components/controls/edit/link/km-view-links.json"></i18n>
 <script setup>
   import { defineEmits, computed } from 'vue'
   import { languages } from '@/app-data/languages'
-
+    const {t} = useI18n();
     const model = defineProps({
         links   : {type:Array, required:true},
         canEdit : {type:Boolean, default:true}
