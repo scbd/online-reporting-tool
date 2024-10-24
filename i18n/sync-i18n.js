@@ -44,7 +44,7 @@ async function createLocaleFile(enFile){
   for (let i = 0; i < locales.length; i++) {
     const locale = locales[i];
 
-    const langFilePath = enFile.replace(/\/en\//, `/${locale}/`);
+    const langFilePath = enFile.replace(/[/\\]en[/\\]/, `/${locale}/`);
     const taskPromise = readJsonFile(langFilePath)
           .then((data)=>{ 
             // console.log(langFilePath)
@@ -61,7 +61,7 @@ async function createLocaleFile(enFile){
   const localeData = await Promise.all(localeFilePromises);
   localeData.unshift({en:enData});
 
-  const distFilePath = enFile.replace(/\/en\//, `/dist/`); //path is i18n/dist/
+  const distFilePath = enFile.replace(/[/\\]en[/\\]/, `/dist/`); //path is i18n/dist/
   const flatData = localeData.reduce((a,b)=>{return { ...(a), ...(b||{})}});
 
   try{
