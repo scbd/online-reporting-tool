@@ -23,13 +23,13 @@
         </CNavItem>
         <CNavItem  class="d-none d-md-flex">
           <NuxtLink class="nav-link" target="_blank" href="https://chm.cbd.int">
-            CHM
+            {{ t('chm') }}
           </NuxtLink>
         </CNavItem>
         <CNavItem  class="d-none d-md-flex">
           <NuxtLink class="nav-link" target="_blank" href="https://chm.cbd.int/management/national-users">
             <font-awesome-icon icon="users-line" />
-            National users
+            {{ t('nationalUsers') }}
           </NuxtLink>
         </CNavItem>           
         <CNavItem>
