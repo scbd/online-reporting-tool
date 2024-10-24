@@ -257,7 +257,8 @@
 
     const cleanDocument = computed(() => {
         const clean = useKmStorage().cleanDocument({ ...document.value });
-
+        clean.additionalDocuments = undefined;
+        
         return clean
     })
 
@@ -280,7 +281,7 @@
 
 
     function onFileUpload({ file, locale }) {
-        useOnFileUpload({ document, file, locale });
+        // useOnFileUpload({ document, file, locale });
     }
 
     function emptyDocument() {
