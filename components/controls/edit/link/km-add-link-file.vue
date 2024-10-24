@@ -1,19 +1,19 @@
 <template>
     <div class="scbd-common km-link">
         <button type="button" class="btn btn-primary m-2" @click="addLink()" v-if ="props.allowLinks">
-            <slot name="link-button-label">+ Add Link</slot>
+            <slot name="link-button-label">+ {{ t('addLink') }}  </slot>
         </button>  
        
         <select-file-button class="m-2" @on-file-selected="receiveFile"  :accept="allowFileTypes"  v-if="props.allowFiles"> 
             <slot name="file-button-label">
-                + Add Files
+                + {{ t('addFiles') }}
             </slot>
         </select-file-button>    
              
        <file-upload-editor ref="fileEditorRef" @on-close="onFileUploadEditorClose"  v-if ="props.allowFiles">
             <template v-slot:modalTitle>
                 <slot name="link-dialog-title"   >        
-                    File Upload   
+                    {{ t('fileUpload') }}     
                 </slot>
             </template>       
         </file-upload-editor>
@@ -21,13 +21,14 @@
         <link-editor ref="linkEditorRef" @on-close="onLinkEditorClose" v-if ="props.allowLinks">       
             <template v-slot:modalTitle>
                 <slot name="link-dialog-title"   >        
-                Edit link    
+               {{ t('editlink') }}    
                 </slot>
             </template>       
         </link-editor>
         <km-view-links :links="links"   @on-delete ="removeLink($event)"   @on-edit="editLink($event)"  v-if ="props.allowLinks || props.allowFiles " ></km-view-links>      
     </div>
 </template>
+<i18n src="@/i18n/dist/components/controls/edit/link/km-add-link-file.json"></i18n>
 <script setup>
 
     const links = defineModel({type:Array, required:true, default:[]});
@@ -39,6 +40,7 @@
         multiple: { type: Boolean, require: false, default: false },
         identifier: { type:String, required:true}
     });
+    const {t} = useI18n();
     const { $api }         = useNuxtApp();
     const config          = useRuntimeConfig();
     const linkEditorRef   = shallowRef(null);

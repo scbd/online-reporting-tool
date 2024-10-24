@@ -3,6 +3,7 @@
     "uploadingFile" : "Upload in progress, please wait",
     "attachmentMessage": "Attach files by dragging & dropping or pasting from clipboard",
     "wordCount":"Word count",
-    "uploadError": "Error occurred uploading file(s), please try again"
+    "uploadError": "Error occurred uploading file(s), please try again",
+    "missingIdentifier": "Missing identifier for this field, please provide identifier to use this control"
 
 }

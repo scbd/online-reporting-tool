@@ -1,12 +1,12 @@
 
 <template>
   <button type="button" class="btn btn-primary" @click="addLink()">
-    <slot name="link-button-label">+ Add Link</slot>
+    <slot name="link-button-label">+ {{ t('addLink') }} </slot>
   </button>  
   <link-editor ref="linkEditorRef" @on-close="onLinkEditorClose">
     <template v-slot:modalTitle>
       <slot name="link-dialog-title"   >        
-        Edit link    
+        {{ t('editlink') }}       
       </slot>
      </template>       
   </link-editor>
@@ -14,9 +14,9 @@
     <km-view-links v-model="links"   @on-delete = "removeLink($event)"   @on-edit = "editLink($event)"></km-view-links>  
   </slot>
 </template>
-
+<i18n src="@/i18n/dist/components/controls/edit/link/km-add-link.json"></i18n>
 <script setup>
-
+  const {t} = useI18n();
   const linkEditorRef= shallowRef(null); 
   let editedLinkIndex = -1;   
   const links = defineModel({type:Array, required:true, default:[]});
