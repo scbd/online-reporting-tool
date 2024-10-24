@@ -19,6 +19,7 @@ export const useAPIFetch: useFetchType = async (path, options = {}) => {
     options.key = key;//generate unique key to avoid caching
     options.cache = 'no-cache';
     
+    console.log(path)
     const { data, error, execute, pending, refresh, status } = await useFetch(path, options)
 
     if(error?.value){

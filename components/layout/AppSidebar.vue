@@ -7,7 +7,7 @@
     :visible="userPreferences.sidebarVisible"
     @visible-change="(value) => userPreferences.setSidebarVisible(value)"
   >
-    <CSidebarBrand>
+    <CSidebarHeader class="border-bottom">
         <img src="https://chm.cbd.int/app/img/cbd-logo-en.svg" role="img" custom-class-name="sidebar-brand-full" height="35">
         <CTooltip content="On-line Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
             <template #toggler="{ on }">
@@ -15,8 +15,8 @@
             </template>
         </CTooltip>
       <CCloseButton class="d-lg-none" dark @click="userPreferences.setSidebarVisible()" />
-     
-    </CSidebarBrand>     
+    </CSidebarHeader>
+
     <CSidebarNav>
       <KmNavLink :to="localePath('/dashboard')" icon="cil-speedometer" :title="t('menuDashboard')"></KmNavLink>      
       <!-- <li class="nav-title" v-if="menuAccess[appRoutes.NATIONAL_TARGETS]">
@@ -86,15 +86,17 @@
         
       </CNavGroup>
     </CSidebarNav> 
-    <CSidebarToggler  class="d-none d-lg-flex" @click="userPreferences.setSidebarUnfoldable()"> 
-        <div class="app-version">
+
+    <CSidebarFooter class="border-top d-none d-lg-flex">
+      <div class="app-version">
           Ver {{ TAG||COMMIT.substring(0, 20) }}      
           <span class="ms-3" v-if="appState.showBackupSpinner">
             <CSpinner color="success" variant="grow" class="me-1" size="sm"/>
             <CSpinner color="info" variant="grow" size="sm"/>
           </span>    
-        </div>     
-    </CSidebarToggler>
+        </div> 
+      <CSidebarToggler @click="userPreferences.setSidebarUnfoldable()" />
+    </CSidebarFooter>
   </CSidebar>
 </template>
 

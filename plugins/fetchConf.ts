@@ -1,13 +1,11 @@
-import { ofetch } from 'ofetch'
-import { useRealmConfStore } from '@/stores/realmConf'
-import { useAuthStore } from '@/store/auth'
-import {removeEmpty} from '@/utils'
+import { ofetch } from 'ofetch';
+import { useRealmConfStore } from '@/stores/realmConf';
 
 export default defineNuxtPlugin((nuxtApp) => {
   
   globalThis.$fetch = ofetch.create({
     onRequest ({ request, options }) {
-        
+        console.log(request)
         const config = useRuntimeConfig();
         const auth = useAuth()
         const realmConfStore = useRealmConfStore()        
@@ -41,9 +39,17 @@ export default defineNuxtPlugin((nuxtApp) => {
             }
         } 
 
+        console.log(options.headers, request)
+
     },
     onRequestError ({ error }) {
       useLogger().error(error)
     }
   })
+
+  return {
+    provide : {
+        globalFetch : globalThis.$fetch
+    }
+  }
 })
