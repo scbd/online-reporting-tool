@@ -1,12 +1,14 @@
 <template>
   <CCard>
     <CCardHeader>
+      <!-- ToDo: allNationalReports text is missing in json  -->
       <slot name="header"> <CIcon name="cil-grid" /> {{ t('allNationalReports') }} </slot>
     </CCardHeader>
     <CCardBody>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
         <NuxtLink :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_OVERVIEW" class="btn btn-secondary">
             <font-awesome-icon icon="fa-plus"></font-awesome-icon> {{ t('myCountryNr7') }}
+            <!-- ToDo: myCountryNr7 text is missing in json  -->
         </NuxtLink>
       </div>
 
@@ -16,8 +18,7 @@
     </CCardBody>
   </CCard>
 </template>
-
-<i18n  src="~/i18n/dist/pages/national-targets/index.json"></i18n>
+<i18n src="@/i18n/dist/pages/national-reports/index.json"></i18n>
 <script setup lang="ts">
 
 import { SCHEMAS, ROLES } from '@/utils';
