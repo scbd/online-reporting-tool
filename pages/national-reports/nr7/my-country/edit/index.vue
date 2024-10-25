@@ -247,25 +247,7 @@
   </CCard>
 </template>
 <i18n src="@/i18n/dist/pages/national-reports/nr7/my-country/edit/index.json"></i18n>
-<script>
-import { defineComponent } from '@vue/composition-api'
-const {t} = useI18n();
-export default defineComponent({
-  components:{
-    Ckeditor
-  },
-  setup() {
-    
-  },
-})
+<script setup>
+  const {t} = useI18n();
 </script>
-<!-- <script>
-export default {
-  name: 'Nr7Edit',
-  meta:{
-    schema:'nationalReport7'
-  },
-  props: {},
-  methods: {},
-}
-</script> -->
+
