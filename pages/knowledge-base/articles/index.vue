@@ -1,12 +1,12 @@
 <template>
     <CCard>
-        <CCardHeader>Knowledge base</CCardHeader>
+        <CCardHeader>{{ t('knowledgeBase') }}</CCardHeader>
         <CCardBody>
-           Welcome to ORT knowledge base!
+           {{ t('welcome') }}
         </CCardBody>
    </CCard>
 </template>
-
+<i18n src="@/i18n/dist/pages/knowledge-base/articles/index.json"></i18n>
 <script setup lang="ts">
    import {useRoute } from 'vue-router';
 
