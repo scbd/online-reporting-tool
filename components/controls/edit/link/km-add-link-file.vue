@@ -99,7 +99,6 @@
     }      
  
     function onFileUploadEditorClose(newValue) {  
-        console.log(newValue)
         if(!newValue) {
             return;
         } 

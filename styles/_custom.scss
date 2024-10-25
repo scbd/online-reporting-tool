@@ -4,6 +4,11 @@ ul.header-nav li.nav-item:hover{
     background-color: #eee;
     border-radius: 5%;
 }
+html[data-coreui-theme="dark"] ul.header-nav li.nav-item:hover{
+    color: var(--cui-sidebar-nav-link-hover-color);
+    text-decoration: none;
+    background: var(--cui-sidebar-nav-link-hover-bg);
+}
 
 .km-input-ar input, .km-input-ar textarea{
     direction: rtl;

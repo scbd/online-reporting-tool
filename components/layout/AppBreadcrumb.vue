@@ -59,8 +59,7 @@ import { useRoute } from 'vue-router'
                     
                     const paramName = routeName.replace(/[:\(\)]/g, '');
                     pageBreadcrumbsConf?.replaceCrumbs?.forEach(e=>{
-                        const key = Object.keys(e)[0]
-                        console.log(key)
+                        const key = Object.keys(e)[0];
                         if(key == routeName)
                             text = e[key];
                     });                    

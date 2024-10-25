@@ -51,7 +51,6 @@
           updatedValue.splice(updatedValue.indexOf({[props.optionValueField] :optionId}), 1);
         }
         context.emit("update:modelValue", updatedValue);
-        console.log(updatedValue)
       };
   
       return {
