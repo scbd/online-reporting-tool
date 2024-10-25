@@ -248,15 +248,18 @@
 </template>
   <i18n src="@/i18n/dist/pages/national-reports/nr7/my-country/view/index.json"></i18n>
   <script>
-  const {t} = useI18n();
-  export default {
-    name: 'Nr7View',
-    auth:false,
-    meta:{
-      schema:'nationalReport7'
-    },
-    props: {},
-    methods: {},
-  }
+    export default {
+      name: 'Nr7View',
+      auth:false,
+      meta:{
+        schema:'nationalReport7'
+      },
+      setup(){
+          const { t } = useI18n();
+          return { t };
+      },
+      props: {},
+      methods: {},
+    }
   </script>
   
