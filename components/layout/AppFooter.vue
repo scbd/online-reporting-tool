@@ -18,6 +18,10 @@ import cbdFooter from './cbd/footer.vue'
 
 export default {
   name: 'AppFooter',
-  components: {cbdFooter}
+  components: {cbdFooter},
+  setup(){
+          const { t } = useI18n();
+          return { t };
+  },
 }
 </script>

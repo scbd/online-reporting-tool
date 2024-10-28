@@ -13,27 +13,27 @@
         </thead>
         <tbody>
             <tr>
-                <td>Code</td>
+                <td>{{ t('code') }}</td>
                 <td>{{ term.identifier }}</td>
             </tr>
             <tr v-if="term.title">
-                <td>Title</td>
+                <td>{{ t('title') }}</td>
                 <td>{{ lstring(term.title) }}</td>
             </tr>
             <tr v-if="term.shortTitle">
-                <td>Short title</td>
+                <td>{{ t('shortTitle') }}</td>
                 <td>{{ lstring(term.shortTitle) }}</td>
             </tr>
             <tr v-if="term.description">
-                <td>Description</td>
+                <td>{{ t('description') }}</td>
                 <td>{{ lstring(term.description) }}</td>
             </tr>
             <tr v-if="term.longDescription">
-                <td>Long Description</td>
+                <td>{{ t('longDescription') }}</td>
                 <td>{{ lstring(term.longDescription) }}</td>
             </tr>
             <tr v-if="term.broaderTerms && /GBF\-INDICATOR/.test(term.identifier)">
-                <td>Linked with</td>
+                <td>{{ t('linkedWith') }}</td>
                 <td>
                     <ul class="list-group">
                         <li class="list-group-item" v-for="xTerm in term.broaderTerms" :key="xTerm">
@@ -46,7 +46,9 @@
         </tbody>
     </table>
 </template>
+<i18n src="@/i18n/dist/components/pages/taxonomy/gbf/term-details.json"></i18n>
 <script setup lang="ts">
+const {t} = useI18n();
     defineProps({
         header : {type:String, require:true},
         term   : {type:Object, required:true}
