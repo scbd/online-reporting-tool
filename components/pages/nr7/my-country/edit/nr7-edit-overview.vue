@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> <CIcon name="cil-grid" /> Overview </slot>
+        <slot name="header"> <CIcon name="cil-grid" /> {{ t('overview') }} </slot>
       </CCardHeader>
       <CCardBody>
         <!-- {{ nrProgress }} -->
@@ -49,9 +49,9 @@
             <CCol md="4" class="mt-2">
                 <div class="card" :class="{'border-danger bg-danger text-white' : sectionIErrors?.length}">
                 <div class="card-body">
-                    <div class="h4 m-0">Section I</div>
+                    <div class="h4 m-0">{{ t('sectionI') }}</div>
                     <hr>
-                    <div>Brief overview of the process of preparation of the report</div>
+                    <div>{{ t('briefOverviewOfProcess') }}</div>
                     <div class="progress-xs my-3 mb-0 progress">
                     <div
                         role="progressbar"
@@ -72,8 +72,8 @@
                                 :title="t('hasErrors') + '('+ sectionIErrors.length + ')'" color="warning" v-if="sectionIErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">Preview section I</button>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I" title="Edit section I" 
+                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionI') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I" :title="t('editSectionI')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -83,10 +83,10 @@
             <CCol md="4" class="mt-2">
                 <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIErrors?.length}">
                 <div class="card-body">
-                    <div class="h4 m-0">Section II</div>
+                    <div class="h4 m-0">{{ t('sectionII') }}</div>
                     <hr>
                     <div>
-                        Status of the revised or updated national biodiversity strategies and action plans (NBSAPs) in the light of the Kunming-Montreal Global Biodiversity Framework 
+                        {{ t('sectionIIDescription') }}
                     </div>
                     <div class="progress-xs my-3 mb-0 progress">
                     <div
@@ -108,8 +108,8 @@
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
                             
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">Preview section I</button>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II" title="Edit section I" 
+                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionII') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II" :title="t('editSectionII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -119,10 +119,10 @@
             <CCol md="4" class="mt-2">               
                 <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIIErrors?.length}">
                 <div class="card-body">
-                    <div class="h4 m-0">Section III</div>
+                    <div class="h4 m-0">{{ t('sectionIII') }}</div>
                     <hr>
                     <div>
-                        Assessment of progress towards national targets 
+                        {{ t('assessmentOfProgressNationalTargets') }} 
                     </div>
                     <div class="progress-xs my-3 mb-0 progress">
                     <div
@@ -143,8 +143,8 @@
                                 :title="t('hasErrors') + '('+ sectionIIIErrors.length + ')'" color="warning" v-if="sectionIIIErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">Preview section I</button>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III" title="Edit section I" 
+                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionIII') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III" :title="t('editSectionIII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -154,9 +154,9 @@
             <CCol md="4" class="mt-2">
                 <div class="card" :class="{'border-danger bg-danger text-white' : sectionIVErrors?.length}">
                 <div class="card-body">
-                    <div class="h4 m-0">Section IV</div>
+                    <div class="h4 m-0">{{ t('sectionIV') }}</div>
                     <hr>
-                    <div>Assessment of national progress towards the goals and targets of the Kunming-Montreal Global Biodiversity Framework</div>
+                    <div>{{ t('sectionIVDescription') }}</div>
                     <div class="progress-xs my-3 mb-0 progress">
                     <div
                         role="progressbar"
@@ -176,8 +176,8 @@
                                 :title="t('hasErrors') + '('+ sectionIVErrors.length + ')'" color="warning" v-if="sectionIVErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">Preview section I</button>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV" title="Edit section I" 
+                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionIV') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV" :title="t('editSectionIV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -187,10 +187,10 @@
             <CCol md="4" class="mt-2">
                 <div class="card" :class="{'border-danger bg-danger text-white' : sectionVErrors?.length}">
                 <div class="card-body">
-                    <div class="h4 m-0">Section V</div>
+                    <div class="h4 m-0">{{ t('sectionV') }}</div>
                     <hr>
                     <div>
-                        Conclusions on the national implementation of the Convention and the Kunming-Montreal Global Biodiversity Framework
+                        {{ t('conclusionsImplementationConvention') }}
                     </div>
                     <div class="progress-xs my-3 mb-0 progress">
                     <div
@@ -211,8 +211,8 @@
                                 :title="t('hasErrors') + '('+ sectionVErrors.length + ')'" color="warning" v-if="sectionVErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">Preview section I</button>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V" title="Edit section I" 
+                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionV') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V" :title="t('editSectionV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -222,11 +222,10 @@
             <CCol md="4" class="mt-2 d-none" >
                 <div class="card">
                 <div class="card-body">
-                    <div class="h4 m-0">Annex</div>
+                    <div class="h4 m-0">{{ t('annex') }}</div>
                     <hr>
                     <div>
-                    Information as requested in related decisions adopted by the
-                    Conference of the Parties at its fifteenth meeting
+                    {{ t('informationAsRequested') }}
                     </div>
                     <div class="progress-xs my-3 mb-0 progress">
                     <div
@@ -240,8 +239,8 @@
                     </div>
                     <small class="text-muted d-grid gap-2 d-md-flex justify-content-md-end">
                         <div class="d-grid gap-1 d-flex mt-2">
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">Preview section I</button>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_ANNEX" title="Edit section I" 
+                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionANNEX') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_ANNEX" :title="t('editSectionANNEX')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -256,7 +255,7 @@
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th>Draft records</th>
+                                    <th>{{ t('draftRecords') }}</th>
                                     <td></td>
                                 </tr>
                                 <tr v-for="document in validationErrorDocuments" :key="document">

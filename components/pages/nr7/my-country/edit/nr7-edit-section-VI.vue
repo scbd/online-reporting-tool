@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> NR7 Section VI</slot>
+        <slot name="header"> {{ t('nr7SectionVI') }}</slot>
       </CCardHeader>
       <CCardBody>
 
@@ -17,10 +17,10 @@
                     <km-form-group>
                         <div class="card">
                             <div class="card-header bg-secondary">
-                                Elements of the global targets
+                               {{ t('elementsOfTheGlobalTargets') }}
                             </div>
                             <div class="card-body">                      
-                                <km-form-group required caption="Elements of the global targets addressed by national targets" name="elementOfGlobalTargetsInfo">
+                                <km-form-group required :caption="t('elementsOfTheGlobalTargetsAddress')" name="elementOfGlobalTargetsInfo">
                                     <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
                                 </km-form-group>                                    
                             </div>
@@ -38,7 +38,7 @@
     </CCard>
   
 </template>
-
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-VI.json"></i18n>
 <script setup>
 
     // import viewTarget               from "./view-target-part-2.vue";
@@ -59,7 +59,7 @@
     const security        = useSecurity();
     const route           = useRoute();
     const {$appRoutes:appRoutes }   = useNuxtApp();
-    const locale          = useI18n().locale
+    const {t, locale }              = useI18n();
     const $toast                = useToast();        
     const container = useAttrs().container;
 

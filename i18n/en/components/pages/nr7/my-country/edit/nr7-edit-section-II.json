@@ -11,5 +11,12 @@
     "hasNbsapAdopted"       : "Has your country's revised or updated NBSAPs been adopted as policy or legal instruments?",
     "anticipatedNbsapAdoptionDate"  : "Please indicate the anticipated date of adoption",
     "policyInstrument"     : "Please indicate the type of policy instrument your country's revised or updated NBSAPs has been adopted as",
-    "sectionMandatory" : "All fields in Section II are mandatory"
+    "sectionMandatory" : "All fields in Section II are mandatory",
+    "headlineIndicators": "Headline Indicators",
+    "binaryIndicators": "Binary Indicators",
+    "componentIndicators": "Component Indicators",
+    "complementaryIndicators": "Complementary Indicators",
+    "otherNationalIndicators": "Other National Indicators",
+    "componentIndicatorsNotLinked": "Would you like to provide data for other component indicators not linked to your country’s national targets?",
+    "complementaryIndicatorsNotLinked": "Would you like to provide data for other complementary indicators not linked to your country’s national targets?"
 }

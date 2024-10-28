@@ -1,4 +1,6 @@
 {
+    "missingNationalTargets": "Missing National Targets",
+    "missingNationalTargetsDescription": "Your country has not published any national targets, please submit national targets to pre populate section III of the 7th national report.",
     "sectionIII":"Section III",
     "sectionIIIDescription":"Status of the revised or updated national biodiversity strategies and action plans (NBSAPs) in the light of the Kunming-Montreal Global Biodiversity Framework ",
     "headlineIndicators": "Headline indicator",
@@ -6,6 +8,13 @@
     "componentIndicators": "Component indicator",
     "complementaryIndicators": "Complementary indicator",
     "nationalIndicators": "National indicator",
-    "sectionMandatory" : "All fields in Section III are mandatory"
+    "indicateTheCurrentLevelOfProgress": "Please indicate the current level of progress towards this national target",
+    "brieflyDescribeTheMainActions": "Please briefly describe the main actions taken to implement this national target",
+    "provideASummaryOfProgress": "Please provide a summary of progress towards this national target, including the main outcomes achieved, key challenges encountered, and different approaches that may be taken for further implementation",
+    "provideExamplesOrCases": "Please provide examples or cases to illustrate the effectiveness of the actions taken to implement this national assessment. If needed, provide relevant web links or attach related materials or publications",
+    "brieflyDescribeImplementation": "Please briefly describe how the implementation of this national target relates to progress in achieving related Sustainable Development Goals and associated targets and implementation of other related agreements",  
+    
+    "sectionMandatory" : "All fields in Section III are mandatory",
+    "indicatorData": "Indicator Data"
 
 }

@@ -30,14 +30,14 @@
                                     <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
                                         <CAccordionItem :visible="true">
                                             <CAccordionHeader id="generalAccordion">
-                                                General                       
+                                                {{ t('general') }}                       
                                             </CAccordionHeader>
                                             <CAccordionBody> 
-                                                <km-form-group name="government" caption="Government" required>
+                                                <km-form-group name="government" :caption="t('government')" required>
                                                     <km-government v-model="document.government"></km-government>                           
                                                 </km-form-group>   
 
-                                                <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
+                                                <km-form-group name="languages" :caption="t('pleaseSelectLanguage')" required>
                                                     <km-languages v-model="document.header.languages"></km-languages>
                                                 </km-form-group>                                
                                             </CAccordionBody>
@@ -45,35 +45,35 @@
                                     </CAccordion>   
                                     <div class="card">
                                         <div class="card-header bg-secondary">
-                                            Data
+                                            {{ t('data') }}
                                         </div>
                                         <div class="card-body">
                                             <div class="alert alert-info">
-                                                <strong>Please note that source of data selection is disabled since its still under development.</strong>
+                                                <strong>{{ t('dataSelectionNote') }}</strong>
                                             </div>
-                                            <km-form-check-group name="sourceOfData" required caption="Source of Data">
+                                            <km-form-check-group name="sourceOfData" required :caption="t('sourceOfData')">
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNational"         @update:modelValue="onSourceOfDataChange"  value="national"          v-model="document.sourceOfData" label="Use national data set " />
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataAvailableDataset" @update:modelValue="onSourceOfDataChange"  value="availableDataset"  v-model="document.sourceOfData" label="Use the available data (pre-populated data)" />
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNoData"           @update:modelValue="onSourceOfDataChange"  value="noData"            v-model="document.sourceOfData" label="No data available"/>
                                                 <km-form-check-item type="radio" name="sourceOfData"  for="sourceOfData" id="sourceOfDataNotRelevant"      @update:modelValue="onSourceOfDataChange"  value="notRelevant"       v-model="document.sourceOfData" label="Not relevant"/>                                            
                                             </km-form-check-group>
                                             <div v-show="document.sourceOfData=='national'">
-                                                <km-form-group name="sourceOfDataNational" required caption="National data set" >
+                                                <km-form-group name="sourceOfDataNational" required :caption="t('nationalDataSet')" >
                                                     <div class="alert alert-info" >
                                                         <a :href="indicatorDataTemplates" target="_blank">
-                                                            Download sample template for the Indicator 
+                                                           {{ t('downloadIndicator') }}  
                                                             <font-awesome-icon icon="fa-download"></font-awesome-icon>
                                                         </a>
                                                     </div>
                                                     <input type="file" id="input" @change="uploadFile"/>                                                
                                                 </km-form-group>                                                
                                             </div>
-                                            <km-form-group name="availableDataset" required caption="Global data set" v-show="document.sourceOfData=='availableDataset'">
+                                            <km-form-group name="availableDataset" required :caption="t('globalDataSet')" v-show="document.sourceOfData=='availableDataset'">
                                         
                                                 <div class="mt-3" v-show="!isFetchingGlobalData && !wcmcIndicatorData.data?.charts?.length">
                                                     <CAlert color="danger" class="d-flex align-items-center">
                                                         <font-awesome-icon icon="fa-solid fa-info"/>
-                                                        No global data found for this Indicator.
+                                                          {{ t('noGlobalDataIndicator') }}
                                                     </CAlert>
                                                 </div>
                                                 <div class="mt-3" v-show="isFetchingGlobalData">
@@ -85,7 +85,7 @@
                                                 <nr7-view-indicator-data :indicator-data="indicatorData"></nr7-view-indicator-data>
                                             </div>
 
-                                            <km-form-group v-show="document.sourceOfData" name="comments" caption="Comments">
+                                            <km-form-group v-show="document.sourceOfData" name="comments" :caption="t('comments')">
                                                 <km-input-rich-lstring v-model="document.comments" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
                                             </km-form-group>         
                                         </div>

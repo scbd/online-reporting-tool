@@ -23,7 +23,7 @@
                     </km-value>
                     <missing-data-alert v-if="!hideMissingResponse && !(indicatorData?.responses||{})[question.key]" class="alert-sm">
                         <template #message>
-                            Your country has not answered this binary indicator question
+                             {{t('binaryIndicatorQuestion')}}
                         </template>
                     </missing-data-alert>
                 </CCardBody>
