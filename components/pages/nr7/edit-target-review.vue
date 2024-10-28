@@ -3,21 +3,19 @@
     <div class="card">
       <div class="card-body">
         <div class="form-group">
-          <label for="exampleFormControlSelect1">Global Target</label>
-          <strong>Global Target 1</strong>
+          <label for="exampleFormControlSelect1">{{t('globalTarget')}}</label>
+          <strong>{{t('globalTarget1')}}</strong>
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1"
-            >Please explain briefly how this target aligns with and will
-            contribute to the attainment of the global target(s):</label
+            >{{t('explainBrieflyThisTarget')}}</label
           >
           <ckeditor></ckeditor>
         </div>
 
         <div class="form-group">
           <label for="targetProgress"
-            >Please indicate the current level of progress towards this/these
-            national target(s).</label
+            >{{t('indicateTheCurrentLevelOfProgress')}}</label
           >
           <div class="form-check">
             <input
@@ -26,7 +24,7 @@
               id="targetProgress1"
             />
             <label class="form-check-label" for="targetProgress1"
-              >On track to achieve target</label
+              >{{t('onTrackToAchieveTarget')}}</label
             >
           </div>
           <div class="form-check">
@@ -36,7 +34,7 @@
               id="targetProgress2"
             />
             <label class="form-check-label" for="targetProgress2"
-              >Progress towards target but at an insufficient rate</label
+              >{{t('progressTowardsTarget')}}</label
             >
           </div>
           <div class="form-check">
@@ -46,7 +44,7 @@
               id="targetProgress3"
             />
             <label class="form-check-label" for="targetProgress3"
-              >No significant progress
+              >{{t('noSignificantProgress')}}
             </label>
           </div>
           <div class="form-check">
@@ -56,7 +54,7 @@
               id="targetProgress4"
             />
             <label class="form-check-label" for="targetProgress4"
-              >Moving away from target
+              >{{t('movingAwayFromTarget')}}
             </label>
           </div>
           <div class="form-check">
@@ -66,15 +64,14 @@
               id="targetProgress5"
             />
             <label class="form-check-label" for="targetProgress5"
-              >Unknown
+              >{{t('unknown')}}
             </label>
           </div>
         </div>
 
         <div class="form-group">
           <label for="targetProgress"
-            >Please provide the national value of the headline indicator(s)
-            related to the global target.</label
+            >{{t('headlineIndicator')}}</label
           >
           <div class="form-check">
             <input
@@ -83,7 +80,7 @@
               id="headlineIndicator1"
             />
             <label class="form-check-label" for="headlineIndicator1"
-              >Use national data set
+              >{{t('useNationalDataSet')}}
             </label>
           </div>
           <div class="form-check">
@@ -93,7 +90,7 @@
               id="headlineIndicator2"
             />
             <label class="form-check-label" for="headlineIndicator2"
-              >Use the available data (pre-populated data);</label
+              >{{t('useAvailableData')}}</label
             >
           </div>
           <div class="form-check">
@@ -103,7 +100,7 @@
               id="headlineIndicator3"
             />
             <label class="form-check-label" for="headlineIndicator3"
-              >No data available
+              >{{t('noDataAvailable')}}
             </label>
           </div>
           <div class="form-check">
@@ -113,30 +110,27 @@
               id="headlineIndicator4"
             />
             <label class="form-check-label" for="headlineIndicator4"
-              >Not relevant
+              >{{t('notRelevant')}}
             </label>
           </div>
         </div>
 
         <div class="form-group">
           <label for="exampleInputEmail1"
-            >Please provide the sources of data and references to metadata
-            related to the headline indicator(s).</label
+            >{{t('provideReferencesToMetadata')}}</label
           >
           <ckeditor></ckeditor>
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1"
-            >Please provide component and complementary indicators and other
-            national indicators used for this global target if any.</label
+            >{{t('complementaryIndicators')}}</label
           >
           <ckeditor></ckeditor>
         </div>
 
         <div class="form-group">
           <label for="targetProgress"
-            >Please estimate the current level of your country’s contribution
-            towards the global target(s).</label
+            >{{t('currentLevelOfYourCountry')}}</label
           >
           <div class="form-check">
             <input
@@ -145,7 +139,7 @@
               id="targetProgress1"
             />
             <label class="form-check-label" for="targetProgress1"
-              >On track to achieve target</label
+              >{{t('onTrackToAchieveTarget')}}</label
             >
           </div>
           <div class="form-check">
@@ -155,7 +149,7 @@
               id="targetProgress2"
             />
             <label class="form-check-label" for="targetProgress2"
-              >Progress towards target but at an insufficient rate</label
+              >{{t('progressTowardsTarget')}}</label
             >
           </div>
           <div class="form-check">
@@ -165,7 +159,7 @@
               id="targetProgress3"
             />
             <label class="form-check-label" for="targetProgress3"
-              >No significant progress
+              >{{t('noSignificantProgress')}}
             </label>
           </div>
           <div class="form-check">
@@ -175,7 +169,7 @@
               id="targetProgress4"
             />
             <label class="form-check-label" for="targetProgress4"
-              >Moving away from target
+              >{{t('movingAwayFromTarget')}}
             </label>
           </div>
           <div class="form-check">
@@ -185,36 +179,28 @@
               id="targetProgress5"
             />
             <label class="form-check-label" for="targetProgress5"
-              >Unknown
+              >{{t('unknown')}}
             </label>
           </div>
         </div>
 
         <div class="form-group">
           <label for="exampleInputEmail1"
-            >Please provide examples or cases to illustrate the effectiveness of
-            the actions taken to implement this/these national target/s or the
-            global target. If needed please provide relevant web links or attach
-            related materials or publications.
+            >{{t('examplesOrCasesToIllustrate')}}
           </label>
           <ckeditor></ckeditor>
         </div>
 
         <div class="form-group">
           <label for="exampleInputEmail1"
-            >Please describe briefly how the implementation of this national
-            target and relevant global target(s) has contributed to progress in
-            achieving related SDGs and associated targets. (This is
-            optional)</label
+            >{{t('describeImplementationOfThisNationalTarget')}}</label
           >
           <ckeditor></ckeditor>
         </div>
 
         <div class="form-group">
           <label for="exampleInputEmail1"
-            >Please provide a summary of progress towards this global target,
-            including main outcomes achieved, key challenges encountered, and
-            different approaches that may be taken for further implementation.
+            >{{t('summaryOProgress')}}
           </label>
           <ckeditor></ckeditor>
         </div>
@@ -222,7 +208,7 @@
     </div>
   </form>
 </template>
-
+<i18n src="@/i18n/dist/components/pages/nr7/edit-target-review.json"></i18n>
 <script>
 export default {
   components: {
@@ -234,6 +220,10 @@ export default {
       document: {},
     }
   },
+  setup(){
+          const { t } = useI18n();
+          return { t };
+      },
   methods: {
     submitDocument() {},
   },
