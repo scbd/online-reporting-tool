@@ -1,1 +1,8 @@
-{}
+{
+    "code": "Code",
+    "title": "Title",
+    "shortTitle": "Short title",
+    "description": "Description",
+    "longDescription": "Long Description",
+    "linkedWith": "Linked with"
+}

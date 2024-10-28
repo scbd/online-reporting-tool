@@ -8,9 +8,9 @@
       </tr>
       <tr>
         <th class="w-25">
-          Code
+          {{ t('code') }}   
         </th>
-        <th>Title</th>
+        <th>{{ t('title') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -25,7 +25,9 @@
     </tbody>
   </table>
 </template>
+<i18n src="@/i18n/dist/components/pages/taxonomy/gbf/term-list.json"></i18n>
 <script setup lang="ts">
+    const {t} = useI18n();
     defineProps({
         header : {type:String, require:true},
         terms   : {type:Object, required:true},
