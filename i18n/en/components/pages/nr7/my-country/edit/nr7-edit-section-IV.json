@@ -6,7 +6,9 @@
     "component": "Component indicator",
     "complementary": "Complementary indicator",
     "national": "National indicator",
-
+    "indicatorData": "Indicator Data",
+    "summaryOfNationalProgress": "Summary of national progress contributing to the global goals",
+    "componentAndComplementaryIndicators": "Would you like to provide data for Component and Complementary indicators on Global Biodiversity Framework (GBF) Goal",
     "complementaryIndicators" : "Complementary indicators",
     "componentIndicators"      : "Component indicators",
     "sectionMandatory" : "All fields in Section IV are mandatory"

@@ -16,7 +16,7 @@
                             :active="tabPaneActiveKey === 1"
                             @click="() => {tabPaneActiveKey = 1}"
                         >
-                            Headline Indicators
+                             {{t('headlineIndicators')}}
                         </CNavLink>
                     </CNavItem>
                     <CNavItem>
@@ -25,7 +25,7 @@
                             :active="tabPaneActiveKey === 2"
                             @click="() => {tabPaneActiveKey = 2}"
                         >
-                            Binary Indicators
+                             {{t('binaryIndicators')}}
                         </CNavLink>
                     </CNavItem>
                     <CNavItem>
@@ -34,7 +34,7 @@
                             :active="tabPaneActiveKey === 3"
                             @click="() => {tabPaneActiveKey = 3}"
                         >
-                            Component Indicators
+                            {{t('componentIndicators')}}
                         </CNavLink>
                     </CNavItem>
                     <CNavItem>
@@ -43,7 +43,7 @@
                             :active="tabPaneActiveKey === 4"
                             @click="() => {tabPaneActiveKey = 4}"
                         >
-                            Complementary Indicators
+                            {{t('complementaryIndicators')}}
                         </CNavLink>
                     </CNavItem>
                     <CNavItem>
@@ -51,8 +51,7 @@
                             href="javascript:void(0);"
                             :active="tabPaneActiveKey === 5"
                             @click="() => {tabPaneActiveKey = 5}"
-                        >
-                            Other National Indicators
+                        >{{t('otherNationalIndicators')}} 
                         </CNavLink>
                     </CNavItem>
                 </CNav>
@@ -67,7 +66,7 @@
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 3">
                         <div class="alert alert-info mt-2"  v-if="globalComponentIndicators">
-                            Would you like to provide data for other component indicators not linked to your country’s national targets?
+                             {{t('componentIndicatorsNotLinked')}}
                             <km-select v-model="selectedComponent"
                                 :placeholder="t('componentIndicators')"
                                 :close-on-select="false"
@@ -81,7 +80,7 @@
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="contact-tab" :visible="tabPaneActiveKey === 4">
                         <div class="alert alert-info m-2" v-if="globalComplementaryIndicators">
-                            Would you like to provide data for other complementary indicators not linked to your country’s national targets?
+                            {{t('complementaryIndicatorsNotLinked')}}
                             <km-select v-model="selectedComplementary"
                                 :placeholder="t('complementaryIndicators')"
                                 :close-on-select="false"

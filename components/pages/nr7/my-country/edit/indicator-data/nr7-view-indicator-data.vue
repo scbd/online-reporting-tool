@@ -2,20 +2,20 @@
             <km-form-group v-if="indicatorData.sourceOfData" :caption="t('sourceOfData')">
                 <km-value>{{ t(indicatorData.sourceOfData) }}</km-value>
             </km-form-group>
-            <km-form-group caption="Data"  v-if="indicatorData.data">
+            <km-form-group :caption="t('data')"  v-if="indicatorData.data">
                 <div class="w-100" style="overflow: auto;">
                     <table class="table responsive table-bordered">
                         <tbody>
                         <tr>
-                            <th>Indicator code</th>
+                            <th>{{t('indicatorCode')}}</th>
                             <th class="col-1">
-                                Does this data row represent a disaggregation                                
+                               {{t('doesDisaggregation')}}
                             </th>
-                            <th>Disaggregation</th>
-                            <th>Year</th>
-                            <th>Unit</th>
-                            <th>Value</th>
-                            <th>Footnote</th>
+                            <th>{{t('disaggregation')}}</th>
+                            <th>{{t('year')}}</th>
+                            <th>{{t('unit')}}</th>
+                            <th>{{t('value')}}</th>
+                            <th>{{t('footnote')}}</th>
                         </tr>
                         <tr v-for="unit in indicatorData.data" :key="unit">
                             <td>{{unit.indicatorCode}}</td>

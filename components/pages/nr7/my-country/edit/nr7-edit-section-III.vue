@@ -9,10 +9,8 @@
             <km-spinner center></km-spinner>
         </div>
         <div v-if="(!nationalReport7Store.isBusy && !isBusy) && !nationalTargetsComputed" class="alert alert-danger">
-            <strong>Missing National Targets</strong>
-            <p>
-                Your country has not published any national targets, 
-                please submit national targets to pre populate section III of the 7th national report. 
+            <strong>{{ t('missingNationalTargets') }}</strong>
+            <p>{{ t('missingNationalTargetsDescription') }} 
                 <KmNavLink class="btn btn-secondary btn-sm"  :title="t('Go to national targets')" :to="localePath(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)" >
                 </KmNavLink>
             </p>
@@ -48,17 +46,17 @@
                                 <km-form-group>
                                     <div class="card">
                                         <div class="card-body">
-                                            <km-form-group required :name="'mainActionsInfo_'+ assessment.target?.identifier" caption="Please briefly describe the main actions taken to implement this national target">
+                                            <km-form-group required :name="'mainActionsInfo_'+ assessment.target?.identifier" :caption="t('brieflyDescribeTheMainActions')">
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.mainActionsInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
-                                            <km-form-group required :name="'levelOfProgress_'+ assessment.target?.identifier" caption="Please indicate the current level of progress towards this national target">
+                                            <km-form-group required :name="'levelOfProgress_'+ assessment.target?.identifier" :caption="t('indicateTheCurrentLevelOfProgress')">
                                                 <km-select
                                                     v-model="assessment.levelOfProgress"
                                                     class="validationClass"
                                                     label="title"
                                                     track-by="identifier"
                                                     value-key="identifier"
-                                                    placeholder="Please indicate the current level of progress towards this national target"
+                                                    :placeholder="t('indicateTheCurrentLevelOfProgress')"
                                                     :options="progressAssessmentLists"
                                                     :disabled="false"
                                                     :custom-label="customLabel"
@@ -67,15 +65,15 @@
                                                 >
                                                 </km-select>
                                             </km-form-group>
-                                            <km-form-group required :name="'progressSummaryInfo_'+ assessment.target?.identifier" caption="Please provide a summary of progress towards this national target, including the main outcomes achieved, key challenges encountered, and different approaches that may be taken for further implementation">
+                                            <km-form-group required :name="'progressSummaryInfo_'+ assessment.target?.identifier" :caption="t('provideASummaryOfProgress')">
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.progressSummaryInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
 
-                                            <km-form-group required :name="'actionEffectivenessInfo_'+ assessment.target?.identifier" caption="Please provide examples or cases to illustrate the effectiveness of the actions taken to implement this national assessment. If needed, provide relevant web links or attach related materials or publications">
+                                            <km-form-group required :name="'actionEffectivenessInfo_'+ assessment.target?.identifier" :caption="t('provideExamplesOrCases')">
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.actionEffectivenessInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
 
-                                            <km-form-group :name="'sdgRelationInfo_'+ assessment.target?.identifier" caption="Please briefly describe how the implementation of this national target relates to progress in achieving related Sustainable Development Goals and associated targets and implementation of other related agreements ">
+                                            <km-form-group :name="'sdgRelationInfo_'+ assessment.target?.identifier" :caption="t('brieflyDescribeImplementation')">
                                                 <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.sdgRelationInfo" :locales="document.header.languages"></km-input-rich-lstring>
                                             </km-form-group>
                                         </div>
@@ -83,7 +81,7 @@
                                 </km-form-group>
                                 <km-form-group v-if="nationalTargets[assessment.target.identifier]?.indicators" >
                                     <legend>
-                                       Indicator Data ({{ nationalTargetsComputed[assessment.target.identifier]?.indicators?.length }})
+                                       {{ t('indicatorData') }} ({{ nationalTargetsComputed[assessment.target.identifier]?.indicators?.length }})
                                     </legend>
                                     <hr>
                                     <div class="card mb-3" v-for="indicator in nationalTargetsComputed[assessment.target.identifier]?.indicators" :key="indicator">
