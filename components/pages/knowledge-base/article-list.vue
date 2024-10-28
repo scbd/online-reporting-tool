@@ -19,7 +19,7 @@
                             </CCardBody>
                             <CCardFooter>
                                 <nuxt-link href="#" :to="'/knowledge-base/articles/' + article._id">                                    
-                                    <CButton color="primary float-end mb-2" href="#">View</CButton>
+                                    <CButton color="primary float-end mb-2" href="#">{{ t('view') }}</CButton>
                                 </nuxt-link>
                             </CCardFooter>
                         <!--  -->
