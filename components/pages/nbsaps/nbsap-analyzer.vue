@@ -10,13 +10,13 @@
 
                 <CCard class="mb-3" v-if="canShowGeneralCount">
                     <CCardHeader>
-                        General count
+                        {{  t('generalCount') }}   
                     </CCardHeader>
                     <CCardBody>
                         <div class="row">
                             <div class="col-sm-6 mt-xs-1">
                                 <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
-                                    <template #text>Parties with at least 1 NBSAP
+                                    <template #text>{{ t('partiesWithNBSAP') }}
                                     </template>
                                     <template #value>{{ Object.keys(facets.government_s).length || 0
                                         }}</template>
@@ -24,7 +24,7 @@
                             </div>
                             <div class="col-sm-6 mt-xs-1">
                                 <CWidgetStatsB class="mb-3" :progress="{ color: 'success', value: 100}">
-                                    <template #text>Total NBSAP's</template>
+                                    <template #text>{{ t('totalNBSAP') }}</template>
                                     <template #value>{{ facets.schema_s.nbsap || 0 }}</template>
                                 </CWidgetStatsB>
                             </div>
@@ -34,7 +34,7 @@
 
                 <CCard class="mb-3" v-if="canShowMap && countryColors?.length">
                     <CCardHeader>
-                        Map
+                        {{ t('map') }}
                     </CCardHeader>
                     <CCardBody>
                         <div class="row">
@@ -47,7 +47,7 @@
 
                 <CCard class="mb-3" v-if="canShowByParties">
                     <CCardHeader>
-                        Progress by CBD regions
+                        {{ t('progressByCBDRegions') }}
                     </CCardHeader>
                     <CCardBody>
                         <div class="row">
@@ -55,8 +55,8 @@
                                 <table class="table table-bordered table-striped1 table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Number of Parties by CBD regional groups</th>
-                                            <th>Party count</th>
+                                            <th>{{ t('numberOfParties') }}</th>
+                                            <th>{{ t('partyCount') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -69,7 +69,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Total</td>
+                                            <td>{{ t('total') }}</td>
                                             <td>
                                                 <strong>{{ cbdRegionalGroups?.reduce((prev, item)=>prev+(facets.government_REL_ss[item.identifier]||0), 0) }}</strong>
                                             </td>                                            
@@ -84,7 +84,7 @@
 
                 <CCard v-if="canShowByParties">
                     <CCardHeader>
-                        Progress by parties
+                       {{ t('progressByParties') }}
                         <!-- <export class="float-end" :search-query="exportSearchQuery" :schema="SCHEMAS.NATIONAL_TARGET_7">
                             <template #exportTitle> Export national targets</template>
                         </export> -->
@@ -96,11 +96,11 @@
                                 <table class="table table-bordered table-striped1 table-hover" >
                                     <thead>
                                         <tr>
-                                            <th>Party</th>
-                                            <th>Status</th>
-                                            <th>Date of completion and adoption</th>
-                                            <th>Start Date</th>
-                                            <th>End Date</th>
+                                            <th>{{ t('party') }}</th>
+                                            <th>{{ t('status') }}</th>
+                                            <th>{{ t('dateOfCompletion') }}</th>
+                                            <th>{{ t('startDate') }}</th>
+                                            <th>{{ t('endDate') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>                 
@@ -132,7 +132,7 @@
         </CAlert>      
     </div>
 </template>
-<!-- <i18n src="@/i18n/dist/components/pages/nbsaps/nbsap-analyzer.json"></i18n> -->
+<i18n src="@/i18n/dist/components/pages/nbsaps/nbsap-analyzer.json"></i18n>
 <script setup lang="ts">
 import { useThesaurusStore }    from '@/stores/thesaurus';
 import { useRealmConfStore } from '@/stores/realmConf';
