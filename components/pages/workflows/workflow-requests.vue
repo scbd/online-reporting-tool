@@ -2,7 +2,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Request type</th>
+                <th>Request type   </th>
                 <th>Record type</th>
                 <th>Title</th>
                 <th>Requested by</th>
