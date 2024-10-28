@@ -2,7 +2,7 @@
     <div>
         <km-spinner v-if="loading" center></km-spinner>
         <!-- <cbd-add-new-view-article class="float-end btn btn-primary" :admin-tags="adminTags"></cbd-add-new-view-article> -->
-        <div class="alert alert-info mt-5" v-if="!loading && !articles?.length">No articles available</div>
+        <div class="alert alert-info mt-5" v-if="!loading && !articles?.length">{{ t('noArticle') }}</div>
         <div v-if="articles.length" class="mt-3">
             <!-- <CRow> -->
                 <div class="grid" data-masonry>
@@ -29,6 +29,7 @@
         </div>
     </div>
 </template>
+<i18n src="@/i18n/dist/components/pages/knowledge-base/article-list.json"></i18n>
 
 <script setup lang="ts">
 
