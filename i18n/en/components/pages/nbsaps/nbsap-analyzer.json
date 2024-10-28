@@ -1,0 +1,16 @@
+{
+    "generalCount": "General count",
+    "partiesWithNBSAP": "Parties with at least 1 NBSAP",
+    "totalNBSAP": "Total NBSAP's",
+    "map": "Map",
+    "progressByCBDRegions": "Progress by CBD regions",
+    "numberOfParties": "Number of Parties by CBD regional groups",
+    "partyCount": "Party count",
+    "total": "Total",
+    "progressByParties": " Progress by parties",
+    "party": "Party",
+    "status": "Status",
+    "dateOfCompletion": "Date of completion and adoption",
+    "startDate": "Start Date",
+    "endDate": "End Date"
+}
