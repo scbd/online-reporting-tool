@@ -63,14 +63,14 @@
                     delay: 0
                 },
                 layers: [
-                    {
-                        id: 'background',
-                        type: 'background',
-                        layout: { 'visibility': 'visible' },
-                        paint: {
-                            'background-color': ['rgb', 255, 255, 255]
-                        }
-                    },
+                    // {
+                    //     id: 'background',
+                    //     type: 'background',
+                    //     layout: { 'visibility': 'visible' },
+                    //     paint: {
+                    //         'background-color': ['rgb', 255, 255, 255]
+                    //     }
+                    // },
                     {
                         id: 'bnda',
                         type: 'fill',

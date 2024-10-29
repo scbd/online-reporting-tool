@@ -1,0 +1,16 @@
+
+html[data-coreui-theme="dark"] ul.header-nav li.nav-item:hover{
+    color: var(--cui-emphasis-color);
+    text-decoration: none;
+    background: var(--cui-tertiary-bg);
+}
+html[data-coreui-theme="dark"] .multiselect .multiselect__tags
+// html[data-coreui-theme="dark"] .multiselect .multiselect__content-wrapper
+{    
+    background: var(--cui-sidebar-nav-link-hover-bg);
+    border: 1px solid var(--cui-border-color);
+}
+.mapboxgl-popup-content{
+    background : var(--cui-body-bg)!important;
+    border:1px solid var(--cui-border-color)!important;
+}

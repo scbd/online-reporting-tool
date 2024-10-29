@@ -1,14 +1,18 @@
 // Here you can add other styles
 
 ul.header-nav li.nav-item:hover{
-    background-color: #eee;
+    background-color: var(--cui-tertiary-bg);
     border-radius: 5%;
 }
-html[data-coreui-theme="dark"] ul.header-nav li.nav-item:hover{
-    color: var(--cui-sidebar-nav-link-hover-color);
-    text-decoration: none;
-    background: var(--cui-sidebar-nav-link-hover-bg);
+.search-item .card:hover{
+    background-color: var(--cui-header-hover-color);
+    color: var(--cui-sidebar-nav-link-hover-color)!important;        
+    background: var(--cui-sidebar-nav-link-hover-bg)!important;
 }
+.header-nav .nav-link:hover, .header-nav .nav-link:focus {
+    color: var(--cui-header-hover-color);
+}
+
 
 .km-input-ar input, .km-input-ar textarea{
     direction: rtl;

@@ -129,13 +129,12 @@ import { useColorModes } from '@coreui/vue'
 
 import { cilSun, cilContrast } from '@coreui/icons';
 
-    console.log(cilSun)
     const { setLocale, } = useI18n()
     const switchLocalePath = useSwitchLocalePath();
     const { t } = useI18n()
     const userPreferences = useUserPreferencesStore();
     const headerClassNames = ref('mb-4 p-0')
-    const { colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
+    const { isColorModeSet, colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
 
     async function switchLocale (locale){
       setLocale(locale);
@@ -145,6 +144,7 @@ import { cilSun, cilContrast } from '@coreui/icons';
     }
 
     onMounted(() => {
+            
         document.addEventListener('scroll', () => {
             if (document.documentElement.scrollTop > 0) {
             headerClassNames.value = 'mb-4 p-0 shadow-sm'
@@ -152,6 +152,10 @@ import { cilSun, cilContrast } from '@coreui/icons';
             headerClassNames.value = 'mb-4 p-0'
             }
         })
+
+        if (!isColorModeSet()) {
+          setColorMode('auto')
+        }
     })
 
 </script>

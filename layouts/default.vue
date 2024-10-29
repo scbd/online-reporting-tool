@@ -1,7 +1,7 @@
 <template>
     <div>   
         <AppSidebar v-if="!query?.embed" />
-        <div class="wrapper d-flex flex-column" :class="{'bg-light min-vh-100' : !query?.embed}">
+        <div class="wrapper d-flex flex-column" :class="{'min-vh-100' : !query?.embed}">
             <AppHeader  v-if="!query?.embed" />
             <div class="body flex-grow-1 px-3" id="page-content-wrapper">
                 <CContainer fluid>
