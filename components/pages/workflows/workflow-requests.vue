@@ -2,12 +2,12 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Request type   </th>
-                <th>Record type</th>
-                <th>Title</th>
-                <th>Requested by</th>
-                <th>Requested on</th>
-                <th>Expiry</th>
+                <th>{{t('requestType')}}</th>
+                <th>{{t('recordType')}}</th>
+                <th>{{t('title')}}</th>
+                <th>{{t('requestedBy')}}</th>
+                <th>{{t('requestedOn')}}</th>
+                <th>{{t('expiry')}}</th>
                 <th></th>
             </tr>
         </thead>
@@ -39,14 +39,14 @@
                 <td>
                     <km-link class="btn btn-success" 
                         :to="`${resolveSchemaViewRoute(workflow.data.metadata.schema, workflow.data.identifier)}?draft=true&workflowId=${workflow._id}`">
-                        View request
+                        {{t('viewRequest')}}
                     </km-link>
                 </td>
             </tr>
         </tbody>
     </table>   
 </template>
-
+<i18n src="@/i18n/dist/components/pages/workflows/workflow-requests.json"></i18n>
 <script setup lang="ts">
     import moment from 'moment';
     

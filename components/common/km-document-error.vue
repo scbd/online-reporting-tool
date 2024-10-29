@@ -5,7 +5,7 @@
             <div v-if="documentError==404">
                 {{t('notFound')}}
                 <span class="col-12 ps-1 pt-2" v-if="security.role.isAdministrator() ">
-                    <a :href="`${$route.path}?draft=true`">Load Draft (Admin only)</a>
+                    <a :href="`${$route.path}?draft=true`">{{t('loadDraftAdminOnly')}}</a>
                 </span>
             </div>
             <div v-else-if="documentError==401 || documentError==403">

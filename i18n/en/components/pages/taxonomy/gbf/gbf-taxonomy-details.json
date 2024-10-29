@@ -1,1 +1,9 @@
-{}
+{
+    "globalBiodiversityFrameworkGoal": "Global Biodiversity Framework Goal",
+    "globalBiodiversityFrameworkTarget": "Global Biodiversity Framework Target",
+    "headlineIndicators": "Headline Indicators",
+    "binaryIndicators": "Binary Indicators",
+    "componentIndicators": "Component Indicators",
+    "complementaryIndicators": "Complementary Indicators",
+    "globalBiodiversityFrameworkTerm": "Global Biodiversity Framework Term"
+}

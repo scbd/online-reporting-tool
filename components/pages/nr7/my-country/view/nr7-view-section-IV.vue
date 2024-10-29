@@ -29,13 +29,13 @@
                         <div >
                             {{ sectionIVComputed.summaryOfProgress }}
                             <km-form-group :name="'summaryOfProgress_'+ assessment.gbfGoal?.identifier"
-                                caption="Summary of national progress contributing to the global goals">
+                                :caption="t('summaryOfNationalProgress')">
                                 <km-lstring-value type="html" :value="assessment.summaryOfProgress" 
                                     :locales="document.header.languages"></km-lstring-value>
                             </km-form-group>
                             
                             <legend>
-                                Indicator Data 
+                                {{ t('indicatorData') }}
                                 <!-- ({{ nationalTargetsComputed[assessment.gbfGoal.identifier]?.indicators?.length }}) -->
                             </legend>
                             <hr>

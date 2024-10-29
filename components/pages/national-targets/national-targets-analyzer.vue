@@ -93,7 +93,7 @@
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>{{ lstring(region.title) }}</th>
-                                                                                <th>Target count</th>
+                                                                                <th>{{ t('targetCount') }}</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -392,7 +392,7 @@
                                     <tr>
                                         <th></th>
                                         <th>{{ t('party') }}</th>
-                                        <th>No. of elements included in Section C</th>
+                                        <th>{{ t('elementsInSectionC') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -405,7 +405,7 @@
                                         </tr>
                                         <tr>
                                             <td></td>
-                                            <td>Total</td>
+                                            <td>{{ t('total') }}</td>
                                             <td>{{ analyzedCounts.sectionC.countries?.reduce((prev, item)=>prev+item.pivot.length, 0) }}</td>
                                         </tr>
                                 </tbody>
@@ -414,16 +414,16 @@
                         <CCol :sm="12">
                                 <div class="card mb-3">
                                     <div class="card-header">
-                                        For each GBF target, elements of Section C that Parties say have been considered in developing their NBSAP
-                                    </div>
+                                        {{ t('elementsInSectionCHaveParties') }}
+                                        </div>
                                     <div class="card-body">
                                         <table class="table table-bordered table-striped1 table-hover" >
                                             <thead>
                                                 <tr>
-                                                    <th>Target</th>
-                                                    <th>Percent</th>
-                                                    <th>National targets that include Section C</th>
-                                                    <th>Total national targets</th>
+                                                    <th>{{ t('target') }}</th>
+                                                    <th>{{ t('percent') }}</th>
+                                                    <th>{{ t('nationalTargetsInSectionC') }}</th>
+                                                    <th>{{ t('totalNationalTargets') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -452,13 +452,13 @@
                 <!-- Non-state actors -->
                 <CCard class="mb-3" v-if="canShowNonStateProgress">
                     <CCardHeader>
-                        Non-state actor
+                        {{ t('nonStateActor') }} 
                     </CCardHeader>
                     <CCardBody>
                         <!-- 16. Number of parties with non-state actor commitments by target -->
                         <div class="fs-4 fw-semibold">{{ analyzedCounts.nonStateActors.partyCount || 0 }}</div>
                         <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                            Number of countries that have included non-state actor commitments in their target submission
+                            {{ t('nonStateActorCountries') }}
                         </div>
                         <div class="progress my-2" style="height: 4px;"></div>
 
@@ -468,13 +468,13 @@
                                 <tr>
                                     <th colspan="3">
                                         <div class="text-uppercase fw-semibold small text-medium-emphasis">
-                                            Number of parties with non-state actor commitments by target
+                                            {{ t('nonStateActorParties') }}
                                         </div>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th>GBF target</th>
-                                    <th colspan="2">Parties</th>
+                                    <th>{{ t('GBFTarget') }}</th>
+                                    <th colspan="2">{{ t('parties') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -497,9 +497,9 @@
                 <!-- General party count by GBF Targets -->
                 <CCard v-if="canShowPartyCounts">
                     <CCardHeader>
-                        Party count
+                        {{ t('partyCount') }}
                         <export class="float-end" :search-query="exportSearchQuery" :schema="SCHEMAS.NATIONAL_TARGET_7">
-                            <template #exportTitle> Export national targets</template>
+                            <template #exportTitle> {{ t('exportNationalTargets') }}</template>
                         </export>
                     </CCardHeader>
                     <CCardBody>
@@ -509,10 +509,10 @@
                                 <table class="table table-bordered table-striped1 table-hover" >
                                     <thead>
                                         <tr>
-                                            <th rowspan="2">Party</th>
-                                            <th rowspan="2">Number of national targets reported</th>
-                                            <th :colspan="partyCountGoalColumnRange?.length"   v-if="partyCountGoalColumnRange?.length && partyCountTargetColumnRange?.length + partyCountGoalColumnRange?.length > 1">KMGBF Goal(s)</th>
-                                            <th :colspan="partyCountTargetColumnRange?.length" v-if="partyCountTargetColumnRange?.length && partyCountTargetColumnRange?.length + partyCountGoalColumnRange?.length > 1">KMGBF Target(s)</th>
+                                            <th rowspan="2">{{ t('party') }}</th>
+                                            <th rowspan="2">{{ t('numberOfNationalTargetsReported') }}</th>
+                                            <th :colspan="partyCountGoalColumnRange?.length"   v-if="partyCountGoalColumnRange?.length && partyCountTargetColumnRange?.length + partyCountGoalColumnRange?.length > 1">{{ t('KMGBFGoals') }}</th>
+                                            <th :colspan="partyCountTargetColumnRange?.length" v-if="partyCountTargetColumnRange?.length && partyCountTargetColumnRange?.length + partyCountGoalColumnRange?.length > 1">{{ t('KMGBFTargets') }}</th>
                                         </tr>
                                         <tr v-if="partyCountTargetColumnRange?.length + partyCountGoalColumnRange?.length > 1">                                            
                                             <th v-for="range in partyCountGoalColumnRange" :key="range">

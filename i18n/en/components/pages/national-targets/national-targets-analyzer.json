@@ -38,5 +38,17 @@
     "progressInSectionC": "Progress in Section C",
     "averageNumberOfElements": "Average number of elements of Section C that Parties say have been consAverage number of elements of Section C that Parties say have been considered in developing their NBSAPidered in developing their NBSAP",
     "numberOfPartiesHaveElements": "Number of Parties that have elements of Section C that have been considered in developing their NBSAP",
-    "": ""
+    "elementsInSectionC": "No. of elements included in Section C",
+    "elementsInSectionCHaveParties": "For each GBF target, elements of Section C that Parties say have been considered",
+    "nationalTargetsInSectionC": "National targets that include Section C",
+    "totalNationalTargets": "Total national targets",
+    "nonStateActor": "Non-state actor",
+    "nonStateActorCountries": "Number of countries that have included non-state actor commitments in their target submission",
+    "nonStateActorParties": "Number of parties with non-state actor commitments by target",
+    "parties": "Parties",
+    "exportNationalTargets": "Export national targets",
+    "numberOfNationalTargetsReported": "Number of national targets reported",
+    "KMGBFGoals": "KMGBF Goal(s)",
+    "KMGBFTargets": "KMGBF Target(s)"
+
 }

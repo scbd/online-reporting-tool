@@ -13,7 +13,7 @@
             <km-form-group>
                 <div class="card">
                     <div class="card-header bg-secondary">
-                        General
+                        {{t('general')}}
                     </div>
                     <div class="card-body">  
                         <km-form-group v-if="document.government && document.government.identifier" :caption="t('government')">
