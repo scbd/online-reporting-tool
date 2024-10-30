@@ -75,7 +75,7 @@
                         </km-link>
                     </div>
                     <div class="card-body row text-center">
-                        <p>In alignment with KMGBF</p>
+                        <p>{{t('inAlignmentWithKMGBF')}}</p>
                         <div class="col">
                             <div class="text-value-lg">{{nr7TargetCount}}</div>
                             <div class="text-uppercase text-muted small">
@@ -119,7 +119,7 @@
                         </km-link>
                     </div>
                     <div class="card-body row text-center">
-                        <p>In alignment with KMGBF</p>
+                        <p>{{t('inAlignmentWithKMGBF')}}</p>
                         <div class="col">
                             <div class="text-value-lg">{{nbsapCount}}</div>
                             <div class="text-uppercase text-muted small">

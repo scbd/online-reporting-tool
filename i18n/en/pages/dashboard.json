@@ -17,6 +17,7 @@
     "country" : "Party",
     "type":   "Type",
     "publishedOn" : "Published on",
+    "inAlignmentWithKMGBF": "In alignment with KMGBF",
     
     "tourTitle"               : "Dashboard",
     "tourWelcomeTitle"        : "Welcome to the Online Reporting Tool",

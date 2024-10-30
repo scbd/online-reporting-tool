@@ -1,14 +1,14 @@
 <template>
   <CCard>
     <CCardHeader>
-      <slot name="header"> <CIcon name="cil-grid" /> Overview </slot>
+      <slot name="header"> <CIcon name="cil-grid" /> {{ t('overview') }} </slot>
     </CCardHeader>
     <CCardBody>
       <CRow>
         <CCol md="12">
           <div class="alert alert-success" role="alert">
             <p>
-              Welcome to <strong>Holy See</strong> 7th National Report Overview
+              {{ t('welcomeTo') }} <strong>{{ t('holySee') }}</strong> {{ t('7thNationalReportOverview') }}
             </p>
             <hr />
           </div>
@@ -19,17 +19,17 @@
             <div class="card-body">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <CButton color="secondary m-1">
-                  <CIcon icon="cil-save"/> Save
+                  <CIcon icon="cil-save"/> {{ t('save') }}
                 </CButton>
                 <CButton color="success m-1">
-                  <CIcon icon="cil-save"/> Publish
+                  <CIcon icon="cil-save"/> {{ t('publish') }}
                 </CButton>
                 <CButton color="warning m-1">
-                  <CIcon icon="cil-share"/> Share
+                  <CIcon icon="cil-share"/> {{ t('share') }}
                 </CButton>
 
                 <CButton color="danger m-1">
-                  <CIcon icon="cil-file-pdf"/> PDF
+                  <CIcon icon="cil-file-pdf"/> {{ t('pdf') }}
                 </CButton>
               </div>
             </div>
@@ -39,8 +39,8 @@
         <CCol md="3">
           <div class="card">
             <div class="card-body">
-              <div class="h4 m-0">Section I</div>
-              <div>Executive summary of the report</div>
+              <div class="h4 m-0">{{ t('sectionI') }}</div>
+              <div>{{ t('executiveSummaryReport') }}</div>
               <div class="progress-xs my-3 mb-0 progress">
                 <div
                   role="progressbar"
@@ -56,7 +56,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-1">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <font-awesome-icon icon="fa-edit" /> {{ t('update') }}
                   </CButton>
                 </NuxtLink>
               </small>
@@ -66,9 +66,9 @@
         <CCol md="3">
           <div class="card">
             <div class="card-body">
-              <div class="h4 m-0">Section II</div>
+              <div class="h4 m-0">{{ t('sectionII') }}</div>
               <div>
-                Brief overview of the process of preparation of the report
+                {{ t('briefOverviewPreparationReport') }}
               </div>
               <div class="progress-xs my-3 mb-0 progress">
                 <div
@@ -85,7 +85,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-2">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <font-awesome-icon icon="fa-edit" /> {{ t('update') }}
                   </CButton>
                 </NuxtLink>
               </small>
@@ -95,11 +95,9 @@
         <CCol md="3">
           <div class="card">
             <div class="card-body">
-              <div class="h4 m-0">Section III</div>
+              <div class="h4 m-0">{{ t('sectionIII') }}</div>
               <div>
-                Status of the updated or revised national biodiversity
-                strategies and action plans (NBSAPs) in the light of the
-                post-2020 global biodiversity framework
+                {{ t('statusUpdatedNationalBiodiversity') }}
               </div>
               <div class="progress-xs my-3 mb-0 progress">
                 <div
@@ -116,7 +114,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-3">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <font-awesome-icon icon="fa-edit" /> {{ t('update') }}
                   </CButton>
                 </NuxtLink>
               </small>
@@ -126,8 +124,8 @@
         <CCol md="3">
           <div class="card">
             <div class="card-body">
-              <div class="h4 m-0">Section IV</div>
-              <div>Assessment of progress towards the 2050 goals</div>
+              <div class="h4 m-0">{{ t('sectionIV') }}</div>
+              <div>{{ t('assessmentOfProgress2050Goals') }}</div>
               <div class="progress-xs my-3 mb-0 progress">
                 <div
                   role="progressbar"
@@ -143,7 +141,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-4">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <font-awesome-icon icon="fa-edit" /> {{ t('update') }}
                   </CButton>
                 </NuxtLink>
               </small>
@@ -153,10 +151,9 @@
         <CCol md="3">
           <div class="card">
             <div class="card-body">
-              <div class="h4 m-0">Section V</div>
+              <div class="h4 m-0">{{ t('sectionV') }}</div>
               <div>
-                Assessment of progress towards national targets and
-                contributions to progress in the 2030 action targets
+                {{ t('assessmentOfProgressNationalTargets') }}
               </div>
               <div class="progress-xs my-3 mb-0 progress">
                 <div
@@ -173,7 +170,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-5">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <font-awesome-icon icon="fa-edit" /> {{ t('update') }}
                   </CButton>
                 </NuxtLink>
               </small>
@@ -183,10 +180,9 @@
         <CCol md="3">
           <div class="card">
             <div class="card-body">
-              <div class="h4 m-0">Section VI</div>
+              <div class="h4 m-0">{{ t('sectionVI') }}</div>
               <div>
-                Conclusions on the implementation of the Convention and the
-                post-2020 global biodiversity framework
+                {{ t('conclusionsImplementationConvention') }}
               </div>
               <div class="progress-xs my-3 mb-0 progress">
                 <div
@@ -203,7 +199,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-6">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <font-awesome-icon icon="fa-edit" /> {{ t('update') }}
                   </CButton>
                 </NuxtLink>
               </small>
@@ -213,10 +209,9 @@
         <CCol md="3">
           <div class="card">
             <div class="card-body">
-              <div class="h4 m-0">Annex</div>
+              <div class="h4 m-0">{{ t('annex') }}</div>
               <div>
-                Information as requested in related decisions adopted by the
-                Conference of the Parties at its fifteenth meeting
+                {{ t('informationAsRequested') }}
               </div>
               <div class="progress-xs my-3 mb-0 progress">
                 <div
@@ -233,7 +228,7 @@
               >
                 <NuxtLink to="/national-reports/nr7/edit/section-7">
                   <CButton color="secondary" size="sm">
-                    <font-awesome-icon icon="fa-edit" /> Update
+                    <font-awesome-icon icon="fa-edit" /> {{ t('update') }}
                   </CButton>
                 </NuxtLink>
               </small>
@@ -251,26 +246,8 @@
     </CCardBody>
   </CCard>
 </template>
-
-<script>
-import { defineComponent } from '@vue/composition-api'
-
-export default defineComponent({
-  components:{
-    Ckeditor
-  },
-  setup() {
-    
-  },
-})
+<i18n src="@/i18n/dist/pages/national-reports/nr7/my-country/edit/index.json"></i18n>
+<script setup>
+  const {t} = useI18n();
 </script>
-<!-- <script>
-export default {
-  name: 'Nr7Edit',
-  meta:{
-    schema:'nationalReport7'
-  },
-  props: {},
-  methods: {},
-}
-</script> -->
+

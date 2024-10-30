@@ -16,8 +16,7 @@
     </CCardBody>
   </CCard>
 </template>
-
-<i18n  src="~/i18n/dist/pages/national-targets/index.json"></i18n>
+<i18n src="@/i18n/dist/pages/national-reports/index.json"></i18n>
 <script setup lang="ts">
 
 import { SCHEMAS, ROLES } from '@/utils';

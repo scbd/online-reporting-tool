@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const {t} = useI18n();
   useHead({
     title: "GBF Indicator",
   });
@@ -11,10 +12,10 @@
     }
   });
 </script>
-
+<i18n src="@/i18n/dist/pages/taxonomy/gbf/[target]/[identifier].json"></i18n>
 <template>
   <CCard>
-        <CCardHeader>GBF Indicator</CCardHeader>
+        <CCardHeader>{{ t('gbfIndicator') }}</CCardHeader>
         <CCardBody>            
             <gbf-taxonomy-details></gbf-taxonomy-details>
         </CCardBody>

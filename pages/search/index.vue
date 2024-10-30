@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const {t} = useI18n();
   useHead({
     title: "ORT Search",
   });
@@ -8,11 +9,11 @@
     roles : []
   });
 </script>
-
+<i18n src="@/i18n/dist/pages/search/index.json"></i18n>
 <template>
   <div>
     <code>
-        Welcome to search   
+        {{ t('welcomeToSearch') }}   
     </code>
   </div>
 </template>

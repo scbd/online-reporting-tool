@@ -16,5 +16,7 @@
     "filterByGlobalGoals": "Filter by global goals",
     "selectOne":"Please select one",
     "overview":"Go to Overview",
-    "addEditMapping":"Click the Add/Edit mapping button to edit this section"
+    "addEditMapping":"Click the Add/Edit mapping button to edit this section",
+    "allNationalReports": "All National Reports",
+    "myCountryNr7": "My country 7th National Report"
 }
