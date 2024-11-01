@@ -10,5 +10,6 @@
     "validating"    : "Validating...",
     "filterByTitle": "Filter by title",
     "filterByGlobalTargets": "Filter by global targets",
-    "filterByGlobalGoals": "Filter by global goals"
+    "filterByGlobalGoals": "Filter by global goals",
+    "clearFilters": "Clear filters"
 }

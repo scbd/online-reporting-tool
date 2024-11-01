@@ -35,14 +35,14 @@
                                     <CAccordion always-open id="mapping-accordion" class="mt-3 mb-3">                    
                                         <CAccordionItem :visible="true">
                                             <CAccordionHeader id="generalAccordion">
-                                                General                       
+                                               {{ t('general') }}                        
                                             </CAccordionHeader>
                                             <CAccordionBody> 
-                                                <km-form-group name="government" caption="Government" required>
+                                                <km-form-group name="government" :caption="t('government')" required>
                                                     <km-government v-model="document.government"></km-government>                           
                                                 </km-form-group>   
 
-                                                <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
+                                                <km-form-group name="languages" :caption="t('selectLangauges')" required>
                                                     <km-languages v-model="document.header.languages"></km-languages>
                                                 </km-form-group>                                
                                             </CAccordionBody>

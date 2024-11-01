@@ -1,1 +1,13 @@
-{}
+{
+    "userInfo": "User Info",
+    "name": "Name",
+    "testUserForTourDemo": ": Test user for Tour demo",
+    "primaryEmail": "Primary email",
+    "countryAffiliation": "Country affiliation",
+    "haiti": "Haiti",
+    "role": "Role(s)",
+    "nationalFocalPoint": "National Focal Point",
+    "publishingAuthority": "Publishing Authority",
+    "updateProfile": "Update profile",
+    "updatePassword": "Update password"
+}

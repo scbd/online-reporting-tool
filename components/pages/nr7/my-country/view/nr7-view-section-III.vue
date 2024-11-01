@@ -34,28 +34,28 @@
                         <div class="card1">
                             <div class="card-body1">
                                 <km-form-group name="mainActionsInfo" v-if="assessment.mainActionsInfo"
-                                    caption="Please briefly describe the main actions taken to implement this national target">
+                                    :caption="t('describeActionsToThisNationalTarget')">
                                     <km-lstring-value type="html" :value="assessment.mainActionsInfo"
                                         :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
                                 <km-form-group name="levelOfProgress" v-if="assessment.levelOfProgress"
-                                    caption="Please indicate the current level of progress towards this national target">                                    
+                                    :caption="t('indicateTheCurrentLevelOfProgress')">                                    
                                     <km-value-term :value="assessment.levelOfProgress" :locale="selectedLocale"></km-value-term>                                    
                                 </km-form-group>
                                 <km-form-group name="progressSummaryInfo" v-if="assessment.progressSummaryInfo"
-                                    caption="Please provide a summary of progress towards this national target, including the main outcomes achieved, key challenges encountered, and different approaches that may be taken for further implementation">
+                                    :caption="t('provideASummaryOfProgress')">
                                     <km-lstring-value type="html" :value="assessment.progressSummaryInfo"
                                         :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
 
                                 <km-form-group name="actionEffectivenessInfo" v-if="assessment.actionEffectivenessInfo"
-                                    caption="Please provide examples or cases to illustrate the effectiveness of the actions taken to implement this national assessment. If needed, provide relevant web links or attach related materials or publications">
+                                    :caption="t('provideExamplesOrCases')">
                                     <km-lstring-value type="html" :value="assessment.actionEffectivenessInfo"
                                         :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
 
                                 <km-form-group name="sdgRelationInfo" v-if="assessment.sdgRelationInfo"
-                                    caption="Please briefly describe how the implementation of this national target relates to progress in achieving related Sustainable Development Goals and associated targets and implementation of other related agreements ">
+                                    :caption="t('brieflyDescribeImplementation')">
                                     <km-lstring-value type="html" :value="assessment.sdgRelationInfo"
                                         :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
@@ -64,7 +64,7 @@
                         <km-form-group v-if="nationalTargets[assessment.target.identifier]?.indicators">
                             
                             <legend>
-                                Indicator Data ({{ nationalTargetsComputed[assessment.target.identifier]?.indicators?.length}})
+                                {{ t('indicatorData') }} ({{ nationalTargetsComputed[assessment.target.identifier]?.indicators?.length}})
                             </legend>
                             <hr>
                             <div v-for="indicator in nationalTargetsComputed[assessment.target.identifier]?.indicators"

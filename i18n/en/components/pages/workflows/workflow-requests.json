@@ -1,1 +1,9 @@
-{}
+{
+    "requestType": "Request type",
+    "recordType": "Record type",
+    "title": "Title",
+    "requestedBy": "Requested by",
+    "requestedOn": "Requested on",
+    "expiry": "Expiry",
+    "viewRequest": "View request"
+}
