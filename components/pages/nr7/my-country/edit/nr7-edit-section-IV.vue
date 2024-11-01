@@ -39,7 +39,7 @@
                                     {{ sectionIVComputed.summaryOfProgress }}
                                     <km-form-group :name="'summaryOfProgress_'+ assessment.gbfGoal?.identifier" required>
                                         <label class="form-label control-label" required :for="'summaryOfProgress_'+assessment.gbfGoal?.identifier">
-                                            Summary of national progress contributing to the global goals
+                                            {{ t('summaryOfNationalProgress') }}
                                             <span class="visually-hidden">({{lstring(globalGoals[assessment.gbfGoal.identifier].title)}})</span>                                            
                                         </label>
                                         <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.summaryOfProgress" 
@@ -47,7 +47,7 @@
                                     </km-form-group>
                                     
                                     <legend>
-                                       Indicator Data 
+                                       {{ t('indicatorData') }}
                                        <!-- ({{ nationalTargetsComputed[assessment.gbfGoal.identifier]?.indicators?.length }}) -->
                                     </legend>
                                     <hr>
@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="alert alert-info">
-                                            Would you like to provide data for Component and Complementary indicators on Global Biodiversity Framework (GBF) Goal 
+                                            {{ t('componentAndComplementaryIndicators') }}
                                             <strong>{{lstring(globalGoals[assessment.gbfGoal.identifier].title)}}</strong>
                                         </div>
                                         <div class="col-6">

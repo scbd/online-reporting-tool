@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> NR7 other information</slot>
+        <slot name="header"> {{t('nr7OtherInformation')}} </slot>
       </CCardHeader>
       <CCardBody>
 
@@ -38,7 +38,7 @@
     </CCard>
   
 </template>
-
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-annex.json"></i18n>
 <script setup>
   
   import {cloneDeep } from 'lodash';

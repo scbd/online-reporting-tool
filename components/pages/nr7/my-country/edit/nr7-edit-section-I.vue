@@ -21,7 +21,7 @@
                 
                     <div class="card mb-3" v-if="document?.header">
                         <div class="card-header bg-secondary">
-                            General
+                            {{t('general')}}
                         </div>
                         <div class="card-body">
                             <km-form-group name="government" caption="Government" required>

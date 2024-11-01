@@ -10,5 +10,11 @@
     "globalIndicatorProviders": "Indicator providers",
     "comments"          : "Comments",
     "yes"               : "Yes",
-    "no"                : "No"
+    "no"                : "No",
+    "data" : "Data",
+    "indicatorCode": "Indicator code",
+    "doesDisaggregation": "Does this data row represent a disaggregation",
+    "disaggregation": "Disaggregation",
+    "unit": "Unit",
+    "footnote": "Footnote"
 }

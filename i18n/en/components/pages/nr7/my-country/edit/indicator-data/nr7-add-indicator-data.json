@@ -1,4 +1,16 @@
 {
     "editIndicatorData" : "Edit data",
-    "addIndicatorData"  : "Add data"
+    "addIndicatorData"  : "Add data",
+    "general": "General",
+    "data": "Data",
+    "dataSelectionNote": "Please note that source of data selection is disabled since its still under development.",
+    "sourceOfData": "Source of Data",
+    "government": "Government",
+    "comments": "Comments",
+    "pleaseSelectLanguage": "Please select in which language(s) you wish to submit this record",
+    "nationalDataSet": "National data set",
+    "downloadIndicator": "Download sample template for the Indicator",
+    "globalDataSet": "Global data set",
+    "noGlobalDataIndicator": "No global data found for this Indicator."
+
 }

@@ -7,8 +7,8 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Email alert</th>
+                                <th>{{ t('title')}}</th>
+                                <th>{{ t('emailAlert') }}</th>
                                 <th width="10%"></th>
                             </tr>
                         </thead>
