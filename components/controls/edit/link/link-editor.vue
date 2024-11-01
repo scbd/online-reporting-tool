@@ -15,7 +15,7 @@
                         <form>
                         <div class="mb-3" >
                             <label class="col-form-label" for="url">{{ t('Url') }} <span class="text-danger"> *</span></label><br/>
-                            <small class="help-block">{{ t('protocolIsRequired') }} (https:// or http://)</small>                                
+                            <small class="help-block">{{ t('protocolIsRequired') }} (https:// {{ t('or') }} http://)</small>                                
                             <input class="form-control"  id ="url" v-model="link.url" type="url"  placeholder=" https://www." />
                             <p v-if=" checkValidation &&  !isUrlValid"  ><span class="text-danger"> {{ t('pleaseProvideValidUrl') }}</span></p>
                         </div>

@@ -1,19 +1,19 @@
 <template>
 
-    <term-details header="Global Biodiversity Framework Goal"   v-if="globalGoal" :term="globalGoal"></term-details>
-    <term-details header="Global Biodiversity Framework Target" v-if="globalTarget" :term="globalTarget"></term-details>
+    <term-details :header="t('globalBiodiversityFrameworkGoal')"   v-if="globalGoal" :term="globalGoal"></term-details>
+    <term-details :header="t('globalBiodiversityFrameworkTarget')" v-if="globalTarget" :term="globalTarget"></term-details>
     
-    <term-list header="Headline Indicators"      :link-url="appRoutes.TAXONOMY_GBF_INDICATOR_DETAILS.replace(':target', filterTerm)" v-if="headlineIndicators?.length" :terms="headlineIndicators"></term-list>
-    <term-list header="Binary Indicators"        :link-url="appRoutes.TAXONOMY_GBF_INDICATOR_DETAILS.replace(':target', filterTerm)" v-if="binaryIndicators?.length" :terms="binaryIndicators"></term-list>
-    <term-list header="Component Indicators"     :link-url="appRoutes.TAXONOMY_GBF_INDICATOR_DETAILS.replace(':target', filterTerm)" v-if="componentIndicators?.length" :terms="componentIndicators"></term-list>
-    <term-list header="Complementary Indicators" :link-url="appRoutes.TAXONOMY_GBF_INDICATOR_DETAILS.replace(':target', filterTerm)" v-if="complementaryIndicators?.length" :terms="complementaryIndicators"></term-list>
+    <term-list :header="t('headlineIndicators')"      :link-url="appRoutes.TAXONOMY_GBF_INDICATOR_DETAILS.replace(':target', filterTerm)" v-if="headlineIndicators?.length" :terms="headlineIndicators"></term-list>
+    <term-list :header="t('binaryIndicators')"        :link-url="appRoutes.TAXONOMY_GBF_INDICATOR_DETAILS.replace(':target', filterTerm)" v-if="binaryIndicators?.length" :terms="binaryIndicators"></term-list>
+    <term-list :header="t('componentIndicators')"     :link-url="appRoutes.TAXONOMY_GBF_INDICATOR_DETAILS.replace(':target', filterTerm)" v-if="componentIndicators?.length" :terms="componentIndicators"></term-list>
+    <term-list :header="t('complementaryIndicators')" :link-url="appRoutes.TAXONOMY_GBF_INDICATOR_DETAILS.replace(':target', filterTerm)" v-if="complementaryIndicators?.length" :terms="complementaryIndicators"></term-list>
 
     <div v-if="showTermDetails && otherTermDetails">
-      <term-details header="Global Biodiversity Framework Term" :term="otherTermDetails"></term-details>      
+      <term-details :header="t('globalBiodiversityFrameworkTerm')" :term="otherTermDetails"></term-details>      
     </div>
 
 </template>
-
+<i18n src="@/i18n/dist/components/pages/taxonomy/gbf/gbf-taxonomy-details.json"></i18n>
 <script setup lang="ts">
   import { useThesaurusStore } from '@/stores/thesaurus';
   import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";

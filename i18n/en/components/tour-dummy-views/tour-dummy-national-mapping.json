@@ -1,1 +1,27 @@
-{}
+{
+    "GBFGAEcosystems": "GBF-G-A. Ecosystems are conserved, extinctions are halted and genetic diversity is maintained",
+    "editMapping": "Edit mapping",
+    "delete": "Delete",
+    "nationalTarget": "National target(s) linked to this global Goal/Target",
+    "elementGlobalTargetsInformation": "Element of Global Targets information",
+    "addEditButton": "Click the Add/Edit mapping button to edit this section",
+    "nationalTarget1": "National target 1",
+    "updateTarget": "update on this target",
+    "dsf": "dsf",
+    "nationalTarget23EXAMPLE": "National Target 23 EXAMPLE",
+    "sudanNationalTarget1": "Sudan National Target 1",
+    "invasiveAlienSpecies": "Invasive alien species (IAS) and pathways are identified and prioritize",
+    "headlineIndicators": "Headline Indicators",
+    "referencePeriod": "Reference period",
+    "a1RedListEcosystems": "A.1 Red List of Ecosystems",
+    "noReferencePeriod": "No reference period",
+    "a2ExtentNaturalEcosystems": "A.2 Extent of natural ecosystems",
+    "a3RedListIndex": "A.3 Red List Index",
+    "a4TheProportionPopulations": "A.4 The proportion of populations within species with an effective population size",
+    "fifthHundred": "500",
+    "otherIndicators": "Other indicators linked in the national target(s) for this global Goal/Target",
+    "ecosystemIntactnessIndex": "Ecosystem Intactness Index",
+    "livingPlanetIndex": "Living Planet Index",
+    "changeInlandWaterEcosystems": "Change in the extent of inland water ecosystems over time"
+
+}

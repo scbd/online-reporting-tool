@@ -1,5 +1,6 @@
 {
     "notFound" : "Record was not found!",
     "notAuthorized" : "You are not authorized to access this record!",
-    "errorLoading": "Error loading view document "
+    "errorLoading": "Error loading view document ",
+    "loadDraftAdminOnly": "Load Draft (Admin only)"
 }

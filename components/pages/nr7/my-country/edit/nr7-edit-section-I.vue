@@ -24,11 +24,11 @@
                             {{t('general')}}
                         </div>
                         <div class="card-body">
-                            <km-form-group name="government" caption="Government" required>
+                            <km-form-group name="government" :caption="t('government')" required>
                                 <km-government v-model="document.government"></km-government>                           
                             </km-form-group>   
 
-                            <km-form-group name="languages" caption="Please select in which language(s) you wish to submit this record" required>
+                            <km-form-group name="languages" :caption="t('selectLangauges')" required>
                                 <km-languages v-model="document.header.languages"></km-languages>
                             </km-form-group>   
                         </div>

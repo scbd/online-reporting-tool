@@ -1,1 +1,16 @@
-{}
+{
+    "one": "(1)",
+    "title": "Title",
+    "GBFgoalsAndTargets": "GBF goal(s) and target(s)",
+    "status": "Status",
+    "updatedOn": "Updated on",
+    "dummyRecordToShowcaseTourFunction": "Dummy record to showcase tour function",
+    "target18": "TARGET-18",
+    "target19": "TARGET-19",
+    "published": "Published",
+    "publishedDate": "12 May 2024 18:32",
+    "blaiseFonseca": "Blaise Fonseca",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete"
+}

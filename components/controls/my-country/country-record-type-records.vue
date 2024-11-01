@@ -1,5 +1,5 @@
 <template>
-    <button class="btn btn-danger btn-sm float-end" v-if="hasFilters" @click="clearFilters">clear Filters</button>
+    <button class="btn btn-danger btn-sm float-end" v-if="hasFilters" @click="clearFilters">{{ t('clearFilters') }}</button>
     <div id="filters" class="row">
         <div class="col-md-4"  v-if="recordTitles?.length">
             <km-form-group :caption="t('filterByTitle')">

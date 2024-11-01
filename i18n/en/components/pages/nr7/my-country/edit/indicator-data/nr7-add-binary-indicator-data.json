@@ -1,4 +1,8 @@
 {
     "editBinaryIndicatorData" : "Edit response",
-    "addBinaryIndicatorData"  : "Add response"
+    "addBinaryIndicatorData"  : "Add response",
+    "general": "General",
+    "government": "Government",
+    "selectLangauges": "Please select in which language(s) you wish to submit this record"
+
 }
