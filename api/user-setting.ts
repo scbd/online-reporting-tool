@@ -1,9 +1,10 @@
+import { type ApiOptions } from "~/types/api-schemas/api-options";
 import type { MongoQuery } from '~/types/api-schemas/mongo-query';
 import ApiBase, { tryCastToApiError } from './api-base';
 
 export default class SubscriptionApi extends ApiBase
 {
-    constructor(options) {
+    constructor(options:ApiOptions) {
         super(options);
     }
     async get(id:String) {

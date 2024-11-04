@@ -1,10 +1,11 @@
 
+import { type ApiOptions } from "~/types/api-schemas/api-options";
 import ApiBase, { tryCastToApiError } from './api-base';
 
 const  serviceUrls = { 
   documentQueryUrl      (){ return "/api/v2013/documents/" },
   documentUrl           (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}` },
-  validateUrl           (){ return "/api/v2013/documents/x/validate" },
+  validateUrl           (){ return "/api/v2013/documents/x/validate1" },
   draftUrl              (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft` },
   attachmentUrl         (identifier, filename) { return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/${encodeURIComponent(filename)}` },
   temporaryAttachmentUrl(                    ) { return `/api/v2015/temporary-files` },
@@ -20,7 +21,7 @@ const  serviceUrls = {
 }
 export default class KmStorageApi extends ApiBase
 {
-  constructor(options) {
+  constructor(options:ApiOptions) {
     super(options);
     
     this.documents    = new KmDocumentsApi(options);

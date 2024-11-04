@@ -21,7 +21,8 @@
     "fs-extra": "^11.1.1",
     "nuxt": "^3.11.2",
     "nuxt-gtag": "^3.0.1",
-    "sass": "^1.63.6"
+    "sass": "^1.63.6",
+    "vue-tsc": "^2.1.10"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-vue": "^7.2.0",
@@ -50,13 +51,12 @@
     "read-excel-file": "^5.6.1",
     "socket.io-client": "^4.7.2",
     "string-width": "7.2.0",
+    "typescript": "^5.6.3",
     "v-onboarding": "^2.8.1",
     "vue-multiselect": "^3.0.0-beta.2",
     "vue-toast-notification": "^3.1.1",
     "vue3-loading-overlay": "^0.0.0",
     "webui-popover": "^1.2.18"
   },
-  "resolutions": {
-    
-  }
+  "resolutions": {}
 }
