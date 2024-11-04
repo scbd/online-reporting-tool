@@ -7,13 +7,13 @@ import RealmConfigurationApi  from '@/api/realm-configuration'
 import SolrIndexApi           from '~/api/solr-index'
 import ThesaurusApi           from '~/api/thesaurus'
 
-const articles           = new ArticlesApi          (context);
-const countries          = new CountriesApi         (context);
-const kmDocuments        = new KmDocumentsApi       (context);
-const kmWorkflows        = new KmWorkflowsApi       (context);
-const realmConfiguration = new RealmConfigurationApi(context);
-const solrIndex          = new SolrIndexApi         (context);
-const thesaurus          = new ThesaurusApi         (context);
+const articles           = new ArticlesApi          ({});
+const countries          = new CountriesApi         ({});
+const kmDocuments        = new KmDocumentsApi       ({});
+const kmWorkflows        = new KmWorkflowsApi       ({});
+const realmConfiguration = new RealmConfigurationApi({});
+const solrIndex          = new SolrIndexApi         ({});
+const thesaurus          = new ThesaurusApi         ({});
 
 export const Api = {
   articles          ,

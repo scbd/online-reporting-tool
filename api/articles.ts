@@ -1,9 +1,10 @@
 
+import { type ApiOptions } from "~/types/api-schemas/api-options";
 import ApiBase, { tryCastToApiError } from './api-base';
 
 export default class ArticlesApi extends ApiBase
 {
-  constructor(options) {
+  constructor(options:ApiOptions) {
     super(options);
   }
   
