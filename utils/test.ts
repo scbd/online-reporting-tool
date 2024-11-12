@@ -1,4 +1,4 @@
-interface NTransformer<T>{
+export interface NTransformer<T>{
     transformMe(param:T) : T
 }
 

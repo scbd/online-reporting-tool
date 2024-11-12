@@ -1,6 +1,6 @@
-import { type ApiOptions } from "~/types/api-schemas/api-options";
-import type { MongoQuery } from '~/types/api-schemas/mongo-query';
-import ApiBase, { tryCastToApiError } from './api-base';
+import { type ApiOptions } from "~/types/api/api-options";
+import type { MongoQuery } from '~/types/api/mongo-query';
+import ApiBase from './api-base';
 
 export default class SubscriptionApi extends ApiBase
 {

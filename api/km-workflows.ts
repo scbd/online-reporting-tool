@@ -1,6 +1,8 @@
 
-import { type ApiOptions } from "~/types/api-schemas/api-options";
-import ApiBase, { tryCastToApiError } from './api-base';
+import { type ApiOptions } from "~/types/api/api-options";
+import ApiBase from './api-base';
+import type { MongoQuery } from "~/types/api/mongo-query";
+import type { EKmDocumentsBatchWorkflow } from "~/types/schemas/Workflows";
 
 export default class KmWorkflowsApi extends ApiBase
 {
@@ -9,7 +11,7 @@ export default class KmWorkflowsApi extends ApiBase
     }
     
     
-    async getWorkflows(q:object, { count, length, skip, sort } = {}) {
+    async getWorkflows(q:object, { count, length, skip, sort } = {} as MongoQuery) {
         const query = {
             q: JSON.stringify(q),
             l: length,
@@ -21,13 +23,13 @@ export default class KmWorkflowsApi extends ApiBase
         return data;
     }
 
-    async getWorkflow(workflowId)  {
+    async getWorkflow(workflowId:string)  {
 
         const data =  await useAPIFetch(`/api/v2013/workflows/${encodeURIComponent(workflowId)}`,  { method:'get' })                
         return data;
     }
 
-    async getBatchWorkflowDetails(batchId):Promise<EKmDocumentsBatchWorkflow>  {
+    async getBatchWorkflowDetails(batchId:string):Promise<EKmDocumentsBatchWorkflow>  {
 
         const data = useAPIFetch<EKmDocumentsBatchWorkflow>(`/api/v2013/workflows/batches/${encodeURIComponent(batchId)}`,  { method:'get' })
                     
@@ -35,11 +37,11 @@ export default class KmWorkflowsApi extends ApiBase
 
     }
 
-    async updateActivity(id, activityName, body) {
+    async updateActivity(id:string, activityName:string, body:object) {
         return useAPIFetch("/api/v2013/workflows/" + id + "/activities/" + activityName, {method:'PUT', body})
     }
 
-    async updateBatchActivity(id, activityName, body) {
+    async updateBatchActivity(id:string, activityName:string, body:object) {
         return useAPIFetch("/api/v2013/workflows/batches/" + id + "/activities/" + activityName, {method:'PUT', body})
     }
 

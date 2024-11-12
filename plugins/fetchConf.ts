@@ -18,25 +18,26 @@ export default defineNuxtPlugin((nuxtApp) => {
             if(/^https:\/\/api\.cbd\.int\//i.test(config.url) || /^https:\/\/api\.cbddev\.xyz\//i.test(config.url)){
                 options.headers.append('x-referer', window.location.href);
             }
+
+            if(realmConf.realm)
+                options.headers.append('realm', realmConf.realm);
+
+            if (auth?.token) {
+                const authConf = useAuthConf();
+
+                const authHeaderName = authConf?.token?.name||'Authorization';
+                const authTokenType  = authConf?.token?.type||'Bearer';
+
+                if(!options.headers.hasOwnProperty(authHeaderName))
+                    options.headers.append([authHeaderName], `${authTokenType} ${auth.token}`);
+                
+                if(!options.headers[authHeaderName]){
+                    delete options.headers[authHeaderName];
+                    delete options.headers['realm'];
+                }
+            } 
         }
 
-        if(realmConf.realm)
-            options.headers.append('realm', realmConf.realm);
-
-        if (auth?.token) {
-            const authConf = useAuthConf();
-
-            const authHeaderName = authConf?.token?.name||'Authorization';
-            const authTokenType  = authConf?.token?.type||'Bearer';
-
-            if(!options.headers.hasOwnProperty(authHeaderName))
-                options.headers.append([authHeaderName], `${authTokenType} ${auth.token}`);
-            
-            if(!options.headers[authHeaderName]){
-                delete options.headers[authHeaderName];
-                delete options.headers['realm'];
-            }
-        } 
 
     },
     onRequestError ({ error }) {

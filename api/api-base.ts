@@ -1,4 +1,4 @@
-import { type ApiOptions } from "~/types/api-schemas/api-options";
+import { type ApiOptions } from "~/types/api/api-options";
 import type { FetchError } from 'ofetch';
 
 export default class ApiBase
@@ -21,15 +21,3 @@ export default class ApiBase
 //////////////////////////
 // Helpers
 ////////////////////////
-
-export function tryCastToApiError(error:FetchError) {
-
-  useLogger().error(error);
-  
-  if(error && error.response && error.response.data && error.response.data.code) {
-      const apiError = error.response.data
-      throw error.response.data;
-  }
-
-  throw error
-}

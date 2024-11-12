@@ -1,4 +1,11 @@
-interface EDocumentInfo {
+import type { EUserInfo } from "./EUserInfo";
+import type { ELstring } from "./ELstring";
+import type { ENationalReport7 } from "../ENationalReport7";
+import type { ENationalTarget7 } from "../ENationalTarget7";
+import type { ENationalTarget7Mapping } from "../ENationalTarget7Mapping";
+import type { ELockInfo } from "./ELockInfo";
+import type { Metadata } from "~/types/schemas/base/km-storage";
+export interface EDocumentInfo {
     identifier              : string;
     documentID              : number | null;
     createdOn               : Date;
@@ -17,7 +24,7 @@ interface EDocumentInfo {
     charset                 : string;
     title                   : ELstring;
     summary                 : ELstring;
-    metadata                : { [key: string]: string; };
+    metadata                : Metadata;
     body                    : ENationalTarget7 | ENationalTarget7Mapping | ENationalReport7 |object;
     workingDocumentID       : number | null;
     workingDocumentCreatedOn: Date | null;
@@ -28,7 +35,7 @@ interface EDocumentInfo {
     workingDocumentOwner    : string;
     workingDocumentTitle    : ELstring;
     workingDocumentSummary  : ELstring;
-    workingDocumentMetadata : { [key: string]: string; };
+    workingDocumentMetadata : Metadata;
     workingDocumentBody     : ENationalTarget7 | ENationalTarget7Mapping | object;
     workingDocumentLock     : ELockInfo;
     realm                   : string;
