@@ -229,17 +229,13 @@
 </script>
 
 
-<style>
+<style scoped>
 .radio label {
     padding: 20px;
 }
 
 .radio-inline {
     display: inline-block !important;
-}
-
-.modal-body {
-    background: #fff;
 }
 
 #datatable .tableexport-caption {

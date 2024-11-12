@@ -98,7 +98,7 @@
     const editDocument              = ref<ENationalTarget7|ENationalTarget7>();
     const showEditDocumentModal     = ref(false);
     const showValidationMessageModal= ref(false);
-
+    
     const disableActions = computed(()=>!!stateTargetWorkflow.value?.batchId)
     const nationalTargetRecords = computed(()=>{
         return [...draftNationalTargets.value, ...publishedNationalTargets.value]
@@ -129,6 +129,11 @@
     }
 
     async function init(){
+
+        var cat:EDocumentInfo = {}; 
+        
+        cat.d="";
+
         try{
             isLoadingRecords.value = true;    
             let query = '';

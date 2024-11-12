@@ -1,6 +1,10 @@
+import { type ApiOptions } from "~/types/api/api-options";
+import type { FetchError } from 'ofetch';
+
 export default class ApiBase
 {
-  constructor({ $config }) {
+  $config : ApiOptions = {}
+  constructor($config:ApiOptions) {
     this.$config = $config;
   }
 
@@ -17,15 +21,3 @@ export default class ApiBase
 //////////////////////////
 // Helpers
 ////////////////////////
-
-export function tryCastToApiError(error) {
-
-  useLogger().error(error);
-
-  if(error && error.response && error.response.data && error.response.data.code) {
-      const apiError = error.response.data
-      throw error.response.data;
-  }
-
-  throw error
-}

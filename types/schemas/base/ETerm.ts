@@ -1,5 +1,5 @@
-
-class ETerm{
+import type { ELstring } from "./ELstring";
+export class ETerm{
     title : ELstring;
     identifier:String;
 

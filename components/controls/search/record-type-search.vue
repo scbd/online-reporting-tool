@@ -129,7 +129,6 @@
             
             exportSelectedSchema.value = {identifier : filters.value?.recordTypes?.length ? filters.value?.recordTypes[0] : props.recordTypes[0] }
             
-            console.log(exportSelectedSchema)
             exportDialogRef.value.openExportModal();
             return;
         }

@@ -20,7 +20,7 @@ export interface Subscription {
     subFilters?: { [key: string]: SearchFilter; }
 }
 
-interface SearchFilter {
+export interface SearchFilter {
     filterID : String
     id       : String
     name     : String

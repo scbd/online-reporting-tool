@@ -87,7 +87,7 @@
                 }
                 catch(e){
                     //ignore as it will be 404 in most cases.
-                    console.log(e)
+                    console.error(e)
                 }   
             }
             //'document-deleted'

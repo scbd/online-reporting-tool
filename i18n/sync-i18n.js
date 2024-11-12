@@ -43,8 +43,8 @@ async function createLocaleFile(enFile){
 
   for (let i = 0; i < locales.length; i++) {
     const locale = locales[i];
-
     const langFilePath = enFile.replace(/[/\\]en[/\\]/, `/${locale}/`);
+
     const taskPromise = readJsonFile(langFilePath)
           .then((data)=>{ 
             // console.log(langFilePath)
@@ -84,12 +84,12 @@ async function createLocaleEnFile(enVueFile){
     }
     catch(e){
         try{
-            console.log(`********** Creating locale file for vue file ${enVueFile} ***********`)
+            console.info(`********** Creating locale file for vue file ${enVueFile} ***********`)
             await  mkdir(path.dirname(jsonFileName), { recursive: true });
             await writeFile(jsonFileName, JSON.stringify({}))
         }
         catch(e){
-            console.log(e)
+            console.error(e)
         }
     }
 }

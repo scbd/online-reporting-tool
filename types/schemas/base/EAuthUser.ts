@@ -1,4 +1,4 @@
-interface EAuthUser {
+export interface EAuthUser {
     email          : String
     government     : String
     isAuthenticated: Boolean

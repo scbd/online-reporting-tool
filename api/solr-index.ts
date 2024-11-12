@@ -1,13 +1,15 @@
 
-import ApiBase, { tryCastToApiError } from './api-base';
+import { type ApiOptions } from "~/types/api/api-options";
+import ApiBase from './api-base';
+import type { SolrQuery } from "~/types/api/solr";
 
 export default class SolrIndexAPI extends ApiBase
 {
-  constructor(options) {
+  constructor(options:ApiOptions) {
     super(options);
   }
 
-  async querySolr(params)  {
+  async querySolr(params:SolrQuery)  {
 
     const defaults = {
       searchField : 'text_EN_txt',
@@ -15,26 +17,27 @@ export default class SolrIndexAPI extends ApiBase
     }
     params = {...defaults, ...params };
 
-    var queryListParameters = {
-      df    : params.searchField,
-      fq    : params.fieldQueries,
-      q     : params.query,
-      sort  : this.localizeFields(params.sort),
-      fl    : this.localizeFields(params.fields),
-      wt    : 'json',
-      start : params.start,
-      rows  : params.rowsPerPage,
-      // 'debug.explain.structured':true,
-      // "debugQuery":"on"
-  };
+      var queryListParameters = {
+        df    : params.searchField,
+        fq    : params.fieldQueries,
+        q     : params.query,
+        sort  : this.localizeFields(params.sort),
+        fl    : this.localizeFields(params.fields),
+        wt    : 'json',
+        start : params.start,
+        rows  : params.rowsPerPage,
+        // 'debug.explain.structured':true,
+        // "debugQuery":"on"
+    };
 
-  return $fetch.post(`/api/v2013/index/select`, queryListParameters)
-                  .then(res => res.data)
-                  .catch(tryCastToApiError);
+    const data = await useAPIFetch(`/api/v2013/index/select`, { method:'POST', body : queryListParameters});
+
+    return data;
+
 
   }
 
-  localizeFields(fields, locale){
+  localizeFields(fields:string, locale?:string){
       if(!fields)
           return;
           
