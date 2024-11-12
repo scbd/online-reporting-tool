@@ -1,5 +1,5 @@
 
-interface KmFormWorkflowFunctions{
+export interface KmFormWorkflowFunctions{
     onPreClose                  : Function,
     onPostClose                 : Function,
     onPreReview                 : Function,

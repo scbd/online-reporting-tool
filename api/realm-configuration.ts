@@ -1,6 +1,6 @@
 
-import { type ApiOptions } from "~/types/api-schemas/api-options";
-import ApiBase, { tryCastToApiError } from './api-base';
+import { type ApiOptions } from "~/types/api/api-options";
+import ApiBase from './api-base';
 
 export default class RealmConfigurationAPI extends ApiBase
 {
@@ -8,13 +8,7 @@ export default class RealmConfigurationAPI extends ApiBase
     super(options);
   }
 
-  async queryRealmConfigurations(params)  {
-    return $fetch.get(`/api/v2018/realm-configurations`, { params })
-                    .then(res => res.data)
-                    .catch(tryCastToApiError);
-  }
-
-  async getRealmConfigurationByHost(host)  {
+  async getRealmConfigurationByHost(host:string)  {
 
     if(!host){
       host = window.location.host || useRuntimeConfig().public.REALM_CONF_HOST

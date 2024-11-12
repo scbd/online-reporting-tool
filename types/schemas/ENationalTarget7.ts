@@ -1,5 +1,9 @@
+import type { EHeader } from "./base/EHeader";
+import type { ETerm } from "./base/ETerm";
+import type { ELstring } from "./base/ELstring";
+import type { ELink } from "./base/ELink";
 
-interface ENationalTarget7 {
+export interface ENationalTarget7 {
     header                         : EHeader;
     government                     : ETerm;
     title                          : ELstring;
@@ -26,15 +30,15 @@ interface ENationalTarget7 {
     notes                          : string;
 }
 
-interface LTerm extends ETerm {
+export interface LTerm extends ETerm {
 
 }
 
-interface TargetAlignment extends ETerm {
+export interface TargetAlignment extends ETerm {
     degreeOfAlignment: ETerm;
 }
 
-interface NationalIndicators
+export interface NationalIndicators
 {
     identifier  : string;
     value       : ELstring;

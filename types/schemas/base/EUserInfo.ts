@@ -1,4 +1,4 @@
-interface EUserInfo {
+export interface EUserInfo {
     userID: number;
     firstName: string;
     lastName: string;

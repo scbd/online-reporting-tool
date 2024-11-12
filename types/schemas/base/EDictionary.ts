@@ -1,7 +1,7 @@
-interface EDictionary<T> {
+export interface EDictionary<T> {
     [key: string]: T;
 }
-interface EDictionaryPair<K, V> {
+export interface EDictionaryPair<K, V> {
     key: K;
     value: V;
 }

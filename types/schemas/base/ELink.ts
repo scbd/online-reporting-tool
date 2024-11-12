@@ -1,4 +1,4 @@
-interface ELink {
+export interface ELink {
     url: string;
     name: string;
     tags: string;
