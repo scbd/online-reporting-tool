@@ -8,6 +8,7 @@ export default defineNuxtConfig({
             CAPTCHA_V2_BADGE_KEY: process.env.CAPTCHA_V2_BADGE_KEY        || '*******',
             TAG               : '',
             COMMIT            : '',
+            targetTrackerApiUrl: process.env.NUXT_TARGET_TRACKER_API_URL || 'https://tt-backend.staging.linode.unep-wcmc.org',
             auth : {
                 // accountsHostUrl : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL,
                 redirect: {
