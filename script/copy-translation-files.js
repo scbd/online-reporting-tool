@@ -10,7 +10,7 @@ const destination = process.cwd() + '/i18n'
 
 async function beginImport(){
 
-    console.log(destination);
+    console.info(destination);
     
     let source = await askUser('Enter source location: ')
     source = source.replace(/'/g, '')
@@ -46,7 +46,7 @@ async function copyFiles(source, destination){
         
         const exportFolderFormat = ['ru-RU', 'ar-SA', 'fr-FR','es-ES', 'zh-CN'];
 
-        console.log(directories);
+        console.info(directories);
         for (let i = 0; i < directories.length; i++) {
             const directory = directories[i];
 
@@ -63,7 +63,7 @@ async function copyFiles(source, destination){
             if(lang && lang.length > 1){
                 if(supportedLanguages.includes(lang[0])){
                     var language = lang[0];
-                    console.log(source + '/' + directory)
+                    console.info(source + '/' + directory)
                     await copyFolderFiles(source + '/' + directory, source + '/' + directory, language, destination)
                 }
                 else{

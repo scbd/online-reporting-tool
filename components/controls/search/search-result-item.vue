@@ -56,15 +56,12 @@
     }
 </script>
 
-<style>
-    .search-item .card:hover{
-        background-color: #eee;
-    }
-
+<style scoped>
+    
     .limited-text {
-     display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;  /* Number of lines displayed before it truncate */
-     overflow: hidden;
-}
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;  /* Number of lines displayed before it truncate */
+        overflow: hidden;
+    }
 </style>

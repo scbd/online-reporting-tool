@@ -2,8 +2,9 @@
 import { HTTP_STATUS } from '~/utils';
 export default defineEventHandler((event) => {
     try{
-        const response = $fetch('https://tt-backend.new-web-supported-staging.linode.unep-wcmc.org/api/goalsTargets',  { method:'get'})
-        return response;
+        const { targetTrackerApiUrl } = useRuntimeConfig().public;
+
+        return $fetch(`${targetTrackerApiUrl}/api/goalsTargets`,{ method: 'get' });
     }
     catch(e){
         console.error(e)

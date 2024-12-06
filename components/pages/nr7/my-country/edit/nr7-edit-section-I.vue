@@ -136,7 +136,6 @@
                 nationalReport7Store.nationalReport.sectionI = {};
             }                   
             document.value = cloneDeep(nationalReport7Store.nationalReport);
-            console.log(document.value)
         }
         catch(e){
             useLogger().error(e,  'Error loading Section I')
