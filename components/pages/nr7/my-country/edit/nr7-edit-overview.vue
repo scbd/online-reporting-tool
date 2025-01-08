@@ -560,7 +560,6 @@
             showSpinnerDialog.value = true;
             isPublishing.value = true;
             const result = await KmDocumentDraftsService.bulkPublish(realmConf.realm, [SCHEMAS.NATIONAL_REPORT_7])
-            console.log(result);
             //save batch id from api to local storage
             // result.batchId
 

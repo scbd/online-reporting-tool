@@ -61,7 +61,7 @@ async function renameFile(newFileName, source) {
         catch (e) { }
 
     }
-    console.log('File renaming successful!!!!!!');
+    console.info('File renaming successful!!!!!!');
 }
 
 function askUser(question){

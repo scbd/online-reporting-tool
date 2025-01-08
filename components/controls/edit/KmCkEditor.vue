@@ -44,7 +44,7 @@
 <script>
 
 import '@/libs/ckeditor/build/ckeditor.js'//'@ckeditor/ckeditor5-build-classic'
-import CKEditor     from '@ckeditor/ckeditor5-vue';
+import { Ckeditor }    from '@ckeditor/ckeditor5-vue';
 import OverlayLoading from 'vue3-loading-overlay';
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 import KmSpinner from '../KmSpinner.vue';
@@ -53,7 +53,7 @@ import { useI18n } from 'vue-i18n';
 export default {
   name: 'KmCkEditor',
   components: {
-    ckeditor: CKEditor.component,
+    ckeditor: Ckeditor,
     OverlayLoading,
     KmSpinner
   },
@@ -391,10 +391,14 @@ export default {
         'onFileUpload', 'onEditorDestroy', 'onWordCountChange']
 }
 </script>
-<style>
+<style lang="scss">
 
 .ck.ck-balloon-panel.ck-balloon-panel_visible {
   /* stylelint-disable-line */
   z-index: 10000 !important;
+}
+
+.ck.ck-reset.ck-editor.ck-rounded-corners, .ck-editor__editable{
+  background-color: var(--cui-card-bg)!important;
 }
 </style>
