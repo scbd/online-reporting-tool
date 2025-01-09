@@ -81,7 +81,7 @@ export default defineNuxtConfig({
     
     gtag: {
         id: process.env.NUXT_PUBLIC_GOOGLE_TAG_ID || 'G-XXXXXX',
-        initialConsent: false,
+        enabled: false//process.env?.NUXT_PUBLIC_ACCOUNTS_HOST_URL?.indexOf('accounts.cbd.int') >=0
     },
     components: [
         {
