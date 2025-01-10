@@ -34,7 +34,7 @@ import {useRoute} from 'vue-router';
     //Enable google tracking in production only
     if(config?.public?.ACCOUNTS_HOST_URL.indexOf('accounts.cbd.int')>=0){
         const { gtag, initialize, disableAnalytics } = useGtag()
-        initialize(config.public.gtag.id)
+        initialize()
     }
 
     useHead({

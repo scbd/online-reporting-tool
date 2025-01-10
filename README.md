@@ -17,6 +17,15 @@ pnpm install
 yarn install
 ```
 
+## ENV variables
+```
+NUXT_PUBLIC_ACCOUNTS_HOST_URL    = 'https://accounts.cbddev.xyz'
+NUXT_PUBLIC_API_URL              = 'https://api.cbddev.xyz'
+# NUXT_PUBLIC_API_DIRECT_URL     = 'https://api-direct.cbddev.xyz'
+NUXT_PUBLIC_REALM_CONF_HOST      = 'ort.cbddev.xyz'
+NUXT_PUBLIC_GTAG_ID              = 'G-********'
+NUXT_PUBLIC_CAPTCHA_V2_BADGE_KEY = 'dskfmdsf'
+```
 ## Development Server
 
 Start the development server on `http://localhost:3000`:
