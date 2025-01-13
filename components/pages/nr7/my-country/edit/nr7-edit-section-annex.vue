@@ -39,7 +39,7 @@
   
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-annex.json"></i18n>
-<script setup>
+<script setup lang="ts">
   
   import {cloneDeep } from 'lodash';
     import { useNationalReport7Store }    from '@/stores/nationalReport7';

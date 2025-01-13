@@ -39,7 +39,7 @@
   
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-VI.json"></i18n>
-<script setup>
+<script setup lang="ts">
 
     // import viewTarget               from "./view-target-part-2.vue";
     import { useRealmConfStore }    from '@/stores/realmConf';

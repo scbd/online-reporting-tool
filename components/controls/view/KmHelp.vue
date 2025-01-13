@@ -13,7 +13,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import 'webui-popover';
 import 'webui-popover/dist/jquery.webui-popover.css'
 import $ from 'jquery'

@@ -6,7 +6,7 @@
 </template>
 
 <i18n src="@/i18n/dist/components/controls/view/toggle-accordion.json"></i18n>
-<script setup>
+<script setup lang="ts">
     import $ from 'jquery';
     import { useI18n } from 'vue-i18n';
 

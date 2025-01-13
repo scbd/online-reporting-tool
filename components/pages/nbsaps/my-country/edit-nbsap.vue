@@ -202,7 +202,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/nbsaps/my-country/edit-nbsap.json"></i18n>
 
-<script setup>
+<script setup lang="ts">
 
     import { useThesaurusStore } from '@/stores/thesaurus';
     import { useRoute } from 'vue-router'

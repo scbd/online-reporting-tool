@@ -106,7 +106,7 @@
 </template>
 
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-add-indicator-data.json"></i18n>
-<script setup>
+<script setup lang="ts">
     import { useToast } from 'vue-toast-notification';
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";

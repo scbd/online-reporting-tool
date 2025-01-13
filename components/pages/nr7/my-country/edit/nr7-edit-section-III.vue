@@ -140,7 +140,7 @@
   
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-III.json"></i18n>
-<script setup>
+<script setup lang="ts">
   
     import { capitalCase } from 'change-case';
     import { useNationalReport7Store }    from '@/stores/nationalReport7';

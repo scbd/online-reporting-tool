@@ -8,7 +8,7 @@
     </button> 
 </template>
   
-<script setup>
+<script setup lang="ts">
   const emit = defineEmits(['onFileSelected']);
   const props = defineProps({ 
     multiple: { type: Boolean, require: false, default: false },

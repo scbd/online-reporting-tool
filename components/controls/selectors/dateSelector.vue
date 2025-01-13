@@ -2,7 +2,7 @@
     <input v-model="model" :type="type" /> 
 </template>
 
-<script setup>
+<script setup lang="ts">
     const model = defineModel();    
     const props = defineProps({
         type:{
