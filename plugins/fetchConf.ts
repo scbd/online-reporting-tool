@@ -16,7 +16,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         if(/^\/api\/v20\d{2}\/*/.test(request)){
             options.baseURL = options.baseURL || config.public.API_URL;
             
-            if(/^https:\/\/api\.cbd\.int\//i.test(config.url) || /^https:\/\/api\.cbddev\.xyz\//i.test(config.url)){
+            if(/^https:\/\/api\.cbd\.int\//i.test(options.baseURL) || /^https:\/\/api\.cbddev\.xyz\//i.test(options.baseURL)){
                 options.headers.append('x-referer', window.location.href);
             }
 
