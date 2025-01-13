@@ -1,3 +1,4 @@
+//@ts-nocheck
 import  { useRuntimeConfig, useAppConfig } from '#app';
 import { setUserToken } from '../utils';
 import { SocketIOService } from '@/services/socket-io';

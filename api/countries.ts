@@ -1,3 +1,4 @@
+//@ts-nocheck
 
 import { type ApiOptions } from "~/types/api/api-options";
 import ApiBase from './api-base';

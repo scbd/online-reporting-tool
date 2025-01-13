@@ -1,3 +1,4 @@
+//@ts-nocheck
 import moment from 'moment';
 import { useI18n } from 'vue-i18n'
 

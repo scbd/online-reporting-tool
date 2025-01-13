@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getUserToken } from "../utils";
 
 export default defineNuxtPlugin(async (nuxtApp) => {

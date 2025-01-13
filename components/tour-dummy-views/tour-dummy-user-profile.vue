@@ -7,6 +7,7 @@
                     <div class="row m-0 p-o py-1">
                         <div class="col-md-6 cp-header">
                             <table>
+                                <tbody>
                                 <tr>
                                     <td><label>{{ t('name') }}</label></td>
                                     <td class="fw-medium">{{ t('testUserForTourDemo') }}</td>
@@ -21,10 +22,12 @@
                                         <!-- <a class="text-decoration-none" rel="noopener" translation-url href="https://ch/countries/{{user.government | uppercase}}" ng-bind="userCountry|term"></a> --><span><!--v-if-->
                                             {{ t('haiti') }} </span></td><!--v-if-->
                                 </tr>
+                                </tbody>
                             </table>
                         </div>
                         <div class="col-md-6 cp-header">
                             <table>
+                            <tbody>
                                 <tr id="userRoles">
                                     <td><label>{{ t('role') }}</label></td>
                                     <td class="fw-medium">: <span class="comma"><span>{{ t('nationalFocalPoint') }} <span
@@ -51,6 +54,7 @@
                                             accounts.cbd.int/password </a></td>
                                     <td></td>
                                 </tr>
+                            </tbody>
                             </table>
                         </div>
                     </div>

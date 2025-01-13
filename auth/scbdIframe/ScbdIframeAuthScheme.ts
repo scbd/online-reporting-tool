@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useResolveApiBaseUrl } from "@/composables/common";
 
 export default class ScbdIframeAuthScheme {

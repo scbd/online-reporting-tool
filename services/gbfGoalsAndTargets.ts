@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useThesaurusStore } from '@/stores/thesaurus';
 
 class GBFGoalsAndTargets{

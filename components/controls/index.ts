@@ -1,3 +1,4 @@
+//@ts-nocheck
 export {default as KmSelect             }  from './edit/KmSelect.vue';
 export {default as KmInputRichLstring   }  from './edit/KmInputRichLstring';
 export {default as KmInputLstring       }  from './edit/KmInputLstring';

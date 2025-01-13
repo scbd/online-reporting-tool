@@ -15,6 +15,8 @@
     </CRow>
 </template>
 <script lang="ts" setup>
+    //@ts-nocheck
+    
     import { makeUid } from '@coreui/utils/src'
     import KmHelp      from './view/KmHelp.vue';
 

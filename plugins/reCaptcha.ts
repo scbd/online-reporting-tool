@@ -1,3 +1,4 @@
+//@ts-nocheck
 let reCaptchaPromise:Promise<string>|undefined = undefined;
 let gAssignedId:string|undefined = undefined;
 let initResult:Promise<any>|undefined

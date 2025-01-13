@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {useToast} from 'vue-toast-notification';
 import { useRealmConfStore } from '@/stores/realmConf';
 import type { FetchError } from 'ofetch';

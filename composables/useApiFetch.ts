@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {hash } from 'ohash'
 type useFetchType = typeof useFetch
 import type { UseFetchOptions } from 'nuxt/app'

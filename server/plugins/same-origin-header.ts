@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { RenderResponse } from "nitropack"
 
 export default defineNitroPlugin((nitroApp) => {

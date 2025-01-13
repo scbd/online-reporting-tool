@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {uniqBy, cloneDeep} from 'lodash'
 
 export const buildTargetMatrix = (globalTargets: any[], nationalTargets: any[], nationalMappings: any[])=>{

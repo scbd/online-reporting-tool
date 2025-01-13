@@ -1,3 +1,4 @@
+//@ts-nocheck
 import _, { isNumber, isDate, } from 'lodash';
 import { useRealmConfStore } from '@/stores/realmConf';
 

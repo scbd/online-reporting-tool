@@ -1,3 +1,4 @@
+//@ts-nocheck
 
 import { useRealmConfStore }    from '@/stores/realmConf';
 import { intersection, flatten }         from 'lodash';

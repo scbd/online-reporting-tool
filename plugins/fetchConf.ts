@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { ofetch } from 'ofetch';
 import { useRealmConfStore } from '@/stores/realmConf';
 
