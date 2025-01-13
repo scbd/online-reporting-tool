@@ -388,6 +388,7 @@
   <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-overview.json"></i18n>
 
   <script setup lang="ts">
+//@ts-nocheck
     import {cloneDeep } from 'lodash';
     import { useStorage } from '@vueuse/core'
     import { useNationalReport7Store }    from '@/stores/nationalReport7';

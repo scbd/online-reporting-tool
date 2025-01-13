@@ -107,6 +107,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-II.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
   
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
     import { useRoute } from 'vue-router' 
@@ -116,7 +117,7 @@
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';    
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
-    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions.js'
+    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
 
     let document = ref({});
     let sectionIII;

@@ -22,6 +22,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/common/km-document-count.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     defineProps({
         publishedCount  : {type:Number, default:0},

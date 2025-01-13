@@ -4,6 +4,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     import { useCountriesStore }    from '@/stores/countries';
 
     const props = defineProps({

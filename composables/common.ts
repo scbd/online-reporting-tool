@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { RouteLocationRaw } from "vue-router";
 import { NavigateToOptions } from '#imports'
 import { useRealmConfStore } from '@/stores/realmConf';

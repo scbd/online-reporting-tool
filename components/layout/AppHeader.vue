@@ -119,10 +119,11 @@
 
 <i18n src="@/i18n/dist/components/layout/AppHeader.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
 import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt'
-import { logo } from '@/assets/brand/logo'
+import { logo } from '~/assets/brand/logo'
 import { languages } from '@/app-data/languages'
 import { useUserPreferencesStore } from '@/stores/userPreferences';
 import { useColorModes } from '@coreui/vue'

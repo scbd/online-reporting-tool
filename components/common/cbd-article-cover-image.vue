@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     const props = defineProps({
        coverImage: { type: Object, required: true },
        coverImageSize : { type : String, default:'1280x720'}

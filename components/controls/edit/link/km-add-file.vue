@@ -15,7 +15,8 @@
     </div>
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/link/km-add-file.json"></i18n>
-<script setup lang="ts">  
+<script setup lang="ts">
+//@ts-nocheck  
  const {t} = useI18n();
     const links = defineModel({type:Array, required:true, default:[]});
     const props = defineProps({

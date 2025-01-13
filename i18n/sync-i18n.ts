@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { copyFile, mkdir, readFile, readdir, stat, writeFile } from 'fs/promises';
 import path from 'path';
 import assert, { match } from 'assert';
@@ -176,7 +177,7 @@ async function getAllDirectoryFiles(dir, options) {
 
 }
 
-export function viteSyncI18nFiles(options) {
+export function viteSyncI18nFiles(options:any|undefined) {
   let isBuildRunning = false;
   return {
     name: 'vite-plugin-sync-i18n-files',

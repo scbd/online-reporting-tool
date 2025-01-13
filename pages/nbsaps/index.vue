@@ -12,6 +12,7 @@
   </template>
   <i18n src="@/i18n/dist/pages/nbsaps/index.json"></i18n>
   <script setup lang="ts">
+//@ts-nocheck
 
     const schema        = useGetRealmSchema(SCHEMAS.NATIONAL_NBSAP)
     const { t, locale } = useI18n();

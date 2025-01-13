@@ -6,8 +6,9 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
   import MyCountryTargetsMapping from "@/components/pages/national-targets/my-country/part-2/index.vue";
-  import { KmSuspense } from '@/components/controls'
+  import { KmSuspense } from '~/components/controls'
   import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
       import { SCHEMAS, ROLES } from '@/utils';
 

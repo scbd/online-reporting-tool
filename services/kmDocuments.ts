@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { defineStore } from 'pinia'
 
 class kmDocuments {

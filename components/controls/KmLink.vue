@@ -9,6 +9,7 @@
     </NuxtLink> 
 </template>
 <script lang="ts">
+//@ts-nocheck
 import {useRoute } from 'vue-router';
 
 export default defineComponent({

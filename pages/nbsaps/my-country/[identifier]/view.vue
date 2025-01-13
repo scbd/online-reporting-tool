@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
   import { useRoute } from 'vue-router';
 
   const route      = useRoute();

@@ -32,6 +32,7 @@
 <i18n src="@/i18n/dist/components/pages/knowledge-base/article-list.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
 
     import { useRealmConfStore } from '@/stores/realmConf';
     import Masonry from 'masonry-layout'

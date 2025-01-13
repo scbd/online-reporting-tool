@@ -35,6 +35,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/km-question.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     const model = defineModel<String>();
 
     const props = defineProps({

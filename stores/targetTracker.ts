@@ -1,39 +1,32 @@
 import { defineStore } from 'pinia'
+import type { ThesaurusTerm } from '~/types/api/thesaurus-term'
+import type { EDictionary } from '~/types/schemas/base/EDictionary'
 
 export const useThesaurusStore = defineStore('targetTracker', {
   state: () => {
     return {
-        goalsTargets: {},
-      domainTerms : {},
-      terms       : {}
+        domainTerms : {} as EDictionary<ThesaurusTerm[]>,
+        terms       : {} as EDictionary<ThesaurusTerm>
     }
   },
   getters:{
     getDomainTerms(state){
-      return function (identifier){
+      return (identifier:string):ThesaurusTerm[]=>{
         const domainTerms = this.domainTerms[identifier];
         return domainTerms;
       }
     },
     getTerm(state){
-        return function (term){
+        return (term:string):ThesaurusTerm=>{
             return this.terms[term]
         }
     }
   },
-  actions:{
-    async loadDomain(domainName:string, params:any){
-      
-        const { $api } = useNuxtApp();
-        let domain = this.domains[domainName]
-        if(!domain){
-          domain = await $api.thesaurs.getDomain(domainName, params);
-          this.domains.push(domain);
-        };
-    },  
-    async loadDomainTerms(identifier:string, params:any){
+  actions:{     
+    async loadDomainTerms(identifier:string, params:any):Promise<ThesaurusTerm[] | undefined>{
         if(!identifier)
           return;
+
         let terms = this.getDomainTerms(identifier)
         if(!terms){
 
@@ -45,9 +38,10 @@ export const useThesaurusStore = defineStore('targetTracker', {
             this.terms[term.identifier] = term;
           });
         }
+
         return terms;
     },  
-    async loadTerm(identifier:string){
+    async loadTerm(identifier:string):Promise<ThesaurusTerm|undefined>{
 
         if(!this.terms[identifier]){
             

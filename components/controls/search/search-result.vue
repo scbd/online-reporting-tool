@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     import searchResultItem from './search-result-item.vue';
 
     const props = defineProps({

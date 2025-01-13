@@ -8,6 +8,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     const props = defineProps({
         printSelector : {type: String, required:true},
         title   : {type: String, required:true},

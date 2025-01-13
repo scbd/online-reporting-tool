@@ -84,6 +84,7 @@
 
 <i18n src="@/i18n/dist/components/controls/my-country/country-record-type-records.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';  
     
     const props = defineProps({

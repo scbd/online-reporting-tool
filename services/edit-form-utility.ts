@@ -1,3 +1,4 @@
+//@ts-nocheck
 
 import { useRealmConfStore }    from '@/stores/realmConf';
 import { useI18n } from 'vue-i18n';

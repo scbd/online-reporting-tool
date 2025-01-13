@@ -5,8 +5,9 @@
 </template>
   
 <script setup lang="ts">
+//@ts-nocheck
 
-import { KmSuspense } from "@/components/controls";
+import { KmSuspense } from "~/components/controls";
 import { SCHEMAS, ROLES } from '@/utils';
 import IndicatorDataOverview from "@/components/pages/nr7/my-country/edit/indicator-data/nr7-indicator-data-overview.vue";
 

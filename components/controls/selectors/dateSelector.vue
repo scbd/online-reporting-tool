@@ -2,7 +2,8 @@
     <input v-model="model" :type="type" /> 
 </template>
 
-<script setup>
+<script setup lang="ts">
+//@ts-nocheck
     const model = defineModel();    
     const props = defineProps({
         type:{

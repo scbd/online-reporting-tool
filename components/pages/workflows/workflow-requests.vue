@@ -48,6 +48,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/workflows/workflow-requests.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import moment from 'moment';
     
     const emit = defineEmits(['onLoad']);

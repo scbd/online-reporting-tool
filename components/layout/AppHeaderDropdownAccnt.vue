@@ -17,7 +17,8 @@
   <a v-if="!user || !user.isAuthenticated" :href="`${accountsUrl}?returnUrl=${returnUrl}`">{{t('signIn')}}</a>
 </template>
 <i18n src="@/i18n/dist/components/layout/AppHeaderDropdownAccnt.json"></i18n>
-<script>
+<script lang="ts">
+//@ts-nocheck
 
 import { useRoute } from 'vue-router';
 export default {

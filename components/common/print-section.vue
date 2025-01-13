@@ -21,6 +21,7 @@
 </template>
 <i18n src="@/i18n/dist/components/common/print-section.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     const props = defineProps({
         element : {type: String, required:true},

@@ -92,7 +92,8 @@
 <i18n src="@/i18n/dist/app-data/download-schemas.json"></i18n>
 
 
-<script setup>
+<script setup lang="ts">
+//@ts-nocheck
     import { downloadSchemas } from '~/app-data/download-schemas.js';
     import { queryIndex, parseSolrQuery } from '@/services/solr'
     

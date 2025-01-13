@@ -8,7 +8,8 @@
    </a>
 </template>
 <i18n src="@/i18n/dist/components/common/cbd-add-new-view-article.json"></i18n>
-<script>
+<script lang="ts">
+//@ts-nocheck
    export default {
        name:'cbdAddNewArticle',
        props: {

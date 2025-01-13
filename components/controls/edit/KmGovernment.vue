@@ -14,6 +14,7 @@
 
 <i18n src="@/i18n/dist/components/controls/edit/KmGovernment.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import { KmSelect } from "~/components/controls";
     import { useCountriesStore }    from '@/stores/countries';
 

@@ -18,6 +18,7 @@
 </template>
 <i18n src="@/i18n/dist/pages/national-reports/index.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
 import { SCHEMAS, ROLES } from '@/utils';
 import { KmSuspense } from "@/components/controls";

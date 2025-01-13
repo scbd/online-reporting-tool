@@ -4,7 +4,6 @@ export default defineEventHandler((event) => {
     try{
         const { targetTrackerApiUrl } = useRuntimeConfig().public;
 
-        console.log('targetTrackerApiUrl /api/goalsTargets', `${targetTrackerApiUrl}/api/goalsTargets`);
         return $fetch(`${targetTrackerApiUrl}/api/goalsTargets`,{ method: 'get' });
     }
     catch(e){

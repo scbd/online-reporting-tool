@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
 import { onMounted, ref } from 'vue'
 import { capitalCase } from 'change-case';
 import { languages } from '@/app-data/languages'

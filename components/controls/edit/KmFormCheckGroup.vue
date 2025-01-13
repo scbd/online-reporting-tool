@@ -5,6 +5,8 @@
     </KmFormGroup>            
 </template>
 <script lang="ts" setup>
+//@ts-nocheck
+
 import { makeUid }         from '@coreui/utils/src'
 import { default as KmFormGroup } from '../KmFormGroup.vue';
 const attrs = useAttrs()

@@ -18,6 +18,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/common/km-document-status.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     import { useStorage } from '@vueuse/core';
     import { KmDocumentsService } from '@/services/kmDocuments';

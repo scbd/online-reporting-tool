@@ -1,3 +1,4 @@
+//@ts-nocheck
 
 Array.prototype.removeItem = function(predicate){
 

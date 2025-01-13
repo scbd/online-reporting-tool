@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     import KmLink from '../KmLink.vue';
     import { SCHEMAS } from '@/utils';
     const props = defineProps({

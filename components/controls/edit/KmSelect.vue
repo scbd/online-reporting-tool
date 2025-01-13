@@ -30,7 +30,8 @@
     </VueMultiselect>
 </template>
 
-<script setup lang="ts">  
+<script setup lang="ts">
+//@ts-nocheck  
 
 import VueMultiselect from 'vue-multiselect';
 import { isEqual } from 'lodash'

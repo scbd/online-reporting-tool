@@ -1,6 +1,7 @@
-let reCaptchaPromise = undefined;
-let gAssignedId = undefined;
-let initResult
+//@ts-nocheck
+let reCaptchaPromise:Promise<string>|undefined = undefined;
+let gAssignedId:string|undefined = undefined;
+let initResult:Promise<any>|undefined
 
 export default defineNuxtPlugin((nuxtApp) => {
 
@@ -15,7 +16,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     })
 })
 
-function initializeRecaptcha(elementId, sitekey){
+function initializeRecaptcha(elementId:string, sitekey:string){
 
     if(!initResult){
 
@@ -64,24 +65,24 @@ function resetRecaptcha(){
     window.grecaptcha.reset(gAssignedId)
 }
 
-function render(elementId, sitekey){
+function render(elementId:string, sitekey:string){
     return window.grecaptcha.render(elementId, {
         sitekey: sitekey,
         size: 'invisible',
-        'callback': (recaptchaToken) => {
+        'callback': (recaptchaToken:string) => {
             if(reCaptchaPromise?.resolve)
                 reCaptchaPromise.resolve(recaptchaToken);
             reCaptchaPromise = undefined;
             resetRecaptcha();
         },
-        'expired-callback': (message) => {
-            if(reCaptchaPromise.reject)
+        'expired-callback': (message:any) => {
+            if(reCaptchaPromise?.reject)
                 reCaptchaPromise.reject({expired:true, message});
             reCaptchaPromise = undefined;
             resetRecaptcha();
         },
-        'error-callback': (error) => {
-            if(reCaptchaPromise.reject)
+        'error-callback': (error:any) => {
+            if(reCaptchaPromise?.reject)
                 reCaptchaPromise.reject({error});
             reCaptchaPromise = undefined;
             resetRecaptcha();

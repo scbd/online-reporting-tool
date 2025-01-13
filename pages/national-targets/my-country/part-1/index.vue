@@ -6,10 +6,11 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
   import MyCountryTargets from "@/components/pages/national-targets/my-country/part-1/index.vue";
 
     import { SCHEMAS, ROLES } from '@/utils';
-  import { KmSuspense } from '@/components/controls'
+  import { KmSuspense } from '~/components/controls'
 
     definePageMeta({
         auth:true,

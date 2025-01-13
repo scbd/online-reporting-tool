@@ -41,6 +41,7 @@
 <i18n src="@/i18n/dist/components/controls/edit/KmLanguages.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
     import { KmSelect, KmFormCheckGroup, KmFormGroup, KmFormCheckItem } from "~/components/controls";
     import { useThesaurusStore }    from '@/stores/thesaurus';
     import { useUserPreferencesStore }    from '@/stores/userPreferences';

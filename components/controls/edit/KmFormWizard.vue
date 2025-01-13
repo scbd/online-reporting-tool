@@ -32,7 +32,8 @@
         </div>
     </div>
 </template>
-<script>
+<script lang="ts">
+//@ts-nocheck
 import { provide } from 'vue';
 
 export default {

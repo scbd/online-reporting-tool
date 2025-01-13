@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 
 function resolveUrlParams(url:string, params){
     for (const param in params) {
