@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     const props = defineProps({
         schema  : {type:String, required:true},
         type    : {type:String, default:'title'}

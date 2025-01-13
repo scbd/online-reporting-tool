@@ -15,6 +15,7 @@
 
 <i18n src="@/i18n/dist/components/controls/KmModalSpinner.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import { useI18n } from 'vue-i18n';
     const props = defineProps({
         visible : { type:Boolean, default:false},

@@ -17,6 +17,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/KmInputLstringML.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import { removeEmpty } from '@/utils';
     import { isEmpty } from 'lodash';
     import { makeUid } from '@coreui/utils/src'

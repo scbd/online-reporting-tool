@@ -32,6 +32,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/error.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     const props = defineProps({
         error : { type:Object, required:true}

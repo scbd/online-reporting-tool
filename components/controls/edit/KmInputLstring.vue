@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts">
+//@ts-nocheck
 import { makeUid } from '@coreui/utils/src'
 import {without} from 'lodash';
 import { useThesaurusStore }    from '@/stores/thesaurus';

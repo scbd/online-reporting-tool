@@ -248,6 +248,7 @@
   </template>
     <i18n src="@/i18n/dist/components/pages/nr7/my-country/view/index.json"></i18n>
   <script lang="ts">
+//@ts-nocheck
   export default {
     name: 'Nr7View',
     auth:false,

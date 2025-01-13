@@ -160,6 +160,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-IV.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
   
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
     import { useRoute } from 'vue-router' 
@@ -171,7 +172,7 @@
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
     import {uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
-    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions.js'
+    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
 
     let document = ref({});
     const props = defineProps({

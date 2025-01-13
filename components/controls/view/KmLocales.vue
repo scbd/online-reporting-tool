@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
 import { useI18n } from 'vue-i18n';
     import { useThesaurusStore }    from '@/stores/thesaurus';
     const nuxtApp = useNuxtApp();

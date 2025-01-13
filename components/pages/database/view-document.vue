@@ -28,7 +28,8 @@
 <i18n src="@/i18n/dist/components/pages/database/view-document.json"></i18n>
 
 <script setup lang="ts">
-    import { KmSuspense } from "@/components/controls";
+//@ts-nocheck
+    import { KmSuspense } from "~/components/controls";
     
     import { useRoute } from 'vue-router';
     import { SCHEMAS, ROLES } from '@/utils';

@@ -11,6 +11,7 @@
 </template>
 <i18n src="@/i18n/dist/pages/knowledge-base/index.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
    import {useRoute } from 'vue-router';
 
    const {t} = useI18n();

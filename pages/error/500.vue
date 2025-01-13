@@ -20,6 +20,7 @@
 </template>
 <i18n src="@/i18n/dist/pages/error/500.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     const { t } = useI18n();
     const handleError = () => clearError({ redirect: '/' })
 

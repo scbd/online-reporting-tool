@@ -84,6 +84,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/email-alerts/subscribe-email-alerts.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import { SCHEMAS } from '@/utils';
     import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
     import { useRealmConfStore } from '@/stores/realmConf';

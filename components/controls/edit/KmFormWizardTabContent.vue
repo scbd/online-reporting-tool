@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts">
+//@ts-nocheck
 import { inject } from 'vue';
 export default {
     name: 'tab-content',

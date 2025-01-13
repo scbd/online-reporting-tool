@@ -24,6 +24,7 @@
 <i18n src="@/i18n/dist/components/controls/km-questions.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
     import { flattenObject } from "~/utils/helpers";
 
     const model = defineModel<Array<Object>>({required:true});

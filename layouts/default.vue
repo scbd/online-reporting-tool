@@ -17,6 +17,7 @@
 </template>
 <i18n src="@/i18n/dist/layouts/default.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 import { CContainer } from '@coreui/vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'

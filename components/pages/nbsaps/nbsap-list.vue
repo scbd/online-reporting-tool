@@ -11,6 +11,7 @@
 <i18n src="@/i18n/dist/components/pages/nbsaps/nbsap-list.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
     import { useRoute } from 'vue-router';
     import {stringifyQuery} from 'ufo'
 

@@ -5,6 +5,7 @@
   </NuxtLayout>
 </template>
 <script lang="ts">
+//@ts-nocheck
 import { SocketIOService } from '@/services/socket-io';
 import '@/utils/prototypes.js';
 

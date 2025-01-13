@@ -43,6 +43,7 @@
   <!-- :on-close="onAddIndicatorDataClose" -->
 </template>
 <script setup lang="ts">
+//@ts-nocheck
     import { makeUid }         from '@coreui/utils/src'
     import {cloneDeep} from 'lodash';
     

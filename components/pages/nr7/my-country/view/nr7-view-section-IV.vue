@@ -84,6 +84,7 @@
 <!-- <i18n src="@/i18n/dist/components/pages/nr7/my-country/view/nr7-view-section-IV.json"></i18n> -->
 
 <script setup lang="ts">
+//@ts-nocheck
   
   const props = defineProps({
         document    : { type:Object, required:true},

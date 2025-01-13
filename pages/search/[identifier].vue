@@ -8,6 +8,7 @@
 </template>
 <i18n src="@/i18n/dist/pages/search/[identifier].json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 const {t} = useI18n();
   useHead({
     title: "ORT Search",

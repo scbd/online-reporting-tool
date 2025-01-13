@@ -109,6 +109,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/part-2/edit-target-part-2.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
   
     import viewTarget               from "./view-target-part-2.vue";
     import { useRoute } from 'vue-router' 

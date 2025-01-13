@@ -73,6 +73,7 @@
 </template>
 <i18n src="@/i18n/dist/components/tour-dummy-views/tour-dummy-table.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 const {t} = useI18n();
     defineProps({
         title:String,

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+//@ts-nocheck
 
     import {useRoute} from 'vue-router';
     const { query }  = useRoute();

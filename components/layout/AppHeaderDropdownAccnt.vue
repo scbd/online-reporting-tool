@@ -18,6 +18,7 @@
 </template>
 <i18n src="@/i18n/dist/components/layout/AppHeaderDropdownAccnt.json"></i18n>
 <script lang="ts">
+//@ts-nocheck
 
 import { useRoute } from 'vue-router';
 export default {

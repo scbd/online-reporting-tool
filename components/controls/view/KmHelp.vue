@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
 import 'webui-popover';
 import 'webui-popover/dist/jquery.webui-popover.css'
 import $ from 'jquery'

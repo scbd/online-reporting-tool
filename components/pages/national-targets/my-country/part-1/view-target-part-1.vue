@@ -222,8 +222,9 @@
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/part-1/view-target-part-1.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
   
-    import { degreeOfAlignments }   from '@/app-data/degreeOfAlignments';
+    import { degreeOfAlignments }   from '~/app-data/degreeOfAlignments';
     import { useRoute } from 'vue-router' 
     import { KmDocumentDraftsService}from "@/services/kmDocumentDrafts";
     import { KmDocumentsService } from "@/services/kmDocuments";

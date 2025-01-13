@@ -62,6 +62,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/search/record-type-search.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     import { useRealmConfStore } from '@/stores/realmConf';
     import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'

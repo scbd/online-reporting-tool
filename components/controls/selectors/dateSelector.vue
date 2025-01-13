@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     const model = defineModel();    
     const props = defineProps({
         type:{

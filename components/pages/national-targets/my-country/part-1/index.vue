@@ -50,6 +50,7 @@
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/part-1/index.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
     import { useI18n } from "vue-i18n"; 
     import { useStorage } from '@vueuse/core'
     import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";

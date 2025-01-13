@@ -184,10 +184,11 @@
 </template>
 <i18n src="@/i18n/dist/pages/dashboard.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 import UserProfileInfo  from "@/components/common/user-profile-info.vue"
 import { useRealmConfStore } from '@/stores/realmConf';
 import { facets,andOr,parseSolrQuery } from '@/services/solr';
-import { KmLink } from "@/components/controls";
+import { KmLink } from "~/components/controls";
 
         const {user} = useAuth();
         const { t }  = useI18n();

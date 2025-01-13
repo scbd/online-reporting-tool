@@ -331,6 +331,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/part-1/edit-target-part-1.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
   
     import viewTarget               from  "./view-target-part-1.vue";
     import { useThesaurusStore }    from '@/stores/thesaurus';

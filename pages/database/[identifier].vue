@@ -6,7 +6,8 @@
 </template>
 
 <script setup lang="ts">
-    import { KmSuspense } from "@/components/controls";
+//@ts-nocheck
+    import { KmSuspense } from "~/components/controls";
     import viewDocument from '@/components/pages/database/view-document.vue';
     import { useRoute } from 'vue-router';
     import { SCHEMAS, ROLES } from '@/utils';

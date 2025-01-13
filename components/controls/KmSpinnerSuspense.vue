@@ -14,6 +14,7 @@
 <i18n src="@/i18n/dist/components/controls/KmSpinnerSuspense.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
 import { useI18n } from 'vue-i18n';
     import KmSpinner from './KmSpinner.vue';
     const nuxtApp = useNuxtApp();

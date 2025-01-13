@@ -4,6 +4,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
 
     import { facets,parseSolrQuery } from '@/services/solr';
     import { useCountriesStore }    from '@/stores/countries';

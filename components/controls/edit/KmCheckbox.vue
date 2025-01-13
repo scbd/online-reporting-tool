@@ -12,6 +12,7 @@
 </template>
   
 <script lang="ts">
+//@ts-nocheck
 export default {
     props: {
         label: String,

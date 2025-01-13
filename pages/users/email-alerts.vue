@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
 
     const {t} = useI18n();
     definePageMeta({

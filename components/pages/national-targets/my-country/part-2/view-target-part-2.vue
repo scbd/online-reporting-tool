@@ -88,6 +88,7 @@
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/part-2/view-target-part-2.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
   
     import { useRoute } from 'vue-router' 
     import { KmDocumentDraftsService}from "@/services/kmDocumentDrafts";

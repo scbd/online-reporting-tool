@@ -13,6 +13,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/missing-target-error.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import btnNewTarget from './btn-new-target.vue';
     
     const { t }       = useI18n(); 

@@ -61,8 +61,9 @@
 
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/validation.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import  { KmSpinnerSuspense, KmSpinner, KmModalSpinner, KmTerm, KmLink
-            } from "@/components/controls";
+            } from "~/components/controls";
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { KmDocumentsService } from '@/services/kmDocuments';

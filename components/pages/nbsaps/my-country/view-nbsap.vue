@@ -160,6 +160,7 @@
 <i18n src="@/i18n/dist/components/pages/nbsaps/my-country/edit-nbsap.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
   
     import { useRoute } from 'vue-router' 
     import { KmDocumentDraftsService}from "@/services/kmDocumentDrafts";

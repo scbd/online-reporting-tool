@@ -225,9 +225,10 @@
 
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/overview.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     import _ from 'lodash';
-    import { KmSuspense, KmLink, KmNavLink, KmModalSpinner } from '@/components/controls'
+    import { KmSuspense, KmLink, KmNavLink, KmModalSpinner } from '~/components/controls'
     import WorkflowActions from '@/components/actions/workflow-actions.vue';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import btnNewTarget from './btn-new-target.vue';

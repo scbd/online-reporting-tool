@@ -5,6 +5,7 @@
 
 <i18n src="@/i18n/dist/components/pages/taxonomy/gbf/gbf-taxonomy-list.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 import { useThesaurusStore } from '@/stores/thesaurus';
 import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
 

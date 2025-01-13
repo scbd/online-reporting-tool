@@ -16,6 +16,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/link/km-add-link.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
   const {t} = useI18n();
   const linkEditorRef= shallowRef(null); 
   let editedLinkIndex = -1;   

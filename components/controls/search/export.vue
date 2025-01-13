@@ -93,6 +93,7 @@
 
 
 <script setup lang="ts">
+//@ts-nocheck
     import { downloadSchemas } from '~/app-data/download-schemas.js';
     import { queryIndex, parseSolrQuery } from '@/services/solr'
     

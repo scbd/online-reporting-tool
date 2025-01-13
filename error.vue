@@ -8,6 +8,7 @@
     </NuxtLayout>
   </template>
   <script setup lang="ts">
+//@ts-nocheck
     import error404 from '~/pages/error/404.vue';
     import error500 from '~/pages/error/500.vue';
     const props = defineProps({

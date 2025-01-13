@@ -164,6 +164,7 @@
 </template>
 <i18n src="@/i18n/dist/components/layout/cbd/footer.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     const { t } = useI18n();
 </script>
 

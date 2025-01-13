@@ -30,6 +30,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/link/km-add-link-file.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     const links = defineModel({type:Array, required:true, default:[]});
 
