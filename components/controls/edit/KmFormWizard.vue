@@ -32,7 +32,7 @@
         </div>
     </div>
 </template>
-<script>
+<script lang="ts">
 import { provide } from 'vue';
 
 export default {

@@ -247,7 +247,7 @@
   </CCard>
 </template>
   <i18n src="@/i18n/dist/pages/national-reports/nr7/my-country/view/index.json"></i18n>
-  <script>
+  <script lang="ts">
     export default {
       name: 'Nr7View',
       auth:false,

@@ -4,7 +4,7 @@
   </km-suspense>
 </template>
   
-  <script>
+  <script lang="ts">
   
   import { KmSuspense } from "@/components/controls";
   import EditTargetPart2 from "@/components/pages/national-targets/my-country/part-2/edit-target-part-2.vue";

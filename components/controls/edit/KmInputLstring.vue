@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { makeUid } from '@coreui/utils/src'
 import {without} from 'lodash';
 import { useThesaurusStore }    from '@/stores/thesaurus';

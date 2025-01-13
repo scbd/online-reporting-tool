@@ -41,7 +41,7 @@
   </div>
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/KmCkEditor.json"></i18n>
-<script>
+<script lang="ts">
 
 import '@/libs/ckeditor/build/ckeditor.js'//'@ckeditor/ckeditor5-build-classic'
 import { Ckeditor }    from '@ckeditor/ckeditor5-vue';

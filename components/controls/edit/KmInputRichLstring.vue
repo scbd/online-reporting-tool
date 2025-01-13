@@ -33,7 +33,7 @@
   </div>
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/KmInputRichLstring.json"></i18n>
-<script>
+<script lang="ts">
 import $ from 'jquery';
 import { makeUid } from '@coreui/utils/src'
 import {without} from 'lodash';

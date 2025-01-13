@@ -22,7 +22,7 @@
 
 </template>
 <i18n src="@/i18n/dist/components/common/cbd-article.json"></i18n>
-<script>
+<script lang="ts">
 
 // import cbdAddNewArticle from './cbd-add-new-article.vue';
 

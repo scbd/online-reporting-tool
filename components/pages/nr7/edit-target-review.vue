@@ -209,7 +209,7 @@
   </form>
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/edit-target-review.json"></i18n>
-<script>
+<script lang="ts">
 export default {
   components: {
     Ckeditor,

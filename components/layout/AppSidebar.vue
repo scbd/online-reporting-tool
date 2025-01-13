@@ -101,7 +101,7 @@
 </template>
 
 <i18n src="@/i18n/dist/components/layout/AppSidebar.json"></i18n>
-<script>
+<script lang="ts">
 
 import { useRealmConfStore }    from '@/stores/realmConf';
 import { useUserPreferencesStore } from '@/stores/userPreferences';

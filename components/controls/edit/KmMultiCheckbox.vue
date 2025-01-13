@@ -8,7 +8,7 @@
     </div>
   </template>
   
-  <script>
+  <script lang="ts">
   import Checkbox from "./KmCheckbox.vue";  
     import { makeUid }         from '@coreui/utils/src';
 
