@@ -7,8 +7,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     const { CAPTCHA_V2_BADGE_KEY } = useRuntimeConfig().public;
 
-
-    initializeRecaptcha('g-recaptcha', CAPTCHA_V2_BADGE_KEY);
+    if(CAPTCHA_V2_BADGE_KEY)
+        initializeRecaptcha('g-recaptcha', CAPTCHA_V2_BADGE_KEY);
 
     nuxtApp.provide('recaptcha', {
         getRecaptchaToken,
@@ -48,7 +48,9 @@ function initializeRecaptcha(elementId:string, sitekey:string){
 }
 
 function getRecaptchaToken(){
-
+    if(!gAssignedId)
+        return;
+    
     if(reCaptchaPromise?.reject)
         reCaptchaPromise.reject();        
 
@@ -59,6 +61,9 @@ function getRecaptchaToken(){
 }
 
 function resetRecaptcha(){
+    if(!gAssignedId)
+        return;
+
     if(reCaptchaPromise?.reject)
         reCaptchaPromise.reject();
     reCaptchaPromise = undefined;
