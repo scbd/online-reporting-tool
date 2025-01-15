@@ -11,7 +11,7 @@ import type { HttpHeaders } from "~/types/api/http-headers";
 const  serviceUrls = { 
   documentQueryUrl      (){ return "/api/v2013/documents/" },
   documentUrl           (identifier:string){ return `/api/v2013/documents/${encodeURIComponent(identifier)}` },
-  validateUrl           (){ return "/api/v2013/documents/x/validate1" },
+  validateUrl           (){ return "/api/v2013/documents/x/validate" },
   draftUrl              (identifier:string){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft` },
   attachmentUrl         (identifier:string, filename:string) { return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/${encodeURIComponent(filename)}` },
   temporaryAttachmentUrl(                    ) { return `/api/v2015/temporary-files` },
