@@ -36,7 +36,6 @@
 <script lang="ts">
 //@ts-nocheck
 import $ from 'jquery';
-import { makeUid } from '@coreui/utils/src'
 import {without} from 'lodash';
 import KmCkEditor from './KmCkEditor.vue'
 import { useThesaurusStore }    from '@/stores/thesaurus';
@@ -71,7 +70,7 @@ export default {
   data() {
     return {
         activeLocale : '',
-        uid : makeUid(),
+        uid : useGenerateUUID(),
         tabPaneActiveKey:1,
         userPreferencesStore : useUserPreferencesStore(),
         wordCount:{}

@@ -158,7 +158,7 @@
     import ViewData         from './indicator-data/nr7-view-indicator-data.vue';
     import _,{uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
-    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions.s'
+    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
 
     let document = ref({});
     const props = defineProps({
