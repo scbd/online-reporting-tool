@@ -44,7 +44,6 @@
 </template>
 <script setup lang="ts">
 //@ts-nocheck
-    import { makeUid }         from '@coreui/utils/src'
     import {cloneDeep} from 'lodash';
     
     const {t, locale }          = useI18n()
@@ -56,7 +55,7 @@
     }) 
     const emit = defineEmits(['onRecordDelete'])
 
-    const componentId        = makeUid();
+    const componentId        = useGenerateUUID();
     const accordionToggle    = shallowRef(null);
     // const canTeleport        = ref(false);
     const indicators         = ref(props.indicators)
