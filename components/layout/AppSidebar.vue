@@ -101,12 +101,13 @@
 </template>
 
 <i18n src="@/i18n/dist/components/layout/AppSidebar.json"></i18n>
-<script>
+<script lang="ts">
+//@ts-nocheck
 
 import { useRealmConfStore }    from '@/stores/realmConf';
 import { useUserPreferencesStore } from '@/stores/userPreferences';
 import { useAppStateStore } from '@/stores/appState';
-import { KmNavLink } from '@/components/controls';
+import { KmNavLink } from '~/components/controls';
 import { useRoute } from 'vue-router';
 
 

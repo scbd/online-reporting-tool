@@ -33,9 +33,9 @@
   </div>
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/KmInputRichLstring.json"></i18n>
-<script>
+<script lang="ts">
+//@ts-nocheck
 import $ from 'jquery';
-import { makeUid } from '@coreui/utils/src'
 import {without} from 'lodash';
 import KmCkEditor from './KmCkEditor.vue'
 import { useThesaurusStore }    from '@/stores/thesaurus';
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
         activeLocale : '',
-        uid : makeUid(),
+        uid : useGenerateUUID(),
         tabPaneActiveKey:1,
         userPreferencesStore : useUserPreferencesStore(),
         wordCount:{}

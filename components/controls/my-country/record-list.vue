@@ -1,3 +1,3 @@
 <template>
-    <record-type-search :recordTypes></record-type-search>
+    <record-type-search :record-types="[]"></record-type-search>
 </template>

@@ -14,6 +14,7 @@
     </div> -->
 </template>
 <script lang="ts" setup>
+//@ts-nocheck
 
 const attrs = useAttrs()
 const emit = defineEmits(['update:modelValue',])

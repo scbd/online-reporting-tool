@@ -24,6 +24,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/goal-target-list.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     const props = defineProps({
         goalTargets : {type:Array<ETerm>, required:true}

@@ -48,7 +48,8 @@
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-II.json"></i18n>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/view/nr7-view-section-II.json"></i18n>
 
-<script setup>
+<script setup lang="ts">
+//@ts-nocheck
   
     const {t, locale}    = useI18n();
     const selectedLocale = ref(locale.value);

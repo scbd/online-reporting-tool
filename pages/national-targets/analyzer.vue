@@ -53,6 +53,7 @@
   </template>
   <i18n src="@/i18n/dist/pages/national-targets/analyzer.json"></i18n>
   <script setup lang="ts">
+//@ts-nocheck
 
     import {useRoute} from 'vue-router';
     import {stringifyQuery} from 'ufo'

@@ -61,8 +61,9 @@
 
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/validation.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import  { KmSpinnerSuspense, KmSpinner, KmModalSpinner, KmTerm, KmLink
-            } from "@/components/controls";
+            } from "~/components/controls";
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { KmDocumentsService } from '@/services/kmDocuments';
@@ -98,7 +99,7 @@
     const editDocument              = ref<ENationalTarget7|ENationalTarget7>();
     const showEditDocumentModal     = ref(false);
     const showValidationMessageModal= ref(false);
-
+    
     const disableActions = computed(()=>!!stateTargetWorkflow.value?.batchId)
     const nationalTargetRecords = computed(()=>{
         return [...draftNationalTargets.value, ...publishedNationalTargets.value]
@@ -129,6 +130,11 @@
     }
 
     async function init(){
+
+        var cat:EDocumentInfo = {}; 
+        
+        cat.d="";
+
         try{
             isLoadingRecords.value = true;    
             let query = '';

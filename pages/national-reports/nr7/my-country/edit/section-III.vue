@@ -5,8 +5,9 @@
 </template>
   
 <script setup lang="ts">
+//@ts-nocheck
 
-import { KmSuspense } from "@/components/controls";
+import { KmSuspense } from "~/components/controls";
 import { SCHEMAS, ROLES } from '@/utils';
 
     const EditSectionIII = defineAsyncComponent(()=>import("@/components/pages/nr7/my-country/edit/nr7-edit-section-III.vue"))

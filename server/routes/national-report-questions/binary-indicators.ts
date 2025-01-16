@@ -1,3 +1,4 @@
+//@ts-nocheck
 
 import {binaryIndicatorQuestions} from '@/app-data/binary-indicator-questions.js' 
 

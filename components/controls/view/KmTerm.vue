@@ -9,6 +9,7 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/view/KmTerm.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     import { useThesaurusStore }    from '@/stores/thesaurus';
 

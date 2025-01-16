@@ -182,7 +182,8 @@
 
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/KmFormWorkflow.json"></i18n>
-<script setup>
+<script setup lang="ts">
+//@ts-nocheck
 
     import {cloneDeep, isEqual} from 'lodash';
     import moment from 'moment';

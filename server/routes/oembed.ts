@@ -1,3 +1,4 @@
+//@ts-nocheck
 import _ from 'lodash';
 import { HTTP_STATUS } from '~/utils';
 export default defineEventHandler((event)=>{

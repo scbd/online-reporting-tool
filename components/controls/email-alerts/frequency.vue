@@ -28,7 +28,8 @@
 <i18n src="@/i18n/dist/components/controls/email-alerts/frequency.json"></i18n>
 <i18n src="@/i18n/dist/app-data/frequency.json"></i18n>
 <script setup lang="ts">
-    import { frequencies } from '@/app-data/frequencies';
+//@ts-nocheck
+    import { frequencies } from '~/app-data/frequencies';
     const {t, locale } = useI18n();
     const realmConf    = useRealm();
     const { user }     = useAuth();

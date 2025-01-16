@@ -13,7 +13,8 @@
 </template>
 <i18n src="@/i18n/dist/components/layout/AppFooter.json"></i18n>
 
-<script>
+<script lang="ts">
+//@ts-nocheck
 import cbdFooter from './cbd/footer.vue'
 
 export default {

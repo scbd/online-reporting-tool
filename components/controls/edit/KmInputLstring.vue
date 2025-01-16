@@ -15,8 +15,8 @@
   </div>
 </template>
 
-<script>
-import { makeUid } from '@coreui/utils/src'
+<script lang="ts">
+//@ts-nocheck
 import {without} from 'lodash';
 import { useThesaurusStore }    from '@/stores/thesaurus';
 
@@ -43,7 +43,7 @@ export default {
     },
     data() {
         return {
-            uid : makeUid()
+            uid : useGenerateUUID()
         };
     },
     watch:{

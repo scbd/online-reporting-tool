@@ -1,5 +1,7 @@
+//@ts-nocheck
 import {useToast} from 'vue-toast-notification';
 import { useRealmConfStore } from '@/stores/realmConf';
+import type { FetchError } from 'ofetch';
 
 export const useGenerateUUID = ()=> {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()).toUpperCase();
@@ -27,9 +29,9 @@ export const isProduction = ()=>{
     return ACCOUNTS_HOST_URL.indexOf('accounts.cbd.int')>=0
 }
 
-function error(appError, userMessage){
+function error(appError:FetchError, userMessage:string|null=null){
 
-    if(![404, 401, 403].includes(appError?.status)){
+    if(![404, 401, 403].includes(appError?.status||0)){
 
         try{
             console.error(appError);

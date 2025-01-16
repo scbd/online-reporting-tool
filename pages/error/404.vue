@@ -19,7 +19,8 @@
     </div>
   </template>
   <i18n src="@/i18n/dist/pages/error/404.json"></i18n>
-  <script setup>
+  <script setup lang="ts">
+//@ts-nocheck
       const { t } = useI18n();
       const handleError = () => clearError({ redirect: '/' })
   

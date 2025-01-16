@@ -1,26 +1,38 @@
 
-import ApiBase, { tryCastToApiError } from './api-base';
+import { type ApiOptions } from "~/types/api/api-options";
+import type { ELstring } from "~/types/schemas/base/ELstring";
+import type { TempFileUploadOptions, TempSlotBody, TempSlotResponse } from "~/types/api/temp-slot";
+
+import ApiBase from './api-base';
+import type { KmDocumentAttachment, KmDocumentInfoList, KmStorageParam } from "~/types/schemas/base/km-storage";
+import type { EDocumentInfo } from "~/types/schemas/base/EDocumentInfo";
+import type { HttpHeaders } from "~/types/api/http-headers";
 
 const  serviceUrls = { 
   documentQueryUrl      (){ return "/api/v2013/documents/" },
-  documentUrl           (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}` },
+  documentUrl           (identifier:string){ return `/api/v2013/documents/${encodeURIComponent(identifier)}` },
   validateUrl           (){ return "/api/v2013/documents/x/validate" },
-  draftUrl              (identifier){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft` },
-  attachmentUrl         (identifier, filename) { return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/${encodeURIComponent(filename)}` },
+  draftUrl              (identifier:string){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft` },
+  attachmentUrl         (identifier:string, filename:string) { return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/${encodeURIComponent(filename)}` },
   temporaryAttachmentUrl(                    ) { return `/api/v2015/temporary-files` },
-  persistAttachmentUrl  (identifier, guid    ) { return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/persist-temporary/${encodeURIComponent(guid)}` },
-  securityUrl           (identifier, operation){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/securities/${encodeURIComponent(operation)}` },
-  draftSecurityUrl      (identifier, operation){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/securities/${encodeURIComponent(operation)}` },
-  draftLockUrl          (identifier, lockID)   { return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/locks/${encodeURIComponent(lockID)}` },
-  documentVersionUrl    (identifier)           { return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions` },
-  saveDraftVersionUrl   (identifier)           { return `/api/v2018/temporary-documents/${encodeURIComponent(identifier)}` },
-  publishDraftUrl       (schema, identifier)   { return `/api/v2023/documents/schemas/${encodeURIComponent(schema)}/${encodeURIComponent(identifier||'')}` },
+  persistAttachmentUrl  (identifier:string, guid:string    ) { return `/api/v2013/documents/${encodeURIComponent(identifier)}/attachments/persist-temporary/${encodeURIComponent(guid)}` },
+  securityUrl           (identifier:string, operation:string){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/securities/${encodeURIComponent(operation)}` },
+  draftSecurityUrl      (identifier:string, operation:string){ return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/securities/${encodeURIComponent(operation)}` },
+  draftLockUrl          (identifier:string, lockID:string)   { return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions/draft/locks/${encodeURIComponent(lockID)}` },
+  documentVersionUrl    (identifier:string)           { return `/api/v2013/documents/${encodeURIComponent(identifier)}/versions` },
+  saveDraftVersionUrl   (identifier:string)           { return `/api/v2018/temporary-documents/${encodeURIComponent(identifier)}` },
+  publishDraftUrl       (schema:string, identifier:string)   { return `/api/v2023/documents/schemas/${encodeURIComponent(schema)}/${encodeURIComponent(identifier||'')}` },
   
   
 }
 export default class KmStorageApi extends ApiBase
 {
-  constructor(options) {
+  documents   :KmDocumentsApi;
+  drafts      :KmDraftsApi;
+  locks       :KmLocksApi;
+  attachments :KmAttachmentsApi;
+
+  constructor(options:ApiOptions) {
     super(options);
     
     this.documents    = new KmDocumentsApi(options);
@@ -30,41 +42,40 @@ export default class KmStorageApi extends ApiBase
 
   }
 
-
 }
 
 class KmDocumentsApi extends ApiBase
 {
-  constructor(options) {
+  constructor(options:ApiOptions) {
     super(options);
-    this.self = this;
   }
-  async query(params){
+
+  async query(params:object){
     const data =  await useAPIFetch(serviceUrls.documentQueryUrl(), { method:'get', params })
                   
     return data;
   }
-  async get(identifier, params){
+  async get(identifier:string, params:object){
     const data =  await useAPIFetch(serviceUrls.documentUrl(identifier), { method:'get', params })
                   
     return data;
   }
-  async exists(identifier,params){
+  async exists(identifier:string,params:object){
     const data =  await useAPIFetch(serviceUrls.documentUrl(identifier), { method:'head', params })
                   
     return data;
   }
-  async put(identifier, body, params){
+  async put(identifier:string, body:object, params:object){
     const data =  await useAPIFetch(serviceUrls.documentUrl(identifier), { method:'put', body, params })
                   
     return data;
   }
-  async delete(identifier, params){
+  async delete(identifier:string, params:object){
     const data =  await useAPIFetch(serviceUrls.documentUrl(identifier), { method:'delete', params })
                   
     return data;
   }
-  async validate(body, params){
+  async validate(body:any, params:KmStorageParam){
     params = params || {};
 
     if (!params?.schema && body?.header?.schema)
@@ -77,17 +88,17 @@ class KmDocumentsApi extends ApiBase
     return data;
   }
 
-  async canCreate(identifier, params){
+  async canCreate(identifier:string, params:object){
     const data =  await useAPIFetch(serviceUrls.securityUrl(identifier, 'create'), { method:'get', params })
                   
     return data;
   }
-  async canUpdate(identifier, params){
+  async canUpdate(identifier:string, params:object){
     const data =  await useAPIFetch(serviceUrls.securityUrl(identifier, 'update'), { method:'get', params })
                   
     return data;
   }
-  async canDelete(identifier, params){
+  async canDelete(identifier:string, params:object){
     const data =  await useAPIFetch(serviceUrls.securityUrl(identifier, 'delete'), { method:'get', params })
                   
     return data;
@@ -95,17 +106,17 @@ class KmDocumentsApi extends ApiBase
 }
 class KmDraftsApi extends ApiBase
 {
-  constructor(options) {
+  constructor(options:ApiOptions) {
     super(options);
     
   }
 
-  async query(params){
+  async query(params:KmStorageParam):Promise<KmDocumentInfoList>{
     params.collection = "mydraft";
-    const data =  await useAPIFetch(serviceUrls.documentQueryUrl(),  { method:'get', params })
+    const data =  await useAPIFetch<KmDocumentInfoList>(serviceUrls.documentQueryUrl(),  { method:'get', params })
     
     if(data?.Items?.length){
-        data.Items = data.Items.map(e=>{
+        data.Items = data.Items.map((e:EDocumentInfo)=>{
                         if(e.workingDocumentBody){
                             e.body = e.workingDocumentBody;
                         }
@@ -116,7 +127,7 @@ class KmDraftsApi extends ApiBase
     return data;
   }
 
-  async get(identifier, params):Promise<EDocumentInfo>{
+  async get(identifier:string, params:object):Promise<EDocumentInfo>{
     const data =  await useAPIFetch<EDocumentInfo>(serviceUrls.draftUrl(identifier),  { method:'get', params })
 
     if(data.workingDocumentBody){
@@ -126,18 +137,18 @@ class KmDraftsApi extends ApiBase
     return data;
   }
 
-  async exists(identifier,params){
+  async exists(identifier:string,params:object){
 
     const data =  await useAPIFetch(serviceUrls.draftUrl(identifier),  { method:'head', params })
                   
     return data;
   }
-  async put(identifier, body, params){
+  async put(identifier:string, body:object, params:object){
     const data = await useAPIFetch( serviceUrls.draftUrl(identifier), { body, method:'put', params });
     return data;
   }
 
-  async publishDraftPost(schema:String, identifier:String, document, additionalInfo:ELstring){
+  async publishDraftPost(schema:string, identifier:string, document:object, additionalInfo:ELstring){
     const body = {
       document,
       additionalInfo
@@ -146,7 +157,7 @@ class KmDraftsApi extends ApiBase
     return data;
   }
 
-  async publishDraftPut(schema:String, identifier:String, document, additionalInfo:ELstring){
+  async publishDraftPut(schema:string, identifier:string, document:object, additionalInfo:ELstring){
     const body = {
       document,
       additionalInfo
@@ -155,28 +166,28 @@ class KmDraftsApi extends ApiBase
     return data;
   }
 
-  async saveDraftVersion(identifier, body, params){    
+  async saveDraftVersion(identifier:string, body:object, params:object){    
     const data = await useAPIFetch( serviceUrls.saveDraftVersionUrl(identifier), { body, method:'put', params });
     return data;
   }
 
-  async delete(identifier, params){
+  async delete(identifier:string, params:object){
     const data =  await useAPIFetch(serviceUrls.draftUrl(identifier),  { method:'delete', params })
                   
     return data;
   }
   
-  async canCreate(identifier, params){
+  async canCreate(identifier:string, params:object){
     const data =  await useAPIFetch(serviceUrls.draftSecurityUrl(identifier, 'create'),  { method:'get', params })
                   
     return data;
   }
-  async canUpdate(identifier, params){
+  async canUpdate(identifier:string, params:object){
     const data =  await useAPIFetch(serviceUrls.draftSecurityUrl(identifier, 'update'),  { method:'get', params })
                   
     return data;
   }
-  async canDelete(identifier, params){
+  async canDelete(identifier:string, params:object){
     const data =  await useAPIFetch(serviceUrls.draftSecurityUrl(identifier, 'delete'),  { method:'get', params })
                   
     return data;
@@ -184,58 +195,60 @@ class KmDraftsApi extends ApiBase
 }
 class KmLocksApi extends ApiBase
 {
-  constructor(options) {
+  constructor(options:ApiOptions) {
     super(options);
   }
 
-  async get(identifier, params){
-    const data =  await useAPIFetch(serviceUrls.draftLockUrl(identifier),  { method:'get', params })
+  async get(identifier:string, lockId:string, params:object){
+    const data =  await useAPIFetch(serviceUrls.draftLockUrl(identifier, lockId),  { method:'get', params })
                   
     return data;
   }
-  async exists(identifier,params){
-    const data =  await useAPIFetch(serviceUrls.draftLockUrl(identifier),  { method:'head', params })
+  async exists(identifier:string, lockId:string,params:object){
+    const data =  await useAPIFetch(serviceUrls.draftLockUrl(identifier, lockId),  { method:'head', params })
                   
     return data;
   }
-  async put(identifier, body, params){
-    const data =  await useAPIFetch(serviceUrls.draftLockUrl(identifier), { body, method:'put', params })
+  async put(identifier:string, lockId:string, body:object, params:object){
+    const data =  await useAPIFetch(serviceUrls.draftLockUrl(identifier, lockId), { body, method:'put', params })
                   
     return data;
   }
-  async delete(identifier, params){
-    const data =  await useAPIFetch(serviceUrls.draftLockUrl(identifier),  { method:'delete', params })
+  async delete(identifier:string, lockId:string, params:object){
+    const data =  await useAPIFetch(serviceUrls.draftLockUrl(identifier, lockId),  { method:'delete', params })
                   
     return data;
   }
 }
 class KmAttachmentsApi extends ApiBase
 {
-  constructor(options) {
+  constructor(options:ApiOptions) {
     super(options);
   }
 
-  async uploadTempFile(identifier, file, fileName, options)  {
+  async uploadTempFile(identifier:string, file:FormData|File, fileName:string, options:TempFileUploadOptions)  {
     
     
     const { timeout, onUploadProgress, onDownloadProgress }= { ...(options||{}) };
+    const requestHeaders: HeadersInit = new Headers();
 
     const apiConfig = {
-      headers: {},
+      headers: requestHeaders,
       timeout: timeout || 60 * 60 * 1000,
       onUploadProgress, 
       onDownloadProgress
     };
     
-    const tempSlotBody = {
-        filename    : fileName,
+    const tempSlotBody:TempSlotBody = {
+      filename: fileName,
+      contentType: ""
     }
 
     //find the content type and validate with whitelist
     if(file instanceof FormData){
-        const tempFile = formData.get('file')
+        const tempFile = file.get('file') as File;
         if(tempFile){
-            tempSlotBody.contentType = this.getMimeType(file);
+            tempSlotBody.contentType = this.getMimeType(tempFile);
         }
     }
     else if(file instanceof File){
@@ -246,20 +259,20 @@ class KmAttachmentsApi extends ApiBase
     }
     
     if (this.mimeTypeWhitelist().indexOf(tempSlotBody.contentType) < 0) {
-        throw new Error("File type not supported: " + mimeType + "(" + file.name + ")");
+        throw new Error("File type not supported: " + tempSlotBody.contentType + "(" + fileName + ")");
     }
 
     const key = S4();
     // get a temporary slot from S3 to upload the file
-    const temporarySlot =  await useAPIFetch(serviceUrls.temporaryAttachmentUrl(),   { key, method:'POST', body : tempSlotBody})
+    const temporarySlot =  await useAPIFetch<TempSlotResponse>(serviceUrls.temporaryAttachmentUrl(),   { key, method:'POST', body : tempSlotBody})
     
     // upload the file to the temporary slot on S3    
-    apiConfig.headers['Content-Type' ] = temporarySlot.contentType;
-    apiConfig.headers['Authorization'] = undefined;
-    const temporaryAttachment =  await useAPIFetch(temporarySlot.url,   { key,  method:'PUT', body:file, ...apiConfig})
+    apiConfig.headers.set('Content-Type', temporarySlot.contentType);
+    
+    const temporaryAttachment =  await useAPIFetch(temporarySlot.url, { key,  method:"PUT", body:file, ...apiConfig});
 
     //persists the file using the KM persists attachments endpoint
-    const persistedAttachment =  await useAPIFetch(serviceUrls.persistAttachmentUrl(identifier, temporarySlot.uid),   { key,  method:'POST', body:{fileName}  })
+    const persistedAttachment =  await useAPIFetch<KmDocumentAttachment>(serviceUrls.persistAttachmentUrl(identifier, temporarySlot.uid),   { key,  method:'POST', body:{fileName}  })
     
     const config = useRuntimeConfig();
     return {
@@ -267,38 +280,39 @@ class KmAttachmentsApi extends ApiBase
         url     : config.public.API_URL+persistedAttachment.url        
     };
   }
-  async upload(identifier, file, params) {
-        params = params || {};
-        params.identifier = identifier;
-        params.filename = file.name;
+  // async upload(identifier:string, file:File, params:any) {
+  //       params = params || {};
+  //       params.identifier = identifier;
+  //       params.filename = file.name;
 
-        var contentType = params.contentType || this.getMimeType(file);
+  //       var contentType = params.contentType || this.getMimeType(file);
 
-        // params.contentType = undefined;
-        params.headers = params.header || {};
-        params.headers["Content-Type"] = contentType;
+  //       // params.contentType = undefined;
+  //       params.headers = params.header || {};
+  //       params.headers["Content-Type"] = contentType;
 
-        ////TEMP////////////////
-            //upload to temp url
-            const data =  await useAPIFetch(serviceUrls.attachmentUrl(identifier, file.name),   { method:'put', body:file, params })
+  //       ////TEMP////////////////
+  //           //upload to temp url
+  //           const data =  await useAPIFetch(serviceUrls.attachmentUrl(identifier, file.name),   { method:'put', body:file, params })
 
             
-            const config = useRuntimeConfig()
-            data.url = config.public.API_URL+data.url;
-            data.urls = {//required by ckeditor
-                "default": data.url 
-            };
+  //           const config = useRuntimeConfig()
+  //           data.url = config.public.API_URL+data.url;
+  //           //TODO:move to ckeditor control
+  //           data.urls = {//required by ckeditor
+  //               "default": data.url 
+  //           };
             
-            return data;
-        ///////TEMP////////////////
+  //           return data;
+  //       ///////TEMP////////////////
 
-      //TODO : use s3
-      //1 request for temp file from s3
-      //upload file 
-      //return s3 location
-      //persist temp file location in api
-  }
-  getMimeType(file) {
+  //     //TODO : use s3
+  //     //1 request for temp file from s3
+  //     //upload file 
+  //     //return s3 location
+  //     //persist temp file location in api
+  // }
+  getMimeType(file:File) {
     const filename = file.name
     let sMimeType = file.type || "application/octet-stream";     
 

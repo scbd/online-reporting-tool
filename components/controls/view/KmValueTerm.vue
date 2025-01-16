@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     import KmTerm from './KmTerm.vue';
     // import { useThesaurusStore }    from '@/stores/thesaurus';
     

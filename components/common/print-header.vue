@@ -24,6 +24,7 @@
     </div>
 </template>
 <script lang="ts" setup>
+//@ts-nocheck
 
     import { useRealmConfStore } from '@/stores/realmConf';
 

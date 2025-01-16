@@ -64,7 +64,9 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/common/pagination.json"></i18n>
 
-<script setup>
+<script setup lang="ts">
+//@ts-nocheck
+
 const { t } = useI18n({ });
 
 const props = defineProps({

@@ -140,7 +140,8 @@
   
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-III.json"></i18n>
-<script setup>
+<script setup lang="ts">
+//@ts-nocheck
   
     import { capitalCase } from 'change-case';
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
@@ -157,7 +158,7 @@
     import ViewData         from './indicator-data/nr7-view-indicator-data.vue';
     import _,{uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
-    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions.js'
+    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
 
     let document = ref({});
     const props = defineProps({

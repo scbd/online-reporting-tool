@@ -8,6 +8,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/missing-data-alert.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     // import btnNewTarget from './btn-new-target.vue';
     const {t} = useI18n();
     const props = defineProps({

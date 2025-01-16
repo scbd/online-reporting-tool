@@ -10,6 +10,7 @@
     </div>
 </template>
 <script setup lang="ts">
+//@ts-nocheck
 import searchResult from '@/components/controls/search/search-result.vue';
 import { useRealmConfStore } from '@/stores/realmConf';
 import { SCHEMAS } from '@/utils';

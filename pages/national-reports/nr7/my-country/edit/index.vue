@@ -247,7 +247,8 @@
   </CCard>
 </template>
 <i18n src="@/i18n/dist/pages/national-reports/nr7/my-country/edit/index.json"></i18n>
-<script setup>
+<script setup lang="ts">
+//@ts-nocheck
   const {t} = useI18n();
 </script>
 

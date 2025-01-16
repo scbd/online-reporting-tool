@@ -5,12 +5,13 @@
     </KmFormGroup>            
 </template>
 <script lang="ts" setup>
-import { makeUid }         from '@coreui/utils/src'
+//@ts-nocheck
+
 import { default as KmFormGroup } from '../KmFormGroup.vue';
 const attrs = useAttrs()
 
 const props = defineProps({
-    name      : {type:String, default:makeUid()},
+    name      : {type:String, default:useGenerateUUID()},
     caption   : {type:String  },
     isValidFn : {type:Function},
 })

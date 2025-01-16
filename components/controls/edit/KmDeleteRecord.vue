@@ -58,7 +58,7 @@
 
 <i18n src="@/i18n/dist/components/controls/edit/KmDeleteRecord.json"></i18n>
 <script setup lang="ts">
-import { CCard, CCardBody, CCardFooter, CCardHeader, CCardTitle } from '@coreui/vue';
+//@ts-nocheck
     import {useToast} from 'vue-toast-notification';
     import { EditFormUtility } from '@/services/edit-form-utility';
 

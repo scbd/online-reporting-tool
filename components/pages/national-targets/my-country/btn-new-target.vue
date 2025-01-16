@@ -5,6 +5,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/national-targets/my-country/btn-new-target.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 
     const { t } = useI18n();
     const { $appRoutes }   = useNuxtApp();

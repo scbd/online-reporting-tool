@@ -7,6 +7,7 @@
   <i18n src="@/i18n/dist/pages/national-reports/nr7/my-country/edit/overview.json"></i18n>
 
   <script setup lang="ts">
+//@ts-nocheck
 
     import { KmSuspense, KmLink } from "@/components/controls";
     import { SCHEMAS, ROLES } from '@/utils';

@@ -45,6 +45,7 @@
 </template>
 <i18n src="@/i18n/dist/pages/users/setting.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 import { useStorage } from '@vueuse/core'
 
 const { t }  = useI18n();

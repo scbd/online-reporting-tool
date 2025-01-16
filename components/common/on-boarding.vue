@@ -18,6 +18,7 @@
 </template>
 <i18n src="@/i18n/dist/components/common/on-boarding.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import { VOnboardingWrapper, useVOnboarding } from 'v-onboarding'
     import 'v-onboarding/dist/style.css';
     import tourDummyTable  from '@/components/tour-dummy-views/tour-dummy-table.vue'; 

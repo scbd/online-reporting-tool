@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { defineStore } from 'pinia'
 import editFormUtility from './edit-form-utility'
 

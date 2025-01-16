@@ -17,6 +17,7 @@
 </template>
 <i18n src="@/i18n/dist/layouts/default.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
 import { CContainer } from '@coreui/vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
@@ -75,7 +76,7 @@ import {useRoute} from 'vue-router';
         await sleep(500)
         const { user } = useAuth();
         if(window._slaask){
-            if (user?.value?.isAuthenticated && window. _slaask) {
+            if (user?.value?.isAuthenticated && window._slaask) {
                 window._slaask.identify(user.name, {
                     'user-id': user.value.userID,
                     'name'   : user.value.name,

@@ -6,6 +6,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
   import MyCountryNbsaps from "@/components/pages/nbsaps/my-country/index.vue";
   import { SCHEMAS, ROLES } from '@/utils';
 

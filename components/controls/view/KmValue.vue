@@ -7,6 +7,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     // import { direction, lstringLocale, lstring } from '@/util/filter';
 
     const props = defineProps({

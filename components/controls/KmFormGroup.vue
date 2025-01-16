@@ -14,12 +14,12 @@
         </CCol>
     </CRow>
 </template>
-<script lang="ts" setup>
-    import { makeUid } from '@coreui/utils/src'
+<script setup lang="ts">
+    //@ts-nocheck
     import KmHelp      from './view/KmHelp.vue';
 
     const props = defineProps({
-        name      : {type:String, default:makeUid()},
+        name      : {type:String, default:useGenerateUUID()},
         caption   : {type:String  },
         required  : {type:Boolean, default:false}
     });

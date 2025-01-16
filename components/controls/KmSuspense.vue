@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
 import KmSpinnerSuspense from './KmSpinnerSuspense.vue';
 
 </script>

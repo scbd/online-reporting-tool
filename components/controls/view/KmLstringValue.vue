@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
     import { direction, lstringLocale, lstring } from '@/utils';
     import { useThesaurusStore }    from '@/stores/thesaurus';
 

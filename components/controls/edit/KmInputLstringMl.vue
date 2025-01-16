@@ -17,9 +17,9 @@
 </template>
 <i18n src="@/i18n/dist/components/controls/edit/KmInputLstringML.json"></i18n>
 <script setup lang="ts">
+//@ts-nocheck
     import { removeEmpty } from '@/utils';
     import { isEmpty } from 'lodash';
-    import { makeUid } from '@coreui/utils/src'
     import KmInputLstring from './KmInputLstring.vue';
     import { CCol } from '@coreui/vue';
     import { useI18n } from 'vue-i18n';
@@ -45,7 +45,7 @@
 
     const emit = defineEmits(['update:modelValue',])
     const binding = ref([{value:{}}]);
-    const id = computed(()=>useAttrs().id || makeUid());
+    const id = computed(()=>useAttrs().id || useGenerateUUID());
     const hasEmpty = computed(()=>binding.value.some(e=>isEmpty(e.value)))
     function addItem(){
         binding.value.push({value:{}});

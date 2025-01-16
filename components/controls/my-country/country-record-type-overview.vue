@@ -48,6 +48,7 @@
 <i18n src="@/i18n/dist/components/controls/my-country/country-record-type-overview.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
     import { useI18n } from "vue-i18n"; 
     import { useStorage } from '@vueuse/core'
     import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";

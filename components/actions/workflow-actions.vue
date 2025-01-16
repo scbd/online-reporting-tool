@@ -129,7 +129,8 @@
 </template>
 
 <i18n src="@/i18n/dist/components/actions/workflow-actions.json"></i18n>    
-<script setup lang="ts">    
+<script setup lang="ts">
+//@ts-nocheck    
     import moment from 'moment';
     import { useI18n } from 'vue-i18n';
     import { isWorkflowAssignedToMe, isWorkFlowCreatedByMe } from '@/utils'

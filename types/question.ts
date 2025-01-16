@@ -1,4 +1,4 @@
-interface Question {
+export interface Question {
 
     key         : string;
     section     : string;
@@ -12,7 +12,7 @@ interface Question {
     answer      : string; // used for ng-model
 }
 
-interface QuestionOption {
+export interface QuestionOption {
     value      : string
     title  : string
 }

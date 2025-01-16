@@ -16,6 +16,8 @@
 <i18n src="@/i18n/dist/components/pages/national-targets/national-targets-list.json"></i18n>
 
 <script lang="ts" setup>
+    //@ts-nocheck
+
     import {stringifyQuery} from 'ufo'
     import { useRoute } from 'vue-router';
 

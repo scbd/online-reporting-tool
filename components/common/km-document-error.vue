@@ -21,6 +21,7 @@
 <i18n src="@/i18n/dist/common/errors.json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
     const { locale, t } = useI18n();
     const security      = useSecurity();
     

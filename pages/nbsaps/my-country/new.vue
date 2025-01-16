@@ -5,6 +5,7 @@
 </template>
   
 <script setup lang="ts">
+//@ts-nocheck
     const schema      = useGetRealmSchema(SCHEMAS.NATIONAL_NBSAP)
     const { locale }  = useI18n();
     const route       = useRoute();

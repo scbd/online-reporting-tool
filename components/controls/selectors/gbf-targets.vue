@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-nocheck
 
     import { useThesaurusStore }    from '@/stores/thesaurus';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";

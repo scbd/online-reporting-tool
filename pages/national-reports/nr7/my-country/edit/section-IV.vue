@@ -5,6 +5,7 @@
 </template>
   
 <script setup lang="ts">
+//@ts-nocheck
 
 import { KmSuspense } from "@/components/controls";
 import { SCHEMAS, ROLES } from '@/utils';

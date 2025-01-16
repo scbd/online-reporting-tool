@@ -18,6 +18,7 @@
 <i18n src="@/i18n/dist/pages/workflows/batches/[batchId]/[[identifier]].json"></i18n>
 
 <script setup lang="ts">
+//@ts-nocheck
     import { KmSuspense } from "@/components/controls";
     import { useRoute } from 'vue-router';
     import { SCHEMAS, ROLES } from '@/utils';

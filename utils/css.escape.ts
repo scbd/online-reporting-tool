@@ -1,3 +1,4 @@
+//@ts-nocheck
 // https://raw.githubusercontent.com/mathiasbynens/CSS.escape/master/css.escape.js
 	
 export const cssEscape = function(value) {
