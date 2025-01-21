@@ -93,12 +93,10 @@ export default defineNuxtConfig({
           // }),
       ]
   },
-
-  gtag: {
-      id: process.env.NUXT_PUBLIC_GTAG_ID || 'G-XXXXXX',
-      enabled: (process.env?.NUXT_PUBLIC_ACCOUNTS_HOST_URL||'').indexOf('accounts.cbd.int') >= 0
+  gtag: {       
+    //   id: process.env.NUXT_PUBLIC_GTAG_ID || 'G-XXXXXX',
+      enabled: true//(process.env?.NUXT_PUBLIC_ACCOUNTS_HOST_URL||'').indexOf('accounts.cbd.int') >= 0
   },
-
   components: [
       {
           path: '~/components',
