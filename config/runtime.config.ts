@@ -6,6 +6,7 @@ export default defineNuxtConfig({
             API_DIRECT_URL    : process.env.NUXT_PUBLIC_API_URL           || 'https://api-direct.cbd.int',
             REALM_CONF_HOST   : process.env.NUXT_PUBLIC_REALM_CONF_HOST   || 'ort.cbddev.xyz',
             CAPTCHA_V2_BADGE_KEY: process.env.CAPTCHA_V2_BADGE_KEY        || '*******',
+            GTAG_ID           : '',
             TAG               : '',
             COMMIT            : '',
             targetTrackerApiUrl: process.env.NUXT_PUBLIC_TARGET_TRACKER_API_URL || 'https://tt-backend.staging.linode.unep-wcmc.org',
