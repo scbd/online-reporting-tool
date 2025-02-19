@@ -48,7 +48,8 @@ function initializeRecaptcha(elementId:string, sitekey:string){
 }
 
 function getRecaptchaToken(){
-    if(!gAssignedId)
+    
+    if(isNaN(parseInt(gAssignedId)))
         return;
     
     if(reCaptchaPromise?.reject)
@@ -61,7 +62,8 @@ function getRecaptchaToken(){
 }
 
 function resetRecaptcha(){
-    if(!gAssignedId)
+
+    if(isNaN(parseInt(gAssignedId)))
         return;
 
     if(reCaptchaPromise?.reject)
