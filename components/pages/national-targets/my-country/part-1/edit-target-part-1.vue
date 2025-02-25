@@ -370,7 +370,7 @@
     const selectedGlobalTargets     = ref([]);      
     const isBusy                    = ref(false);
     const validationReport          = ref({});
-
+    const documentInfo              = ref({});
     const isEventDefined        = useHasEvents();
     
 
@@ -402,10 +402,15 @@
 
     const onPostSaveDraft = async (document)=>{
         emit('onPostSaveDraft', document);
+        documentInfo.value = document
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
         validationReport.value     = cloneDeep(newValidationReport);
+    }
+
+    const onGetDocumentInfo = async ()=>{
+        return documentInfo.value;
     }
 
     const onGoalsAndTargetSelected = async (selected, type)=>{
@@ -495,8 +500,8 @@
                 document.value = {...refProps.rawDocument.value};
             }
             else if(refProps.identifier.value || route?.params?.identifier){        
-                const documentInfo = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
-                document.value = documentInfo.body;
+                documentInfo.value = await EditFormUtility.load(refProps.identifier.value||route.params.identifier);
+                document.value = documentInfo.value.body;
             }
             else 
                 document.value = emptyDocument();
@@ -548,7 +553,8 @@
     provide('kmWorkflowFunctions', {
         onPostSaveDraft,
         onPostReviewDocument,
-        onPostClose
+        onPostClose,
+        onGetDocumentInfo
     });
 
     provide("validationReview", {
