@@ -39,6 +39,7 @@ function error(appError:FetchError, userMessage:string|null=null){
             const { ACCOUNTS_HOST_URL, TAG, COMMIT } = useRuntimeConfig().public;
             const realmConfStore  = useRealmConfStore();
             const realmConf = realmConfStore.realmConf; 
+            const user = useAuth().user.value;
             //TODO: send error to server
             const errorLog = {
                 stack : JSON.stringify(appError, Object.getOwnPropertyNames(appError)), 
@@ -47,7 +48,8 @@ function error(appError:FetchError, userMessage:string|null=null){
                 userAgent: window.navigator.userAgent,
                 ver      : TAG||COMMIT,
                 timestamp: new Date(),
-                realm : realmConf.realm
+                realm : realmConf.realm,
+                userId: user?.userID
             }; 
 
             useAPIFetch('/error-logs', {method:'POST', body: errorLog});

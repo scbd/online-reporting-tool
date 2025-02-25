@@ -106,12 +106,17 @@
                 </CModalTitle>
             </CModalHeader>
             <CModalBody>
-                <strong>{{ t('overwriteConfirmation') }}</strong>
-                
+                <strong>{{ t('overwriteConfirmationMessage') }}</strong>
+                <!-- <div>
+                    {{ t('overwriteConfirmationMessage2') }}
+                    <km-link :to="`copybrowserurl`">
+                        link
+                    </km-link>
+                </div> -->
             </CModalBody>
             <CModalFooter>
-                <CButton color="danger" @click="confirm({confirm:true})">{{t('confirm')}}</CButton>
-                <CButton color="secondary" @click="confirm({confirm:false})">{{t('cancel')}}</CButton>
+                <CButton color="danger" @click="confirm({confirm:true})">{{t('overwriteConfirmationYes')}}</CButton>
+                <CButton color="secondary" @click="confirm({confirm:false})">{{t('overwriteConfirmationNo')}}</CButton>
             </CModalFooter>
         </CModal>
         
@@ -203,7 +208,7 @@
         focusedTab                  : { type:Number, default:0 },
         tab                         : { type:String },
     	document                    : { type:Object, required:true  },
-    	validateServerDraft         : { type:Boolean, required:false, default:false  }
+    	validateServerDraft         : { type:Boolean, required:false, default:true  }
     });
     
     const container     = useAttrs().container ?? 'body,html';
@@ -307,7 +312,8 @@
             $toast.success(t('draftSaveMessage'), {position:'top-right'});  
         }
         catch(e){
-            $toast.error('Error saving draft record', {position:'top-right'}); 
+            if(e?.message != 'Document has changed on server, cannot save draft')
+                $toast.error('Error saving draft record', {position:'top-right'}); 
             useLogger().error(e)
         }
         finally{
@@ -345,7 +351,8 @@
             $toast.success(t('successfulMessage'), {position:'top-right'});  
         }
         catch(e){
-            $toast.error('Error publishing record', {position:'top-right'}); 
+            if(e?.status != 'Document has changed on server, cannot save draft')
+                $toast.error('Error publishing record', {position:'top-right'}); 
             useLogger().error(e)
         }
         finally{
@@ -400,7 +407,7 @@
 
         const hasChangedAndOverwrite = await validateIfServerHasChanged()
         if(!hasChangedAndOverwrite)
-            return;
+            throw new Error('Document has changed on server, cannot save draft', {status:409}); //409 Resource Conflict 
 
         // save document
         const documentSaveResponse = await EditFormUtility.saveDraft(document);
@@ -469,11 +476,14 @@
 
         if(props.validateServerDraft.value){
             if(workflowFunctions.onGetDocumentInfo){
-                const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
+                const localDocumentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
                 try{
                     const serverDraft  = await KmDocumentDraftsService.loadDraftDocument(props.document.value.header.identifier);
 
-                    if(moment(serverDraft.updatedOn).isAfter(moment(documentInfo.updatedOn))){
+                    const serverDocumentUpdatedOn = serverDraft.workingDocumentUpdatedOn||serverDraft.updatedOn;
+                    const localDocumentUpdatedOn  = localDocumentInfo.workingDocumentUpdatedOn||localDocumentInfo.updatedOn;
+
+                    if(moment(serverDocumentUpdatedOn).isAfter(moment(localDocumentUpdatedOn))){
                         showOverwriteConfirmation.value = true;
                         const { data } = await reveal(); 
                         return data.confirm;

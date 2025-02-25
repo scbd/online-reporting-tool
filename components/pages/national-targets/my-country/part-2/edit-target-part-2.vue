@@ -142,6 +142,7 @@
     const isLoading = ref(false);
     const documentLoadError = ref(null); 
     const validationReport  = ref({}); 
+    const documentInfo      = ref({});
     let isNewDocument       = false;
 
     const cleanDocument = computed(()=>{
@@ -185,10 +186,15 @@
     const onPostSaveDraft = async (document)=>{
         isNewDocument = false;
         emit('onPostSaveDraft', document);
+        documentInfo.value = document
     }
 
     const onPostReviewDocument = async(document, newValidationReport)=>{
         validationReport.value     = cloneDeep(newValidationReport);
+    }
+    
+    const onGetDocumentInfo = async ()=>{
+        return documentInfo.value;
     }
     
     function onFileUpload({file, locale}){
@@ -234,8 +240,8 @@
                 document.value = {...props.rawDocument};
             }
             else if(identifier){
-                const documentInfo = await EditFormUtility.load(identifier); 
-                document.value = documentInfo.body;               
+                documentInfo.value = await EditFormUtility.load(identifier); 
+                document.value = documentInfo.value.body;               
             }
             else{
                 document.value = emptyDocument();
@@ -259,7 +265,8 @@
     provide('kmWorkflowFunctions', {
         onPostSaveDraft,
         onPostReviewDocument,
-        onPostClose
+        onPostClose,
+        onGetDocumentInfo
     });
 
     provide("validationReview", {

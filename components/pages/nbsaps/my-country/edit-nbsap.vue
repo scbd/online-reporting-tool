@@ -233,6 +233,7 @@
     const document                  = ref();
     const isBusy                    = ref(false);
     const validationReport          = ref({});
+    const documentInfo              = ref({});
     const isEventDefined            = useHasEvents();
 
     const jurisdictions  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.JURISDICTIONS).filter(e=>e.identifier == THESAURUS_TERMS.JURISDICTION_FEDERAL));
@@ -274,12 +275,16 @@
 
     const onPostSaveDraft = async (document) => {
         emit('onPostSaveDraft', document);
+        documentInfo.value = document
     }
 
     const onPostReviewDocument = async (document, newValidationReport) => {
         validationReport.value = cloneDeep(newValidationReport);
     }
 
+    const onGetDocumentInfo = async ()=>{
+        return documentInfo.value;
+    }
 
     function onFileUpload({ file, locale }) {
         // useOnFileUpload({ document, file, locale });
@@ -304,8 +309,8 @@
                 document.value = { ...refProps.rawDocument.value };
             }
             else if (refProps.identifier.value || route?.params?.identifier) {
-                const documentInfo = await EditFormUtility.load(refProps.identifier.value || route.params.identifier);
-                document.value = documentInfo.body;
+                documentInfo.value = await EditFormUtility.load(refProps.identifier.value || route.params.identifier);
+                document.value = documentInfo.value.body;
             }
             else
                 document.value = emptyDocument();
@@ -337,7 +342,8 @@
     provide('kmWorkflowFunctions', {
         onPostSaveDraft,
         onPostReviewDocument,
-        onPostClose
+        onPostClose,
+        onGetDocumentInfo
     });
 
     provide("validationReview", {
