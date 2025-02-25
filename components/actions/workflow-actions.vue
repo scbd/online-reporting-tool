@@ -35,10 +35,10 @@
                     :disabled=" isRevealed " v-if=" activity.name != 'deleteRecord' ">
                     <span>{{t('approve')}}</span>
                 </button>
-                <!-- <button type="button" class="btn btn-danger bold" @click="confirmDelete()" :disabled=" isRevealed "
+                <button type="button" class="btn btn-danger bold" @click="confirmWorkflowRequestAction('confirmDeleteApproval')" :disabled=" isRevealed "
                     v-if=" activity.name == 'deleteRecord' ">
-                    <span>{{t('delete')}}</span>
-                </button> -->
+                    <span>{{t('deleteRecord')}}</span>
+                </button>
                 <button type="button" class="btn btn-warning bold" @click="confirmWorkflowRequestAction('confirmRejection')" :disabled=" isRevealed ">
                     <span v-if=" activity.name == 'deleteRecord' ">{{t('rejectNotDelete')}}</span>
                     <span v-if=" activity.name != 'deleteRecord' ">{{t('reject')}}</span>
@@ -126,6 +126,23 @@
         </CModalFooter>
     </CModal>
 
+    <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {isRevealed=false}" :visible="isRevealed && activeDialog.name == 'confirmDeleteApproval'" >
+        <CModalHeader :close-button="false">
+            <CModalTitle>
+                {{ t('deleteConfirmation') }}
+            </CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            <strong>{{ t('deletePublishingRequestConfirm') }}</strong>
+            <div class="mt-2" v-if="activeDialog.processing">
+                <CSpinner size="md" variant="grow"/><strong>{{ t('deleteProcessing') }}</strong>
+            </div>
+        </CModalBody>
+        <CModalFooter>
+            <CButton :disabled="activeDialog.processing" color="danger" @click="confirm({confirm:true, activeDialog, actionData:{ action : 'approve' }})">{{t('approve')}}</CButton>
+            <CButton :disabled="activeDialog.processing" color="secondary" @click="confirm({confirm:false, activeDialog})">{{t('cancel')}}</CButton>
+        </CModalFooter>
+    </CModal>
 </template>
 
 <i18n src="@/i18n/dist/components/actions/workflow-actions.json"></i18n>    
@@ -178,7 +195,10 @@
             else
                 result = await $api.kmWorkflows.updateActivity(props.workflow._id, props.workflow.activities[0].name, actionData);
 
-            await sleep(10000) //sleep for 10 seconds 
+            if( props.workflow.activities[0].name == 'deleteRecord' )
+                await sleep(1000) //for delete request just sleep for 1 second
+            else 
+                await sleep(10000) //sleep for 10 seconds 
 
             emit('onWorkflowAction', {
                 action    : actionData.action,
@@ -199,7 +219,7 @@
         activeDialog.value.processing = false;
     };
 
-    async function confirmWorkflowRequestAction(dialog){
+    async function confirmWorkflowRequestAction(dialog, type:string){
         activeDialog.value.name = dialog;
         const { data, isCanceled } = await reveal();       
         activeDialog.value = {name:'', data:[], processing:false, rejectReason:undefined};
@@ -219,12 +239,12 @@
             return;
 
         if(data.activeDialog.name == 'confirmCancellation')
-            return deleteWorkflowRequest(data);
+            return rejectWorkflowRequest(data);
         else
             return updateActivity(data.actionData)//'confirmRejection', 'approve'
     });
 
-    async function deleteWorkflowRequest(data){
+    async function rejectWorkflowRequest(data){
 
         try{
             data.activeDialog.processing = true;
