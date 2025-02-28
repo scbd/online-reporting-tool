@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <view-actions print-selector=".print-section" :title="lstring(record?.title)"></view-actions>
+      <view-actions print-selector=".print-section" :title="lstring(record?.workingDocumentTitle||record?.title)"></view-actions>
       <div class="print-section">
         <view-target-part-1 v-if="identifier" :identifier="identifier" @on-document-load="onDocumentLoad"></view-target-part-1>
       </div>
