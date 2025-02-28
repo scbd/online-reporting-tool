@@ -39,7 +39,7 @@
                                 <CCardBody>
                                     <ul class="list-group">
                                     <li  class="list-group-item" v-for="(target, index) in nationalTargets" :key="target.identifier">
-                                        {{lstring(target.title)}}
+                                        {{lstring(target.workingDocumentTitle||target.title)}}
                                     </li>
                                     </ul>
                                 </CCardBody>
