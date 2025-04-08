@@ -4,10 +4,9 @@
             <div class="p-0 header header-sticky other-users-sticky-header"  v-if="otherCollaborators.length">
                 <div class="container-fluid px-4 alert alert-danger" role="alert">      
                     <p>
-                        Currently other user(s) 
+                        {{t('collaboratorsMessage')}}
                         [<strong v-for="(user, index) in otherCollaborators" :key="user">
-                            {{ user.name }}{{ index<otherCollaborators.length-1 ? ', ' : '' }}</strong>]
-                        are also editing this record, which can cause overwrites.
+                            {{ user.name }}{{ index<otherCollaborators.length-1 ? ', ' : '' }}</strong>]                                
                     </p>                     
                 </div>
             </div>
