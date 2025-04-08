@@ -260,7 +260,7 @@
                                 </tr>
                                 <tr v-for="document in validationErrorDocuments" :key="document">
                                     <td>
-                                        {{ lstring(document.title) }}
+                                        {{ lstring(document.workingDocumentTitle||document.title) }}
                                         {{ document?.body?.indicator?.identifier }}
                                     </td>
                                     <td >

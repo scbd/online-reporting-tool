@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <view-actions print-selector=".print-section" :title="lstring(record?.title)"></view-actions>
+      <view-actions print-selector=".print-section" :title="lstring(record?.workingDocumentTitle||record?.title)"></view-actions>
 
       <workflow-request v-if="workflowId" :workflow-id="workflowId"></workflow-request>
 
