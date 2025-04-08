@@ -1,7 +1,16 @@
 <template>
     <div>
         <div :class="{'dim-section':isBusy}">
-            <form-wizard  @on-tab-change="onChangeCurrentTab" ref="formWizard">
+            <div class="p-0 header header-sticky other-users-sticky-header"  v-if="otherCollaborators.length">
+                <div class="container-fluid px-4 alert alert-danger" role="alert">      
+                    <p>
+                        Currently other user(s) 
+                        [<strong v-for="(user, index) in otherCollaborators" :key="user">
+                            {{ user.name }}{{ index<otherCollaborators.length-1 ? ', ' : '' }}</strong>]
+                        are also editing this record, which can cause overwrites.
+                    </p>                     
+                </div>
+            </div>
 
                 <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
                     <CCol class="col-12">
@@ -197,6 +206,7 @@
     import { useRealmConfStore } from '@/stores/realmConf';
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
     import { useAppStateStore } from '@/stores/appState';
+    import { SocketIOService } from '~/services/socket-io';
 
 
     const definedProps = defineProps({
@@ -211,7 +221,7 @@
     const $toast        = useToast();
     const { user }      = useAuth();
     const security      = useSecurity();
-    const { $api }      = useNuxtApp();
+    const { $api, $eventBus }      = useNuxtApp();
     const appState      = useAppStateStore();
     
     const isPrinting       = ref(false);
@@ -225,11 +235,13 @@
     const showConfirmDialog         = ref(false);
     const showSuccessDialog         = ref(false);
     const confirmationPromise       = ref(null);
+    const otherCollaborators = ref([]);
 
     let originalDocument = null
     let workflowFunctions;
     let saveDraftVersionTimer;
     let previousDraftVersion;
+    let notifyCollaboratorsTimer;
 
     const workflowTabs = {
         // use individual compute so that on language change the text is updated
@@ -529,6 +541,21 @@
         }
     }
 
+    function notifyCollaboratorProgress(){
+        
+        try {
+            const document    = props.document.value;
+            const identifier  = document.header.identifier;
+            SocketIOService.notifyCollaboratorProgress(identifier, 'inProgress');            
+        }
+        catch(err){
+            useError().error(err);
+        }
+        finally{
+            notifyCollaboratorsTimer = setTimeout(notifyCollaboratorProgress, 1000*10); //notify every 30 seconds
+        };
+    }
+
     async function verifyUserCanAccess(){
 
         const $kmStorageApi = $api.kmStorage
@@ -568,10 +595,35 @@
         onClose()
     }
 
+    async function onServerPushNotification({type, identifier, status, by,...other}){
+        
+        if(!identifier)
+            return;
+
+        const notificationType = ['editRecordInProgress', 'editRecordFinished'];
+        
+        if(type == 'notifyCollaborator' && identifier){
+            
+            if(props.document.value?.header?.identifier != identifier)
+                return;
+
+            if(props.document.value?.header?.identifier == identifier){
+                if(user.value.userID != by.userId){
+                    if(status == 'inProgress' && !otherCollaborators.value.find((item) => item.userId == by.userId))    
+                        otherCollaborators.value.push(by);
+
+                    if(status == 'finished')   
+                        otherCollaborators.value = otherCollaborators.value.filter((item) => item.userId != by.userId)
+                }
+            }
+        }
+    }
+
     onMounted(async() => {
         validationReport.value = {}; 
         originalDocument = null
         saveDraftVersionTimer = null;
+        notifyCollaboratorsTimer = null;
         previousDraftVersion = null;
         
         formWizard.value?.selectTab(focusedTab.value ?? 0)
@@ -589,6 +641,8 @@
             if(isEditAllowed.value){
                 //start save draft version 10 sec later
                 saveDraftVersionTimer = setTimeout(saveDraftVersion, 1000 * 10);
+                notifyCollaboratorProgress();
+                $eventBus.on('evt:server-pushNotification', onServerPushNotification);     
             }
         }
         catch(e){
@@ -609,6 +663,14 @@
         if(saveDraftVersionTimer)
             clearTimeout(saveDraftVersionTimer);
 
+        if(notifyCollaboratorsTimer)
+            clearTimeout(notifyCollaboratorsTimer);
+
+        const document    = props.document.value;
+        const identifier  = document.header.identifier;
+        SocketIOService.notifyCollaboratorProgress(identifier, 'finished');
+        $eventBus.off('evt:server-pushNotification', onServerPushNotification);
+
     });
 
 </script>
@@ -622,6 +684,12 @@
     }
     .form-wizard-vue .fw-body-content{
         padding:5px;
+    }
+    .other-users-sticky-header{
+        top:113px!important;
+    }
+    .modal .other-users-sticky-header{
+        top: 0px !important;
     }
 </style>
   
