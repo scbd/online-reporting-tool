@@ -68,14 +68,9 @@ class socketIo {
         }
     }
 
-    emitEditRecordInProgress({identifier}){
+    notifyCollaboratorProgress(identifier, status){
 
-        this.socket?.emit('editRecordInProgress', {identifier});
-    }
-
-    emitEditRecordFinished({identifier}){
-
-        this.socket?.emit('editRecordFinished', {identifier});
+        this.socket?.emit('notifyCollaboratorProgress', {identifier, status});
     }
     
 
