@@ -68,6 +68,17 @@ class socketIo {
         }
     }
 
+    emitEditRecordInProgress({identifier}){
+
+        this.socket?.emit('editRecordInProgress', {identifier});
+    }
+
+    emitEditRecordFinished({identifier}){
+
+        this.socket?.emit('editRecordFinished', {identifier});
+    }
+    
+
 }
 
 export const SocketIOService = new socketIo();
