@@ -11,7 +11,7 @@
                     </p>                     
                 </div>
             </div>
-
+            <form-wizard  @on-tab-change="onChangeCurrentTab" ref="formWizard">
                 <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
                     <CCol class="col-12">
                         <div class="action-buttons float-end mb-1">
