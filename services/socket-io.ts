@@ -68,6 +68,12 @@ class socketIo {
         }
     }
 
+    notifyCollaboratorProgress(identifier, status){
+
+        this.socket?.emit('notifyCollaboratorProgress', {identifier, status});
+    }
+    
+
 }
 
 export const SocketIOService = new socketIo();
