@@ -32,6 +32,7 @@
     "successfulMessage"      : "Your request to publish has been received.",
     "successMessageNau"      : "Your request to publish will be sent to your country's NFP who has rights to publish.",
     "successMessagePA"       : "The publishing process will take a few minutes to complete and for the content to appear in the search results.",
-    "successTitle"           : "Success"
+    "successTitle"           : "Success",
+    "collaboratorsMessage"   : "Other users are currently editing this record. This may result in potential overwrites."
     
 }
