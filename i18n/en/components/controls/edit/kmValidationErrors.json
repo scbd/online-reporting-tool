@@ -9,7 +9,7 @@
     "mandatoryAnyOf"   : "One of the field is mandatory",
     "invalidValue"     : "The value specified is invalid",
     "invalidProperty"  : "This value cannot be specified",
-    "unspecifiedLocale": "A language is used but not specified in your document",
+    "unspecifiedLocale": "Value must be provided in at least one official language of the United Nations",
     "unexpectedTerm"   : "A specified term cannot be used",
     "invalidType"      : "The fields type is invalid"
 }

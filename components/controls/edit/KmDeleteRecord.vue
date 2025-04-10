@@ -22,8 +22,8 @@
                         <CCard>
                             <CCardHeader>{{t('publishedRecord')}}</CCardHeader>
                             <CCardBody>
-                                <CCardTitle>{{ lstring(documentToDelete.title, locale) }}</CCardTitle>
-                                <CCardText> {{ lstring(documentToDelete.summary, locale) }}</CCardText>
+                                <CCardTitle>{{ lstring(documentToDelete.workingDocumentTitle || documentToDelete.title, locale) }}</CCardTitle>
+                                <CCardText> {{ lstring(documentToDelete.workingDocumentSummary || documentToDelete.summary, locale) }}</CCardText>
 
                                 <CButton color="danger" size="sm" :disabled="isLoading" @click="deleteRecord('published')" class="float-end">
                                     <font-awesome-icon icon="fa-trash" /> {{t('deletePublished')}}

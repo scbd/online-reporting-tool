@@ -53,7 +53,11 @@ const localStorageCache = [];
 
 for (const cache in localStorage) {
     if (Object.prototype.hasOwnProperty.call(localStorage, cache)) {
-        const data = useStorage([cache], {});
+        const data = useStorage([cache], {}, undefined, {
+            onError: (error) => {
+                useLogger().error({error, cache});
+            }        
+        });
         localStorageCache.push({cache, data});        
     }
 }

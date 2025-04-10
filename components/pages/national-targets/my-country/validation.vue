@@ -33,7 +33,7 @@
         <CModal  class="show d-block nationalTargetsValidationEdit" size="xl" alignment="center" backdrop="static" @close="() => {showEditDocumentModal=false}" :visible="showEditDocumentModal" >
             <CModalHeader :close-button="false">
                 <CModalTitle>
-                    <span v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7">{{lstring(editDocument.title)}}</span>
+                    <span v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7">{{lstring(editDocument.workingDocumentTitle||editDocument.title)}}</span>
                     <span v-if="editDocument.header.schema==SCHEMAS.NATIONAL_TARGET_7_MAPPING">{{lstring(getGlobalTarget(editDocument.globalGoalOrTarget.identifier).title)}}</span>
                 </CModalTitle>
             </CModalHeader>
