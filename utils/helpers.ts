@@ -38,22 +38,7 @@ export function getTargetNumber(target:String){
 }
 
 export function isLString(element){
-    let hasLocale =   element.hasOwnProperty('ar') || element.hasOwnProperty('en') ||
-                      element.hasOwnProperty('fr') || element.hasOwnProperty('es') || 
-                      element.hasOwnProperty('ru') || element.hasOwnProperty('zh');
-                      
-    if(!hasLocale){
-        for (const key in element) {
-            if (element.hasOwnProperty(key)) {
-                if (key.length == 2) {
-                    hasLocale = true;
-                    break;
-                }
-            }
-        }
-    }
-    
-    return hasLocale;
+    return Object.keys(element).some(l=>/^[a-z]{2,3}$/.test(l)); 
 }
 
 export function sortBy(list:Array, property){
