@@ -32,7 +32,7 @@
     "successfulMessage"      : "Your request to publish has been received.",
     "successMessageNau"      : "Your request to publish will be sent to your country's NFP who has rights to publish.",
     "successMessagePA"       : "The publishing process will take a few minutes to complete and for the content to appear in the search results.",
-    "collaboratorsMessage"   : "Other users are currently editing this record. This may result in potential overwrites."
+    "collaboratorsMessage"   : "Other users are currently editing this record. This may result in potential overwrites.",
     "successTitle"           : "Success",
     "overwriteConfirmationTitle": "Overwrite Confirmation",
     "overwriteConfirmationMessage": "The record on the server has changed, saving your version will overwrite those changes, are you sure you want to overwrite?",

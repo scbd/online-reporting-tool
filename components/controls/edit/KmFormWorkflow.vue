@@ -323,7 +323,7 @@
             $toast.success(t('draftSaveMessage'), {position:'top-right'});  
         }
         catch(e){
-            if(e?.message != 'Document has changed on server, cannot save draft')
+            if(e?.cause?.serverStatusCode != 409)
                 $toast.error('Error saving draft record', {position:'top-right'}); 
             useLogger().error(e)
         }
@@ -362,7 +362,7 @@
             $toast.success(t('successfulMessage'), {position:'top-right'});  
         }
         catch(e){
-            if(e?.status != 'Document has changed on server, cannot save draft')
+            if(e?.cause?.serverStatusCode != 409)//ignore 
                 $toast.error('Error publishing record', {position:'top-right'}); 
             useLogger().error(e)
         }
@@ -418,7 +418,7 @@
 
         const hasChangedAndOverwrite = await validateIfServerHasChanged()
         if(!hasChangedAndOverwrite)
-            throw new Error('Document has changed on server, cannot save draft', {status:409}); //409 Resource Conflict 
+            throw new Error('Document has changed on server, cannot save draft', { cause : {serverStatusCode:409}}); //409 Resource Conflict 
 
         // save document
         const documentSaveResponse = await EditFormUtility.saveDraft(document);
