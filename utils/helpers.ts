@@ -38,9 +38,7 @@ export function getTargetNumber(target:String){
 }
 
 export function isLString(element){
-    return  element.hasOwnProperty('ar') || element.hasOwnProperty('en') ||
-            element.hasOwnProperty('fr') || element.hasOwnProperty('es') || 
-            element.hasOwnProperty('ru') || element.hasOwnProperty('zh');
+    return Object.keys(element).some(l=>/^[a-z]{2,3}$/.test(l)); 
 }
 
 export function sortBy(list:Array, property){
