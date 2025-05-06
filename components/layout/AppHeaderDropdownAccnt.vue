@@ -15,17 +15,38 @@
     </CDropdownMenu>
   </CDropdown>
   <a v-if="!user || !user.isAuthenticated" :href="`${accountsUrl}?returnUrl=${returnUrl}`">{{t('signIn')}}</a>
+
+
+  <CModal  class="show d-block" size="sm" alignment="center" backdrop="static" @close="() => {showSessionExpiredDialog=false}" :visible="showSessionExpiredDialog" >
+      <CModalHeader :close-button="false">
+          <CModalTitle>
+              {{t('sessionExpiredTitle')}}
+          </CModalTitle>
+      </CModalHeader>
+      <CModalBody>
+          <CAlert color="success" class="d-flex">
+            {{t('sessionExpiredDescription')}} 
+          </CAlert>
+      </CModalBody>
+      <CModalFooter>
+          <CButton @click="onSessionExpiredDialogClose()" color="secondary">{{t('signIn')}}</CButton>
+      </CModalFooter>
+  </CModal>
 </template>
 <i18n src="@/i18n/dist/components/layout/AppHeaderDropdownAccnt.json"></i18n>
-<script lang="ts">
+<script lang="ts" setup>
 //@ts-nocheck
 
 import { useRoute } from 'vue-router';
-export default {
-  name: 'AppHeaderDropdownAccnt',
-  setup() {
-    const { t } = useI18n();
-    const route = useRoute();
+    
+    const { t }         = useI18n();
+    const route         = useRoute();
+    const { $eventBus } = useNuxtApp();
+    const user          = useAuth().user;
+    const itemsCount    = 42;
+    const accountsUrl   = useRuntimeConfig().public.ACCOUNTS_HOST_URL;
+    
+    const showSessionExpiredDialog = ref(false);
 
     const logout = async ()=>{
       await authLogout()
@@ -36,16 +57,23 @@ export default {
         const url = new URL(window.location.href);
         url.path = route.path;
         return url.href;
-     })
+    })
 
-    return {
-        t,
-      user       : useAuth().user,
-      itemsCount : 42,
-      accountsUrl: useRuntimeConfig().public.ACCOUNTS_HOST_URL,
-      returnUrl,
-      logout
+    function onSessionExpired(){     
+      showSessionExpiredDialog.value = true;
     }
-  },
-}
+
+    function onSessionExpiredDialogClose(){
+      showSessionExpiredDialog.value = false;
+      logout();
+    }
+
+    onMounted(()=>{
+        $eventBus.on('evt:session-expired', onSessionExpired);
+    })
+
+    onBeforeUnmount(()=>{
+        $eventBus.off('evt:session-expired', onSessionExpired);
+    })
+
 </script>

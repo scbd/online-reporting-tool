@@ -5,6 +5,7 @@ export interface KmStorageParam {
     collection : string
     schema     : string;
     identifier : string;
+    validationSection: string;
 }
 
 export interface Government {

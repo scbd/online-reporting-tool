@@ -3,7 +3,10 @@
     <slot></slot>    
     <CInputGroup class="mb-1" v-for="locale in locales" :key="locale" :class="`km-input-${locale}`" >
         <CFormInput aria-describedby="basic-addon2" v-model="binding[locale]" :dir="locale=='ar' ? 'rtl' : 'ltr'" 
-            @update:modelValue="emitChange" />
+            @update:modelValue="emitChange" v-if="!isTextArea"  />
+        <CFormTextarea aria-describedby="basic-addon2" v-model="binding[locale]" :dir="locale=='ar' ? 'rtl' : 'ltr'" 
+            @update:modelValue="emitChange" v-if="isTextArea"  />
+            
         <CInputGroupText id="basic-addon2">
             <CTooltip :content="lstring(getTerm(locale).title)" trigger="hover">
                 <template #toggler="{ on }">
@@ -19,6 +22,7 @@
 //@ts-nocheck
 import {without} from 'lodash';
 import { useThesaurusStore }    from '@/stores/thesaurus';
+import { CFormTextarea } from '@coreui/vue';
 
 export default {
     name: "KmInputLstring",
@@ -39,6 +43,13 @@ export default {
         disabled: {
             type: Boolean,
             required: false,
+        },
+        rows: {
+            type: Number,
+            required: false,
+            default(){
+                return 1
+            }
         },
     },
     data() {
@@ -71,7 +82,10 @@ export default {
             set(value) {
                 this.emitChange();
             }
-        }
+        },
+        isTextArea(){
+            return this.rows > 1;
+        },
     },
     methods: { 
 
