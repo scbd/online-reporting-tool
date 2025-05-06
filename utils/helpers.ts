@@ -71,6 +71,8 @@ export const scrollToElement = (querySelector, container)=>{
     const qLabel = $(container).find(querySelector);
     const qBody  = $(container);
 
+    if(!qLabel.length)
+        return;
     var scrollNum = qLabel.offset().top
 
     if(container!= 'body,html'){

@@ -7,7 +7,8 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
     return {
       nationalReport: undefined as ENationalReport7 | undefined,
       nationalReportInfo: undefined as EDocumentInfo | undefined,
-      isBusy:false
+      isBusy:false,
+      sectionIIIActiveAccordion: undefined as string | undefined,
     }
   },
   getters:{
@@ -25,7 +26,7 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
                 let nationalReport: EDocumentInfo | undefined = undefined;
                 if(!identifier){
                     
-                    let query = `(type eq '${SCHEMAS.NATIONAL_TARGET_7}')`
+                    let query = `(type eq '${SCHEMAS.NATIONAL_REPORT_7}')`
                     if(user.value?.government)
                         query += ` and owner eq 'country:${user.value.government}'` ;
                     const queryParams = {
@@ -83,12 +84,23 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
     updateNationalReport(nationalReport:EDocumentInfo){
         this.nationalReport = nationalReport.body;
         this.nationalReportInfo = nationalReport;
-    }
+    },
+    setSectionIIIActiveAccordion(identifier:string){
+        this.sectionIIIActiveAccordion = identifier;
+    },
+    clearSectionIIIActiveAccordion(){
+        this.sectionIIIActiveAccordion = undefined;
+    },
     // async saveSectionI(header:Object, government:Object, sectionI:Object){
     //     this.nationalReportDraft.header = header;
     //     this.nationalReportDraft.government = government;
     //     this.nationalReportDraft.sectionI = sectionI;
     // }
 
+
+  },
+  persist: {
+      storage: persistedState.localStorage,
+      pick: ['sectionIIIActiveAccordion'],
   }
 })

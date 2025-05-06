@@ -1,12 +1,14 @@
 {
     "general": "General",
     "sectionI": "Section I",
+    "nationalAuthorities": "National authorities responsible for the preparation and submission of the report",
+    "contactPerson": "Contact person",
+    "contactDetails":"Contact details",
     "sectionIDescription":"Brief overview of the process of preparation of the report",
-    "preparationProcess":"Please briefly describe the process undertaken for the preparation of this report (responses may include the following)",
-    "coordination":"Coordination mechanisms and methodology for data collection and validation employed (if applicable) as well as key challenges encountered;",
-    "consultation":"Consultations undertaken at various levels for preparing this report, involving and engaging various stakeholders, taking into account national circumstances.",
+    "preparationProcess":"Briefly describe the process followed for the preparation of the present report. Responses may include the following",
+    "coordination":"Coordination mechanisms and methodology for data collection and validation employed, if applicable, as well as key challenges encountered;",
+    "consultation":"Consultations undertaken at various levels for preparing the present report, involving and engaging various stakeholders and taking into account national circumstances, including by using a whole-of-government and whole-of-society approach.",
     "sectionMandatory" : "All fields in Section I are mandatory",
     "government": "Government",
-    "selectLangauges": "Please select in which language(s) you wish to submit this record"
-
+    "selectLanguages": "Please select in which language(s) you wish to submit this record"
 }

@@ -21,16 +21,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory":true
@@ -48,34 +48,26 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory":true
             },
-        ]
-    },
-    {
-        "key":"binaryResponseGoalC",
-        "target": "GBF-GOAL-B",
-        "binaryIndicator": "KMGBF-INDICATOR-BIN-C-13",
-        "title": "", 
-        "questions":[ 
             {
-                "key":"13_1",
-                "section":"binaryResponseTarget13",
-                "number":"13.1",
+                "key":"b_3",
+                "section":"goalB",
+                "number":"B.3",
                 "type":"option",
-                "title": binaryQuestionsT.target13_question_1,
+                "title": binaryQuestionsT.goalB_question3,
                 "multiple":false,
                 "options":[
                    {
@@ -83,34 +75,26 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_1_c
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_1_d
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
-                    {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_1_e
-                    },
-                    {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_1_f
-                    }
                 ],
                 "mandatory":true
             },
             {
-                "key":"13_2",
-                "section":"binaryResponseTarget13",
-                "number":"13.2",
+                "key":"b_4",
+                "section":"goalB",
+                "number":"B.4",
                 "type":"option",
-                "title": binaryQuestionsT.target13_question_2,
+                "title": binaryQuestionsT.goalB_question4,
                 "multiple":false,
                 "options":[
                    {
@@ -118,102 +102,21 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
-                    {
-                        "value":"notApplicable",
-                        "title": binaryQuestionsT.notApplicable
-                    },
-                    {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.digitalSequenceInformation
-                    }
                 ],
                 "mandatory":true
             },
-            {
-                "key":"13_3",
-                "section":"binaryResponseTarget13",
-                "number":"13.3",
-                "type":"option",
-                "title": binaryQuestionsT.target13_question_3,
-                "multiple":false,
-                "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
-                    },
-                    {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
-                    },
-                    {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
-                    }
-                ],
-                "mandatory":true
-            },
-            {
-                "key":"13_3_alt",
-                "section":"binaryResponseTarget13",
-                "number":"13.3 alt",
-                "type":"option",
-                "title": binaryQuestionsT.target13_question_3_alt,
-                "multiple":false,
-                "options":[
-                   {
-                      "value":"??", //value?
-                      "title": binaryQuestionsT.target13_question_3_alt_c
-                   },
-                   {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_3_alt_d
-                    },
-                    {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.digitalSequenceInformation
-                    }
-                ],
-                "mandatory":true
-            },
-            {
-                "key":"13_3_alt_bis",
-                "section":"binaryResponseTarget13",
-                "number":"13.3 alt bis",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target13_question_3_alt_bis,
-                "mandatory":true
-            },
-            {
-                "key":"13_4",
-                "section":"binaryResponseTarget13",
-                "number":"13.4",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target13_question_4,
-                "mandatory":true
-            },
-            {
-                "key":"13_4_alt",
-                "section":"binaryResponseTarget13",
-                "number":"13.4.alt",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target13_question_4_alt,
-                "mandatory":true
-            }
+
         ]
     },
     {
@@ -237,22 +140,32 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.target1_question_1_a,
                         "multiple":false,
                         "options":[
-                        {
-                            "value":"no",
-                            "title": binaryQuestionsT.no
-                        },
-                        {
-                                "value":"noButUnderDevelopment",
-                                "title": binaryQuestionsT.noButUnderDevelopment
+                            {
+                                "value":"no",
+                                "title": binaryQuestionsT.no
                             },
                             {
-                                "value":"yesPartially",
-                                "title": binaryQuestionsT.yesPartially
+                                "value":"underDevelopment",
+                                "title": binaryQuestionsT.underDevelopment
                             },
                             {
-                                "value":"yesFully",
-                                "title": binaryQuestionsT.yesFully
+                                "value":"partially",
+                                "title": binaryQuestionsT.partially
                             },
+                            {
+                                "value":"fully",
+                                "title": binaryQuestionsT.fully
+                            },
+                        ],
+                        "validations":[
+                           {
+                              "question":"1_2",
+                              "type":"@hasValues",
+                              "values":[
+                                 "underDevelopment","partially","fully"
+                              ],
+                              "trigger":"enable"
+                           }
                         ],
                         "mandatory":true
                     },
@@ -264,22 +177,32 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.target1_question_1_b,
                         "multiple":false,
                         "options":[
-                        {
-                            "value":"no",
-                            "title": binaryQuestionsT.no
-                        },
-                        {
-                            "value":"noButUnderDevelopment",
-                            "title": binaryQuestionsT.noButUnderDevelopment
-                        },
-                        {
-                            "value":"yesPartially",
-                            "title": binaryQuestionsT.yesPartially
-                        },
-                        {
-                            "value":"yesFully",
-                            "title": binaryQuestionsT.yesFully
-                        },
+                            {
+                                "value":"no",
+                                "title": binaryQuestionsT.no
+                            },
+                            {
+                                "value":"underDevelopment",
+                                "title": binaryQuestionsT.underDevelopment
+                            },
+                            {
+                                "value":"partially",
+                                "title": binaryQuestionsT.partially
+                            },
+                            {
+                                "value":"fully",
+                                "title": binaryQuestionsT.fully
+                            },
+                        ],
+                        "validations":[
+                           {
+                              "question":"1_2",
+                              "type":"@hasValues",
+                              "values":[
+                                 "underDevelopment","partially","fully"
+                              ],
+                              "trigger":"enable"
+                           }
                         ],
                         "mandatory":true
                     },
@@ -291,22 +214,32 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.target1_question_1_c,
                         "multiple":false,
                         "options":[
-                        {
-                            "value":"no",
-                            "title": binaryQuestionsT.no
-                        },
-                        {
-                            "value":"noButUnderDevelopment",
-                            "title": binaryQuestionsT.noButUnderDevelopment
-                        },
-                        {
-                            "value":"yesPartially",
-                            "title": binaryQuestionsT.yesPartially
-                        },
-                        {
-                            "value":"yesFully",
-                            "title": binaryQuestionsT.yesFully
-                        },
+                            {
+                                "value":"no",
+                                "title": binaryQuestionsT.no
+                            },
+                            {
+                                "value":"underDevelopment",
+                                "title": binaryQuestionsT.underDevelopment
+                            },
+                            {
+                                "value":"partially",
+                                "title": binaryQuestionsT.partially
+                            },
+                            {
+                                "value":"fully",
+                                "title": binaryQuestionsT.fully
+                            },
+                        ],
+                        "validations":[
+                           {
+                              "question":"1_2",
+                              "type":"@hasValues",
+                              "values":[
+                                 "underDevelopment","partially","fully"
+                              ],
+                              "trigger":"enable"
+                           }
                         ],
                         "mandatory":true
                     },
@@ -316,25 +249,60 @@ export const binaryIndicatorQuestions = [
                 "key":"1_2",
                 "section":"GBF-TARGET-01",
                 "number":"1.2",
-                "type":"option",
+                "type":"checkbox",
                 "title": binaryQuestionsT.target1_question_2,
-                "multiple":false,
+                "multiple":true,
                 "options":[
-                   {
-                      "value":"noParticipatoryProcess",
-                      "title": binaryQuestionsT.noParticipatoryProcess
-                   },
                    {
                         "value":"forTerrestrialPlanning",
                         "title": binaryQuestionsT.forTerrestrialPlanning
                     },
                     {
-                        "value":"forMarinePlanning",
-                        "title": binaryQuestionsT.forMarinePlanning
-                    },
-                    {
                         "value":"forInlandWaterPlanning",
                         "title": binaryQuestionsT.forInlandWaterPlanning
+                    },
+                    {
+                        "value":"forCostalMarinePlanning",
+                        "title": binaryQuestionsT.forCostalMarinePlanning
+                    },
+                    {
+                        "value":"none",
+                        "title": binaryQuestionsT.none
+                    },
+                ],
+                "mandatory":true
+            },
+        ]
+    },
+    {
+        "key":"binaryResponseTarget5",
+        "target": "GBF-TARGET-05",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-5",
+        "title": "",
+        "questions":[
+            {
+                "key":"5_1",
+                "section":"GBF-TARGET-05",
+                "number":"5.1",
+                "type":"checkbox",
+                "title": binaryQuestionsT.target5_question_1,
+                "multiple":true,
+                "options":[
+                   {
+                        "value":"terrestrialSpecies",
+                        "title": binaryQuestionsT.terrestrialSpecies
+                    },
+                    {
+                        "value":"freshwaterSpecies",
+                        "title": binaryQuestionsT.freshwaterSpecies
+                    },
+                    {
+                        "value":"marineSpecies",
+                        "title": binaryQuestionsT.marineSpecies
+                    },
+                    {
+                        "value":"none",
+                        "title": binaryQuestionsT.none
                     },
                 ],
                 "mandatory":true
@@ -360,16 +328,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory":true
@@ -387,19 +355,47 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory":true
+            },
+            {
+                "key":"6_3",
+                "section":"binaryResponseTarget6",
+                "number":"6.3",
+                "type":"option",
+                "title": binaryQuestionsT.target6_question_3,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                ],
+                "mandatory":true
+
             }
         ]
     },
@@ -413,21 +409,21 @@ export const binaryIndicatorQuestions = [
                 "key":"8_1",
                 "section":"binaryResponseTarget8",
                 "number":"8.1",
-                "type":"option",
+                "type":"checkbox",
                 "title": binaryQuestionsT.target8_question_1,
-                "multiple":false,
+                "multiple":true,
                 "options":[
                    {
-                      "value":"??", //value?
-                      "title": binaryQuestionsT.target8_question_1_a
+                      "value":"climateChange",
+                      "title": binaryQuestionsT.climateChange
                    },
                    {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target8_question_1_b
+                        "value":"oceanAcidification",
+                        "title": binaryQuestionsT.oceanAcidification
                     },
                     {
                         "value":"none",
-                        "title": binaryQuestionsT.target8_question_1_c
+                        "title": binaryQuestionsT.none
                     },
                 ],
                 "mandatory":true
@@ -445,16 +441,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory":true
@@ -467,21 +463,21 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target8_question_3,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target8_question_3_c
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target8_question_3_d
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory":true
@@ -494,37 +490,168 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target8_question_4,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"??", //value?
-                      "title": binaryQuestionsT.target8_question_4_a
-                   },
-                   {
-                        "value":"??",  //value?
-                        "title": binaryQuestionsT.target8_question_4_b
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target8_question_4_c
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory":true
             },
             {
-                "key":"8_4_bis",
+                "key":"8_5",
                 "section":"binaryResponseTarget8",
-                "number":"8.4.bis",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target8_question_4_bis,
+                "number":"8.5",
+                "type":"option",
+                "title": binaryQuestionsT.target8_question_5,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                ],
                 "mandatory":true
             },
             {
-                "key":"8_4_ter",
+                "key":"8_6",
                 "section":"binaryResponseTarget8",
-                "number":"8.4.ter",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target8_question_4_ter,
+                "number":"8.6",
+                "type":"option",
+                "title": binaryQuestionsT.target8_question_6,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                ],
                 "mandatory":true
-            }
+            },
+            {
+                "key":"8_7",
+                "section":"binaryResponseTarget8",
+                "number":"8.7",
+                "type":"checkbox",
+                "title": binaryQuestionsT.target8_question_7,
+                "multiple":true,
+                "options":[
+                    {
+                        "value":"mitigation",
+                        "title": binaryQuestionsT.mitigation
+                    },
+                    {
+                        "value":"adaptation",
+                        "title": binaryQuestionsT.adaptation
+                    },
+                    {
+                        "value":"disasterRiskReduction",
+                        "title": binaryQuestionsT.disasterRiskReduction
+                    },
+                    {
+                        "value":"natureBasedSolutions",
+                        "title": binaryQuestionsT.natureBasedSolutions
+                    },
+                    {
+                        "value":"policiesToMinimize",
+                        "title": binaryQuestionsT.policiesToMinimize
+                    },
+                    {
+                        "value":"other",
+                        "title": binaryQuestionsT.other
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"8_8",
+                "section":"binaryResponseTarget8",
+                "number":"8.8",
+                "type":"option",
+                "title": binaryQuestionsT.target8_question_8,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"8_9",
+                "section":"binaryResponseTarget8",
+                "number":"8.9",
+                "type":"option",
+                "title": binaryQuestionsT.target8_question_9,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                ],
+                "mandatory":true
+            },
         ]
     },
     {
@@ -546,16 +673,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory":true
@@ -573,16 +700,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target9_question_2_c
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target9_question_2_d
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory":true
@@ -591,55 +718,72 @@ export const binaryIndicatorQuestions = [
                 "key":"9_3",
                 "section":"binaryResponseTarget9",
                 "number":"9.3",
-                "type":"option",
+                "type":"checkbox",
                 "title": binaryQuestionsT.target9_question_3,
-                "multiple":false,
+                "multiple":true,
                 "options":[
                    {
-                      "value":"??", //value?
-                      "title": binaryQuestionsT.target9_question_3_a
+                      "value":"no",
+                      "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target9_question_3_b
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target9_question_3_c
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target9_question_3_d
-                    },
-                    {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target9_question_3_e
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
-                "mandatory":true
-            },
-             {
-                "key":"9_3_alt",
-                "section":"binaryResponseTarget9",
-                "number":"9.3.alt",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target9_question_3_alt,
-                "mandatory":true
-            },
-            {
-                "key":"9_4_bis",
-                "section":"binaryResponseTarget9",
-                "number":"9.3.bis",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target9_question_3_bis,
+                "validations":[
+                   {
+                      "question":"9_4",
+                      "type":"@hasValues",
+                      "values":[
+                         "partially","fully"
+                      ],
+                      "trigger":"enable"
+                   }
+                ],
                 "mandatory":true
             },
             {
                 "key":"9_4",
                 "section":"binaryResponseTarget9",
                 "number":"9.4",
-                "type":"option",
+                "type":"checkbox",
                 "title": binaryQuestionsT.target9_question_4,
+                "multiple":true,
+                "options":[
+                   {
+                      "value":"womenGirls",
+                      "title": binaryQuestionsT.womenGirls
+                   },
+                   {
+                        "value":"childrenYouth",
+                        "title": binaryQuestionsT.childrenYouth
+                    },
+                    {
+                        "value":"personWithDisabilities",
+                        "title": binaryQuestionsT.personWithDisabilities
+                    },
+                    {
+                        "value":"indigenousPeoplesLocalCommunities",
+                        "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
+                    }
+                ],
+                "mandatory":true
+            },,
+            {
+                "key":"9_5",
+                "section":"binaryResponseTarget9",
+                "number":"9.5",
+                "type":"option",
+                "title": binaryQuestionsT.target9_question_5,
                 "multiple":false,
                 "options":[
                    {
@@ -647,20 +791,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
-                    },
-                    {
-                        "value":"notApplicable",
-                        "title": binaryQuestionsT.notApplicable
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory":true
@@ -682,22 +822,22 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target12_question_1,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.yesForSomeUrbanAreas
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.yesForAllUrbanAreas
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    }
                 ],
                 "mandatory":true
             },
@@ -709,22 +849,22 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target12_question_2,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.yesForSomeUrbanAreas
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.yesForAllUrbanAreas
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    }
                 ],
                 "mandatory":true
             }
@@ -744,29 +884,25 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target13_question_1,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_1_c
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_1_d
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_1_e
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_1_f
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
                     }
                 ],
                 "mandatory":true
@@ -779,29 +915,25 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target13_question_2,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                     {
                         "value":"notApplicable",
                         "title": binaryQuestionsT.notApplicable
-                    },
-                    {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.digitalSequenceInformation
                     }
                 ],
                 "mandatory":true
@@ -814,72 +946,141 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target13_question_3,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
-                "mandatory":true
-            },
-            {
-                "key":"13_3_alt",
-                "section":"binaryResponseTarget13",
-                "number":"13.3.alt",
-                "type":"option",
-                "title": binaryQuestionsT.target13_question_3_alt,
-                "multiple":false,
-                "options":[
-                   {
-                      "value":"??", //value?
-                      "title": binaryQuestionsT.target13_question_3_alt_c
-                   },
-                   {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target13_question_3_alt_d
-                    },
-                    {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.digitalSequenceInformation
-                    }
-                ],
-                "mandatory":true
-            },
-            {
-                "key":"13_3_alt_bis",
-                "section":"binaryResponseTarget13",
-                "number":"13.3.alt.bis",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target13_question_3_alt_bis,
                 "mandatory":true
             },
             {
                 "key":"13_4",
                 "section":"binaryResponseTarget13",
                 "number":"13.4",
-                "type":"string or text", //need to verify
+                "type":"option",
                 "title": binaryQuestionsT.target13_question_4,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"yes",
+                        "title": binaryQuestionsT.yes
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
+                "mandatory":true
+            },,
+            {
+                "key":"13_5",
+                "section":"binaryResponseTarget13",
+                "number":"13.5",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_5,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
+                "mandatory":true
+            },,
+            {
+                "key":"13_6",
+                "section":"binaryResponseTarget13",
+                "number":"13.6",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_6,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
+                "mandatory":true
+            },,
+            {
+                "key":"13_7",
+                "section":"binaryResponseTarget13",
+                "number":"13.7",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_7,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
                 "mandatory":true
             },
-            {
-                "key":"13_4_alt",
-                "section":"binaryResponseTarget13",
-                "number":"13.4.alt",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target13_question_4_alt,
-                "mandatory":true
-            }
         ]
     },
     {
@@ -901,16 +1102,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                      {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     } 
                 ],
                 "mandatory":true
@@ -923,25 +1124,21 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target14_question_2,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target14_question_2_c
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target14_question_2_d
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target14_question_2_e
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     } 
                 ],
                 "mandatory":true
@@ -959,17 +1156,86 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                      {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     } 
+                ],
+                "validations":[
+                   {
+                      "question":"14_3_a",
+                      "type":"@hasValues",
+                      "values":[
+                         "partially","fully"
+                      ],
+                      "trigger":"enable"
+                   }
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"14_3_a",
+                "section":"binaryResponseTarget14",
+                "number":"",
+                "type":"checkbox",
+                "title": binaryQuestionsT.target14_question_3_a,
+                "multiple":true,
+                "options":[
+                    {
+                        "value":"agriculture",
+                        "title": binaryQuestionsT.agriculture
+                    },
+                    {
+                        "value":"fisheries",
+                        "title": binaryQuestionsT.fisheries
+                    },
+                    {
+                        "value":"forestry",
+                        "title": binaryQuestionsT.forestry
+                    },
+                    {
+                        "value":"aquaculture",
+                        "title": binaryQuestionsT.aquaculture
+                    },
+                    {
+                        "value":"finance",
+                        "title": binaryQuestionsT.finance
+                    },
+                    {
+                        "value":"tourism",
+                        "title": binaryQuestionsT.tourism
+                    },
+                    {
+                        "value":"health",
+                        "title": binaryQuestionsT.health
+                    },
+                    {
+                        "value":"infrastructure",
+                        "title": binaryQuestionsT.infrastructure
+                    },
+                    {
+                        "value":"energy",
+                        "title": binaryQuestionsT.energy
+                    },
+                    {
+                        "value":"mining",
+                        "title": binaryQuestionsT.mining
+                    },
+                    {
+                        "value":"manufacturingAndProcessing",
+                        "title": binaryQuestionsT.manufacturingAndProcessing
+                    },
+                    {
+                        "value":"other",
+                        "title": binaryQuestionsT.other
+                    }  
                 ],
                 "mandatory":true
             }, 
@@ -981,41 +1247,52 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target14_question_4,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
-                    },
-                     {
-                         "value":"??", //value?
-                        "title": binaryQuestionsT.target14_question_4_b
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target14_question_4_c
-                    },
-                      {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target14_question_4_d
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                         "value":"??", //value?
-                        "title": binaryQuestionsT.target14_question_4_e
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     } 
                 ],
                 "mandatory":true
             },
             {
-                "key":"14_4_bis",
+                "key":"14_5",
                 "section":"binaryResponseTarget14",
-                "number":"14.4.bis",
-                "type":"string or text", //need to verify
-                "title": binaryQuestionsT.target14_question_4_bis,
+                "number":"14.5",
+                "type":"option",
+                "title": binaryQuestionsT.target14_question_5,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    } 
+                ],
                 "mandatory":true
-            }
+            },
         ]
     },
     {
@@ -1037,16 +1314,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                      {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory":true
@@ -1064,16 +1341,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                      {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     } 
                 ],
                 "mandatory":true
@@ -1091,16 +1368,71 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                      {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    } 
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"15_4",
+                "section":"GBF-TARGET-015",
+                "number":"15.4",
+                "type":"option",
+                "title": binaryQuestionsT.target15_question_4,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                     {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    } 
+                ],
+                "mandatory":true
+            },
+
+            {
+                "key":"15_5",
+                "section":"GBF-TARGET-015",
+                "number":"15.5",
+                "type":"option",
+                "title": binaryQuestionsT.target15_question_5,
+                "multiple":false,
+                "options":[
+                   {
+                      "value":"no",
+                      "title": binaryQuestionsT.no
+                   },
+                   {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                     {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     } 
                 ],
                 "mandatory":true
@@ -1126,16 +1458,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                      {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory":true
@@ -1153,16 +1485,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                      {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     } 
                 ],
                 "mandatory":true
@@ -1175,25 +1507,21 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target16_question_3,
                 "multiple":false,
                 "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
-                    },
-                     {
-                         "value":"??", //value?
-                        "title": binaryQuestionsT.target16_question_3_c
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target16_question_3_d
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"??", //value?
-                        "title": binaryQuestionsT.target16_question_3_e
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }  
                 ],
                 "mandatory":true
@@ -1215,20 +1543,20 @@ export const binaryIndicatorQuestions = [
                 "multiple": false,
                 "options": [
                     {
-                        "value": "no",
+                        "value":"no",
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.target17_question_1_c
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory": true
@@ -1242,20 +1570,20 @@ export const binaryIndicatorQuestions = [
                 "multiple": false,
                 "options": [
                     {
-                        "value": "no",
+                        "value":"no",
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory": true
@@ -1269,48 +1597,24 @@ export const binaryIndicatorQuestions = [
                 "multiple": false,
                 "options": [
                     {
-                        "value": "no",
+                        "value":"no",
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.target17_question_3_d
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory": true
             }, 
-            {
-                "key": "17_3_alt_1",
-                "section": "binaryResponseTarget17",
-                "number": "17.3.alt.1",
-                "type": "string or text", //need to verify
-                "title": binaryQuestionsT.target17_question_3_alt_1,
-                "mandatory": true
-            },
-            {
-                "key": "17_3_alt_1_bis",
-                "section": "binaryResponseTarget17",
-                "number": "17.3.alt.1.bis",
-                "type": "string or text", //need to verify
-                "title": binaryQuestionsT.target17_question_3_alt_1_bis,
-                "mandatory": true
-            },
-            {
-                "key": "17_3_bis",
-                "section": "binaryResponseTarget17",
-                "number": "17.3.bis",
-                "type": "string or text", //need to verify
-                "title": binaryQuestionsT.target17_question_3_bis,
-                "mandatory": true
-            },
             {
                 "key": "17_4",
                 "section": "GBF-TARGET-017",
@@ -1320,38 +1624,22 @@ export const binaryIndicatorQuestions = [
                 "multiple": false,
                 "options": [
                     {
-                        "value": "no",
+                        "value":"no",
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.target17_question_4_c
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
-                "mandatory": true
-            },
-            {
-                "key": "17_4_alt",
-                "section": "binaryResponseTarget17",
-                "number": "17.4.alt",
-                "type": "string or text", //need to verify
-                "title": binaryQuestionsT.target17_question_4_alt,
-                "mandatory": true
-            },
-            {
-                "key": "17_4_bis",
-                "section": "binaryResponseTarget17",
-                "number": "17.4.bis",
-                "type": "string or text", //need to verify
-                "title": binaryQuestionsT.target17_question_4_bis,
                 "mandatory": true
             },
             {
@@ -1363,27 +1651,51 @@ export const binaryIndicatorQuestions = [
                 "multiple": false,
                 "options": [
                     {
-                        "value": "no",
+                        "value":"no",
                         "title": binaryQuestionsT.no
-                    }, 
-                    {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.target17_question_5_b
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory": true
-            }, {
-                "key": "17_5_alt",
-                "section": "binaryResponseTarget17",
-                "number": "17.5.alt",
-                "type": "string or text", //need to verify
-                "title": binaryQuestionsT.target17_question_5_alt,
+            },
+            {
+                "key": "17_6",
+                "section": "GBF-TARGET-017",
+                "number": "17.6",
+                "type": "option",
+                "title": binaryQuestionsT.target17_question_6,
+                "multiple": false,
+                "options": [
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    }
+                ],
                 "mandatory": true
-            }
+            }, 
         ]
     },
     {
@@ -1405,51 +1717,47 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value": "underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value": "partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value": "fully",
+                        "title": binaryQuestionsT.fully
                     }
                 ],
                 "mandatory": true
             }, 
-            {
-                "key": "20_1_bis",
-                "section": "binaryResponseTarget20",
-                "number": "20.1.bis",
-                "type": "string or text", //need to verify
-                "title": binaryQuestionsT.target20_question_1_bis,
-                "mandatory": true
-            },
             {
                 "key": "20_2",
                 "section": "GBF-TARGET-020",
                 "number": "20.2",
                 "type": "option",
                 "title": binaryQuestionsT.target20_question_2,
-                "multiple": false,
-                "options": [
+                "multiple": true,
+                "options":[
                     {
-                        "value": "no",
-                        "title": binaryQuestionsT.no
+                        "value":"womenGirls",
+                        "title": binaryQuestionsT.womenGirls
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"childrenYouth",
+                        "title": binaryQuestionsT.childrenYouth
                     },
                     {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"personWithDisabilities",
+                        "title": binaryQuestionsT.personWithDisabilities
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"indigenousPeoplesLocalCommunities",
+                        "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
+                    },
+                    {
+                        "value":"other",
+                        "title": binaryQuestionsT.other
                     }
                 ],
                 "mandatory": true
@@ -1467,16 +1775,16 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value": "underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value": "partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value": "fully",
+                        "title": binaryQuestionsT.fully
                     },
                     {
                         "value": "notApplicable",
@@ -1491,31 +1799,32 @@ export const binaryIndicatorQuestions = [
                 "number": "20.4",
                 "type": "option",
                 "title": binaryQuestionsT.target20_question_4,
-                "multiple": false,
-                "options": [
+                "multiple": true,
+                "options":[
                     {
-                        "value": "no",
-                        "title": binaryQuestionsT.no
+                        "value":"womenGirls",
+                        "title": binaryQuestionsT.womenGirls
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"childrenYouth",
+                        "title": binaryQuestionsT.childrenYouth
                     },
                     {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"personWithDisabilities",
+                        "title": binaryQuestionsT.personWithDisabilities
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"indigenousPeoplesLocalCommunities",
+                        "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
                     },
                     {
-                        "value": "notApplicable",
-                        "title": binaryQuestionsT.notApplicable
+                        "value":"other",
+                        "title": binaryQuestionsT.other
                     }
                 ],
                 "mandatory": true
-            }, {
+            }, 
+            {
                 "key": "20_5",
                 "section": "GBF-TARGET-020",
                 "number": "20.5",
@@ -1528,38 +1837,27 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value": "underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "yes",
-                        "title": binaryQuestionsT.yes
-                    }
+                        "value": "partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value": "fully",
+                        "title": binaryQuestionsT.fully
+                    },
                 ],
                 "mandatory": true
             },
             {
-                "key": "20_5_alt",
+                "key": "20_5",
                 "section": "GBF-TARGET-020",
                 "number": "20.5.alt",
-                "type": "option",
-                "title": binaryQuestionsT.target20_question_5_alt,
-                "multiple": false,
-                "options": [
-                    {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.target20_question_5_alt_c
-                    },
-                    {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.target20_question_5_alt_c_bis
-                    },
-                    {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.target20_question_5_alt_c_ter
-                    }
-                ],
-                "mandatory": true
+                "type": "string",
+                "title": "Specify for each type of partnership (optional)",
+                "mandatory": false
             }
         ]
     },
@@ -1582,7 +1880,7 @@ export const binaryIndicatorQuestions = [
                         "type":"checkbox",
                         "title": binaryQuestionsT.target22_question_1_a,
                         "multiple":true,
-                        "options":[
+                        "options":[                            
                             {
                                 "value":"indigenousPeoplesLocalCommunities",
                                 "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
@@ -1600,8 +1898,8 @@ export const binaryIndicatorQuestions = [
                                 "title": binaryQuestionsT.personWithDisabilities
                             },
                             {
-                                "value":"none",
-                                "title": binaryQuestionsT.none
+                                "value":"other",
+                                "title": binaryQuestionsT.other
                             }
                         ],
                         "mandatory":true
@@ -1664,7 +1962,7 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.target22_question_1_d,
                         "multiple":true,
                         "options":[
-                           {
+                            {
                                 "value":"indigenousPeoplesLocalCommunities",
                                 "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
                             },
@@ -1681,8 +1979,8 @@ export const binaryIndicatorQuestions = [
                                 "title": binaryQuestionsT.personWithDisabilities
                             },
                             {
-                                "value":"none",
-                                "title": binaryQuestionsT.none
+                                "value":"other",
+                                "title": binaryQuestionsT.other
                             }
                         ],
                         "mandatory":true
@@ -1695,7 +1993,7 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.target22_question_1_e,
                         "multiple":true,
                         "options":[
-                           {
+                            {
                                 "value":"indigenousPeoplesLocalCommunities",
                                 "title": binaryQuestionsT.indigenousPeoplesLocalCommunities
                             },
@@ -1712,8 +2010,8 @@ export const binaryIndicatorQuestions = [
                                 "title": binaryQuestionsT.personWithDisabilities
                             },
                             {
-                                "value":"none",
-                                "title": binaryQuestionsT.none
+                                "value":"other",
+                                "title": binaryQuestionsT.other
                             }
                         ],
                         "mandatory":true
@@ -1733,16 +2031,16 @@ export const binaryIndicatorQuestions = [
                       "title": binaryQuestionsT.no
                    },
                    {
-                        "value":"noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value":"yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value":"yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory":true
@@ -1751,56 +2049,14 @@ export const binaryIndicatorQuestions = [
                 "key":"22_3",
                 "section":"binaryResponseTarget22",
                 "number":"22.3",
-                "type":"option",
                 "title": binaryQuestionsT.target22_question_3,
-                "multiple":false,
-                "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                       "value": "??", //value?
-                       "title": binaryQuestionsT.yesFinancialAllocationsFromNationalBudget
-                    },
-                    {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.yesFinancialAllocationsFromOtherResource
-                    }
-                ],
-                "mandatory":true
-            },
-            {
-                "key":"22_4",
-                "section":"binaryResponseTarget22",
-                "number":"22.4",
-                "type":"option",
-                "title": binaryQuestionsT.target22_question_4,
-                "multiple":false,
-                "options":[
-                   {
-                      "value":"no",
-                      "title": binaryQuestionsT.no
-                   },
-                   {
-                        "value":"yes",
-                        "title": binaryQuestionsT.yes
-                    }
-                ],
-                "mandatory":true
-            },
-            {
-                "key":"22_5",
-                "section":"binaryResponseTarget22",
-                "number":"22.5",
-                "title": binaryQuestionsT.target22_question_5,
                 questions:[
                     {
-                        "key":"22_5_a",
+                        "key":"22_3_a",
                         "section":"binaryResponseTarget22",
                         "number":"(a)",
                         "type":"checkbox",
-                        "title": binaryQuestionsT.target22_question_5_a,
+                        "title": binaryQuestionsT.target22_question_3_a,
                         "multiple":true,
                         "options":[
                             {
@@ -1820,18 +2076,18 @@ export const binaryIndicatorQuestions = [
                                 "title": binaryQuestionsT.personWithDisabilities
                             },
                             {
-                                "value":"none",
-                                "title": binaryQuestionsT.none
+                                "value":"other",
+                                "title": binaryQuestionsT.other
                             }
                         ],
                         "mandatory":true
                     },
                     {
-                        "key":"22_5_b",
+                        "key":"22_3_b",
                         "section":"binaryResponseTarget22",
                         "number":"(b)",
                         "type":"checkbox",
-                        "title": binaryQuestionsT.target22_question_5_b,
+                        "title": binaryQuestionsT.target22_question_3_b,
                         "multiple":true,
                         "options":[                           
                             {
@@ -1858,11 +2114,11 @@ export const binaryIndicatorQuestions = [
                         "mandatory":true
                     },
                     {
-                        "key":"22_5_c",
+                        "key":"22_3_c",
                         "section":"binaryResponseTarget22",
                         "number":"(c)",
                         "type":"option",
-                        "title": binaryQuestionsT.target22_question_5_c,
+                        "title": binaryQuestionsT.target22_question_3_c,
                         "multiple":false,
                         "options":[
                             {
@@ -1900,16 +2156,16 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value": "underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value": "partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value": "fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory": true
@@ -1927,16 +2183,16 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value": "underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value": "partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value": "fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory": true
@@ -1954,16 +2210,16 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
+                        "value": "underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
+                        "value": "partially",
+                        "title": binaryQuestionsT.partially
                     },
                     {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
+                        "value": "fully",
+                        "title": binaryQuestionsT.fully
                     },
                 ],
                 "mandatory": true
@@ -1990,76 +2246,7 @@ export const binaryIndicatorQuestions = [
                     }, 
                 ],
                 "mandatory": true
-            },
-            {
-                "key": "23_5",
-                "section": "binaryResponseTarget23",
-                "number": "23.5",
-                "type": "option",
-                "title": binaryQuestionsT.target23_question_5,
-                "multiple": false,
-                "options": [
-                    {
-                        "value": "no",
-                        "title": binaryQuestionsT.no
-                    },
-                    {
-                        "value": "yes",
-                        "title": binaryQuestionsT.yes
-                    },
-                ],
-                "mandatory": true
-            },
-            {
-                "key": "23_6",
-                "section": "binaryResponseTarget23",
-                "number": "23.6",
-                "type": "option",
-                "title": binaryQuestionsT.target23_question_6,
-                "multiple": false,
-                "options": [
-                    {
-                        "value": "no",
-                        "title": binaryQuestionsT.no
-                    },
-                    {
-                        "value": "noButUnderDevelopment",
-                        "title": binaryQuestionsT.noButUnderDevelopment
-                    },
-                    {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
-                    },
-                    {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
-                    },
-                ],
-                "mandatory": true
-            },
-            {
-                "key": "23_7",
-                "section": "binaryResponseTarget23",
-                "number": "23.7",
-                "type": "option",
-                "title": binaryQuestionsT.target23_question_7,
-                "multiple": false,
-                "options": [
-                    {
-                        "value": "no",
-                        "title": binaryQuestionsT.no
-                    },
-                    {
-                        "value": "yesPartially",
-                        "title": binaryQuestionsT.yesPartially
-                    },
-                    {
-                        "value": "yesFully",
-                        "title": binaryQuestionsT.yesFully
-                    },
-                ],
-                "mandatory": true
-            },
+            }
         ]
     }
 ]

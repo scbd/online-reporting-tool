@@ -211,6 +211,7 @@
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
     import { useAppStateStore } from '@/stores/appState';
     import { SocketIOService } from '~/services/socket-io';
+    import { type KmFormWorkflowFunctions } from '@/types/km-form-workflow-functions';
 
 
     const definedProps = defineProps({
@@ -242,7 +243,7 @@
     const otherCollaborators = ref([]);
 
     let originalDocument = null
-    let workflowFunctions;
+    let workflowFunctions:KmFormWorkflowFunctions;
     let saveDraftVersionTimer;
     let previousDraftVersion;
     let notifyCollaboratorsTimer;
@@ -299,7 +300,12 @@
         if(workflowFunctions?.onPreReviewDocument)
             document = await workflowFunctions.onPreReviewDocument(document);
 
-        const validationResponse = await validate(document)
+        let validationSection = null;
+        if(workflowFunctions?.onPreReviewParams){
+            const params = await workflowFunctions.onPreReviewParams(document);            
+            validationSection = params.validationSection;
+        }
+        const validationResponse = await validate(document, {validationSection})
         if(validationResponse && validationResponse?.errors?.length) {
             validationReport.value = {...validationResponse};
             // $scope.tab = "review";
@@ -393,19 +399,24 @@
             await workflowFunctions.onPostClose(originalDocument);
     }
 
-    async function validate(document) {
+    async function validate(document, {validationSection} = {}) {
                     
         try{
             if(!document)
                 throw "Invalid document";
-
-            const data     = await $api.kmStorage.documents.validate(document);
+            
+            const data     = await $api.kmStorage.documents.validate(document, {validationSection});
 
             return data;
         }
         catch(e){
             useLogger().error(e);
             $toast.error('Error occurred while validating your record, please save your data and try again.')
+            return {
+                errors : [{
+                    property : e.message
+                }]
+            }
         }
     }
 
@@ -637,7 +648,7 @@
         
         formWizard.value?.selectTab(focusedTab.value ?? 0)
 
-        workflowFunctions = inject('kmWorkflowFunctions');
+        workflowFunctions = inject<KmFormWorkflowFunctions>('kmWorkflowFunctions');
         try{
             if(workflowFunctions.onGetDocumentInfo){
                 const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
