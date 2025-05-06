@@ -51,6 +51,7 @@
                                 <km-form-check-item type="radio" name="hasNbsapAdopted"  for="hasNbsapAdopted" id="hasNbsapAdoptedYes"       value="yes"        v-model="sectionIIComputed.hasNbsapAdopted" :label="t('yes')"/>
                                 <km-form-check-item type="radio" name="hasNbsapAdopted"  for="hasNbsapAdopted" id="hasNbsapAdoptedNo"        value="no"         v-model="sectionIIComputed.hasNbsapAdopted" :label="t('no')"/>
                                 <km-form-check-item type="radio" name="hasNbsapAdopted"  for="hasNbsapAdopted" id="hasNbsapAdoptedInProcess" value="inProcess"  v-model="sectionIIComputed.hasNbsapAdopted" :label="t('inProcess')"/>
+                                <km-form-check-item type="radio" name="hasNbsapAdopted"  for="hasNbsapAdopted" id="hasNbsapAdoptedOther"     value="other"      v-model="sectionIIComputed.hasNbsapAdopted" :label="t('other')"/>
                             </km-form-group>  
 
                             <km-form-group name="anticipatedNbsapAdoptionDate" :caption="t('anticipatedNbsapAdoptionDate')"
@@ -69,6 +70,11 @@
                                     :custom-selected-item="customSelectedItem">
                                 </km-select>
                             </km-form-group>
+
+                                
+                            <km-form-group required :caption="t('implementationProgress')" name="implementationProgress">
+                                <km-input-rich-lstring v-model="sectionIIComputed.implementationProgress" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
+                            </km-form-group>  
                         </div>
                     </div>
                 </template>
@@ -126,7 +132,7 @@
     const stakeholderLists                  = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.STAKEHOLDERS)||[]));
     const policyInstrumentLists             = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.POLICY_INSTRUMENTS)||[]));
     const showAnticipatedNbsapDate          = computed(()=>['no', 'inProcess'].includes(sectionIIComputed.value?.hasRevisedNbsap))
-    const showAnticipatedNbsapAdoptionDate  = computed(()=>['no', 'inProcess'].includes(sectionIIComputed.value?.hasNbsapAdopted))
+    const showAnticipatedNbsapAdoptionDate  = computed(()=>['no', 'other'].includes(sectionIIComputed.value?.hasNbsapAdopted))
 
     const customLabel = ({title})=>{        
         return lstring(title, locale.value);

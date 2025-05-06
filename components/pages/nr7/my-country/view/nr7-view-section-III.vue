@@ -14,12 +14,12 @@
                     <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
                 </span>          
                 <toggle-accordion ref="accordionToggle"
-                    selector="#mapping-accordion .accordion-header button.accordion-button"
+                    selector="#view-mapping-accordion .accordion-header button.accordion-button"
                     v-if="sectionIIIComputed"></toggle-accordion>
             </div>
             <br>
             <br>
-            <CAccordion always-open id="mapping-accordion">
+            <CAccordion always-open id="view-mapping-accordion">
                
                 <!-- nationalTargets           -->
                 <CAccordionItem :item-key="index + 1" :visible="true"

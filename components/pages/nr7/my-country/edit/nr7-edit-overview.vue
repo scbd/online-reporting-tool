@@ -5,6 +5,7 @@
       </CCardHeader>
       <CCardBody>
         <!-- {{ nrProgress }} -->
+         
         <CRow>
           <CCol md="12">
             <div class="alert alert-success" role="alert">
@@ -219,7 +220,7 @@
                 </div>
                 </div>
             </CCol>
-            <CCol md="4" class="mt-2 d-none" >
+            <!-- <CCol md="4" class="mt-2 d-none" >
                 <div class="card">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('annex') }}</div>
@@ -246,7 +247,7 @@
                     </small>
                 </div>
                 </div>
-            </CCol>          
+            </CCol>           -->
         </CRow>
         <CRow v-if="validationErrorDocuments?.length">
             <CCol class="mt-1" :md="12">
@@ -255,7 +256,7 @@
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th>{{ t('draftRecords') }}</th>
+                                    <th>{{ t('draftRecords') }} (Indicator data)</th>
                                     <td></td>
                                 </tr>
                                 <tr v-for="document in validationErrorDocuments" :key="document">
@@ -444,6 +445,7 @@
         isBusy.value = true;
 
         try{
+            console.log('init overview')
             await nationalReport7Store.loadNationalReport();     
             validatedProgress()       
         }
@@ -456,7 +458,7 @@
 
     function validatedProgress(){
         const fields = {
-            sectionI : ['processUndertaken'],
+            sectionI : ['nationalAuthorities', 'contactPerson', 'contactDetails', 'processUndertaken'],
             sectionII: [
                 'hasRevisedNbsap',
                 'anticipatedNbsapDate',
@@ -465,6 +467,7 @@
                 'hasNbsapAdopted',
                 'anticipatedNbsapAdoptionDate',
                 'policyInstrument',
+                'implementationProgress'
             ],
             sectionIII:[
                 'target',
@@ -492,10 +495,13 @@
             sectionV : 0,
             sectionAnnex : 0
         }
+        console.log(progress)
 
-        if(document.sectionI?.processUndertaken)
-            progress.sectionI = 100;
-            
+        fields.sectionI.forEach(field=>{
+            if(document.sectionI?.[field] != undefined){
+                progress.sectionI += 25;
+            }
+        })
         
         if(document.sectionII?.hasRevisedNbsap!=undefined){
             progress.sectionII = 25;
@@ -517,13 +523,25 @@
         if(document.sectionII?.hasNbsapAdopted != undefined){
             progress.sectionII += 25;
         }
-        if(['no', 'inProgress'].includes(document.sectionII?.hasNbsapAdopted) 
+        if(['yes'].includes(document.sectionII?.hasNbsapAdopted) 
+            && document.sectionII?.policyInstrument != undefined){
+                progress.sectionII -= 15;
+        }
+        if(['no', 'other'].includes(document.sectionII?.hasNbsapAdopted) 
             && document.sectionII?.anticipatedNbsapAdoptionDate != undefined){
                 progress.sectionII -= 15;
         }
-
-        if(document.sectionII?.policyInstrument != undefined){
+        if(document.sectionII?.implementationProgress != undefined){
             progress.sectionII += 25;
+        }
+        
+
+        if(document.sectionIII?.length){
+            progress.sectionIII += 5;
+        }
+
+        if(document.sectionIV?.length){
+            progress.sectionIV += 5;
         }
 
         if(document.sectionV?.assessmentSummaryInfo)
@@ -535,7 +553,6 @@
         
         nrProgress.value = progress
     }
-
 
     async function onPublish(){
         
@@ -590,6 +607,9 @@
 
                 draftRecords.value = drafts.flat();
             }
+            // const indicatorResponse = await Promise.all([
+            //                         GbfGoalsAndTargets.loadGbfHeadlineIndicator(),
+            //                         GbfGoalsAndTargets.loadGbfBinaryIndicator()
 
             draftNr7Document.value = { body : cloneDeep(cleanDocument.value) };
             await validateDocuments([draftNr7Document.value, ...draftRecords.value]);
@@ -603,10 +623,10 @@
         isValidating.value = false;  
     }
 
-    async function validateDocument(document:any){
+    async function validateDocument(document:any,  {collection, schema, identifier, validationSection}:KmStorageParam){
         
         const { $api } = useNuxtApp();
-        const data     = await $api.kmStorage.documents.validate(document);
+        const data     = await $api.kmStorage.documents.validate(document, {collection, schema, identifier, validationSection});
  
         return data?.errors;
 
@@ -619,7 +639,7 @@
                 document.isValidating = true
                 document.validated    = false;
                 document.errors = undefined;
-                const validationErrors = await validateDocument(document.body)
+                const validationErrors = await validateDocument(document.body, {schema:document.body?.header?.schema})
                 if(validationErrors)
                     document.errors = [...validationErrors];
                 

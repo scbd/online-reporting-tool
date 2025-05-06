@@ -13,7 +13,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
         
         options.headers = options.headers || new globalThis.Headers({});
-        if(/^\/api\/v20\d{2}\/*/.test(request)){
+        if(/^\/api\/v20\d{2}\/*/.test(request) || /^http:\/\/10\.211\.55\.4/i.test(request) ){
             options.baseURL = options.baseURL || config.public.API_URL;
             
             if(/^https:\/\/api\.cbd\.int\//i.test(options.baseURL) || /^https:\/\/api\.cbddev\.xyz\//i.test(options.baseURL)){

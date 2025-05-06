@@ -19,107 +19,169 @@
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
                 :container="container" :validate-server-draft="true">
                 <template #submission>
+                    <div class="alert alert-info">
+                        <strong v-if="gbfMissingNationalTargets.length">
+                            {{ t('reportingNationalCount', [gbfMissingNationalTargets.length]) }}
+                        </strong>
+                        <strong v-if="Object.keys(nationalTargets).length" class="d-block">
+                            {{ t('reportingGlobalCount',   [Object.keys(nationalTargets).length]) }}
+                        </strong>
+                    </div>                    
                     <km-form-group name="sectionIII" class="visually-hidden">
                         <label class="form-label control-label" for="sectionIII">
                             <span >{{ t('sectionMandatory') }}</span>                                            
                         </label>
-                    </km-form-group>      
-                
+                    </km-form-group>    
+
                     <toggle-accordion class="float-end mr-1 mb-1 btn-xs"  ref="accordionToggle"
                     selector="#mapping-accordion .accordion-header button.accordion-button" v-if="nationalTargets"></toggle-accordion>
                     <br>
                     <br>
                     <CAccordion always-open id="mapping-accordion">          
-                        <!-- nationalTargets           -->
+                        <!-- nationalTargets          -->
                        
                         <CAccordionItem :item-key="index+1" :visible="true" 
                             v-for="(assessment, index) in sectionIIIComputed" :key="assessment" 
                             class="mb-2" :class="{'assessment-target-active' : mouseOverTarget?.identifier == assessment.target?.identifier}"
                             @mouseover="onMouseOver(assessment)" @mouseleave="onMouseleave(assessment)">
+
                             <CAccordionHeader :id="'assessment-target'+assessment.target?.identifier" 
-                                class="assessment-target-accordion"
+                                class="assessment-target-accordion" 
+                                @click="setAccordionStatus(assessment.target?.identifier)"
                                 :class="{'p-0 header header-sticky' : canHeaderStick(assessment.target?.identifier)}">
-                                {{lstring(nationalTargets[assessment.target.identifier]?.title)}}  
+                                
+                                {{ lstring(nationalTargets[assessment.target.identifier]?.title) }}
+
                                 <strong v-if="assessment.targetType" class="ms-1">({{ capitalCase(assessment.targetType) }})</strong>
                             </CAccordionHeader>
-                            <CAccordionBody> 
-                                <km-form-group>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <km-form-group required :name="'mainActionsInfo_'+ assessment.target?.identifier" :caption="t('brieflyDescribeTheMainActions')">
-                                                <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.mainActionsInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                            </km-form-group>
-                                            <km-form-group required :name="'levelOfProgress_'+ assessment.target?.identifier" :caption="t('indicateTheCurrentLevelOfProgress')">
-                                                <km-select
-                                                    v-model="assessment.levelOfProgress"
-                                                    class="validationClass"
-                                                    label="title"
-                                                    track-by="identifier"
-                                                    value-key="identifier"
-                                                    :placeholder="t('indicateTheCurrentLevelOfProgress')"
-                                                    :options="progressAssessmentLists"
-                                                    :disabled="false"
-                                                    :custom-label="customLabel"
-                                                    :custom-selected-item="customSelectedItem"
-                                                    
-                                                >
-                                                </km-select>
-                                            </km-form-group>
-                                            <km-form-group required :name="'progressSummaryInfo_'+ assessment.target?.identifier" :caption="t('provideASummaryOfProgress')">
-                                                <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.progressSummaryInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                            </km-form-group>
-
-                                            <km-form-group required :name="'actionEffectivenessInfo_'+ assessment.target?.identifier" :caption="t('provideExamplesOrCases')">
-                                                <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.actionEffectivenessInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                            </km-form-group>
-
-                                            <km-form-group :name="'sdgRelationInfo_'+ assessment.target?.identifier" :caption="t('brieflyDescribeImplementation')">
-                                                <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.sdgRelationInfo" :locales="document.header.languages"></km-input-rich-lstring>
-                                            </km-form-group>
-                                        </div>
+                            <CAccordionBody  :id="'assessment-target-body-'+assessment.target?.identifier" >
+                                <div v-if="!accordionItemVisibility[assessment.target?.identifier]">
+                                    <km-spinner center></km-spinner>
+                                </div>
+                                <div v-if="accordionItemVisibility[assessment.target?.identifier]">
+                                    <div class="alert alert-info" v-if="assessment.targetType == 'national'">
+                                        <km-link target="_blank"
+                                            :to="localePath(resolveSchemaViewRoute(SCHEMAS.NATIONAL_TARGET_7, assessment.target?.identifier))" >
+                                            {{ lstring(nationalTargets[assessment.target.identifier]?.title) }}
+                                        </km-link>
                                     </div>
-                                </km-form-group>
-                                <km-form-group v-if="nationalTargets[assessment.target.identifier]?.indicators" >
-                                    <legend>
-                                       {{ t('indicatorData') }} ({{ nationalTargetsComputed[assessment.target.identifier]?.indicators?.length }})
-                                    </legend>
-                                    <hr>
-                                    <div class="card mb-3" v-for="indicator in nationalTargetsComputed[assessment.target.identifier]?.indicators" :key="indicator">
-                                        <div class="card-header">
-                                            <!-- {{ indicator }} -->
-                                            <strong>{{ t(indicator.type) }}:</strong>
-                                            {{ lstring(indicator?.title||indicator?.value) }} 
-                                            <small class="fw-bold" v-if="indicator.type!='nationalIndicators'">({{ indicator?.identifier }})</small>
-                                            <!-- <span class="float-end" v-if="indicator">
-                                                <add-indicator-data  :indicator="indicator" :raw-document="indicator.nationalData" :identifier="((indicator.nationalData||{}).header||{}).identifier"
-                                                :on-close="onAddIndicatorDataClose"></add-indicator-data>
-                                            </span> -->
-                                        </div>
-                                        <div class="card-body" v-if="indicator">                                                    
-                                            <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
-                                                <missing-data-alert v-if="!Object.keys(indicator.nationalData||{})?.length"></missing-data-alert>    
-                                
-                                                <nr7-add-indicator-data :indicator="indicator" 
-                                                    :identifier="((indicator.nationalData||{}).header||{}).identifier" @on-post-save-draft="onAddIndicatorDataClose">
-                                                </nr7-add-indicator-data>       
-                                                <div v-if="indicator.nationalData">
-                                                    <nr7-view-indicator-data :indicator-data="indicator.nationalData"></nr7-view-indicator-data>
-                                                </div>
-                                            </div>      
-                                            <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
-                                                <nr7-add-binary-indicator-data :indicator="indicator" container=".nr7-add-binary-indicator-data-modal"
-                                                    :identifier="indicator?.nationalData?.header?.identifier" 
-                                                    @on-post-save-draft="onAddIndicatorDataClose">
-                                                </nr7-add-binary-indicator-data>   
-                                                <div v-if="indicator.nationalData">
-                                                    <nr7-view-binary-indicator-data :indicator-data="indicator.nationalData" :questions="indicator?.question?.questions">
-                                                    </nr7-view-binary-indicator-data>
-                                                </div>    
+                                    <km-form-group>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <km-form-group required :name="'mainActionsSummary_'+ assessment.target?.identifier">
+                                                    <template #caption>
+                                                        <span class="d-none">
+                                                            {{lstring(nationalTargets[assessment.target.identifier]?.title) }} :
+                                                        </span>
+                                                        {{ t('brieflyDescribeTheMainActions') }}
+                                                    </template>
+                                                    <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.mainActionsSummary" :locales="document.header.languages"></km-input-rich-lstring>
+                                                </km-form-group>
+                                                <km-form-group required :name="'levelOfProgress_'+ assessment.target?.identifier">
+                                                    <template #caption>
+                                                        <span class="d-none">
+                                                            {{lstring(nationalTargets[assessment.target.identifier]?.title) }} :
+                                                        </span>
+                                                        {{ t('indicateTheCurrentLevelOfProgress') }}
+                                                    </template>
+                                                    <km-select
+                                                        v-model="assessment.levelOfProgress"
+                                                        class="validationClass"
+                                                        label="title"
+                                                        track-by="identifier"
+                                                        value-key="identifier"
+                                                        :placeholder="t('indicateTheCurrentLevelOfProgress')"
+                                                        :options="progressAssessmentLists"
+                                                        :disabled="false"
+                                                        :custom-label="customLabel"
+                                                        :custom-selected-item="customSelectedItem"
+                                                        
+                                                    >
+                                                    </km-select>
+                                                </km-form-group>
+                                                <km-form-group required :name="'progressSummary_'+ assessment.target?.identifier">
+                                                    <template #caption>
+                                                        <span class="d-none">
+                                                            {{lstring(nationalTargets[assessment.target.identifier]?.title) }} :
+                                                        </span>
+                                                        {{ t('provideASummaryOfProgress') }}
+                                                    </template>
+                                                    <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.progressSummary" :locales="document.header.languages"></km-input-rich-lstring>
+                                                </km-form-group>
+
+                                                <km-form-group required :name="'keyChallengesSummary_'+ assessment.target?.identifier">
+                                                    <template #caption>
+                                                        <span class="d-none">
+                                                            {{lstring(nationalTargets[assessment.target.identifier]?.title) }} :
+                                                        </span>
+                                                        {{ t('keyChallengesSummary') }}
+                                                    </template>
+                                                    <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.keyChallengesSummary" :locales="document.header.languages"></km-input-rich-lstring>
+                                                </km-form-group>
+
+                                                <km-form-group required :name="'actionEffectivenessSummary_'+ assessment.target?.identifier">
+                                                    <template #caption>
+                                                        <span class="d-none">
+                                                            {{lstring(nationalTargets[assessment.target.identifier]?.title) }} :
+                                                        </span>
+                                                        {{ t('provideExamplesOrCases') }}
+                                                    </template>
+                                                    <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.actionEffectivenessSummary" :locales="document.header.languages"></km-input-rich-lstring>
+                                                </km-form-group>
+
+                                                <km-form-group :name="'sdgRelationSummary_'+ assessment.target?.identifier">
+                                                    <template #caption>
+                                                        <span class="d-none">
+                                                            {{lstring(nationalTargets[assessment.target.identifier]?.title) }} :
+                                                        </span>
+                                                        {{ t('brieflyDescribeImplementation') }}
+                                                    </template>
+                                                    <km-input-rich-lstring  :identifier="document.header.identifier" v-model="assessment.sdgRelationSummary" :locales="document.header.languages"></km-input-rich-lstring>
+                                                </km-form-group>
                                             </div>
                                         </div>
-                                    </div>
-                                </km-form-group>
-                                
+                                    </km-form-group>
+                                    <km-form-group v-if="nationalTargets[assessment.target.identifier]?.indicators" >
+                                        <legend>
+                                        {{ t('indicatorData') }} ({{ nationalTargetsComputed[assessment.target.identifier]?.indicators?.length }})
+                                        </legend>
+                                        <hr>
+                                        <div class="card mb-3" v-for="indicator in nationalTargetsComputed[assessment.target.identifier]?.indicators" :key="indicator">
+                                            <div class="card-header">
+                                                <!-- {{ indicator }} -->
+                                                <strong>{{ t(indicator.type) }}:</strong>
+                                                {{ lstring(indicator?.title||indicator?.value) }} 
+                                                <small class="fw-bold" v-if="indicator.type!='nationalIndicators'">({{ indicator?.identifier }})</small>
+                                                <!-- <span class="float-end" v-if="indicator">
+                                                    <add-indicator-data  :indicator="indicator" :raw-document="indicator.nationalData" :identifier="((indicator.nationalData||{}).header||{}).identifier"
+                                                    :on-close="onAddIndicatorDataClose"></add-indicator-data>
+                                                </span> -->
+                                            </div>
+                                            <div class="card-body" v-if="indicator">                                                    
+                                                <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
+                                                    <missing-data-alert v-if="!Object.keys(indicator.nationalData||{})?.length"></missing-data-alert>    
+                                    
+                                                    <nr7-add-indicator-data :indicator="indicator" 
+                                                        :identifier="((indicator.nationalData||{}).header||{}).identifier" @on-post-save-draft="onAddIndicatorDataClose">
+                                                    </nr7-add-indicator-data>       
+                                                    <div v-if="indicator.nationalData">
+                                                        <nr7-view-indicator-data :indicator-data="indicator.nationalData"></nr7-view-indicator-data>
+                                                    </div>
+                                                </div>      
+                                                <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
+                                                    <nr7-add-binary-indicator-data :indicator="indicator" container=".nr7-add-binary-indicator-data-modal"
+                                                        :identifier="indicator?.nationalData?.header?.identifier" 
+                                                        @on-post-save-draft="onAddIndicatorDataClose">
+                                                    </nr7-add-binary-indicator-data>   
+                                                    <div v-if="indicator.nationalData">
+                                                        <nr7-view-binary-indicator-data :indicator-data="indicator.nationalData" :questions="indicator?.question?.questions">
+                                                        </nr7-view-binary-indicator-data>
+                                                    </div>    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </km-form-group>                                
+                                </div>
                             </CAccordionBody>
                         </CAccordionItem>
                     </CAccordion>         
@@ -159,6 +221,7 @@
     import _,{uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
     import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
+    import { Collapse } from '@coreui/coreui';
 
     let document = ref({});
     const props = defineProps({
@@ -186,7 +249,7 @@
     const validationReport     = ref(null);
     const isEventDefined        = useHasEvents();
     const thesaurusStore        = useThesaurusStore ();
-    
+    const accordionItemVisibility= ref({});
 
     const sectionIIIComputed = computed({ 
         get(){ 
@@ -207,10 +270,40 @@
         let clean = {...nationalReport7Store.nationalReport};
         clean.sectionIII = sectionIIIComputed.value;
 
+
+        // Indicator data
+        clean.sectionIII.forEach(section => {
+            const indicatorData = nationalTargetsComputed.value[section.target.identifier];
+            // console.log(indicatorData)
+            section.indicatorData = {
+                headline     : indicatorDataDTO(indicatorData, 'headlineIndicators'),
+                binary       : indicatorDataDTO(indicatorData, 'binaryIndicators'),
+                component    : indicatorDataDTO(indicatorData, 'componentIndicators'),
+                complementary: indicatorDataDTO(indicatorData, 'complementaryIndicators'),
+                national     : indicatorDataDTO(indicatorData, 'nationalIndicators'),
+            }
+            console.log(section.indicatorData)
+        });
+        
+
         clean = useKmStorage().cleanDocument(clean);
         
         return clean;
     });
+
+    function indicatorDataDTO(data:Object, type:string){
+        const typeData = data[type]?.map(e=>({indicator : { identifier : e.identifier}}));
+        typeData?.forEach(e=>{
+            const indicatorData = data.indicators?.find(i=>i.identifier == e.indicator.identifier);
+            if(indicatorData?.nationalData){
+                e.data = {
+                    identifier : indicatorData.nationalData?.header?.identifier,
+                }
+            }
+        });
+
+        return typeData;
+    }
 
     const onPostClose = async (document)=>{
         
@@ -233,9 +326,20 @@
     const onPostReviewDocument = async(document, newValidationReport)=>{
         validationReport.value     = cloneDeep(newValidationReport);
 
-        if(validationReport.value?.errors)
+        if(validationReport.value?.errors){
             validationReport.value.errors = validationReport.value?.errors?.filter(e=>e.parameters=='sectionIII');
+            
+            const ids = new Set(validationReport.value.errors.map(e=>e.property.replace(/^.*_/, '')))
+            ids.forEach(async (identifier)=>{
+                if(!accordionItemVisibility.value[identifier]){
+                    accordionItemVisibility.value[identifier] = true;
+                    await sleep(100)
+                    toggleAccordionBody(identifier);
+                }
+            })
 
+            await sleep(500);
+        }
 
         return validationReport.value;
         
@@ -244,6 +348,11 @@
     const onPreReviewDocument = (document)=>{
         return document;
     }
+     
+    const onPreReviewParams = ()=>{
+        return {validationSection:'sectionIII'};
+    }
+
     const onGetDocumentInfo = async ()=>{
         return nationalReport7Store.nationalReport;
     }
@@ -268,8 +377,8 @@
                                 headlineIndicators     : headlineIndicators?.flat(),
                                 binaryIndicators       : binaryIndicators  ?.flat(),
                             }
-                        }));
-                        return targets;
+                        }));      
+        return targets;
     }
 
     async function loadNationalIndicatorData(indicatorType){
@@ -404,7 +513,13 @@
 
             nationalReport7Store.nationalReport.sectionIII = sectionIII;
             
-            setTimeout(()=>accordionToggle.value.toggle(true), 500)
+            // setTimeout(()=>accordionToggle.value.toggle(true), 500)
+            setTimeout(() => {
+                const identifier=nationalReport7Store.sectionIIIActiveAccordion||sectionIIIComputed.value[0]?.target?.identifier        
+                toggleAccordionBody(identifier);
+                setAccordionStatus(identifier, true);
+                scrollToElement(`#assessment-target${identifier}`, container);
+            }, 200);
             
         }
         catch(e){
@@ -530,6 +645,33 @@
             return obj;
         }
     }
+
+    function setAccordionStatus(identifier:string, status:boolean){
+        setTimeout(() => {
+           
+            const hasShow = window.document.querySelector(`#assessment-target-body-${identifier}`)?.classList?.contains('show');
+            
+            accordionItemVisibility.value[identifier] = hasShow
+            if(accordionItemVisibility.value[identifier])
+                nationalReport7Store.setSectionIIIActiveAccordion(identifier);
+            else
+                nationalReport7Store.clearSectionIIIActiveAccordion(identifier);
+    
+        }, 400);
+    }
+
+    function toggleAccordionBody(identifier:string){
+        
+        const headerElement = `#assessment-target-body-${identifier}`;        
+        const myCollapse    = window.document.querySelector(headerElement);
+        if(myCollapse){
+            const bsCollapse    = new Collapse(myCollapse, { toggle: false });
+            bsCollapse.show();
+
+            const accordionButton = window.document.querySelector('#assessment-target'+identifier + ' button');
+            accordionButton?.classList?.remove('collapsed');
+        }
+    }
     
 
     provide('kmWorkflowFunctions', {
@@ -537,6 +679,7 @@
         onPreSaveDraft,
         onPostSaveDraft,
         onPostReviewDocument,
+        onPreReviewParams,
         onPostClose,
         onGetDocumentInfo
     });
@@ -544,9 +687,10 @@
     provide("validationReview", {
         hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
     });
+
+    defineExpose({cleanDocument, isBusy})
     
     onMounted(()=>{
-        // setTimeout(init, 200);
         init();
     })
 </script>

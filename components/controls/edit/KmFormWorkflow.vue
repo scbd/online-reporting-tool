@@ -4,10 +4,9 @@
             <div class="p-0 header header-sticky other-users-sticky-header"  v-if="otherCollaborators.length">
                 <div class="container-fluid px-4 alert alert-danger" role="alert">      
                     <p>
-                        Currently other user(s) 
+                        {{t('collaboratorsMessage')}}
                         [<strong v-for="(user, index) in otherCollaborators" :key="user">
-                            {{ user.name }}{{ index<otherCollaborators.length-1 ? ', ' : '' }}</strong>]
-                        are also editing this record, which can cause overwrites.
+                            {{ user.name }}{{ index<otherCollaborators.length-1 ? ', ' : '' }}</strong>]                                
                     </p>                     
                 </div>
             </div>
@@ -212,6 +211,7 @@
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
     import { useAppStateStore } from '@/stores/appState';
     import { SocketIOService } from '~/services/socket-io';
+    import { type KmFormWorkflowFunctions } from '@/types/km-form-workflow-functions';
 
 
     const definedProps = defineProps({
@@ -243,7 +243,7 @@
     const otherCollaborators = ref([]);
 
     let originalDocument = null
-    let workflowFunctions;
+    let workflowFunctions:KmFormWorkflowFunctions;
     let saveDraftVersionTimer;
     let previousDraftVersion;
     let notifyCollaboratorsTimer;
@@ -300,7 +300,12 @@
         if(workflowFunctions?.onPreReviewDocument)
             document = await workflowFunctions.onPreReviewDocument(document);
 
-        const validationResponse = await validate(document)
+        let validationSection = null;
+        if(workflowFunctions?.onPreReviewParams){
+            const params = await workflowFunctions.onPreReviewParams(document);            
+            validationSection = params.validationSection;
+        }
+        const validationResponse = await validate(document, {validationSection})
         if(validationResponse && validationResponse?.errors?.length) {
             validationReport.value = {...validationResponse};
             // $scope.tab = "review";
@@ -324,7 +329,7 @@
             $toast.success(t('draftSaveMessage'), {position:'top-right'});  
         }
         catch(e){
-            if(e?.message != 'Document has changed on server, cannot save draft')
+            if(e?.cause?.serverStatusCode != 409)
                 $toast.error('Error saving draft record', {position:'top-right'}); 
             useLogger().error(e)
         }
@@ -363,7 +368,7 @@
             $toast.success(t('successfulMessage'), {position:'top-right'});  
         }
         catch(e){
-            if(e?.status != 'Document has changed on server, cannot save draft')
+            if(e?.cause?.serverStatusCode != 409)//ignore 
                 $toast.error('Error publishing record', {position:'top-right'}); 
             useLogger().error(e)
         }
@@ -394,19 +399,24 @@
             await workflowFunctions.onPostClose(originalDocument);
     }
 
-    async function validate(document) {
+    async function validate(document, {validationSection} = {}) {
                     
         try{
             if(!document)
                 throw "Invalid document";
-
-            const data     = await $api.kmStorage.documents.validate(document);
+            
+            const data     = await $api.kmStorage.documents.validate(document, {validationSection});
 
             return data;
         }
         catch(e){
             useLogger().error(e);
             $toast.error('Error occurred while validating your record, please save your data and try again.')
+            return {
+                errors : [{
+                    property : e.message
+                }]
+            }
         }
     }
 
@@ -419,7 +429,7 @@
 
         const hasChangedAndOverwrite = await validateIfServerHasChanged()
         if(!hasChangedAndOverwrite)
-            throw new Error('Document has changed on server, cannot save draft', {status:409}); //409 Resource Conflict 
+            throw new Error('Document has changed on server, cannot save draft', { cause : {serverStatusCode:409}}); //409 Resource Conflict 
 
         // save document
         const documentSaveResponse = await EditFormUtility.saveDraft(document);
@@ -638,7 +648,7 @@
         
         formWizard.value?.selectTab(focusedTab.value ?? 0)
 
-        workflowFunctions = inject('kmWorkflowFunctions');
+        workflowFunctions = inject<KmFormWorkflowFunctions>('kmWorkflowFunctions');
         try{
             if(workflowFunctions.onGetDocumentInfo){
                 const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);

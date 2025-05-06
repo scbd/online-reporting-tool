@@ -25,6 +25,10 @@ export async function useAPIFetch<T>(path: string | (() => string), options:UseF
     const { data, error, execute, refresh, status } = await useFetch(path, options)
 
     if(error?.value){
+        if(error.value?.statusCode === 401){
+            const { $eventBus } = useNuxtApp();
+            $eventBus.emit('evt:session-expired');
+        }
         throw new ApiError({
             status : error.value?.statusCode,
             error  : error.value?.data||error.value,

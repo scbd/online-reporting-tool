@@ -42,7 +42,7 @@
                                                     <km-government v-model="document.government"></km-government>                           
                                                 </km-form-group>   
 
-                                                <km-form-group name="languages" :caption="t('selectLangauges')" required>
+                                                <km-form-group name="languages" :caption="t('selectLanguages')" required>
                                                     <km-languages v-model="document.header.languages"></km-languages>
                                                 </km-form-group>                                
                                             </CAccordionBody>
@@ -115,6 +115,7 @@
     const isLoading                  = ref(false);
     const showEditIndicatorDataModal = ref(false);
     const customValidationErrors     = ref(null);
+    const documentInfo              = ref({});
 
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
@@ -144,6 +145,7 @@
         //vue prepends 'on' to all events internally
         if(isEventDefined('onPostSaveDraft'))
             emit('onPostSaveDraft', document);
+            documentInfo.value = document
     };
     
     const onPreReviewDocument = (document)=>{
@@ -153,10 +155,12 @@
 
         validationReport.value = cloneDeep(newValidationReport || {});
 
+        const {questions, key, binaryIndicator, target } = binaryQuestion.value
+        const flatQuestions = flattenQuestions(questions);
+
+        console.log(newValidationReport, flatQuestions)
         if(!validationReport.value?.errors){
 
-            const {questions, key, binaryIndicator, target } = binaryQuestion.value
-            const flatQuestions = flattenQuestions(questions);
 
             // answers for the current binary target, show validation errors only for the current target.
             const answers = cleanDocument.value[key] ||{responses:{}}; 
@@ -170,6 +174,13 @@
             });
             validationReport.value.errors = errors;
         }
+        else{
+            const currentTargetQuestions = flatQuestions.map(e=>e.key);
+            validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
+        }
+    }
+    const onGetDocumentInfo = async ()=>{
+        return documentInfo.value;
     }
 
     function showEditIndicatorData(target){ 
@@ -181,8 +192,8 @@
         try{
             isLoading.value = true;
             if(props.identifier){
-                const documentInfo = await EditFormUtility.load(props.identifier, SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)
-                document.value = documentInfo.body;
+                documentInfo.value = await EditFormUtility.load(props.identifier, SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)
+                document.value = documentInfo.value.body;
                 // const keys = binaryQuestions.questions.flat(3).map(e=>e.key)
                 // binaryData.value.answers = answersDummy.filter(e=>keys.includes(e.question))
                 // binaryQuestion
@@ -224,7 +235,8 @@
         onPreSaveDraft,
         onPostSaveDraft,
         onPostReviewDocument,
-        onPostClose
+        onPostClose,
+        onGetDocumentInfo
     });
 
     provide("validationReview", {
