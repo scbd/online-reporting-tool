@@ -282,7 +282,6 @@
                 complementary: indicatorDataDTO(indicatorData, 'complementaryIndicators'),
                 national     : indicatorDataDTO(indicatorData, 'nationalIndicators'),
             }
-            console.log(section.indicatorData)
         });
         
 
@@ -338,7 +337,7 @@
                 }
             })
 
-            await sleep(500);
+            await sleep(1000);
         }
 
         return validationReport.value;
