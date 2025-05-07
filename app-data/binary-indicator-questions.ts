@@ -120,6 +120,219 @@ export const binaryIndicatorQuestions = [
         ]
     },
     {
+        "key":"binaryResponseGoalC",
+        "target": "GBF-GOAL-C",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-C-13",
+        "title": "",
+        "questions":[ 
+            {
+                "key":"13_1",
+                "section":"binaryResponseTarget13",
+                "number":"13.1",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_1,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"13_2",
+                "section":"binaryResponseTarget13",
+                "number":"13.2",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_2,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"13_3",
+                "section":"binaryResponseTarget13",
+                "number":"13.3",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_3,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    }
+                ],
+                "mandatory":true
+            },
+            {
+                "key":"13_4",
+                "section":"binaryResponseTarget13",
+                "number":"13.4",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_4,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"yes",
+                        "title": binaryQuestionsT.yes
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
+                "mandatory":true
+            },,
+            {
+                "key":"13_5",
+                "section":"binaryResponseTarget13",
+                "number":"13.5",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_5,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
+                "mandatory":true
+            },,
+            {
+                "key":"13_6",
+                "section":"binaryResponseTarget13",
+                "number":"13.6",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_6,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
+                "mandatory":true
+            },,
+            {
+                "key":"13_7",
+                "section":"binaryResponseTarget13",
+                "number":"13.7",
+                "type":"option",
+                "title": binaryQuestionsT.target13_question_7,
+                "multiple":false,
+                "options":[
+                    {
+                        "value":"no",
+                        "title": binaryQuestionsT.no
+                    },
+                    {
+                        "value":"underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
+                    },
+                    {
+                        "value":"partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value":"fully",
+                        "title": binaryQuestionsT.fully
+                    },
+                    {
+                        "value":"notApplicable",
+                        "title": binaryQuestionsT.notApplicable
+                    }
+                ],
+                "mandatory":true
+            },
+        ]
+    },
+    {
         "key":"binaryResponseTarget1",
         "target": "GBF-TARGET-01",
         "binaryIndicator": "KMGBF-INDICATOR-BIN-1",
@@ -133,7 +346,7 @@ export const binaryIndicatorQuestions = [
                 "title": binaryQuestionsT.target1_question_1,
                 "questions":[
                     {
-                        "key":"1_a",
+                        "key":"1_1_a",
                         "section":"1_1",
                         "number":"(a)",
                         "type":"option",
@@ -170,7 +383,7 @@ export const binaryIndicatorQuestions = [
                         "mandatory":true
                     },
                     {
-                        "key":"1_b",
+                        "key":"1_1_b",
                         "section":"1_1",
                         "number":"(b)",
                         "type":"option",
@@ -207,7 +420,7 @@ export const binaryIndicatorQuestions = [
                         "mandatory":true
                     },
                     {
-                        "key":"1_c",
+                        "key":"1_1_c",
                         "section":"1_1",
                         "number":"(c)",
                         "type":"option",
@@ -873,7 +1086,7 @@ export const binaryIndicatorQuestions = [
     {
         "key":"binaryResponseTarget13",
         "target": "GBF-TARGET-013",
-        "binaryIndicator": "KMGBF-INDICATOR-BIN-13",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-C-13",
         "title": "",
         "questions":[ 
             {
