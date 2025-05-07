@@ -1,7 +1,9 @@
 <template>
     <!-- {{ indicatorData }} -->
-    <div class="mb-3" v-for="question in questions" :key="question.key">
-        <div v-if="!question.questions?.length && showQuestion(indicatorData, question)">
+    <div class="mb-3" v-for="question in questions" :key="question?.key">
+        
+        <span v-if="!question?.key">{{ question }}</span>
+        <div v-if="!question?.questions?.length && showQuestion(indicatorData, question)">
             <CCard>
                 <CCardHeader>
                     <km-form-group class="mb-0">            
@@ -11,17 +13,17 @@
                     </km-form-group>
                 </CCardHeader>
                 <CCardBody>
-                    <km-value v-if="(indicatorData?.responses||{})[question.key]">
+                    <km-value v-if="(indicatorData?.responses||{})[question?.key]">
                         <span v-if="question.type == 'option'">
-                            {{ question.options.find(e=>e.value == (indicatorData?.responses||{})[question.key])?.title }}
+                            {{ question.options.find(e=>e.value == (indicatorData?.responses||{})[question?.key])?.title }}
                         </span>
                         <span v-if="question.type == 'checkbox'">
-                                <div v-for="answer in (indicatorData?.responses||{})[question.key]" :key="answer">
+                                <div v-for="answer in (indicatorData?.responses||{})[question?.key]" :key="answer">
                                     {{ question.options.find(e=>e.value == answer)?.title }}
                                 </div>
                         </span>
                     </km-value>
-                    <missing-data-alert v-if="!hideMissingResponse && !(indicatorData?.responses||{})[question.key]" class="alert-sm">
+                    <missing-data-alert v-if="!hideMissingResponse && !(indicatorData?.responses||{})[question?.key]" class="alert-sm">
                         <template #message>
                              {{t('binaryIndicatorQuestion')}}
                         </template>
@@ -30,7 +32,7 @@
             </CCard>
 
         </div>
-        <div v-if="question.questions?.length && showQuestions(indicatorData, question.questions)">
+        <div v-if="question?.questions?.length && showQuestions(indicatorData, question.questions)">
             <CCard>
                 <CCardHeader>
                     {{question?.number}} {{question?.title}}
@@ -64,7 +66,7 @@ const { indicatorData } = toRefs(props);
 function showQuestion(indicatorData, question){
 
     if(props.hideMissingResponse)
-        return indicatorData?.responses && indicatorData?.responses[question.key];
+        return indicatorData?.responses && indicatorData?.responses[question?.key];
 
     return true;
 
@@ -78,7 +80,7 @@ function showQuestions(indicatorData, questions){
 
         if(!question.questions){
             if(props.hideMissingResponse)
-                return indicatorData?.responses && indicatorData?.responses[question.key];
+                return indicatorData?.responses && indicatorData?.responses[question?.key];
         }
 
         return showQuestions(indicatorData, question.questions);
