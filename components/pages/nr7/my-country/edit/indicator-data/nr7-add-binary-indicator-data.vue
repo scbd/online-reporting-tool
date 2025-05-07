@@ -50,7 +50,7 @@
                                     </CAccordion>   
                                     <div class="">     
                                         <CCard>
-                                            <CCardBody>                 
+                                            <CCardBody>                
                                                 <km-questions :questions="binaryQuestion?.questions" 
                                                     v-model="document[binaryQuestion.key].responses"></km-questions>
                                             </CCardBody>  
@@ -119,7 +119,12 @@
 
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
-         return clean
+
+        //since the binary indicator for Goal C and Target 13 is same, overwrite to avoid answering double
+        if(props.indicator?.identifier == "KMGBF-INDICATOR-BIN-C-13")            
+            clean["binaryResponseTarget13"] = clean["binaryResponseGoalC"];
+
+        return clean
     });
     
     const binaryQuestion = computed(()=>{
@@ -176,6 +181,7 @@
         }
         else{
             const currentTargetQuestions = flatQuestions.map(e=>e.key);
+            console.log()
             validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
         }
     }
@@ -190,6 +196,7 @@
 
     async function loadDocument(){
         try{
+            console.log('loadDocument', props.identifier)
             isLoading.value = true;
             if(props.identifier){
                 documentInfo.value = await EditFormUtility.load(props.identifier, SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)
@@ -222,7 +229,7 @@
 
     function flattenQuestions(questions){
         return questions.map(e=>{
-            if(e.questions?.length)
+            if(e?.questions?.length)
                 return flattenQuestions(e.questions);
 
             return e;

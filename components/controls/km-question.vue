@@ -1,4 +1,5 @@
 <template>
+    <template v-if="question">
     <!-- <CCard> -->
       <!-- <CCardHeader> -->
         <km-form-group :name="question?.key" required class="mb-0">            
@@ -32,6 +33,7 @@
         </div>
       <!-- </CCardBody>
     </CCard> -->
+    </template>
 </template>
 <i18n src="@/i18n/dist/components/controls/km-question.json"></i18n>
 <script setup lang="ts">
