@@ -150,7 +150,8 @@
         //vue prepends 'on' to all events internally
         if(isEventDefined('onPostSaveDraft'))
             emit('onPostSaveDraft', document);
-            documentInfo.value = document
+        
+        documentInfo.value = document
     };
     
     const onPreReviewDocument = (document)=>{
@@ -181,7 +182,6 @@
         }
         else{
             const currentTargetQuestions = flatQuestions.map(e=>e.key);
-            console.log()
             validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
         }
     }
@@ -234,7 +234,7 @@
 
             return e;
         })
-        .flat()        
+        .flat().filter(e=>e)        
     }
 
     provide('kmWorkflowFunctions', {

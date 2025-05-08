@@ -1,9 +1,9 @@
 {
     "no"                                       : "No",
     "yes"                                      : "Yes",
-    "underDevelopment"                         : "under development",
-    "partially"                             : "Partially",
-    "fully"                                 : "Fully",
+    "underDevelopment"                         : "Under development",
+    "partially"                                : "Partially",
+    "fully"                                    : "Fully",
     "yesForSomeUrbanAreas"                     : "Yes, for some urban areas",
     "yesForAllUrbanAreas"                      : "Yes, for all urban areas",
     "noParticipatoryProcess"                   : "No participatory process",
