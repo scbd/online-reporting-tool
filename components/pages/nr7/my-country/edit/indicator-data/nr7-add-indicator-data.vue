@@ -62,10 +62,18 @@
                                                     <div class="alert alert-info" >
                                                         <a :href="indicatorDataTemplates" target="_blank">
                                                            {{ t('downloadIndicator') }}  
-                                                            <font-awesome-icon icon="fa-download"></font-awesome-icon>
+                                                            <font-awesome-icon icon="fa-download"></font-awesome-icon>                                                            
                                                         </a>
+                                                        <strong class="d-block h-3">
+                                                            {{ t('fileFormatMessage') }}
+                                                        </strong>
                                                     </div>
-                                                    <input type="file" id="input" @change="uploadFile"/>                                                
+                                                    <div class="alert alert-danger" v-if="fileError">
+                                                        <strong>
+                                                            {{ t(fileError.error, fileError.params) }}
+                                                        </strong>
+                                                    </div>
+                                                    <input type="file" id="dataSetFile" ref="dataSetFile" @change="uploadFile"/>                                                
                                                 </km-form-group>                                                
                                             </div>
                                             <km-form-group name="availableDataset" required :caption="t('globalDataSet')" v-show="document.sourceOfData=='availableDataset'">
@@ -140,8 +148,11 @@
     const selectedLocale             = ref(locale.value);
     const validationReport           = ref(null);
     const document                   = ref({});
+    const documentInfo               = ref({});
     const isLoading                  = ref(false);
     const showEditIndicatorDataModal = ref(false);
+    const fileError                  = ref(null);
+    const dataSetFile                = ref(null);       
       //TODO: Temp, move to service 
     const isFetchingGlobalData = ref(false);
     const wcmcTargets          = ref([]);
@@ -168,6 +179,7 @@
         
         if(isEventDefined('onClose'))
             emit('onClose', document);
+        documentInfo.value = document
 
         showEditIndicatorDataModal.value = false;
     }
@@ -190,18 +202,45 @@
     const onPostReviewDocument = (document, newValidationReport)=>{
         validationReport.value = cloneDeep(newValidationReport);
     }
+
+    const onGetDocumentInfo = async ()=>{
+        return documentInfo.value;
+    }
     
     const uploadFile = async (event) => {
         try{
+            fileError.value = null;
             const file = event.target.files[0];
             const rows = await readXlsxFile(file)
                 // `rows` is an array of rows
                 // each row being an array of cells.
+                const columns = ['Indicator_code', 'Indicator', 'Does this data row represent a disaggregation',
+                                 'Disaggregation', 'Year', 'Unit', 'Value', 'Footnote'];
+                            
+console.log(rows[0]);
 
-                if(!rows[0].some(e=>['year', 'value'].includes(e.toLowerCase()))){
-                    alert('invalid template, please use the system provided template');
+                if(rows[0].length != columns.length){
+                    fileError.value = {
+                        error : 'columnsMismatch',
+                        params : {count:columns.length}
+                    }
+                    console.log(dataSetFile.value);
+                    dataSetFile.value.value = null;
+                    // alert('Your excel file is not following the template (column mismatch) expected columns are 8, please use the system provided template');
                     return;
                 }
+                for (let i = 0; i < columns.length; i++) {
+                    if(rows[0][i].toLowerCase() != columns[i].toLowerCase()){
+                        fileError.value = {
+                            error : 'columnsInvalid',
+                            params : { colName:rows[0][i], colNo:i+1, colExpected : columns[i]}
+                        }
+                        dataSetFile.value.value = null;
+                        // alert('Column name {rows[0][i]} is invalid at column no {i+1} expected name is {columns[i]}, please follow the sequence provided in the template');
+                        return;
+                    }
+                }
+                
                 const data = [];
                 for (let i = 1; i < rows.length; i++) {
                     const row = rows[i];
@@ -329,8 +368,8 @@
         try{
             isLoading.value = true;
             if(props.identifier){
-                const documentInfo = await EditFormUtility.load(props.identifier, SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA)
-                document.value = documentInfo.body;
+                documentInfo.value = await EditFormUtility.load(props.identifier, SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA)
+                document.value = documentInfo.value.body;
             }
             else{
                 document.value = EditFormUtility.buildEmptyDocument(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA,
@@ -356,7 +395,8 @@
         onPreSaveDraft,
         onPostSaveDraft,
         onPostReviewDocument,
-        onPostClose
+        onPostClose,
+        onGetDocumentInfo
     });
 
     provide("validationReview", {
