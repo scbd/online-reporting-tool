@@ -1,4 +1,5 @@
 <template>
+  <div v-if="SITE_ALERT" :class="'mb-0 alert alert-' + SITE_ALERT_LEVEL">{{SITE_ALERT}}</div>
   <CHeader position="sticky" :class="headerClassNames">
     <CContainer class="border-bottom px-4" fluid>
       <CHeaderToggler class="ps-1" @click="userPreferences.setSidebarVisible()">
@@ -136,6 +137,9 @@ import { cilSun, cilContrast } from '@coreui/icons';
     const userPreferences = useUserPreferencesStore();
     const headerClassNames = ref('mb-4 p-0')
     const { isColorModeSet, colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
+
+    const  { SITE_ALERT, SITE_ALERT_LEVEL } = useRuntimeConfig().public;
+    console.log(useRuntimeConfig().public)
 
     async function switchLocale (locale){
       setLocale(locale);
