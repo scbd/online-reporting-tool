@@ -24,7 +24,19 @@
             </km-form-group>
             <km-form-group>
                 <div class="card">
-                    <div class="card-body">  
+                    <div class="card-body">    
+                        <km-form-group v-if="document.sectionI && document.sectionI.nationalAuthorities" :caption="t('nationalAuthorities')">
+                            <km-lstring-value type="html" :value="document.sectionI.nationalAuthorities" :locale="selectedLocale"></km-lstring-value> 
+                        </km-form-group>
+                          
+                        <km-form-group v-if="document.sectionI && document.sectionI.contactPerson" :caption="t('contactPerson')">
+                            <km-lstring-value :value="document.sectionI.contactPerson" :locale="selectedLocale"></km-lstring-value> 
+                        </km-form-group>
+                          
+                        <km-form-group v-if="document.sectionI && document.sectionI.contactDetails" :caption="t('contactDetails')">
+                            <km-lstring-value :value="document.sectionI.contactDetails" :locale="selectedLocale"></km-lstring-value> 
+                        </km-form-group>
+
                         <km-form-group v-if="document.sectionI && document.sectionI.processUndertaken" :caption="t('preparationProcess')">
                             <km-lstring-value type="html" :value="document.sectionI.processUndertaken" :locale="selectedLocale"></km-lstring-value> 
                         </km-form-group>

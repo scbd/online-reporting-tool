@@ -125,6 +125,17 @@
         let clean = {...nationalReport7Store.nationalReport};
         clean.sectionII = sectionIIComputed.value;
 
+        if(!showAnticipatedNbsapDate.value)
+            clean.sectionII.anticipatedNbsapDate = undefined;
+        if(!showAnticipatedNbsapAdoptionDate.value) 
+            clean.sectionII.anticipatedNbsapAdoptionDate = undefined;
+
+        if(!clean.sectionII.hasStakeholderEngagement)
+            clean.sectionII.stakeholders = undefined;
+        
+        if(clean.sectionII.hasNbsapAdopted!='yes')
+            clean.sectionII.policyInstrument = undefined;
+
         clean = useKmStorage().cleanDocument(clean);
         
         return clean;
@@ -182,8 +193,8 @@
         try{
 
             await Promise.all([
-                        thesaurusStore.loadDomainTerms(THESAURUS.STAKEHOLDERS),
-                        thesaurusStore.loadDomainTerms(THESAURUS.POLICY_INSTRUMENTS),
+                        thesaurusStore.loadDomainTerms(THESAURUS.STAKEHOLDERS, {other: true}),
+                        thesaurusStore.loadDomainTerms(THESAURUS.POLICY_INSTRUMENTS, {other: true}),
                         nationalReport7Store.loadNationalReport()
                     ]);
             
