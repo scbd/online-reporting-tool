@@ -26,6 +26,7 @@
         skip : ['identifier']
       }
     })
+    useNavigateAppTo('/')
   
   </script>
   

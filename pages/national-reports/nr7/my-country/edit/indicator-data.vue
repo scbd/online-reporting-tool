@@ -20,4 +20,5 @@ import IndicatorDataOverview from "@/components/pages/nr7/my-country/edit/indica
     }
   })
 
+  useNavigateAppTo('/')
 </script>

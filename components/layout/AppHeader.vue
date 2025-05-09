@@ -139,8 +139,7 @@ import { cilSun, cilContrast } from '@coreui/icons';
     const { isColorModeSet, colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
 
     const  { SITE_ALERT, SITE_ALERT_LEVEL } = useRuntimeConfig().public;
-    console.log(useRuntimeConfig().public)
-
+    
     async function switchLocale (locale){
       setLocale(locale);
       const newLocalePath = switchLocalePath(locale);

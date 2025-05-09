@@ -19,4 +19,5 @@ import { SCHEMAS, ROLES } from '@/utils';
     }
   })
 
+  useNavigateAppTo('/')
 </script>
