@@ -20,5 +20,6 @@ import { SCHEMAS, ROLES } from '@/utils';
         skip : ['identifier']
         }
     })
+    useNavigateAppTo('/')
 
 </script>

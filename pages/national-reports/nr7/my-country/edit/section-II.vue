@@ -21,4 +21,5 @@ const Nr7EditSectionII = defineAsyncComponent(()=>import("@/components/pages/nr7
     }
   })
 
+  useNavigateAppTo('/')
 </script>

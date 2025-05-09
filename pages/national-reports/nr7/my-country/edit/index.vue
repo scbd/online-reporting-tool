@@ -250,5 +250,6 @@
 <script setup lang="ts">
 //@ts-nocheck
   const {t} = useI18n();
+  useNavigateAppTo('/')
 </script>
 

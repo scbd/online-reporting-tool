@@ -34,5 +34,6 @@ import { KmSuspense } from "@/components/controls";
   const navigateToPage = async (url:string)=>{
     await useNavigateAppTo(url);
   }
+  useNavigateAppTo('/')
   
 </script>

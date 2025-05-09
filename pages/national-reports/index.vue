@@ -34,4 +34,5 @@ import { KmSuspense } from "@/components/controls";
     await useNavigateAppTo(url);
   }
   
+  useNavigateAppTo('/')
 </script>
