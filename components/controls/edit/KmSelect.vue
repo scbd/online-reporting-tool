@@ -81,9 +81,11 @@ import { asArray } from '@/utils/helpers';
           return props.options?.find((option) => {
             const customSelectedItem = props.customSelectedItem(option[props.valueKey], option);
             
-            return isEqual(customSelectedItem, value)
-            //  ||
-            //        isEqual(customSelectedItem[props.valueKey], value[props.valueKey]);
+            if(value?.customValue){
+                return isEqual(customSelectedItem[props.valueKey], value[props.valueKey]);
+            }
+
+            return isEqual(customSelectedItem, value);
           })
         });
       },
@@ -109,3 +111,6 @@ import { asArray } from '@/utils/helpers';
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
+
+
