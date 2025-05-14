@@ -350,11 +350,11 @@
                     <div class="p-2">                             
                         {{t('successfulMessage')}}
                         <strong>
-                            <div v-if="security.role.isNationalAuthorizedUser(SCHEMAS.NATIONAL_REPORT_7)">               
-                                {{t('successMessageNau')}}
-                            </div>
                             <div v-if="security.role.isPublishingAuthority(SCHEMAS.NATIONAL_REPORT_7)">               
                                 {{t('successMessagePA')}}
+                            </div>
+                            <div v-else-if="security.role.isNationalAuthorizedUser(SCHEMAS.NATIONAL_REPORT_7)">               
+                                {{t('successMessageNau')}}
                             </div>
                         </strong>
                     </div>
@@ -557,7 +557,8 @@
     async function onPublish(){
         
         try{ 
-
+            //TODO: verify if indicator data was published later then the nr7 document, 
+            // ask to go back to the nr7 section III
             await onValidate();
             const hasValidationErrors = [draftNr7Document.value, ...(draftRecords.value||[])].some(e=>e.errors);
             

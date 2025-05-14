@@ -175,11 +175,11 @@
                     <div class="p-2">                             
                         {{t('successfulMessage')}}
                         <strong>
-                            <div v-if="security.role.isNationalAuthorizedUser(SCHEMAS.NATIONAL_TARGET_7)">               
-                                {{t('successMessageNau')}}
-                            </div>
                             <div v-if="security.role.isPublishingAuthority(SCHEMAS.NATIONAL_TARGET_7)">               
                                 {{t('successMessagePA')}}
+                            </div>
+                            <div v-else-if="security.role.isNationalAuthorizedUser(SCHEMAS.NATIONAL_TARGET_7)">               
+                                {{t('successMessageNau')}}
                             </div>
                         </strong>
                     </div>
