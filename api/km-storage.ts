@@ -75,7 +75,7 @@ class KmDocumentsApi extends ApiBase
                   
     return data;
   }
-  async validate(body:any, {collection, schema, identifier, validationSection}:KmStorageParam){
+  async validate(body:any, {collection, schema, identifier, validationSection}:KmStorageParam = {}){
     const params = {
       collection,
       schema,
