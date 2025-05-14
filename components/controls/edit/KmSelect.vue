@@ -81,7 +81,9 @@ import { asArray } from '@/utils/helpers';
           return props.options?.find((option) => {
             const customSelectedItem = props.customSelectedItem(option[props.valueKey], option);
             
-            return isEqual(customSelectedItem, value);
+            return isEqual(customSelectedItem, value)
+            //  ||
+            //        isEqual(customSelectedItem[props.valueKey], value[props.valueKey]);
           })
         });
       },

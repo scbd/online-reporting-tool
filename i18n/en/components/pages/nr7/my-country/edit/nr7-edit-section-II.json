@@ -5,20 +5,23 @@
     "revisedNbsap"          : "Has your country revised or updated its national biodiversity strategy and action plan in alignment with the Framework?",
     "yes"                   : "Yes",
     "no"                    : "No",
-    "inProcess"             : "In Process",
+    "inProgress"             : "In Progress",
     "other"                 : "Other",        
     "anticipatedNbsapDate": "Please indicate the expected date of completion of the revision or updating of the national biodiversity strategy and action plan?",
     "stakeholderEngagement" : "Did your country involve and engage stakeholders in revising or updating its national biodiversity strategy and action plan?",
     "stakeholders"          : "Stakeholders",
-    "hasNbsapAdopted"       : "Has your country’s revised or updated national biodiversity strategy and action plan been adopted as a policy or a legal instrument, and/or integrated into other strategies?",
+    "hasNbsapAdopted"       : "Has your country's revised or updated national biodiversity strategy and action plan been adopted as a policy or a legal instrument, and/or integrated into other strategies?",
     "anticipatedNbsapAdoptionDate"  : "Please specify and indicate the expected date of adoption",
-    "policyInstrument"     : "Please indicate how your country’s revised or updated national biodiversity strategy and action plan has been adopted",
+    "policyInstrument"     : "Please indicate how your country's revised or updated national biodiversity strategy and action plan has been adopted",
     "implementationProgress": "Briefly describe the national biodiversity monitoring system and how it tracks progress in the implementation of the national biodiversity strategy and action plan.",    "headlineIndicators": "Headline Indicators",
     "binaryIndicators": "Binary Indicators",
     "componentIndicators": "Component Indicators",
     "complementaryIndicators": "Complementary Indicators",
     "otherNationalIndicators": "Other National Indicators",
-    "componentIndicatorsNotLinked": "Would you like to provide data for other component indicators not linked to your country’s national targets?",
-    "complementaryIndicatorsNotLinked": "Would you like to provide data for other complementary indicators not linked to your country’s national targets?"
+    "componentIndicatorsNotLinked": "Would you like to provide data for other component indicators not linked to your country's national targets?",
+    "complementaryIndicatorsNotLinked": "Would you like to provide data for other complementary indicators not linked to your country's national targets?",
     
+    "hasNbsapAdoptedInfo":"Please specify",
+    "otherStakeholderInfo":"Please specify other stakeholders",
+    "otherPolicyInstrumentInfo":"Please specify other policy instrument"
 }

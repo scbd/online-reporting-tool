@@ -66,28 +66,14 @@
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 3">
                         <div class="alert alert-info mt-2"  v-if="globalComponentIndicators">
-                             {{t('componentIndicatorsNotLinked')}}
-                            <km-select v-model="selectedComponent"
-                                :placeholder="t('componentIndicators')"
-                                :close-on-select="false"
-                                :options="globalComponentIndicators"
-                                :multiple="true"
-                                @update:modelValue="onIndicatorChange($event, 'component')">
-                            </km-select>
+                             {{t('componentIndicatorsNotLinked')}}                           
                         </div>
                         <indicator-list indicator-type="componentIndicators" v-if="nationalComponentIndicators" :indicators="nationalComponentIndicators"
                             @on-record-delete="onRecordDelete"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="contact-tab" :visible="tabPaneActiveKey === 4">
                         <div class="alert alert-info m-2" v-if="globalComplementaryIndicators">
-                            {{t('complementaryIndicatorsNotLinked')}}
-                            <km-select v-model="selectedComplementary"
-                                :placeholder="t('complementaryIndicators')"
-                                :close-on-select="false"
-                                :options="globalComplementaryIndicators"
-                                :multiple="true"
-                                @update:modelValue="onIndicatorChange($event, 'complementary')">
-                            </km-select>
+                            {{t('complementaryIndicatorsNotLinked')}}                            
                         </div>
                         <indicator-list indicator-type="complementaryIndicators" v-if="nationalComplementaryIndicators" :indicators="nationalComplementaryIndicators"
                             @on-record-delete="onRecordDelete"></indicator-list>

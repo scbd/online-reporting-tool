@@ -8,14 +8,14 @@
         <div  v-if="nationalReport7Store.isBusy || isBusy">
             <km-spinner center></km-spinner>
         </div>
-        <div v-if="(!nationalReport7Store.isBusy && !isBusy) && !nationalTargetsComputed" class="alert alert-danger">
+        <div v-if="(!nationalReport7Store.isBusy && !isBusy) && !Object.keys(nationalTargetsComputed||[])?.length" class="alert alert-danger">
             <strong>{{ t('missingNationalTargets') }}</strong>
             <p>{{ t('missingNationalTargetsDescription') }} 
                 <KmNavLink class="btn btn-secondary btn-sm"  :title="t('Go to national targets')" :to="localePath(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)" >
                 </KmNavLink>
             </p>
         </div>
-        <form v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport && nationalTargetsComputed" name="editForm">          
+        <form v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport && Object.keys(nationalTargetsComputed||[])?.length" name="editForm">          
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
                 :container="container" :validate-server-draft="true">
                 <template #submission>
@@ -143,19 +143,25 @@
                                     </km-form-group>
                                     <km-form-group v-if="nationalTargets[assessment.target.identifier]?.indicators" >
                                         <legend>
-                                        {{ t('indicatorData') }} ({{ nationalTargetsComputed[assessment.target.identifier]?.indicators?.length }})
+                                            <label :for="'indicatorData_'+assessment.target.identifier">
+                                                <span class="d-none">{{lstring(nationalTargets[assessment.target.identifier]?.title) }} : </span>
+                                                {{ t('indicatorData') }} ({{ nationalTargetsComputed[assessment.target.identifier]?.indicators?.length }})
+                                            </label>
                                         </legend>
                                         <hr>
-                                        <div class="card mb-3" v-for="indicator in nationalTargetsComputed[assessment.target.identifier]?.indicators" :key="indicator">
+                                        <div class="card mb-3" v-for="(indicator, index) in nationalTargetsComputed[assessment.target.identifier]?.indicators" :key="indicator">
                                             <div class="card-header">
                                                 <!-- {{ indicator }} -->
-                                                <strong>{{ t(indicator.type) }}:</strong>
-                                                {{ lstring(indicator?.title||indicator?.value) }} 
-                                                <small class="fw-bold" v-if="indicator.type!='nationalIndicators'">({{ indicator?.identifier }})</small>
-                                                <!-- <span class="float-end" v-if="indicator">
-                                                    <add-indicator-data  :indicator="indicator" :raw-document="indicator.nationalData" :identifier="((indicator.nationalData||{}).header||{}).identifier"
-                                                    :on-close="onAddIndicatorDataClose"></add-indicator-data>
-                                                </span> -->
+                                                <label :for="'indicatorData_'+assessment.target.identifier+'_'+indicator?.type.replace('Indicators','')+'_' + indicator?.identifier">    
+                                                    <span class="d-none">{{lstring(nationalTargets[assessment.target.identifier]?.title) }} : {{ t('indicatorData') + ' - ' }} </span>
+                                                    <strong>{{ t(indicator.type) }}:</strong>
+                                                    {{ lstring(indicator?.title||indicator?.value) }} 
+                                                    <small class="fw-bold" v-if="indicator.type!='national'">({{ indicator?.identifier }})</small>
+                                                    <!-- <span class="float-end" v-if="indicator">
+                                                        <add-indicator-data  :indicator="indicator" :raw-document="indicator.nationalData" :identifier="((indicator.nationalData||{}).header||{}).identifier"
+                                                        :on-close="onAddIndicatorDataClose"></add-indicator-data>
+                                                    </span> -->
+                                                </label>
                                             </div>
                                             <div class="card-body" v-if="indicator">                                                    
                                                 <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
@@ -199,7 +205,7 @@
 
       </CCardBody>
     </CCard>
-  
+    
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-III.json"></i18n>
 <script setup lang="ts">
@@ -215,6 +221,7 @@
     import { sortBy } from "lodash";
     
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
+    import { nationalReport7Service } from '~/services/national-report-7-service';
     import addIndicatorData from './indicator-data/nr7-add-indicator-data.vue';
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
     import ViewData         from './indicator-data/nr7-view-indicator-data.vue';
@@ -256,6 +263,7 @@
             return sortBy(document.value.sectionIII, 'targetType').reverse()
         }
     });
+
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
     const progressAssessmentLists = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.ASSESSMENT_PROGRESS)||[]));
     
@@ -274,13 +282,13 @@
         // Indicator data
         clean.sectionIII.forEach(section => {
             const indicatorData = nationalTargetsComputed.value[section.target.identifier];
-            // console.log(indicatorData)
+            console.log(indicatorData.indicators)
             section.indicatorData = {
-                headline     : indicatorDataDTO(indicatorData, 'headlineIndicators'),
-                binary       : indicatorDataDTO(indicatorData, 'binaryIndicators'),
-                component    : indicatorDataDTO(indicatorData, 'componentIndicators'),
-                complementary: indicatorDataDTO(indicatorData, 'complementaryIndicators'),
-                national     : indicatorDataDTO(indicatorData, 'nationalIndicators'),
+                headline     : nationalReport7Service.indicatorDataDTO(indicatorData, 'headlineIndicators'),
+                binary       : nationalReport7Service.indicatorDataDTO(indicatorData, 'binaryIndicators'),
+                component    : nationalReport7Service.indicatorDataDTO(indicatorData, 'componentIndicators')?.filter(e=>e.data),
+                complementary: nationalReport7Service.indicatorDataDTO(indicatorData, 'complementaryIndicators')?.filter(e=>e.data),
+                national     : nationalReport7Service.indicatorDataDTO(indicatorData, 'nationalIndicators')?.filter(e=>e.data),
             }
         });
         
@@ -289,20 +297,6 @@
         
         return clean;
     });
-
-    function indicatorDataDTO(data:Object, type:string){
-        const typeData = data[type]?.map(e=>({indicator : { identifier : e.identifier}}));
-        typeData?.forEach(e=>{
-            const indicatorData = data.indicators?.find(i=>i.identifier == e.indicator.identifier);
-            if(indicatorData?.nationalData){
-                e.data = {
-                    identifier : indicatorData.nationalData?.header?.identifier,
-                }
-            }
-        });
-
-        return typeData;
-    }
 
     const onPostClose = async (document)=>{
         
@@ -377,7 +371,8 @@
                                 binaryIndicators       : binaryIndicators  ?.flat(),
                             }
                         }));      
-        return targets;
+        return targets
+        // .filter(e=>e.identifier == 'GBF-TARGET-11');
     }
 
     async function loadNationalIndicatorData(indicatorType){
@@ -410,7 +405,8 @@
 
         return globalTargets.filter(e=>{
             return !targets.includes(e.identifier)
-        });
+        })
+        // .filter(e=>e.identifier == 'GBF-TARGET-11');
     }
 
     async function init(){
@@ -660,15 +656,21 @@
     }
 
     function toggleAccordionBody(identifier:string){
-        
-        const headerElement = `#assessment-target-body-${identifier}`;        
-        const myCollapse    = window.document.querySelector(headerElement);
-        if(myCollapse){
-            const bsCollapse    = new Collapse(myCollapse, { toggle: false });
-            bsCollapse.show();
+        try
+        {
 
-            const accordionButton = window.document.querySelector('#assessment-target'+identifier + ' button');
-            accordionButton?.classList?.remove('collapsed');
+            const headerElement = `#assessment-target-body-${identifier}`;        
+            const myCollapse    = window.document.querySelector(headerElement);
+            if(myCollapse){
+                const bsCollapse    = new Collapse(myCollapse, { toggle: false });
+                bsCollapse.show();
+
+                const accordionButton = window.document.querySelector('#assessment-target'+identifier + ' button');
+                accordionButton?.classList?.remove('collapsed');
+            }
+        } 
+        catch(e){
+            //ignore error
         }
     }
     
