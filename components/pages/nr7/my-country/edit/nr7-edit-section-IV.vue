@@ -51,90 +51,44 @@
                                        <!-- ({{ nationalTargetsComputed[assessment.gbfGoal.identifier]?.indicators?.length }}) -->
                                     </legend>
                                     <hr>
-                                    <div v-for="(indictorData, key) in assessment?.indicatorData" :key="key">
+                                    <div v-for="(indictorData, key) in globalGoals[assessment.gbfGoal.identifier]?.indicatorData" :key="key">
                                         <div class="mb-3"  v-if="indictorData.length">
-                                            <div  v-for="data in indictorData" :key="data" class="card mb-3">
+                                            <div  v-for="indicator in indictorData" :key="indicator" class="card mb-3">
                                                 <div class="card-header">
                                                     <strong>{{ t(key) }}:</strong>
-                                                    {{ lstring(indicators[data.indicator.identifier]?.title) }} 
-                                                    <small class="fw-bold">({{ data.indicator?.identifier }})</small>
-                                                    
+                                                    {{ lstring(indicators[indicator.identifier]?.title) }} 
+                                                    <small class="fw-bold">({{ indicator?.identifier }})</small>
                                                 </div>
-                                                <div class="card-body" v-if="data.indicator">                                       
-                                                    <div v-if="data.indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
+                                                <div class="card-body" v-if="indicators[indicator.identifier]">                                       
+                                                    <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
                                                         <missing-data-alert 
-                                                            v-if="!Object.keys(nationalIndicatorData[data.indicator.identifier]?.nationalData||{})?.length">
+                                                            v-if="!Object.keys(nationalIndicatorData[indicator.identifier]?.nationalData||{})?.length">
                                                         </missing-data-alert>    
-                                        
-                                                        <nr7-add-indicator-data :indicator="data.indicator"                                                              
-                                                            :identifier="nationalIndicatorData[data.indicator.identifier]?.nationalData?.header?.identifier" 
+
+                                                        <nr7-add-indicator-data :indicator="indicator"                                                              
+                                                            :identifier="nationalIndicatorData[indicator.identifier]?.nationalData?.header?.identifier" 
                                                             @on-post-save-draft="onAddIndicatorDataClose">
                                                         </nr7-add-indicator-data>       
-                                                        <div v-if="nationalIndicatorData[data.indicator.identifier]?.nationalData">
-                                                            <nr7-view-indicator-data :indicator-data="nationalIndicatorData[data.indicator.identifier]?.nationalData"></nr7-view-indicator-data>
+                                                        <div v-if="nationalIndicatorData[indicator.identifier]?.nationalData">
+                                                            <nr7-view-indicator-data :indicator-data="nationalIndicatorData[indicator.identifier]?.nationalData"></nr7-view-indicator-data>
                                                         </div>
                                                     </div>      
-                                                    <div v-if="data.indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
-                                                        <nr7-add-binary-indicator-data :indicator="data.indicator" 
+                                                    <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
+                                                        <nr7-add-binary-indicator-data :indicator="indicator" 
                                                             container=".nr7-add-binary-indicator-data-modal"
-                                                            :identifier="nationalIndicatorData[data.indicator.identifier]?.nationalData?.header?.identifier" 
+                                                            :identifier="nationalIndicatorData[indicator.identifier]?.nationalData?.header?.identifier" 
                                                             @on-post-save-draft="onAddIndicatorDataClose">
                                                         </nr7-add-binary-indicator-data>   
-                                                        <div v-if="nationalIndicatorData[data.indicator.identifier]?.nationalData">
+                                                        <div v-if="nationalIndicatorData[indicator.identifier]?.nationalData">
                                                             <nr7-view-binary-indicator-data 
-                                                                :indicator-data="nationalIndicatorData[data.indicator.identifier]?.nationalData" 
-                                                                :questions="nationalIndicatorData[data.indicator.identifier]?.question?.questions">
+                                                                :indicator-data="nationalIndicatorData[indicator.identifier]?.nationalData" 
+                                                                :questions="nationalIndicatorData[indicator.identifier]?.question?.questions">
                                                             </nr7-view-binary-indicator-data>
                                                         </div>    
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="alert alert-info">
-                                            {{ t('componentAndComplementaryIndicators') }}
-                                            <strong>{{lstring(globalGoals[assessment.gbfGoal.identifier].title)}}</strong>
-                                        </div>
-                                        <div class="col-6">
-                                            <km-form-group :caption="t('componentIndicators')">
-                                                <km-select
-                                                    v-model="globalGoals[assessment.gbfGoal.identifier].selectedComponent"
-                                                    class="validationClass"
-                                                    label="title"
-                                                    track-by="identifier"
-                                                    value-key="identifier"
-                                                    :placeholder="t('componentIndicators')"
-                                                    :options="globalGoals[assessment.gbfGoal.identifier]?.componentIndicators"
-                                                    :multiple="true"
-                                                    :disabled="false"
-                                                    :close-on-select="false"
-                                                    :custom-label="customLabel"
-                                                    :custom-selected-item="customSelectedItem"
-                                                    @update:modelValue="onIndicatorChange($event, 'component', assessment.gbfGoal.identifier)"
-                                                >
-                                                </km-select>
-                                            </km-form-group>
-                                        </div>
-                                        <div class="col-6">
-                                            <km-form-group :caption="t('complementaryIndicators')">
-                                                <km-select
-                                                    v-model="globalGoals[assessment.gbfGoal.identifier].selectedComplementary"
-                                                    class="validationClass"
-                                                    label="title"
-                                                    track-by="identifier"
-                                                    value-key="identifier"
-                                                    :placeholder="t('complementaryIndicators')"
-                                                    :close-on-select="false"
-                                                    :options="globalGoals[assessment.gbfGoal.identifier]?.complementaryIndicators"
-                                                    :multiple="true"
-                                                    :disabled="false"
-                                                    :custom-label="customLabel"
-                                                    :custom-selected-item="customSelectedItem"
-                                                    @update:modelValue="onIndicatorChange($event, 'complementary', assessment.gbfGoal.identifier)"
-                                                >
-                                                </km-select>
-                                            </km-form-group>
+                                                
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +106,6 @@
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
         </form>
-
 
       </CCardBody>
     </CCard>
@@ -173,6 +126,7 @@
     import {uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
     import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
+    import { nationalReport7Service } from '~/services/national-report-7-service';
 
     let document = ref({});
     const props = defineProps({
@@ -204,20 +158,41 @@
     const sectionIVComputed = computed(()=>document.value.sectionIV);
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
 
-    const customLabel = ({title})=>{        
-        return lstring(title, locale.value);
-    }
-    const customSelectedItem = (item)=>{
-        return { identifier : item };
-    }
-
     const cleanDocument = computed(()=>{
         let clean = {...nationalReport7Store.nationalReport};
         clean.sectionIV = sectionIVComputed.value;
+
+        // Indicator data
+        clean.sectionIV.forEach(goal => {
+            const indicatorData = globalGoals.value[goal.gbfGoal.identifier]?.indicatorData;
+            console.log(indicatorData)
+            goal.indicatorData = {
+                headline     : indicatorData.headline.map(mapNationalIndicatorData),
+                binary       : indicatorData.binary.map(mapNationalIndicatorData),
+                component    : indicatorData.component.map(mapNationalIndicatorData)?.filter(e=>e.data),
+                complementary: indicatorData.complementary.map(mapNationalIndicatorData)?.filter(e=>e.data),
+            }
+            console.log(goal.indicatorData)
+        });
         clean = useKmStorage().cleanDocument(clean);
         
         return clean;
     });
+
+    const mapNationalIndicatorData = (indicator)=>{
+        
+        const nationalData = {
+            indicator : { identifier : indicator.identifier} 
+        }
+
+        const data = nationalIndicatorData.value[indicator.identifier]?.nationalData
+        if(data?.header?.identifier){
+            nationalData.data = {
+                identifier : data?.header?.identifier,
+            }
+        }
+        return nationalData;
+    }
 
     const onPostClose = async (document)=>{
         
@@ -275,17 +250,21 @@
         try{
             const response = await Promise.all([
                                 GbfGoalsAndTargets.loadGbfGoalsWithIndicators(),
-                                nationalReport7Store.loadNationalReport(),
-                                // loadNationalTargets(),
+                                nationalReport7Store.loadNationalReport(),                                
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
-                                loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)
+                                loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA),
+                                nationalReport7Service.loadNationalTargetIndicators(),
+                                // nationalReport7Service.loadNationalReport()
                             ]);  
 
-            globalGoals.value     = arrayToObject(response[0], {selectedComponent:[], selectedComplementary : []});
+            globalGoals.value     = arrayToObject(response[0]);
             indicators.value      = flattenIndicators(response[0]);
-            // nationalTargets.value = arrayToObject(response[2]); 
             nationalIndicatorData.value = normalizeIndicatorData(indicators.value , response[3][0], response[2].map(e=>e.body));
             
+            const nationalTargets = response[4].nationalTargets.map(e=>e.body);
+            const flatComplementaryIndicators = nationalReport7Service.uniqueIndicators(nationalTargets.map(e=>e.complementaryIndicators));
+            const flatComponentIndicators = nationalReport7Service.uniqueIndicators(nationalTargets.map(e=>e.componentIndicators));
+
             if(!nationalReport7Store.nationalReport.sectionIV?.length){
                 // add all global goals and its headline and binary indicators
                 // H & B will be mandatory and COMP/COM will be optional
@@ -300,26 +279,38 @@
                             component     : []
                         }
                     }
-                    e.headlineIndicators?.forEach((indicator)=>{
-                        goal.indicatorData.headline.push({ indicator : { identifier:indicator.identifier}});
-                    });
-                    e.binaryIndicators?.forEach((indicator)=>{
-                        goal.indicatorData.binary.push({ indicator : { identifier:indicator.identifier}});
-                    });
+                    // e.headlineIndicators?.forEach((indicator)=>{
+                    //     goal.indicatorData.headline.push({ indicator : { identifier:indicator.identifier}});
+                    // });
+                    // e.binaryIndicators?.forEach((indicator)=>{
+                    //     goal.indicatorData.binary.push({ indicator : { identifier:indicator.identifier}});
+                    // });
 
+                    // e.complementaryIndicators?.forEach((indicator)=>{
+                    //     if(flatComplementaryIndicators.find(e=>e.identifier == indicator.identifier))
+                    //         goal.indicatorData.complementary.push({ indicator : { identifier:indicator.identifier}});
+                    // });
+                    // e.componentIndicators?.forEach((indicator)=>{
+                    //     if(flatComponentIndicators.find(e=>e.identifier == indicator.identifier))
+                    //         goal.indicatorData.component.push({ indicator : { identifier:indicator.identifier}});
+                    // });
                     sectionIV.push(goal);
                 });
-
+                console.log(nationalIndicatorData.value)
                 nationalReport7Store.nationalReport.sectionIV = sectionIV;
             }
-            else{
-                //if there are any selected COMP/COM indicators add them to the goals selected indicators list
-                nationalReport7Store.nationalReport.sectionIV?.forEach(sectionItem=>{
-                    const goal = globalGoals.value[sectionItem.gbfGoal.identifier];
-                    goal.selectedComplementary  = sectionItem?.indicatorData?.complementary?.map(e=>e.indicator);
-                    goal.selectedComponent      = sectionItem?.indicatorData?.component?.map(e=>e.indicator);
-                })
-            }
+            response[0].forEach(goal=>{
+                globalGoals.value[goal.identifier].indicatorData = {
+                    headline : goal.headlineIndicators,
+                    binary   : goal.binaryIndicators,
+                    complementary : goal.complementaryIndicators?.filter((indicator)=>{
+                                        return flatComplementaryIndicators.find(e=>e.identifier == indicator.identifier);
+                                    }),
+                    component     : goal.componentIndicators?.filter((indicator)=>{
+                                        return flatComponentIndicators.find(e=>e.identifier == indicator.identifier);
+                                    })
+                }
+            });
 
             document.value = cloneDeep(nationalReport7Store.nationalReport);
             

@@ -2,9 +2,9 @@
     <span>
         <CAlert color="danger" v-if="error">{{ t('error')}} {{ value.identifier }}</CAlert>
         {{ lstring(term.title, locale) }}
-        <slot name="help" :term="term">
-
-        </slot>
+        <span v-if="value?.customValue">({{ lstring(value.customValue, locale) }})</span>
+        
+        <slot name="help" :term="term"></slot>
     </span>
 </template>
 <i18n src="@/i18n/dist/components/controls/view/KmTerm.json"></i18n>

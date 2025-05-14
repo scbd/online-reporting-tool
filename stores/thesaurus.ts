@@ -41,7 +41,6 @@ export const useThesaurusStore = defineStore('thesaurus', {
           const params = {
             relations: relations
           }
-          console.log("params", params)
           const { $api } = useNuxtApp();
           terms  = await $api.thesaurus.getDomainTerms(identifier, params);
           if(other){
