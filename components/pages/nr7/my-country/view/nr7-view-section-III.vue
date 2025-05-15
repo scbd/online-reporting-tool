@@ -14,12 +14,12 @@
                     <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
                 </span>          
                 <toggle-accordion ref="accordionToggle"
-                    selector="#mapping-accordion .accordion-header button.accordion-button"
+                    selector="#view-mapping-accordion .accordion-header button.accordion-button"
                     v-if="sectionIIIComputed"></toggle-accordion>
             </div>
             <br>
             <br>
-            <CAccordion always-open id="mapping-accordion">
+            <CAccordion always-open id="view-mapping-accordion">
                
                 <!-- nationalTargets           -->
                 <CAccordionItem :item-key="index + 1" :visible="true"
@@ -33,30 +33,36 @@
                     <CAccordionBody v-if="nationalTargets[assessment.target.identifier]">
                         <div class="card1">
                             <div class="card-body1">
-                                <km-form-group name="mainActionsInfo" v-if="assessment.mainActionsInfo"
-                                    :caption="t('describeActionsToThisNationalTarget')">
-                                    <km-lstring-value type="html" :value="assessment.mainActionsInfo"
+                                <km-form-group name="mainActionsSummary" v-if="assessment.mainActionsSummary"
+                                    :caption="t('brieflyDescribeTheMainActions')">
+                                    <km-lstring-value type="html" :value="assessment.mainActionsSummary"
                                         :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
                                 <km-form-group name="levelOfProgress" v-if="assessment.levelOfProgress"
                                     :caption="t('indicateTheCurrentLevelOfProgress')">                                    
                                     <km-value-term :value="assessment.levelOfProgress" :locale="selectedLocale"></km-value-term>                                    
                                 </km-form-group>
-                                <km-form-group name="progressSummaryInfo" v-if="assessment.progressSummaryInfo"
+                                <km-form-group name="progressSummary" v-if="assessment.progressSummary"
                                     :caption="t('provideASummaryOfProgress')">
-                                    <km-lstring-value type="html" :value="assessment.progressSummaryInfo"
+                                    <km-lstring-value type="html" :value="assessment.progressSummary"
                                         :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
 
-                                <km-form-group name="actionEffectivenessInfo" v-if="assessment.actionEffectivenessInfo"
+                                <km-form-group name="keyChallengesSummary" v-if="assessment.keyChallengesSummary"
                                     :caption="t('provideExamplesOrCases')">
-                                    <km-lstring-value type="html" :value="assessment.actionEffectivenessInfo"
+                                    <km-lstring-value type="html" :value="assessment.keyChallengesSummary"
                                         :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
 
-                                <km-form-group name="sdgRelationInfo" v-if="assessment.sdgRelationInfo"
+                                <km-form-group name="actionEffectivenessSummary" v-if="assessment.actionEffectivenessSummary"
+                                    :caption="t('provideExamplesOrCases')">
+                                    <km-lstring-value type="html" :value="assessment.actionEffectivenessSummary"
+                                        :locale="selectedLocale"></km-lstring-value>
+                                </km-form-group>
+
+                                <km-form-group name="sdgRelationSummary" v-if="assessment.sdgRelationSummary"
                                     :caption="t('brieflyDescribeImplementation')">
-                                    <km-lstring-value type="html" :value="assessment.sdgRelationInfo"
+                                    <km-lstring-value type="html" :value="assessment.sdgRelationSummary"
                                         :locale="selectedLocale"></km-lstring-value>
                                 </km-form-group>
                             </div>
@@ -68,8 +74,8 @@
                             </legend>
                             <hr>
                             <div v-for="indicator in nationalTargetsComputed[assessment.target.identifier]?.indicators"
-                                    :key="indicator">
-                                <div class="card mb-3" v-if="indicator?.nationalData" >
+                                    :key="indicator">                            
+                                <div class="card mb-3"  v-if="['headlineIndicators', 'binaryIndicators'].includes(indicator.type) || indicator.nationalData">
 
                                     <div class="card-header">
                                         <!-- {{ indicator }} -->
