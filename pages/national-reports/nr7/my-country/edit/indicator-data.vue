@@ -19,6 +19,5 @@ import IndicatorDataOverview from "@/components/pages/nr7/my-country/edit/indica
       skip : ['identifier']
     }
   })
-
-  useNavigateAppTo('/')
+  
 </script>
