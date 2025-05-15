@@ -1,24 +1,25 @@
 <template>
-    <div  v-if="answersInitialized" >
-    <div class="mb-3" v-for="question in questions" :key="question.key">           
-        <div v-if="!question.questions?.length">
-            <km-question :question="question" v-model="answers[question.key]" @update:modelValue="onAnswer"></km-question>
+    <div  v-if="answersInitialized && questions?.length" >
+        <div class="mb-3" v-for="question in questions" :key="question?.key">           
+            <div v-if="!question?.questions?.length">
+                <km-question :question="question" v-model="answers[question?.key]" @update:modelValue="onAnswer"></km-question>
+            </div>
+            <div v-if="question?.questions?.length">
+                <!-- <CCard>
+                    <CCardHeader> -->
+                        <km-form-group>
+                            <template #caption>
+                                {{question?.number}} {{question?.title}}
+                            </template>
+                        </km-form-group>
+                    <!-- </CCardHeader>
+                    <CCardBody> -->
+                        <km-questions class="ms-3" :subQuestion="true" :questions="question?.questions" v-model="answers[question?.key]" @update:modelValue="onAnswer"></km-questions>  
+                    <!-- </CCardBody>
+                </CCard>           -->
+            </div>
         </div>
-        <div v-if="question.questions?.length">
-            <!-- <CCard>
-                <CCardHeader> -->
-                    <km-form-group>
-                        <template #caption>
-                            {{question?.number}} {{question?.title}}
-                        </template>
-                    </km-form-group>
-                <!-- </CCardHeader>
-                <CCardBody> -->
-                    <km-questions class="ms-3" :subQuestion="true" :questions="question.questions" v-model="answers[question.key]" @update:modelValue="onAnswer"></km-questions>  
-                <!-- </CCardBody>
-            </CCard>           -->
-        </div>
-    </div></div>
+    </div>
 </template>
 
 <i18n src="@/i18n/dist/components/controls/km-questions.json"></i18n>
@@ -44,11 +45,11 @@
         const hierarchy = {};
         for (let i = 0; i < questions.length; i++) {
             const question = questions[i];
-            if(!question.questions){
-                hierarchy[question.key] = answers[question.key];
+            if(!question?.questions){
+                hierarchy[question?.key] = answers[question?.key];
             }
             else{
-                hierarchy[question.key] = answerArrayToHierarchy(question.questions, answers);
+                hierarchy[question.key] = answerArrayToHierarchy(question?.questions, answers);
             }
         }
         return hierarchy;
