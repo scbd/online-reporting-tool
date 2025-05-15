@@ -13,7 +13,6 @@
         </CRow>
     </div>
 </template>
-<i18n src="@/i18n/dist/components/controls/edit/KmInputLstringML.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
     import { isEmpty } from 'lodash';
