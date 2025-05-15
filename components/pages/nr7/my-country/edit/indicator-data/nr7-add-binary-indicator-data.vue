@@ -164,7 +164,6 @@
         const {questions, key, binaryIndicator, target } = binaryQuestion.value
         const flatQuestions = flattenQuestions(questions);
 
-        console.log(newValidationReport, flatQuestions)
         if(!validationReport.value?.errors){
 
 
@@ -196,7 +195,6 @@
 
     async function loadDocument(){
         try{
-            console.log('loadDocument', props.identifier)
             isLoading.value = true;
             if(props.identifier){
                 documentInfo.value = await EditFormUtility.load(props.identifier, SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)

@@ -165,14 +165,13 @@
         // Indicator data
         clean.sectionIV.forEach(goal => {
             const indicatorData = globalGoals.value[goal.gbfGoal.identifier]?.indicatorData;
-            console.log(indicatorData)
             goal.indicatorData = {
                 headline     : indicatorData.headline.map(mapNationalIndicatorData),
                 binary       : indicatorData.binary.map(mapNationalIndicatorData),
                 component    : indicatorData.component.map(mapNationalIndicatorData)?.filter(e=>e.data),
                 complementary: indicatorData.complementary.map(mapNationalIndicatorData)?.filter(e=>e.data),
             }
-            console.log(goal.indicatorData)
+            
         });
         clean = useKmStorage().cleanDocument(clean);
         
@@ -296,7 +295,6 @@
                     // });
                     sectionIV.push(goal);
                 });
-                console.log(nationalIndicatorData.value)
                 nationalReport7Store.nationalReport.sectionIV = sectionIV;
             }
             response[0].forEach(goal=>{

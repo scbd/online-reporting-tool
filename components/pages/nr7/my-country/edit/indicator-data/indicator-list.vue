@@ -20,7 +20,7 @@
                         </km-delete-record>
                     </div>
 
-                    <nr7-add-indicator-data :indicator="indicator"
+                    <nr7-add-indicator-data :indicator="indicator" container=".nr7-add-indicator-data-modal"
                         :identifier="((indicator.nationalData||{}).header||{}).identifier" @on-post-save-draft="onAddIndicatorDataClose">
                     </nr7-add-indicator-data>       
 

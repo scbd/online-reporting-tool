@@ -43,7 +43,9 @@
                     <slot name="introduction" >
                         <CCard>
                             <CCardBody>
-
+                                <div class="d-grid d-md-flex justify-content-md-end mb-2">
+                                    <button class="btn btn-secondary" @click="onGoToSubmission()">{{t('goToSubmission')}}</button>
+                                </div>
                                 <cbd-article :query="articleQuery()" hide-cover-image="true" show-edit="true">
                                     <template #missingArticle>
                                         <CAlert color="success" v-bind:visible="true">
@@ -638,6 +640,10 @@
             }
         }
     }
+    
+    function onGoToSubmission() {
+        formWizard.value?.selectTab(workflowTabs.submission.index)
+    }
 
     onMounted(async() => {
         validationReport.value = {}; 
@@ -670,6 +676,7 @@
         }
             
     })
+    
     // same as beforeRouteLeave option with no access to `this`
     onBeforeRouteLeave((to, from) => {
         return alertIfDocumentChanged();

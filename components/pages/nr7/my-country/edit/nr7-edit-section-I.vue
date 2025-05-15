@@ -80,7 +80,7 @@
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
 
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:1 },
+        workflowActiveTab  : {type:Number, default:0 },
     }) 
     // These emits are used by base view when the form is 
     // open in a dialog mode form overview

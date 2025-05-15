@@ -1,90 +1,145 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header"> {{ t('nr7SectionVI') }}</slot>
+        <slot name="header">{{t('sectionVI')}} {{t('sectionVIDescription')}}</slot>
       </CCardHeader>
       <CCardBody>
 
-        <div  v-if="isLoading">
-            <km-spinner></km-spinner>
-        </div>
-        <form v-if="!isLoading" name="editForm">          
-            <km-form-workflow v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport"
-            :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
-                :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
-                <template #submission>
-                    
-                    <km-form-group>
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                               {{ t('elementsOfTheGlobalTargets') }}
-                            </div>
-                            <div class="card-body">                      
-                                <km-form-group required :caption="t('elementsOfTheGlobalTargetsAddress')" name="elementOfGlobalTargetsInfo">
-                                    <km-input-rich-lstring v-model="document.elementOfGlobalTargetsInfo" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
-                                </km-form-group>                                    
-                            </div>
-                        </div>
-                    </km-form-group>
-                </template>
-                <template #review>                
-                    <view-nr7-section-VI :identifier="document.header.identifier" :document="cleanDocument"></view-nr7-section-VI>
-                </template>
-            </km-form-workflow>
-            <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
-        </form>
+        <div  v-if="nationalReport7Store.isBusy">
+            <km-spinner center  ></km-spinner>
+        </div>  
+        <km-form-workflow v-if="!isBusy && !nationalReport7Store.isBusy && sectionVIComputed"
+            :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
+            :container="container" :validate-server-draft="true">
+            <template #submission>
+                <form  name="editForm">  
+                    <km-form-group name="documentLinks" :caption="t('relevantLinks')" required>
+                        <km-add-link-file name="documentLinks" v-model="document.documentLinks" :allow-link="true" 
+                            :allow-file="true"  :identifier="document.header.identifier">
+                        </km-add-link-file>
+                    </km-form-group>  
+                    <km-form-group required :caption="t('nationalAuthorities')" name="nationalAuthorities">
+                        <km-input-rich-lstring v-model="sectionVIComputed.nationalAuthorities" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
+                    </km-form-group>  
+                </form>
+            </template>
+            <template #review>                
+                <nr7-view-section-I :identifier="cleanDocument.header.identifier" :document="cleanDocument"></nr7-view-section-I>
+            </template>
+        </km-form-workflow>
+
+        <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
+        
 
       </CCardBody>
     </CCard>
   
 </template>
-<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-VI.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-I.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
-
-    // import viewTarget               from "./view-target-part-2.vue";
-    import { useRealmConfStore }    from '@/stores/realmConf';
-    import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
-    import { useRoute } from 'vue-router' 
-    import { useToast } from 'vue-toast-notification';
-    import { useStorage } from '@vueuse/core'
-    import { EditFormUtility } from "@/services/edit-form-utility";
+  
+    import {cloneDeep } from 'lodash';
+    import { useNationalReport7Store }    from '@/stores/nationalReport7';
 
     const props = defineProps({
         workflowActiveTab  : {type:Number, default:1 },
-        onClose            : {type:Function, required:false},
-        onPostSaveDraft    : {type:Function, required:false},
     }) 
+    // These emits are used by base view when the form is 
+    // open in a dialog mode form overview
+    const emit  = defineEmits(['onClose', 'onPostSaveDraft'])
 
-    const { user }        = useAuth();
-    const security        = useSecurity();
-    const route           = useRoute();
-    const {$appRoutes:appRoutes }   = useNuxtApp();
-    const {t, locale }              = useI18n();
-    const $toast                = useToast();        
-    const container = useAttrs().container;
+    const {t, locale }          = useI18n();     
+    const nationalReport7Store  = useNationalReport7Store();
+    const isBusy                = ref(true);
+    const validationReport      = ref(null); 
+    const container             = useAttrs().container;
+    let document                = ref({});
+    const isEventDefined        = useHasEvents();
+    
 
-    let document = {
-        header : {
-            schema : SCHEMAS.NATIONAL_REPORT_7,
-            identifier : useGenerateUUID(),
-            languages  : EditFormUtility.getPreferredEditLanguages()
-        },        
-        government : {
-            identifier : user.value?.government
-        },
+    const sectionVIComputed = computed(()=>document.value?.sectionVI);
+
+    const cleanDocument = computed(()=>{
+        let clean = {...document.value};
+        clean.sectionVI = sectionVIComputed.value;
+        clean = useKmStorage().cleanDocument(clean);
+        
+        return clean;
+    });
+
+    const onPostClose = async (document)=>{
+        
+        if(isEventDefined('onClose'))
+            emit('onClose', document);
+        else{
+            await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_OVERVIEW);
+        }
     }
 
+    const onPreSaveDraft = async (document)=>{
+        return document;
+    };
 
-    // provide('kmWorkflowFunctions', {
-    //     onPreReviewDocument,
-    //     onPreSaveDraft,
-    //     onPostSaveDraft,
-    //     onPostReviewDocument,
-    //     onPostClose
-    // });
+    const onPostSaveDraft = async (document)=>{
+        emit('onPostSaveDraft', document);
+        nationalReport7Store.updateNationalReport(document);
+    }
 
-    // provide("validationReview", {
-    //     hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
-    // });
+    const onPostReviewDocument = async(document, newValidationReport)=>{
+        validationReport.value     = cloneDeep(newValidationReport);
+
+        if(validationReport.value?.errors)
+            validationReport.value.errors = validationReport.value?.errors?.filter(e=>e.parameters=='sectionVI');
+
+
+        return validationReport.value;
+    }
+    
+    const onPreReviewDocument = (document)=>{
+        return document;
+    }
+    const onGetDocumentInfo = async ()=>{
+        return nationalReport7Store.nationalReportInfo;
+    }
+
+    async function init(){
+        isBusy.value = true;
+
+        try{
+            await nationalReport7Store.loadNationalReport();
+            
+
+            if(!nationalReport7Store.nationalReport.sectionVI){
+                nationalReport7Store.nationalReport.sectionVI = {};
+            }                   
+            document.value = cloneDeep(nationalReport7Store.nationalReport);
+        }
+        catch(e){
+            useLogger().error(e,  'Error loading Section I')
+        }
+
+        isBusy.value = false;
+    }
+
+    
+
+    provide('kmWorkflowFunctions', {
+        onPreReviewDocument,
+        onPreSaveDraft,
+        onPostSaveDraft,
+        onPostReviewDocument,
+        onPostClose,
+        onGetDocumentInfo
+    });
+
+    provide("validationReview", {
+        hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+    });
+    
+    onMounted(()=>{
+        // setTimeout(init, 200);
+        init();
+    })
 </script>
+

@@ -50,6 +50,8 @@
         <km-lstring-value type="html" :value="indicatorData.comments"  :locale="locale"></km-lstring-value>
     </km-form-group>
 </template>
+
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-add-binary-indicator-data.json"></i18n>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-view-binary-indicator-data.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
