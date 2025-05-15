@@ -43,7 +43,9 @@
                     <slot name="introduction" >
                         <CCard>
                             <CCardBody>
-
+                                <div class="d-grid d-md-flex justify-content-md-end mb-2">
+                                    <button class="btn btn-secondary" @click="onGoToSubmission()">{{t('goToSubmission')}}</button>
+                                </div>
                                 <cbd-article :query="articleQuery()" hide-cover-image="true" show-edit="true">
                                     <template #missingArticle>
                                         <CAlert color="success" v-bind:visible="true">
@@ -170,11 +172,11 @@
                     <div class="p-2">         
                         {{t('successfulMessage')}}
                         <strong>
-                            <div v-if="security.role.isNationalAuthorizedUser(documentSchema)">               
-                                {{t('successMessageNau')}}
-                            </div>
                             <div v-if="security.role.isPublishingAuthority(documentSchema)">               
                                 {{t('successMessagePA')}}
+                            </div>
+                            <div v-else-if="security.role.isNationalAuthorizedUser(documentSchema)">               
+                                {{t('successMessageNau')}}
                             </div>
                         </strong>
                     </div>
@@ -211,6 +213,7 @@
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
     import { useAppStateStore } from '@/stores/appState';
     import { SocketIOService } from '~/services/socket-io';
+    import { type KmFormWorkflowFunctions } from '@/types/km-form-workflow-functions';
 
 
     const definedProps = defineProps({
@@ -242,7 +245,7 @@
     const otherCollaborators = ref([]);
 
     let originalDocument = null
-    let workflowFunctions;
+    let workflowFunctions:KmFormWorkflowFunctions;
     let saveDraftVersionTimer;
     let previousDraftVersion;
     let notifyCollaboratorsTimer;
@@ -299,7 +302,12 @@
         if(workflowFunctions?.onPreReviewDocument)
             document = await workflowFunctions.onPreReviewDocument(document);
 
-        const validationResponse = await validate(document)
+        let validationSection = null;
+        if(workflowFunctions?.onPreReviewParams){
+            const params = await workflowFunctions.onPreReviewParams(document);            
+            validationSection = params.validationSection;
+        }
+        const validationResponse = await validate(document, {validationSection})
         if(validationResponse && validationResponse?.errors?.length) {
             validationReport.value = {...validationResponse};
             // $scope.tab = "review";
@@ -393,19 +401,24 @@
             await workflowFunctions.onPostClose(originalDocument);
     }
 
-    async function validate(document) {
+    async function validate(document, {validationSection} = {}) {
                     
         try{
             if(!document)
                 throw "Invalid document";
-
-            const data     = await $api.kmStorage.documents.validate(document);
+            
+            const data     = await $api.kmStorage.documents.validate(document, {validationSection});
 
             return data;
         }
         catch(e){
             useLogger().error(e);
             $toast.error('Error occurred while validating your record, please save your data and try again.')
+            return {
+                errors : [{
+                    property : e.message
+                }]
+            }
         }
     }
 
@@ -627,6 +640,10 @@
             }
         }
     }
+    
+    function onGoToSubmission() {
+        formWizard.value?.selectTab(workflowTabs.submission.index)
+    }
 
     onMounted(async() => {
         validationReport.value = {}; 
@@ -637,7 +654,7 @@
         
         formWizard.value?.selectTab(focusedTab.value ?? 0)
 
-        workflowFunctions = inject('kmWorkflowFunctions');
+        workflowFunctions = inject<KmFormWorkflowFunctions>('kmWorkflowFunctions');
         try{
             if(workflowFunctions.onGetDocumentInfo){
                 const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
@@ -659,6 +676,7 @@
         }
             
     })
+    
     // same as beforeRouteLeave option with no access to `this`
     onBeforeRouteLeave((to, from) => {
         return alertIfDocumentChanged();

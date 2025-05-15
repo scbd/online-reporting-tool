@@ -75,13 +75,16 @@ class KmDocumentsApi extends ApiBase
                   
     return data;
   }
-  async validate(body:any, params:KmStorageParam){
-    params = params || {};
+  async validate(body:any, {collection, schema, identifier, validationSection}:KmStorageParam){
+    const params = {
+      collection,
+      schema,
+      identifier,
+      'validation-section' : validationSection
+    }
 
-    if (!params?.schema && body?.header?.schema)
-        params.schema = body.header.schema;
-        
-    params.identifier = body.header.identifier;
+    params.schema = params.schema || body?.header?.schema;
+    params.identifier = params.identifier || body?.header?.identifier;  
 
     const data =  await useAPIFetch(serviceUrls.validateUrl(), { body, method:'put', params })
                   
