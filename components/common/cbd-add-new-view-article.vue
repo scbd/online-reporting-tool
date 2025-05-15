@@ -2,8 +2,7 @@
     <a :href="newArticleUrl" :target="target">
        <slot>
            <span v-if="!id"><i class="fa fa-plus"></i> {{ t('addContent')}}</span>
-           <span v-if="id" ><i class="fa fa-edit"></i> {{ t('editContent')}}</span>
-           
+           <span v-if="id" ><i class="fa fa-edit"></i> {{ t('editContent')}}</span>           
        </slot>
    </a>
 </template>
@@ -26,11 +25,8 @@
        computed: {
            newArticleUrl : function(){
 
-               const domain = window.location.hostname.replace(/[^\.]+\./, '');
-               let baseUrl = 'https://oasis.cbd.int'
-
-               if(domain=='localhost' || domain == 'cbddev.xyz')
-                   baseUrl = 'https://oasis.cbddev.xyz';
+                const conf    = useRuntimeConfig();
+                const oasisUrl= conf.public.API_URL.replace('api.', 'oasis.');
 
                const queryString = [];
                if(!this.id){
@@ -45,9 +41,9 @@
                queryString.push('returnUrl=' + encodeURI(window.location.href));
 
                if(!this.id)
-                   return `${baseUrl}/articles/new?${queryString.join('&')}`
+                   return `${oasisUrl}/articles/new?${queryString.join('&')}`
                
-               return  `${baseUrl}/articles/${encodeURIComponent(this.id)}/edit?${queryString.join('&')}`;
+               return  `${oasisUrl}/articles/${encodeURIComponent(this.id)}/edit?${queryString.join('&')}`;
            }
        }
    }
