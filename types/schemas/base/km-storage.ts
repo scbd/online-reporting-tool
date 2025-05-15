@@ -2,9 +2,10 @@ import type { EDocumentInfo } from "./EDocumentInfo";
 import type { EUserInfo } from "./EUserInfo";
 
 export interface KmStorageParam {
-    collection : string
-    schema     : string;
-    identifier : string;
+    collection? : string
+    schema?     : string;
+    identifier? : string;
+    validationSection?: string;
 }
 
 export interface Government {
