@@ -7,13 +7,13 @@
 
         <div  v-if="nationalReport7Store.isBusy">
             <km-spinner center></km-spinner>
-        </div>        
+        </div>
         <form v-if="!nationalReport7Store.isBusy && sectionIIComputed" name="editForm">          
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument"
                 :container="container" :validate-server-draft="true">
                 <template #submission>
                     <div class="card">
-                        <div class="card-body">    
+                        <div class="card-body">   
                             <km-form-group name="sectionII" class="visually-hidden">
                                 <label class="form-label control-label" for="sectionII">
                                     <span >{{ t('sectionMandatory') }}</span>                                            
@@ -23,7 +23,7 @@
                             <km-form-group name="hasRevisedNbsap" :caption="t('revisedNbsap')" required>    
                                 <km-form-check-item type="radio" name="hasRevisedNbsap"  for="hasRevisedNbsap" id="hasRevisedNbsapYes"       value="yes"        v-model="sectionIIComputed.hasRevisedNbsap" :label="t('yes')"/>
                                 <km-form-check-item type="radio" name="hasRevisedNbsap"  for="hasRevisedNbsap" id="hasRevisedNbsapNo"        value="no"         v-model="sectionIIComputed.hasRevisedNbsap" :label="t('no')"/>
-                                <km-form-check-item type="radio" name="hasRevisedNbsap"  for="hasRevisedNbsap" id="hasRevisedNbsapInProcess" value="inProcess"  v-model="sectionIIComputed.hasRevisedNbsap" :label="t('inProcess')"/>                               
+                                <km-form-check-item type="radio" name="hasRevisedNbsap"  for="hasRevisedNbsap" id="hasRevisedNbsapinProgress" value="inProgress"  v-model="sectionIIComputed.hasRevisedNbsap" :label="t('inProgress')"/>                               
                             </km-form-group>                       
                             <km-form-group name="anticipatedNbsapDate" :caption="t('anticipatedNbsapDate')" required
                                 v-if="showAnticipatedNbsapDate"> 
@@ -47,18 +47,32 @@
                                 </km-select>
                             </km-form-group>
 
+                            <km-form-group name="stakeholders.other" :caption="t('otherStakeholderInfo')"
+                                v-if="showStakeholderInfo" required>                                  
+                                <km-input-lstring id="stakeholders.other" :placeholder="t('otherStakeholderInfo')" 
+                                    v-model="otherStakeholderInfo" :locales="document.header.languages">
+                                </km-input-lstring>                                                       
+                            </km-form-group>  
+
                             <km-form-group name="hasNbsapAdopted" :caption="t('hasNbsapAdopted')" required>              
                                 <km-form-check-item type="radio" name="hasNbsapAdopted"  for="hasNbsapAdopted" id="hasNbsapAdoptedYes"       value="yes"        v-model="sectionIIComputed.hasNbsapAdopted" :label="t('yes')"/>
                                 <km-form-check-item type="radio" name="hasNbsapAdopted"  for="hasNbsapAdopted" id="hasNbsapAdoptedNo"        value="no"         v-model="sectionIIComputed.hasNbsapAdopted" :label="t('no')"/>
-                                <km-form-check-item type="radio" name="hasNbsapAdopted"  for="hasNbsapAdopted" id="hasNbsapAdoptedInProcess" value="inProcess"  v-model="sectionIIComputed.hasNbsapAdopted" :label="t('inProcess')"/>
+                                <km-form-check-item type="radio" name="hasNbsapAdopted"  for="hasNbsapAdopted" id="hasNbsapAdoptedinProgress" value="inProgress"  v-model="sectionIIComputed.hasNbsapAdopted" :label="t('inProgress')"/>
+                                <km-form-check-item type="radio" name="hasNbsapAdopted"  for="hasNbsapAdopted" id="hasNbsapAdoptedOther"     value="other"      v-model="sectionIIComputed.hasNbsapAdopted" :label="t('other')"/>
+                            </km-form-group> 
+ 
+                            <km-form-group name="hasNbsapAdoptedInfo" :caption="t('hasNbsapAdoptedInfo')"
+                                v-if="showAnticipatedNbsapAdoptionDate" required>                                  
+                                <km-input-lstring id="hasNbsapAdoptedInfo" :placeholder="t('hasNbsapAdoptedInfo')" 
+                                    v-model="sectionIIComputed.hasNbsapAdoptedInfo" :locales="document.header.languages">
+                                </km-input-lstring>                                                       
                             </km-form-group>  
-
                             <km-form-group name="anticipatedNbsapAdoptionDate" :caption="t('anticipatedNbsapAdoptionDate')"
                                 v-if="showAnticipatedNbsapAdoptionDate" required>  
                                 <div class="col-1">                                  
                                     <date-selector class="form-control" v-model="sectionIIComputed.anticipatedNbsapAdoptionDate"></date-selector>                            
                                 </div>   
-                            </km-form-group>  
+                            </km-form-group> 
 
                             <km-form-group name="policyInstrument" :caption="t('policyInstrument')"  required
                                 v-if="sectionIIComputed.hasNbsapAdopted=='yes'">  
@@ -69,6 +83,16 @@
                                     :custom-selected-item="customSelectedItem">
                                 </km-select>
                             </km-form-group>
+                            <km-form-group name="policyInstrument.other" :caption="t('otherPolicyInstrumentInfo')"
+                                v-if="sectionIIComputed.policyInstrument?.identifier == THESAURUS.OTHER" required>                                  
+                                <km-input-lstring id="policyInstrument.other" :placeholder="t('otherPolicyInstrumentInfo')" 
+                                    v-model="sectionIIComputed.policyInstrument.customValue" :locales="document.header.languages">
+                                </km-input-lstring>                                                       
+                            </km-form-group>  
+                                
+                            <km-form-group required :caption="t('implementationProgress')" name="implementationProgress">
+                                <km-input-rich-lstring v-model="sectionIIComputed.implementationProgress" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
+                            </km-form-group>  
                         </div>
                     </div>
                 </template>
@@ -104,7 +128,8 @@
     const isBusy                = ref(true);
     const validationReport      = ref(null); 
     const container             = useAttrs().container;
-    let document                = ref({});
+    const document              = ref({});
+    const otherStakeholderInfo  = ref(null);
     const isEventDefined        = useHasEvents();
     const thesaurusStore        = useThesaurusStore ();
     
@@ -119,22 +144,34 @@
         let clean = {...nationalReport7Store.nationalReport};
         clean.sectionII = sectionIIComputed.value;
 
+        if(!showAnticipatedNbsapDate.value)
+            clean.sectionII.anticipatedNbsapDate = undefined;
+        if(!showAnticipatedNbsapAdoptionDate.value){ 
+            clean.sectionII.anticipatedNbsapAdoptionDate = undefined;
+            clean.sectionII.hasNbsapAdoptedInfo          = undefined;
+        }
+
+        if(!clean.sectionII.hasStakeholderEngagement)
+            clean.sectionII.stakeholders = undefined;
+
+        if(showStakeholderInfo.value){            
+            const otherStakeholder = clean.sectionII.stakeholders.find(e=>e.identifier == THESAURUS.OTHER);
+            otherStakeholder.customValue = otherStakeholderInfo.value;
+        }
+
+        if(clean.sectionII.hasNbsapAdopted!='yes')
+            clean.sectionII.policyInstrument = undefined;
+        
         clean = useKmStorage().cleanDocument(clean);
         
         return clean;
     });
     const stakeholderLists                  = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.STAKEHOLDERS)||[]));
     const policyInstrumentLists             = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.POLICY_INSTRUMENTS)||[]));
-    const showAnticipatedNbsapDate          = computed(()=>['no', 'inProcess'].includes(sectionIIComputed.value?.hasRevisedNbsap))
-    const showAnticipatedNbsapAdoptionDate  = computed(()=>['no', 'inProcess'].includes(sectionIIComputed.value?.hasNbsapAdopted))
-
-    const customLabel = ({title})=>{        
-        return lstring(title, locale.value);
-    }
-    const customSelectedItem = (item)=>{
-        return { identifier : item };
-    }
-
+    const showAnticipatedNbsapDate          = computed(()=>['no', 'inProgress'].includes(sectionIIComputed.value?.hasRevisedNbsap))
+    const showAnticipatedNbsapAdoptionDate  = computed(()=>['no', 'other'].includes(sectionIIComputed.value?.hasNbsapAdopted))
+    const showStakeholderInfo               = computed(()=>sectionIIComputed.value?.stakeholders?.map(e=>e.identifier)?.includes(THESAURUS.OTHER))
+    
     const onPostClose = async (document)=>{
         
         if(isEventDefined('onClose'))
@@ -176,8 +213,8 @@
         try{
 
             await Promise.all([
-                        thesaurusStore.loadDomainTerms(THESAURUS.STAKEHOLDERS),
-                        thesaurusStore.loadDomainTerms(THESAURUS.POLICY_INSTRUMENTS),
+                        thesaurusStore.loadDomainTerms(THESAURUS.STAKEHOLDERS, {other: true}),
+                        thesaurusStore.loadDomainTerms(THESAURUS.POLICY_INSTRUMENTS, {other: true}),
                         nationalReport7Store.loadNationalReport()
                     ]);
             
@@ -185,7 +222,7 @@
             if(!nationalReport7Store.nationalReport.sectionII){
                 nationalReport7Store.nationalReport.sectionII = {};
             }
-            const sectionII = nationalReport7Store.nationalReport;
+            const sectionII = nationalReport7Store.nationalReport.sectionII;
             if(!sectionII.hasRevisedNbsap){
                 sectionII.hasRevisedNbsap = {};
             }
@@ -194,8 +231,13 @@
             }
             if(!sectionII.hasStakeholderEngagement){
                 sectionII.hasStakeholderEngagement = {};
-            }                   
-            nationalReport7Store.nationalReport = sectionII;
+            }         
+            if(sectionII.stakeholders?.length){
+                const otherStakeholder = sectionII.stakeholders.find(e=>e.identifier == THESAURUS.OTHER);
+                otherStakeholderInfo.value = otherStakeholder.customValue;
+            }
+
+            nationalReport7Store.nationalReport.sectionII = sectionII;
             document.value = cloneDeep(nationalReport7Store.nationalReport);
         }
         catch(e){
