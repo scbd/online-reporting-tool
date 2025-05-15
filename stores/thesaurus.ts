@@ -1,5 +1,6 @@
 //@ts-nocheck
 import { defineStore } from 'pinia'
+import {THESAURUS} from '@/utils/constants'
 
 export const useThesaurusStore = defineStore('thesaurus', {
   state: () => {
@@ -28,18 +29,24 @@ export const useThesaurusStore = defineStore('thesaurus', {
         const { $api } = useNuxtApp();
         let domain = this.domains[domainName]
         if(!domain){
-          domain = await $api.thesaurs.getDomain(domainName, params);
+          domain = await $api.thesaurus.getDomain(domainName, params);
           this.domains.push(domain);
         };
     },  
-    async loadDomainTerms(identifier:string, params:any){
+    async loadDomainTerms(identifier:string, {relations, other}:any = {}){
         if(!identifier)
           return;
         let terms = this.getDomainTerms(identifier)
         if(!terms){
-
+          const params = {
+            relations: relations
+          }
           const { $api } = useNuxtApp();
           terms  = await $api.thesaurus.getDomainTerms(identifier, params);
+          if(other){
+            const otherTerm = await this.loadTerm(THESAURUS.OTHER);
+            terms.push(otherTerm);
+          }
           this.domainTerms[identifier] = terms;
           
           terms.forEach(term => {
