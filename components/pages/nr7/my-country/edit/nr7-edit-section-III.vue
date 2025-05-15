@@ -17,14 +17,14 @@
         </div>
         <form v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport && Object.keys(nationalTargetsComputed||[])?.length" name="editForm">          
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
-                :container="container" :validate-server-draft="true">
+                :container="container" :validate-server-draft="true"  :admin-tags="['section-III']">
                 <template #submission>
                     <div class="alert alert-info">
-                        <strong v-if="gbfMissingNationalTargets.length">
-                            {{ t('reportingNationalCount', [gbfMissingNationalTargets.length]) }}
+                        <strong v-if="Object.keys(nationalTargets).length">
+                            {{ t('reportingNationalCount', [Object.keys(nationalTargets).length]) }}
                         </strong>
-                        <strong v-if="Object.keys(nationalTargets).length" class="d-block">
-                            {{ t('reportingGlobalCount',   [Object.keys(nationalTargets).length]) }}
+                        <strong v-if="gbfMissingNationalTargets.length" class="d-block">
+                            {{ t('reportingGlobalCount',   [gbfMissingNationalTargets.length]) }}
                         </strong>
                     </div>                    
                     <km-form-group name="sectionIII" class="visually-hidden">
@@ -232,7 +232,7 @@
 
     let document = ref({});
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:1 },
+        workflowActiveTab  : {type:Number, default:0 },
     }) 
     // These emits are used by base view when the form is 
     // open in a dialog mode form overview

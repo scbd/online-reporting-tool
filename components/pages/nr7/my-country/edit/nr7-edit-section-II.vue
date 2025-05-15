@@ -10,7 +10,7 @@
         </div>
         <form v-if="!nationalReport7Store.isBusy && sectionIIComputed" name="editForm">          
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument"
-                :container="container" :validate-server-draft="true">
+                :container="container" :validate-server-draft="true" :admin-tags="['section-II']">
                 <template #submission>
                     <div class="card">
                         <div class="card-body">   
@@ -117,7 +117,7 @@
     import { useThesaurusStore }    from '@/stores/thesaurus';
 
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:1 },
+        workflowActiveTab  : {type:Number, default:0 },
     }) 
     // These emits are used by base view when the form is 
     // open in a dialog mode form overview

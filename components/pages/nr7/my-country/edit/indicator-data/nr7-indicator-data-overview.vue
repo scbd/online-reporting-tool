@@ -79,6 +79,9 @@
                             @on-record-delete="onRecordDelete"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 5">
+                        <div class="alert alert-info m-2" v-if="!otherNationalIndicators?.length">
+                            {{t('missingNationalIndicators')}}                            
+                        </div>
                         <indicator-list indicator-type="otherNationalIndicators" v-if="otherNationalIndicators?.length" :indicators="otherNationalIndicators"
                             @on-record-delete="onRecordDelete"></indicator-list>
                     </CTabPane>
@@ -91,7 +94,7 @@
     </CCard>
   
 </template>
-<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-II.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-indicator-data-overview.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
   

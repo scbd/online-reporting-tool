@@ -10,7 +10,7 @@
         </div>
         <form v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport" name="editForm">          
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
-                :container="container" :validate-server-draft="true">
+                :container="container" :validate-server-draft="true" :admin-tags="['section-IV']">
                 <template #submission>
                     <km-form-group name="sectionIV" class="visually-hidden">
                         <label class="form-label control-label" for="sectionIV">
@@ -130,7 +130,7 @@
 
     let document = ref({});
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:1 },
+        workflowActiveTab  : {type:Number, default:0 },
     }) 
     // These emits are used by base view when the form is 
     // open in a dialog mode form overview

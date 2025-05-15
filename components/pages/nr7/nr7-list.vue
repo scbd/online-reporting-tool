@@ -1,12 +1,6 @@
 <template>
     <div>
-        <search-result v-if="documents?.length" :documents="documents"></search-result>
-        <CAlert color="info" class="d-flex align-items-center" v-if="!documents?.length">
-            <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
-            <div class="p-2">
-                 {{t('noRecords')}}
-            </div>
-        </CAlert>
+        <record-type-search :recordTypes="recordTypes"></record-type-search>
     </div>
 </template>
 <script setup lang="ts">
@@ -19,6 +13,8 @@ import { SCHEMAS } from '@/utils';
     const realmConfStore  = useRealmConfStore();
     const realmConf = realmConfStore.realmConf; 
     const documents = ref([]);
+
+    const recordTypes = [SCHEMAS.NATIONAL_REPORT_7, SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA, SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA];
 
     const searchQuery = {
         rows:300,

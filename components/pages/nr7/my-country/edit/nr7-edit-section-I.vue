@@ -9,7 +9,7 @@
             <km-spinner center  ></km-spinner>
         </div>  
         <km-form-workflow v-if="!isBusy && !nationalReport7Store.isBusy && sectionIComputed"
-            :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
+            :focused-tab="props.workflowActiveTab" :document="cleanDocument" :admin-tags="['section-I']"
             :container="container" :validate-server-draft="true">
             <template #submission>
                 <form  name="editForm">  
