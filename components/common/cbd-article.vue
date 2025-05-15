@@ -1,15 +1,16 @@
 
 <template>
-   <div style="border:none;margin-top:10px">
+    <div style="border:none;margin-top:10px">
         <div v-if="!loading">
             <div v-if="!hideCoverImage && viewArticle && viewArticle.coverImage && viewArticle.coverImage.url">
                 <cbd-article-cover-image :cover-image="viewArticle.coverImage" :cover-image-size="coverImageSize"></cbd-article-cover-image>
             </div>    
             <cbd-add-new-view-article v-if="hasEditRights" 
                 :tags="tags" :admin-tags="adminTags" :custom-tags="customTags" :id="(viewArticle||{})._id" :target="target"
-                class="btn btn-secondary float-end"></cbd-add-new-view-article>
+                class="btn btn-secondary btn-sm mb-2">
+            </cbd-add-new-view-article>
             <div v-if="viewArticle" v-html="lstring(viewArticle.content, $locale)" class="ck-content"></div>
-            <div v-if="!viewArticle" class="ck-content">
+            <div v-if="!viewArticle" class="d-block">
                 <slot name="missingArticle">
                     {{t('noInformation')}}
                 </slot>
