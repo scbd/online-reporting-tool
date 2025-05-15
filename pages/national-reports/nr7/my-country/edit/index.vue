@@ -249,7 +249,9 @@
 <i18n src="@/i18n/dist/pages/national-reports/nr7/my-country/edit/index.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
-  const {t} = useI18n();
-  useNavigateAppTo('/')
+  // const {t} = useI18n();
+
+  useNavigateAppTo(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_OVERVIEW);
+  
 </script>
 

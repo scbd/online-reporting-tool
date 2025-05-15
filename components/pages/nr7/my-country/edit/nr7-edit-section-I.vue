@@ -28,13 +28,27 @@
                                 <km-government v-model="document.government"></km-government>                           
                             </km-form-group>   
 
-                            <km-form-group name="languages" :caption="t('selectLangauges')" required>
+                            <km-form-group name="languages" :caption="t('selectLanguages')" required>
                                 <km-languages v-model="document.header.languages"></km-languages>
                             </km-form-group>   
                         </div>
                     </div>
                     <div class="card" v-if="sectionIComputed">
-                        <div class="card-body">                      
+                        <div class="card-body">       
+                            <km-form-group required :caption="t('nationalAuthorities')" name="nationalAuthorities">
+                                <km-input-rich-lstring v-model="sectionIComputed.nationalAuthorities" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
+                            </km-form-group>  
+
+                            <km-form-group required :caption="t('contactPerson')" name="contactPerson">                               
+                                <km-input-lstring id="contactPerson" :placeholder="t('contactPerson')" v-model="sectionIComputed.contactPerson"
+                                    :locales="document.header.languages"></km-input-lstring>
+                            </km-form-group> 
+
+                            <km-form-group required :caption="t('contactDetails')" name="contactDetails">
+                                <km-input-lstring id="contactDetails" :placeholder="t('contactDetails')" v-model="sectionIComputed.contactDetails"
+                                :locales="document.header.languages" :rows="3"></km-input-lstring>
+                            </km-form-group>  
+
                             <km-form-group required :caption="t('preparationProcess')" name="processUndertaken">
                                 <ul>
                                     <li>{{ t('coordination') }}</li>
@@ -66,7 +80,7 @@
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
 
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:1 },
+        workflowActiveTab  : {type:Number, default:0 },
     }) 
     // These emits are used by base view when the form is 
     // open in a dialog mode form overview

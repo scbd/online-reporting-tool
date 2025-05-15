@@ -35,9 +35,12 @@
             </km-form-group>
 
             <km-form-group :caption="t('policyInstrument')" v-if="sectionII.policyInstrument">
-                <km-value-terms :value="sectionII.policyInstrument" :locale="selectedLocale"></km-value-terms>                                   
+                <km-value-term :value="sectionII.policyInstrument" :locale="selectedLocale"></km-value-term> 
             </km-form-group>
 
+            <km-form-group :caption="t('implementationProgress')" v-if="sectionII.implementationProgress">
+                <km-lstring-value type="html" :value="sectionII.implementationProgress" :locale="selectedLocale"></km-lstring-value>                                    
+            </km-form-group>
         </div>
        
       </CCardBody>

@@ -2,19 +2,21 @@
     "missingNationalTargets": "Missing National Targets",
     "missingNationalTargetsDescription": "Your country has not published any national targets, please submit national targets to pre populate section III of the 7th national report.",
     "sectionIII":"Section III",
-    "sectionIIIDescription":"Status of the revised or updated national biodiversity strategies and action plans (NBSAPs) in the light of the Kunming-Montreal Global Biodiversity Framework ",
+    "sectionIIIDescription":"Please use the following template to report on progress in the implementation of your country’s national targets and revised or updated national biodiversity strategy and action plan in alignment with the Framework. In cases where no national target is linked with one or more related global targets, it is suggested that countries report directly on progress contributing to the global targets.",
     "headlineIndicators": "Headline indicator",
     "binaryIndicators": "Binary indicator",
     "componentIndicators": "Component indicator",
     "complementaryIndicators": "Complementary indicator",
     "nationalIndicators": "National indicator",
-    "indicateTheCurrentLevelOfProgress": "Please indicate the current level of progress towards this national target",
-    "brieflyDescribeTheMainActions": "Please briefly describe the main actions taken to implement this national target",
-    "provideASummaryOfProgress": "Please provide a summary of progress towards this national target, including the main outcomes achieved, key challenges encountered, and different approaches that may be taken for further implementation",
-    "provideExamplesOrCases": "Please provide examples or cases to illustrate the effectiveness of the actions taken to implement this national assessment. If needed, provide relevant web links or attach related materials or publications",
-    "brieflyDescribeImplementation": "Please briefly describe how the implementation of this national target relates to progress in achieving related Sustainable Development Goals and associated targets and implementation of other related agreements",  
-    
+    "brieflyDescribeTheMainActions": "Briefly describe the main actions taken to implement the target",
+    "indicateTheCurrentLevelOfProgress": "Indicate the current level of progress towards the target",
+    "provideASummaryOfProgress": "Provide a summary of progress towards the target, including the main outcomes achieved",
+    "keyChallengesSummary":"Provide a summary of key challenges encountered and different approaches that may be taken for further implementation",
+    "provideExamplesOrCases": "Provide examples or cases to illustrate the effectiveness of the actions taken to implement the target. Provide relevant hyperlinks or attach related materials or publications, as needed.",
+    "brieflyDescribeImplementation": "Briefly describe how the implementation of the target relates to progress in achieving the related Sustainable Development Goals and associated targets, and the implementation of other related agreements",  
     "sectionMandatory" : "All fields in Section III are mandatory",
-    "indicatorData": "Indicator Data"
+    "indicatorData": "Indicator Data",
+    "reportingNationalCount" : "You are currently reporting on {0} national targets, which are aligned with the KMGBF.",
+    "reportingGlobalCount" : "You are currently reporting on {0} global targets because your country has not yet published any national targets that are aligned with the KMGBF."
 
 }

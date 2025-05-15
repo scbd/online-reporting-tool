@@ -257,7 +257,6 @@
       },
       setup(){
           const { t } = useI18n();
-          useNavigateAppTo('/')
           return { t };
       },
       props: {},
