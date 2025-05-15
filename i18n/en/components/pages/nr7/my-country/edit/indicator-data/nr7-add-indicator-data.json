@@ -10,7 +10,11 @@
     "pleaseSelectLanguage": "Please select in which language(s) you wish to submit this record",
     "nationalDataSet": "National data set",
     "downloadIndicator": "Download sample template for the Indicator",
+    "fileFormatMessage": "The system strictly requires the data in the format of the sample template. Please download the sample template and fill in the data accordingly.",
     "globalDataSet": "Global data set",
-    "noGlobalDataIndicator": "No global data found for this Indicator."
-
+    "noGlobalDataIndicator": "No global data found for this indicator on the UNEP-WCMC Target Tracker",
+    "columnsMismatch":"Your excel file is not following the template (column mismatch) expected columns are \"{count}\", please use the system provided template",
+    "columnsInvalid":"Column name \"{colName}\" is invalid at column no \"{colNo}\" expected name is \"{colExpected}\", please follow the sequence provided in the template",
+    "sourceOfDataInfoNoData":"Please describe the situation",
+    "sourceOfDataInfoNotRelevant":"Please describe why this indicator is not relevant"
 }
