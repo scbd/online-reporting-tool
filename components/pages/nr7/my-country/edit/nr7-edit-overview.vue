@@ -5,26 +5,27 @@
       </CCardHeader>
       <CCardBody>
         <!-- {{ nrProgress }} -->
+         
         <CRow>
-          <CCol md="12">
+          <!-- <CCol md="12">
             <div class="alert alert-success" role="alert">
               <p>
                {{t('welcome', { government :user.government})}}
               </p>
               <hr />
             </div>
-          </CCol>
+          </CCol> -->
   
           <CCol md="12">
             <div class="card">
               <div class="card-body">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
+                    <CButton :disabled="disableActions || 1==1" @click="onPublish()" color="secondary">
                         <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                         <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                         {{t('publish')}}
                     </CButton>
-                    <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
+                    <CButton :disabled="disableActions || 1==1" @click="onValidate(undefined)" color="secondary">
                         <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"  message=" "></km-spinner>
                         <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                         {{t('validate')}}
@@ -72,7 +73,9 @@
                                 :title="t('hasErrors') + '('+ sectionIErrors.length + ')'" color="warning" v-if="sectionIErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionI') }}</button>
+                            
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I+ '?preview=true'" :title="t('previewSectionI')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I" :title="t('editSectionI')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -108,7 +111,8 @@
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
                             
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionII') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II+ '?preview=true'" :title="t('previewSectionII')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II" :title="t('editSectionII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -143,7 +147,8 @@
                                 :title="t('hasErrors') + '('+ sectionIIIErrors.length + ')'" color="warning" v-if="sectionIIIErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionIII') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III+ '?preview=true'" :title="t('previewSectionIII')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III" :title="t('editSectionIII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -176,7 +181,8 @@
                                 :title="t('hasErrors') + '('+ sectionIVErrors.length + ')'" color="warning" v-if="sectionIVErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionIV') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV+ '?preview=true'" :title="t('previewSectionIV')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV" :title="t('editSectionIV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -211,7 +217,8 @@
                                 :title="t('hasErrors') + '('+ sectionVErrors.length + ')'" color="warning" v-if="sectionVErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionV') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V+ '?preview=true'" :title="t('previewSectionV')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V" :title="t('editSectionV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -219,7 +226,7 @@
                 </div>
                 </div>
             </CCol>
-            <CCol md="4" class="mt-2 d-none" >
+            <!-- <CCol md="4" class="mt-2 d-none" >
                 <div class="card">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('annex') }}</div>
@@ -246,7 +253,7 @@
                     </small>
                 </div>
                 </div>
-            </CCol>          
+            </CCol>           -->
         </CRow>
         <CRow v-if="validationErrorDocuments?.length">
             <CCol class="mt-1" :md="12">
@@ -255,7 +262,7 @@
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th>{{ t('draftRecords') }}</th>
+                                    <th>{{ t('draftRecords') }} (Indicator data)</th>
                                     <td></td>
                                 </tr>
                                 <tr v-for="document in validationErrorDocuments" :key="document">
@@ -290,12 +297,12 @@
                 <CCard>
                     <CCardBody>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
+                            <CButton :disabled="disableActions || 1==1" @click="onPublish()" color="secondary">
                                 <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                                 {{t('publish')}}
                             </CButton>
-                            <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
+                            <CButton :disabled="disableActions || 1==1" @click="onValidate(undefined)" color="secondary">
                                 <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                                 {{t('validate')}}
@@ -349,11 +356,11 @@
                     <div class="p-2">                             
                         {{t('successfulMessage')}}
                         <strong>
-                            <div v-if="security.role.isNationalAuthorizedUser(SCHEMAS.NATIONAL_REPORT_7)">               
-                                {{t('successMessageNau')}}
-                            </div>
                             <div v-if="security.role.isPublishingAuthority(SCHEMAS.NATIONAL_REPORT_7)">               
                                 {{t('successMessagePA')}}
+                            </div>
+                            <div v-else-if="security.role.isNationalAuthorizedUser(SCHEMAS.NATIONAL_REPORT_7)">               
+                                {{t('successMessageNau')}}
                             </div>
                         </strong>
                     </div>
@@ -456,7 +463,7 @@
 
     function validatedProgress(){
         const fields = {
-            sectionI : ['processUndertaken'],
+            sectionI : ['nationalAuthorities', 'contactPerson', 'contactDetails', 'processUndertaken'],
             sectionII: [
                 'hasRevisedNbsap',
                 'anticipatedNbsapDate',
@@ -465,6 +472,7 @@
                 'hasNbsapAdopted',
                 'anticipatedNbsapAdoptionDate',
                 'policyInstrument',
+                'implementationProgress'
             ],
             sectionIII:[
                 'target',
@@ -493,9 +501,11 @@
             sectionAnnex : 0
         }
 
-        if(document.sectionI?.processUndertaken)
-            progress.sectionI = 100;
-            
+        fields.sectionI.forEach(field=>{
+            if(document.sectionI?.[field] != undefined){
+                progress.sectionI += 25;
+            }
+        })
         
         if(document.sectionII?.hasRevisedNbsap!=undefined){
             progress.sectionII = 25;
@@ -517,13 +527,25 @@
         if(document.sectionII?.hasNbsapAdopted != undefined){
             progress.sectionII += 25;
         }
-        if(['no', 'inProgress'].includes(document.sectionII?.hasNbsapAdopted) 
+        if(['yes'].includes(document.sectionII?.hasNbsapAdopted) 
+            && document.sectionII?.policyInstrument != undefined){
+                progress.sectionII -= 15;
+        }
+        if(['no', 'other'].includes(document.sectionII?.hasNbsapAdopted) 
             && document.sectionII?.anticipatedNbsapAdoptionDate != undefined){
                 progress.sectionII -= 15;
         }
-
-        if(document.sectionII?.policyInstrument != undefined){
+        if(document.sectionII?.implementationProgress != undefined){
             progress.sectionII += 25;
+        }
+        
+
+        if(document.sectionIII?.length){
+            progress.sectionIII += 5;
+        }
+
+        if(document.sectionIV?.length){
+            progress.sectionIV += 5;
         }
 
         if(document.sectionV?.assessmentSummaryInfo)
@@ -536,11 +558,11 @@
         nrProgress.value = progress
     }
 
-
     async function onPublish(){
         
         try{ 
-
+            //TODO: verify if indicator data was published later then the nr7 document, 
+            // ask to go back to the nr7 section III
             await onValidate();
             const hasValidationErrors = [draftNr7Document.value, ...(draftRecords.value||[])].some(e=>e.errors);
             
@@ -590,6 +612,9 @@
 
                 draftRecords.value = drafts.flat();
             }
+            // const indicatorResponse = await Promise.all([
+            //                         GbfGoalsAndTargets.loadGbfHeadlineIndicator(),
+            //                         GbfGoalsAndTargets.loadGbfBinaryIndicator()
 
             draftNr7Document.value = { body : cloneDeep(cleanDocument.value) };
             await validateDocuments([draftNr7Document.value, ...draftRecords.value]);
@@ -603,10 +628,10 @@
         isValidating.value = false;  
     }
 
-    async function validateDocument(document:any){
+    async function validateDocument(document:any,  {collection, schema, identifier, validationSection}:KmStorageParam){
         
         const { $api } = useNuxtApp();
-        const data     = await $api.kmStorage.documents.validate(document);
+        const data     = await $api.kmStorage.documents.validate(document, {collection, schema, identifier, validationSection});
  
         return data?.errors;
 
@@ -619,7 +644,7 @@
                 document.isValidating = true
                 document.validated    = false;
                 document.errors = undefined;
-                const validationErrors = await validateDocument(document.body)
+                const validationErrors = await validateDocument(document.body, {schema:document.body?.header?.schema})
                 if(validationErrors)
                     document.errors = [...validationErrors];
                 
