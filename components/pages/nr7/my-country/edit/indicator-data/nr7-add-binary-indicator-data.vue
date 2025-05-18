@@ -164,7 +164,6 @@
         const {questions, key, binaryIndicator, target } = binaryQuestion.value
         const flatQuestions = flattenQuestions(questions);
 
-        console.log(newValidationReport, flatQuestions)
         if(!validationReport.value?.errors){
 
 

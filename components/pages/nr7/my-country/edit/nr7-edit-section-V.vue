@@ -12,7 +12,8 @@
         </div>       
             <km-form-workflow v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport"
              :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
-                :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft" hidden-tabs="['introduction', 'publish']">
+                :container="container" @on-pre-close="onClose" @on-post-save-draft="onPostSaveDraft" 
+                hidden-tabs="['introduction', 'publish']"  :admin-tags="['section-V']">
                 <template #submission>
                     
                     <form v-if="!isLoading && sectionVComputed" name="editForm">   
@@ -52,7 +53,7 @@
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
 
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:1 },
+        workflowActiveTab  : {type:Number, default:0 },
     }) 
     // These emits are used by base view when the form is 
     // open in a dialog mode form overview

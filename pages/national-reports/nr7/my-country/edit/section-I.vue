@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <nr7-edit-section-I @on1-close="onClose"></nr7-edit-section-I>
+      <nr7-edit-section-I :workflow-active-tab="workflowActiveTab"></nr7-edit-section-I>
     </km-suspense>
 </template>
   
@@ -9,7 +9,11 @@
 
 import { KmSuspense } from "~/components/controls";
 import { SCHEMAS, ROLES } from '@/utils';
+  import {useRoute} from 'vue-router';
+
 const Nr7EditSectionI = defineAsyncComponent(()=>import("@/components/pages/nr7/my-country/edit/nr7-edit-section-I.vue"))
+
+  
   definePageMeta({
     auth:true,
     schema:'nationalReport7',
@@ -18,8 +22,11 @@ const Nr7EditSectionI = defineAsyncComponent(()=>import("@/components/pages/nr7/
       skip : ['identifier']
     }
   })
+  const { query }  = useRoute();
+  const workflowActiveTab = computed(()=>{
+      if(query.preview == 'true')
+        return 2;      
+  })
 
-    async function onClose(){
-        await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_OVERVIEW);
-    }
+  
 </script>

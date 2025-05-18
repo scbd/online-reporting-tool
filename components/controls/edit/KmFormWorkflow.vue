@@ -43,8 +43,11 @@
                     <slot name="introduction" >
                         <CCard>
                             <CCardBody>
-
-                                <cbd-article :query="articleQuery()" hide-cover-image="true" show-edit="true">
+                                <div class="d-grid d-md-flex justify-content-md-end mb-2">
+                                    <button class="btn btn-secondary" @click="onGoToSubmission()">{{t('goToSubmission')}}</button>
+                                </div>
+                                <cbd-article :query="articleQuery()" hide-cover-image="true" show-edit="true"
+                                    :admin-tags="introductionAdminTags" >
                                     <template #missingArticle>
                                         <CAlert color="success" v-bind:visible="true">
                                             <CAlertHeading>{{t('introduction')}}!</CAlertHeading>
@@ -218,7 +221,8 @@
         focusedTab                  : { type:Number, default:0 },
         tab                         : { type:String },
     	document                    : { type:Object, required:true  },
-    	validateServerDraft         : { type:Boolean, required:false, default:true  }
+    	validateServerDraft         : { type:Boolean, required:false, default:true  },
+    	adminTags                   : { type:Array<String>, required:false, default:[]  },
     });
     
     const container     = useAttrs().container ?? 'body,html';
@@ -257,6 +261,7 @@
     }
 
     let { focusedTab, tab, ...props } = toRefs(definedProps);
+    
         
     const isBusy = computed(()=>validationReport.value?.isSaving || validationReport.value?.isAnalyzing || validationReport.value?.isPublishing);
     const printTitle = computed(()=>{
@@ -267,6 +272,18 @@
         return `${title}-draft`;
     });
     const documentSchema = computed(()=>props.document.value?.header?.schema);
+    const introductionAdminTags = computed(()=>{
+
+        const document = props.document;
+        const realmConfStore  = useRealmConfStore();
+        const realmConf = realmConfStore.realmConf;
+
+        return ['edit-form', 
+            encodeURIComponent(realmConf.realm.toLowerCase().replace(/(\-[a-zA-Z]{1,5})/, '')),
+            encodeURIComponent(document.value?.header?.schema?.toLowerCase()||''),
+            ...props.adminTags.value
+        ]
+    });
 
     const onChangeCurrentTab = async (index)=>{
         if(index == activeTab.value)
@@ -458,18 +475,11 @@
     }
 
     function articleQuery(){
-        const document = props.document;
-        const realmConfStore  = useRealmConfStore();
-        const realmConf = realmConfStore.realmConf;
         const ag = [];
         ag.push({
             "$match":{
                 "adminTags": { 
-                    "$all" :
-                        [   'edit-form', 
-                            encodeURIComponent(realmConf.realm.toLowerCase().replace(/(\-[a-zA-Z]{1,5})/, '')),
-                            encodeURIComponent(document.value?.header?.schema?.toLowerCase()||'')
-                        ]
+                    "$all" : introductionAdminTags.value
                 }
             }
         });
@@ -638,6 +648,10 @@
             }
         }
     }
+    
+    function onGoToSubmission() {
+        formWizard.value?.selectTab(workflowTabs.submission.index)
+    }
 
     onMounted(async() => {
         validationReport.value = {}; 
@@ -670,6 +684,7 @@
         }
             
     })
+    
     // same as beforeRouteLeave option with no access to `this`
     onBeforeRouteLeave((to, from) => {
         return alertIfDocumentChanged();

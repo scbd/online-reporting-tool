@@ -10,7 +10,7 @@
         </div>
         <form v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport" name="editForm">          
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
-                :container="container" :validate-server-draft="true">
+                :container="container" :validate-server-draft="true" :admin-tags="['section-IV']">
                 <template #submission>
                     <km-form-group name="sectionIV" class="visually-hidden">
                         <label class="form-label control-label" for="sectionIV">
@@ -130,7 +130,7 @@
 
     let document = ref({});
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:1 },
+        workflowActiveTab  : {type:Number, default:0 },
     }) 
     // These emits are used by base view when the form is 
     // open in a dialog mode form overview
@@ -165,14 +165,13 @@
         // Indicator data
         clean.sectionIV.forEach(goal => {
             const indicatorData = globalGoals.value[goal.gbfGoal.identifier]?.indicatorData;
-            console.log(indicatorData)
             goal.indicatorData = {
                 headline     : indicatorData.headline.map(mapNationalIndicatorData),
                 binary       : indicatorData.binary.map(mapNationalIndicatorData),
                 component    : indicatorData.component.map(mapNationalIndicatorData)?.filter(e=>e.data),
                 complementary: indicatorData.complementary.map(mapNationalIndicatorData)?.filter(e=>e.data),
             }
-            console.log(goal.indicatorData)
+            
         });
         clean = useKmStorage().cleanDocument(clean);
         
@@ -296,7 +295,6 @@
                     // });
                     sectionIV.push(goal);
                 });
-                console.log(nationalIndicatorData.value)
                 nationalReport7Store.nationalReport.sectionIV = sectionIV;
             }
             response[0].forEach(goal=>{

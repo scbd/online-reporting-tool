@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <nr7-edit-section-VI></nr7-edit-section-VI>
+      <nr7-edit-section-VI :workflow-active-tab="workflowActiveTab"></nr7-edit-section-VI>
     </km-suspense>
 </template>
   
@@ -9,6 +9,7 @@
 
 import { KmSuspense } from "@/components/controls";
 import { SCHEMAS, ROLES } from '@/utils';
+import {useRoute} from 'vue-router';
 
   definePageMeta({
     auth:true,
@@ -18,5 +19,10 @@ import { SCHEMAS, ROLES } from '@/utils';
       skip : ['identifier']
     }
   })
-
+  const { query }  = useRoute();
+  const workflowActiveTab = computed(()=>{
+      if(query.preview == 'true')
+        return 2;      
+  })
+  
 </script>

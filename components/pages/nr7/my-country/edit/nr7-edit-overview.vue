@@ -7,25 +7,25 @@
         <!-- {{ nrProgress }} -->
          
         <CRow>
-          <CCol md="12">
+          <!-- <CCol md="12">
             <div class="alert alert-success" role="alert">
               <p>
                {{t('welcome', { government :user.government})}}
               </p>
               <hr />
             </div>
-          </CCol>
+          </CCol> -->
   
           <CCol md="12">
             <div class="card">
               <div class="card-body">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
+                    <CButton :disabled="disableActions || 1==1" @click="onPublish()" color="secondary">
                         <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                         <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                         {{t('publish')}}
                     </CButton>
-                    <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
+                    <CButton :disabled="disableActions || 1==1" @click="onValidate(undefined)" color="secondary">
                         <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"  message=" "></km-spinner>
                         <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                         {{t('validate')}}
@@ -73,7 +73,9 @@
                                 :title="t('hasErrors') + '('+ sectionIErrors.length + ')'" color="warning" v-if="sectionIErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionI') }}</button>
+                            
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I+ '?preview=true'" :title="t('previewSectionI')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I" :title="t('editSectionI')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -109,7 +111,8 @@
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
                             
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionII') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II+ '?preview=true'" :title="t('previewSectionII')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II" :title="t('editSectionII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -144,7 +147,8 @@
                                 :title="t('hasErrors') + '('+ sectionIIIErrors.length + ')'" color="warning" v-if="sectionIIIErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionIII') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III+ '?preview=true'" :title="t('previewSectionIII')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III" :title="t('editSectionIII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -177,7 +181,8 @@
                                 :title="t('hasErrors') + '('+ sectionIVErrors.length + ')'" color="warning" v-if="sectionIVErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionIV') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV+ '?preview=true'" :title="t('previewSectionIV')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV" :title="t('editSectionIV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -212,7 +217,8 @@
                                 :title="t('hasErrors') + '('+ sectionVErrors.length + ')'" color="warning" v-if="sectionVErrors?.length"
                                 role="button" class="btn btn-warning btn-sm">
                             </km-link>
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionV') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V+ '?preview=true'" :title="t('previewSectionV')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V" :title="t('editSectionV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
@@ -291,12 +297,12 @@
                 <CCard>
                     <CCardBody>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
+                            <CButton :disabled="disableActions || 1==1" @click="onPublish()" color="secondary">
                                 <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                                 {{t('publish')}}
                             </CButton>
-                            <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
+                            <CButton :disabled="disableActions || 1==1" @click="onValidate(undefined)" color="secondary">
                                 <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                                 {{t('validate')}}

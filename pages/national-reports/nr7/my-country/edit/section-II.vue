@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <nr7-edit-section-II></nr7-edit-section-II>
+      <nr7-edit-section-II :workflow-active-tab="workflowActiveTab"></nr7-edit-section-II>
     </km-suspense>
 </template>
   
@@ -9,6 +9,7 @@
 
 import { KmSuspense } from "~/components/controls";
 import { SCHEMAS, ROLES } from '@/utils';
+import {useRoute} from 'vue-router';
 
 const Nr7EditSectionII = defineAsyncComponent(()=>import("@/components/pages/nr7/my-country/edit/nr7-edit-section-II.vue"))
 
@@ -20,5 +21,10 @@ const Nr7EditSectionII = defineAsyncComponent(()=>import("@/components/pages/nr7
       skip : ['identifier']
     }
   })
-
+  const { query }  = useRoute();
+  const workflowActiveTab = computed(()=>{
+      if(query.preview == 'true')
+        return 2;      
+  })
+  
 </script>

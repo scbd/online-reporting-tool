@@ -1,1 +1,11 @@
-{}
+{
+    "indicatorData": "Indicator Data",
+    "headlineIndicators": "Headline Indicators",
+    "binaryIndicators": "Binary Indicators",
+    "componentIndicators": "Component Indicators",
+    "complementaryIndicators": "Complementary Indicators",
+    "otherNationalIndicators": "Other National Indicators",
+    "componentIndicatorsNotLinked": "If you want to provide data for other component indicators, please update your country's national targets to include the necessary indicators.",
+    "complementaryIndicatorsNotLinked": "If you want to provide data for other complementary indicators, please update your country's national targets to include the necessary indicators.",
+    "missingNationalIndicators": "Your country has not reported any national indicators in national targets."
+}

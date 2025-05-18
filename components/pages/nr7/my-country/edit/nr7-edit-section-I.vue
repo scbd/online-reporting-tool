@@ -9,7 +9,7 @@
             <km-spinner center  ></km-spinner>
         </div>  
         <km-form-workflow v-if="!isBusy && !nationalReport7Store.isBusy && sectionIComputed"
-            :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
+            :focused-tab="props.workflowActiveTab" :document="cleanDocument" :admin-tags="['section-I']"
             :container="container" :validate-server-draft="true">
             <template #submission>
                 <form  name="editForm">  
@@ -80,7 +80,7 @@
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
 
     const props = defineProps({
-        workflowActiveTab  : {type:Number, default:1 },
+        workflowActiveTab  : {type:Number, default:0 },
     }) 
     // These emits are used by base view when the form is 
     // open in a dialog mode form overview
