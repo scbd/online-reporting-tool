@@ -1,6 +1,7 @@
 //@ts-nocheck
 import { defineStore } from 'pinia'
 import {THESAURUS} from '@/utils/constants'
+import type { ETerm } from '~/types/schemas/base/ETerm'
 
 export const useThesaurusStore = defineStore('thesaurus', {
   state: () => {
@@ -18,7 +19,7 @@ export const useThesaurusStore = defineStore('thesaurus', {
       }
     },
     getTerm(state){
-        return function (term){
+        return function (term):ETerm {
             return this.terms[term]
         }
     }
