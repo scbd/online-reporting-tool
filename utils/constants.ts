@@ -72,3 +72,5 @@ export const HTTP_STATUS = {
 }
 
 export const CBD_GREEN = '#2c9844';
+
+export const ATTACHMENTS_API_REGEX = /\/api\/v2013\/documents\/(.+?)\/attachments\/(\d+)\/(.*?)(\/.*|$)/;
