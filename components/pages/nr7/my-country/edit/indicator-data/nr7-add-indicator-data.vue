@@ -69,11 +69,8 @@
                                             </km-form-group>  
                                             <div v-show="document.sourceOfData=='national'">
                                                 <km-form-group name="data" required :caption="t('nationalDataSet')" >
-                                                    <div class="alert alert-info" >
-                                                        <a :href="indicatorDataTemplates" target="_blank">
-                                                           {{ t('downloadIndicator') }}  
-                                                            <font-awesome-icon icon="fa-download"></font-awesome-icon>                                                            
-                                                        </a>
+                                                    <div class="alert alert-info">                                                        
+                                                        <indicator-sample-data :indicator="document.indicator.identifier"></indicator-sample-data>
                                                         <strong class="d-block h-3">
                                                             {{ t('fileFormatMessage') }}
                                                         </strong>
@@ -172,8 +169,6 @@
     const isFetchingGlobalData = ref(false);
     const wcmcTargets          = ref([]);
     const wcmcIndicatorData    = ref([])
-
-    const indicatorDataTemplates = '/excel-templates/GBF-INDICATORS-DATA.xlsx'
     
     const showSourceOfDataInfo = computed(()=>{
         return ['noData', 'notRelevant'].includes(document.value.sourceOfData)
