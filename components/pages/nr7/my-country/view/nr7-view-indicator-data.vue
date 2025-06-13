@@ -88,6 +88,7 @@ import type { ETerm } from '~/types/schemas/base/ETerm';
         { type: String, value: t('value'), fontWeight: 'bold' },
         { type: String, value: t('footnote'), fontWeight: 'bold' }
     ]);
+    const indicator:ComputedRef<ETerm> = computed(() => thesaurusStore.getTerm(props.indicatorData.indicator.identifier));
 
     const excelData = computed(() => {
         return indicatorData.value.data?.map((unit:IndicatorData) => [
@@ -107,6 +108,32 @@ import type { ETerm } from '~/types/schemas/base/ETerm';
             await thesaurusStore.loadTerm(indicatorData.value.indicator.identifier);
         }
     }); 
+    await thesaurusStore.loadTerm(props.indicatorData.indicator.identifier);
+
+    
+    const excelHeaders = computed(() => [
+        { type: String, value: t('indicatorCode'), fontWeight: 'bold' },
+        { type: String, value: t('indicator'), fontWeight: 'bold' },
+        { type: String, value: t('doesDisaggregation'), fontWeight: 'bold' },
+        { type: String, value: t('disaggregation'), fontWeight: 'bold' },
+        { type: String, value: t('year'), fontWeight: 'bold' },
+        { type: String, value: t('unit'), fontWeight: 'bold' },
+        { type: String, value: t('value'), fontWeight: 'bold' },
+        { type: String, value: t('footnote'), fontWeight: 'bold' }
+    ]);
+
+    const excelData = computed(() => {
+        return indicatorData.value.data?.map((unit:IndicatorData) => [
+            { type: String, value: unit.indicatorCode },
+            { type: String, value: lstring(indicator.value.title, locale) },
+            { type: String, value: unit.hasDisaggregation ? t('yes') : t('no') },
+            { type: String, value: unit.disaggregation||'' },
+            { type: Number, value: unit.year||0 },
+            { type: String, value: unit.unit||'' },
+            { type: Number, value: unit.value||0 },
+            { type: String, value: unit.footnote||'' }
+        ]) || [];
+    });
 </script>
 
 <style scoped></style>
