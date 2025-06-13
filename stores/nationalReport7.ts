@@ -70,6 +70,7 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
                 }
                 if(nationalReport)
                     this.updateNationalReport(nationalReport);
+                console.log('National Report loaded', this.nationalReport);
             }
         }
         catch(e){
