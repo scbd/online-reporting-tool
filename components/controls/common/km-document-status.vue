@@ -30,7 +30,7 @@
     const emit   = defineEmits(['onStatusChange'])
 
     const { t } = useI18n();
-    const stateTargetWorkflow = useStorage('ort-target-workflow', { batchId : undefined });    
+    const stateTargetWorkflow = useStorage('scbd-ort-target-workflow', { batchId : undefined });    
     const { $eventBus }       = useNuxtApp();
 
     const { document }        = toRefs(props);

@@ -360,7 +360,7 @@
     const {t, locale }              = useI18n();
     const thesaurusStore            = useThesaurusStore ();
     const container                 = useAttrs().container;
-    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
+    const stateTargetWorkflow       = useStorage('scbd-ort-target-workflow', { batchId : undefined });
     const showGlobalTargetsModal    = ref(false);
     const document                  = ref();
     const headlineIndicators        = ref(null);

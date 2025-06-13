@@ -260,7 +260,7 @@
 
     const security                  = useSecurity();
     const { t }                     = useI18n();
-    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
+    const stateTargetWorkflow       = useStorage('scbd-ort-target-workflow', { batchId : undefined });
 
     const disableActions = computed(()=>isLoading.value || isValidating.value || isPublishing.value || !!stateTargetWorkflow.value.batchId)
     

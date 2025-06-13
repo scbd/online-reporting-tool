@@ -76,7 +76,7 @@
                     defineExpose({ validate, refresh, setProcessingStatus });
     const $emits =  defineEmits(['onRecordsLoad', 'onValidationFinished', 'onRecordStatusChange']);
 
-    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
+    const stateTargetWorkflow       = useStorage('scbd-ort-target-workflow', { batchId : undefined });
     const EditTargetPart1 = defineAsyncComponent(()=>import("./part-1/edit-target-part-1.vue"));
     const EditTargetPart2 = defineAsyncComponent(()=>import('./part-2/edit-target-part-2.vue'));
 

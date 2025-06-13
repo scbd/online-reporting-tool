@@ -41,7 +41,7 @@ import type { IndicatorMapping } from '~/types/controls/indicator-mapping';
         }
 
         const { headers, rows } = buildExcelData(indicatorData.value);
-        await writeXlsxFile([headers, ...rows], { fileName: `${props.indicator}-data.xlsx`})
+        await writeXlsxFile([headers, ...rows], { fileName: `scbd-ort-${props.indicator}-data.xlsx`})
  
     }
 
