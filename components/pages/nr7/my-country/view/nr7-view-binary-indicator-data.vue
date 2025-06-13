@@ -1,7 +1,5 @@
 <template>
-    <!-- {{ indicatorData }} -->
     <div class="mb-3" v-for="question in questions" :key="question?.key">
-        
         <span v-if="!question?.key">{{ question }}</span>
         <div v-if="!question?.questions?.length && showQuestion(indicatorData, question)">
             <CCard>
@@ -60,8 +58,10 @@ const props = defineProps({
     questions : { type: Array, required: true },
     isRecursive : {type:Boolean, default:false},
     hideMissingResponse : {type:Boolean, default:false},
+        documentLocale: { type:String }
 });
 const {locale, t} = useI18n();
+    const selectedLocale = computed(()=>props.documentLocale||locale.value);
 
 const { indicatorData } = toRefs(props);
 
