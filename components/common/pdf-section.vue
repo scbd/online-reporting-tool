@@ -39,7 +39,7 @@
     const userPdfHtml   = ref(null);
 
     const downloadFileName = computed(()=>{
-        const fileName = props.fileName || props.title?.trim()?.replace(/[\W_]+/gi, '-').substr(0, 50);
+        const fileName = 'scbd-ort-' + (props.fileName || props.title?.trim()?.replace(/[\W_]+/gi, '-').substr(0, 50));
 
         if(fileName.endsWith('.pdf'))
             return fileName
