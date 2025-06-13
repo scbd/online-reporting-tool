@@ -197,10 +197,11 @@
     });
 
     const onPostClose = async (document)=>{
-        
+        if(document)
+            documentInfo.value = document
+                
         if(isEventDefined('onClose'))
             emit('onClose', document);
-        documentInfo.value = document
 
         showEditIndicatorDataModal.value = false;
     }
@@ -235,7 +236,7 @@
             const rows = await readXlsxFile(file)
                 // `rows` is an array of rows
                 // each row being an array of cells.
-                const columns = ['Indicator_code', 'Indicator', 'Does this data row represent a disaggregation',
+                const columns = ['Indicator code', 'Indicator', 'Does this data row represent a disaggregation',
                                  'Disaggregation', 'Year', 'Unit', 'Value', 'Footnote'];
                             
                 if(rows[0].length != columns.length){

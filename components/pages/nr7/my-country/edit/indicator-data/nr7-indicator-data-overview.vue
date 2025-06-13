@@ -16,7 +16,8 @@
                             :active="tabPaneActiveKey === 1"
                             @click="() => {tabPaneActiveKey = 1}"
                         >
-                             {{t('headlineIndicators')}}
+                             {{t('headlineIndicators')}} 
+                             <strong>({{ nationalHeadlineIndicators?.length || 0 }})</strong>
                         </CNavLink>
                     </CNavItem>
                     <CNavItem>
@@ -26,6 +27,7 @@
                             @click="() => {tabPaneActiveKey = 2}"
                         >
                              {{t('binaryIndicators')}}
+                             <strong>({{ nationalBinaryIndicators?.length || 0 }})</strong>
                         </CNavLink>
                     </CNavItem>
                     <CNavItem>
@@ -35,6 +37,7 @@
                             @click="() => {tabPaneActiveKey = 3}"
                         >
                             {{t('componentIndicators')}}
+                            <strong>({{ nationalComponentIndicators?.length || 0 }})</strong>
                         </CNavLink>
                     </CNavItem>
                     <CNavItem>
@@ -44,6 +47,7 @@
                             @click="() => {tabPaneActiveKey = 4}"
                         >
                             {{t('complementaryIndicators')}}
+                            <strong>({{ nationalComplementaryIndicators?.length || 0 }})</strong>
                         </CNavLink>
                     </CNavItem>
                     <CNavItem>
@@ -52,6 +56,7 @@
                             :active="tabPaneActiveKey === 5"
                             @click="() => {tabPaneActiveKey = 5}"
                         >{{t('otherNationalIndicators')}} 
+                        <strong>({{ otherNationalIndicators?.length || 0 }})</strong>
                         </CNavLink>
                     </CNavItem>
                 </CNav>
