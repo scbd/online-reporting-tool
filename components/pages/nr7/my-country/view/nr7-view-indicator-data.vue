@@ -9,9 +9,6 @@
     <km-form-group v-if="!indicatorData.data && ['notRelevant', 'noData'].includes(indicatorData?.sourceOfDataInfo)">
         <missing-data-alert></missing-data-alert>    
     </km-form-group>
-    <km-form-group v-if="!indicatorData.data">
-        <missing-data-alert></missing-data-alert>    
-    </km-form-group>
     <km-form-group :caption="t('data')"  v-if="indicatorData.data">
         <download-data :headers="excelHeaders" :data="excelData" class="float-end"
             :fileName="`indicator-data-${lstring(indicator.title, locale)}`"></download-data>
@@ -79,10 +76,7 @@ import type { ETerm } from '~/types/schemas/base/ETerm';
     const { indicatorData } = toRefs(props);
     const selectedLocale = computed(()=>props.documentLocale||locale.value);
 
-    const indicator:ComputedRef<ETerm> = computed(() => thesaurusStore.getTerm(props.indicatorData.indicator.identifier));
-
-    await thesaurusStore.loadTerm(props.indicatorData.indicator.identifier);
-
+    const indicator:ComputedRef<ETerm> = computed(() => thesaurusStore.getTerm(props.indicatorData?.indicator?.identifier));
     
     const excelHeaders = computed(() => [
         { type: String, value: t('indicatorCode'), fontWeight: 'bold' },
@@ -107,6 +101,12 @@ import type { ETerm } from '~/types/schemas/base/ETerm';
             { type: String, value: unit.footnote||'' }
         ]) || [];
     });
+
+    onMounted(async () => {
+        if (indicatorData.value.indicator) {
+            await thesaurusStore.loadTerm(indicatorData.value.indicator.identifier);
+        }
+    }); 
 </script>
 
 <style scoped></style>
