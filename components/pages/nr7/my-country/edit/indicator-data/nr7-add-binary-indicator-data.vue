@@ -12,7 +12,7 @@
         alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
-                {{lstring(props.indicator.title)}}
+                <km-term :value="indicator?.identifier" :locale="locale"></km-term>
             </CModalTitle>
         </CModalHeader>
         <CModalBody>
@@ -135,7 +135,7 @@
     const onPostClose = async (document)=>{
         
         if(isEventDefined('onClose'))
-            emit('onClose', document);
+            emit('onClose', documentInfo.value);
 
         showEditIndicatorDataModal.value = false;
         customValidationErrors.value = null;
