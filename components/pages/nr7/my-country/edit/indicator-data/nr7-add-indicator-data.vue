@@ -197,11 +197,9 @@
     });
 
     const onPostClose = async (document)=>{
-        if(document)
-            documentInfo.value = document
-                
+               
         if(isEventDefined('onClose'))
-            emit('onClose', document);
+            emit('onClose', documentInfo.value);
 
         showEditIndicatorDataModal.value = false;
     }
