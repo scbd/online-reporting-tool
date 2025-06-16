@@ -16,7 +16,7 @@
             </p>
         </div>
         <form v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport && Object.keys(nationalTargetsComputed||[])?.length" name="editForm">          
-            <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument" 
+            <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument"  
                 :container="container" :validate-server-draft="true"  :admin-tags="['section-III']">
                 <template #submission>
                     <div class="alert alert-info">
@@ -149,43 +149,31 @@
                                             </label>
                                         </legend>
                                         <hr>
-                                        <div class="card mb-3" v-for="(indicator, index) in nationalTargetsComputed[assessment.target.identifier]?.indicators" :key="indicator">
-                                            <div class="card-header">
-                                                <!-- {{ indicator }} -->
-                                                <label :for="'indicatorData_'+assessment.target.identifier+'_'+indicator?.type.replace('Indicators','')+'_' + indicator?.identifier">    
-                                                    <span class="d-none">{{lstring(nationalTargets[assessment.target.identifier]?.title) }} : {{ t('indicatorData') + ' - ' }} </span>
-                                                    <strong>{{ t(indicator.type) }}:</strong>
-                                                    {{ lstring(indicator?.title||indicator?.value) }} 
-                                                    <small class="fw-bold" v-if="indicator.type!='national'">({{ indicator?.identifier }})</small>
-                                                    <!-- <span class="float-end" v-if="indicator">
-                                                        <add-indicator-data  :indicator="indicator" :raw-document="indicator.nationalData" :identifier="((indicator.nationalData||{}).header||{}).identifier"
-                                                        :on-close="onAddIndicatorDataClose"></add-indicator-data>
-                                                    </span> -->
+                                       
+                                        <nr7-view-target-indicators :target-indicators="assessment?.indicatorData"
+                                            :indicators-data="indicatorsData" :national-indicators="nationalIndicators">
+                                            <template #header="{key,indicatorIdentifier, nationalIndicator}">
+                                                <label :for="`indicatorData_${assessment.target.identifier}_${key}_${indicatorIdentifier}`">   
+                                                    <span class="d-none">{{lstring(nationalTargets[assessment.target.identifier]?.title) }} : {{ t('indicatorData') + ' - ' }} </span> 
+                                                    <km-term v-if="key!='national'" :value="indicatorIdentifier" :locale="locale"></km-term>
+                                                    <span v-if="key=='national'">{{ lstring(nationalIndicator?.value, locale) }}</span>
                                                 </label>
-                                            </div>
-                                            <div class="card-body" v-if="indicator">                                                    
-                                                <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
-                                                    <missing-data-alert v-if="!Object.keys(indicator.nationalData||{})?.length"></missing-data-alert>    
-                                    
-                                                    <nr7-add-indicator-data :indicator="indicator" 
-                                                        :identifier="((indicator.nationalData||{}).header||{}).identifier" @on-post-save-draft="onAddIndicatorDataClose">
-                                                    </nr7-add-indicator-data>       
-                                                    <div v-if="indicator.nationalData">
-                                                        <nr7-view-indicator-data :indicator-data="indicator.nationalData"></nr7-view-indicator-data>
-                                                    </div>
-                                                </div>      
-                                                <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
-                                                    <nr7-add-binary-indicator-data :indicator="indicator" container=".nr7-add-binary-indicator-data-modal"
-                                                        :identifier="indicator?.nationalData?.header?.identifier" 
-                                                        @on-post-save-draft="onAddIndicatorDataClose">
-                                                    </nr7-add-binary-indicator-data>   
-                                                    <div v-if="indicator.nationalData">
-                                                        <nr7-view-binary-indicator-data :indicator-data="indicator.nationalData" :questions="indicator?.question?.questions">
-                                                        </nr7-view-binary-indicator-data>
-                                                    </div>    
-                                                </div>
-                                            </div>
-                                        </div>
+                                            </template>   
+                                            <template #actionButtons="{key,indicatorData, indicator}">
+                                                <nr7-add-indicator-data :indicator="indicator"  v-if="key!='binary'"
+                                                        :identifier="indicatorData?.identifier" 
+                                                        container=".nr7-add-indicator-data-modal"
+                                                        @on-close="onAddIndicatorDataClose">
+                                                    </nr7-add-indicator-data>  
+                                                <nr7-add-binary-indicator-data :indicator="indicator"  v-if="key=='binary'"
+                                                    container=".nr7-add-binary-indicator-data-modal"
+                                                    :identifier="indicatorData?.identifier" 
+                                                    @on-close="onAddIndicatorDataClose">
+                                                </nr7-add-binary-indicator-data>   
+                                            </template>
+                                                                                         
+                                        </nr7-view-target-indicators>   
+                                            
                                     </km-form-group>                                
                                 </div>
                             </CAccordionBody>
@@ -195,7 +183,7 @@
                 </template>
                 <template #review>                
                     <nr7-view-section-III :identifier="nationalReport7Store.nationalReport?.header?.identifier" 
-                        :document="cleanDocument"
+                        :document="cleanDocument" :locales="cleanDocument.header.languages"
                         :national-targets="nationalTargetsComputed"></nr7-view-section-III>
                 </template>
             </km-form-workflow>
@@ -224,7 +212,7 @@
     import { nationalReport7Service } from '~/services/national-report-7-service';
     import addIndicatorData from './indicator-data/nr7-add-indicator-data.vue';
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
-    import ViewData         from './indicator-data/nr7-view-indicator-data.vue';
+    import ViewData         from '../view/nr7-view-indicator-data.vue';
     import _,{uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
     import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
@@ -248,6 +236,7 @@
     const nationalReport7Store = useNationalReport7Store();
     const nationalTargets     = ref();
     const gbfMissingNationalTargets = ref();
+    const indicatorsData        = ref([]);
     const nationalIndicatorData = ref([]);
     const nationalBinaryIndicatorData = ref({});
     const isBusy                = ref(true);
@@ -257,13 +246,19 @@
     const isEventDefined        = useHasEvents();
     const thesaurusStore        = useThesaurusStore ();
     const accordionItemVisibility= ref({});
+    let firstLoad = true;
 
     const sectionIIIComputed = computed({ 
         get(){ 
-            return sortBy(document.value.sectionIII, 'targetType').reverse()
+            const nationalTargets = document.value.sectionIII.filter(e=>e.targetType == 'national')
+            const globalTargets   = document.value.sectionIII.filter(e=>e.targetType == 'global');
+            return [...nationalTargets, ...globalTargets]
         }
     });
 
+    const nationalIndicators      = computed(()=>{
+        return Object.values(nationalTargets.value).map(e=>e.nationalIndicators||[]).flat();
+    });
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
     const progressAssessmentLists = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.ASSESSMENT_PROGRESS)||[]));
     
@@ -278,19 +273,17 @@
         let clean = {...nationalReport7Store.nationalReport};
         clean.sectionIII = sectionIIIComputed.value;
 
-
         // Indicator data
         clean.sectionIII.forEach(section => {
-            const indicatorData = nationalTargetsComputed.value[section.target.identifier];
+            const indicatorData = nationalTargetsComputed.value[section.target.identifier];            
             section.indicatorData = {
                 headline     : nationalReport7Service.indicatorDataDTO(indicatorData, 'headlineIndicators'),
                 binary       : nationalReport7Service.indicatorDataDTO(indicatorData, 'binaryIndicators'),
-                component    : nationalReport7Service.indicatorDataDTO(indicatorData, 'componentIndicators')?.filter(e=>e.data),
-                complementary: nationalReport7Service.indicatorDataDTO(indicatorData, 'complementaryIndicators')?.filter(e=>e.data),
-                national     : nationalReport7Service.indicatorDataDTO(indicatorData, 'nationalIndicators')?.filter(e=>e.data),
+                component    : nationalReport7Service.indicatorDataDTO(indicatorData, 'componentIndicators'),
+                complementary: nationalReport7Service.indicatorDataDTO(indicatorData, 'complementaryIndicators'),
+                national     : nationalReport7Service.indicatorDataDTO(indicatorData, 'nationalIndicators'),
             }
         });
-        
 
         clean = useKmStorage().cleanDocument(clean);
         
@@ -423,8 +416,11 @@
             nationalTargets.value = arrayToObject(response[2]) || {}; 
             
             nationalIndicatorData.value = mapNationalIndicatorData(response[3]);
-            if(response[4]?.length)//there can be only binary indicator data record per government
+            indicatorsData.value        = response[3]||[];
+            if(response[4]?.length){//there can be only binary indicator data record per government
                 nationalBinaryIndicatorData.value = response[4][0];
+                indicatorsData.value.push(nationalBinaryIndicatorData.value);
+            }
 
             document.value = nationalReport7Store.nationalReport;
 
@@ -432,8 +428,8 @@
                 nationalReport7Store.nationalReport.sectionIII = [];
             }
 
-            const sectionIII = document.value.sectionIII || [];
-            
+            let sectionIII = document.value.sectionIII || [];
+            sectionIII = [];
             if(sectionIII?.length){
                 
                 //verify if the existing data in section iii exists in published targets
@@ -479,6 +475,12 @@
                 }
                 
             }
+
+            // Filter out any global targets which are aligned with any national targets,
+            // this will happen if countries align new NT after saving the NR7
+            sectionIII =  sectionIII.filter(e=>e.targetType == 'national' || 
+                                            (e.targetType == 'global' && !hasNationalTargetForGlobalTarget(e.target.identifier)));
+
             // Any global target which are not aligned with any national targets, countries will assess against those global targets
             const missingTargets = gbfMissingNationalTargets.value = await findMissingGlobalTargets(nationalTargets.value);
             missingTargets.forEach(e=>{
@@ -493,10 +495,11 @@
             });
 
             // add any global targets to list of national targets temporarily to display titles on the grid.
+
             const globalTargets = await GbfGoalsAndTargets.loadGbfTargets()
             sectionIII.filter(e=>e.target?.targetType == 'global' || e.target?.identifier.startsWith('GBF-'))
             .forEach(e=>{
-                if(!nationalTargets.value[e.target.identifier]){
+                if(!hasNationalTargetForGlobalTarget(e.target.identifier)){
                     const globalTarget = globalTargets.find(g=>g.identifier == e.target?.identifier)
                     const indicators = mapIndicatorsToData({
                         headlineIndicators:globalTarget.headlineIndicators, binaryIndicators:globalTarget.binaryIndicators})
@@ -505,15 +508,9 @@
                 }
             })
 
+            
             nationalReport7Store.nationalReport.sectionIII = sectionIII;
             
-            // setTimeout(()=>accordionToggle.value.toggle(true), 500)
-            setTimeout(() => {
-                const identifier=nationalReport7Store.sectionIIIActiveAccordion||sectionIIIComputed.value[0]?.target?.identifier        
-                toggleAccordionBody(identifier);
-                setAccordionStatus(identifier, true);
-                scrollToElement(`#assessment-target${identifier}`, container);
-            }, 200);
             
         }
         catch(e){
@@ -567,10 +564,17 @@
 
     }
 
-    function onAddIndicatorDataClose(document){
+    function hasNationalTargetForGlobalTarget(targetIdentifier){
+        return Object.values(nationalTargets.value||{})
+                     .find(e=>e.globalTargetAlignment?.map(e=>e.identifier)?.includes(targetIdentifier))
+    }   
+
+    async function onAddIndicatorDataClose(document){
+        
         if(!document?.body)
             return;
-
+        
+        await sleep(300);
         const isBinaryIndicator = document.body.header.schema == SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA;
         
         if(!isBinaryIndicator){
@@ -579,7 +583,10 @@
         else{
             nationalBinaryIndicatorData.value = document
         }
-        
+        const indicatorDataIndex = indicatorsData.value.findIndex(e=>e.identifier == document.identifier);
+        if(~indicatorDataIndex){
+            indicatorsData.value.splice(indicatorDataIndex, 1, document);
+        }
         for (const value in nationalTargets.value) {
             if (Object.hasOwnProperty.call(nationalTargets.value, value)) {
                 const target = nationalTargets.value[value];
@@ -672,6 +679,19 @@
             //ignore error
         }
     }
+
+
+    function onStepChange(step) {
+        if(step==1 && firstLoad) {
+            setTimeout(() => {
+                const identifier = nationalReport7Store.sectionIIIActiveAccordion || sectionIIIComputed.value[0]?.target?.identifier;
+                toggleAccordionBody(identifier);
+                setAccordionStatus(identifier, true);
+                scrollToElement(`#assessment-target${identifier}`, container);
+                firstLoad = false;
+            }, 200);
+        }
+    }
     
 
     provide('kmWorkflowFunctions', {
@@ -681,7 +701,8 @@
         onPostReviewDocument,
         onPreReviewParams,
         onPostClose,
-        onGetDocumentInfo
+        onGetDocumentInfo,
+        onStepChange
     });
 
     provide("validationReview", {
