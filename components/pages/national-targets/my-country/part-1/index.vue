@@ -62,7 +62,7 @@
     const { t, locale }            = useI18n();
     const { $appRoutes:appRoutes } = useNuxtApp();
     const { user }                 = useAuth();
-    const stateTargetWorkflow      = useStorage('ort-target-workflow', { batchId : undefined });
+    const stateTargetWorkflow      = useStorage('scbd-ort-target-workflow', { batchId : undefined });
     const draftNationalTargets     = ref([]);
     const publishedNationalTargets = ref([]);
     const isLoadingRecords         = ref(false);

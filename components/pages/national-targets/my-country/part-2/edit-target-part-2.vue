@@ -135,7 +135,7 @@
     const route           = useRoute();
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const container = useAttrs().container;
-    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
+    const stateTargetWorkflow       = useStorage('scbd-ort-target-workflow', { batchId : undefined });
     
     const headlineIndicators = ref(null);
     const document = ref({});
