@@ -36,7 +36,7 @@
                 </div>
                 <div id="section4" class="mb-3">
                   <nr7-view-section-IV :identifier="viewDocument?.header?.identifier||''" 
-                          :document="viewDocument" :indicator-data="indicatorsData" :document-locale="selectedLocale"></nr7-view-section-IV>
+                          :document="viewDocument" :indicators-data="indicatorsData" :document-locale="selectedLocale"></nr7-view-section-IV>
                 </div>
                 <div id="section5" class="mb-3">             
                    <nr7-view-section-V :identifier="viewDocumentInfo.identifier" :document="viewDocument" :document-locale="selectedLocale"></nr7-view-section-V>
