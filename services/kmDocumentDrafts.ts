@@ -4,6 +4,24 @@ import editFormUtility from './edit-form-utility'
 
 class kmDocumentDrafts {
 
+
+    async loadSchemaDrafts(schema:string|string[], government:string = null){
+
+        let query = ''
+        if(Array.isArray(schema))
+            query = `(type eq '${schema.join("' or type eq '")}')`;
+        else
+            query = `(type eq '${schema}')`;
+
+        if(government)
+            query += ` and owner eq 'country:${government}'` ;
+
+        const result = await this.loadDraftDocuments(query,500, 'updatedOn desc', 0, true);  
+
+        return result.Items;
+
+    }
+
     async loadDraftDocuments(query:string, rowsPerPage:number, 
       sort:String, pageNumebr:number, body:boolean){
                     
@@ -22,7 +40,7 @@ class kmDocumentDrafts {
         return data;
     }
 
-    async loadDraftDocument(identifier:String){
+    async loadDraftDocument(identifier:string){
       if(identifier){
 
         const { $api } = useNuxtApp();

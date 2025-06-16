@@ -60,7 +60,7 @@ class NationalReport7Service {
             //                 sectionIII : [],
             //                 sectionIV : [],
             //                 sectionV : {},
-            //                 annex : {}
+            //                 sectionOtherInfo : {}
             //             }
             //         }          
             //     }
