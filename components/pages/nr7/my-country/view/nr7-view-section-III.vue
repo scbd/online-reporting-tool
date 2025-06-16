@@ -5,7 +5,7 @@
         </CCardHeader>
         <CCardBody>
             <div v-if="locales?.length > 1" class="d-grid d-md-flex justify-content-md-end mb-2">
-                <km-locales v-model="selectedLocale" :locales="locales"></km-locales>
+                <km-locales v-model="lSelectedLocale" :locales="locales"></km-locales>
             </div>
 
             <div class="card mb-3" v-for="(assessment) in sectionIIIComputed" :key="assessment">
@@ -78,7 +78,9 @@
     });
     
     const {t, locale} = useI18n();
-    const selectedLocale = computed(()=>props.documentLocale||locale.value);
+    const { documentLocale } = toRefs(props);
+    const lSelectedLocale = ref(locale.value)
+    const selectedLocale  = computed(()=>documentLocale?.value||lSelectedLocale.value);
     const sectionIIIComputed = computed(()=>{
         return props.document?.sectionIII || [];
     })
