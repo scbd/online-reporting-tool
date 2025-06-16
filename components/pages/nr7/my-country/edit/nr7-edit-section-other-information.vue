@@ -1,55 +1,53 @@
 <template>
     <CCard>
       <CCardHeader>
-        <slot name="header">
-            {{ t('sectionV') }} : {{ t('sectionVDescription') }}
-        </slot>
+        <slot name="header"> {{t('sectionOtherInformation')}} {{t('sectionOtherInformationDescription')}}</slot>
       </CCardHeader>
       <CCardBody>
 
         <div  v-if="isBusy">
             <km-spinner></km-spinner>
-        </div>       
+        </div>
+        <form v-if="!isBusy" name="editForm">          
             <km-form-workflow v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport"
-             :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
+            :focused-tab="props.workflowActiveTab" :document="cleanDocument" :validation-report="validationReport" 
                 :container="container" @on-post-save-draft="onPostSaveDraft" 
-                hidden-tabs="['introduction', 'publish']"  :admin-tags="['section-V']">
+                hidden-tabs="['introduction', 'publish']"  :admin-tags="['section-other-information']">
                 <template #submission>
-                    
-                    <form v-if="!isBusy && sectionVComputed" name="editForm">   
+                    <form v-if="!isBusy && otherInformationComputed" name="editForm">   
                         <div class="card mt-2">                           
                             <div class="card-body"> 
-                                <km-form-group name="sectionV" class="visually-hidden">
-                                    <label class="form-label control-label" for="sectionV">
-                                        <span >{{ t('sectionMandatory') }}</span>                                            
-                                    </label>
-                                </km-form-group>      
-                                <div class="alert alert-info">
-                                   {{ t('introduction') }}
+                                <km-form-group name="additionalDocuments" :caption="t('additionalDocuments')">
+                                    <small id="emailHelp" class="form-text text-muted">{{t('additionalDocumentsHelp')}}</small>
+                                    <km-add-link-file name="additionalDocuments" v-model="otherInformationComputed.additionalDocuments" :allow-link="true" 
+                                        :allow-file="true"  :identifier="document.header.identifier">
+                                    </km-add-link-file>
+                                </km-form-group>
+
+                                <km-form-group :caption="t('additionalInformation')" name="additionalInformation">
+                                    <small id="emailHelp" class="form-text text-muted">{{t('additionalInformationHelp')}}</small>
+                                    <km-input-rich-lstring v-model="otherInformationComputed.additionalInformation" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
+                                </km-form-group>
                                 </div>
-                                <km-form-group name="assessmentSummary" required :caption="t('assessmentSummary')">                                    
-                                    <km-input-rich-lstring v-model="sectionVComputed.assessmentSummary" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
-                                </km-form-group>                                    
-                            </div>
                         </div>
                     </form>
                 </template>
-                <template #review>                
-                    <nr7-view-section-V :identifier="document.header.identifier" :document="cleanDocument" :locales="cleanDocument?.header?.languages"></nr7-view-section-V>
+                <template #review>          
+                    <nr7-view-section-other-information :identifier="document.header.identifier" :document="cleanDocument"></nr7-view-section-other-information>
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
-        
+        </form>
 
       </CCardBody>
     </CCard>
   
 </template>
-<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-V.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-other-information.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
-  
-  import {cloneDeep } from 'lodash';
+    import {defineProps, defineEmits} from 'vue';
+    import {cloneDeep } from 'lodash';
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
 
     const props = defineProps({
@@ -68,15 +66,11 @@
     const isEventDefined        = useHasEvents();
     
 
-    const sectionVComputed = computed({ 
-        get(){ 
-            return document.value.sectionV
-        }
-    });
+    const otherInformationComputed = computed(()=>document.value.sectionOtherInfo);
 
     const cleanDocument = computed(()=>{
         let clean = {...nationalReport7Store.nationalReport};
-        clean.sectionV = sectionVComputed.value;
+        clean.sectionOtherInfo = otherInformationComputed.value;
 
         clean = useKmStorage().cleanDocument(clean);
         
@@ -105,13 +99,13 @@
         validationReport.value     = cloneDeep(newValidationReport);
 
         if(validationReport.value?.errors)
-            validationReport.value.errors = validationReport.value?.errors?.filter(e=>e.parameters=='sectionV');
+            validationReport.value.errors = validationReport.value?.errors?.filter(e=>e.parameters=='otherInformation');
 
 
         return validationReport.value;
     }
     
-    const onPreReviewDocument = (document)=>{
+    const onPreReviewDocument = (document:ENationalReport7)=>{
         return document;
     }
     const onGetDocumentInfo = async ()=>{
@@ -125,8 +119,8 @@
             await nationalReport7Store.loadNationalReport();
             
 
-            if(!nationalReport7Store.nationalReport.sectionV){
-                nationalReport7Store.nationalReport.sectionV = {};
+            if(!nationalReport7Store.nationalReport.sectionOtherInfo){
+                nationalReport7Store.nationalReport.sectionOtherInfo = {};
             }
             document.value = cloneDeep(nationalReport7Store.nationalReport);
         }
@@ -149,7 +143,7 @@
     });
 
     provide("validationReview", {
-        hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
+        hasError : (name:string)=>validationReport.value?.errors?.find((e:any)=>e.property == name)
     });
     
     onMounted(()=>{
