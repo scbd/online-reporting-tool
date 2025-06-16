@@ -69,7 +69,7 @@
             <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIII')"    :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III   )" ></KmNavLink>
             <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionIV')"     :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV    )" ></KmNavLink>
             <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('sectionV')"      :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V     )" ></KmNavLink>
-            <!-- <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('annex')"         :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_ANNEX )" ></KmNavLink> -->
+            <KmNavLink  v-if="menuAccess[appRoutes.NATIONAL_REPORTS_NR7_EDIT]"  icon="fa-pen-to-square" :title="t('otherInformation')"         :to="localePath(appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION )" ></KmNavLink>
                    
         </CNavGroup>          
         

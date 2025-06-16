@@ -180,7 +180,7 @@
         <CCol md="3">
           <div class="card">
             <div class="card-body">
-              <div class="h4 m-0">{{ t('sectionVI') }}</div>
+              <div class="h4 m-0">{{ t('otherInformation') }}</div>
               <div>
                 {{ t('conclusionsImplementationConvention') }}
               </div>
@@ -209,9 +209,9 @@
         <CCol md="3">
           <div class="card">
             <div class="card-body">
-              <div class="h4 m-0">{{ t('annex') }}</div>
+              <div class="h4 m-0">{{ t('otherInformation') }}</div>
               <div>
-                {{ t('informationAsRequested') }}
+                {{ t('sectionOtherInfoDescription') }}
               </div>
               <div class="progress-xs my-3 mb-0 progress">
                 <div

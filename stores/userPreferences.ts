@@ -9,7 +9,7 @@ export const useUserPreferencesStore = defineStore('userPreferences', {
             preferredEditGovernment : '',
             editorActiveLanguageTab : '',
             sidebarVisible          : true,
-            sidebarUnfoldable       : true
+            sidebarUnfoldable       : false
         }
     },
     getters:{
