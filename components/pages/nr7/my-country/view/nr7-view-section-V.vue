@@ -1,16 +1,17 @@
 <template>
+    
     <CCard>
-      <CCardHeader v-if="identifier">
+      <CCardHeader>
         <slot name="header"> {{t('sectionV')}} {{t('sectionVDescription')}}</slot>
       </CCardHeader>
       <CCardBody>
-            <div v-if="document.header.languages && document.header.languages.length > 1" 
+            <div v-if="locales?.length > 1" 
                 class="d-grid d-md-flex justify-content-md-end mb-2">
-                <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
+                <km-locales v-model="selectedLocale" :locales="locales"></km-locales>
             </div>
-            <km-form-group v-if="document.sectionV && document.sectionV.assessmentSummaryInfo" 
-                :caption="t('assessmentSummaryInfo')">
-                <km-lstring-value type="html" :value="document.sectionV.assessmentSummaryInfo" :locale="selectedLocale"></km-lstring-value> 
+            <km-form-group v-if="sectionV && sectionV.assessmentSummary" 
+                :caption="t('assessmentSummary')">
+                <km-lstring-value type="html" :value="sectionV.assessmentSummary" :locale="selectedLocale"></km-lstring-value> 
             </km-form-group>       
       </CCardBody>
     </CCard>
@@ -23,14 +24,18 @@
 <script setup lang="ts">
 //@ts-nocheck
   
-    const {t, locale}    = useI18n();
-    const selectedLocale = ref(locale.value);
 
     const props = defineProps({
         document    : { type:Object, default : undefined},
-        identifier  : { type:String, required:true}
+        identifier  : { type:String, required:true},
+        locales     : { type:Array<string>, default:[]  },
+        documentLocale: { type:String }
     });
 
-    const document = useKmStorage().cleanDocument({...props.document});
+    const {t, locale}    = useI18n();
+    const { documentLocale } = toRefs(props);
+    const selectedLocale = computed(()=>props.documentLocale||locale.value);
+
+    const sectionV = computed(()=>useKmStorage().cleanDocument({...props.document}).sectionV);
 
 </script>
