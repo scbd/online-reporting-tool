@@ -236,11 +236,11 @@
         try{
             const response = await Promise.all([
                                 GbfGoalsAndTargets.loadGbfGoalsWithIndicators(),
-                                nationalReport7Store.loadNationalReport(),                                
+                                nationalReport7Store.loadNationalReport(undefined, true),                                
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA),
                                 nationalReport7Service.loadNationalTargetIndicators(),
-                                // nationalReport7Service.loadNationalReport()
+                                // nationalReport7Service.loadNationalReport(undefined, true)
                             ]);  
 
             globalGoals.value     = arrayToObject(response[0]);

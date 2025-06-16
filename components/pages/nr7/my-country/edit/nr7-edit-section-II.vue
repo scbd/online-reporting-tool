@@ -215,7 +215,7 @@
             await Promise.all([
                         thesaurusStore.loadDomainTerms(THESAURUS.STAKEHOLDERS, {other: true}),
                         thesaurusStore.loadDomainTerms(THESAURUS.POLICY_INSTRUMENTS, {other: true}),
-                        nationalReport7Store.loadNationalReport()
+                        nationalReport7Store.loadNationalReport(undefined, true)
                     ]);
             
 
