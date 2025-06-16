@@ -20,12 +20,17 @@
             <div class="card">
               <div class="card-body">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <CButton :disabled="disableActions || 1==1" @click="onPublish()" color="secondary">
+                    <CButton :disabled="disableActions" @click="onPreview()" color="secondary">
+                        <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
+                        <font-awesome-icon icon="fa-eye"></font-awesome-icon>
+                        {{t('preview')}}
+                    </CButton>
+                    <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
                         <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                         <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                         {{t('publish')}}
                     </CButton>
-                    <CButton :disabled="disableActions || 1==1" @click="onValidate(undefined)" color="secondary">
+                    <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
                         <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true"  message=" "></km-spinner>
                         <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                         {{t('validate')}}
@@ -226,13 +231,14 @@
                 </div>
                 </div>
             </CCol>
-            <!-- <CCol md="4" class="mt-2 d-none" >
+
+            <CCol md="4" class="mt-2" >
                 <div class="card">
                 <div class="card-body">
-                    <div class="h4 m-0">{{ t('annex') }}</div>
+                    <div class="h4 m-0">{{ t('otherInformation') }}</div>
                     <hr>
                     <div>
-                    {{ t('informationAsRequested') }}
+                    {{ t('sectionOtherInfoDescription') }}
                     </div>
                     <div class="progress-xs my-3 mb-0 progress">
                     <div
@@ -240,35 +246,42 @@
                         aria-valuemin="0"
                         aria-valuemax="100"
                         class="progress-bar bg-info"
-                        :aria-valuenow="nrProgress.sectionAnnex"
-                        :style="{ width: nrProgress.sectionAnnex + '%'}"
+                        :aria-valuenow="nrProgress.sectionOtherInfo"
+                        :style="{ width: nrProgress.sectionOtherInfo + '%'}"
                     ></div>
                     </div>
                     <small class="text-muted d-grid gap-2 d-md-flex justify-content-md-end">
                         <div class="d-grid gap-1 d-flex mt-2">
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionANNEX') }}</button>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_ANNEX" :title="t('editSectionANNEX')" 
+                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionOtherInfo') }}</button>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION" :title="t('editSectionOtherInfo')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
                 </div>
                 </div>
-            </CCol>           -->
+            </CCol>          
         </CRow>
-        <CRow v-if="validationErrorDocuments?.length">
+        <CRow v-if="validationErrorDrafts?.length">
             <CCol class="mt-1" :md="12">
                 <CCard>
                     <CCardBody>
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th>{{ t('draftRecords') }} (Indicator data)</th>
-                                    <td></td>
+                                    <th colspan="2">{{ t('hasErrors') }}</th>
                                 </tr>
-                                <tr v-for="document in validationErrorDocuments" :key="document">
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="alert alert-danger">
+                                            <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
+                                            {{t('missingIndicatorFieldsMessage')}}                                            
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-for="document in validationErrorDrafts" :key="document" :class="{'table-danger': document.errors?.length}">
                                     <td>
                                         {{ lstring(document.workingDocumentTitle||document.title) }}
-                                        {{ document?.body?.indicator?.identifier }}
+                                        <strong>({{ document?.body?.indicator?.identifier }})</strong>
                                     </td>
                                     <td >
                                         <div class="d-flex m-1">
@@ -284,12 +297,44 @@
                                             <km-document-status class="ms-1" :document="document" @on-status-change="onRecordStatusChange"></km-document-status>
                                         </div>
                                     </td>
+                                </tr>  
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered" v-if="missingIndicatorData?.length">
+                            <tbody>
+                                <tr >                                    
+                                    <th>{{ t('missingIndicatorData') }}</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="alert alert-danger">
+                                            <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
+                                            {{t('missingIndicatorDataMessage')}}                                            
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-for="indicator in missingIndicatorData" :key="indicator">
+                                    <td>
+                                        {{ lstring(indicator.title) }}
+                                        <strong>({{ indicator?.identifier }})</strong>
+                                    </td>
+                                    <td>
+                                        <CBadge color="danger">
+                                            {{t('notSubmitted')}}
+                                        </CBadge>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- {{ validationErrorDocuments }} -->
+                        <!-- {{ validationErrorDrafts }} -->
                     </CCardBody>
                 </CCard>
+            </CCol>
+        </CRow>
+        <CRow v-if="!isLoading && cleanDocumentInfo && showPreview">
+            <CCol class="mt-1" :md="12">                                
+                <nr-7-view :document-info="cleanDocumentInfo" ></nr-7-view>                
             </CCol>
         </CRow>
         <CRow>
@@ -297,12 +342,17 @@
                 <CCard>
                     <CCardBody>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <CButton :disabled="disableActions || 1==1" @click="onPublish()" color="secondary">
+                            <CButton :disabled="disableActions" @click="onPreview()" color="secondary">
+                                <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
+                                <font-awesome-icon icon="fa-eye"></font-awesome-icon>
+                                {{t('preview')}}
+                            </CButton>
+                            <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
                                 <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 <font-awesome-icon icon="fa-bullhorn" :beat="isPublishing"></font-awesome-icon>
                                 {{t('publish')}}
                             </CButton>
-                            <CButton :disabled="disableActions || 1==1" @click="onValidate(undefined)" color="secondary">
+                            <CButton :disabled="disableActions" @click="onValidate(undefined)" color="secondary">
                                 <km-spinner v-if="isValidating" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                                 <font-awesome-icon icon="fa-file-shield"></font-awesome-icon>
                                 {{t('validate')}}
@@ -401,6 +451,8 @@
     import { useNationalReport7Store }    from '@/stores/nationalReport7';
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     import { useRealmConfStore } from '@/stores/realmConf';
+    import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
+    import { KmDocumentsService } from '~/services/kmDocuments';
 
 
     const { $appRoutes:appRoutes, $api } = useNuxtApp();
@@ -416,7 +468,8 @@
     const validationReport      = ref(null); 
     const document              = ref({});
     const nrProgress            = ref({});
-    const draftRecords          = ref([]);
+    const draftIndicatorData          = ref([]);
+    const publishedIndicatorData      = ref([]);
     const draftNr7Document      = ref({});
 
     const isValidating       = ref(false);
@@ -428,8 +481,10 @@
     const showSpinnerDialog         = ref(false);
     const confirmationPromise       = ref(null);
     const openWorkflow              = ref(null);
-    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
-    
+    const stateTargetWorkflow       = useStorage('scbd-ort-target-workflow', { batchId : undefined });
+    const mandatoryIndicators        = ref([]);
+    const binaryIndicators           = ref([]);
+    const showPreview              = ref(false);
 
     const cleanDocument = computed(()=>{
         let clean = {...nationalReport7Store.nationalReport};
@@ -438,9 +493,24 @@
 
         return clean;
     });
+    const cleanDocumentInfo = computed(()=>{
+        return {...nationalReport7Store.nationalReportInfo, body: cleanDocument.value};
+    });
 
     const disableActions = computed(()=>isValidating.value || isBusy.value || isLoadingRecords.value || isPublishing.value)
-    const validationErrorDocuments = computed(()=>draftRecords.value)//.filter(e=>e.errors?.length)
+    const validationErrorDrafts = computed(()=>draftIndicatorData.value)//.filter(e=>e.errors?.length)
+    const missingIndicatorData  = computed(()=>{
+        const indicatorData = [...(publishedIndicatorData.value||[]), ...(draftIndicatorData.value||[])];
+        const identifier    = indicatorData.map(e=>e.body?.indicator?.identifier).filter(e=>e);
+        const missingIndicators = mandatoryIndicators.value.filter(e=>!identifier.includes(e.identifier));
+        if(!indicatorData.find(e=>e.type == SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)){
+            missingIndicators.push({
+                identifier: SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA,
+                title: 'Binary Indicator Data',
+            })
+        }
+        return missingIndicators
+    })
     const sectionIErrors    = computed(()=>draftNr7Document.value.errors?.filter(e=>e.parameters == 'sectionI'));
     const sectionIIErrors   = computed(()=>draftNr7Document.value.errors?.filter(e=>e.parameters == 'sectionII'));
     const sectionIIIErrors  = computed(()=>draftNr7Document.value.errors?.filter(e=>e.parameters == 'sectionIII'));
@@ -451,8 +521,15 @@
         isBusy.value = true;
 
         try{
-            await nationalReport7Store.loadNationalReport();     
-            validatedProgress()       
+            const [headlineIndicators, binaryIndicators ] = 
+                    await Promise.all([
+                        GbfGoalsAndTargets.loadGbfHeadlineIndicator(),
+                        GbfGoalsAndTargets.loadGbfBinaryIndicator(),
+                        nationalReport7Store.loadNationalReport()
+                    ]);  
+            mandatoryIndicators.value = headlineIndicators;   
+            binaryIndicators.value    = binaryIndicators;
+            calculateEditProgress()       
         }
         catch(e){
             useLogger().error(e,  'Error loading NR7 Overview')
@@ -461,7 +538,7 @@
         isBusy.value = false;
     }
 
-    function validatedProgress(){
+    function calculateEditProgress(){
         const fields = {
             sectionI : ['nationalAuthorities', 'contactPerson', 'contactDetails', 'processUndertaken'],
             sectionII: [
@@ -488,7 +565,7 @@
                 'summaryOfProgress',
                 'indicatorData'
             ],
-            sectionV: ['assessmentSummaryInfo']
+            sectionV: ['assessmentSummary']
         }
 
         const document= cleanDocument.value;
@@ -498,7 +575,7 @@
             sectionIII : 0,
             sectionIV : 0,
             sectionV : 0,
-            sectionAnnex : 0
+            sectionOtherInfo : 0
         }
 
         fields.sectionI.forEach(field=>{
@@ -548,14 +625,20 @@
             progress.sectionIV += 5;
         }
 
-        if(document.sectionV?.assessmentSummaryInfo)
+        if(document.sectionV?.assessmentSummary)
             progress.sectionV = 100;
 
-        // if(document.annex?.additionalInformation)
-        //     progress.sectionAnnex = 100;
+        if(document.sectionOtherInfo?.additionalInformation)
+            progress.sectionOtherInfo = 50;
+        if(document.sectionOtherInfo?.additionalDocuments?.length)
+            progress.sectionOtherInfo += 50;
         
         
         nrProgress.value = progress
+    }
+
+    async function onPreview(){
+        showPreview.value = !showPreview.value;
     }
 
     async function onPublish(){
@@ -564,7 +647,7 @@
             //TODO: verify if indicator data was published later then the nr7 document, 
             // ask to go back to the nr7 section III
             await onValidate();
-            const hasValidationErrors = [draftNr7Document.value, ...(draftRecords.value||[])].some(e=>e.errors);
+            const hasValidationErrors = [draftNr7Document.value, ...(draftIndicatorData.value||[])].some(e=>e.errors);
             
             if(hasValidationErrors){
                 showValidationErrorDialog.value = true;
@@ -604,20 +687,23 @@
         try{
             isValidating.value = true; 
 
-            if(!draftRecords.value?.length){
+            if(!draftIndicatorData.value?.length){
                 const drafts = await Promise.all([
-                    loadDraftRecords(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
-                    loadDraftRecords(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)
+                    KmDocumentDraftsService.loadSchemaDrafts(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA, user.value?.government),
+                    KmDocumentDraftsService.loadSchemaDrafts(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA, user.value?.government),                    
                 ]);
 
-                draftRecords.value = drafts.flat();
+                draftIndicatorData.value = drafts.flat();
+
+                const documents = await Promise.all([
+                    KmDocumentsService.loadSchemaDocuments (SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA, user.value?.government),
+                    KmDocumentsService.loadSchemaDocuments (SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA, user.value?.government)
+                ]);
+                publishedIndicatorData.value = documents.flat()
             }
-            // const indicatorResponse = await Promise.all([
-            //                         GbfGoalsAndTargets.loadGbfHeadlineIndicator(),
-            //                         GbfGoalsAndTargets.loadGbfBinaryIndicator()
 
             draftNr7Document.value = { body : cloneDeep(cleanDocument.value) };
-            await validateDocuments([draftNr7Document.value, ...draftRecords.value]);
+            await validateDocuments([draftNr7Document.value, ...draftIndicatorData.value]);
  
             
         }
@@ -658,18 +744,6 @@
         });
 
         return await Promise.all(promises);
-    }
-    
-    async function loadDraftRecords(schema:String){
-
-        let query = `(type eq '${schema}')`;
-        if(user.value?.government)
-            query += ` and owner eq 'country:${user.value.government}'` ;
-
-        const result = await KmDocumentDraftsService.loadDraftDocuments(query,500, 'updatedOn desc', 0, true);  
-
-        return result.Items;//?.map(e=>e.body);
-
     }
     
     async function showConfirmation(){
