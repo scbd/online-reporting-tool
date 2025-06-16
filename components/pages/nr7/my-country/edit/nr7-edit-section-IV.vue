@@ -36,7 +36,6 @@
                             </CAccordionHeader>
                             <CAccordionBody>
                                 <div >
-                                    {{ sectionIVComputed.summaryOfProgress }}
                                     <km-form-group :name="'summaryOfProgress_'+ assessment.gbfGoal?.identifier" required>
                                         <label class="form-label control-label" required :for="'summaryOfProgress_'+assessment.gbfGoal?.identifier">
                                             {{ t('summaryOfNationalProgress') }}
@@ -51,46 +50,29 @@
                                        <!-- ({{ nationalTargetsComputed[assessment.gbfGoal.identifier]?.indicators?.length }}) -->
                                     </legend>
                                     <hr>
-                                    <div v-for="(indictorData, key) in globalGoals[assessment.gbfGoal.identifier]?.indicatorData" :key="key">
-                                        <div class="mb-3"  v-if="indictorData.length">
-                                            <div  v-for="indicator in indictorData" :key="indicator" class="card mb-3">
-                                                <div class="card-header">
-                                                    <strong>{{ t(key) }}:</strong>
-                                                    {{ lstring(indicators[indicator.identifier]?.title) }} 
-                                                    <small class="fw-bold">({{ indicator?.identifier }})</small>
-                                                </div>
-                                                <div class="card-body" v-if="indicators[indicator.identifier]">                                       
-                                                    <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')<0">
-                                                        <missing-data-alert 
-                                                            v-if="!Object.keys(nationalIndicatorData[indicator.identifier]?.nationalData||{})?.length">
-                                                        </missing-data-alert>    
-
-                                                        <nr7-add-indicator-data :indicator="indicator"                                                              
-                                                            :identifier="nationalIndicatorData[indicator.identifier]?.nationalData?.header?.identifier" 
-                                                            @on-post-save-draft="onAddIndicatorDataClose">
-                                                        </nr7-add-indicator-data>       
-                                                        <div v-if="nationalIndicatorData[indicator.identifier]?.nationalData">
-                                                            <nr7-view-indicator-data :indicator-data="nationalIndicatorData[indicator.identifier]?.nationalData"></nr7-view-indicator-data>
-                                                        </div>
-                                                    </div>      
-                                                    <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  
-                                                        <nr7-add-binary-indicator-data :indicator="indicator" 
-                                                            container=".nr7-add-binary-indicator-data-modal"
-                                                            :identifier="nationalIndicatorData[indicator.identifier]?.nationalData?.header?.identifier" 
-                                                            @on-post-save-draft="onAddIndicatorDataClose">
-                                                        </nr7-add-binary-indicator-data>   
-                                                        <div v-if="nationalIndicatorData[indicator.identifier]?.nationalData">
-                                                            <nr7-view-binary-indicator-data 
-                                                                :indicator-data="nationalIndicatorData[indicator.identifier]?.nationalData" 
-                                                                :questions="nationalIndicatorData[indicator.identifier]?.question?.questions">
-                                                            </nr7-view-binary-indicator-data>
-                                                        </div>    
-                                                    </div>
-                                                </div>
-                                            </div>
-                                                
-                                        </div>
-                                    </div>
+                                     <nr7-view-target-indicators :target-indicators="assessment?.indicatorData"
+                                        :indicators-data="indicatorsData" :national-indicators="nationalIndicators">
+                                        <template #header="{key,indicatorIdentifier, nationalIndicator}">
+                                            <label :for="`indicatorData_${assessment.gbfGoal.identifier}_${key}_${indicatorIdentifier}`">   
+                                                <span class="d-none">{{lstring(globalGoals[assessment.gbfGoal.identifier]?.title) }} : {{ t('indicatorData') + ' - ' }} </span> 
+                                                <km-term v-if="key!='national'" :value="indicatorIdentifier" :locale="locale"></km-term>
+                                                <span v-if="key=='national'">{{ lstring(nationalIndicator?.value, locale) }}</span>
+                                            </label>
+                                        </template>   
+                                        <template #actionButtons="{key,indicatorData, indicator}">
+                                            <nr7-add-indicator-data :indicator="indicator"  v-if="key!='binary'"
+                                                    :identifier="indicatorData?.identifier" 
+                                                    container=".nr7-add-indicator-data-modal"
+                                                    @on-close="onAddIndicatorDataClose">
+                                                </nr7-add-indicator-data>  
+                                            <nr7-add-binary-indicator-data :indicator="indicator"  v-if="key=='binary'"
+                                                container=".nr7-add-binary-indicator-data-modal"
+                                                :identifier="indicatorData?.identifier" 
+                                                @on-close="onAddIndicatorDataClose">
+                                            </nr7-add-binary-indicator-data>   
+                                        </template>
+                                                                                    
+                                    </nr7-view-target-indicators>
                                 </div>
                                 
                             </CAccordionBody>
@@ -99,7 +81,7 @@
                     
                 </template>
                 <template #review>                
-                    <nr7-view-section-IV :identifier="cleanDocument?.header?.identifier" 
+                    <nr7-view-section-IV :identifier="cleanDocument?.header?.identifier"  :locales="cleanDocument.header.languages"
                         :document="cleanDocument" :global-goals="globalGoals" :indicators="indicators"
                         :national-indicator-data="nationalIndicatorData"></nr7-view-section-IV>
                 </template>
@@ -148,6 +130,7 @@
     const indicators          = ref({});
     const nationalTargets     = ref();
     const nationalIndicatorData = ref([]);
+    const indicatorsData        = ref([]);
     const isBusy                = ref(true);
     const accordionToggle      = ref(null);
     const mouseOverGoal      = ref(null);
@@ -158,6 +141,10 @@
     const sectionIVComputed = computed(()=>document.value.sectionIV);
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
 
+    const nationalIndicators      = computed(()=>{
+        return Object.values(nationalTargets.value||[]).map(e=>e.nationalIndicators||[]).flat();
+    });
+    
     const cleanDocument = computed(()=>{
         let clean = {...nationalReport7Store.nationalReport};
         clean.sectionIV = sectionIVComputed.value;
@@ -168,8 +155,8 @@
             goal.indicatorData = {
                 headline     : indicatorData.headline.map(mapNationalIndicatorData),
                 binary       : indicatorData.binary.map(mapNationalIndicatorData),
-                component    : indicatorData.component.map(mapNationalIndicatorData)?.filter(e=>e.data),
-                complementary: indicatorData.complementary.map(mapNationalIndicatorData)?.filter(e=>e.data),
+                component    : indicatorData.component.map(mapNationalIndicatorData),
+                complementary: indicatorData.complementary.map(mapNationalIndicatorData),
             }
             
         });
@@ -259,7 +246,8 @@
             globalGoals.value     = arrayToObject(response[0]);
             indicators.value      = flattenIndicators(response[0]);
             nationalIndicatorData.value = normalizeIndicatorData(indicators.value , response[3][0], response[2].map(e=>e.body));
-            
+            indicatorsData.value = [...response[2], response[3][0]];
+
             const nationalTargets = response[4].nationalTargets.map(e=>e.body);
             const flatComplementaryIndicators = nationalReport7Service.uniqueIndicators(nationalTargets.map(e=>e.complementaryIndicators));
             const flatComponentIndicators = nationalReport7Service.uniqueIndicators(nationalTargets.map(e=>e.componentIndicators));
@@ -278,21 +266,6 @@
                             component     : []
                         }
                     }
-                    // e.headlineIndicators?.forEach((indicator)=>{
-                    //     goal.indicatorData.headline.push({ indicator : { identifier:indicator.identifier}});
-                    // });
-                    // e.binaryIndicators?.forEach((indicator)=>{
-                    //     goal.indicatorData.binary.push({ indicator : { identifier:indicator.identifier}});
-                    // });
-
-                    // e.complementaryIndicators?.forEach((indicator)=>{
-                    //     if(flatComplementaryIndicators.find(e=>e.identifier == indicator.identifier))
-                    //         goal.indicatorData.complementary.push({ indicator : { identifier:indicator.identifier}});
-                    // });
-                    // e.componentIndicators?.forEach((indicator)=>{
-                    //     if(flatComponentIndicators.find(e=>e.identifier == indicator.identifier))
-                    //         goal.indicatorData.component.push({ indicator : { identifier:indicator.identifier}});
-                    // });
                     sectionIV.push(goal);
                 });
                 nationalReport7Store.nationalReport.sectionIV = sectionIV;
@@ -369,10 +342,11 @@
 
     }
 
-    function onAddIndicatorDataClose(document){
+    async function onAddIndicatorDataClose(document){
         if(!document?.body)
             return;
 
+        await sleep(300);
         const isBinaryIndicator = document.body.header.schema == SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA;
         if(!isBinaryIndicator){
             const indicator = indicators.value[document.body?.indicator?.identifier];
@@ -387,6 +361,10 @@
                 nationalIndicatorData.value[indicator?.identifier] = 
                     normalizeNationalBinaryData(indicator, indicator.type, document.body);
             })
+        }
+        const indicatorDataIndex = indicatorsData.value.findIndex(e=>e.identifier == document.identifier);
+        if(~indicatorDataIndex){
+            indicatorsData.value.splice(indicatorDataIndex, 1, document);
         }
     }
 
