@@ -97,7 +97,7 @@
                     </div>
                 </template>
                 <template #review>                
-                    <nr7-view-section-II :identifier="cleanDocument.header.identifier" :document="cleanDocument"></nr7-view-section-II>
+                    <nr7-view-section-II :identifier="cleanDocument.header.identifier" :document="cleanDocument" :locales="cleanDocument.header.languages"></nr7-view-section-II>
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>

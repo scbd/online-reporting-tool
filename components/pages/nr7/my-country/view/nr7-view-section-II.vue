@@ -6,9 +6,9 @@
       <CCardBody>
         <div v-if="sectionII">
 
-            <div v-if="document.header.languages && document.header.languages.length > 1" 
+            <div v-if="locales?.length > 1" 
                 class="d-grid d-md-flex justify-content-md-end mb-2">
-                <km-locales v-model="selectedLocale" :locales="document.header.languages"></km-locales>
+                <km-locales v-model="selectedLocale" :locales="locales"></km-locales>
             </div>
             <km-form-group :caption="t('revisedNbsap')" v-if="sectionII.hasRevisedNbsap">
                 <km-lstring-value :value="t(sectionII.hasRevisedNbsap)" :locale="selectedLocale"></km-lstring-value>                                    
@@ -54,13 +54,15 @@
 <script setup lang="ts">
 //@ts-nocheck
   
-    const {t, locale}    = useI18n();
-    const selectedLocale = ref(locale.value);
-
     const props = defineProps({
         document    : { type:Object, default : undefined},
-        identifier  : { type:String, required:true}
+        identifier  : { type:String, required:true},
+        locales     : { type:Array<string>, default:[] },
+        documentLocale: { type:String }
     });
+
+    const {t, locale}    = useI18n();
+    const selectedLocale = computed(()=>props.documentLocale||locale.value);
 
     const sectionII = computed(()=>useKmStorage().cleanDocument({...props.document}).sectionII);
 

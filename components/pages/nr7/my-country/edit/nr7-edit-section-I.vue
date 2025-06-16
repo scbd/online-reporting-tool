@@ -61,7 +61,7 @@
                 </form>
             </template>
             <template #review>                
-                <nr7-view-section-I :identifier="cleanDocument.header.identifier" :document="cleanDocument"></nr7-view-section-I>
+                <nr7-view-section-I :identifier="cleanDocument.header.identifier" :document="cleanDocument" :locales="cleanDocument.header.languages"></nr7-view-section-I>
             </template>
         </km-form-workflow>
 
