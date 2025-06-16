@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-      <nr7-edit-section-VI :workflow-active-tab="workflowActiveTab"></nr7-edit-section-VI>
+      <nr7-edit-section-other-information :workflow-active-tab="workflowActiveTab"></nr7-edit-section-other-information>
     </km-suspense>
 </template>
   

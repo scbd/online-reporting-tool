@@ -33,7 +33,7 @@ export const appRoutes = {
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III   : '/national-reports/nr7/my-country/edit/section-III',
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV    : '/national-reports/nr7/my-country/edit/section-IV',
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V     : '/national-reports/nr7/my-country/edit/section-V',
-    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_ANNEX : '/national-reports/nr7/my-country/edit/section-Annex',
+    NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION : '/national-reports/nr7/my-country/edit/section-other-information',
     
     TAXONOMY_GBF_LIST   : '/taxonomy/gbf',
     TAXONOMY_GBF_DETAILS: '/taxonomy/gbf/:identifier',

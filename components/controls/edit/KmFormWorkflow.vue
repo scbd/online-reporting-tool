@@ -289,6 +289,10 @@
         if(index == activeTab.value)
             return;
         activeTab.value = index;
+        
+        if(workflowFunctions?.onStepChange)
+            await workflowFunctions.onStepChange(index);
+
         if([workflowTabs.review.index].includes(activeTab.value)){
             onReviewDocument(true);
         }

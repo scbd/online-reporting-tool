@@ -184,7 +184,7 @@
     const localePath  = useLocalePath()
     const { t, locale }       = useI18n(); 
     const { user }            = useAuth();
-    const stateTargetWorkflow       = useStorage('ort-target-workflow', { batchId : undefined });
+    const stateTargetWorkflow       = useStorage('scbd-ort-target-workflow', { batchId : undefined });
 
     const isBusy = ref(false);
     const gbfGoalAndTargetList = ref(null);

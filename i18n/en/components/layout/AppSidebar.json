@@ -20,7 +20,7 @@
     "sectionIII": "Section III",
     "sectionIV": "Section IV",
     "sectionV": "Section V",
-    "sectionVI": "Section VI",
-    "annex": "Other information",
-    "indicatorData" : "Indicator Data"
+    "otherInformation": "Other information",
+    "otherInformation": "Other information",
+    "indicatorData" : "Indicator data"
 }

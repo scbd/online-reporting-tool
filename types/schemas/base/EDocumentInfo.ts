@@ -5,6 +5,8 @@ import type { ENationalTarget7 } from "../ENationalTarget7";
 import type { ENationalTarget7Mapping } from "../ENationalTarget7Mapping";
 import type { ELockInfo } from "./ELockInfo";
 import type { Metadata } from "~/types/schemas/base/km-storage";
+
+export type Schemas = ENationalTarget7 | ENationalTarget7Mapping | ENationalReport7 | object;
 export interface EDocumentInfo {
     identifier              : string;
     documentID              : number | null;
@@ -25,7 +27,7 @@ export interface EDocumentInfo {
     title                   : ELstring;
     summary                 : ELstring;
     metadata                : Metadata;
-    body                    : ENationalTarget7 | ENationalTarget7Mapping | ENationalReport7 |object;
+    body                    : Schemas;
     workingDocumentID       : number | null;
     workingDocumentCreatedOn: Date | null;
     workingDocumentCreatedBy: EUserInfo;
@@ -36,7 +38,7 @@ export interface EDocumentInfo {
     workingDocumentTitle    : ELstring;
     workingDocumentSummary  : ELstring;
     workingDocumentMetadata : Metadata;
-    workingDocumentBody     : ENationalTarget7 | ENationalTarget7Mapping | object;
+    workingDocumentBody     : Schemas;
     workingDocumentLock     : ELockInfo;
     realm                   : string;
     latestRevision          : number;

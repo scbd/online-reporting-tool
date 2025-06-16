@@ -17,7 +17,6 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
   actions:{
     
     async loadNationalReport(identifier:string, force:boolean){
-        
         this.isBusy = true;
         try{
             const { $api }        = useNuxtApp();
@@ -62,7 +61,7 @@ export const useNationalReport7Store = defineStore('nationalReport7', {
                             sectionIII : [],
                             sectionIV : [],
                             sectionV : {},
-                            annex : {}
+                            sectionOtherInfo : {}
                         }
                     }          
                 }
