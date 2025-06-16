@@ -8,10 +8,10 @@
             {{ t('addIndicatorData') }}
         </CButton>
     </div>
-    <CModal  class="show d-block nr7-add-indicator-data-modal" size="xl" alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
+    <CModal  class="show d-block nr7-add-indicator-data-modal" size="xl" alignment="center" backdrop="static" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
-                {{lstring(indicator.title)}}
+                <km-term :value="indicator?.identifier" :locale="locale"></km-term>
             </CModalTitle>
         </CModalHeader>
         <CModalBody>
@@ -113,7 +113,7 @@
                                 </div>                                 
                             </template>
                             <template #review>
-                                <nr7-view-indicator-data :indicator-data="cleanDocument">
+                                <nr7-view-indicator-data v-if="cleanDocument.indicator" :indicator-data="cleanDocument">
                                 </nr7-view-indicator-data>
                             </template>
                         </km-form-workflow>
@@ -197,10 +197,9 @@
     });
 
     const onPostClose = async (document)=>{
-        
+               
         if(isEventDefined('onClose'))
-            emit('onClose', document);
-        documentInfo.value = document
+            emit('onClose', documentInfo.value);
 
         showEditIndicatorDataModal.value = false;
     }
@@ -210,10 +209,11 @@
     };
 
     const onPostSaveDraft = async (document)=>{
-        // console.log(document);
         //vue prepends 'on' to all events internally
         if(isEventDefined('onPostSaveDraft'))
             emit('onPostSaveDraft', document);
+        
+        documentInfo.value = document
     };
 
     const onPreReviewDocument = (document)=>{
@@ -235,7 +235,7 @@
             const rows = await readXlsxFile(file)
                 // `rows` is an array of rows
                 // each row being an array of cells.
-                const columns = ['Indicator_code', 'Indicator', 'Does this data row represent a disaggregation',
+                const columns = ['Indicator code', 'Indicator', 'Does this data row represent a disaggregation',
                                  'Disaggregation', 'Year', 'Unit', 'Value', 'Footnote'];
                             
                 if(rows[0].length != columns.length){

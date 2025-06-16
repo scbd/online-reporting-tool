@@ -2,10 +2,16 @@
     <km-form-group v-if="indicatorData.sourceOfData" :caption="t('sourceOfData')">
         <km-value>{{ t(indicatorData.sourceOfData) }}</km-value>
     </km-form-group>
-    <km-form-group v-if="indicatorData.sourceOfDataInfo" :caption="t('sourceOfDataInfo')">
+    
+    <km-form-group v-if="indicatorData.sourceOfDataInfo" :caption="t(indicatorData.sourceOfData =='noData' ? 'sourceOfDataInfoNoData' : 'sourceOfDataInfoNotRelevant')">
         <km-lstring-value :value="indicatorData.sourceOfDataInfo" :locale="indicatorData.languages"></km-lstring-value>
     </km-form-group>
+    <km-form-group v-if="!indicatorData.data && ['notRelevant', 'noData'].includes(indicatorData?.sourceOfDataInfo)">
+        <missing-data-alert></missing-data-alert>    
+    </km-form-group>
     <km-form-group :caption="t('data')"  v-if="indicatorData.data">
+        <download-data :headers="excelHeaders" :data="excelData" class="float-end"
+            :fileName="`indicator-data-${lstring(indicator.title, locale)}`"></download-data>
         <div class="w-100" style="overflow: auto;">
             <table class="table responsive table-bordered">
                 <tbody>
@@ -46,7 +52,7 @@
     </km-form-group>
     <km-form-group v-if="indicatorData.globalDescription" :caption="t('description')">
         <km-value>{{ indicatorData.globalDescription }}</km-value>
-    </km-form-group>
+    </km-form-group>    
     <km-form-group v-if="indicatorData.comments" class="mt-1" :caption="t('comments')">
         <km-lstring-value type="html" :value="indicatorData.comments"
             :locale="indicatorData.languages"></km-lstring-value>
@@ -56,16 +62,51 @@
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-add-indicator-data.json"></i18n>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-view-indicator-data.json"></i18n>
 <script setup lang="ts">
-//@ts-nocheck
+import { computed, toRefs, defineProps } from 'vue';
+import type {IndicatorData } from '~/types/controls/indicator-mapping';
+import type { ETerm } from '~/types/schemas/base/ETerm';
 
+    const props = defineProps({
+        indicatorData: { type: Object, required: true },
+        documentLocale: { type:String }
+    });
 
-const props = defineProps({
-    indicatorData: { type: Object, required: true }
-});
+    const thesaurusStore    = useThesaurusStore();
+    const {locale, t}       = useI18n();
+    const { indicatorData } = toRefs(props);
+    const selectedLocale = computed(()=>props.documentLocale||locale.value);
 
-const {locale, t} = useI18n();
-const { indicatorData } = toRefs(props);
+    const indicator:ComputedRef<ETerm> = computed(() => thesaurusStore.getTerm(props.indicatorData?.indicator?.identifier));
+    
+    const excelHeaders = computed(() => [
+        { type: String, value: t('indicatorCode'), fontWeight: 'bold' },
+        { type: String, value: t('indicator'), fontWeight: 'bold' },
+        { type: String, value: t('doesDisaggregation'), fontWeight: 'bold' },
+        { type: String, value: t('disaggregation'), fontWeight: 'bold' },
+        { type: String, value: t('year'), fontWeight: 'bold' },
+        { type: String, value: t('unit'), fontWeight: 'bold' },
+        { type: String, value: t('value'), fontWeight: 'bold' },
+        { type: String, value: t('footnote'), fontWeight: 'bold' }
+    ]);
 
+    const excelData = computed(() => {
+        return indicatorData.value.data?.map((unit:IndicatorData) => [
+            { type: String, value: unit.indicatorCode },
+            { type: String, value: lstring(indicator.value.title, locale) },
+            { type: String, value: unit.hasDisaggregation ? t('yes') : t('no') },
+            { type: String, value: unit.disaggregation||'' },
+            { type: Number, value: unit.year||0 },
+            { type: String, value: unit.unit||'' },
+            { type: Number, value: unit.value||0 },
+            { type: String, value: unit.footnote||'' }
+        ]) || [];
+    });
+
+    onMounted(async () => {
+        if (indicatorData.value.indicator) {
+            await thesaurusStore.loadTerm(indicatorData.value.indicator.identifier);
+        }
+    }); 
 </script>
 
 <style scoped></style>
