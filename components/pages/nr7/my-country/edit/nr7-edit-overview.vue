@@ -525,7 +525,7 @@
                     await Promise.all([
                         GbfGoalsAndTargets.loadGbfHeadlineIndicator(),
                         GbfGoalsAndTargets.loadGbfBinaryIndicator(),
-                        nationalReport7Store.loadNationalReport()
+                        nationalReport7Store.loadNationalReport(undefined, true),
                     ]);  
             mandatoryIndicators.value = headlineIndicators;   
             binaryIndicators.value    = binaryIndicators;

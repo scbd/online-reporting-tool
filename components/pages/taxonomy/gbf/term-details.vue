@@ -37,8 +37,9 @@
                 <td>
                     <ul class="list-group">
                         <li class="list-group-item" v-for="xTerm in term.broaderTerms" :key="xTerm">
-                            <km-link class="pe-1" :to="appRoutes.TAXONOMY_GBF_DETAILS.replace(':identifier', xTerm)" 
-                            v-if="/^GBF/.test(xTerm)">{{ xTerm }}</km-link>
+                            <!-- <km-link class="pe-1" :to="appRoutes.TAXONOMY_GBF_DETAILS.replace(':identifier', xTerm)"  -->
+                            <!-- v-if="/^GBF/.test(xTerm)">{{ xTerm }}</km-link> -->
+                             {{ xTerm }}
                         </li>
                     </ul>
                 </td>
@@ -49,12 +50,11 @@
 <i18n src="@/i18n/dist/components/pages/taxonomy/gbf/term-details.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
-const {t} = useI18n();
+    const {t} = useI18n();
     defineProps({
         header : {type:String, require:true},
         term   : {type:Object, required:true}
     })
-
 </script>
 
 <style scoped>

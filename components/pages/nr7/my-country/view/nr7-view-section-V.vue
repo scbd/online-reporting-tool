@@ -7,7 +7,7 @@
       <CCardBody>
             <div v-if="locales?.length > 1" 
                 class="d-grid d-md-flex justify-content-md-end mb-2">
-                <km-locales v-model="selectedLocale" :locales="locales"></km-locales>
+                <km-locales v-model="lSelectedLocale" :locales="locales"></km-locales>
             </div>
             <km-form-group v-if="sectionV && sectionV.assessmentSummary" 
                 :caption="t('assessmentSummary')">
@@ -34,7 +34,8 @@
 
     const {t, locale}    = useI18n();
     const { documentLocale } = toRefs(props);
-    const selectedLocale = computed(()=>props.documentLocale||locale.value);
+    const lSelectedLocale = ref(locale.value)
+    const selectedLocale  = computed(()=>documentLocale?.value||lSelectedLocale.value);
 
     const sectionV = computed(()=>useKmStorage().cleanDocument({...props.document}).sectionV);
 

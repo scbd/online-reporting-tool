@@ -32,7 +32,7 @@
     defineProps({
         header : {type:String, require:true},
         terms   : {type:Object, required:true},
-        linkUrl : {type:String, default:appRoutes.TAXONOMY_GBF_DETAILS}
+        linkUrl : {type:String, default:appRoutes.TAXONOMY_GBF}
     })
 
 </script>

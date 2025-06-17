@@ -35,7 +35,17 @@ export const appRoutes = {
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V     : '/national-reports/nr7/my-country/edit/section-V',
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION : '/national-reports/nr7/my-country/edit/section-other-information',
     
-    TAXONOMY_GBF_LIST   : '/taxonomy/gbf',
-    TAXONOMY_GBF_DETAILS: '/taxonomy/gbf/:identifier',
-    TAXONOMY_GBF_INDICATOR_DETAILS: '/taxonomy/gbf/:target/:identifier',
+    
+    TAXONOMY                                  : '/taxonomy',
+    TAXONOMY_GBF                              : '/taxonomy/gbf',
+    TAXONOMY_GBF_GOALS                        : '/taxonomy/gbf/goals',
+    TAXONOMY_GBF_GOAL_DETAILS                 : '/taxonomy/gbf/goals/:identifier',
+    TAXONOMY_GBF_GOAL_INDICATOR_TYPE_DETAILS  : '/taxonomy/gbf/goals/:identifier/:type', //component/comp etc
+    TAXONOMY_GBF_TARGETS                      : '/taxonomy/gbf/targets',
+    TAXONOMY_GBF_TARGET_DETAILS               : '/taxonomy/gbf/targets/:identifier',
+    TAXONOMY_GBF_TARGET_INDICATOR_TYPE_DETAILS: '/taxonomy/gbf/targets/:identifier/:type',
+    TAXONOMY_GBF_INDICATORS                   : '/taxonomy/gbf/indicators',
+    TAXONOMY_GBF_INDICATOR_DETAILS            : '/taxonomy/gbf/indicators/:identifier',
+    TAXONOMY_GBF_ANY                          : '/taxonomy/gbf/:identifier',
+    // TAXONOMY_GBF_INDICATOR_DETAILS: '/taxonomy/gbf/:target/:identifier',
 }
