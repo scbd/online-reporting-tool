@@ -25,10 +25,14 @@
                     v-model="model" :label="lstring(option.title, locale)" />
                 </km-form-group>
             </div>
-            <div v-if="question.type == 'checkbox' && question?.options">
+            <div v-else-if="question.type == 'checkbox' && question?.options">
                 <km-multi-checkbox v-model="multiOptionModel" option-value-field="value"
                     :options="question?.options">
                 </km-multi-checkbox>
+            </div>
+            <div v-else-if="question.type == 'string'">
+                <input :id="question?.key" :placeholder="question?.title" class="form-control"
+                    v-model="model" type="textbox" />
             </div>
         </div>
       <!-- </CCardBody>
@@ -38,7 +42,7 @@
 <i18n src="@/i18n/dist/components/controls/km-question.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
-    const model = defineModel<String>();
+    const model = defineModel<String|Object>();
 
     const props = defineProps({
         question : {type:Object as PropType<Question>}

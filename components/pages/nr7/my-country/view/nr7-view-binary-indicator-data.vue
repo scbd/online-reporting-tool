@@ -17,10 +17,13 @@
                         <span v-if="question.type == 'option'">
                             {{ question.options.find(e=>e.value == (indicatorData?.responses||{})[question?.key])?.title }}
                         </span>
-                        <span v-if="question.type == 'checkbox'">
+                        <span v-else-if="question.type == 'checkbox'">
                                 <div v-for="answer in (indicatorData?.responses||{})[question?.key]" :key="answer">
                                     {{ question.options.find(e=>e.value == answer)?.title }}
                                 </div>
+                        </span>
+                        <span v-else-if="question.type == 'string'">
+                            {{ (indicatorData?.responses||{})[question?.key] }}
                         </span>
                     </km-value>
                     <missing-data-alert v-if="!hideMissingResponse && !(indicatorData?.responses||{})[question?.key]" class="alert-sm">
