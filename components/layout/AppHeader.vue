@@ -9,6 +9,12 @@
         <CIcon :icon="logo" height="48" alt="Logo" />
       </CHeaderBrand>
       <CHeaderNav class="me-auto" id="topNav">
+
+        <CNavItem  class="d-none d-md-flex">
+          <NuxtLink class="nav-link" target="_blank" href="https://chm.cbd.int">
+            {{ t('chm') }}
+          </NuxtLink>
+        </CNavItem>
         <CNavItem class="d-none d-md-flex">
           <NuxtLink class="nav-link" :to="localePath('/dashboard')"> {{t('menuDashboard')}}</NuxtLink>
         </CNavItem>
@@ -23,16 +29,18 @@
           </NuxtLink>
         </CNavItem>
         <CNavItem  class="d-none d-md-flex">
-          <NuxtLink class="nav-link" target="_blank" href="https://chm.cbd.int">
-            {{ t('chm') }}
-          </NuxtLink>
-        </CNavItem>
-        <CNavItem  class="d-none d-md-flex">
           <NuxtLink class="nav-link" target="_blank" href="https://chm.cbd.int/management/national-users">
             <font-awesome-icon icon="users-line" />
             {{ t('nationalUsers') }}
           </NuxtLink>
-        </CNavItem>           
+        </CNavItem> 
+                  
+        <CNavItem>
+          <NuxtLink class="nav-link" :to="localePath('/taxonomy')">
+            {{t('menuTaxonomy')}} 
+          </NuxtLink>
+        </CNavItem>
+                  
         <CNavItem>
           <NuxtLink class="nav-link" :to="localePath('/knowledge-base')">
             <font-awesome-icon icon="fa-solid fa-circle-question" />
