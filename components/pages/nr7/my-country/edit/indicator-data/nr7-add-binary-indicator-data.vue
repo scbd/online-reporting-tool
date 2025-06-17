@@ -134,6 +134,7 @@
 
     const onPostClose = async (document)=>{
         
+        documentInfo.value.body = document
         if(isEventDefined('onClose'))
             emit('onClose', documentInfo.value);
 

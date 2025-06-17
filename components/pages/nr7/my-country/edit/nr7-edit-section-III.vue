@@ -275,7 +275,14 @@
         clean.sectionIII = sectionIIIComputed.value;
 
         // Indicator data
-        clean.sectionIII.forEach(section => {
+        buildIndicatorDataObject(clean.sectionIII);
+
+        clean = useKmStorage().cleanDocument(clean);
+        
+        return clean;
+    });
+    function buildIndicatorDataObject(targets){
+        targets.forEach(section => {
             const indicatorData = nationalTargetsComputed.value[section.target.identifier];            
             section.indicatorData = {
                 headline     : nationalReport7Service.indicatorDataDTO(indicatorData, 'headlineIndicators'),
@@ -285,12 +292,7 @@
                 national     : nationalReport7Service.indicatorDataDTO(indicatorData, 'nationalIndicators'),
             }
         });
-
-        clean = useKmStorage().cleanDocument(clean);
-        
-        return clean;
-    });
-
+    }
     const onPostClose = async (document)=>{
         
         if(isEventDefined('onClose'))
@@ -429,8 +431,7 @@
                 nationalReport7Store.nationalReport.sectionIII = [];
             }
 
-            let sectionIII = document.value.sectionIII || [];
-            sectionIII = [];
+            let sectionIII = document.value.sectionIII || [];            
             if(sectionIII?.length){
                 
                 //verify if the existing data in section iii exists in published targets
@@ -584,13 +585,6 @@
         else{
             nationalBinaryIndicatorData.value = document
         }
-        const indicatorDataIndex = indicatorsData.value.findIndex(e=>e.identifier == document.identifier);
-        if(indicatorDataIndex>=0){
-            indicatorsData.value.splice(indicatorDataIndex, 1, document);
-        }
-        else
-            indicatorsData.value.push(document);
-
         for (const value in nationalTargets.value) {
             if (Object.hasOwnProperty.call(nationalTargets.value, value)) {
                 const target = nationalTargets.value[value];
@@ -610,6 +604,15 @@
                     }
                 })
             }
+        }
+
+        const indicatorDataIndex = indicatorsData.value.findIndex(e=>e.identifier == document.identifier);
+        if(indicatorDataIndex>=0){
+            indicatorsData.value.splice(indicatorDataIndex, 1, document);
+        }
+        else{
+            indicatorsData.value.push(document);
+            buildIndicatorDataObject(sectionIIIComputed.value);
         }
     }
 
