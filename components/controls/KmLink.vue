@@ -16,8 +16,8 @@ export default defineComponent({
     props: {
         title   : { type:String, required :true},
         to      : { type:String, required :true},
-        icon    : { type:String },
-        target  : { type:String }
+        icon    : { type:String, default:null },
+        target  : { type:String, default:null }
     },
     setup(props) {
         const localePath  = useLocalePath();
