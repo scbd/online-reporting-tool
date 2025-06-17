@@ -184,7 +184,8 @@
                 <template #review>                
                     <nr7-view-section-III :identifier="nationalReport7Store.nationalReport?.header?.identifier" 
                         :document="cleanDocument" :locales="cleanDocument.header.languages"
-                        :national-targets="nationalTargetsComputed"></nr7-view-section-III>
+                        :national-targets="nationalTargetsComputed"
+                        :indicators-data="indicatorsData"></nr7-view-section-III>
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
@@ -407,7 +408,7 @@
         try{
             const response = await Promise.all([
                                 GbfGoalsAndTargets.loadGbfGoalsAndTargetsWithIndicators(),
-                                nationalReport7Store.loadNationalReport(),
+                                nationalReport7Store.loadNationalReport(undefined, true),
                                 loadNationalTargets(),
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA),
@@ -584,9 +585,12 @@
             nationalBinaryIndicatorData.value = document
         }
         const indicatorDataIndex = indicatorsData.value.findIndex(e=>e.identifier == document.identifier);
-        if(~indicatorDataIndex){
+        if(indicatorDataIndex>=0){
             indicatorsData.value.splice(indicatorDataIndex, 1, document);
         }
+        else
+            indicatorsData.value.push(document);
+
         for (const value in nationalTargets.value) {
             if (Object.hasOwnProperty.call(nationalTargets.value, value)) {
                 const target = nationalTargets.value[value];

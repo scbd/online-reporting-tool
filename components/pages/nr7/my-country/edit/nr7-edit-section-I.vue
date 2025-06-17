@@ -29,7 +29,7 @@
                             </km-form-group>   
 
                             <km-form-group name="languages" :caption="t('selectLanguages')" required>
-                                <km-languages v-model="document.header.languages"></km-languages>
+                                <km-languages v-model="document.header.languages" @update:modelValue="onLanguageChange"></km-languages>
                             </km-form-group>   
                         </div>
                     </div>
@@ -140,11 +140,38 @@
         return nationalReport7Store.nationalReportInfo;
     }
 
+    const onLanguageChange = (languages)=>{
+        document.value =  removeUnusedLocales(document.value, languages);   
+    }
+
+    function removeUnusedLocales(obj, locales){
+        if(!obj || !locales) return obj;
+
+        const isArray = Array.isArray(obj);
+        if(isArray){
+            return obj.map(item=>removeUnusedLocales(item, locales));
+        }
+        Object.keys(obj).forEach(key=>{
+            if(obj[key] && isLString(obj[key])){
+                Object.keys(obj[key]).forEach(locale=>{
+                    if(!locales.includes(locale)){
+                        delete obj[key][locale];
+                    }
+                });                
+            }
+            else if(typeof obj[key] === 'object'){
+                obj[key] = removeUnusedLocales(obj[key], locales);
+            }
+        });
+
+        return obj;
+    }
+
     async function init(){
         isBusy.value = true;
 
         try{
-            await nationalReport7Store.loadNationalReport();
+            await nationalReport7Store.loadNationalReport(undefined, true);
             
 
             if(!nationalReport7Store.nationalReport.sectionI){

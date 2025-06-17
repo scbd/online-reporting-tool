@@ -3,10 +3,10 @@
       <CCardHeader>
         <slot name="header"> {{t('sectionIV')}} {{t('sectionIVDescription')}}</slot>
       </CCardHeader>
-      <CCardBody>         
+      <CCardBody>
             <div v-if="locales?.length > 1" 
                 class="d-grid d-md-flex justify-content-md-end mb-2">
-                <km-locales v-model="selectedLocale" :locales="locales"></km-locales>
+                <km-locales v-model="lSelectedLocale" :locales="locales"></km-locales>
             </div>
 
              <div class="card mb-3" v-for="(assessment) in sectionIVComputed" :key="assessment">
@@ -15,10 +15,10 @@
                     <strong v-if="assessment.targetType" class="ms-1">({{ capitalCase(assessment.targetType) }})</strong>
                 </div>
                 <div class="card-body" >
-                    <km-form-group v-if="assessment.mainActionsSummary"
+                    <km-form-group v-if="assessment.summaryOfProgress"
                         :caption="t('summaryOfNationalProgress')">
                         <km-lstring-value type="html" :value="assessment.summaryOfProgress" 
-                            :locales="document.header.languages"></km-lstring-value>
+                            :locale="selectedLocale"></km-lstring-value>
                     </km-form-group>
                     
                     <legend>
@@ -50,7 +50,9 @@
     });
 
     const {t, locale}    = useI18n();
-    const mouseOverGoal  = ref(null);const selectedLocale = computed(()=>props.documentLocale||locale.value);
+    const { documentLocale } = toRefs(props);
+    const lSelectedLocale = ref(locale.value)
+    const selectedLocale  = computed(()=>documentLocale?.value||lSelectedLocale.value);
 
     const sectionIVComputed = computed(()=>{
         return props.document?.sectionIV || [];
@@ -58,21 +60,7 @@
 
     const nationalTargetsComputed = computed(()=>{
         return props.nationalTargets || {}
-    })
-
-    function onMouseleave(){
-        mouseOverGoal.value = null;
-    }
-    function onMouseOver({gbfGoal}){
-        mouseOverGoal.value = gbfGoal;
-    }
-
-    function canHeaderStick(identifier){
-        const accordionClasses = window.document.querySelector('#assessment-target'+identifier + ' button')?.className?.split(' ');
-        const isCollapsed = accordionClasses?.includes('collapsed');
-
-        return !isCollapsed && mouseOverGoal.value?.identifier == identifier
-    }
+    });
 
     onMounted(()=>{
         // console.log('mounted')

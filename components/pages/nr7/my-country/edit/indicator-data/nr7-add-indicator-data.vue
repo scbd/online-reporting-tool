@@ -183,8 +183,8 @@
     });
 
     const indicatorData = computed(()=>{
-        const { data, globalDataSources, globalDescription, globalIndicatorProviders } = document.value
-        return { data, globalDataSources, globalDescription, globalIndicatorProviders };        
+        const { data, globalDataSources, globalDescription, globalIndicatorProviders,indicator } = document.value
+        return { data, globalDataSources, globalDescription, globalIndicatorProviders, indicator };        
     });
   
     const cleanDocument = computed(()=>{

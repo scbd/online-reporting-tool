@@ -116,7 +116,7 @@
         isBusy.value = true;
 
         try{
-            await nationalReport7Store.loadNationalReport();
+            await nationalReport7Store.loadNationalReport(undefined, true);
             
 
             if(!nationalReport7Store.nationalReport.sectionOtherInfo){

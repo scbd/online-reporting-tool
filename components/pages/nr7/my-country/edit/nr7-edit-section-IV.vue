@@ -82,8 +82,8 @@
                 </template>
                 <template #review>                
                     <nr7-view-section-IV :identifier="cleanDocument?.header?.identifier"  :locales="cleanDocument.header.languages"
-                        :document="cleanDocument" :global-goals="globalGoals" :indicators="indicators"
-                        :national-indicator-data="nationalIndicatorData"></nr7-view-section-IV>
+                        :document="cleanDocument" :global-goals="globalGoals" 
+                        :indicators-data="indicatorsData"></nr7-view-section-IV>
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
@@ -236,11 +236,11 @@
         try{
             const response = await Promise.all([
                                 GbfGoalsAndTargets.loadGbfGoalsWithIndicators(),
-                                nationalReport7Store.loadNationalReport(),                                
+                                nationalReport7Store.loadNationalReport(undefined, true),                                
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA),
                                 nationalReport7Service.loadNationalTargetIndicators(),
-                                // nationalReport7Service.loadNationalReport()
+                                // nationalReport7Service.loadNationalReport(undefined, true)
                             ]);  
 
             globalGoals.value     = arrayToObject(response[0]);
@@ -363,9 +363,11 @@
             })
         }
         const indicatorDataIndex = indicatorsData.value.findIndex(e=>e.identifier == document.identifier);
-        if(~indicatorDataIndex){
+        if(indicatorDataIndex>=0){
             indicatorsData.value.splice(indicatorDataIndex, 1, document);
         }
+        else
+            indicatorsData.value.push(document);
     }
 
     function onIndicatorChange(selectedItems, type, goal){
