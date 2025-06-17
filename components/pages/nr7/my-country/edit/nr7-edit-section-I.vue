@@ -141,10 +141,7 @@
     }
 
     const onLanguageChange = (languages)=>{
-        console.log('onLanguageChange', document.value);
-        console.log('onLanguageChange after', document.value);
         document.value =  removeUnusedLocales(document.value, languages);   
-        console.log('onLanguageChange after', document.value);
     }
 
     function removeUnusedLocales(obj, locales){
@@ -154,7 +151,6 @@
         if(isArray){
             return obj.map(item=>removeUnusedLocales(item, locales));
         }
-        console.log(Object.keys(obj))
         Object.keys(obj).forEach(key=>{
             if(obj[key] && isLString(obj[key])){
                 Object.keys(obj[key]).forEach(locale=>{

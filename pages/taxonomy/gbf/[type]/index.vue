@@ -3,7 +3,6 @@
 import {useRoute } from 'vue-router';
     const {t} = useI18n();
     const route          = useRoute();
-console.log("route", route);
     const filterTerm = route.params?.identifier?.toUpperCase();
 
     useHead({
