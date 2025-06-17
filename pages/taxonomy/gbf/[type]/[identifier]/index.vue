@@ -1,8 +1,12 @@
 <script setup lang="ts">
 //@ts-nocheck
-const {t} = useI18n();
+import {useRoute } from 'vue-router';
+    const {t} = useI18n();
+    const route          = useRoute();
+    const filterTerm = route.params?.identifier?.toUpperCase();
+
   useHead({
-    title: "GBF Indicator",
+    title: "GBF Taxonomy",
   });
 
   definePageMeta({
@@ -13,10 +17,10 @@ const {t} = useI18n();
     }
   });
 </script>
-<i18n src="@/i18n/dist/pages/taxonomy/gbf/[target]/[identifier].json"></i18n>
+<i18n src="@/i18n/dist/pages/taxonomy/gbf/[identifier].json"></i18n>
 <template>
   <CCard>
-        <CCardHeader>{{ t('gbfIndicator') }}</CCardHeader>
+        <CCardHeader>{{ t('gbfTaxonomy') }}</CCardHeader>
         <CCardBody>            
             <gbf-taxonomy-details></gbf-taxonomy-details>
         </CCardBody>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 //@ts-nocheck
+import {useRoute } from 'vue-router';
 const {t} = useI18n();
   useHead({
     title: "GBF Taxonomy",
@@ -13,15 +14,12 @@ const {t} = useI18n();
     }
   });
 </script>
-<i18n src="@/i18n/dist/pages/taxonomy/gbf/index.json"></i18n>
+<i18n src="@/i18n/dist/pages/taxonomy/gbf/[identifier].json"></i18n>
 <template>
   <CCard>
         <CCardHeader>{{ t('gbfTaxonomy') }}</CCardHeader>
-        <CCardBody>
-            <div class="text-center border-bottom-1">
-                <h5>{{ t('welcomeToGBFTaxonomy') }}</h5>
-            </div>
-            <gbf-taxonomy-list type="all"></gbf-taxonomy-list>
+        <CCardBody>            
+            <gbf-taxonomy-details></gbf-taxonomy-details>
         </CCardBody>
    </CCard>
 </template>
