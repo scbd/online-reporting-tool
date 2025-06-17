@@ -236,7 +236,7 @@ export const binaryIndicatorQuestions = [
                     }
                 ],
                 "mandatory":true
-            },,
+            },
             {
                 "key":"13_5",
                 "section":"binaryResponseTarget13",
@@ -267,7 +267,7 @@ export const binaryIndicatorQuestions = [
                     }
                 ],
                 "mandatory":true
-            },,
+            },
             {
                 "key":"13_6",
                 "section":"binaryResponseTarget13",
@@ -298,7 +298,7 @@ export const binaryIndicatorQuestions = [
                     }
                 ],
                 "mandatory":true
-            },,
+            },
             {
                 "key":"13_7",
                 "section":"binaryResponseTarget13",
@@ -512,6 +512,10 @@ export const binaryIndicatorQuestions = [
                     {
                         "value":"marineSpecies",
                         "title": binaryQuestionsT.marineSpecies
+                    },
+                    {
+                        "value":"internationalTrade",
+                        "title": binaryQuestionsT.internationalTrade
                     },
                     {
                         "value":"none",
@@ -954,7 +958,7 @@ export const binaryIndicatorQuestions = [
                 ],
                 "validations":[
                    {
-                      "question":"9_4",
+                      "question":"9_3_1",
                       "type":"@hasValues",
                       "values":[
                          "partially","fully"
@@ -965,11 +969,11 @@ export const binaryIndicatorQuestions = [
                 "mandatory":true
             },
             {
-                "key":"9_4",
+                "key":"9_3_1",
                 "section":"binaryResponseTarget9",
-                "number":"9.4",
+                "number":"9.3.1",
                 "type":"checkbox",
-                "title": binaryQuestionsT.target9_question_4,
+                "title": binaryQuestionsT.target9_question_3_1,
                 "multiple":true,
                 "options":[
                    {
@@ -990,13 +994,13 @@ export const binaryIndicatorQuestions = [
                     }
                 ],
                 "mandatory":true
-            },,
+            },
             {
-                "key":"9_5",
+                "key":"9_4",
                 "section":"binaryResponseTarget9",
-                "number":"9.5",
+                "number":"9.4",
                 "type":"option",
-                "title": binaryQuestionsT.target9_question_5,
+                "title": binaryQuestionsT.target9_question_4,
                 "multiple":false,
                 "options":[
                    {
@@ -1200,7 +1204,7 @@ export const binaryIndicatorQuestions = [
                     }
                 ],
                 "mandatory":true
-            },,
+            },
             {
                 "key":"13_5",
                 "section":"binaryResponseTarget13",
@@ -1231,7 +1235,7 @@ export const binaryIndicatorQuestions = [
                     }
                 ],
                 "mandatory":true
-            },,
+            },
             {
                 "key":"13_6",
                 "section":"binaryResponseTarget13",
@@ -1262,7 +1266,7 @@ export const binaryIndicatorQuestions = [
                     }
                 ],
                 "mandatory":true
-            },,
+            },
             {
                 "key":"13_7",
                 "section":"binaryResponseTarget13",
@@ -1299,7 +1303,7 @@ export const binaryIndicatorQuestions = [
     {
         "key":"binaryResponseTarget14",
         "target": "GBF-TARGET-014",
-        "binaryIndicator": "KMGBF-INDICATOR-BIN-14",
+        "binaryIndicator": "KMGBF-INDICATOR-BIN-C-14",
         "title": "",
         "questions":[ 
             {
@@ -1948,7 +1952,7 @@ export const binaryIndicatorQuestions = [
                 "key": "20_2",
                 "section": "GBF-TARGET-020",
                 "number": "20.2",
-                "type": "option",
+                "type": "checkbox",
                 "title": binaryQuestionsT.target20_question_2,
                 "multiple": true,
                 "options":[
@@ -2010,7 +2014,7 @@ export const binaryIndicatorQuestions = [
                 "key": "20_4",
                 "section": "GBF-TARGET-020",
                 "number": "20.4",
-                "type": "option",
+                "type": "checkbox",
                 "title": binaryQuestionsT.target20_question_4,
                 "multiple": true,
                 "options":[
@@ -2065,9 +2069,9 @@ export const binaryIndicatorQuestions = [
                 "mandatory": true
             },
             {
-                "key": "20_5",
+                "key": "20_5_1",
                 "section": "GBF-TARGET-020",
-                "number": "20.5.alt",
+                "number": "20.5.1",
                 "type": "string",
                 "title": "Specify for each type of partnership (optional)",
                 "mandatory": false
@@ -2450,13 +2454,17 @@ export const binaryIndicatorQuestions = [
                         "title": binaryQuestionsT.no
                     },
                     {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.yesFinancialAllocationsFromNationalBudget
+                        "value": "underDevelopment",
+                        "title": binaryQuestionsT.underDevelopment
                     },
                     {
-                        "value": "??", //value?
-                        "title": binaryQuestionsT.yesFinancialAllocationsFromOtherResource
-                    }, 
+                        "value": "partially",
+                        "title": binaryQuestionsT.partially
+                    },
+                    {
+                        "value": "fully",
+                        "title": binaryQuestionsT.fully
+                    },
                 ],
                 "mandatory": true
             }
