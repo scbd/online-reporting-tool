@@ -24,6 +24,8 @@ const Nr7EditSectionI = defineAsyncComponent(()=>import("@/components/pages/nr7/
   })
   const { query }  = useRoute();
   const workflowActiveTab = computed(()=>{
+      if(query.edit == 'true')
+        return 1;   
       if(query.preview == 'true')
         return 2;      
   })

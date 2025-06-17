@@ -227,6 +227,7 @@
     // open in a dialog mode form overview
     const emit  = defineEmits(['onClose', 'onPostSaveDraft'])
 
+    const { query }  = useRoute();
     const { user }        = useAuth();
     const security        = useSecurity();
     const route           = useRoute();
@@ -509,10 +510,11 @@
                     nationalTargets.value[globalTarget.identifier] = {...globalTarget, indicators };
                 }
             })
-
             
             nationalReport7Store.nationalReport.sectionIII = sectionIII;
-            
+
+            if(query.edit=true)
+                onStepChange(1)
             
         }
         catch(e){

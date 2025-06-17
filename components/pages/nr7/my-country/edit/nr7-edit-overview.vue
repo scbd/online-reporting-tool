@@ -81,7 +81,7 @@
                             
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I+ '?preview=true'" :title="t('previewSectionI')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I" :title="t('editSectionI')" 
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_I+ '?edit=true'" :title="t('editSectionI')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -118,7 +118,7 @@
                             
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II+ '?preview=true'" :title="t('previewSectionII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II" :title="t('editSectionII')" 
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_II+ '?edit=true'" :title="t('editSectionII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -154,7 +154,7 @@
                             </km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III+ '?preview=true'" :title="t('previewSectionIII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III" :title="t('editSectionIII')" 
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III+ '?edit=true'" :title="t('editSectionIII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -188,7 +188,7 @@
                             </km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV+ '?preview=true'" :title="t('previewSectionIV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV" :title="t('editSectionIV')" 
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV+ '?edit=true'" :title="t('editSectionIV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -224,7 +224,7 @@
                             </km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V+ '?preview=true'" :title="t('previewSectionV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V" :title="t('editSectionV')" 
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V+ '?edit=true'" :title="t('editSectionV')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
@@ -252,8 +252,9 @@
                     </div>
                     <small class="text-muted d-grid gap-2 d-md-flex justify-content-md-end">
                         <div class="d-grid gap-1 d-flex mt-2">
-                            <button :disabled="disableActions" role="button" class="btn btn-secondary btn-sm">{{ t('previewSectionOtherInfo') }}</button>
-                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION" :title="t('editSectionOtherInfo')" 
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION+ '?preview=true'" :title="t('previewSectionOtherInfo')" 
+                                role="button" class="btn btn-secondary btn-sm"></km-link>
+                            <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION+ '?edit=true'" :title="t('editSectionOtherInfo')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                         </div>
                     </small>
