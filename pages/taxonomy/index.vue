@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-sm-4 mb-2">
+                <div class="col-sm-4 mb-2">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">{{ t('gbfIndicators') }}</h5>
@@ -41,13 +41,13 @@
                             <km-link class="btn btn-primary" :to="appRoutes.TAXONOMY_GBF_INDICATORS" :title="t('view')"></km-link>                            
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
         </CCardBody>
     </CCard>
 
 </template>
-
+<i18n src="@/i18n/dist/pages/taxonomy/index.json"></i18n>
 <script setup lang="ts">
 const { t } = useI18n();
 
