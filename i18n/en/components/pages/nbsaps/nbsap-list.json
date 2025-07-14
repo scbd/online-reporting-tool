@@ -1,3 +1,4 @@
 {
-    "analyzer": "Analyzer"
+    "analyzer": "Analyzer",
+    "status": "Status"
 }
