@@ -41,6 +41,7 @@
                             </km-select>
                         </km-form-group>
                     </div>
+                    <slot name="custom-filters"></slot>
                     <div class="col-md-12 m-1">
                         <button class="btn btn-danger btn-sm" @click="clearFilters">{{ t('clearFilter') }}</button>
                         <slot name="action-buttons"></slot>
