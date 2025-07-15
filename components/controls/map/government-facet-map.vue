@@ -21,7 +21,7 @@
 
         await countriesStore.loadCountries();
         const searchQuery = {
-            rows            : 0,
+            rowsPerPage     : 0,
             facet           : true,
             facetFields     : 'government_s',
             facetMinCount   : 1,
