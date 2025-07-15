@@ -11,6 +11,9 @@
                         {{ t('exportButton') }}
                     </a>                   
                 </template>
+                <template #custom-filters>
+                    <slot name="custom-filters" :on-custom-filter-change="onCustomFilterChange"></slot>                        
+                </template>
             </search-filters>
             <div style="height:0;width:0;overflow: hidden;">
                 <export ref="exportDialogRef" :search-query="searchQuery" :schema="exportSelectedSchema?.identifier"></export>
@@ -67,6 +70,7 @@
     import { useRealmConfStore } from '@/stores/realmConf';
     import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
     import { compact } from 'lodash';
+    import {useRoute, useRouter} from 'vue-router';
 
     const props = defineProps({
         recordTypes : {type:Array<String>, required:true},
@@ -79,6 +83,8 @@
 
     const { t, locale } = useI18n();
     const realmConfStore  = useRealmConfStore();
+    const { query, fullPath }       = useRoute();
+    const router    = useRouter();
     const realmConf = realmConfStore.realmConf; 
     const documents = ref([]);
     const loading = ref(false);
@@ -91,6 +97,7 @@
     const searchFilterRef = ref();
     const isExportDialogRevealed = ref(false);
     const exportSelectedSchema = ref({identifier:props.recordTypes[0]});
+    const customQueries = ref([]);
 
     const schemaTypeLists = computed(()=>{
         return props.recordTypes?.map((schema)=>{
@@ -121,6 +128,27 @@
     function onFilterChange(newFilters:Object){
         currentPage.value = 1;
         filters.value = newFilters;
+        loadRecords();
+    }
+
+    function onCustomFilterChange(newFilters:Array<Object>){
+        currentPage.value = 1;
+        customQueries.value = newFilters;
+
+        const customFilters = {}
+        customQueries.value.forEach((customQuery)=>{
+            if(customQuery?.name){
+                customFilters[customQuery.name] = customQuery.value;
+            }
+        });
+
+        router.push({
+            path : fullPath,
+            query : { 
+                ...(query||{}),
+                ...(customFilters||{})
+            }
+        });
         loadRecords();
     }
 
@@ -167,6 +195,11 @@
         queries.push(buildArrayQuery('government_s', filters.value.countries));              
         queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
         
+        customQueries.value.forEach((customQuery)=>{
+            if(customQuery?.field && customQuery?.value?.length){
+                queries.push(buildArrayQuery(customQuery.field, customQuery.value));
+            }
+        });
         searchQuery.value = {
             rowsPerPage: recordsPerPage.value,
             query: andOr(compact(queries), 'AND'),

@@ -2,7 +2,16 @@
     <div id="analyzer">
         <div class="search">
             <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes" 
-            :show-record-type="false" :show-targets="false" :show-goals="false" v-show="!query.embed"></search-filters>
+                :show-record-type="false" :show-targets="false" :show-goals="false" v-show="!query.embed">
+                <template #custom-filters>
+                    <div class="col-md-4">
+                        <km-form-group :caption="t('status')">
+                            <km-select v-model="customFilters.reportStatus" :options="reportStatus" 
+                                option-value="identifier" option-label="name.en" multiple @update:model-value="onCustomFilterChange"></km-select>
+                        </km-form-group>
+                    </div>
+                </template>
+            </search-filters>
 
             <km-spinner v-if="loading" center></km-spinner>
 
@@ -142,20 +151,22 @@ import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
 import { compact } from 'lodash';
 import { useCountriesStore }    from '@/stores/countries';
 import { THESAURUS_TERMS } from '~/utils/constants';
-import {useRoute} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 
 
     const { t, locale } = useI18n();
     const realmConfStore  = useRealmConfStore();
     const countriesStore  = useCountriesStore ();
     const thesaurusStore  = useThesaurusStore ();
-    const { query }       = useRoute();
+    const { query, fullPath }       = useRoute();
+    const router          = useRouter();
     const realmConf = realmConfStore.realmConf; 
     const facets = ref([]);
     const nbsaps = ref([]);
     const recordCount = ref(0);
     const loading = ref(false);
     const filters     = ref({});
+    const customFilters     = ref({});
     const analyzedCounts = ref({});
     const exportSearchQuery = ref();
     const countryColors     = ref();
@@ -166,7 +177,7 @@ import {useRoute} from 'vue-router';
     const canShowByRegions               = computed(()=>canShowSection('regions'));
     const canShowByParties               = computed(()=>canShowSection('parties'));
     const cbdRegionalGroups              = computed(()=>[...thesaurusStore.getDomainTerms(THESAURUS.CBD_REGIONAL_GROUPS)])
-
+    const reportStatus                   = computed(() => thesaurusStore.getDomainTerms(THESAURUS.REPORT_STATUS));
     const canShowSection = (section:string) : boolean =>{
         return !query.embed || (!!query.embed && (!query.share || query.share.includes(section)));
     }
@@ -187,6 +198,17 @@ import {useRoute} from 'vue-router';
         filters.value = newFilters;
         loadRecords();
     }
+
+    function onCustomFilterChange(){
+        router.push({
+            path : fullPath,
+            query : { 
+                ...(query||{}),
+                reportStatus:customFilters.reportStatus
+            }
+        });
+        loadRecords();
+    }
     
     async function loadRecords(){
         loading.value = true;
@@ -194,7 +216,10 @@ import {useRoute} from 'vue-router';
 
         queries.push(buildArrayQuery('schema_s', filters.value.recordTypes?.length ? filters.value.recordTypes : recordTypes));
         queries.push(buildArrayQuery('government_s', filters.value.countries));              
-        queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
+        queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));       
+        
+        if(customFilters.value?.reportStatus?.length)    
+            queries.push(buildArrayQuery('statusOfTheDocument_s', customFilters.value?.reportStatus));         
         
         const facetQuery = {
             query: andOr(compact([...queries]), 'AND'),
@@ -248,7 +273,8 @@ import {useRoute} from 'vue-router';
 
     await Promise.all([
         thesaurusStore.loadDomainTerms(THESAURUS.CBD_REGIONAL_GROUPS, {relations:true}),
-        countriesStore.loadCountries()
+        countriesStore.loadCountries(),
+        thesaurusStore.loadDomainTerms(THESAURUS.REPORT_STATUS)
     ]);
 
 </script>
