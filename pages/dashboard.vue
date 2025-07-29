@@ -246,7 +246,7 @@ import { KmLink } from "~/components/controls";
         async function loadFacets(){
             try{
                 const searchQuery = {
-                    rows:10,
+                    rowsPerPage:10,
                     q : `realm_ss:${realmConf.realm} AND 
                         (schema_s:(${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}))`,
                     facet: true,
@@ -258,7 +258,7 @@ import { KmLink } from "~/components/controls";
                 }
                 //TODO remove second query
                 const nbsapFacetQuery = {
-                    rows:0,
+                    rowsPerPage:0,
                     query : `_state_s: public AND realm_ss:${realmConf.realm} AND (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true)`,
                     facet: true,
                     facetMinCount: 1,

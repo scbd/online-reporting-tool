@@ -234,7 +234,8 @@
             }         
             if(sectionII.stakeholders?.length){
                 const otherStakeholder = sectionII.stakeholders.find(e=>e.identifier == THESAURUS.OTHER);
-                otherStakeholderInfo.value = otherStakeholder.customValue;
+                if(otherStakeholder)
+                    otherStakeholderInfo.value = otherStakeholder.customValue;
             }
 
             nationalReport7Store.nationalReport.sectionII = sectionII;
