@@ -16,32 +16,39 @@ import { IndicatorsMappingData } from '~/app-data/indicators';
 import type { ETerm } from '~/types/schemas/base/ETerm';
 import writeXlsxFile from 'write-excel-file';
 import type { IndicatorMapping } from '~/types/controls/indicator-mapping';
+import { nationalReport7Service } from '~/services/national-report-7-service';
 
     const props = defineProps({
-        indicator: { type: String, required: true }
+        indicator: { type: Object, required: true },
+        indicatorType: { type: String, required: true }
     });
 
     const indicatorDataTemplates = '/excel-templates/GBF-INDICATORS-DATA.xlsx'
     const thesaurusStore = useThesaurusStore();
     const { t, locale } = useI18n();
 
-    const indicatorTerm: ComputedRef<ETerm> = computed(() => {        
-        return thesaurusStore.getTerm(props.indicator);
+    const indicatorTerm: ComputedRef<ETerm> = computed(() => {  
+        if(props.indicatorType == 'otherNationalIndicators') {
+            const {identifier, title} = props.indicator;
+            return {identifier, title}
+        }      
+        return thesaurusStore.getTerm(props.indicator?.identifier);
     });
-    const indicatorData: ComputedRef<IndicatorMapping|undefined> = computed(() => {        
-        return IndicatorsMappingData.find(e=>e.identifier == props.indicator);
+    const indicatorData: ComputedRef<IndicatorMapping|undefined> = computed(() => { 
+        return nationalReport7Service.getIndicatorDataMapping(props.indicator as ETerm, props.indicatorType, locale.value);
     });
 
-    await thesaurusStore.loadTerm(props.indicator);
-
+    if(props.indicatorType != 'otherNationalIndicators') {
+        await thesaurusStore.loadTerm(props.indicator?.identifier);
+    }
     const downloadSampleExcel = async () => {
         if (!indicatorData.value) {
-            alert(`No sample data found for indicator: ${props.indicator}`);
+            alert(`No sample data found for indicator: ${props.indicator?.identifier}`);
             return;
         }
 
         const { headers, rows } = buildExcelData(indicatorData.value);
-        await writeXlsxFile([headers, ...rows], { fileName: `scbd-ort-${props.indicator}-data.xlsx`})
+        await writeXlsxFile([headers, ...rows], { fileName: `scbd-ort-${props.indicator?.identifier}-data.xlsx`})
  
     }
 
@@ -92,7 +99,7 @@ import type { IndicatorMapping } from '~/types/controls/indicator-mapping';
         const rows = [];
         
         const currentYear = new Date().getFullYear();
-        for (let i = 0; i < 25; i++) {
+        for (let i = currentYear; i >=2020; i--) {
             
             rows.push([
                 {
@@ -113,7 +120,7 @@ import type { IndicatorMapping } from '~/types/controls/indicator-mapping';
                 },
                 {
                     type: Number,
-                    value: currentYear - i
+                    value: i
                 },
                 {
                     type: String,
