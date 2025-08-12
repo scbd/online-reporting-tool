@@ -11,7 +11,8 @@
     <CModal  class="show d-block nr7-add-indicator-data-modal" size="xl" alignment="center" backdrop="static" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
-                <km-term :value="indicator?.identifier" :locale="locale"></km-term>
+                <km-term v-if="indicatorType!='otherNationalIndicators'" :value="indicator?.identifier" :locale="locale"></km-term>
+                <span v-if="indicatorType=='otherNationalIndicators'">{{ lstring(indicator?.title||indicator) }}</span>
             </CModalTitle>
         </CModalHeader>
         <CModalBody>
@@ -69,8 +70,9 @@
                                             </km-form-group>  
                                             <div v-show="document.sourceOfData=='national'">
                                                 <km-form-group name="data" required :caption="t('nationalDataSet')" >
-                                                    <div class="alert alert-info">                                                        
-                                                        <indicator-sample-data :indicator="document.indicator.identifier"></indicator-sample-data>
+                                                    <div class="alert alert-info">                                                    
+                                                        <indicator-sample-data :indicator="indicator"
+                                                        :indicator-type="indicatorType"></indicator-sample-data>
                                                         <strong class="d-block h-3">
                                                             {{ t('fileFormatMessage') }}
                                                         </strong>
@@ -80,8 +82,12 @@
                                                             {{ t(fileError.error, fileError.params) }}
                                                         </strong>
                                                     </div>
-                                                    <input type="file" id="dataSetFile" ref="dataSetFile" @change="uploadFile"/>                                                
-                                                </km-form-group>                                                
+                                                    <!-- <input type="file" id="dataSetFile" ref="dataSetFile" @change="uploadFile"/>  -->
+                                                    <national-indicator-data :indicators="[indicator]" @on-data-load="onDataLoad"
+                                                        :indicator-type="indicatorType"></national-indicator-data>
+                                                                                           
+                                                </km-form-group> 
+                                                                                 
                                             </div>
 
                                             <km-form-group name="availableDataset" required :caption="t('globalDataSet')" v-show="document.sourceOfData=='availableDataset'">
@@ -100,10 +106,6 @@
                                                     <km-spinner></km-spinner>
                                                 </div>
                                             </km-form-group>
-
-                                            <div class="mt-3 mb-3" v-show="indicatorData?.data">
-                                                <nr7-view-indicator-data :indicator-data="indicatorData"></nr7-view-indicator-data>
-                                            </div>
 
                                             <km-form-group v-show="document.sourceOfData" name="comments" :caption="t('comments')">
                                                 <km-input-rich-lstring v-model="document.comments" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
@@ -134,10 +136,13 @@
     import readXlsxFile from 'read-excel-file';
     import {cloneDeep} from 'lodash';
     import { useCountriesStore } from '@/stores/countries';
+    import { IndicatorsMappingData } from '~/app-data/indicators';
+    import { nationalReport7Service } from '~/services/national-report-7-service';
 
     const props = defineProps({
         identifier         : {type:String, required:false},
         indicator          : {type:Object, required:true},
+        indicatorType      : {type:String, required:true},
         workflowActiveTab  : {type:Number, default:1 },
         disabled           : {type:Boolean, default:false}
     });
@@ -229,59 +234,9 @@
         return documentInfo.value;
     }
     
-    const uploadFile = async (event) => {
-        try{
-            fileError.value = null;
-            const file = event.target.files[0];
-            const rows = await readXlsxFile(file)
-                // `rows` is an array of rows
-                // each row being an array of cells.
-                const columns = ['Indicator code', 'Indicator', 'Does this data row represent a disaggregation',
-                                 'Disaggregation', 'Year', 'Unit', 'Value', 'Footnote'];
-                            
-                if(rows[0].length != columns.length){
-                    fileError.value = {
-                        error : 'columnsMismatch',
-                        params : {count:columns.length}
-                    }
-                    dataSetFile.value.value = null;
-                    // alert('Your excel file is not following the template (column mismatch) expected columns are 8, please use the system provided template');
-                    return;
-                }
-                for (let i = 0; i < columns.length; i++) {
-                    if(rows[0][i].toLowerCase() != columns[i].toLowerCase()){
-                        fileError.value = {
-                            error : 'columnsInvalid',
-                            params : { colName:rows[0][i], colNo:i+1, colExpected : columns[i]}
-                        }
-                        dataSetFile.value.value = null;
-                        // alert('Column name {rows[0][i]} is invalid at column no {i+1} expected name is {columns[i]}, please follow the sequence provided in the template');
-                        return;
-                    }
-                }
-                
-                const data = [];
-                for (let i = 1; i < rows.length; i++) {
-                    const row = rows[i];
-                    data.push({
-                        indicatorCode    : row[0],
-                                      // : row[1] is indicator globalDescription
-                        hasDisaggregation: row[2] == 'no' ? 'false' :  true,
-                        disaggregation   : row[3],
-                        year             : Number(row[4]),
-                        unit             : row[5],
-                        value            : parseFloat(row[6]),
-                        footnote         : row[7]
-                    })
-                }
-                
-                document.value.data = data;
-            
-        }
-        catch(e){
-            useLogger().error(e)
-            $toast.error('Error loading file details')
-        }
+    function onDataLoad(data){
+        const { code } = nationalReport7Service.getIndicatorDataMapping(props.indicator as ETerm, props.indicatorType, locale.value) || {};        
+        document.value.data = data[code];
     };
 
     function onSourceOfDataChange(value){
