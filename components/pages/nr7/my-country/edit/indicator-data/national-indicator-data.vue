@@ -166,7 +166,7 @@
                 hasDisaggregation: row[2] == 'no' ? false :  true as boolean,
                 disaggregation   : row[3] as string,
                 year             : Number(row[4]),
-                unit             : row[5] as string,
+                unit             : row[5]?.toString(),
                 value            : parseFloat(row[6] as string),
                 footnote         : row[7] as string
             }
