@@ -11,33 +11,9 @@
     </km-form-group>
     <km-form-group :caption="t('data')"  v-if="indicatorData.data">
         <download-data :headers="excelHeaders" :data="excelData" class="float-end"
-            :fileName="`indicator-data-${lstring(indicator.title, locale)}`"></download-data>
-        <div class="w-100" style="overflow: auto;">
-            <table class="table responsive table-bordered">
-                <tbody>
-                <tr>
-                    <th>{{t('indicatorCode')}}</th>
-                    <th class="col-1">
-                        {{t('doesDisaggregation')}}
-                    </th>
-                    <th>{{t('disaggregation')}}</th>
-                    <th>{{t('year')}}</th>
-                    <th>{{t('unit')}}</th>
-                    <th>{{t('value')}}</th>
-                    <th>{{t('footnote')}}</th>
-                </tr>
-                <tr v-for="unit in indicatorData.data" :key="unit">
-                    <td>{{unit.indicatorCode}}</td>
-                    <td>{{unit.hasDisaggregation ? t('yes') : t('no')}}</td>
-                    <td>{{unit.disaggregation}}</td>
-                    <td>{{unit.year}}</td>
-                    <td>{{unit.unit}}</td>
-                    <td>{{unit.value}}</td>
-                    <td>{{unit.footnote}}</td>
-                </tr>
-            </tbody>
-            </table>
-        </div>
+            :fileName="`indicator-data-${lstring(indicator?.title||'', locale)}`"></download-data>
+        <indicator-data-table :indicator-data="indicatorData.data" :indicator-code="indicatorData.data[0].indicatorCode"></indicator-data-table>
+        
     </km-form-group>
 
     <km-form-group v-if="indicatorData.globalDataSources" :caption="t('globalSourceOfData')">
@@ -76,7 +52,7 @@ import type { ETerm } from '~/types/schemas/base/ETerm';
     const { indicatorData } = toRefs(props);
     const selectedLocale = computed(()=>props.documentLocale||locale.value);
 
-    const indicator:ComputedRef<ETerm> = computed(() => thesaurusStore.getTerm(props.indicatorData?.indicator?.identifier));
+    const indicator:ComputedRef<ETerm> = computed(() => thesaurusStore.getTerm(props.indicatorData?.indicator?.identifier)||{});
     
     const excelHeaders = computed(() => [
         { type: String, value: t('indicatorCode'), fontWeight: 'bold' },
@@ -92,7 +68,7 @@ import type { ETerm } from '~/types/schemas/base/ETerm';
     const excelData = computed(() => {
         return indicatorData.value.data?.map((unit:IndicatorData) => [
             { type: String, value: unit.indicatorCode },
-            { type: String, value: lstring(indicator.value.title, locale) },
+            { type: String, value: lstring(indicator.value?.title||'', locale) },
             { type: String, value: unit.hasDisaggregation ? t('yes') : t('no') },
             { type: String, value: unit.disaggregation||'' },
             { type: Number, value: unit.year||0 },

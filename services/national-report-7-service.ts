@@ -8,6 +8,7 @@ import {KmDocumentDraftsService} from "~/services/kmDocumentDrafts";
 import { EditFormUtility } from "~/services/edit-form-utility";
 import { GbfGoalsAndTargets } from "~/services/gbfGoalsAndTargets";
 import { getAlignedGoalsOrTargets } from '~/components/pages/national-targets/my-country/part-2/util';
+import { IndicatorsMappingData } from '~/app-data/indicators';
 
 class NationalReport7Service {
 
@@ -203,6 +204,18 @@ class NationalReport7Service {
             return acc;
         }, []);
         return uniqueIndicators;
+    }
+
+
+    getIndicatorDataMapping(indicator:ETerm, indicatorType:string, locale:string):IndicatorMapping|undefined {
+        if(indicatorType == 'otherNationalIndicators') {
+            return {
+                identifier: indicator.identifier,
+                code: indicator.identifier,
+                title: lstring(indicator.title, locale)
+            }
+        }
+        return IndicatorsMappingData.find(e=>e.identifier == indicator.identifier);
     }
 
 }
