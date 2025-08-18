@@ -92,7 +92,7 @@
 
                                             <km-form-group name="availableDataset" required :caption="t('globalDataSet')" v-show="document.sourceOfData=='availableDataset'">
                                         
-                                                <div class="mt-3" v-show="!isFetchingGlobalData && !wcmcIndicatorData.data?.charts?.length">
+                                                <div class="mt-3" v-show="!isFetchingGlobalData && !indicatorData?.data?.length">
                                                     <CAlert color="info" class="d-flex align-items-center">
                                                         <font-awesome-icon icon="fa-solid fa-info" class="flex-shrink-0 me-2 fa-2x "/>
                                                           <strong>{{ t('noGlobalDataIndicator') }}</strong>
@@ -104,6 +104,9 @@
                                                 </div>
                                                 <div class="mt-3" v-show="isFetchingGlobalData">
                                                     <km-spinner></km-spinner>
+                                                </div>
+                                                <div class="mt-3 mb-3" v-if="indicatorData?.data?.length">
+                                                    <indicator-data-table :indicator-data="indicatorData.data" :indicator-type="indicatorType"  :indicator-code="indicatorData.data[0].indicatorCode"></indicator-data-table>
                                                 </div>
                                             </km-form-group>
 
@@ -256,6 +259,7 @@
 
     async function loadGlobalDataSet(){
         try{
+        document.value.data = [];
         wcmcIndicatorData.value = [];
         if(!document.value?.indicator?.identifier)
             return;
@@ -271,9 +275,24 @@
         
         //1
         if(!wcmcTargets.value.length){
+            const codeRegex = /([A-z0-9]{1,2}.[0-9]{1}(.[0-9])?)/;
+
             const targets = await useAPIFetch('/target-tracker/goals-targets');
             const cbdIndicators = await GbfGoalsAndTargets.loadGbfHeadlineIndicator();
+            cbdIndicators.forEach(cbd=>{
+                cbd.code = cbd.title.en.trim().match(codeRegex)?.[0] || '';
+            });
+
             wcmcTargets.value = targets.data.map(e=>e.indicators).flat().map(e=>{
+                e.code = e.title.trim().match(codeRegex)?.[0] || '';
+                cbdIndicators.forEach(cbd=>{                    
+                    if(cbd.code == e.code){
+                        e.cbdIndicator = cbd;
+                    }
+                    else if(cbd.title.en.trim() == e.title.trim()){
+                        e.cbdIndicator = cbd;
+                    }
+                });
                 const cbdIndicator = cbdIndicators.find(cbd=>cbd.title.en.trim() == e.title.trim());
                 if(cbdIndicator)
                     return {
@@ -297,21 +316,31 @@
 
                 const globalData = dataResponse?.data?.charts?.filter(e=>e.tabType == 'GloballyDerived')
                 if(globalData?.length) {
-                    const chart = globalData[0];
-                    const valueData = chart.datasets.find(e=>e.derived == "Global");
-                    
-                    document.value.data = chart.labels.map((e, index)=>{
-                                    const val = valueData?.data[index]
-                                    return {
-                                        indicatorCode : indicator?.cbdIndicator?.identifier?.replace(/gbf\-indicator\-/i, ''),//dataResponse?.data?.globallyDerivedData?.title,
-                                        hasDisaggregation : e.dataGroupName != "Aggregated" ? false : true,
-                                        disaggregation    : e.dataGroupName != "Aggregated" ? 'none' : '',
-                                        year : Number(e.replace(/Baseline|\(|\)/g, '')),
-                                        value: parseFloat(val),
-                                        unit: dataResponse?.data?.globallyDerivedData?.valueSuffix
-                                    }
-                                });
+                    let data = []
+                    globalData.forEach(chart=>{
 
+                        const globalChartData = chart.datasets.filter(e=>e.derived == "Global" && e.indicatorDataScale == "Global");
+                        globalChartData.forEach(valueData=>{
+                            if(!valueData.data?.length)
+                                return;
+                            
+                                const formattedData = chart.labels.map((e, index)=>{
+                                        const val = valueData?.data[index]
+                                        return {
+                                            indicatorCode : indicator?.cbdIndicator?.identifier?.replace(/gbf\-indicator\-/i, ''),
+                                            hasDisaggregation : valueData.dataGroupName == "Aggregated" ? false : true,
+                                            disaggregation    : valueData.dataGroupName == "Aggregated" ? 'none' : valueData.dataGroupName,
+                                            year : Number(e.replace(/Baseline|\(|\)/g, '')),
+                                            value: parseFloat(val),
+                                            unit: dataResponse?.data?.globallyDerivedData?.valueSuffix
+                                        }
+                                    });
+                                data = [...data, ...formattedData];
+                        });
+                    });
+
+                    document.value.data = data;
+                    
                     
                     const globallyDerivedData = dataResponse?.data?.globallyDerivedData;
                     if(globallyDerivedData){
