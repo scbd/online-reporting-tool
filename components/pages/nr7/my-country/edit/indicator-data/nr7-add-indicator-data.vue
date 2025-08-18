@@ -320,7 +320,6 @@
                     globalData.forEach(chart=>{
 
                         const globalChartData = chart.datasets.filter(e=>e.derived == "Global" && e.indicatorDataScale == "Global");
-                        console.log('globalChartData', globalChartData);
                         globalChartData.forEach(valueData=>{
                             if(!valueData.data?.length)
                                 return;
