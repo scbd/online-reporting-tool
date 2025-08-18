@@ -327,7 +327,7 @@
                                 const formattedData = chart.labels.map((e, index)=>{
                                         const val = valueData?.data[index]
                                         return {
-                                            indicatorCode : indicator?.cbdIndicator?.identifier?.replace(/gbf\-indicator\-/i, ''),//dataResponse?.data?.globallyDerivedData?.title,
+                                            indicatorCode : indicator?.cbdIndicator?.identifier?.replace(/gbf\-indicator\-/i, ''),
                                             hasDisaggregation : valueData.dataGroupName == "Aggregated" ? false : true,
                                             disaggregation    : valueData.dataGroupName == "Aggregated" ? 'none' : valueData.dataGroupName,
                                             year : Number(e.replace(/Baseline|\(|\)/g, '')),
