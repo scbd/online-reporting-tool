@@ -1,0 +1,9 @@
+{
+    "year"              : "Year",
+    "value"             : "Value",    
+    "indicatorCode": "Indicator code",
+    "doesDisaggregation": "Does this data row represent a disaggregation",
+    "disaggregation": "Disaggregation",
+    "unit": "Unit",
+    "footnote": "Footnote"
+}

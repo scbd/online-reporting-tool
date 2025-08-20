@@ -29,7 +29,7 @@ export const isProduction = ()=>{
     return ACCOUNTS_HOST_URL.indexOf('accounts.cbd.int')>=0
 }
 
-function error(appError:FetchError, userMessage:string|null=null){
+function error(appError:FetchError|Error, userMessage:string|null=null){
 
     if(![404, 401, 403].includes(appError?.status||0)){
 

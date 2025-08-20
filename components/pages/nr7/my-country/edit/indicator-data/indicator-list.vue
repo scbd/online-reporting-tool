@@ -19,9 +19,10 @@
                             @on-delete="onRecordDelete($event, indicator)">
                         </km-delete-record>
                     </div>
-
                     <nr7-add-indicator-data :indicator="indicator" container=".nr7-add-indicator-data-modal"
-                        :identifier="((indicator.nationalData||{}).header||{}).identifier" @on-post-save-draft="onAddIndicatorDataClose">
+                        :identifier="((indicator.nationalData||{}).header||{}).identifier" 
+                        :indicator-type="indicatorType"
+                        @on-post-save-draft="onAddIndicatorDataClose">
                     </nr7-add-indicator-data>       
 
                     <div v-if="indicator.nationalData">
@@ -48,7 +49,7 @@
     
     const {t, locale }          = useI18n()
     const props = defineProps({
-        indicators         : {type:Object, default:[] },
+        indicators         : {type:Array<Object>, default:{} },
         onClose            : {type:Function, required:false},
         showMissingAlert   : {type:String, default:false },
         indicatorType      : {type:String, required:true }, 

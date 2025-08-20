@@ -1,0 +1,7 @@
+{
+    "noLinkedData": "No linked data",
+    "noLinkedDataDescription": "The following data has wrong indicator code, Indicator code in excel data should match the code the indicator! This data will be ignored.",
+    "indicatorCode": "Indicator code :",
+    "failedValidation": "The following data failed validation! This data will be ignored.",
+    "validData": "Valid data"
+}
