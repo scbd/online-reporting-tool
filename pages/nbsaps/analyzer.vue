@@ -1,7 +1,7 @@
 <template>
     <CCard>
       <CCardHeader>
-          <font-awesome-icon :icon="['fas', 'chart-simple']" /> 
+          <font-awesome-icon icon="chart-simple" /> 
           {{ t('nationalTargetsAnalyzer') }} 
           <km-link class="float-end" v-if="query.embed" :to="realm.baseURL" target="_blank">
             <CTooltip :content="t('ortTip')" trigger="hover">
@@ -12,7 +12,7 @@
           </km-link>
           <button class="float-end btn btn-secondary btn-sm" @click="()=>showSharableSectionModal=true"
             v-if="!query.embed" :to="ShareAllUrl">
-              <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+              <font-awesome-icon icon="share-nodes" /> 
               {{t('share')}}          
           </button>
       </CCardHeader>  
@@ -44,7 +44,7 @@
         <CModalFooter>
           <CButton color="secondary" @click="showEmbedCode">{{t('embedCode')}}</CButton>
             <km-link target="_blank" class="float-end btn btn-secondary" :to="ShareAllUrl">
-                <font-awesome-icon :icon="['fas', 'share-nodes']" /> 
+                <font-awesome-icon icon="share-nodes" /> 
                 {{t('getShareLink')}}
             </km-link>
             <CButton color="secondary" @click="closeDialog">{{t('close')}}</CButton>

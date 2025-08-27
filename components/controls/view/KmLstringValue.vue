@@ -26,7 +26,7 @@
 //@ts-nocheck
     import { direction, lstringLocale, lstring } from '@/utils';
     import { useThesaurusStore }    from '@/stores/thesaurus';
-    import $ from 'jquery';
+    // import $ from 'jquery';
 
     const props = defineProps({
         value  : {type:Object, required:true },

@@ -42,7 +42,7 @@ import { useRoute } from 'vue-router';
     const { t }         = useI18n();
     const route         = useRoute();
     const { $eventBus } = useNuxtApp();
-    const user          = useAuth().user;
+    const user          = useAuth().user||{};
     const itemsCount    = 42;
     const accountsUrl   = useRuntimeConfig().public.ACCOUNTS_HOST_URL;
     
@@ -54,9 +54,12 @@ import { useRoute } from 'vue-router';
     }
 
     const returnUrl = computed(()=>{
+      if(process.client){
         const url = new URL(window.location.href);
         url.path = route.path;
         return url.href;
+      }
+      return '';
     })
 
     function onSessionExpired(){     

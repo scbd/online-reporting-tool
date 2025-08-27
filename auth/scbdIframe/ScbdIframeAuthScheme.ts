@@ -1,6 +1,9 @@
 //@ts-nocheck
 import { useResolveApiBaseUrl } from "@/composables/common";
 
+if(process.client){
+    window = {};
+}
 export default class ScbdIframeAuthScheme {
 
     constructor(options) {

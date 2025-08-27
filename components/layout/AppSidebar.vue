@@ -3,13 +3,13 @@
     class="border-end"
     colorScheme="dark"
     position="fixed"
-    :unfoldable="userPreferences.sidebarUnfoldable"
-    :visible="userPreferences.sidebarVisible"
+    :unfoldable="userPreferences?.sidebarUnfoldable"
+    :visible="userPreferences?.sidebarVisible"
     @visible-change="(value) => userPreferences.setSidebarVisible(value)"
   >
     <CSidebarHeader class="border-bottom">
         <img src="https://chm.cbd.int/app/img/cbd-logo-en.svg" role="img" custom-class-name="sidebar-brand-full" height="35">
-        <CTooltip content="On-line Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
+        <CTooltip content="Online Reporting Tool for NBSAPS and National Reports" placement="bottom" trigger="hover">
             <template #toggler="{ on }">
                 <span class="brand-name" v-on="on">CHM - ORT</span>
             </template>
@@ -90,7 +90,7 @@
 </template>
 
 <i18n src="@/i18n/dist/components/layout/AppSidebar.json"></i18n>
-<script lang="ts">
+<script setup lang="ts">
 //@ts-nocheck
 
 import { useRealmConfStore }    from '@/stores/realmConf';
@@ -99,13 +99,6 @@ import { useAppStateStore } from '@/stores/appState';
 import { KmNavLink } from '~/components/controls';
 import { useRoute } from 'vue-router';
 
-
-export default {
-  name: 'AppSidebar',
-  components: {
-    KmNavLink
-},
-  async setup() {
     const { ACCOUNTS_HOST_URL, TAG, COMMIT } = useRuntimeConfig().public
     const {$appRoutes:appRoutes }   = useNuxtApp();
     const {locale} = useI18n()
@@ -115,8 +108,9 @@ export default {
     const appState        = useAppStateStore();
     const { t } = useI18n()
     const route = useRoute();
+    const sidebarUnfoldable = false
+    const sidebarVisible = true
     
-    await loadRealmConf();
 
     const menuAccess = {
       [appRoutes.DASHBOARD] : true,
@@ -141,20 +135,9 @@ export default {
 
     const isDevelopment = ACCOUNTS_HOST_URL.indexOf('accounts.cbddev.xyz')>=0
     
-    return {
-      sidebarUnfoldable: false,
-      sidebarVisible: true,
-      appRoutes,
-      menuAccess,
-      localePath,
-      t,
-      isChildRouteActive,
-      isDevelopment,
-      userPreferences, TAG, COMMIT,
-      appState
-    }
-  },
-}
+
+    await loadRealmConf();
+    
 </script>
 <style scoped>
 /* TODO:Temp check why its not align with parellel component */

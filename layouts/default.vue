@@ -53,8 +53,9 @@ import {useRoute} from 'vue-router';
                 hid: 'slaask',
                 src : 'https://cdn.slaask.com/chat.js',
                 defer: true, 
+                clientOnly: true,
                 onload: () => { 
-                    if(!query?.embed)
+                    if(!query?.embed && process.client)
                         initializeSlaask();
                 }
             },
@@ -62,7 +63,8 @@ import {useRoute} from 'vue-router';
                 hid: 'recaptcha',
                 src : 'https://www.recaptcha.net/recaptcha/api.js',
                 defer: true,
-                callback: () => { }
+                callback: () => { },
+                clientOnly: true,
             }
         ]
     });

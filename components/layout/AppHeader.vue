@@ -30,7 +30,8 @@
         </CNavItem>
         <CNavItem  class="d-none d-md-flex">
           <NuxtLink class="nav-link" target="_blank" href="https://chm.cbd.int/management/national-users">
-            <font-awesome-icon icon="users-line" />
+            <font-awesome-icon icon="fa-solid fa-users-line" />
+            <font-awesome-icon :icon="['fas', 'users-line']" />
             {{ t('nationalUsers') }}
           </NuxtLink>
         </CNavItem> 

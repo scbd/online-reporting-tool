@@ -39,7 +39,7 @@ function error(appError:FetchError|Error, userMessage:string|null=null){
             const { ACCOUNTS_HOST_URL, TAG, COMMIT } = useRuntimeConfig().public;
             const realmConfStore  = useRealmConfStore();
             const realmConf = realmConfStore.realmConf; 
-            const user = useAuth().user.value;
+            const user = useAuth()?.user?.value;
             //TODO: send error to server
             const errorLog = {
                 stack : JSON.stringify(appError, Object.getOwnPropertyNames(appError)), 
