@@ -24,10 +24,12 @@
     </CNav>
     <CTabContent>
       <CTabPane role="tabpanel" :aria-labelledby="`tabContent-${locale}-${uid}`" v-for="locale in locales" :key="locale" 
-        :visible="selectedLocale === locale" :id="`lstringTabContent-${uid}`">       
-        <km-ck-editor v-if="selectedLocale==locale" v-model="binding[selectedLocale]" :identifier="identifier"
-            :locale="selectedLocale" @update:modelValue="onChange" @onFileUpload="onFileUpload"
-            @on-word-count-change="onOnWordCountChange"></km-ck-editor>     
+        :visible="selectedLocale === locale" :id="`lstringTabContent-${uid}`">   
+         <client-only>
+          <km-ck-editor v-if="selectedLocale==locale" v-model="binding[selectedLocale]" :identifier="identifier"
+              :locale="selectedLocale" @update:modelValue="onChange" @onFileUpload="onFileUpload"
+              @on-word-count-change="onOnWordCountChange"></km-ck-editor>     
+        </client-only>    
       </CTabPane>
     </CTabContent>
   </div>
@@ -35,7 +37,7 @@
 <i18n src="@/i18n/dist/components/controls/edit/KmInputRichLstring.json"></i18n>
 <script lang="ts">
 //@ts-nocheck
-import $ from 'jquery';
+// import $ from 'jquery';
 import {without} from 'lodash';
 import KmCkEditor from './KmCkEditor.vue'
 import { useThesaurusStore }    from '@/stores/thesaurus';

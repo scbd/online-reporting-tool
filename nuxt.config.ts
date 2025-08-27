@@ -36,6 +36,9 @@ export default defineNuxtConfig({
       '@pinia-plugin-persistedstate/nuxt',
       'nuxt-gtag'
   ],
+  plugins: [
+    { src: '~/plugins/jquery', mode: 'client' },
+  ],
 
   css:[
       // 'bootstrap/dist/css/bootstrap.css'

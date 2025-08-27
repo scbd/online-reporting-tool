@@ -15,10 +15,14 @@
 
 <script setup lang="ts">
 //@ts-nocheck
-import 'webui-popover';
-import 'webui-popover/dist/jquery.webui-popover.css'
-import $ from 'jquery'
+    let $;
 
+    if(process.client){
+            import('webui-popover')
+            import('webui-popover/dist/jquery.webui-popover.css')
+        // $ = import('jquery')
+    }
+    console.log('KmHelp', $);
     const helpAnchor = ref(null);
     const $attrs = useAttrs();
     const slots  = useSlots();

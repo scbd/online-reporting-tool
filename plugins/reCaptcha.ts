@@ -32,11 +32,13 @@ function initializeRecaptcha(elementId:string, sitekey:string){
                 }
 
                 checkIntervalRunCount++;
-
-                if (window.grecaptcha && window.grecaptcha.hasOwnProperty('render')){
-                    clearInterval(checkInterval);
-                    gAssignedId = render(elementId, sitekey);
-                    resolve(gAssignedId);
+                const element = document.getElementById(elementId);
+                if(element){
+                    if (process.client && window.grecaptcha && window.grecaptcha.hasOwnProperty('render')){
+                        clearInterval(checkInterval);
+                        gAssignedId = render(elementId, sitekey);
+                        resolve(gAssignedId);
+                    }
                 }
 
             }, 100)

@@ -44,17 +44,30 @@
 <script lang="ts">
 //@ts-nocheck
 
-import '@/libs/ckeditor/build/ckeditor.js'//'@ckeditor/ckeditor5-build-classic'
-import { Ckeditor }    from '@ckeditor/ckeditor5-vue';
-import OverlayLoading from 'vue3-loading-overlay';
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 import KmSpinner from '../KmSpinner.vue';
 import { useI18n } from 'vue-i18n';
 
+
+let CKEditor;
+let ClassicEditor;
+let OverlayLoading;
+
+if(process.client){
+    ClassicEditor = import('@/libs/ckeditor/build/ckeditor.js')//'@ckeditor/ckeditor5-build-classic'
+    CKEditor      = import('@ckeditor/ckeditor5-vue');
+    OverlayLoading= import('vue3-loading-overlay');
+                    import('vue3-loading-overlay/dist/vue3-loading-overlay.css');
+}
+else{
+    CKEditor = { component : {template:'<div></div>'}}
+}
+
+
 export default {
   name: 'KmCkEditor',
   components: {
-    ckeditor: Ckeditor,
+    ckeditor: CKEditor.component,
     OverlayLoading,
     KmSpinner
   },
@@ -102,7 +115,7 @@ export default {
   data() {
     return {
       wordCount: 0,
-      editor: window.ClassicEditor,
+      editor: ClassicEditor,
       isUploadingFile:false,
       editorConfig : undefined,
       uploadErrors : []

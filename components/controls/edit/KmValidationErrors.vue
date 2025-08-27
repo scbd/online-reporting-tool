@@ -47,7 +47,7 @@
  <script setup lang="ts">
 //@ts-nocheck
     import { useI18n } from 'vue-i18n'
-    import $ from 'jquery';
+    // import $ from 'jquery';
     
 
     const props =   defineProps({

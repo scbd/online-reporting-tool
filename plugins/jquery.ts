@@ -1,5 +1,7 @@
 // @ts-ignore
 import $ from 'jquery'
 export default defineNuxtPlugin( () => {
-    window.jQuery = window.$ = $
+    if (process.client) {
+        window.jQuery = window.$ = $
+    }
 } )
