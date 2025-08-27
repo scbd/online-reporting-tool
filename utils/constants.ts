@@ -58,7 +58,8 @@ export const SCHEMAS = {
     NATIONAL_REPORT_6                   : 'nationalReport6',
     NATIONAL_REPORT_7                   : 'nationalReport7',
     NATIONAL_REPORT_7_INDICATOR_DATA    : 'nationalReport7IndicatorData',
-    NATIONAL_REPORT_7_BINARY_INDICATOR_DATA    : 'nationalReport7BinaryIndicatorData'
+    NATIONAL_REPORT_7_BINARY_INDICATOR_DATA    : 'nationalReport7BinaryIndicatorData',
+    REFERENCE_NON_STATE_ACTOR_COMMITMENT_INTENT    : 'nonStateActorCommitmentIntent'
 }
 
 export const UTILS = {

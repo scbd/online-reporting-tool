@@ -1,0 +1,34 @@
+{
+    "nsaIntentTitle": "Intent to submit non-state actor commitment",
+    "general": "General",
+    "isNonStateActor": "Do you represent a Party (national Government) or an actor other than a national Government",
+    "nonStateActor":"Non-state actor",
+    "party":"National government",
+    "government": "Government",
+    "contactDetailsSection": "Contact details",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "designation": "Designation",
+    "department": "Department",
+    "organization": "Organization or coalition (official name of the organization)",
+    "organizationAcronym": "Organization acronym",
+    "organizationType": "Organization type",
+    "address": "Address",
+    "city": "City",
+    "state": "State/Province",    
+    "postalCode": "Postal code",
+    "country": "Country",    
+    "phones": "Phones",
+    "emails": "Emails",
+    "websites": "Websites",
+
+    "authorityDocumentsSection": "Authority letter from head of the organization",
+    "authorityDocumentsDescription": "Please upload any document that shows you have the authority to submit a commitment on behalf of your organization.",
+    "addAuthorityDocumentHelp": "Simple letter listing the names and emails of the person within the organization that is authorized to use the online reporting tool to communicate commitments as per COP decisions 16/32 Annex II",
+
+    "otherRelevantInformation":"Other relevant information",
+    "otherRelevantInformationInfo":"Please use this field to provide any other relevant information that may not have been addressed elsewhere in the record.",
+    "otherRelevantWebsite":"Other relevant website address or attached documents"
+
+    
+}

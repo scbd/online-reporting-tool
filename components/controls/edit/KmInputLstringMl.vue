@@ -5,8 +5,9 @@
                 <km-input-lstring v-model="item.value" :locales="props.locales" @update:modelValue="emitChange"></km-input-lstring>  
             </CCol>
             <CCol md="1">
-                <button :disabled="binding.length==1" type="button" class="btn btn-danger btn-sm" @click="removeItem(item, index)" >
-                    <font-awesome-icon icon="fa-solid fa-trash"/> {{ t('remove') }}
+                <button :disabled="binding.length==1" type="button" class="btn btn-danger" 
+                @click="removeItem(item, index)" :title="t('remove')" >
+                    <font-awesome-icon icon="fa-solid fa-trash"/> {{  }}
                 </button>     
             </CCol>
         </CRow>
