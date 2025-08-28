@@ -17,7 +17,7 @@ export default defineNuxtConfig({
       client: true
   },
 
-  ssr:false,
+  ssr:true,
 
   nitro: {
       storage: {
@@ -84,6 +84,13 @@ export default defineNuxtConfig({
       resolve: {
           alias: {
               'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
+          }
+      },
+      css: {
+          preprocessorOptions: {
+              scss: {
+                  silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'mixed-decls']
+              }
           }
       },
       plugins: [
