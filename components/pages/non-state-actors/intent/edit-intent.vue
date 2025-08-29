@@ -73,7 +73,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <km-form-group name="organizationType" :caption="t('organizationType')">
-                                                <km-select v-model="document.organizationType" :placeholder="t('organizationType')" :options="thesaurusStore.getDomainTerms(THESAURUS.ORGANIZATION_TYPES)" class="validationClass" />
+                                                <km-select v-model="document.organizationType" :placeholder="t('organizationType')" :options="organizationTypes" class="validationClass" />
                                             </km-form-group>
                                         </div>
                                     </div>
@@ -132,20 +132,28 @@
                                     {{ t('jurisdictionDetailsSection') }}
                                 </div>
                                 <div class="card-body">
-                                    <!-- jurisdiction (ETerm) -->
                                     <km-form-group name="jurisdiction" :caption="t('jurisdiction')" required>
                                         <km-select v-model="document.jurisdiction" :placeholder="t('jurisdiction')" :options="jurisdictions" class="validationClass" :custom-selected-item="customSelectedItem" />
                                     </km-form-group>
 
-                                    <!-- jurisdictionCountries (ETerm[]) -->
-                                    <km-form-group name="jurisdictionCountries" :caption="t('jurisdictionCountries')">
-                                        <km-select v-model="document.jurisdictionCountries" :placeholder="t('jurisdictionCountries')" :options="countries" multiple class="validationClass" />
-                                    </km-form-group>
+                                    <div class="row">
+                                        <div class="col-md-6" v-if="showJurisdictionCountries">
+                                            <km-form-group name="jurisdictionCountries" :caption="t('jurisdictionCountries')" >
+                                                <km-select v-model="document.jurisdictionCountries" :placeholder="t('jurisdictionCountries')" :options="countries" multiple class="validationClass" />
+                                            </km-form-group>
+                                        </div>
+                                        <div class="col-md-6" v-if="showJurisdictionOthers">
+                                            <km-form-group name="subNational" :caption="t('localSubNational')">
+                                                <km-input-lstring v-model="document.jurisdiction.customValue" :locales="document.header.languages" />
+                                            </km-form-group>
+                                        </div>
 
-                                    <!-- jurisdictionRegions (ETerm[]) -->
-                                    <km-form-group name="jurisdictionRegions" :caption="t('jurisdictionRegions')">
-                                        <km-select v-model="document.jurisdictionRegions" :placeholder="t('jurisdictionRegions')" :options="regions" multiple class="validationClass" />
-                                    </km-form-group>
+                                        <div class="col-md-6" v-if="showJurisdictionRegions">
+                                            <km-form-group name="jurisdictionRegions" :caption="t('jurisdictionRegions')" >
+                                                <km-select v-model="document.jurisdictionRegions" :placeholder="t('jurisdictionRegions')" :options="regions" multiple class="validationClass" />
+                                            </km-form-group>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </km-form-group>
@@ -156,9 +164,13 @@
                                     {{ t('authorityDocumentsSection') }}
                                 </div>
                                 <div class="card-body">
-                                    <!-- authorityDocuments (ELink[]) -->
                                     <km-form-group name="authorityDocuments" :caption="t('authorityDocuments')">
+                                        <small id="emailHelp" class="form-text text-muted">{{t('authorityDocumentsHelp')}}</small>
                                         <km-add-link-file name="authorityDocuments" v-model="document.authorityDocuments" :allow-link="true" :allow-file="true" :identifier="document.header.identifier" />
+                                    </km-form-group>
+
+                                    <km-form-group name="authorizedEmails" :caption="t('authorizedEmails')" required>
+                                        <km-input-lstring-ml v-model="document.authorizedEmails" :locales="document.header.languages" />
                                     </km-form-group>
                                 </div>
                             </div>
@@ -231,21 +243,25 @@
     const jurisdictions  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.JURISDICTIONS));
     const countries = computed(() => thesaurusStore.getDomainTerms(THESAURUS.COUNTRIES));
     const regions  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.REGIONS));
+    const organizationTypes  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.ORGANIZATION_TYPES));
 
-    const hasAdoptionDate = computed(() => {
-        return document.value?.status?.identifier == THESAURUS_TERMS.STATUS_FINAL ||
-            document.value?.status?.identifier == THESAURUS_TERMS.STATUS_APPROVED
+    const showJurisdictionCountries = computed(() => {
+        return !!document.value?.jurisdiction && (
+            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_LOCAL ||
+            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_SUB_NATIONAL ||
+            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_NATIONAL);
     });
 
-    const hasApprovedStatus = computed(() => {
-        return !!document.value?.status && document.value?.status.identifier == THESAURUS_TERMS.STATUS_APPROVED;
+    const showJurisdictionOthers = computed(() => {
+        return !!document.value?.jurisdiction && (
+            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_LOCAL ||
+            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_SUB_NATIONAL);
     });
 
-    const hasApprovedStatusInfo = computed(() => {
-        return !!document.value?.approvingBody && (
-            document.value?.approvingBody.identifier == THESAURUS_TERMS.APPROVING_BODY_INTER_MINISTERIAL_COMMITTEE ||
-            document.value?.approvingBody.identifier == THESAURUS_TERMS.APPROVING_BODY_MINISTER ||
-            document.value?.approvingBody.identifier == THESAURUS_TERMS.APPROVING_BODY_NATIONAL_COMMITTEE);
+    const showJurisdictionRegions = computed(() => {
+        return !!document.value?.jurisdiction && (
+            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_REGIONAL ||
+            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_MULTINATIONAL);
     });
 
     const cleanDocument = computed(() => {
@@ -286,8 +302,9 @@
         try {
             await Promise.all([
                 thesaurusStore.loadDomainTerms(THESAURUS.JURISDICTIONS),
-                thesaurusStore.getDomainTerms(THESAURUS.REGIONS),
-                thesaurusStore.getDomainTerms(THESAURUS.COUNTRIES)
+                thesaurusStore.loadDomainTerms(THESAURUS.REGIONS),
+                thesaurusStore.loadDomainTerms(THESAURUS.COUNTRIES),
+                thesaurusStore.loadDomainTerms(THESAURUS.ORGANIZATION_TYPES)
                 
             ]);
 
