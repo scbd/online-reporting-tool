@@ -44,6 +44,12 @@ export default defineNuxtConfig({
       // 'bootstrap/dist/css/bootstrap.css'
       '@fortawesome/fontawesome-svg-core/styles.css'
   ],
+  build: {
+    transpile: [
+      '@fortawesome/fontawesome-svg-core',
+      '@fortawesome/vue-fontawesome'
+    ]
+  },
 
   i18n: {       
       locales: [

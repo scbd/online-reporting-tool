@@ -197,7 +197,7 @@ import { KmLink } from "~/components/controls";
         })
         const realmConfStore  = useRealmConfStore();
         const realmConf = realmConfStore.realmConf;
-
+console.log('realmConf', realmConf);
         const { $appRoutes:appRoutes } = useNuxtApp();
         const tourStarted               = ref(false);
         const hasWorkflowRequest        = ref(false);

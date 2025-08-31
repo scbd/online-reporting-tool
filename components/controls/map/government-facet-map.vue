@@ -10,7 +10,7 @@
     import { useCountriesStore }    from '@/stores/countries';
 
     const props = defineProps({
-        query : { type:Object, required:true},
+        query : { type:[Object, String], required:true},
         zoom  : { type:Number, default : 0.8 }
     });
 

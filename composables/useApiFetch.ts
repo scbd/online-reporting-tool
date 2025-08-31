@@ -18,12 +18,13 @@ export default class ApiError extends Error {
 export async function useAPIFetch<T>(path: string | (() => string), options:UseFetchOptions<T> = {}):Promise<T> {
     //TODO: find why useFetch is returning cache response even when 
     //      there is network call and for POST method
-    const key   = hash({...options, path, requestedOn:new Date().getTime().toString()})
-    options.key = key;//generate unique key to avoid caching
+    // const key   = hash({...options, path, requestedOn:new Date().getTime().toString()})
+    // options.key = key;//generate unique key to avoid caching
     options.cache = 'no-cache';
-    
+    options.baseURL = useRuntimeConfig().public.API_URL;
+    console.log('useAPIFetch', path, options);
     const { data, error, execute, refresh, status } = await useFetch(path, options)
-
+// console.log('useAPIFetch response', {data, error, status});
     if(error?.value){
         if(error.value?.statusCode === 401){
             const { $eventBus } = useNuxtApp();

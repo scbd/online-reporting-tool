@@ -1,10 +1,10 @@
 <template>
     <record-type-search :record-types="[SCHEMAS.NATIONAL_NBSAP]" :show-record-type="false" :show-targets="false" :show-goals="false">
         <template #action-buttons>
-            <km-link :to="analyzerUrl" 
+            <!-- <km-link :to="analyzerUrl" 
                 class="btn btn-secondary btn-sm ms-1">
                 <font-awesome-icon icon="fa-chart-pie"></font-awesome-icon> {{ t('analyzer') }}
-            </km-link>
+            </km-link> -->
         </template>
         <template #custom-filters="{ onCustomFilterChange }">
             <div class="col-md-4">

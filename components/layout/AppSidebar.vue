@@ -17,7 +17,7 @@
       <CCloseButton class="d-lg-none" dark @click="userPreferences.setSidebarVisible()" />
     </CSidebarHeader>
 
-    <CSidebarNav>
+    <CSidebarNav v-if="localePath">
       <KmNavLink :to="localePath('/dashboard')" icon="cil-speedometer" :title="t('menuDashboard')"></KmNavLink>      
       <!-- <li class="nav-title" v-if="menuAccess[appRoutes.NATIONAL_TARGETS]">
         {{t('menuNbsaps')}}
@@ -78,7 +78,7 @@
 
     <CSidebarFooter class="border-top d-none d-lg-flex">
       <div class="app-version">
-          Ver {{ TAG||COMMIT.substring(0, 20) }}      
+          Ver {{ (TAG||COMMIT||'').substring(0, 20) }}      
           <span class="ms-3" v-if="appState.showBackupSpinner">
             <CSpinner color="success" variant="grow" class="me-1" size="sm"/>
             <CSpinner color="info" variant="grow" size="sm"/>
