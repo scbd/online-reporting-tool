@@ -1,7 +1,9 @@
 <template>
   <NuxtLayout>
-      <NuxtLoadingIndicator color="rgb(96 165 250)" />
-      <NuxtPage/>
+        <ClientOnly>
+            <NuxtLoadingIndicator color="rgb(96 165 250)" />
+        </ClientOnly>
+        <NuxtPage :page-key="route => route.fullPath" />
   </NuxtLayout>
 </template>
 <script lang="ts">

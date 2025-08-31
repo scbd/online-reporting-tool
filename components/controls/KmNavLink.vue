@@ -17,7 +17,7 @@ import {useRoute } from 'vue-router';
 export default defineComponent({
     props: {
         title: { type:String, required :true},
-        to   : { type:String, required :true},
+        to   : { type:String, required :false, default:'#'},
         icon : { type:String },
         target : { type:String }
     },
