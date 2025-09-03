@@ -24,7 +24,9 @@ export const THESAURUS = {
     APPROVING_BODY              : "F1A5BFF1-F555-40D1-A24C-BBE1BE8E82BF", 
     REPORT_STATUS               : "7F0D898A-6BF1-4CE6-AA77-7FEAED3429C6", 
     REPORT_TYPES                : "2FD0C77B-D30B-42BC-8049-8C62D898A193",
-    OTHER                       : "5B6177DD-5E5E-434E-8CB7-D63D67D5EBED"  
+    OTHER                       : "5B6177DD-5E5E-434E-8CB7-D63D67D5EBED",
+    ORGANIZATION_TYPES          : "Organization Types",
+    GEOGRAPHICAL_SCOPE          : "ort-nr-geographical-scope",
 }
 
 export const THESAURUS_TERMS = {
@@ -38,7 +40,12 @@ export const THESAURUS_TERMS = {
     APPROVING_BODY_NATIONAL_COMMITTEE          : "905C1F7F-C2F4-4DCE-A94E-BE6D6CE6E78F",
     APPROVING_BODY_MINISTER                    : "E7398F2B-FA36-4F42-85C2-5D0044440476",
     APPROVING_BODY_INTER_MINISTERIAL_COMMITTEE : "D3A4624E-21D9-4E49-953F-529734538E56",
-    JURISDICTION_FEDERAL                       : "7437F880-7B12-4F26-AA91-CED37250DD0A"
+    JURISDICTION_FEDERAL                       : "7437F880-7B12-4F26-AA91-CED37250DD0A",
+    JURISDICTION_LOCAL                         : "geographical-scope-local",
+    JURISDICTION_SUB_NATIONAL                  : "DEBB019D-8647-40EC-8AE5-10CA88572F6E",
+    JURISDICTION_NATIONAL                      : "7437F880-7B12-4F26-AA91-CED37250DD0A",
+    JURISDICTION_REGIONAL                      : "528B1187-F1BD-4479-9FB3-ADBD9076D361",
+    JURISDICTION_MULTINATIONAL                 : "528B1187-F1BD-4479-9FB3-ADBD9076D361"
 }
 
 export const ROLES = {
@@ -46,7 +53,8 @@ export const ROLES = {
     NATIONAL_FOCALPOINT     : 'nationalFocalPoint',
     NATIONAL_AUTHORIZED_USER: 'nationalAuthorizedUser',
     PUBLISHING_AUTHORITIES  : 'publishingAuthorities',
-    ALL_NATIONAL_USERS      : ['nationalFocalPoint', 'nationalAuthorizedUser', 'publishingAuthorities']
+    ALL_NATIONAL_USERS      : ['nationalFocalPoint', 'nationalAuthorizedUser', 'publishingAuthorities'],
+    EVERYONE                : 'everyone'
 }
 // ROLES["ALL_NATIONAL_USERS"] = [ROLES.NATIONAL_FOCALPOINT]
 
@@ -58,7 +66,8 @@ export const SCHEMAS = {
     NATIONAL_REPORT_6                   : 'nationalReport6',
     NATIONAL_REPORT_7                   : 'nationalReport7',
     NATIONAL_REPORT_7_INDICATOR_DATA    : 'nationalReport7IndicatorData',
-    NATIONAL_REPORT_7_BINARY_INDICATOR_DATA    : 'nationalReport7BinaryIndicatorData'
+    NATIONAL_REPORT_7_BINARY_INDICATOR_DATA    : 'nationalReport7BinaryIndicatorData',
+    REFERENCE_NON_STATE_ACTOR_COMMITMENT_INTENT    : 'nonStateActorCommitmentIntent'
 }
 
 export const UTILS = {

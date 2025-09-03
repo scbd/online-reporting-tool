@@ -74,6 +74,23 @@
         </CNavGroup>          
         
       </CNavGroup>
+      <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_REPORTS_NSA)">  
+        <template #togglerContent>
+          {{t('nonStateActors')}}
+        </template>      
+
+        <KmNavLink :to="localePath(appRoutes.NATIONAL_REPORTS_NSA_COMMITMENTS)" icon="cil-list" :title="t('allCommitments')"></KmNavLink>
+        <KmNavLink  :to="appRoutes.NATIONAL_REPORTS_NSA_MY_COMMITMENTS" :title="t('menuMyCommitments')">
+          <template #icon>
+            <font-awesome-icon class="nav-icon" icon="fa-solid fa-handshake" />
+          </template>
+        </KmNavLink>
+        <KmNavLink  :to="appRoutes.NATIONAL_REPORTS_NSA_MY_INTENTS" :title="t('menuMyIntents')">
+          <template #icon>
+            <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
+          </template>
+        </KmNavLink>
+      </CNavGroup>
     </CSidebarNav> 
 
     <CSidebarFooter class="border-top d-none d-lg-flex">

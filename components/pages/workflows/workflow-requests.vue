@@ -15,7 +15,7 @@
             <tr v-for="workflow in workflows" :key="workflow">
                 <td>
                     <span class="text-uppercase fw-bold ps-2 fs-small-8">
-                        <span v-if="workflow.type.name =='publishNationalRecord'" class="text-secondary">
+                        <span v-if="['publishNationalRecord', 'publishReferenceRecord'].includes(workflow.type.name)" class="text-secondary">
                             {{t('publish')}}
                         </span>
                         <span v-if="workflow.type.name=='deleteRecord'" class="text-danger">
