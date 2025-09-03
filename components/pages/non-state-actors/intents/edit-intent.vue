@@ -49,19 +49,19 @@
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <km-form-group name="designation" :caption="t('designation')">
+                                            <km-form-group name="designation" :caption="t('designation')"  required>
                                                 <km-input-lstring v-model="document.designation" :locales="document.header.languages" />
                                             </km-form-group>
                                         </div>
                                         <div class="col-md-6">
-                                            <km-form-group name="department" :caption="t('department')">
+                                            <km-form-group name="department" :caption="t('department')"  required>
                                                 <km-input-lstring v-model="document.department" :locales="document.header.languages" />
                                             </km-form-group>
                                         </div>
                                     </div>
 
 
-                                    <km-form-group name="organization" :caption="t('organization')">
+                                    <km-form-group name="organization" :caption="t('organization')"  required>
                                         <km-input-lstring v-model="document.organization" :locales="document.header.languages" />
                                     </km-form-group>
 
@@ -72,49 +72,49 @@
                                             </km-form-group>
                                         </div>
                                         <div class="col-md-6">
-                                            <km-form-group name="organizationType" :caption="t('organizationType')">
-                                                <km-select v-model="document.organizationType" :placeholder="t('organizationType')" :options="organizationTypes" class="validationClass" />
+                                            <km-form-group name="organizationType" :caption="t('organizationType')"  required>
+                                                <km-select v-model="document.organizationType" :placeholder="t('organizationType')" :options="organizationTypes" class="validationClass" :custom-selected-item="customSelectedItem"/>
                                             </km-form-group>
                                         </div>
                                     </div>
 
-                                    <km-form-group name="address" :caption="t('address')">
-                                        <km-input-lstring v-model="document.address" :locales="document.header.languages" />
+                                    <km-form-group name="address" :caption="t('address')" required>
+                                        <km-input-lstring v-model="document.address" :locales="document.header.languages" :rows="3" />
                                     </km-form-group>
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <km-form-group name="city" :caption="t('city')">
+                                            <km-form-group name="city" :caption="t('city')" required>
                                                 <km-input-lstring v-model="document.city" :locales="document.header.languages" />
                                             </km-form-group>
                                         </div>
                                         <div class="col-md-6">
-                                            <km-form-group name="state" :caption="t('state')">
+                                            <km-form-group name="state" :caption="t('state')" required>
                                                 <km-input-lstring v-model="document.state" :locales="document.header.languages" />
                                             </km-form-group>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <km-form-group name="postalCode" :caption="t('postalCode')">
+                                            <km-form-group name="postalCode" :caption="t('postalCode')" required>
                                                 <km-input-lstring v-model="document.postalCode" :locales="document.header.languages" />
                                             </km-form-group>
                                     </div>
                                         <div class="col-md-6">
                                             <km-form-group name="country" :caption="t('country')" required>
-                                                <km-select v-model="document.country" :placeholder="t('country')" :options="countries" class="validationClass" />
+                                                <km-select v-model="document.country" :placeholder="t('country')" :options="countries" class="validationClass" :custom-selected-item="customSelectedItem"/>
                                             </km-form-group>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <km-form-group name="phones" :caption="t('phones')">
-                                                <km-input-lstring-ml v-model="document.phones" :locales="document.header.languages" />
+                                                <km-input-list v-model="document.phones" type="tel" />
                                             </km-form-group>
                                         </div>
                                         <div class="col-md-6">
                                             <km-form-group name="emails" :caption="t('emails')" required>
-                                                <km-input-lstring-ml v-model="document.emails" :locales="document.header.languages" />
+                                                <km-input-list v-model="document.emails" type="email" />
                                             </km-form-group>
                                         </div>
                                     </div>
@@ -137,20 +137,20 @@
                                     </km-form-group>
 
                                     <div class="row">
-                                        <div class="col-md-6" v-if="showJurisdictionCountries">
-                                            <km-form-group name="jurisdictionCountries" :caption="t('jurisdictionCountries')" >
-                                                <km-select v-model="document.jurisdictionCountries" :placeholder="t('jurisdictionCountries')" :options="countries" multiple class="validationClass" />
+                                        <div class="col-md-6" v-if="showJurisdictionCountries ||showJurisdictionRegions">
+                                            <km-form-group name="jurisdictionCountries" :caption="t('jurisdictionCountries')" :required="showJurisdictionCountries">
+                                                <km-select v-model="document.jurisdictionCountries" :placeholder="t('jurisdictionCountries')" :options="countries" multiple class="validationClass" :custom-selected-item="customSelectedItem"/>
                                             </km-form-group>
                                         </div>
                                         <div class="col-md-6" v-if="showJurisdictionOthers">
-                                            <km-form-group name="subNational" :caption="t('localSubNational')">
+                                            <km-form-group name="subNational" :caption="t('localSubNational')" required>
                                                 <km-input-lstring v-model="document.jurisdiction.customValue" :locales="document.header.languages" />
                                             </km-form-group>
                                         </div>
 
                                         <div class="col-md-6" v-if="showJurisdictionRegions">
-                                            <km-form-group name="jurisdictionRegions" :caption="t('jurisdictionRegions')" >
-                                                <km-select v-model="document.jurisdictionRegions" :placeholder="t('jurisdictionRegions')" :options="regions" multiple class="validationClass" />
+                                            <km-form-group name="jurisdictionRegions" :caption="t('jurisdictionRegions')" required>
+                                                <km-select v-model="document.jurisdictionRegions" :placeholder="t('jurisdictionRegions')" :options="regions" multiple class="validationClass"  :custom-selected-item="customSelectedItem"/>
                                             </km-form-group>
                                         </div>
                                     </div>
@@ -165,12 +165,19 @@
                                 </div>
                                 <div class="card-body">
                                     <km-form-group name="authorityDocuments" :caption="t('authorityDocuments')">
-                                        <small id="emailHelp" class="form-text text-muted">{{t('authorityDocumentsHelp')}}</small>
+                                        <div class="alert alert-info">
+                                            <font-awesome-icon icon="fa-info-circle" class="me-2"/>
+                                            {{t('authorityDocumentsDescription')}}
+                                            <p>
+                                                <small id="emailHelp" class="form-text text-muted">{{t('authorityDocumentsHelp')}}</small>
+                                            </p>
+                                        </div>
                                         <km-add-link-file name="authorityDocuments" v-model="document.authorityDocuments" :allow-link="true" :allow-file="true" :identifier="document.header.identifier" />
                                     </km-form-group>
 
                                     <km-form-group name="authorizedEmails" :caption="t('authorizedEmails')" required>
-                                        <km-input-lstring-ml v-model="document.authorizedEmails" :locales="document.header.languages" />
+                                        <small id="emailHelp" class="form-text text-muted">{{t('authorizedEmailsHelp')}}</small>
+                                        <km-input-list v-model="document.authorizedEmails" :locales="document.header.languages" type="email"/>
                                     </km-form-group>
                                 </div>
                             </div>
@@ -184,7 +191,7 @@
                                     <km-form-group name="relevantInformation" :caption="t('otherRelevantInformationInfo')">
                                         <km-input-rich-lstring @onFileUpload="onFileUpload"
                                             :identifier="document.header.identifier"
-                                            v-model="document.relevantInformation"
+                                            v-model="document.additionalInformation"
                                             :locales="document.header.languages"></km-input-rich-lstring>
                                     </km-form-group>
                                 </div>
@@ -194,11 +201,11 @@
                     </form>
                 </template>
                 <template v-slot:review>
-                    <view-nsaIntent :identifier="document.header.identifier" :document="cleanDocument"></view-nsaIntent>
+                    <view-intent :identifier="document.header.identifier" :document="cleanDocument"></view-intent>
                 </template>
                 <template v-slot:publish></template>
-                <template v-slot:additionalSuccessMessage>
-                    {{ t('submitNationalTargetsMessage') }}
+                <template v-slot:submissionSuccessMessage>
+                    {{ t('submitIntentSuccessMessage') }}
                 </template>
             </km-form-workflow>
             <km-spinner center :visible="isBusy" v-if="isBusy"></km-spinner>
@@ -266,13 +273,16 @@
 
     const cleanDocument = computed(() => {
         const clean = useKmStorage().cleanDocument({ ...document.value });
+
+        if(clean.isNonStateActor === true)
+            clean.government = undefined;
         clean.additionalDocuments = undefined;
         
         return clean
     })
 
     const onPostClose = async (document) => {
-        await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_nsaIntent_MY_COUNTRY_LIST);
+        await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_NSA_MY_INTENTS);
     }
 
     const onPostSaveDraft = async (document) => {
@@ -320,14 +330,6 @@
 
             if (document.value.globalTargetAlignment?.length) {
                 selectedGlobalTargets.value = document.value.globalTargetAlignment?.filter(e => e.identifier.startsWith('GBF-T'))?.map(e => { return { identifier: e.identifier } });
-            }
-
-            //initialize for local use
-            document.value.government = document.value?.government || {};
-
-
-            if (user?.value?.isAuthenticated) {
-                document.value.government.identifier = document.value?.government?.identifier || user.value.government
             }
         }
         catch (e) {

@@ -21,6 +21,10 @@
     "sectionIV": "Section IV",
     "sectionV": "Section V",
     "otherInformation": "Other information",
-    "otherInformation": "Other information",
-    "indicatorData" : "Indicator data"
+    "indicatorData" : "Indicator data",
+
+    "nonStateActors": "Non-state actors",
+    "allCommitments": "All commitments",
+    "menuMyCommitments": "My commitments",
+    "menuMyIntents": "My intents"
 }

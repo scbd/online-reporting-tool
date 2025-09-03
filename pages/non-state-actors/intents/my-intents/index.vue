@@ -1,13 +1,12 @@
 <template>
   <km-suspense>
-      <my-country-nbsaps></my-country-nbsaps>
+      <my-intents></my-intents>
   </km-suspense>
   
 </template>
 
 <script setup lang="ts">
-//@ts-nocheck
-  import MyCountryNbsaps from "@/components/pages/nbsaps/my-country/index.vue";
+
   import { SCHEMAS, ROLES } from '@/utils';
 
     const schema      = useGetRealmSchema(SCHEMAS.NATIONAL_NBSAP)
@@ -16,8 +15,8 @@
 
     definePageMeta({
         auth:true,
-        schema:SCHEMAS.NATIONAL_NBSAP,
-        roles:[...ROLES.ALL_NATIONAL_USERS],
+        schema:SCHEMAS.REFERENCE_NON_STATE_ACTOR_COMMITMENT_INTENT,
+        roles:[...ROLES.EVERYONE],
         breadcrumbs : {}
     });
 

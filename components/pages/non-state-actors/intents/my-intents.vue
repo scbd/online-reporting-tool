@@ -1,15 +1,15 @@
 <template>
     <country-record-type-overview
         :title="t('title')"
-        :schema="SCHEMAS.NATIONAL_NBSAP"
-        :view-route="appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW"
-        :edit-route="appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_EDIT"
-        :new-route="appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_NEW">
+        :schema="SCHEMAS.REFERENCE_NON_STATE_ACTOR_COMMITMENT_INTENT"
+        :view-route="appRoutes.NATIONAL_REPORTS_NSA_MY_INTENT_VIEW"
+        :edit-route="appRoutes.NATIONAL_REPORTS_NSA_MY_INTENTS_EDIT"
+        :new-route="appRoutes.NATIONAL_REPORTS_NSA_MY_INTENTS_NEW">
     </country-record-type-overview>
             
 </template>
+<i18n src="@/i18n/dist/components/pages/non-state-actors/intents/my-intents.json"></i18n>
 
-<i18n src="@/i18n/dist/components/pages/nbsaps/my-country/index.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
     const { t, locale }            = useI18n();
