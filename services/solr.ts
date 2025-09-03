@@ -119,8 +119,10 @@ export async function queryIndex(searchQuery: Object) {
 
     if (searchQuery.facet) { /// Normalize Facets   
 
-        const facetResult = facetsToObject(result.facet_counts.facet_fields, searchQuery['facet.field']);
-        searchResult.facets = facetResult;
+        if(searchQuery['facet.field']){
+            const facetResult = facetsToObject(result.facet_counts.facet_fields, searchQuery['facet.field']);
+            searchResult.facets = facetResult;
+        }        
         searchResult.facetPivot = result.facet_counts.facet_pivot;
     }
 
