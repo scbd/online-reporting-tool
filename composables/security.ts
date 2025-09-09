@@ -106,6 +106,7 @@ async function checkUserAccess(options:any) {
     if (options.auth === false || options.auth === 'guest') return true;
 
     const { roles, schema } = options;
+    const schemaType = realmConfStore.realmConf?.schemas[schema]?.type;
 
     if(!authUser?.government){
         const adminRoles = realmConfStore.getRole(ROLES.ADMINISTRATOR);
@@ -125,7 +126,7 @@ async function checkUserAccess(options:any) {
     }
 
     // verify user has government
-    if(schemaRoles?.length && !authUser?.government){
+    if(schemaType == 'national' && schemaRoles?.length && !authUser?.government){
         return false;
     }
 

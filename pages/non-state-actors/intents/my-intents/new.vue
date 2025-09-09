@@ -8,8 +8,8 @@
 
     definePageMeta({
         auth:true,
-        schema:SCHEMAS.NATIONAL_NBSAP,
-        roles:[...ROLES.ALL_NATIONAL_USERS],
+        schema:SCHEMAS.REFERENCE_NON_STATE_ACTOR_COMMITMENT_INTENT,
+        roles:[...ROLES.EVERYONE],
         breadcrumbs : {}
     });
 

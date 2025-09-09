@@ -1,7 +1,7 @@
 <template>
     <km-suspense>{{ record?.workingDocumentTitle }}
       <view-actions print-selector=".print-section" :title="lstring(record?.workingDocumentTitle||record?.title)"></view-actions>
-{{ workflowId }}
+
       <workflow-request v-if="workflowId" :workflow-id="workflowId"></workflow-request>
 
       <div class="print-section">

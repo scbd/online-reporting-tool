@@ -35,6 +35,7 @@
                     <th scope="col">{{t('title')}}</th>
                     <th scope="col" v-if="hasGbfObjectives">{{t('gbfGoals')}}</th>
                     <th scope="col">{{t('status')}}</th>
+                    <!-- <th scope="col">{{t('createdOn')}}</th> -->
                     <th scope="col">{{t('updatedOn')}}</th>
                     <th scope="col"></th>
                 </tr>
@@ -60,6 +61,11 @@
                         </CBadge>
                         <km-document-status :document="document" @on-status-change="onRecordStatusChange"></km-document-status>
                     </td>
+                    <!-- <td>
+                        {{formatDate(document.createdOn)}}<br/>
+                        submitted by can be NAU, but show the date when the record was actually published.
+                        {{ document.submittedBy.firstName }} {{ document.submittedBy.lastName }}
+                    </td> -->
                     <td>
                         {{formatDate(document.updatedOn)}}<br/>
                         {{ document.updatedBy.firstName }} {{ document.updatedBy.lastName }}

@@ -153,7 +153,12 @@
                 <km-view-links :can-edit="false" :links="viewDocument.authorityDocuments" />
               </km-form-group>
               <km-form-group :caption="t('authorizedEmails')" v-if="viewDocument.authorizedEmails">
-                <km-value-list :value="viewDocument.authorizedEmails" :locale="selectedLocale" />
+                <km-value-list  v-if="!security.role.isAdministrator()" :value="viewDocument.authorizedEmails" />
+                <div v-else>
+                    <km-value v-for="(item, index) in viewDocument.authorizedEmails" :key="index" class="mb-1">
+                      <a :href="`${ACCOUNTS_HOST_URL}/admin/users?freetext=${item}`" target="_blank">{{ item }} </a>
+                    </km-value>
+                </div>
               </km-form-group>
             </div>
           </div>
@@ -188,6 +193,8 @@ import { KmDocumentsService } from "@/services/kmDocuments";
 const emit = defineEmits(['onDocumentLoad']);
 const route = useRoute();
 const { t, locale } = useI18n();
+const security = useSecurity();
+const { ACCOUNTS_HOST_URL } = useRuntimeConfig().public;
 
 const props = defineProps({
   document: { type: Object, default: undefined },

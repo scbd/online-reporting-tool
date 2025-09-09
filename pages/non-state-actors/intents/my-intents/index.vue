@@ -9,7 +9,7 @@
 
   import { SCHEMAS, ROLES } from '@/utils';
 
-    const schema      = useGetRealmSchema(SCHEMAS.NATIONAL_NBSAP)
+    const schema      = useGetRealmSchema(SCHEMAS.REFERENCE_NON_STATE_ACTOR_COMMITMENT_INTENT)
     const { locale }  = useI18n();
     const route       = useRoute();
 

@@ -14,12 +14,12 @@
   <script setup lang="ts">
 //@ts-nocheck
 
-    const schema        = useGetRealmSchema(SCHEMAS.NATIONAL_NBSAP)
+    // const schema        = useGetRealmSchema(SCHEMAS.NATIONAL_NBSAP)
     const { t, locale } = useI18n();
     const route         = useRoute();
     definePageMeta({
         auth:false,
-        schema:SCHEMAS.NATIONAL_NBSAP,
+        // schema:SCHEMAS.NATIONAL_NBSAP,
         // roles:[...ROLES.ALL_NATIONAL_USERS],
         breadcrumbs : {}
     });

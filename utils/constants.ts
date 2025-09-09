@@ -54,7 +54,8 @@ export const ROLES = {
     NATIONAL_AUTHORIZED_USER: 'nationalAuthorizedUser',
     PUBLISHING_AUTHORITIES  : 'publishingAuthorities',
     ALL_NATIONAL_USERS      : ['nationalFocalPoint', 'nationalAuthorizedUser', 'publishingAuthorities'],
-    EVERYONE                : 'everyone'
+    EVERYONE                : 'everyone',
+    NSA_COMMITMENT_AUTHORIZED_USER : 'ortNsaCommitmentAuthorizedUser',
 }
 // ROLES["ALL_NATIONAL_USERS"] = [ROLES.NATIONAL_FOCALPOINT]
 
