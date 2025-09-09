@@ -1,8 +1,8 @@
 {
-    "nsaIntentTitle": "Intent to submit non-state actor commitment",
+    "nsaIntentTitle": "Intent to submit stakeholder commitment",
     "general": "General",
     "isNonStateActor": "Do you represent a Party (national Government) or an actor other than a national Government",
-    "nonStateActor":"Non-state actor",
+    "nonStateActor":"Stakeholder",
     "party":"National government",
     "government": "Government",
     "contactDetailsSection": "Contact details",

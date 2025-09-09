@@ -76,7 +76,7 @@
       </CNavGroup>
       <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_REPORTS_NSA)">  
         <template #togglerContent>
-          {{t('nonStateActors')}}
+          {{t('stakeholders')}}
         </template>      
 
         <KmNavLink :to="localePath(appRoutes.NATIONAL_REPORTS_NSA_COMMITMENTS)" icon="cil-list" :title="t('allCommitments')"></KmNavLink>

@@ -449,7 +449,6 @@
                     </CCardBody>
                 </CCard>
 
-                <!-- Non-state actors -->
                 <CCard class="mb-3" v-if="canShowNonStateProgress">
                     <CCardHeader>
                         {{ t('nonStateActor') }} 

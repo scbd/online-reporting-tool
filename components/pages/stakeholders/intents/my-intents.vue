@@ -8,7 +8,7 @@
     </country-record-type-overview>
             
 </template>
-<i18n src="@/i18n/dist/components/pages/non-state-actors/intents/my-intents.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/stakeholders/intents/my-intents.json"></i18n>
 
 <script setup lang="ts">
 //@ts-nocheck
