@@ -578,6 +578,7 @@
             sectionV : 0,
             sectionOtherInfo : 0
         }
+        console.log(progress)
 
         fields.sectionI.forEach(field=>{
             if(document.sectionI?.[field] != undefined){

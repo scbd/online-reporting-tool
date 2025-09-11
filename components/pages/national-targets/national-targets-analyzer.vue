@@ -188,7 +188,7 @@
                             </CCol>
                         </CRow>
                         <CRow>
-                            <CCol :sm="6">
+                            <CCol :sm="6" v-if="analyzedCounts.progressInTargets?.partiesWithAllGbfTargets">
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <div class="fs-4 fw-semibold">
@@ -215,7 +215,7 @@
                                     </div>
                                 </div>
                             </CCol>
-                            <CCol :sm="6">
+                            <CCol :sm="6" v-if="analyzedCounts.progressInTargets?.partiesWith17AndMoreGbfTargets">
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <div class="fs-4 fw-semibold">
@@ -679,7 +679,6 @@ import {useRoute} from 'vue-router';
         }
         const result = await queryIndex(parseSolrQuery(searchQuery, locale));
 
-        loading.value = false;
         recordCount.value = result.numFound;
         facets.value = result.facets;
         facetPivot.value = result.facetPivot;
@@ -712,6 +711,8 @@ import {useRoute} from 'vue-router';
 
         const newCounts = {};
         newCounts.progressInTargets     = buildProgressInTargetCounts(facets.value, facetPivot.value);
+        await loadGlobalCount(newCounts.progressInTargets);     
+
         newCounts.progressInMonitoring  = buildProgressInMonitoringCounts(facets.value, facetPivot.value);
         newCounts.relevanceMonitoring   = buildRelevanceMonitoringCounts(facets.value, facetPivot.value);
         newCounts.sectionC              = buildSectionCCounts(facets.value, facetPivot.value, sectionCGbfFacets.facets['globalTargetAlignment_ss']);
@@ -726,6 +727,8 @@ import {useRoute} from 'vue-router';
                     return a.name.localeCompare(b.name);
                 })
         analyzedCounts.value = newCounts;
+
+        loading.value = false;
         
     }
 
@@ -739,6 +742,29 @@ import {useRoute} from 'vue-router';
         showAllCountries.value = !showAllCountries.value
     }
 
+    async function loadGlobalCount(progressInTargets){
+        const queries = [];
+        queries.push(buildArrayQuery('schema_s', filters.value.recordTypes?.length ? filters.value.recordTypes : recordTypes));
+        queries.push(buildArrayQuery('government_s', filters.value.countries));              
+        queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));  
+
+        const searchQuery = {
+            rowsPerPage: 0,
+            query: andOr(compact(queries), 'AND'),
+            facet: true,
+            FacetFields: ['globalTargetAlignment_ss'],
+            pivotFacetFields: ['government_s,globalTargetAlignment_ss'],
+        }
+        const result = await queryIndex(parseSolrQuery(searchQuery, locale));
+        const targetsByParty = result.facetPivot['government_s,globalTargetAlignment_ss'];
+        //4.	Number of Parties that have set national targets for every GBF target  
+        progressInTargets.partiesWithAllGbfTargets   = targetsByParty.filter(e=>e.pivot?.length==23).map(e=>e.value)
+        //5.	Number of Parties that have set national targets for more than 75% of the GBF targets
+        progressInTargets.partiesWith17AndMoreGbfTargets   = targetsByParty.filter(e=>e.pivot?.length>16).map(e=>e.value)
+
+        return progressInTargets;
+
+    }
     function buildProgressInTargetCounts(facets, facetsPivot){
         
         const progressInTargets = {};
@@ -784,10 +810,11 @@ import {useRoute} from 'vue-router';
         progressInTargets.avgByGbfTargetsMin = Math.min(...gbfCountryCounts);
         progressInTargets.avgByGbfTargetsMax = Math.max(...gbfCountryCounts);
 
-        //4.	Number of Parties that have set national targets for every GBF target  
-        progressInTargets.partiesWithAllGbfTargets   = targetsByParty.filter(e=>e.pivot?.length==23).map(e=>e.value)
-        //5.	Number of Parties that have set national targets for more than 75% of the GBF targets
-        progressInTargets.partiesWith17AndMoreGbfTargets   = targetsByParty.filter(e=>e.pivot?.length>16).map(e=>e.value)
+        //calculated in loadGlobalCount to avoid issue with filters
+        // //4.	Number of Parties that have set national targets for every GBF target  
+        //progressInTargets.partiesWithAllGbfTargets   = targetsByParty.filter(e=>e.pivot?.length==23).map(e=>e.value)
+        // //5.	Number of Parties that have set national targets for more than 75% of the GBF targets
+        //progressInTargets.partiesWith17AndMoreGbfTargets   = targetsByParty.filter(e=>e.pivot?.length>16).map(e=>e.value)
 
         //6.	For each GBF target, percent of parties that have a national target which has been mapped to it. [divide by parties that have submitted and not all parties]
         const gbfTargetPercentByParty = gbfTargetsByParty.map(e=>({

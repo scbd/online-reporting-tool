@@ -276,7 +276,7 @@ class editFormUtility{
         additionalProps = additionalProps || {};
 
         const { user } = useAuth();
-
+console.log(schema)
         return {
             header : {
                 schema,
