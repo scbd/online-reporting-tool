@@ -53,12 +53,12 @@ export default defineNuxtConfig({
 
   i18n: {       
       locales: [
-          { code: 'ar', iso: 'ar-SA',  dir: 'rtl' },
-          { code: 'en', iso: 'en-US',             },
-          { code: 'fr', iso: 'fr-FR',             },
-          { code: 'es', iso: 'es-ES',             },
-          { code: 'ru', iso: 'ru-RU',             },
-          { code: 'zh', iso: 'zh-CN',             },
+          { code: 'ar', language: 'ar-SA',  dir: 'rtl' },
+          { code: 'en', language: 'en-US',             },
+          { code: 'fr', language: 'fr-FR',             },
+          { code: 'es', language: 'es-ES',             },
+          { code: 'ru', language: 'ru-RU',             },
+          { code: 'zh', language: 'zh-CN',             },
       ],
       defaultLocale: 'en',
       detectBrowserLanguage : {
