@@ -359,6 +359,10 @@
         }
     }
 
+    /**
+     * Handles the document publishing workflow including validation, pre-publish hooks, and post-publish actions
+     * @returns {Promise<void>} Promise that resolves when publishing is complete
+     */
     async function onPublish(){
         try{
 
@@ -371,7 +375,9 @@
             }
 
             validationReport.value = { isSaving:true, isPublishing:true };
-            const { document, documentSaveResponse } = await saveDraft(); 
+            const saveResult = await saveDraft(); 
+            let document = saveResult.document;
+            const documentSaveResponse = saveResult.documentSaveResponse;
             validationReport.value.isSaving          = false;
 
             // onPrePublish

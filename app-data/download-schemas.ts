@@ -1,13 +1,19 @@
 import messages from '~/i18n/dist/app-data/download-schemas.json' with { type: "json" };;
 
 import { useI18n } from 'vue-i18n'
+
+/**
+ * Download schemas configuration with internationalized field names
+ * Provides schema definitions for various document types with localized labels
+ */
 export const downloadSchemas = {
+    /**
+     * Gets the schemas with internationalized field labels
+     * @returns {Object} Object containing schema definitions for different document types
+     */
     get schemas(){
 
-        const { t, availableLocales, } = useI18n({            
-            messages,
-            useScope:'local'
-        })
+        const { t, availableLocales, } = useI18n()
         return {	
             "nationalTarget7" : {
                "publishedOn"                       : t("publishedOn"),

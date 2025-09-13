@@ -99,6 +99,11 @@ export default defineNuxtConfig({
               }
           }
       },
+      // Note: vue-toast-notification source map warning is a known issue
+      // in the package distribution and doesn't affect functionality
+      optimizeDeps: {
+          include: ['vue-toast-notification']
+      },
       plugins: [
           // @ts-ignore
           viteSyncI18nFiles({}),
