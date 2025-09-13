@@ -2,7 +2,13 @@ import { defineStore } from 'pinia'
 import type { ThesaurusTerm } from '~/types/api/thesaurus-term'
 import type { EDictionary } from '~/types/schemas/base/EDictionary'
 
-export const useThesaurusStore = defineStore('targetTracker', {
+/**
+ * Store for managing target tracker specific thesaurus data.
+ * This store manages domain terms and individual terms for target tracking functionality.
+ * 
+ * @returns Pinia store with state, getters, and actions for target tracker thesaurus management
+ */
+export const useTargetTrackerStore = defineStore('targetTracker', {
   state: () => {
     return {
         domainTerms : {} as EDictionary<ThesaurusTerm[]>,

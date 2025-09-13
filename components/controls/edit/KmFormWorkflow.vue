@@ -371,10 +371,11 @@
             }
 
             validationReport.value = { isSaving:true, isPublishing:true };
-            const { document, documentSaveResponse } = await saveDraft(); 
+            const { document: initialDocument, documentSaveResponse } = await saveDraft(); 
             validationReport.value.isSaving          = false;
 
             // onPrePublish
+            let document = initialDocument;
             if(workflowFunctions?.onPrePublish)
                 document = await workflowFunctions.onPrePublish(document);
 

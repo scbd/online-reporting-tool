@@ -3,6 +3,12 @@ import { defineStore } from 'pinia'
 import {THESAURUS} from '@/utils/constants'
 import type { ETerm } from '~/types/schemas/base/ETerm'
 
+/**
+ * Main thesaurus store for managing domain terms and general thesaurus functionality.
+ * This store handles domain loading, term management, and provides access to thesaurus data.
+ * 
+ * @returns Pinia store with state, getters, and actions for thesaurus management
+ */
 export const useThesaurusStore = defineStore('thesaurus', {
   state: () => {
     return {

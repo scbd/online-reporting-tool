@@ -1,13 +1,10 @@
-import messages from '~/i18n/dist/app-data/download-schemas.json' with { type: "json" };;
+import messages from '~/i18n/dist/app-data/download-schemas.json'
 
 import { useI18n } from 'vue-i18n'
 export const downloadSchemas = {
     get schemas(){
 
-        const { t, availableLocales, } = useI18n({            
-            messages,
-            useScope:'local'
-        })
+        const { t, availableLocales, } = useI18n()
         return {	
             "nationalTarget7" : {
                "publishedOn"                       : t("publishedOn"),
