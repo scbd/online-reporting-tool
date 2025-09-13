@@ -96,3 +96,6 @@ sw.*
 .vscode/
 .output
 .nuxt
+
+# Vite development known issues documentation (not for production)
+.vite-known-issues.md
