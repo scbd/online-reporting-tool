@@ -26,7 +26,7 @@
                     </nr7-add-indicator-data>       
 
                     <div v-if="indicator.nationalData">
-                        <nr7-view-indicator-data :indicator-data="indicator.nationalData"></nr7-view-indicator-data>
+                        <nr7-view-indicator-data :indicator-data="indicator.nationalData" :indicator-type="indicatorType"></nr7-view-indicator-data>
                     </div>
                 </div>      
                 <div v-if="indicator.identifier?.indexOf('KMGBF-INDICATOR-BIN')>=0" >  

@@ -15,11 +15,11 @@
 
             <div class="card-body">
                 <slot name="actionButtons" :key="key" :indicator-data="computedIndicatorsData?.[indicatorData.data?.identifier]"
-                    :indicator="indicatorData?.indicator">
+                    :indicator="indicatorData?.indicator" :national-indicator="computedNationalIndicators[indicatorData.indicator?.identifier]">
                 </slot>
                 <div v-if="key!= 'binary' && indicatorData.data">
                     <div v-if="computedIndicatorsData[indicatorData.data.identifier]">
-                        <nr7-view-indicator-data
+                        <nr7-view-indicator-data :indicator-type="key=='national'?'otherNationalIndicators': key"
                             :indicator="indicator"
                             :indicator-data="computedIndicatorsData[indicatorData.data.identifier]?.body"></nr7-view-indicator-data>
                     </div>
