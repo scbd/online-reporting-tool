@@ -1,17 +1,17 @@
 <template>
   <km-suspense>
-    <edit-intent></edit-intent>
+    <edit-commitment></edit-commitment>
   </km-suspense>
 </template>
   
 <script setup lang="ts">
 
-    const schema      = useGetRealmSchema(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT)
+    const schema      = useGetRealmSchema(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT)
     const { locale }  = useI18n();
     const route       = useRoute();
     definePageMeta({
         auth:true,
-        schema:SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT,
+        schema:SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT,
         roles:[...ROLES.EVERYONE],
         breadcrumbs : {
           skip : ['identifier']

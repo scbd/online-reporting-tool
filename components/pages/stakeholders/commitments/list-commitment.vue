@@ -1,5 +1,6 @@
 <template>
-    <record-type-search :record-types="[SCHEMAS.NATIONAL_NBSAP]" :show-record-type="false" :show-targets="false" :show-goals="false">
+    <record-type-search :record-types="[SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT]" 
+    :show-record-type="false" :show-targets="false" :show-goals="false">
         <template #action-buttons>
             <km-link :to="analyzerUrl" 
                 class="btn btn-secondary btn-sm ms-1">
@@ -10,13 +11,13 @@
             <div class="col-md-4">
                 <km-form-group :caption="t('status')">
                     <km-select v-model="customFilters.reportStatus" :options="reportStatus" 
-                        option-value="identifier" option-label="name.en" multiple @update:model-value="onFilterChange(onCustomFilterChange)"></km-select>
+                        option-value="identifier" option-label="name.en" multiple @update:modelValue="onFilterChange(onCustomFilterChange)"></km-select>
                 </km-form-group>
             </div>
         </template>
     </record-type-search>    
 </template>
-<i18n src="@/i18n/dist/components/pages/nbsaps/nbsap-list.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/stakeholders/commitments/list-commitment.json"></i18n>
 
 <script setup lang="ts">
 //@ts-nocheck

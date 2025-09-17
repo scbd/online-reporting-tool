@@ -1,0 +1,25 @@
+{
+    "contactDetailsSection": "Contact details",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "designation": "Designation",
+    "department": "Department",
+    "organization": "Organization or coalition (official name of the organization)",
+    "organizationAcronym": "Organization acronym",
+    "organizationType": "Organization type",
+    "address": "Address",
+    "city": "City",
+    "state": "State/Province",    
+    "postalCode": "Postal code",
+    "country": "Country",    
+    "phones": "Phones",
+    "emails": "Emails",
+    "websites": "Websites",
+    
+    "jurisdiction": "Jurisdiction",
+    "jurisdictionCountries": "Countries",
+    "jurisdictionRegions": "Regions",
+    "localSubNational": "Local or sub-national name",
+    "jurisdictionDetailsSection": "Geographical scope",
+    "jurisdictionDetailsInfo": "Geographical scope of organization or coalition (indicate whether the organization or coalition operates at the local, subnational, national, regional or multinational level and provide a list of locations whenever possible)."
+}

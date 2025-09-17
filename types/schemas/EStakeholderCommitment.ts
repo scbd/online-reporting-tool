@@ -1,0 +1,47 @@
+import type { EHeader } from "./base/EHeader";
+import type { ETerm } from "./base/ETerm";
+import type { ELstring } from "./base/ELstring";
+import type { ELink } from "./base/ELink";
+import type { EReference } from "./base/EReference";
+import type { EContactBase } from "./EContactBase";
+
+export interface EStakeholderCommitment extends EContactBase {
+	header: EHeader;
+	jurisdiction: ETerm;
+	jurisdictionCountries: ETerm[];
+	jurisdictionRegions: ETerm[];
+	title: ELstring;
+	description: ELstring;
+	timelineStartDate: string | null;
+	timelineEndDate: string | null;
+	isOpenEnded: boolean;
+	nextStepsInformation: ELstring;
+	performanceInformation: ELstring;
+	endorsementsInformation: ELstring;
+	primaryGlobalAlignment: ETerm;
+	primaryNationalTarget: EReference;
+	otherGlobalAlignments: ETerm[];
+	otherNationalTargets: EReference[];
+	alignmentInformation: ELstring;
+	indicators: ETerm[];
+	implementingConsiderations: ETerm[];
+	coverageCountries: ETerm[];
+	coverageRegions: ETerm[];
+	coverageOther: ELstring[];
+	fundingSource: ELstring;
+	isFundingSufficient: boolean;
+	internationalFrameworks: ELstring;
+	partners: ELstring;
+	isLinkedToNbsap: boolean;
+	linkedToNbsapCountries: ETerm[];
+	isReportingOnTarget15: boolean;
+	target15Information: ELstring;
+	isProgressTracked: boolean;
+	progressInformation: ELstring;
+	progressTrackingUrl: ELstring;
+	implementationStrategies: ELstring;
+	additionalInformation: ELstring;
+	additionalDocuments: ELink[];
+	linkedAttachments: ELink[];
+	notes: string;
+}

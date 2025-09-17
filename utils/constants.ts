@@ -68,7 +68,8 @@ export const SCHEMAS = {
     NATIONAL_REPORT_7                   : 'nationalReport7',
     NATIONAL_REPORT_7_INDICATOR_DATA    : 'nationalReport7IndicatorData',
     NATIONAL_REPORT_7_BINARY_INDICATOR_DATA    : 'nationalReport7BinaryIndicatorData',
-    REFERENCE_NON_STATE_ACTOR_COMMITMENT_INTENT    : 'nonStateActorCommitmentIntent'
+    REFERENCE_STAKEHOLDER_COMMITMENT_INTENT    : 'stakeholderCommitmentIntent',
+    REFERENCE_STAKEHOLDER_COMMITMENT    : 'stakeholderCommitment'
 }
 
 export const UTILS = {

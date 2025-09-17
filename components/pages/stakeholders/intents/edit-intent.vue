@@ -282,7 +282,7 @@
     })
 
     const onPostClose = async (document) => {
-        await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_NSA_MY_INTENTS);
+        await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_INTENTS);
     }
 
     const onPostSaveDraft = async (document) => {
@@ -304,7 +304,7 @@
 
     function emptyDocument() {
 
-        return EditFormUtility.buildEmptyDocument(SCHEMAS.REFERENCE_NON_STATE_ACTOR_COMMITMENT_INTENT, {});
+        return EditFormUtility.buildEmptyDocument(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT, {});
     }
 
     async function init() {
@@ -328,9 +328,6 @@
             else
                 document.value = emptyDocument();
 
-            if (document.value.globalTargetAlignment?.length) {
-                selectedGlobalTargets.value = document.value.globalTargetAlignment?.filter(e => e.identifier.startsWith('GBF-T'))?.map(e => { return { identifier: e.identifier } });
-            }
         }
         catch (e) {
             useLogger().error(e, 'Error loading document for edit');

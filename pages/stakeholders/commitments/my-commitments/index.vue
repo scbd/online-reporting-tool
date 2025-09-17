@@ -1,6 +1,6 @@
 <template>
   <km-suspense>
-      <my-intents></my-intents>
+      <my-commitments></my-commitments>
   </km-suspense>
   
 </template>
@@ -9,13 +9,13 @@
 
   import { SCHEMAS, ROLES } from '@/utils';
 
-    const schema      = useGetRealmSchema(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT)
+    const schema      = useGetRealmSchema(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT)
     const { locale }  = useI18n();
     const route       = useRoute();
 
     definePageMeta({
         auth:true,
-        schema:SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT,
+        schema:SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT,
         roles:[...ROLES.EVERYONE],
         breadcrumbs : {}
     });

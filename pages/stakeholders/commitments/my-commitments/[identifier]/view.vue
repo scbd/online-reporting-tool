@@ -5,7 +5,7 @@
       <workflow-request v-if="workflowId" :workflow-id="workflowId"></workflow-request>
 
       <div class="print-section">
-        <view-intent v-if="identifier" :identifier="identifier" @on-document-load="onDocumentLoad"></view-intent>
+        <view-commitment v-if="identifier" :identifier="identifier" @on-document-load="onDocumentLoad"></view-commitment>
       </div>
     </km-suspense>
 
@@ -17,7 +17,7 @@
 
   const route      = useRoute();
   const {locale}   = useI18n();
-  const schema     = useGetRealmSchema(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT)
+  const schema     = useGetRealmSchema(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT)
   const identifier = ref(route.params.identifier);
   const record     = ref(null);
   const workflowId = ref(route.query?.workflowId);

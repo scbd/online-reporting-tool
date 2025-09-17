@@ -1,6 +1,6 @@
 <template>
   <km-suspense>
-    <edit-intent></edit-intent>
+    <edit-commitment></edit-commitment>
   </km-suspense>
 </template>
   
@@ -8,7 +8,7 @@
 
     definePageMeta({
         auth:true,
-        schema:SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT,
+        schema:SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT,
         roles:[...ROLES.EVERYONE],
         breadcrumbs : {}
     });

@@ -1,14 +1,14 @@
 <template>
     <country-record-type-overview
         :title="t('title')"
-        :schema="SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT"
-        :view-route="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_INTENT_VIEW"
-        :edit-route="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_INTENTS_EDIT"
-        :new-route="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_INTENTS_NEW">
+        :schema="SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT"
+        :view-route="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_COMMITMENTS_VIEW"
+        :edit-route="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_COMMITMENTS_EDIT"
+        :new-route="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_COMMITMENTS_NEW">
     </country-record-type-overview>
             
 </template>
-<i18n src="@/i18n/dist/components/pages/stakeholders/intents/my-intents.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/stakeholders/commitments/my-commitments.json"></i18n>
 
 <script setup lang="ts">
 //@ts-nocheck
