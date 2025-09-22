@@ -28,136 +28,10 @@
                             </div>
                         </km-form-group>
                         
-                        <km-form-group>
-                            <div class="card">
-                                <div class="card-header bg-secondary">
-                                    {{ t('contactDetailsSection') }}
-                                </div>
-                                <div class="card-body">
-                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <km-form-group name="firstName" :caption="t('firstName')" required>
-                                                <input type="text" class="form-control" v-model="document.firstName" />
-                                            </km-form-group>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <km-form-group name="lastName" :caption="t('lastName')" required>
-                                                <input type="text" class="form-control" v-model="document.lastName" />
-                                            </km-form-group>                                            
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <km-form-group name="designation" :caption="t('designation')"  required>
-                                                <km-input-lstring v-model="document.designation" :locales="document.header.languages" />
-                                            </km-form-group>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <km-form-group name="department" :caption="t('department')"  required>
-                                                <km-input-lstring v-model="document.department" :locales="document.header.languages" />
-                                            </km-form-group>
-                                        </div>
-                                    </div>
-
-
-                                    <km-form-group name="organization" :caption="t('organization')"  required>
-                                        <km-input-lstring v-model="document.organization" :locales="document.header.languages" />
-                                    </km-form-group>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <km-form-group name="organizationAcronym" :caption="t('organizationAcronym')">
-                                                <km-input-lstring v-model="document.organizationAcronym" :locales="document.header.languages" />
-                                            </km-form-group>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <km-form-group name="organizationType" :caption="t('organizationType')"  required>
-                                                <km-select v-model="document.organizationType" :placeholder="t('organizationType')" :options="organizationTypes" class="validationClass" :custom-selected-item="customSelectedItem"/>
-                                            </km-form-group>
-                                        </div>
-                                    </div>
-
-                                    <km-form-group name="address" :caption="t('address')" required>
-                                        <km-input-lstring v-model="document.address" :locales="document.header.languages" :rows="3" />
-                                    </km-form-group>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <km-form-group name="city" :caption="t('city')" required>
-                                                <km-input-lstring v-model="document.city" :locales="document.header.languages" />
-                                            </km-form-group>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <km-form-group name="state" :caption="t('state')" required>
-                                                <km-input-lstring v-model="document.state" :locales="document.header.languages" />
-                                            </km-form-group>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <km-form-group name="postalCode" :caption="t('postalCode')" required>
-                                                <km-input-lstring v-model="document.postalCode" :locales="document.header.languages" />
-                                            </km-form-group>
-                                    </div>
-                                        <div class="col-md-6">
-                                            <km-form-group name="country" :caption="t('country')" required>
-                                                <km-select v-model="document.country" :placeholder="t('country')" :options="countries" class="validationClass" :custom-selected-item="customSelectedItem"/>
-                                            </km-form-group>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <km-form-group name="phones" :caption="t('phones')">
-                                                <km-input-list v-model="document.phones" type="tel" />
-                                            </km-form-group>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <km-form-group name="emails" :caption="t('emails')" required>
-                                                <km-input-list v-model="document.emails" type="email" />
-                                            </km-form-group>
-                                        </div>
-                                    </div>
-
-                                    <km-form-group name="websites" :caption="t('websites')">
-                                        <km-add-link-file name="websites" v-model="document.websites" :allow-link="true" :allow-files="false" :identifier="document.header.identifier" />
-                                    </km-form-group>
-                                </div>
-                            </div>
-                        </km-form-group>
-                        <km-form-group>
-                            <div class="card">
-                                <div class="card-header bg-secondary">
-                                    <!-- New Section: Jurisdiction Details -->
-                                    {{ t('jurisdictionDetailsSection') }}
-                                </div>
-                                <div class="card-body">
-                                    <km-form-group name="jurisdiction" :caption="t('jurisdiction')" required>
-                                        <km-select v-model="document.jurisdiction" :placeholder="t('jurisdiction')" :options="jurisdictions" class="validationClass" :custom-selected-item="customSelectedItem" />
-                                    </km-form-group>
-
-                                    <div class="row">
-                                        <div class="col-md-6" v-if="showJurisdictionCountries ||showJurisdictionRegions">
-                                            <km-form-group name="jurisdictionCountries" :caption="t('jurisdictionCountries')" :required="showJurisdictionCountries">
-                                                <km-select v-model="document.jurisdictionCountries" :placeholder="t('jurisdictionCountries')" :options="countries" multiple class="validationClass" :custom-selected-item="customSelectedItem"/>
-                                            </km-form-group>
-                                        </div>
-                                        <div class="col-md-6" v-if="showJurisdictionOthers">
-                                            <km-form-group name="subNational" :caption="t('localSubNational')" required>
-                                                <km-input-lstring v-model="document.jurisdiction.customValue" :locales="document.header.languages" />
-                                            </km-form-group>
-                                        </div>
-
-                                        <div class="col-md-6" v-if="showJurisdictionRegions">
-                                            <km-form-group name="jurisdictionRegions" :caption="t('jurisdictionRegions')" required>
-                                                <km-select v-model="document.jurisdictionRegions" :placeholder="t('jurisdictionRegions')" :options="regions" multiple class="validationClass"  :custom-selected-item="customSelectedItem"/>
-                                            </km-form-group>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </km-form-group>
-
+                        <edit-contact-details v-model="contactDetails" 
+                            :locales="document.header.languages"
+                            @update:modelValue="onContactDetailsUpdate"></edit-contact-details>
+                        
                         <km-form-group>
                             <div class="card">
                                 <div class="card-header bg-secondary">
@@ -247,29 +121,8 @@
     const validationReport          = ref({});
     const documentInfo              = ref({});
 
-    const jurisdictions  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.JURISDICTIONS));
-    const countries = computed(() => thesaurusStore.getDomainTerms(THESAURUS.COUNTRIES));
-    const regions  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.REGIONS));
-    const organizationTypes  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.ORGANIZATION_TYPES));
-
-    const showJurisdictionCountries = computed(() => {
-        return !!document.value?.jurisdiction && (
-            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_LOCAL ||
-            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_SUB_NATIONAL ||
-            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_NATIONAL);
-    });
-
-    const showJurisdictionOthers = computed(() => {
-        return !!document.value?.jurisdiction && (
-            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_LOCAL ||
-            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_SUB_NATIONAL);
-    });
-
-    const showJurisdictionRegions = computed(() => {
-        return !!document.value?.jurisdiction && (
-            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_REGIONAL ||
-            document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_MULTINATIONAL);
-    });
+    const contactDetails:ComputedRef<EStakeHolderContact>  = computed(()=>extractContactDetails(document.value));
+    
 
     const cleanDocument = computed(() => {
         const clean = useKmStorage().cleanDocument({ ...document.value });
@@ -310,14 +163,7 @@
     async function init() {
         isBusy.value = true;
         try {
-            await Promise.all([
-                thesaurusStore.loadDomainTerms(THESAURUS.JURISDICTIONS),
-                thesaurusStore.loadDomainTerms(THESAURUS.REGIONS),
-                thesaurusStore.loadDomainTerms(THESAURUS.COUNTRIES),
-                thesaurusStore.loadDomainTerms(THESAURUS.ORGANIZATION_TYPES)
-                
-            ]);
-
+            
             if (refProps.rawDocument.value) {
                 document.value = { ...refProps.rawDocument.value };
             }
@@ -334,6 +180,37 @@
         }
 
         isBusy.value = false;
+    }
+
+    function onContactDetailsUpdate(contactDetails:EContactBase){
+        document.value = {
+            ...document.value,
+            ...contactDetails
+        }
+    }
+    
+    function extractContactDetails(intent: EStakeholderCommitmentIntent):EStakeHolderContact {
+                
+        return {
+            firstName             : intent.firstName,
+            lastName              : intent.lastName,
+            designation           : intent.designation,
+            department            : intent.department,
+            organization          : intent.organization,
+            organizationAcronym   : intent.organizationAcronym,
+            organizationType      : intent.organizationType,
+            address               : intent.address,
+            city                  : intent.city,
+            state                 : intent.state,
+            postalCode            : intent.postalCode,
+            country               : intent.country,
+            phones                : intent.phones,
+            emails                : intent.emails,
+            websites              : intent.websites,
+            jurisdiction          : intent.jurisdiction,
+            jurisdictionCountries : intent.jurisdictionCountries,
+            jurisdictionRegions   : intent.jurisdictionRegions,
+        }
     }
 
     onMounted(() => {

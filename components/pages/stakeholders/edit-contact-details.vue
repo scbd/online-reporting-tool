@@ -47,7 +47,11 @@
                             <km-select v-model="document.organizationType" :placeholder="t('organizationType')" 
                             :options="organizationTypes" class="validationClass" :custom-selected-item="customSelectedItem"
                             @update:modelValue="onUpdate"/>
+                        </km-form-group>                                   
+                        <km-form-group name="organizationType.customValue" :caption="t('otherOrganizationType')" required v-if="document.organizationType?.identifier == THESAURUS.OTHER">
+                            <km-input-lstring v-model="document.organizationType.customValue" :locales="locales"  @update:modelValue="onUpdate"/>
                         </km-form-group>
+
                     </div>
                 </div>
 
@@ -122,11 +126,11 @@
                         <km-form-group name="jurisdictionCountries" :caption="t('jurisdictionCountries')" :required="showJurisdictionCountries">
                             <km-select v-model="document.jurisdictionCountries" :placeholder="t('jurisdictionCountries')"
                              :options="countries" multiple class="validationClass" :custom-selected-item="customSelectedItem"
-                              @update:modelValue="onUpdate"/>
+                              @update:modelValue="onUpdate" :max="maxJurisdictionCountries"/>
                         </km-form-group>
                     </div>
                     <div class="col-md-6" v-if="showJurisdictionOthers">
-                        <km-form-group name="subNational" :caption="t('localSubNational')" required>
+                        <km-form-group name="jurisdiction.customValue" :caption="t('localSubNational')" required>
                             <km-input-lstring v-model="document.jurisdiction.customValue" :locales="locales"  @update:modelValue="onUpdate"/>
                         </km-form-group>
                     </div>
@@ -167,10 +171,10 @@
     const isBusy                    = ref(false);
     const validationReport          = ref({});
 
-    const jurisdictions  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.JURISDICTIONS));
+    const jurisdictions  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.GEOGRAPHICAL_SCOPE));
     const countries = computed(() => thesaurusStore.getDomainTerms(THESAURUS.COUNTRIES));
     const regions  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.REGIONS));
-    const organizationTypes  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.ORGANIZATION_TYPES));
+    const organizationTypes  = computed(() => thesaurusStore.getDomainTerms(THESAURUS.STAKEHOLDER_ORGANIZATION_TYPE));
 
     const showJurisdictionCountries = computed(() => {
         return !!document.value?.jurisdiction && (
@@ -191,6 +195,19 @@
             document.value?.jurisdiction.identifier == THESAURUS_TERMS.JURISDICTION_MULTINATIONAL);
     });
 
+    const maxJurisdictionCountries = computed(() => {
+        if(!document.value?.jurisdiction)
+            return 0;
+
+        if([THESAURUS_TERMS.JURISDICTION_LOCAL,
+            THESAURUS_TERMS.JURISDICTION_SUB_NATIONAL,
+            THESAURUS_TERMS.JURISDICTION_SUB_NATIONAL
+           ].includes(document.value?.jurisdiction.identifier)
+        )
+            return 1;
+
+        return 300;
+    }); 
     const cleanDocument = computed(() => {
         const clean = useKmStorage().cleanDocument({ ...document.value });
         return clean
@@ -200,10 +217,10 @@
         isBusy.value = true;
         try {
             await Promise.all([
-                thesaurusStore.loadDomainTerms(THESAURUS.JURISDICTIONS),
+                thesaurusStore.loadDomainTerms(THESAURUS.GEOGRAPHICAL_SCOPE),
                 thesaurusStore.loadDomainTerms(THESAURUS.REGIONS),
                 thesaurusStore.loadDomainTerms(THESAURUS.COUNTRIES),
-                thesaurusStore.loadDomainTerms(THESAURUS.ORGANIZATION_TYPES)
+                thesaurusStore.loadDomainTerms(THESAURUS.STAKEHOLDER_ORGANIZATION_TYPE, {other: true})
                 
             ]);
         }

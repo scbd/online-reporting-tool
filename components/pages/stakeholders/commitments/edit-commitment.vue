@@ -9,6 +9,9 @@
                 <template v-slot:submission>
                     <form name="editForm">
                         {{document}}
+                        <km-form-group name="languages" :caption="t('submissionLanguage')" required>
+                            <km-languages v-model="document.header.languages"></km-languages>
+                        </km-form-group>
                         <edit-contact-details v-model="contactDetails" 
                             :locales="document.header.languages"
                             @update:modelValue="onContactDetailsUpdate"></edit-contact-details>
@@ -529,27 +532,27 @@
         ]
     }
 
-    function extractContactDetails(intent: EStakeholderCommitmentIntent| EStakeholderCommitment):EStakeHolderContact {
+    function extractContactDetails(commitment: EStakeholderCommitment):EStakeHolderContact {
                 
         return {
-            firstName             : intent.firstName,
-            lastName              : intent.lastName,
-            designation           : intent.designation,
-            department            : intent.department,
-            organization          : intent.organization,
-            organizationAcronym   : intent.organizationAcronym,
-            organizationType      : intent.organizationType,
-            address               : intent.address,
-            city                  : intent.city,
-            state                 : intent.state,
-            postalCode            : intent.postalCode,
-            country               : intent.country,
-            phones                : intent.phones,
-            emails                : intent.emails,
-            websites              : intent.websites,
-            jurisdiction          : intent.jurisdiction,
-            jurisdictionCountries : intent.jurisdictionCountries,
-            jurisdictionRegions   : intent.jurisdictionRegions,
+            firstName             : commitment.firstName,
+            lastName              : commitment.lastName,
+            designation           : commitment.designation,
+            department            : commitment.department,
+            organization          : commitment.organization,
+            organizationAcronym   : commitment.organizationAcronym,
+            organizationType      : commitment.organizationType,
+            address               : commitment.address,
+            city                  : commitment.city,
+            state                 : commitment.state,
+            postalCode            : commitment.postalCode,
+            country               : commitment.country,
+            phones                : commitment.phones,
+            emails                : commitment.emails,
+            websites              : commitment.websites,
+            jurisdiction          : commitment.jurisdiction,
+            jurisdictionCountries : commitment.jurisdictionCountries,
+            jurisdictionRegions   : commitment.jurisdictionRegions,
         }
     }
 
@@ -582,7 +585,7 @@
                 if(myIntents?.length){
                     document.value = {
                         ...document.value,
-                        ...extractContactDetails(myIntents[0].body)
+                        ...extractContactDetails(myIntents[0].body as EStakeholderCommitment)
                     }
                 }
             }
