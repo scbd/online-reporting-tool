@@ -44,7 +44,8 @@ import type { ETerm } from '~/types/schemas/base/ETerm';
 
     const props = defineProps({
         indicatorData: { type: Object, required: true },
-        documentLocale: { type:String }
+        documentLocale: { type:String },
+        indicatorType: { type: String }
     });
 
     const thesaurusStore    = useThesaurusStore();
@@ -79,7 +80,7 @@ import type { ETerm } from '~/types/schemas/base/ETerm';
     });
 
     onMounted(async () => {
-        if (indicatorData.value.indicator) {
+        if (indicatorData.value.indicator && props.indicatorType != 'otherNationalIndicators') {            
             await thesaurusStore.loadTerm(indicatorData.value.indicator.identifier);
         }
     }); 

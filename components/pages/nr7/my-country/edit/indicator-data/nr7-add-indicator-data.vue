@@ -18,7 +18,6 @@
         <CModalBody>
             <CCard>
                 <CCardBody>
-
                     <div  v-if="isLoading">
                         <km-spinner></km-spinner>
                     </div>
@@ -118,7 +117,7 @@
                                 </div>                                 
                             </template>
                             <template #review>
-                                <nr7-view-indicator-data v-if="cleanDocument.indicator" :indicator-data="cleanDocument">
+                                <nr7-view-indicator-data v-if="cleanDocument.indicator" :indicator-data="cleanDocument" :indicator-type="indicatorType">
                                 </nr7-view-indicator-data>
                             </template>
                         </km-form-workflow>
@@ -194,7 +193,7 @@
         const { data, globalDataSources, globalDescription, globalIndicatorProviders,indicator } = document.value
         return { data, globalDataSources, globalDescription, globalIndicatorProviders, indicator };        
     });
-  
+    
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
         
