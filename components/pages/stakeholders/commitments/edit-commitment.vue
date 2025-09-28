@@ -12,9 +12,18 @@
                         <km-form-group name="languages" :caption="t('submissionLanguage')" required>
                             <km-languages v-model="document.header.languages"></km-languages>
                         </km-form-group>
-                        <edit-contact-details v-model="contactDetails" 
-                            :locales="document.header.languages"
-                            @update:modelValue="onContactDetailsUpdate"></edit-contact-details>
+                        <div class="vld-parent">
+                                <edit-contact-details v-model="contactDetails" 
+                                    :locales="document.header.languages"
+                                    @update:modelValue="onContactDetailsUpdate"></edit-contact-details>
+
+                                <overlay-loading :active="true" background-color="rgb(9 9 9)"
+                                    :opacity="0.1" :is-full-page="false">
+                                    <CAlert class="m-2" color="info">
+                                        <strong> This section cannot be modified {{ t('missingIdentifier') }}</strong> 
+                                    </CAlert>
+                                </overlay-loading>
+                            </div>
                         
                         <!-- General Section -->
                         <km-form-group>
@@ -100,7 +109,7 @@
                                             <km-form-group name="coverageCountries" :caption="t('coverageCountries')"
                                                 required>
                                                 <km-select v-model="document.coverageCountries" :options="countries"
-                                                    multiple :max="1" :placeholder="t('coverageCountries')"
+                                                    multiple :placeholder="t('coverageCountries')"
                                                     @update:modelValue="onCoverageCountriesChange"
                                                     :custom-label="customLabel" :custom-selected-item="customSelectedItem"
                                                     :close-on-select="false">
@@ -110,7 +119,7 @@
                                         <div class="col-md-6">
                                             <km-form-group name="coverageRegions" :caption="t('coverageRegions')"
                                                 required>
-                                                <km-select :disabled="true" v-model="document.coverageRegions"
+                                                <km-select v-model="document.coverageRegions"
                                                     :options="regions" multiple :placeholder="t('coverageRegions')"
                                                     :close-on-select="false" 
                                                     :custom-label="customLabel" :custom-selected-item="customSelectedItem"/>
@@ -119,7 +128,7 @@
 
                                         <km-form-group name="coverageOther" :caption="t('coverageOther')">
                                             <!-- <small id="emailHelp" class="form-text text-muted">{{t('coverageOther')}}</small> -->
-                                            <km-input-list v-model="document.coverageOther"
+                                            <km-input-lstring-ml v-model="document.coverageOther"
                                                 :locales="document.header.languages" type="text" />
                                         </km-form-group>
 
@@ -361,6 +370,8 @@
     import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
     import type { EStakeholderCommitmentIntent, EStakeHolderContact } from '~/types/schemas/EStakeholderCommitmentIntent';
     import type { EStakeholderCommitment } from '~/types/schemas/EStakeholderCommitment';
+    import OverlayLoading from 'vue3-loading-overlay';
+    import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 
     const props = defineProps({
         identifier: { type: String },
@@ -416,9 +427,10 @@
     const cleanDocument = computed(() => {
         const clean = useKmStorage().cleanDocument({ ...document.value });
 
-        if (isOpenEnded.value === true)
+        if (isOpenEnded.value === true){
             clean.timelineStartDate = undefined;
-        clean.timelineEndDate = undefined;
+            clean.timelineEndDate = undefined;
+        }
         if (hasTimelineDates.value === true) {
             clean.isOpenEnded = undefined;
             clean.nextStepsInformation = undefined;
@@ -432,7 +444,7 @@
     })
 
     const onPostClose = async (document: any) => {
-        await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_INTENTS);
+        await useNavigateAppTo(appRoutes.STAKEHOLDER_MY_COMMITMENTS);
     }
 
     const onPostSaveDraft = async (document: any) => {
@@ -463,7 +475,7 @@
     function onContactDetailsUpdate(contactDetails:EContactBase){
         document.value = {
             ...document.value,
-            ...contactDetails
+            ...extractContactDetails(contactDetails as EStakeholderCommitment)
         }
     }
 
@@ -588,6 +600,9 @@
                         ...extractContactDetails(myIntents[0].body as EStakeholderCommitment)
                     }
                 }
+            }
+            if (document.value?.coverageCountries?.length == 1) {
+                loadNationalTargets(document.value.coverageCountries[0].identifier);
             }
         }
         catch (e: any) {

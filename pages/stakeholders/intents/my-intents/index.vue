@@ -16,7 +16,7 @@
     definePageMeta({
         auth:true,
         schema:SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT,
-        roles:[...ROLES.EVERYONE],
+        // roles:[ROLES.USER],
         breadcrumbs : {}
     });
 

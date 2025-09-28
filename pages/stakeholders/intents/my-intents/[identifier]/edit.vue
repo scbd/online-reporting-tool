@@ -6,13 +6,10 @@
   
 <script setup lang="ts">
 
-    const schema      = useGetRealmSchema(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT)
-    const { locale }  = useI18n();
-    const route       = useRoute();
     definePageMeta({
         auth:true,
         schema:SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT,
-        roles:[...ROLES.EVERYONE],
+        roles:[ROLES.USER],
         breadcrumbs : {
           skip : ['identifier']
         }

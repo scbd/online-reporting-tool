@@ -2,9 +2,9 @@
     <country-record-type-overview
         :title="t('title')"
         :schema="SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT"
-        :view-route="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_COMMITMENTS_VIEW"
-        :edit-route="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_COMMITMENTS_EDIT"
-        :new-route="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_COMMITMENTS_NEW">
+        :view-route="appRoutes.STAKEHOLDER_MY_COMMITMENTS_VIEW"
+        :edit-route="appRoutes.STAKEHOLDER_MY_COMMITMENTS_EDIT"
+        :new-route="appRoutes.STAKEHOLDER_MY_COMMITMENTS_NEW">
     </country-record-type-overview>
             
 </template>

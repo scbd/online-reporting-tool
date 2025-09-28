@@ -48,12 +48,12 @@
         </km-form-group>
 
         <!-- Other Relevant Information Section -->
-        <km-form-group v-if="viewDocument.relevantInformation">
+        <km-form-group v-if="viewDocument.additionalInformation">
           <div class="card">
             <div class="card-header bg-secondary">{{ t('otherRelevantInformation') }}</div>
             <div class="card-body">
               <km-form-group :caption="t('otherRelevantInformationInfo')">
-                <km-lstring-value type="html" :value="viewDocument.relevantInformation" :locale="selectedLocale" />
+                <km-lstring-value type="html" :value="viewDocument.additionalInformation" :locale="selectedLocale" />
               </km-form-group>
             </div>
           </div>

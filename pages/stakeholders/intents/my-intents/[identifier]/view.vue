@@ -17,12 +17,15 @@
 
   const route      = useRoute();
   const {locale}   = useI18n();
-  const schema     = useGetRealmSchema(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT)
+  // const schema     = useGetRealmSchema(SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT)
   const identifier = ref(route.params.identifier);
   const record     = ref(null);
   const workflowId = ref(route.query?.workflowId);
   
   definePageMeta({
+    auth:true,
+    schema:SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT,
+    roles:[ROLES.USER],
     breadcrumbs : {
       skip : ['identifier']
     }

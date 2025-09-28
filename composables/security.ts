@@ -106,7 +106,7 @@ async function checkUserAccess(options:any) {
     if (options.auth === false || options.auth === 'guest') return true;
 
     const { roles, schema } = options;
-    const schemaType = realmConfStore.realmConf?.schemas[schema]?.type;
+    const schemaType = realmConfStore.realmConf?.schemas?.[schema]?.type;
 
     if(!authUser?.government){
         const adminRoles = realmConfStore.getRole(ROLES.ADMINISTRATOR);

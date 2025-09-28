@@ -111,7 +111,7 @@ export const resolveSchemaViewRoute = function(schema:String, identifier){
         else if(schema == SCHEMAS.NATIONAL_NBSAP)
             url = appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW;
         else if(schema == SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT)
-            url = appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_INTENT_VIEW;
+            url = appRoutes.STAKEHOLDER_MY_INTENTS_VIEW;
             
         return url.replace(':identifier', identifier);
     }

@@ -74,18 +74,18 @@
         </CNavGroup>          
         
       </CNavGroup>
-      <CNavGroup :visible="isChildRouteActive(appRoutes.NATIONAL_REPORTS_STAKEHOLDER)">  
+      <CNavGroup :visible="isChildRouteActive(appRoutes.STAKEHOLDER)">  
         <template #togglerContent>
           {{t('stakeholders')}}
         </template>      
 
-        <KmNavLink :to="localePath(appRoutes.NATIONAL_REPORTS_STAKEHOLDER_COMMITMENTS)" icon="cil-list" :title="t('allCommitments')"></KmNavLink>
-        <KmNavLink  :to="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_COMMITMENTS" :title="t('menuMyCommitments')">
+        <KmNavLink :to="localePath(appRoutes.STAKEHOLDER_COMMITMENTS)" icon="cil-list" :title="t('allCommitments')"></KmNavLink>
+        <KmNavLink  :to="appRoutes.STAKEHOLDER_MY_COMMITMENTS" :title="t('menuMyCommitments')">
           <template #icon>
             <font-awesome-icon class="nav-icon" icon="fa-solid fa-handshake" />
           </template>
         </KmNavLink>
-        <KmNavLink  :to="appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_INTENTS" :title="t('menuMyIntents')">
+        <KmNavLink  :to="appRoutes.STAKEHOLDER_MY_INTENTS" :title="t('menuMyIntents')">
           <template #icon>
             <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
           </template>

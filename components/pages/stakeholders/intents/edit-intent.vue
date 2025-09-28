@@ -135,7 +135,7 @@
     })
 
     const onPostClose = async (document) => {
-        await useNavigateAppTo(appRoutes.NATIONAL_REPORTS_STAKEHOLDER_MY_INTENTS);
+        await useNavigateAppTo(appRoutes.STAKEHOLDER_MY_INTENTS);
     }
 
     const onPostSaveDraft = async (document) => {
@@ -185,7 +185,7 @@
     function onContactDetailsUpdate(contactDetails:EContactBase){
         document.value = {
             ...document.value,
-            ...contactDetails
+            ...extractContactDetails(contactDetails)
         }
     }
     

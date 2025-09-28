@@ -24,8 +24,10 @@
   
   definePageMeta({
     breadcrumbs : {
-      skip : ['identifier']
-    }
+      skip : ['identifier'],
+    },
+    auth:true,
+    roles:[ROLES.STAKEHOLDER_COMMITMENT_AUTHORIZED_USER]
   });
 
   // route.meta.breadcrumbs.replaceCrumbs = [ {'nbsaps' : lstring(schema?.title, locale)} ];
