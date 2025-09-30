@@ -256,7 +256,7 @@ const documentLoadError = ref(false);
 const selectedLocale = ref(locale.value);
 const nationalTargets = ref({});
 const showEndorsements = ref(false);
-const endorsements = ref<StakeholderEndorsement[]>([]);
+const endorsements = ref<CountryCommitmentStatus[]>([]);
 const showCoverage = ref(true);
 
 const viewDocument = computed(() => {

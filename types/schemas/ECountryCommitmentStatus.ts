@@ -2,10 +2,10 @@
 import type { ELstring } from "./base/ELstring";
 import type { EUserInfo } from "./base/EUserInfo";
 
-export interface StakeholderEndorsement {
+export interface CountryCommitmentStatus {
   identifier: string
   title: ELstring
-  country: string
+  government: string
   endorsed?: boolean
   meta: {
     createdBy: number

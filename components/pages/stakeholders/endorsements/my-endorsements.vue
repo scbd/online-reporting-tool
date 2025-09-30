@@ -73,18 +73,18 @@
 
     import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 import type { EAuthUser } from '~/types/schemas/base/EAuthUser';
-import type { StakeholderEndorsement } from '~/types/schemas/EStakeholderEndorsement';
+import type { CountryCommitmentStatus } from '~/types/schemas/ECountryCommitmentStatus';
 import { formatDate } from '~/utils/filters';
     
     const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
     const { t, locale } = useI18n();
     const { user } = useAuth();
-    const myEndorsements = ref<StakeholderEndorsement[]>([]);
+    const myEndorsements = ref<CountryCommitmentStatus[]>([]);
 
-    const endorsedCount = computed(()=>myEndorsements.value.filter((e:StakeholderEndorsement)=>e.endorsed===true).length)
-    const renouncedCount = computed(()=>myEndorsements.value.filter((e:StakeholderEndorsement)=>e.endorsed===false).length)
-    const awaitingActionCount = computed(()=>myEndorsements.value.filter((e:StakeholderEndorsement)=>e.endorsed===undefined).length)
-    const autoApprovedCount = computed(()=>myEndorsements.value.filter((e:StakeholderEndorsement)=>e.endorsed===true && e.meta.updatedByInfo.firstName === 'SYSTEM' ).length)
+    const endorsedCount = computed(()=>myEndorsements.value.filter((e:CountryCommitmentStatus)=>e.endorsed===true).length)
+    const renouncedCount = computed(()=>myEndorsements.value.filter((e:CountryCommitmentStatus)=>e.endorsed===false).length)
+    const awaitingActionCount = computed(()=>myEndorsements.value.filter((e:CountryCommitmentStatus)=>e.endorsed===undefined).length)
+    const autoApprovedCount = computed(()=>myEndorsements.value.filter((e:CountryCommitmentStatus)=>e.endorsed===true && e.meta.updatedByInfo.firstName === 'SYSTEM' ).length)
 
     async function loadMyEndorsements(){
          
@@ -92,7 +92,7 @@ import { formatDate } from '~/utils/filters';
 
     }
     async function onStatusChange(identifier:string, endorsed:boolean){
-        const countryStatus = myEndorsements.value.find((e:StakeholderEndorsement)=>e.identifier == identifier)
+        const countryStatus = myEndorsements.value.find((e:CountryCommitmentStatus)=>e.identifier == identifier)
         if(countryStatus){
             countryStatus.endorsed = endorsed
             countryStatus.meta.updatedBy = user.value.userID

@@ -19,7 +19,7 @@
                         </km-link>
                     </td> 
                     <td>
-                        <km-term :value="{identifier:endorsement.country}" :locale="locale"></km-term>
+                        <km-term :value="{identifier:endorsement.government}" :locale="locale"></km-term>
                     </td>                    
                     <td id="recordStatusTour">
                         <CBadge color="danger" v-if="endorsement.endorsed === undefined">
@@ -40,7 +40,7 @@
                         {{ endorsement.meta.updatedByInfo?.firstName }} {{ endorsement.meta.updatedByInfo?.lastName }}
                     </td>
                     <td>
-                        <endorsement-action v-if="endorsement.country == user.government"
+                        <endorsement-action v-if="endorsement.government == user.government"
                             :identifier="endorsement.identifier" :endorsed="endorsement.endorsed === true"
                             @on-status-change="onStatusChange(endorsement.identifier, $event)"></endorsement-action>
                     </td>
@@ -56,7 +56,7 @@
 import { defineEmits, defineProps} from 'vue';
 import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 import type { EAuthUser } from '~/types/schemas/base/EAuthUser';
-import type { StakeholderEndorsement } from '~/types/schemas/EStakeholderEndorsement';
+import type { CountryCommitmentStatus } from '~/types/schemas/ECountryCommitmentStatus';
 import { formatDate } from '~/utils/filters';
     
     const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
@@ -65,7 +65,7 @@ import { formatDate } from '~/utils/filters';
     
     const emit = defineEmits(['onStatusChange'])
     const props = defineProps({
-        endorsements : { type:Array<StakeholderEndorsement>, required:true }
+        endorsements : { type:Array<CountryCommitmentStatus>, required:true }
     })
 
     
