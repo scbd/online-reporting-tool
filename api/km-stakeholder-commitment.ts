@@ -23,21 +23,21 @@ export default class KmStakeholderCommitmentApi extends ApiBase
             sk: skip,
             c: count
         }
-        const data =  await useAPIFetch<StakeholderEndorsement[]>(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements`, { baseURL:'http://localhost:8000', method:'GET', query })                
+        const data =  await useAPIFetch<StakeholderEndorsement[]>(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements`, {  method:'GET', query })                
         return data;
     }
 
     async getCountryCommitment(identifier:string):Promise<EDocumentInfo>  {
 
-        const data =  await useAPIFetch<EDocumentInfo>(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements/${identifier}`,  {baseURL:'http://localhost:8000', method:'GET' })                
+        const data =  await useAPIFetch<EDocumentInfo>(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements/${identifier}`,  { method:'GET' })                
         return data;
     }
 
     async endorseCountryCommitment(identifier:string) {
-        return useAPIFetch(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements/${identifier}`, {baseURL:'http://localhost:8000', method:'POST'})
+        return useAPIFetch(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements/${identifier}`, { method:'POST'})
     }
 
     async renounceCountryCommitment(identifier:string) {
-        return useAPIFetch(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements/${identifier}`, {baseURL:'http://localhost:8000', method:'DELETE'})
+        return useAPIFetch(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements/${identifier}`, { method:'DELETE'})
     }
 }
