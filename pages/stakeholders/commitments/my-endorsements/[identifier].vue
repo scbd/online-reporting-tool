@@ -24,7 +24,7 @@ import { SCHEMAS, ROLES } from '@/utils';
 import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 import type { EAuthUser } from '~/types/schemas/base/EAuthUser';
 import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
-import type { StakeholderEndorsement } from '~/types/schemas/EStakeholderEndorsement';
+import type { CountryCommitmentStatus } from '~/types/schemas/ECountryCommitmentStatus';
   const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
 
   const { user } = useAuth();
@@ -32,7 +32,7 @@ import type { StakeholderEndorsement } from '~/types/schemas/EStakeholderEndorse
   const route       = useRoute();
   const isLoading   = ref(false);
   const documentInfo= ref<EDocumentInfo|undefined>(undefined);
-  const endorsement = ref<StakeholderEndorsement|undefined>(undefined);
+  const endorsement = ref<CountryCommitmentStatus|undefined>(undefined);
   const document = computed(()=>{
     return documentInfo.value?.workingDocumentBody || documentInfo.value?.body
   })
