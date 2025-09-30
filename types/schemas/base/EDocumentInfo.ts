@@ -5,8 +5,11 @@ import type { ENationalTarget7 } from "../ENationalTarget7";
 import type { ENationalTarget7Mapping } from "../ENationalTarget7Mapping";
 import type { ELockInfo } from "./ELockInfo";
 import type { Metadata } from "~/types/schemas/base/km-storage";
+import type { EStakeholderCommitment } from "../EStakeholderCommitment";
+import type { EStakeholderCommitmentIntent } from "../EStakeholderCommitmentIntent";
 
-export type Schemas = ENationalTarget7 | ENationalTarget7Mapping | ENationalReport7 | object;
+export type Schemas = ENationalTarget7 | ENationalTarget7Mapping | ENationalReport7 | 
+                      EStakeholderCommitment | EStakeholderCommitmentIntent | object;
 export interface EDocumentInfo {
     identifier              : string;
     documentID              : number | null;

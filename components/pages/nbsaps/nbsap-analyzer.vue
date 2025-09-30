@@ -7,7 +7,7 @@
                     <div class="col-md-4">
                         <km-form-group :caption="t('status')">
                             <km-select v-model="customFilters.reportStatus" :options="reportStatus" 
-                                option-value="identifier" option-label="name.en" multiple @update:model-value="onCustomFilterChange"></km-select>
+                                option-value="identifier" option-label="name.en" multiple @update:modelValue="onCustomFilterChange"></km-select>
                         </km-form-group>
                     </div>
                 </template>

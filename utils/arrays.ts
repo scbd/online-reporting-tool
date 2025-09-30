@@ -1,3 +1,4 @@
+import type { ETerm } from "~/types/schemas/base/ETerm";
 
 export const arrayToObject = function<T>(response:Array<any>):Record<string, T> | undefined {
     if(response && Array.isArray(response)) {
@@ -15,3 +16,5 @@ export const arrayToObject = function<T>(response:Array<any>):Record<string, T> 
 
     }
 }
+
+export const sortTermByName = (a:any,b:any)=>a.name.localeCompare(b.name);

@@ -15,18 +15,24 @@
       :searchable="searchable"
       :disabled="disabled"
       @search-change="onEventTextChange"
-      
       :custom-label="customLabelFn"
       :allow-empty="allowEmpty"
       deselect-label="Can't remove this value"
+
+      :limit="$attrs.limit"
+      :max="$attrs.max"
     > 
-      <slot name="clear">
-        <template slot="clear">
+      <template slot="clear">
+          <slot name="clear">
             <div v-if="selectItems.length && !disabled" class="multiselect__clear"
                 @mousedown.prevent.stop="selectItems = null; $emit('change', null)">
-            </div>          
-        </template>
-      </slot>     
+            </div> 
+          </slot>         
+      </template>
+      <template #option="{option, index, search}">
+        <slot name="option" :option="option" :index="index" :search="search"></slot>
+      </template>
+      
     </VueMultiselect>
 </template>
 
@@ -92,7 +98,7 @@ import { asArray } from '@/utils/helpers';
       set(events) {
         let ids = asArray(events).map((event) => props.customSelectedItem(event[props.valueKey], event));
         
-        emit('update:model-value', props.multiple ? ids : ids[0]);
+        emit('update:modelValue', props.multiple ? ids : ids[0]);
       }
     })
 

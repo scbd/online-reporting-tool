@@ -1,4 +1,40 @@
-<template>
+<template> 
+        <div class="scbd-common km-form-check-item form-check " :class="{'form-check-inline' : $attrs.inline}">  
+        <input  
+            v-model="model"
+            :type="type" 
+            :id="$attrs.id"  
+            :value="$attrs.value"
+            :required="$attrs.required"
+            :disabled="$attrs.disabled"
+            :class="$attrs.class"
+            class="form-check-input"
+        />
+        <label :for="$attrs.id" class="form-check-label">
+            <slot name="label">{{ label }}</slot>
+        </label> 
+    </div>  
+</template>
+
+<script  setup> 
+   
+    const model = defineModel({
+        type: [Array, Boolean ], // Arrays for handling checkboxes, and boolean for radio types
+        required: true
+    });
+
+    const props = defineProps({
+    label: { type: String, required: false },
+    type: {
+            type: String,
+            required: true,
+            validator: (value) => ['checkbox', 'radio'].includes(value) // Restrict to 'checkbox' or 'radio'
+        }
+    });
+
+</script> 
+
+<!-- <template>
     <div class="form-check" :class="{'form-check-inline' : attrs.inline}">
         <input @input="onCheck" :type="attrs.type" :name="attrs.name" :disabled="attrs.disabled"
         :id="attrs.id" class="form-check-input" :value="attrs.value" v-model="props.modelValue"/>
@@ -7,11 +43,6 @@
         </label>
     </div>
 
-    <!-- <div class="form-check" :class="{'form-check-inline' : attrs.inline}">                    
-        <input class="form-check-input" :type="attrs.type" :name="attrs.name" :disabled="attrs.disabled"
-           :id="attrs.id" :value="attrs.value" v-model="props.modelValue" @input="onCheck" />
-        <label class="form-check-label">o {{label}}</label>
-    </div> -->
 </template>
 <script lang="ts" setup>
 //@ts-nocheck
@@ -35,4 +66,4 @@ const onCheck = ($evt:any)=>{
     emit('update:modelValue', value)
 }
 
-</script>
+</script> -->

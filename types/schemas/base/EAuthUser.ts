@@ -1,10 +1,16 @@
 export interface EAuthUser {
-    email          : String
-    government     : String
+    email          : string
+    government     : string
     isAuthenticated: Boolean
     isEmailVerified: Boolean
-    name           : String
-    roles          : Array<String>
-    userGroups     : Array<String>
-    userID         : BigInteger
+    name           : string
+    roles          : Array<string>
+    userGroups     : Array<string>
+    userID         : number
+}
+
+export interface EUserInfo {
+    email          : string
+    firstName      : string
+    lastName       : string
 }

@@ -24,8 +24,8 @@
                          <span>{{ t(getTranslation(error)) }}</span> /
                          <ul v-if="error.properties">
                              <li v-for="property in error.properties" :title="error.parameters" :key="property">					
-                                <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo($event, property.property)">
-                                    {{ getLabel(property.property) }}
+                                <a class="text-decoration-none" rel="noopener" href="#" @click="jumpTo($event, property)">
+                                   {{ getLabel(property) }}
                                 </a>
                              </li>
                          </ul>
