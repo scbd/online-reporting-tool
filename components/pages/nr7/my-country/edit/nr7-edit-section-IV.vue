@@ -63,7 +63,8 @@
                                             <nr7-add-indicator-data :indicator="indicator"  v-if="key!='binary'"
                                                     :identifier="indicatorData?.identifier" 
                                                     container=".nr7-add-indicator-data-modal"
-                                                    @on-close="onAddIndicatorDataClose">
+                                                    @on-close="onAddIndicatorDataClose"                                                    
+                                                    :indicator-type="key=='national'?'otherNationalIndicators':key">
                                                 </nr7-add-indicator-data>  
                                             <nr7-add-binary-indicator-data :indicator="indicator"  v-if="key=='binary'"
                                                 container=".nr7-add-binary-indicator-data-modal"
