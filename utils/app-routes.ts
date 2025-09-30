@@ -50,6 +50,10 @@ export const appRoutes = {
     STAKEHOLDER_MY_COMMITMENTS_VIEW : '/stakeholders/commitments/my-commitments/:identifier/view',
     STAKEHOLDER_COMMITMENT_VIEW    : '/stakeholders/commitments/:identifier/view',
     
+    STAKEHOLDER_MY_ENDORSEMENTS     :  '/stakeholders/commitments/my-endorsements',
+    STAKEHOLDER_MY_ENDORSEMENTS_VIEW : '/stakeholders/commitments/my-endorsements/:identifier',
+    
+
     TAXONOMY                                  : '/taxonomy',
     TAXONOMY_GBF                              : '/taxonomy/gbf',
     TAXONOMY_GBF_GOALS                        : '/taxonomy/gbf/goals',

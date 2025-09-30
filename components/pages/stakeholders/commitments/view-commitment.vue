@@ -67,10 +67,10 @@
           <div class="card">
             <div class="card-header bg-secondary">{{ t('coverageSection') }}</div>
             <div class="card-body">
-              <km-form-group :caption="t('coverageCountries')" v-if="viewDocument.coverageCountries">
+              <km-form-group :caption="t('coverageCountries')" v-if="viewDocument.coverageCountries && showCoverage">
                 <km-value-terms :value="viewDocument.coverageCountries" :locale="selectedLocale" />
               </km-form-group>
-              <km-form-group :caption="t('coverageRegions')" v-if="viewDocument.coverageRegions">
+              <km-form-group :caption="t('coverageRegions')" v-if="viewDocument.coverageRegions && showCoverage">
                 <km-value-terms :value="viewDocument.coverageRegions" :locale="selectedLocale" />
               </km-form-group>
               <km-form-group :caption="t('coverageOther')" v-if="viewDocument.coverageOther">                
@@ -87,7 +87,17 @@
             </div>
           </div>
         </km-form-group>
-
+        <km-form-group v-if="endorsements?.length">
+          <div class="card">
+            <div class="card-header bg-secondary">{{ t('endorsementTitle') }}</div>
+            <div class="card-body">
+              <div class="alert alert-success">{{ t('endorsementHelp') }}</div>
+              <endorsement-list 
+                :endorsements="endorsements"
+                @on-status-change="onStatusChange($event)"></endorsement-list>
+            </div>
+          </div>
+        </km-form-group>
         <!-- Alignment Section -->
         <km-form-group>
           <div class="card">
@@ -224,8 +234,11 @@ import { useRoute } from 'vue-router'
 import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
 import { KmDocumentsService } from "@/services/kmDocuments";
   import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
+import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 
-const emit = defineEmits(['onDocumentLoad']);
+const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
+
+const emit = defineEmits(['onDocumentLoad', 'onStatusChange']);
 const route = useRoute();
 const { t, locale } = useI18n();
 const security = useSecurity();
@@ -234,7 +247,7 @@ const { ACCOUNTS_HOST_URL } = useRuntimeConfig().public;
 const props = defineProps({
   document: { type: Object, default: undefined },
   identifier: { type: String, required: true }
-})
+});
 
 const { document, identifier } = toRefs(props);
 const lDocument = ref(undefined);
@@ -242,18 +255,24 @@ const isLoading = ref(false);
 const documentLoadError = ref(false);
 const selectedLocale = ref(locale.value);
 const nationalTargets = ref({});
+const showEndorsements = ref(false);
+const endorsements = ref<StakeholderEndorsement[]>([]);
+const showCoverage = ref(true);
 
 const viewDocument = computed(() => {
   return document?.value || lDocument?.value;
 })
 
-onMounted(() => {
+onMounted(async() => {
   if (props.identifier && !props.document) {
-    loadDocument(props.identifier)
+    await loadDocument(props.identifier)
   }
   if(viewDocument.value?.primaryNationalTarget || viewDocument.value?.otherNationalTargets?.length){
       loadNationalTargets([viewDocument.value?.primaryNationalTarget, ...(viewDocument.value?.otherNationalTargets||[])].filter(e=>e).map(e=>e.identifier));
   }
+
+  if(viewDocument.value?.coverageCountries?.length || viewDocument.value?.coverageRegions?.length)
+    loadEndorsements();
 })
 
 async function loadDocument(identifier) {
@@ -266,6 +285,7 @@ async function loadDocument(identifier) {
     } else {
       const record = await KmDocumentsService.loadDocument(route.params.identifier);
       lDocument.value = record.body;
+      showCoverage.value = false;
       emit('onDocumentLoad', record);
     }
 
@@ -296,5 +316,13 @@ async function loadNationalTargets(identifiers: string[]) {
         targets[doc.identifier] = doc.title;
     })
     nationalTargets.value = targets;
+}
+async function loadEndorsements(){
+  endorsements.value = await kmStakeholderCommitmentApi.getEndorsements(
+    { identifier: props.identifier }, { length : 500});
+}
+async function onStatusChange(identifier:string, endorsed:boolean){
+  loadEndorsements();
+    emit('onStatusChange', identifier, endorsed)
 }
 </script>

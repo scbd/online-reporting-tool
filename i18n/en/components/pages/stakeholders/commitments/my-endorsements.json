@@ -1,0 +1,10 @@
+{
+    "title" :  "Commitment title",
+    "status": "Status",
+    "updatedOn":"Updated",
+    "awaitingAction" : "Awaiting action",
+    "endorsed": "Endorsed",
+    "renounced": "Renounced",
+    "autoApproved": "Auto approved"
+
+}

@@ -10,7 +10,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         const auth = useAuth()
         const realmConfStore = useRealmConfStore()        
         const realmConf = realmConfStore.realmConf;
-
         
         options.headers = options.headers || new globalThis.Headers({});
         if(/^\/api\/v20\d{2}\/*/.test(request) || /^http:\/\/10\.211\.55\.4/i.test(request) ){

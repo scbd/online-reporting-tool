@@ -2,7 +2,7 @@
 import moment from 'moment';
 import { useI18n } from 'vue-i18n'
 
-export function formatDate(datetime, format, local) {
+export function formatDate(datetime:object|string|undefined, format?:string|undefined, local?:string|undefined) {
     if (format === undefined)
         format = 'DD MMM YYYY  HH:mm';
 
