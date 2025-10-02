@@ -159,11 +159,12 @@
                                                     <span v-if="key=='national'">{{ lstring(nationalIndicator?.value, locale) }}</span>
                                                 </label>
                                             </template>   
-                                            <template #actionButtons="{key,indicatorData, indicator}">
-                                                <nr7-add-indicator-data :indicator="indicator"  v-if="key!='binary'"
+                                            <template #actionButtons="{key,indicatorData, indicator, nationalIndicator}">
+                                                <nr7-add-indicator-data :indicator="key=='national'? nationalIndicator : indicator"  v-if="key!='binary'"
                                                         :identifier="indicatorData?.identifier" 
                                                         container=".nr7-add-indicator-data-modal"
-                                                        @on-close="onAddIndicatorDataClose">
+                                                        @on-close="onAddIndicatorDataClose"
+                                                        :indicator-type="key=='national'?'otherNationalIndicators':key">
                                                     </nr7-add-indicator-data>  
                                                 <nr7-add-binary-indicator-data :indicator="indicator"  v-if="key=='binary'"
                                                     container=".nr7-add-binary-indicator-data-modal"
@@ -259,7 +260,7 @@
     });
 
     const nationalIndicators      = computed(()=>{
-        return Object.values(nationalTargets.value).map(e=>e.nationalIndicators||[]).flat();
+        return Object.values(nationalTargets.value).map(e=>e.nationalIndicators||[]).flat().map(e=>{ return {...e, title:e.title||e.value}});
     });
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
     const progressAssessmentLists = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.ASSESSMENT_PROGRESS)||[]));
