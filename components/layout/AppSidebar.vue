@@ -85,13 +85,13 @@
             <font-awesome-icon class="nav-icon" icon="fa-solid fa-handshake" />
           </template>
         </KmNavLink>
-        <KmNavLink  v-if="menuAccess[appRoutes.STAKEHOLDER_MY_ENDORSEMENTS]"
-          :to="appRoutes.STAKEHOLDER_MY_ENDORSEMENTS" :title="t('menuMyEndorsements')">
+        <KmNavLink  v-if="menuAccess[appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS]"
+          :to="appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS" :title="t('menuMyCountryReviews')">
           <template #icon>
             <font-awesome-icon class="nav-icon" icon="fa-solid fa-handshake" />
           </template>
         </KmNavLink>
-        <KmNavLink  :to="appRoutes.STAKEHOLDER_MY_INTENTS" :title="t('menuMyIntents')">
+        <KmNavLink  :to="appRoutes.STAKEHOLDER_MY_CREDENTIALS" :title="t('menuMyIntents')">
           <template #icon>
             <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
           </template>
@@ -150,7 +150,7 @@ export default {
       [appRoutes.NATIONAL_REPORTS_NR6]      : true,
       [appRoutes.NATIONAL_REPORTS_NR7]      : true,
       [appRoutes.NATIONAL_REPORTS_NR7_EDIT] : true,//false,
-      [appRoutes.STAKEHOLDER_MY_ENDORSEMENTS]: true,
+      [appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS]: true,
       
     }
     // for (const route in menuAccess) {
@@ -160,7 +160,7 @@ export default {
     //   }
     // }
 
-    menuAccess[appRoutes.STAKEHOLDER_MY_ENDORSEMENTS] = await checkUserAccess({ roles : [ROLES.NATIONAL_FOCALPOINT]})
+    menuAccess[appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS] = await checkUserAccess({ roles : [ROLES.NATIONAL_FOCALPOINT]})
 
     const isChildRouteActive = (path)=>{
       return route.fullPath.indexOf(path)>=0

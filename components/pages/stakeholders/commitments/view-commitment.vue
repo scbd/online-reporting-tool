@@ -87,14 +87,14 @@
             </div>
           </div>
         </km-form-group>
-        <km-form-group v-if="endorsements?.length">
+        <km-form-group v-if="countryReviews?.length">
           <div class="card">
-            <div class="card-header bg-secondary">{{ t('endorsementTitle') }}</div>
+            <div class="card-header bg-secondary">{{ t('countryReviewTitle') }}</div>
             <div class="card-body">
-              <div class="alert alert-success">{{ t('endorsementHelp') }}</div>
-              <endorsement-list 
-                :endorsements="endorsements"
-                @on-status-change="onStatusChange($event)"></endorsement-list>
+              <div class="alert alert-success">{{ t('countryReviewHelp') }}</div>
+              <country-review-list 
+                :countryReviews="countryReviews"
+                @on-status-change="onStatusChange($event)"></country-review-list>
             </div>
           </div>
         </km-form-group>
@@ -255,8 +255,8 @@ const isLoading = ref(false);
 const documentLoadError = ref(false);
 const selectedLocale = ref(locale.value);
 const nationalTargets = ref({});
-const showEndorsements = ref(false);
-const endorsements = ref<CountryCommitmentStatus[]>([]);
+const showCountryReviews = ref(false);
+const countryReviews = ref<ECommitmentCountryReview[]>([]);
 const showCoverage = ref(true);
 
 const viewDocument = computed(() => {
@@ -272,7 +272,7 @@ onMounted(async() => {
   }
 
   if(viewDocument.value?.coverageCountries?.length || viewDocument.value?.coverageRegions?.length)
-    loadEndorsements();
+    loadCountryReviews();
 })
 
 async function loadDocument(identifier) {
@@ -317,12 +317,12 @@ async function loadNationalTargets(identifiers: string[]) {
     })
     nationalTargets.value = targets;
 }
-async function loadEndorsements(){
-  endorsements.value = await kmStakeholderCommitmentApi.getEndorsements(
+async function loadCountryReviews(){
+  countryReviews.value = await kmStakeholderCommitmentApi.getCountryReviews(
     { identifier: props.identifier }, { length : 500});
 }
 async function onStatusChange(identifier:string, endorsed:boolean){
-  loadEndorsements();
+  loadCountryReviews();
     emit('onStatusChange', identifier, endorsed)
 }
 </script>

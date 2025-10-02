@@ -368,7 +368,7 @@
     import type { EContactBase } from '~/types/schemas/EContactBase';
     import { KmDocumentsService } from '~/services/kmDocuments';
     import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
-    import type { EStakeholderCommitmentIntent, EStakeHolderContact } from '~/types/schemas/EStakeholderCommitmentIntent';
+    import type { EStakeholderCredential, EStakeHolderContact } from '~/types/schemas/EStakeholderCredential';
     import type { EStakeholderCommitment } from '~/types/schemas/EStakeholderCommitment';
     import OverlayLoading from 'vue3-loading-overlay';
     import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
@@ -436,7 +436,7 @@
             clean.nextStepsInformation = undefined;
         }
 
-        if (clean.isNonStateActor === true)
+        if (clean.isParty === true)
             clean.government = undefined;
         clean.additionalDocuments = undefined;
 
@@ -593,7 +593,7 @@
             }
             else{
                 document.value = emptyDocument();
-                const myIntents = await KmDocumentsService.loadSchemaDocuments (SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT, undefined,  {rowsPerPage:1});
+                const myIntents = await KmDocumentsService.loadSchemaDocuments (SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL, undefined,  {rowsPerPage:1});
                 if(myIntents?.length){
                     document.value = {
                         ...document.value,

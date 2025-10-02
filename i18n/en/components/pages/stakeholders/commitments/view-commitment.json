@@ -1,4 +1,4 @@
 {
-    "endorsementTitle" : "Endorsements",
-    "endorsementHelp": "The following countries have formally endorsed this commitment."
+    "countryReviewTitle" : "Country reviews",
+    "countryReviewHelp": "The following countries have reviewed this commitment."
 }

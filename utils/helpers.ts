@@ -110,8 +110,8 @@ export const resolveSchemaViewRoute = function(schema:String, identifier){
             url = appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW;
         else if(schema == SCHEMAS.NATIONAL_NBSAP)
             url = appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW;
-        else if(schema == SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT_INTENT)
-            url = appRoutes.STAKEHOLDER_MY_INTENTS_VIEW;
+        else if(schema == SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL)
+            url = appRoutes.STAKEHOLDER_MY_CREDENTIALS_VIEW;
             
         return url.replace(':identifier', identifier);
     }

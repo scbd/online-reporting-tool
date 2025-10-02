@@ -69,12 +69,12 @@ function findMatchingRoute($appRoutes, to, from){
         registerStakeholderIntentView : {
             regex  :  /register\/SCI|stakeholderCommitmentIntent\/([A-Za-z0-9_\-@]+)\/view/i,
             params : [':identifier'],
-            url    : $appRoutes.STAKEHOLDER_MY_INTENTS_VIEW + '?draft=true'
+            url    : $appRoutes.STAKEHOLDER_MY_CREDENTIALS_VIEW + '?draft=true'
         },
         registerStakeholderIntentEdit : {
             regex  :  /register\/SCI|stakeholderCommitmentIntent\/([A-Za-z0-9_\-@]+)\/edit/i,
             params : [':identifier'],
-            url    : $appRoutes.STAKEHOLDER_MY_INTENTS_EDIT
+            url    : $appRoutes.STAKEHOLDER_MY_CREDENTIALS_EDIT
         },
         registerStakeholderCommitmentView : {
             regex  :  /register\/SCM|stakeholderCommitment\/([A-Za-z0-9_\-@]+)\/view/i,

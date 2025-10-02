@@ -36,12 +36,12 @@ export const appRoutes = {
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION : '/national-reports/nr7/my-country/edit/section-other-information',
     
     STAKEHOLDER                    : '/stakeholders',
-    STAKEHOLDER_INTENTS            : '/stakeholders/intents',
-    STAKEHOLDER_MY_INTENTS         : '/stakeholders/intents/my-intents',
-    STAKEHOLDER_MY_INTENTS_NEW     : '/stakeholders/intents/my-intents/new',
-    STAKEHOLDER_MY_INTENTS_EDIT    : '/stakeholders/intents/my-intents/:identifier/edit',
-    STAKEHOLDER_MY_INTENTS_VIEW     : '/stakeholders/intents/my-intents/:identifier/view',
-    STAKEHOLDER_INTENT_VIEW        : '/stakeholders/intents/:identifier/view',
+    STAKEHOLDER_CREDENTIALS            : '/stakeholders/credentials',
+    STAKEHOLDER_MY_CREDENTIALS         : '/stakeholders/credentials/my-credentials',
+    STAKEHOLDER_MY_CREDENTIALS_NEW     : '/stakeholders/credentials/my-credentials/new',
+    STAKEHOLDER_MY_CREDENTIALS_EDIT    : '/stakeholders/credentials/my-credentials/:identifier/edit',
+    STAKEHOLDER_MY_CREDENTIALS_VIEW    : '/stakeholders/credentials/my-credentials/:identifier/view',
+    STAKEHOLDER_CREDENTIALS_VIEW        : '/stakeholders/credentials/:identifier/view',
 
     STAKEHOLDER_COMMITMENTS        : '/stakeholders/commitments',
     STAKEHOLDER_MY_COMMITMENTS     : '/stakeholders/commitments/my-commitments',
@@ -50,8 +50,8 @@ export const appRoutes = {
     STAKEHOLDER_MY_COMMITMENTS_VIEW : '/stakeholders/commitments/my-commitments/:identifier/view',
     STAKEHOLDER_COMMITMENT_VIEW    : '/stakeholders/commitments/:identifier/view',
     
-    STAKEHOLDER_MY_ENDORSEMENTS     :  '/stakeholders/commitments/my-endorsements',
-    STAKEHOLDER_MY_ENDORSEMENTS_VIEW : '/stakeholders/commitments/my-endorsements/:identifier',
+    STAKEHOLDER_MY_COUNTRY_REVIEWS     :  '/stakeholders/commitments/my-country-reviews',
+    STAKEHOLDER_MY_COUNTRY_REVIEWS_VIEW : '/stakeholders/commitments/my-country-reviews/:identifier',
     
 
     TAXONOMY                                  : '/taxonomy',

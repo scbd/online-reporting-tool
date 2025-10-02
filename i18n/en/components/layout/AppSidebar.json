@@ -26,6 +26,6 @@
     "stakeholders": "Stakeholders",
     "allCommitments": "All commitments",
     "menuMyCommitments": "My commitments",
-    "menuMyIntents": "My intents",
-    "menuMyEndorsements" : "Country endorsements"
+    "menuMyIntents": "Credentials",
+    "menuMyCountryReviews" : "Country reviews"
 }

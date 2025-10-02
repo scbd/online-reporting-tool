@@ -154,7 +154,7 @@
 //@ts-nocheck
 
     import { useThesaurusStore } from '@/stores/thesaurus';
-    import type { EStakeHolderContact } from '~/types/schemas/EStakeholderCommitmentIntent';
+    import type { EStakeHolderContact } from '~/types/schemas/EStakeholderCredential';
 
     const document = defineModel<EStakeHolderContact>({required: true});    
     const emit = defineEmits(['update:modelValue']);
