@@ -1,9 +1,9 @@
 <template>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="endorse()" v-if="!endorsed">
+        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="endorse()" v-if="!reviewed">
             <font-awesome-icon icon="fa-thumbs-up" /> {{t('review')}}
         </CButton>
-        <CButton :disabled="isBusy" color="secondary" size="sm" v-if="endorsed"
+        <CButton :disabled="isBusy" color="secondary" size="sm" v-if="reviewed"
             @click="renounce()">
             <font-awesome-icon icon="fa-thumbs-down" /> {{t('return')}}
         </CButton>        
@@ -23,7 +23,7 @@ import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 
     const props = defineProps({
         identifier: { type : String, required:true},
-        endorsed: { type: Boolean, required:true}    
+        reviewed: { type: Boolean, required:true}    
     })
     const emit = defineEmits(['onStatusChange'])
 
