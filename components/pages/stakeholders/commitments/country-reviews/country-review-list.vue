@@ -29,10 +29,10 @@
                             {{t('returned')}}
                         </CBadge>
                         <CBadge color="success" v-if="countryReview.reviewed === true">
-                            {{t('reviewed')}}
+                            {{t('published')}}
                         </CBadge>  
-                        <CBadge color="info" v-if="countryReview.reviewed === true && countryReview.meta.updatedByInfo?.firstName === 'SYSTEM'">
-                            {{t('autoApproved')}}
+                        <CBadge class="ms-1" color="info" v-if="countryReview.reviewed === true && countryReview.meta.updatedByInfo?.firstName === 'SYSTEM'">
+                            {{t('autoPublished')}}
                         </CBadge>                        
                     </td>
                     <td>
@@ -41,7 +41,7 @@
                     </td>
                     <td>
                         <country-review-action v-if="countryReview.government == user.government"
-                            :identifier="countryReview.identifier" :endorsed="countryReview.reviewed === true"
+                            :identifier="countryReview.identifier" :reviewed="countryReview.reviewed === true"
                             @on-status-change="onStatusChange(countryReview.identifier, $event)"></country-review-action>
                     </td>
                 </tr>
@@ -68,8 +68,8 @@ import { formatDate } from '~/utils/filters';
     })
 
     
-    async function onStatusChange(identifier:string, endorsed:boolean){
-        emit('onStatusChange', identifier, endorsed)
+    async function onStatusChange(identifier:string, reviewed:boolean){
+        emit('onStatusChange', identifier, reviewed)
     }
 </script>
 

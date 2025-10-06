@@ -92,9 +92,20 @@
             <div class="card-header bg-secondary">{{ t('countryReviewTitle') }}</div>
             <div class="card-body">
               <div class="alert alert-success">{{ t('countryReviewHelp') }}</div>
-              <country-review-list 
-                :countryReviews="countryReviews"
-                @on-status-change="onStatusChange($event)"></country-review-list>
+                
+                <country-review-list v-if="isUserFromCoverageGovernment"
+                  :countryReviews="countryReviews"
+                  @on-status-change="onStatusChange"></country-review-list>
+
+                <table v-else class="table table-bordered">
+                  <tbody>
+                    <tr v-for="review in countryReviews" :key="review.government">
+                      <td>
+                        <km-term :value="{identifier: review.government}" :locale="selectedLocale"></km-term>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
             </div>
           </div>
         </km-form-group>
@@ -107,7 +118,7 @@
                 <km-value>
                   <km-link target="_blank"
                     :to="localePath(resolveSchemaViewRoute(SCHEMAS.NATIONAL_TARGET_7, viewDocument.primaryNationalTarget.identifier))" >
-                    {{ lstring(nationalTargets[viewDocument.primaryNationalTarget.identifier]) }}
+                    {{ lstring(nationalTargets[viewDocument.primaryNationalTarget.identifier].toString(), selectedLocale) }}
                   </km-link>
                 </km-value>
               </km-form-group>
@@ -118,7 +129,7 @@
                  <km-value v-for="target in viewDocument.otherNationalTargets" :key="target" class="mb-1">
                   <km-link target="_blank"
                     :to="localePath(resolveSchemaViewRoute(SCHEMAS.NATIONAL_TARGET_7, target.identifier))" >
-                    {{ lstring(nationalTargets[target.identifier]) }}
+                    {{ lstring(nationalTargets[target.identifier], selectedLocale) }}
                   </km-link>
                 </km-value>
               </km-form-group>
@@ -229,100 +240,140 @@
 <i18n src="@/i18n/dist/components/pages/stakeholders/commitments/view-commitment.json"></i18n>
 
 <script setup lang="ts">
-//@ts-nocheck
-import { useRoute } from 'vue-router'
-import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
-import { KmDocumentsService } from "@/services/kmDocuments";
+
+  import { useRoute } from 'vue-router'
+  import { KmDocumentDraftsService } from "@/services/kmDocumentDrafts";
+  import { KmDocumentsService } from "@/services/kmDocuments";
   import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
-import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
+  import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
+  import type { EStakeholderCommitment } from '~/types/schemas/EStakeholderCommitment';
+  import type { ETerm } from '~/types/schemas/base/ETerm';
+  import type { ECommitmentCountryReview } from '~/types/schemas/ECommitmentCountryReview';
+  import { useThesaurusStore } from '@/stores/thesaurus';
+  import _ from 'lodash';
+  import { resolveSchemaViewRoute } from '~/utils';
+import type { EDictionary } from '~/types/schemas/base/EDictionary';
 
-const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
+  const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
 
-const emit = defineEmits(['onDocumentLoad', 'onStatusChange']);
-const route = useRoute();
-const { t, locale } = useI18n();
-const security = useSecurity();
-const { ACCOUNTS_HOST_URL } = useRuntimeConfig().public;
+  const emit = defineEmits(['onDocumentLoad', 'onStatusChange']);
+  const route = useRoute();
+  const { t, locale } = useI18n();
+  const { user } = useAuth();
+  const localePath  = useLocalePath();
+  const thesaurusStore = useThesaurusStore();
 
-const props = defineProps({
-  document: { type: Object, default: undefined },
-  identifier: { type: String, required: true }
-});
+  const props = defineProps({
+    document: { type: Object, default: undefined },
+    identifier: { type: String, required: true },
+    hideCountryReviews: {type:Boolean, default:false}
+  });
 
-const { document, identifier } = toRefs(props);
-const lDocument = ref(undefined);
-const isLoading = ref(false);
-const documentLoadError = ref(false);
-const selectedLocale = ref(locale.value);
-const nationalTargets = ref({});
-const showCountryReviews = ref(false);
-const countryReviews = ref<ECommitmentCountryReview[]>([]);
-const showCoverage = ref(true);
+  const { document, identifier } = toRefs(props);
+  const lDocument = ref<EStakeholderCommitment|null>(null);
+  const isLoading = ref(false);
+  const documentLoadError = ref(null);
+  const selectedLocale = ref(locale.value);
+  const nationalTargets = ref<EDictionary<string>>({});
+  const showCountryReviews = ref(false);
+  const countryReviews = ref<ECommitmentCountryReview[]>([]);
+  const showCoverage = ref(true);
 
-const viewDocument = computed(() => {
-  return document?.value || lDocument?.value;
-})
+  const viewDocument = computed(() => {
+    return document?.value || lDocument?.value;
+  })
 
-onMounted(async() => {
-  if (props.identifier && !props.document) {
-    await loadDocument(props.identifier)
+  const isUserFromCoverageGovernment = computed(()=>{
+    if(user.value.government){
+      return countryReviews.value.find(e=>e.government == user.value.government)
+    }
+    return false;
+  })
+
+  onMounted(async() => {
+    if (props.identifier && !props.document) {
+      await loadDocument(props.identifier)
+    }
+    if(viewDocument.value?.primaryNationalTarget || viewDocument.value?.otherNationalTargets?.length){
+        loadNationalTargets([viewDocument.value?.primaryNationalTarget, ...(viewDocument.value?.otherNationalTargets||[])].filter(e=>e).map(e=>e.identifier));
+    }
+
+    if(viewDocument.value?.coverageCountries?.length || viewDocument.value?.coverageRegions?.length)
+      await loadCountryReviews();
+  })
+
+  async function loadDocument(identifier:string) {
+    isLoading.value = true;
+    try {
+      if (route.query?.draft == 'true' || route.query?.draft === null) {
+        const draftRecord = await KmDocumentDraftsService.loadDraftDocument(route.params.identifier as string);
+        lDocument.value = draftRecord?.body as EStakeholderCommitment;
+        emit('onDocumentLoad', draftRecord);
+      } else {
+        const record = await KmDocumentsService.loadDocument(route.params.identifier as string);
+        lDocument.value = record.body;
+        showCoverage.value = false;
+        emit('onDocumentLoad', record);
+      }
+
+    } catch (e:any) {
+      if ([404, 401, 403].includes(e.status)) {
+        documentLoadError.value = e.status;
+        useLogger().error(e, `${t(e.status == 404 ? 'notFound' : 'notAuthorized')} ` + route.params.identifier);
+      } else
+        useLogger().error(e, `${t('errorLoading')} ` + route.params.identifier);
+    }
+    isLoading.value = false;
   }
-  if(viewDocument.value?.primaryNationalTarget || viewDocument.value?.otherNationalTargets?.length){
-      loadNationalTargets([viewDocument.value?.primaryNationalTarget, ...(viewDocument.value?.otherNationalTargets||[])].filter(e=>e).map(e=>e.identifier));
-  }
+  async function loadNationalTargets(identifiers: string[]) {
+      const queries:Array<String> = [];
 
-  if(viewDocument.value?.coverageCountries?.length || viewDocument.value?.coverageRegions?.length)
+      queries.push(`identifier_s:(${identifiers.map(e=>escape(e)).join(' ')})`);
+
+      const targetQuery = {
+          query: queries,            
+          rowsPerPage: identifiers.length,
+          fields : 'identifier:identifier_s,title:title_EN_s'
+      }
+
+      const result = await queryIndex(parseSolrQuery(targetQuery, locale.value))
+      
+      const targets:EDictionary<string> = {};
+      result.docs.forEach((doc: any)=>{
+          targets[doc.identifier] = doc.title as string;
+      })
+      nationalTargets.value = targets;
+  }
+  async function loadCountryReviews(){
+    countryReviews.value = await kmStakeholderCommitmentApi.getCountryReviews(
+      { identifier: props.identifier }, { length : 500});
+  }
+  async function onStatusChange(identifier:string, reviewed:boolean){
     loadCountryReviews();
-})
-
-async function loadDocument(identifier) {
-  isLoading.value = true;
-  try {
-    if (route.query?.draft == 'true' || route.query?.draft === null) {
-      const draftRecord = await KmDocumentDraftsService.loadDraftDocument(route.params.identifier);
-      lDocument.value = draftRecord.body;
-      emit('onDocumentLoad', draftRecord);
-    } else {
-      const record = await KmDocumentsService.loadDocument(route.params.identifier);
-      lDocument.value = record.body;
-      showCoverage.value = false;
-      emit('onDocumentLoad', record);
-    }
-
-  } catch (e) {
-    if ([404, 401, 403].includes(e.status)) {
-      documentLoadError.value = e.status;
-      useLogger().error(e, `${t(e.status == 404 ? 'notFound' : 'notAuthorized')} ` + route.params.identifier);
-    } else
-      useLogger().error(e, `${t('errorLoading')} ` + route.params.identifier);
+      emit('onStatusChange', identifier, reviewed)
   }
-  isLoading.value = false;
-}
-async function loadNationalTargets(identifiers: string[]) {
-    const queries:Array<String> = [];
 
-    queries.push(`identifier_s:(${identifiers.map(e=>escape(e)).join(' ')})`);
+  // async function getCoverageCountries (draft:EStakeholderCommitment): Promise<string[]> {
+  //   if (draft === undefined) { return [] }
 
-    const targetQuery = {
-        query: queries,            
-        rowsPerPage: identifiers.length,
-        fields : 'identifier:identifier_s,title:title_EN_s'
-    }
+  //   let countries: string[] = []
+  //   if (draft.coverageCountries?.length > 0) {
+  //     countries = draft.coverageCountries.map(c => c.identifier)
+  //   }
+  //   if (draft.coverageRegions?.length > 0) {
+  //     const regionCountries = await getRegionCountries(draft.coverageRegions)
+  //     if (regionCountries?.length > 0) { 
+  //       countries = [...countries, ...regionCountries] 
+  //     }
+  //   }
 
-    const result = await queryIndex(parseSolrQuery(targetQuery, locale.value))
-    
-    const targets = {};
-    result.docs.forEach(doc=>{
-        targets[doc.identifier] = doc.title;
-    })
-    nationalTargets.value = targets;
-}
-async function loadCountryReviews(){
-  countryReviews.value = await kmStakeholderCommitmentApi.getCountryReviews(
-    { identifier: props.identifier }, { length : 500});
-}
-async function onStatusChange(identifier:string, endorsed:boolean){
-  loadCountryReviews();
-    emit('onStatusChange', identifier, endorsed)
-}
+  //   return countries
+  // }
+
+  // async function getRegionCountries (regions:ETerm[]): Promise<string[]> {
+  //   const regionCountries = await Promise.all(regions?.map((term:ETerm)=>thesaurusStore.loadTerm(term.identifier)))
+
+  //   return _(regionCountries).map((e:any)=>e.ss).flatten().filter((e:string) => e.length > 3).uniq().value();
+  // }
+
 </script>

@@ -163,7 +163,7 @@
             return {
                 indicatorCode    : row[0] as string,
                             // : row[1] is indicator name
-                hasDisaggregation: row[2] == 'no' ? false :  true as boolean,
+                hasDisaggregation: row[2]?.toLowerCase() == 'no' ? false :  true as boolean,
                 disaggregation   : row[3] as string,
                 year             : Number(row[4]),
                 unit             : row[5]?.toString(),

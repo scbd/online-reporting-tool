@@ -1,6 +1,6 @@
 {
     "awaitingAction" : "Awaiting action",
-    "reviewed": "Reviewed",
+    "published": "Published",
     "returned": "Returned",
-    "autoApproved": "Auto approved"
+    "autoPublished": "Auto published"
 }

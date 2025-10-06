@@ -50,7 +50,9 @@
             url = appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW;
         else if(document.schema_s == SCHEMAS.NATIONAL_NBSAP)
             url = appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW;
-            
+        else
+            url = document.url_ss[0];
+           
         const path = url.replace(':identifier', document.identifier_s);
 
         return path;

@@ -98,7 +98,7 @@ export const isWorkFlowCreatedByMe = function(workflow){
     return workflow && workflow.createdBy == user.value.userID;
 }
 
-export const resolveSchemaViewRoute = function(schema:String, identifier){
+export const resolveSchemaViewRoute = function(schema:String, identifier): string{
 
     const schemaDetails = useGetRealmSchema(schema);
 

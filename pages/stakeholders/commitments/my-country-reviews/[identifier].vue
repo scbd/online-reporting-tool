@@ -4,7 +4,7 @@
      style="border-color:#DDD; background-color: #f5f5f5;" role="alert">
       {{ t('countryReviewTitle') }}
       <country-review-action :identifier="countryReview.identifier" 
-          :endorsed="countryReview.reviewed === true"
+          :reviewed="countryReview.reviewed === true"
           @on-status-change="onStatusChange">
       </country-review-action>
 

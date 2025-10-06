@@ -12,7 +12,7 @@ export default class KmStakeholderCommitmentApi extends ApiBase
     }
     
     
-    async getCountryReviews({identifier, government} = {} as {identifier?: string, government : string}, 
+    async getCountryReviews({identifier, government} = {} as {identifier?: string, government?: string}, 
         { count, length, skip, sort } = 
             { count: false, length : 25, skip: 0, sort: { 'meta.updatedOn': -1 }} as MongoQuery) : Promise<ECommitmentCountryReview[]> {
         const query = {
@@ -23,21 +23,21 @@ export default class KmStakeholderCommitmentApi extends ApiBase
             sk: skip,
             c: count
         }
-        const data =  await useAPIFetch<ECommitmentCountryReview[]>(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements`, {  method:'GET', query })                
+        const data =  await useAPIFetch<ECommitmentCountryReview[]>(`/api/v2023/documents/schemas/stakeholder-commitment/country-reviews`, {  method:'GET', query })                
         return data;
     }
 
     async getCountryCommitment(identifier:string):Promise<EDocumentInfo>  {
 
-        const data =  await useAPIFetch<EDocumentInfo>(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements/${identifier}`,  { method:'GET' })                
+        const data =  await useAPIFetch<EDocumentInfo>(`/api/v2023/documents/schemas/stakeholder-commitment/country-reviews/${identifier}`,  { method:'GET' })                
         return data;
     }
 
     async reviewCountryCommitment(identifier:string) {
-        return useAPIFetch(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements/${identifier}`, { method:'POST'})
+        return useAPIFetch(`/api/v2023/documents/schemas/stakeholder-commitment/country-reviews/${identifier}`, { method:'POST'})
     }
 
     async returnCountryCommitment(identifier:string) {
-        return useAPIFetch(`/api/v2023/documents/schemas/stakeholder-commitment/endorsements/${identifier}`, { method:'DELETE'})
+        return useAPIFetch(`/api/v2023/documents/schemas/stakeholder-commitment/country-reviews/${identifier}`, { method:'DELETE'})
     }
 }
