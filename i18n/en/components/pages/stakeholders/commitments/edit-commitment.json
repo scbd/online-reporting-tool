@@ -1,6 +1,7 @@
 {
     "stakeholderCommitmentTitle": "Stakeholder Commitment",
     "submissionLanguage": "Language of submission",
+    "contactModifyMessage": "This section cannot be modified, please modify your credential record to update this section.",
     "general": "General Information",
     "title": "Title of commitment",
     "description": "Description of commitment",
@@ -11,7 +12,8 @@
     "timeline": "Timeline of commitment",
     "startDate": "Start date",
     "endDate": "End date (if applicable)",
-    "or": "OR",
+    "or": "Or",
+    "andOr": "And/Or",
     "isOpenEnded": "Alternatively, indicate whether the commitment is open-ended",
     "openEnded": "Open-ended commitment",
     "nextStepsInformation": "Share information on plans for next steps",

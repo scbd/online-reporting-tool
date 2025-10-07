@@ -41,7 +41,7 @@
                     </td>
                     <td>
                         <country-review-action v-if="countryReview.government == user.government"
-                            :identifier="countryReview.identifier" :reviewed="countryReview.reviewed === true"
+                            :identifier="countryReview.identifier" :reviewed="countryReview.reviewed"
                             @on-status-change="onStatusChange(countryReview.identifier, $event)"></country-review-action>
                     </td>
                 </tr>

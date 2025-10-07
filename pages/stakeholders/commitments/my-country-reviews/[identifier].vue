@@ -3,8 +3,14 @@
     <div class="alert alert-danger" v-if="countryReview"
      style="border-color:#DDD; background-color: #f5f5f5;" role="alert">
       {{ t('countryReviewTitle') }}
+      <p>
+        <strong v-if="countryReview.reviewed">{{t('reviewedBy')}} </strong>
+        <strong v-if="!countryReview.reviewed">{{t('returnedBy')}} </strong>
+        {{ countryReview?.meta?.updatedByInfo?.firstName }} {{ countryReview?.meta?.updatedByInfo?.lastName }}
+        {{ formatDate(countryReview?.meta?.updatedOn) }}
+      </p>
       <country-review-action :identifier="countryReview.identifier" 
-          :reviewed="countryReview.reviewed === true"
+          :reviewed="countryReview.reviewed"
           @on-status-change="onStatusChange">
       </country-review-action>
 

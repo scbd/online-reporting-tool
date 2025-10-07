@@ -1,4 +1,6 @@
 {
     "review": "Review",
-    "return": "Return"
+    "return": "Return",
+    "reviewError": "Error reviewing the commitment",
+    "returnError": "Error returning the commitment"
 }

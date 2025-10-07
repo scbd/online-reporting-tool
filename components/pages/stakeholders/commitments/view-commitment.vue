@@ -67,6 +67,7 @@
           <div class="card">
             <div class="card-header bg-secondary">{{ t('coverageSection') }}</div>
             <div class="card-body">
+
               <km-form-group :caption="t('coverageCountries')" v-if="viewDocument.coverageCountries && showCoverage">
                 <km-value-terms :value="viewDocument.coverageCountries" :locale="selectedLocale" />
               </km-form-group>
@@ -78,34 +79,35 @@
                     <km-lstring-value :value="otherCoverage" :locale="selectedLocale"></km-lstring-value>
                 </div>
               </km-form-group>
+
+              <km-form-group :caption="t('countryReviewTitle')"> 
+                <div v-if="countryReviews?.length">
+                    <div class="alert alert-success" v-if="showEnhancedReviews || reviewedByCountries.length">
+                      {{ t('countryReviewHelp') }}
+                    </div>
+                    <country-review-list v-if="showEnhancedReviews"
+                      :countryReviews="countryReviews"
+                      @on-status-change="onStatusChange"></country-review-list>
+
+                    <table v-else class="table table-bordered">
+                      <tbody>
+                        <tr v-for="review in reviewedByCountries" :key="review.government">
+                          <td>
+                            <km-term :value="{identifier: review.government}" :locale="selectedLocale"></km-term>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+                <div  v-if="!reviewedByCountries?.length && !showEnhancedReviews" class="alert alert-info">{{ t('noCountryReviews') }}</div>
+              </km-form-group>
+
               <km-form-group :caption="t('isLinkedToNbsap')" v-if="viewDocument.isLinkedToNbsap !== undefined">
                 <km-value :value="viewDocument.isLinkedToNbsap ? t('yes') : t('no')" />
               </km-form-group>
               <km-form-group v-if="viewDocument.linkedToNbsapCountries" :caption="t('linkedToNbsapCountries')">
                 <km-value-terms :value="viewDocument.linkedToNbsapCountries" :locale="selectedLocale" />
               </km-form-group>
-            </div>
-          </div>
-        </km-form-group>
-        <km-form-group v-if="countryReviews?.length">
-          <div class="card">
-            <div class="card-header bg-secondary">{{ t('countryReviewTitle') }}</div>
-            <div class="card-body">
-              <div class="alert alert-success">{{ t('countryReviewHelp') }}</div>
-                
-                <country-review-list v-if="isUserFromCoverageGovernment"
-                  :countryReviews="countryReviews"
-                  @on-status-change="onStatusChange"></country-review-list>
-
-                <table v-else class="table table-bordered">
-                  <tbody>
-                    <tr v-for="review in countryReviews" :key="review.government">
-                      <td>
-                        <km-term :value="{identifier: review.government}" :locale="selectedLocale"></km-term>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
             </div>
           </div>
         </km-form-group>
@@ -118,7 +120,7 @@
                 <km-value>
                   <km-link target="_blank"
                     :to="localePath(resolveSchemaViewRoute(SCHEMAS.NATIONAL_TARGET_7, viewDocument.primaryNationalTarget.identifier))" >
-                    {{ lstring(nationalTargets[viewDocument.primaryNationalTarget.identifier].toString(), selectedLocale) }}
+                    {{ lstring(nationalTargets[viewDocument.primaryNationalTarget.identifier]?.toString(), selectedLocale) }}
                   </km-link>
                 </km-value>
               </km-form-group>
@@ -253,6 +255,7 @@
   import _ from 'lodash';
   import { resolveSchemaViewRoute } from '~/utils';
 import type { EDictionary } from '~/types/schemas/base/EDictionary';
+import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
 
   const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
 
@@ -262,6 +265,7 @@ import type { EDictionary } from '~/types/schemas/base/EDictionary';
   const { user } = useAuth();
   const localePath  = useLocalePath();
   const thesaurusStore = useThesaurusStore();
+  const security      = useSecurity();
 
   const props = defineProps({
     document: { type: Object, default: undefined },
@@ -271,11 +275,11 @@ import type { EDictionary } from '~/types/schemas/base/EDictionary';
 
   const { document, identifier } = toRefs(props);
   const lDocument = ref<EStakeholderCommitment|null>(null);
+  const documentInfo = ref<EDocumentInfo|null>();
   const isLoading = ref(false);
   const documentLoadError = ref(null);
   const selectedLocale = ref(locale.value);
   const nationalTargets = ref<EDictionary<string>>({});
-  const showCountryReviews = ref(false);
   const countryReviews = ref<ECommitmentCountryReview[]>([]);
   const showCoverage = ref(true);
 
@@ -283,12 +287,19 @@ import type { EDictionary } from '~/types/schemas/base/EDictionary';
     return document?.value || lDocument?.value;
   })
 
-  const isUserFromCoverageGovernment = computed(()=>{
-    if(user.value.government){
-      return countryReviews.value.find(e=>e.government == user.value.government)
+  const showEnhancedReviews = computed(()=>{
+    if(user.value?.government){
+      if(security.role.isNationalFocalPoint())
+        return countryReviews.value.find((e: ECommitmentCountryReview)=>e.government == user.value.government)
     }
-    return false;
+
+    return  documentInfo.value?.submittedBy?.userID == user.value?.userID ||
+      documentInfo.value?.createdBy?.userID == user.value?.userID ;
   })
+
+  const reviewedByCountries = computed(()=>{
+    return countryReviews.value.filter((e:ECommitmentCountryReview)=>e.reviewed===true)
+  });
 
   onMounted(async() => {
     if (props.identifier && !props.document) {
@@ -308,10 +319,12 @@ import type { EDictionary } from '~/types/schemas/base/EDictionary';
       if (route.query?.draft == 'true' || route.query?.draft === null) {
         const draftRecord = await KmDocumentDraftsService.loadDraftDocument(route.params.identifier as string);
         lDocument.value = draftRecord?.body as EStakeholderCommitment;
+        documentInfo.value = draftRecord;
         emit('onDocumentLoad', draftRecord);
       } else {
         const record = await KmDocumentsService.loadDocument(route.params.identifier as string);
         lDocument.value = record.body;
+        documentInfo.value = record;
         showCoverage.value = false;
         emit('onDocumentLoad', record);
       }

@@ -8,22 +8,23 @@
                 :document="cleanDocument" :container="container">
                 <template v-slot:submission>
                     <form name="editForm">
-                        {{document}}
                         <km-form-group name="languages" :caption="t('submissionLanguage')" required>
                             <km-languages v-model="document.header.languages"></km-languages>
                         </km-form-group>
                         <div class="vld-parent">
+                            <km-suspense>
                                 <edit-contact-details v-model="contactDetails" 
                                     :locales="document.header.languages"
                                     @update:modelValue="onContactDetailsUpdate"></edit-contact-details>
 
-                                <overlay-loading :active="true" background-color="rgb(9 9 9)"
+                                <overlay-loading :active="myIntents?.length" background-color="rgb(9 9 9)"
                                     :opacity="0.1" :is-full-page="false">
                                     <CAlert class="m-2" color="info">
-                                        <strong> This section cannot be modified {{ t('missingIdentifier') }}</strong> 
+                                        <strong>  {{ t('contactModifyMessage') }}</strong> 
                                     </CAlert>
                                 </overlay-loading>
-                            </div>
+                            </km-suspense>
+                        </div>
                         
                         <!-- General Section -->
                         <km-form-group>
@@ -105,7 +106,7 @@
                                 <div class="card-header bg-secondary">{{ t('coverageSection') }}</div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <km-form-group name="coverageCountries" :caption="t('coverageCountries')"
                                                 required>
                                                 <km-select v-model="document.coverageCountries" :options="countries"
@@ -116,7 +117,13 @@
                                                 </km-select>
                                             </km-form-group>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
+                                            <div class="d-flex justify-content-center align-items-center"
+                                                style="height: 30px;" v-if="disableLinkedToNbsapCountries">
+                                                <strong class="rounded-circle border border-dark p-2">{{ t('andOr') }}</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
                                             <km-form-group name="coverageRegions" :caption="t('coverageRegions')"
                                                 required>
                                                 <km-select v-model="document.coverageRegions"
@@ -133,9 +140,8 @@
                                         </km-form-group>
 
                                         <km-form-group name="isLinkedToNbsap" :caption="t('isLinkedToNbsap')" required>
-                                            <CFormCheck id="isLinkedToNbsap" :label="t('isLinkedToNbsap')"
-                                                v-model="document.isLinkedToNbsap"
-                                                @update:modelValue="onLinkedToNbsapChange" />
+                                            <km-form-check-item :inline="true" type="radio" name="isLinkedToNbsap"  for="isLinkedToNbsap" id="isLinkedToNbsap" @update:modelValue="onLinkedToNbsapChange" :value="true"  v-model="document.isLinkedToNbsap" :label="t('yes')"/>
+                                            <km-form-check-item :inline="true" type="radio" name="isLinkedToNbsap"  for="isLinkedToNbsap" id="isLinkedToNbsap" @update:modelValue="onLinkedToNbsapChange" :value="false" v-model="document.isLinkedToNbsap" :label="t('no')"/>                                                             
                                         </km-form-group>
                                         <km-form-group name="linkedToNbsapCountries"
                                             :caption="t('linkedToNbsapCountries')" required
@@ -164,26 +170,26 @@
                                             <km-form-group name="primaryNationalTarget"
                                                 :caption="t('primaryNationalTarget')" required>
                                                 <km-select v-model="document.primaryNationalTarget"
-                                                    :options="nationalTargets" :disabled="hasPrimaryGlobalTarget"
+                                                    :options="nationalTargets" :disabled="!hasCoverageCountries"
                                                     :placeholder="t('primaryNationalTarget')"
                                                     :custom-label="customLabel" :custom-selected-item="customSelectedItem"/>
                                             </km-form-group>
                                         </div>
                                         <div class="d-flex justify-content-center align-items-center"
-                                            style="height: 30px;">
-                                            <strong class="rounded-circle border border-dark p-2">{{ t('or') }}</strong>
+                                            style="height: 30px;" v-if="disableLinkedToNbsapCountries">
+                                            <strong class="rounded-circle border border-dark p-2">{{ t('andOr') }}</strong>
                                         </div>
                                         <div class="col-md-12">
                                             <km-form-group name="primaryGlobalAlignment"
                                                 :caption="t('primaryGlobalAlignment')" required>
                                                 <km-select v-model="document.primaryGlobalAlignment"
-                                                    :options="globalGoalAndTargets"  :disabled="hasPrimaryNationalTarget"
+                                                    :options="globalGoalAndTargets"  :disabled="!hasCoverageCountries"
                                                     :placeholder="t('primaryGlobalAlignment')"  @update:modelValue="onGoalsAndTargetSelected"
                                                     :custom-label="customLabel" :custom-selected-item="customSelectedItem"/>
                                             </km-form-group>
                                         </div>
                                     </div>
-                                    <div class="col-md-12" v-if="disableLinkedToNbsapCountries">
+                                    <div class="col-md-12">
                                         <km-form-group name="otherNationalTargets" :caption="t('otherNationalTargets')">
                                             <km-select v-model="document.otherNationalTargets"
                                                 :options="nationalTargets" :placeholder="t('otherNationalTargets')"
@@ -397,11 +403,11 @@
     const documentInfo = ref<EDocumentInfo | undefined>(undefined);
     const nationalTargets = ref([]);
     const indicators      = ref<Object[]>([]);
+    const myIntents       = ref();
 
     const contactDetails:ComputedRef<EStakeHolderContact>  = computed(()=>extractContactDetails(document.value));
-    const countries = computed(() => thesaurusStore.getDomainTerms(THESAURUS.COUNTRIES));
-    const regions = computed(() => thesaurusStore.getDomainTerms(THESAURUS.REGIONS));
-    const organizationTypes = computed(() => thesaurusStore.getDomainTerms(THESAURUS.ORGANIZATION_TYPES));
+    const countries = computed(() => thesaurusStore.getDomainTerms(THESAURUS.COUNTRIES).sort((a:ETerm, b:ETerm) => a.name?.localeCompare(b.name as string)))
+    const regions = computed(() => thesaurusStore.getDomainTerms(THESAURUS.REGIONS).sort((a:ETerm, b:ETerm) => a.name?.localeCompare(b.name as string)))
 
     const globalTargets = computed(() => (thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_TARGETS) || []).sort(sortTermByName));
     const globalGoals = computed(() => (thesaurusStore.getDomainTerms(THESAURUS.GBF_GLOBAL_GOALS) || []).sort(sortTermByName));
@@ -419,6 +425,7 @@
         return !!document.value?.isOpenEnded;
     });
 
+    const hasCoverageCountries = computed(() => document.value?.coverageCountries?.length);
     const disableLinkedToNbsapCountries = computed(() => {
         return !document.value?.isLinkedToNbsap ||
             document.value?.coverageCountries?.length == 1;
@@ -545,8 +552,8 @@
     }
 
     function extractContactDetails(commitment: EStakeholderCommitment):EStakeHolderContact {
-                
-        return {
+                console.log(commitment)
+        const contactDetails = {
             firstName             : commitment.firstName,
             lastName              : commitment.lastName,
             designation           : commitment.designation,
@@ -565,7 +572,11 @@
             jurisdiction          : commitment.jurisdiction,
             jurisdictionCountries : commitment.jurisdictionCountries,
             jurisdictionRegions   : commitment.jurisdictionRegions,
-        }
+        };
+
+        const clean = useKmStorage().cleanDocument(contactDetails);
+        console.log(clean)
+        return clean
     }
 
     async function init() {
@@ -575,7 +586,6 @@
                 thesaurusStore.loadDomainTerms(THESAURUS.JURISDICTIONS),
                 thesaurusStore.loadDomainTerms(THESAURUS.REGIONS),
                 thesaurusStore.loadDomainTerms(THESAURUS.COUNTRIES),
-                thesaurusStore.loadDomainTerms(THESAURUS.ORGANIZATION_TYPES),
                 GbfGoalsAndTargets.loadGbfGoalsAndTargets(),
                 thesaurusStore.loadDomainTerms(THESAURUS.GBF_HEADLINE_INDICATORS),
                 thesaurusStore.loadDomainTerms(THESAURUS.GBF_COMPONENT_INDICATORS),
@@ -593,11 +603,11 @@
             }
             else{
                 document.value = emptyDocument();
-                const myIntents = await KmDocumentsService.loadSchemaDocuments (SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL, undefined,  {rowsPerPage:1});
-                if(myIntents?.length){
+                myIntents.value = await KmDocumentsService.loadSchemaDocuments (SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL, undefined,  {rowsPerPage:1});
+                if(myIntents.value?.length){
                     document.value = {
                         ...document.value,
-                        ...extractContactDetails(myIntents[0].body as EStakeholderCommitment)
+                        ...extractContactDetails(myIntents.value[0].body as EStakeholderCommitment)
                     }
                 }
             }

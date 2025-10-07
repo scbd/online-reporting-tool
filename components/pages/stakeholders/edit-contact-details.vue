@@ -231,11 +231,9 @@
         isBusy.value = false;
     }
 
-    onMounted(() => {
-        init();
-    })
-
     function onUpdate(){
         emit('update:modelValue', cleanDocument.value)
     }
+
+    await init();
 </script>
