@@ -63,7 +63,7 @@
                                             </km-form-group>
                                         </div>
                                         <div class="col-md-6">
-                                            <km-form-group name="timelineEndDate" :caption="t('endDate')" required>
+                                            <km-form-group name="timelineEndDate" :caption="t('endDate')">
                                                 <input type="date" class="form-control"
                                                     v-model="document.timelineEndDate" :disabled="isOpenEnded" />
                                             </km-form-group>
