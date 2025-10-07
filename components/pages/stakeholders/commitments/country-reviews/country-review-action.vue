@@ -1,10 +1,10 @@
 <template>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="endorse()" v-if="!reviewed">
+        <CButton :disabled="isBusy" color="secondary" size="sm"  @click="review()" v-if="reviewed == null || reviewed===false">
             <font-awesome-icon icon="fa-thumbs-up" /> {{t('review')}}
         </CButton>
-        <CButton :disabled="isBusy" color="secondary" size="sm" v-if="reviewed"
-            @click="renounce()">
+        <CButton :disabled="isBusy" color="secondary" size="sm" v-if="reviewed == null || reviewed===true"
+            @click="returnCommitment()">
             <font-awesome-icon icon="fa-thumbs-down" /> {{t('return')}}
         </CButton>        
     </div>
@@ -23,30 +23,30 @@ import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 
     const props = defineProps({
         identifier: { type : String, required:true},
-        reviewed: { type: Boolean, required:true}    
+        reviewed: { type: Boolean, default:null}    
     })
     const emit = defineEmits(['onStatusChange'])
 
-    async function endorse(){
+    async function review(){
         isBusy.value = true
         try{
             await kmStakeholderCommitmentApi.reviewCountryCommitment(props.identifier)
             emit('onStatusChange', true)
         }
         catch(e:any){
-            useLogger().error(e, `${t('endorseError')} ` + props.identifier);
+            useLogger().error(e, `${t('reviewError')} ` + props.identifier);
         }
         isBusy.value = false
     }
 
-    async function renounce(){
+    async function returnCommitment(){
         isBusy.value = true
         try{
             await kmStakeholderCommitmentApi.returnCountryCommitment(props.identifier)
             emit('onStatusChange', false)
         }
         catch(e:any){
-            useLogger().error(e, `${t('renounceError')} ` + props.identifier);
+            useLogger().error(e, `${t('returnError')} ` + props.identifier);
         }
         isBusy.value = false
     }
