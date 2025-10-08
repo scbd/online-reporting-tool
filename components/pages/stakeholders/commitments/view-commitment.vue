@@ -80,7 +80,7 @@
                 </div>
               </km-form-group>
 
-              <km-form-group :caption="t('countryReviewTitle')"> 
+              <km-form-group :caption="t('countryReviewTitle')" v-if="canShowCountryReviews"> 
                 <div v-if="countryReviews?.length">
                     <div class="alert alert-success" v-if="showEnhancedReviews || reviewedByCountries.length">
                       {{ t('countryReviewHelp') }}
@@ -99,7 +99,7 @@
                       </tbody>
                     </table>
                 </div>
-                <div  v-if="!reviewedByCountries?.length && !showEnhancedReviews" class="alert alert-info">{{ t('noCountryReviews') }}</div>
+                <div  v-if="(!reviewedByCountries?.length && !showEnhancedReviews) || (canShowCountryReviews && !countryReviews?.length)" class="alert alert-info">{{ t('noCountryReviews') }}</div>
               </km-form-group>
 
               <km-form-group :caption="t('isLinkedToNbsap')" v-if="viewDocument.isLinkedToNbsap !== undefined">
@@ -292,11 +292,18 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
       if(security.role.isNationalFocalPoint())
         return countryReviews.value.find((e: ECommitmentCountryReview)=>e.government == user.value.government)
     }
-
-    return  documentInfo.value?.submittedBy?.userID == user.value?.userID ||
-      documentInfo.value?.createdBy?.userID == user.value?.userID ;
+    const contributors = [
+      documentInfo.value?.submittedBy?.userID,
+      documentInfo.value?.createdBy?.userID,
+      documentInfo.value?.updatedBy?.userID,
+      documentInfo.value?.workingDocumentCreatedBy?.userID,
+      documentInfo.value?.workingDocumentUpdatedBy?.userID
+     ]
+    return  contributors.includes(user.value?.userID);
   })
-
+  const canShowCountryReviews = computed(()=>countryReviews.value?.length || 
+        showEnhancedReviews.value ||
+        (!reviewedByCountries.value?.length && !showEnhancedReviews.value))
   const reviewedByCountries = computed(()=>{
     return countryReviews.value.filter((e:ECommitmentCountryReview)=>e.reviewed===true)
   });

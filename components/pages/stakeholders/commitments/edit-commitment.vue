@@ -166,7 +166,7 @@
                                         {{ t('alignmentSectionHelp') }}
                                     </div>
                                     <div class="border p-3 mb-3">
-                                        <div class="col-md-12" v-if="disableLinkedToNbsapCountries">
+                                        <div class="col-md-12" v-if="hasCoverageCountries==1">
                                             <km-form-group name="primaryNationalTarget"
                                                 :caption="t('primaryNationalTarget')" required>
                                                 <km-select v-model="document.primaryNationalTarget"
@@ -176,7 +176,7 @@
                                             </km-form-group>
                                         </div>
                                         <div class="d-flex justify-content-center align-items-center"
-                                            style="height: 30px;" v-if="disableLinkedToNbsapCountries">
+                                            style="height: 30px;" v-if="hasCoverageCountries==1">
                                             <strong class="rounded-circle border border-dark p-2">{{ t('andOr') }}</strong>
                                         </div>
                                         <div class="col-md-12">
@@ -189,7 +189,7 @@
                                             </km-form-group>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" v-if="hasCoverageCountries==1">
                                         <km-form-group name="otherNationalTargets" :caption="t('otherNationalTargets')">
                                             <km-select v-model="document.otherNationalTargets"
                                                 :options="nationalTargets" :placeholder="t('otherNationalTargets')"
@@ -264,9 +264,9 @@
                                             v-model="document.internationalFrameworks"
                                             :locales="document.header.languages" />
                                     </km-form-group>
-                                    <km-form-group name="partners" :caption="t('partners')">
+                                    <km-form-group name="partners" :caption="t('partners')" required>
                                          <km-input-rich-lstring @onFileUpload="onFileUpload"
-                                            :identifier="document.header.identifier"
+                                            :identifier="document.header.identifier"required
                                             v-model="document.partners"
                                             :locales="document.header.languages" />
                                     </km-form-group>
