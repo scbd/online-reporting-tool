@@ -18,12 +18,12 @@
   
           <CCol md="12">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body">                
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <CButton :disabled="disableActions" @click="onPreview()" color="secondary">
                         <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                         <font-awesome-icon icon="fa-eye"></font-awesome-icon>
-                        {{t('preview')}}
+                        {{showPreview ? t('hidePreview') : t('preview')}}
                     </CButton>
                     <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
                         <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
@@ -47,6 +47,7 @@
                     <CIcon icon="cil-file-pdf"/> PDF
                   </CButton> -->
                 </div>
+                <small class="form-text text-muted float-end">Click on preview to generate PDF or print NR7</small>
               </div>
             </div>
           </CCol>
@@ -333,9 +334,10 @@
                 </CCard>
             </CCol>
         </CRow>
-        <CRow v-if="!isLoading && cleanDocumentInfo && showPreview">
-            <CCol class="mt-1" :md="12">                                
-                <nr-7-view :document-info="cleanDocumentInfo" ></nr-7-view>                
+        <CRow v-if="!isLoading && cleanDocumentInfo && showPreview" id="nr7-preview-section">
+            <CCol class="mt-1" :md="12">     
+                <view-actions print-selector=".nr7-section-view" :title="lstring(record?.workingDocumentTitle||record?.title)"></view-actions>
+                <nr-7-view :document-info="cleanDocumentInfo" class="print-section"></nr-7-view>                
             </CCol>
         </CRow>
         <CRow>
@@ -345,8 +347,8 @@
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <CButton :disabled="disableActions" @click="onPreview()" color="secondary">
                                 <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
-                                <font-awesome-icon icon="fa-eye"></font-awesome-icon>
-                                {{t('preview')}}
+                                <font-awesome-icon icon="fa-eye"></font-awesome-icon>                                
+                                {{showPreview ? t('hidePreview') : t('preview')}}
                             </CButton>
                             <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
                                 <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
@@ -640,6 +642,10 @@
 
     async function onPreview(){
         showPreview.value = !showPreview.value;
+        if(showPreview.value)
+            setTimeout(()=>{
+                scrollToElement(`#nr7-preview-section`);
+            }, 200)
     }
 
     async function onPublish(){

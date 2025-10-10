@@ -23,7 +23,7 @@
                 <km-locales v-model="selectedLocale" :locales="viewDocument.header.languages"></km-locales>
             </div>
 
-            <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" tabindex="0">
+            <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" tabindex="0" class="nr7-section-view">
                 <div id="section1" class="mb-3">
                   <nr7-view-section-I :identifier="viewDocumentInfo.identifier" :document="viewDocument" :document-locale="selectedLocale"></nr7-view-section-I>
                 </div>
