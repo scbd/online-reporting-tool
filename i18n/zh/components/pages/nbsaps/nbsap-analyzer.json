@@ -1,0 +1,37 @@
+{
+  "generalCount": "总计数",
+  "partiesWithNBSAP": "至少有1个国家生物多样性战略和行动计划的缔约方",
+  "totalNBSAP": "国家生物多样性战略和行动计划总数",
+  "map": "地图",
+  "progressByCBDRegions": "按《生物多样性公约》区域划分的进展",
+  "numberOfParties": "按《生物多样性公约》区域集团划分的缔约方数目",
+  "partyCount": "缔约方计数",
+  "total": "合计",
+  "progressByParties": " 按缔约方划分的进展",
+  "party": "缔约方",
+  "status": "状态",
+  "dateOfCompletion": "完成日期和通过日期",
+  "startDate": "开始日期",
+  "endDate": "结束日期",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.869Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "generalCount": "8138c54d122a829bf3d01eb696b4a90b",
+      "partiesWithNBSAP": "54a496184614c0b58c3010a11c1d4c60",
+      "totalNBSAP": "c4d0d51c51dcbccde955ca514bfb9bed",
+      "map": "46f3ea056caa3126b91f3f70beea068c",
+      "progressByCBDRegions": "6b4923214d0bfd8e1c2d5f29e944fcd6",
+      "numberOfParties": "3d4eeb999e60cf8975784f8a70767456",
+      "partyCount": "103cdb7e887135f36310a1a6e52318b7",
+      "total": "96b0141273eabab320119c467cdcaf17",
+      "progressByParties": "6ae5525a03bd4db4aa9f2589e098d5ce",
+      "party": "094a173d3b32f44f5b5c996e8710ae28",
+      "status": "ec53a8c4f07baed5d8825072c89799be",
+      "dateOfCompletion": "bbad02fe5176ac22b9da226272d434a3",
+      "startDate": "db3794c7d704611ce61c9d8cc09cd806",
+      "endDate": "3c1429dca1ae285353b112dfacae5fe5"
+    }
+  }
+}

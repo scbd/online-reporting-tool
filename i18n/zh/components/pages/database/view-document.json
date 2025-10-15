@@ -1,3 +1,11 @@
 {
-  "indicatorData": "指标数据"
+  "indicatorData": "指标数据",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.852Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "indicatorData": "78a1754651d4c1e246d11f27aec3ac92"
+    }
+  }
 }
