@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 class kmDocuments {
 
     async loadSchemaDocuments(schema:string|string[], government:string = null, 
-        {rowsPerPage= 500, sort= 'updatedOn desc', pageNumber= 0, body= true} : KmDocumentQueryOptions = {}):Promise<EDocumentInfo[]>{
+        {rowsPerPage= 500, sort= 'updatedOn desc', pageNumber= 0, body= true, collection="my"} : KmDocumentQueryOptions = {}):Promise<EDocumentInfo[]>{
      
         let query = ''
         if(Array.isArray(schema))
@@ -15,18 +15,18 @@ class kmDocuments {
         if(government)
           query += ` and owner eq 'country:${government}'` ;
 
-      const result = await this.loadDocuments(query,rowsPerPage, sort, pageNumber, body);  
+      const result = await this.loadDocuments(query,rowsPerPage, sort, pageNumber, body, collection);  
 
       return result.Items;
 
     }
 
     async loadDocuments(query:string, rowsPerPage:number, 
-      sort:String, pageNumber:number, body:boolean){
+      sort:String, pageNumber:number, body:boolean, collection:string='my'):Promise<KmDocumentQueryResult>{
                     
         const queryParams = {
             $filter : query,
-            collection : "my",
+            collection: collection,
             $top    : rowsPerPage,
             $skip   : (rowsPerPage*pageNumber),
             $orderby: sort||'updatedOn desc',
