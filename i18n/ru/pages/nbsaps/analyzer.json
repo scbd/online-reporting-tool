@@ -1,0 +1,33 @@
+{
+  "nationalTargetsAnalyzer": "Анализатор НСПДСБ",
+  "getShareLink": "Получить ссылку для отправки",
+  "close": "Закрыть",
+  "shareMessage": "Отметьте отдельные разделы, чтобы поделиться содержащейся в них информацией, или щелкните кнопку «Получить ссылку для отправки», чтобы поделиться всем содержимым",
+  "shareAnalyzerHeader": "Поделиться ссылкой на анализатор национальных докладов",
+  "share": "Поделиться",
+  "general-count": "Общее количество",
+  "map": "Карта",
+  "regions": "Ход осуществления в разбивке по регионам КБР",
+  "parties": "Ход осуществления в разбивке по Сторонам",
+  "ortTip": "Онлайновый инструмент представления отчетности СКБР",
+  "embedCode": "Показать код для вставки",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:48.092Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "nationalTargetsAnalyzer": "50cc6bdbe12ed05745ba54b502d6dcbb",
+      "getShareLink": "a089d55614f46c671f022986d6be4549",
+      "close": "d3d2e617335f08df83599665eef8a418",
+      "shareMessage": "10878507d1d4df474956f0829933eff0",
+      "shareAnalyzerHeader": "ba7c61f6213edae17aaf708f2dc1b32e",
+      "share": "5a95a425f74314a96f13a2f136992178",
+      "general-count": "8138c54d122a829bf3d01eb696b4a90b",
+      "map": "46f3ea056caa3126b91f3f70beea068c",
+      "regions": "6b4923214d0bfd8e1c2d5f29e944fcd6",
+      "parties": "62d5cda5a58ddb1aa6fb4cd248825a1f",
+      "ortTip": "44218a1b275e8ab27fad74cfc2069564",
+      "embedCode": "77840c3c9ff20e9c8a9079e87efdfa0a"
+    }
+  }
+}

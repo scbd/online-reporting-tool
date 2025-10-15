@@ -1,13 +1,21 @@
 {
   "settings": "设置",
   "signIn": "登录",
+  "emailAlerts": "电子邮件提示",
+  "profile": "个人资料",
+  "sessionExpiredTitle": "会议已过期。",
+  "sessionExpiredDescription": "您的会话已过期。请重新登录。",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.452Z",
+    "hashedOn": "2025-09-23T18:25:47.85Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "settings": "f4f70727dc34561dfde1a3c529b6205c",
-      "signIn": "b6d4223e60986fa4c9af77ee5f7149c5"
+      "signIn": "b6d4223e60986fa4c9af77ee5f7149c5",
+      "emailAlerts": "d6e74a08a9a2c720429944cbd0a80f6c",
+      "profile": "cce99c598cfdb9773ab041d54c3d973a",
+      "sessionExpiredTitle": "f31f28ce9cd8a8aa87bb51f54bb27df1",
+      "sessionExpiredDescription": "273b22511e7da1f5530257828a5b7909"
     }
   }
 }

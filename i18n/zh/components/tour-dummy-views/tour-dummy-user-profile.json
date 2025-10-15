@@ -1,7 +1,31 @@
 {
+  "userInfo": "用户信息",
+  "name": "名称",
+  "testUserForTourDemo": ": 用于导览演示的测试用户",
+  "primaryEmail": "主邮箱",
+  "countryAffiliation": "归属国家",
+  "haiti": "海地",
+  "role": "角色",
+  "nationalFocalPoint": "国家联络点",
+  "publishingAuthority": "发布机构",
+  "updateProfile": "更新概况",
+  "updatePassword": "更新密码",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.405Z",
+    "hashedOn": "2025-09-23T18:25:47.941Z",
     "algorithm": "md5",
-    "branch": "2024.26.0"
+    "branch": "2025.33.2",
+    "hashes": {
+      "userInfo": "cbc4b930801d47bcc491c1192b9c257b",
+      "name": "49ee3087348e8d44e1feda1917443987",
+      "testUserForTourDemo": "ba85bcc6f55ab1a3d7dfaefd6364960d",
+      "primaryEmail": "d5fc71a7f48a5201ede894f7254a40ff",
+      "countryAffiliation": "721c35f425a0e18e43abc29b9de57ec6",
+      "haiti": "b88959cb7d907d91065ac7ec19eb0b44",
+      "role": "87c31a8841364124e0638e3284621e10",
+      "nationalFocalPoint": "563c49902b79409543b5035cea5944e2",
+      "publishingAuthority": "c0a8567ad0cdf948c0974894095308f8",
+      "updateProfile": "54d2e870aca5e99bf69f0ee1d494c3b3",
+      "updatePassword": "7e347ed93c2a1d51aa8bf44ca3f517f0"
+    }
   }
 }

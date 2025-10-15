@@ -7,9 +7,9 @@
   "yes": "是",
   "no": "否",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.451Z",
+    "hashedOn": "2025-09-23T18:25:47.784Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "languageOfRecord": "66537dd560a586bd83b752d7c2517781",
       "minOneLanguage": "7fcfab8c1dd5805c18e077c53bad2aeb",

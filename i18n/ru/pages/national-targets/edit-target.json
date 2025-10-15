@@ -3,9 +3,9 @@
   "additionalImplementationAvailable": "Имеющиеся средства осуществления",
   "additionalImplementationOther": "Прочее",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.455Z",
+    "hashedOn": "2025-09-23T18:25:48.083Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "additionalImplementationRequire": "b551d8e9b60fb9a70e516ed7afb69572",
       "additionalImplementationAvailable": "efb722d5e0d35e1e2d25cc0207b99662",

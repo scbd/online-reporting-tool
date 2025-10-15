@@ -1,7 +1,27 @@
 {
+  "indicatorData": "指标数据",
+  "headlineIndicators": "标题指标",
+  "binaryIndicators": "二元指标",
+  "componentIndicators": "成份指标",
+  "complementaryIndicators": "补充指标",
+  "otherNationalIndicators": "其他国家指标",
+  "componentIndicatorsNotLinked": "如果您想为其他组成指标提供数据，请更新贵国的国家目标以包含必要的指标。",
+  "complementaryIndicatorsNotLinked": "如果您想为其他补充指标提供数据，请更新贵国的国家目标以包含必要的指标。",
+  "missingNationalIndicators": "贵国尚未在国家目标中报告任何国家指标。",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.444Z",
+    "hashedOn": "2025-09-23T18:25:47.879Z",
     "algorithm": "md5",
-    "branch": "2024.26.0"
+    "branch": "2025.33.2",
+    "hashes": {
+      "indicatorData": "78a1754651d4c1e246d11f27aec3ac92",
+      "headlineIndicators": "10bbb9ed7c1c1439be043f02d029a24f",
+      "binaryIndicators": "2c9c40f8fb279b2c7db3aff820085bd9",
+      "componentIndicators": "363d0a122c20aa4e3c0a09ee84bf5d4d",
+      "complementaryIndicators": "9892a23f8f145985d97250b16dae20fe",
+      "otherNationalIndicators": "474e2965245aa08bd6ce4d3ff31c04df",
+      "componentIndicatorsNotLinked": "07699012d2d9b2e80939d33ccc2126f0",
+      "complementaryIndicatorsNotLinked": "1203da84651f7ca52b46dba43b5e2682",
+      "missingNationalIndicators": "4a394fe2a8feb008e1d518f90683d348"
+    }
   }
 }

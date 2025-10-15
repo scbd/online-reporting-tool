@@ -1,0 +1,21 @@
+{
+  "sectionOtherInformation": "Раздел «Другая информация»:",
+  "sectionOtherInformationDescription": "Информация, запрашиваемая в соответствующих решениях, принятых Конференцией Сторон на ее 15-м совещании.",
+  "additionalDocuments": "Дополнительные документы",
+  "additionalDocumentsHelp": "Просьба загрузить любые дополнительные документы, которые вы хотели бы включить в 7‑й национальный доклад вашей страны.",
+  "additionalInformation": "Дополнительная информация",
+  "additionalInformationHelp": "Просьба представить любую дополнительную информацию, которую вы хотели бы включить в 7­‑й национальный доклад вашей страны.",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.889Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "sectionOtherInformation": "74b51b893a1f3fa15bc428a75761a72d",
+      "sectionOtherInformationDescription": "3a5e0218eb1fc53aa35e55ebfe7de266",
+      "additionalDocuments": "71ac72124aee8c60f2c6cf3a4abbcc18",
+      "additionalDocumentsHelp": "bad19f1830e4f3ea866f0449d9bce02c",
+      "additionalInformation": "092bf78f9c97ba171b8232ddff585392",
+      "additionalInformationHelp": "8f89da8d4ddebb7a6896bc60598dd673"
+    }
+  }
+}

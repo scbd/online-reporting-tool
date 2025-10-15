@@ -1,13 +1,26 @@
 {
+  "national": "استخدام مجموعة البيانات الوطنية",
+  "availableDataset": "استخدام البيانات المتاحة (المعبّأة مسبقًا)",
+  "noData": "لا توجد بيانات متاحة",
+  "notRelevant": "غير ذي صلة",
+  "sourceOfData": "مصدر البيانات",
   "year": "السنة",
   "value": "القيمة",
+  "globalSourceOfData": "المصدر العالمي للبيانات",
+  "globalIndicatorProviders": "جهات المؤشرات",
   "comments": "التعليقات",
   "yes": "نعم",
   "no": "لا",
+  "data": "البيانات",
+  "indicatorCode": "رمز المؤشر",
+  "doesDisaggregation": "هل يُمثّل هذا الصف من البيانات تصنيفًا فرعيًا؟",
+  "disaggregation": "تصنيف فرعي",
+  "unit": "الوحدة",
+  "footnote": "الحاشية",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.422Z",
+    "hashedOn": "2025-09-23T18:25:47.881Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "national": "8eac8b2343f0718cb0783c926b091c93",
       "availableDataset": "52a8ba5d68f6ed51e36101841337d41f",
@@ -20,7 +33,13 @@
       "globalIndicatorProviders": "6b22f7500bb6eaaf1b49b641467eaec6",
       "comments": "8413c683b4b27cc3f4dbd4c90329d8ba",
       "yes": "93cba07454f06a4a960172bbd6e2a435",
-      "no": "bafd7322c6e97d25b6299b5d6fe8920b"
+      "no": "bafd7322c6e97d25b6299b5d6fe8920b",
+      "data": "f6068daa29dbb05a7ead1e3b5a48bbee",
+      "indicatorCode": "3f2d40d8ce1f78c1362fbd282e27ab78",
+      "doesDisaggregation": "698c6042a0721371dae1a26dc646f439",
+      "disaggregation": "553d5337f6dc81e0a2fac9a405d332c4",
+      "unit": "19c562a36aeb455d09534f93b4f5236f",
+      "footnote": "8b213ded385c637758f8c3705eb6386a"
     }
   }
 }
