@@ -1,5 +1,6 @@
 {
+    "preparingPdfTitle": "Generating PDF",
     "pdf": "PDF",
-    "preparePdfing": "Please wait while we prepare the pdf document.",
+    "preparingPdfMessage": "Please wait while we prepare the pdf document.",
     "pdfError": "Error generating PDF document. Please try again."
 }
