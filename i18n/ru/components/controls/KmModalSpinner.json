@@ -1,5 +1,15 @@
 {
   "processing": "Обработка",
   "pleaseWait": "Подождите, пока выполняется обработка вашего запроса",
-  "loading": "Загрузка"
+  "loading": "Загрузка",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.77Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "processing": "643562a9ae7099c8aabfdc93478db117",
+      "pleaseWait": "0a50aa78eb1d519be7034330b596cbdc",
+      "loading": "16bfbf9c462762cf1cba4134ec53c504"
+    }
+  }
 }

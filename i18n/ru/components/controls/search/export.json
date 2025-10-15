@@ -1,0 +1,31 @@
+{
+  "exportButton": "Экспортировать",
+  "dialogTitle": "Экспортировать",
+  "downloadFormat": "Формат загрузки",
+  "xls": "XLS (Excel)",
+  "xlsx": "XLSX (Excel)",
+  "csv": "CSV (значения с разделителями-запятыми)",
+  "processing": "Обработка...",
+  "recordsFound": "Найденные записи",
+  "sampleMessage": "Это всего лишь пример экспортируемой информации. Будут экспортированы все найденные в ходе этого поиска записи.",
+  "cancel": "Отменить",
+  "download": "Загрузить",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.797Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "exportButton": "0095a9fa74d1713e43e370a7d7846224",
+      "dialogTitle": "0095a9fa74d1713e43e370a7d7846224",
+      "downloadFormat": "ad0ab9853d247e8e6c3cb83d5e4181ac",
+      "xls": "cc34052c36455d80c3d19f14d0de4587",
+      "xlsx": "91deb0c1ea34195ac73235cea1b3387f",
+      "csv": "539fd45caa63e2b92b01cda635abac7a",
+      "processing": "21d104a54fc71a19a325c7305327f1d2",
+      "recordsFound": "e4dcdb9c8525e1394c08a1e9d545f06e",
+      "sampleMessage": "64a4a481274c3c752512e9b823bcc10a",
+      "cancel": "ea4788705e6873b424c65e91c2846b19",
+      "download": "801ab24683a4a8c433c6eb40c48bcd9d"
+    }
+  }
+}

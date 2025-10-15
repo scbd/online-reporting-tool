@@ -1,0 +1,15 @@
+{
+  "pdf": "PDF",
+  "preparePdfing": "Подождите, пока выполняется подготовка pdf-документа.",
+  "pdfError": "При создании PDF-документа произошла ошибка. Повторите попытку.",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.766Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "pdf": "bcd1b68617759b1dfcff0403a6b5a8d1",
+      "preparePdfing": "a2aa308b47749a88481d5dac3ad1c9a2",
+      "pdfError": "ff26098acecbd883d657d9b6183e4291"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "editingLink": "Изменение ссылки",
+  "pleaseProvideWebsite": "Укажите URL-адрес веб-сайта (например, https://www.cbd.int) и название веб-сайта (например, «Конвенция о биологическом разнообразии»).",
+  "url": "URL-адрес",
+  "protocolIsRequired": "Требуется протокол",
+  "pleaseProvideValidUrl": "Укажите допустимый URL",
+  "name": "Название",
+  "scbdWebsite": "пример: веб-сайт СКБР",
+  "language": "Язык",
+  "pleaseSelectLanguage": "Выберите язык",
+  "cancel": "Отменить",
+  "save": "Сохранить",
+  "or": "или",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.79Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "editingLink": "2128dbb4c2d92dd00f4b5db4cbdc8436",
+      "pleaseProvideWebsite": "236175dbd1b23a4c975b77b9dc113164",
+      "url": "02a3a357710cc2a5dfdfb74ed012fb59",
+      "protocolIsRequired": "3501196318bc2399b9b6287b85efc7a2",
+      "pleaseProvideValidUrl": "306f6f1f5a1067f673e3577de271a9c4",
+      "name": "49ee3087348e8d44e1feda1917443987",
+      "scbdWebsite": "e10cd3c85f5b77f870bd67586678199e",
+      "language": "4994a8ffeba4ac3140beb89e8d41f174",
+      "pleaseSelectLanguage": "accc43ec4951dd7a848f5cf05250404c",
+      "cancel": "ea4788705e6873b424c65e91c2846b19",
+      "save": "c9cc8cce247e49bae79f15173ce97354",
+      "or": "e81c4e4f2b7b93b481e13a8553c2ae1b"
+    }
+  }
+}
