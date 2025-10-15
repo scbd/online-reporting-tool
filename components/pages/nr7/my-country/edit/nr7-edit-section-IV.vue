@@ -108,7 +108,7 @@
     import MissingDataAlert from './indicator-data/missing-data-alert.vue';
     import {uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
-    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
+    import {getBinaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
     import { nationalReport7Service } from '~/services/national-report-7-service';
 
     let document = ref({});
@@ -137,6 +137,7 @@
     const mouseOverGoal      = ref(null);
     const validationReport     = ref(null);
     const isEventDefined       = useHasEvents();
+    const binaryIndicatorQuestions = getBinaryIndicatorQuestions(locale.value);
     
 
     const sectionIVComputed = computed(()=>document.value.sectionIV);

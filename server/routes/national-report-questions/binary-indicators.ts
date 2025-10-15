@@ -1,9 +1,11 @@
 //@ts-nocheck
 
-import {binaryIndicatorQuestions} from '@/app-data/binary-indicator-questions.js' 
+import {getBinaryIndicatorQuestions} from '@/app-data/binary-indicator-questions.js' 
 
 export default defineEventHandler(async (event) => {
     const query = getQuery(event)
+    
+    const binaryIndicatorQuestions = getBinaryIndicatorQuestions(query.lang || "en");
     if(query.flat){
         return binaryIndicatorQuestions
                 .map(e=>{

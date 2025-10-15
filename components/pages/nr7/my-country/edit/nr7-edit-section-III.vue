@@ -217,7 +217,7 @@
     import ViewData         from '../view/nr7-view-indicator-data.vue';
     import _,{uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
-    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
+    import {getBinaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
     import { Collapse } from '@coreui/coreui';
 
     let document = ref({});
@@ -250,7 +250,7 @@
     const thesaurusStore        = useThesaurusStore ();
     const accordionItemVisibility= ref({});
     let firstLoad = true;
-
+    const binaryIndicatorQuestions = getBinaryIndicatorQuestions(locale.value);
     const sectionIIIComputed = computed({ 
         get(){ 
             const nationalTargets = document.value.sectionIII.filter(e=>e.targetType == 'national')

@@ -50,6 +50,9 @@ async function copyFiles(source, destination){
         console.info(directories);
         for (let i = 0; i < directories.length; i++) {
             const directory = directories[i];
+            
+            if(directory == '.DS_Store')
+                continue;
 
             const dirStats = await fs.stat(`${source}/${directory}`)
             if(!dirStats.isDirectory())

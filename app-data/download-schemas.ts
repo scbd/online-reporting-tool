@@ -6,7 +6,8 @@ export const downloadSchemas = {
 
         const { t, availableLocales, } = useI18n({            
             messages,
-            useScope:'local'
+            useScope:'local',
+            fallbackLocale: 'en',
         })
         return {	
             "nationalTarget7" : {

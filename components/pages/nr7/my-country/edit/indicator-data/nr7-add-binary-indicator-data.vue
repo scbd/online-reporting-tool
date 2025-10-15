@@ -80,13 +80,13 @@
 <script setup lang="ts">
 //@ts-nocheck
     
-    import {cloneDeep} from 'lodash';
+    import {cloneDeep, get} from 'lodash';
     import { useToast } from 'vue-toast-notification';
     import { EditFormUtility } from "@/services/edit-form-utility";
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { KmDocumentsService } from '~/services/kmDocuments';
     import { KmDocumentDraftsService } from '~/services/kmDocumentDrafts';
-    import {binaryIndicatorQuestions as binaryIndicatorSource} from '~/app-data/binary-indicator-questions'
+    import { getBinaryIndicatorQuestions} from '~/app-data/binary-indicator-questions'
    
     const props = defineProps({
         identifier         : {type:String, required:false},
@@ -100,7 +100,6 @@
 
     const isEventDefined        = useHasEvents();
    
-    const binaryIndicatorQuestions = reactive(cloneDeep(binaryIndicatorSource));
     const { user }                = useAuth();
     const security                = useSecurity();
     const route                   = useRoute();
@@ -116,7 +115,8 @@
     const showEditIndicatorDataModal = ref(false);
     const customValidationErrors     = ref(null);
     const documentInfo              = ref({});
-
+    const binaryIndicatorQuestions = reactive(cloneDeep(getBinaryIndicatorQuestions(locale.value)));
+    
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
 

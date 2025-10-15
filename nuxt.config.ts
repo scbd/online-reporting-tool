@@ -42,8 +42,9 @@ export default defineNuxtConfig({
       '@fortawesome/fontawesome-svg-core/styles.css'
   ],
 
-  i18n: {       
-      locales: [
+  i18n: { 
+      
+        locales: [
           { code: 'ar', iso: 'ar-SA',  dir: 'rtl' },
           { code: 'en', iso: 'en-US',             },
           { code: 'fr', iso: 'fr-FR',             },
