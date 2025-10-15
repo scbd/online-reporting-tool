@@ -3,7 +3,7 @@
   "sorryForError": "Nous sommes désolés de vous informer qu'une erreur inattendue s'est produite sur cette page.",
   "weUnderstand": "Nous comprenons que cela soit très regrettable et ait pu vous causer des désagréments.",
   "doNotHesitate": "N’hésitez pas à",
-  "contact": "contacter le Secrétariat",
+  "contact": "Veuillez contacter le Secrétariat",
   "furtherQuestion": "Si vous avez des questions ou des préoccupations supplémentaires.",
   "wouldLike": "Si vous voulez",
   "moreInfo": "plus d’informations sur ce message,",
@@ -11,9 +11,9 @@
   "clickHere": "cliquez ici",
   "message": "Message :",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.451Z",
+    "hashedOn": "2025-09-23T18:25:47.792Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "error": "902b0d55fddef6f8d651fe1035b7d4bd",
       "sorryForError": "163dc8e3e5100378855e34392c4a4e41",

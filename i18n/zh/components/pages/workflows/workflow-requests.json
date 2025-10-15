@@ -1,0 +1,23 @@
+{
+  "requestType": "请求类型",
+  "recordType": "记录类型",
+  "title": "标题",
+  "requestedBy": "请求者：",
+  "requestedOn": "请求时间",
+  "expiry": "届满",
+  "viewRequest": "查看请求",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.928Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "requestType": "a224e78a5fe556025783c5fe942ef523",
+      "recordType": "e3ceba76ed8ceac08631ebe7c9bc3f98",
+      "title": "b78a3223503896721cca1303f776159b",
+      "requestedBy": "aeaf08746080e6e79b89c08174a2e279",
+      "requestedOn": "d2093ebc60a5f511df0769dc72407840",
+      "expiry": "ad7a5dccbb87e6c4be1cfd32954711fc",
+      "viewRequest": "3fced20f759cc2c07e2703fb85eccabc"
+    }
+  }
+}

@@ -12,9 +12,9 @@
   "deleteDraftInfo": "لا يؤثر حذف مسودة سجل على السجل المنشور.",
   "deleteError": "خطأ في حذف السجل",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.45Z",
+    "hashedOn": "2025-09-23T18:25:47.779Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "deleteConfirmationTitle": "9e365dd1fae1b9ecae5a1d220a5fe86f",
       "deleteConfirmMessage": "48533a048ce11993c8b819750645d749",

@@ -1,3 +1,11 @@
 {
-  "loadingSuspense": "قيد التحميل"
+  "loadingSuspense": "قيد التحميل",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.773Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "loadingSuspense": "16bfbf9c462762cf1cba4134ec53c504"
+    }
+  }
 }

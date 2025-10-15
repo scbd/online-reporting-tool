@@ -5,17 +5,23 @@
   "menu7Nr": "第七次国家报告",
   "menuSearch": "搜索",
   "menuHelp": "帮助",
+  "nationalUsers": "国家用户",
+  "chm": "信息交换机制",
+  "menuTaxonomy": "分类学",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.409Z",
+    "hashedOn": "2025-09-23T18:25:47.85Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "languages": "3a08e2e340ab29fd9263af48193cbf8e",
       "menuDashboard": "2938c7f7e560ed972f8a4f68e80ff834",
       "menuNationalTargets": "0a4aed0e778cd5ae82ec7544b518bedb",
       "menu7Nr": "f8005bb5b61d52ab71cc606e0e242ff0",
       "menuSearch": "13348442cc6a27032d2b4aa28b75a5d3",
-      "menuHelp": "6a26f548831e6a8c26bfbbd9f6ec61e0"
+      "menuHelp": "6a26f548831e6a8c26bfbbd9f6ec61e0",
+      "nationalUsers": "22fbc96e8e4ed921e2c29e06e2bb2653",
+      "chm": "3668be3c3fe28daef09bbb0be387af10",
+      "menuTaxonomy": "30d10883c017c4fd6751c8982e20dae1"
     }
   }
 }

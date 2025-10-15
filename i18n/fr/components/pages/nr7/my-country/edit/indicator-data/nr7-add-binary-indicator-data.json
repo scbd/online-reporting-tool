@@ -1,11 +1,19 @@
 {
+  "editBinaryIndicatorData": "Modifier une réponse",
+  "addBinaryIndicatorData": "Ajouter une réponse",
+  "general": "Général",
+  "government": "Gouvernement",
+  "selectLanguages": "Veuillez sélectionner la ou les langues dans lesquelles vous souhaitez soumettre ce fichier.",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.443Z",
+    "hashedOn": "2025-09-23T18:25:47.875Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "editBinaryIndicatorData": "25e42091b87abf6689d3104b6f8eaf80",
-      "addBinaryIndicatorData": "1a8e79b4b970350be1daa12618a42d93"
+      "addBinaryIndicatorData": "1a8e79b4b970350be1daa12618a42d93",
+      "general": "0db377921f4ce762c62526131097968f",
+      "government": "18450de39aceed82b26abe218d377740",
+      "selectLanguages": "602b7ef0a2530a7c497820e902dcc982"
     }
   }
 }

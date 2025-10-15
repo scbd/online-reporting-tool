@@ -1,0 +1,11 @@
+{
+  "downloadIndicator": "下载指标的预填充模板",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.764Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "downloadIndicator": "035d3495ad6da5cab89b7ca7b269a94e"
+    }
+  }
+}

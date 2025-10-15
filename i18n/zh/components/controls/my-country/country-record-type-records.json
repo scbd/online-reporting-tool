@@ -1,0 +1,35 @@
+{
+  "title": "标题",
+  "gbfGoals": "全球生物多样性基金的目标和具体目标",
+  "status": "状态",
+  "updatedOn": "更新日期：",
+  "view": "查看",
+  "edit": "编辑",
+  "passedValidation": "验证成功",
+  "hasErrors": "验证失败",
+  "validating": "正在验证...",
+  "filterByTitle": "按标题筛选",
+  "filterByGlobalTargets": "按全球行动目标筛选",
+  "filterByGlobalGoals": "按全球长期目标筛选",
+  "clearFilters": "清除筛选条件",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.795Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "title": "b78a3223503896721cca1303f776159b",
+      "gbfGoals": "c9e0e3c5305181aefa173c26c524536e",
+      "status": "ec53a8c4f07baed5d8825072c89799be",
+      "updatedOn": "b7aabb29ffd777e217ebdaae32a03a2b",
+      "view": "4351cfebe4b61d8aa5efa1d020710005",
+      "edit": "7dce122004969d56ae2e0245cb754d35",
+      "passedValidation": "b2a97ba1150b313c0a5673334571a272",
+      "hasErrors": "7ce566811655aedfaf524bde4e32f575",
+      "validating": "2c3f5a2e1d77bff6ce95d32aec56dbd9",
+      "filterByTitle": "f1eb8e681d899f7379a31801852ac14c",
+      "filterByGlobalTargets": "3d6579e1ec96888dc4552f8cc9bb9d02",
+      "filterByGlobalGoals": "22137392498eb907a4e32e976721e194",
+      "clearFilters": "0b275442d6556cff30b75f37f1918899"
+    }
+  }
+}

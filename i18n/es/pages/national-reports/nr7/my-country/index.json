@@ -1,1 +1,13 @@
-{}
+{
+  "allMyCountryNr7": "Todos los séptimos informes nacionales de mi país",
+  "myCountryNr7": "El Séptimo informe nacional de mi país",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:48.08Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "allMyCountryNr7": "783b40c187a82337fefc12c5c2b086b3",
+      "myCountryNr7": "ba38edb6dac3bb75995f40b1cb4c4a6b"
+    }
+  }
+}

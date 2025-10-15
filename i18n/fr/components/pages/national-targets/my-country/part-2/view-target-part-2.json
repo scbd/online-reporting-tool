@@ -9,9 +9,9 @@
   "referencePeriodForIndicator": "Est-ce qu’il y a une période de référence qui se rapporte à l’indication global?",
   "explain": "Veuillez expliquer",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.397Z",
+    "hashedOn": "2025-09-23T18:25:47.863Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "title": "95a4422dccb74a8be9cade479b9ca8c6",
       "general": "0db377921f4ce762c62526131097968f",

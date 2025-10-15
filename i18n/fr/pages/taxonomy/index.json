@@ -1,0 +1,31 @@
+{
+  "taxonomy": "Taxonomie",
+  "welcomeToTaxonomy": "La taxonomie du Cadre mondial de Kunming-Montréal pour la biodiversité (KMGBF)",
+  "gbfTaxonomy": "Taxonomie du Cadre mondial pour la biodiversité",
+  "gbfTaxonomyDescription": "Le Cadre mondial de Kunming-Montréal pour la biodiversité (KMGBF) est un cadre mondial adopté en décembre 2022 afin de mettre un terme à la perte de biodiversité et d'inverser la tendance d'ici 2030. Il définit des objectifs et des cibles pour la prochaine décennie et au-delà, dans le but de parvenir à un monde en harmonie avec la nature d'ici 2050. Le cadre comprend 4 objectifs pour 2050 et 23 cibles pour 2030, en mettant l'accent sur les mesures urgentes à prendre pour lutter contre la perte de biodiversité. ",
+  "gbfGoals": "Objectifs du Cadre mondial pour la biodiversité",
+  "gbfGoalsDescription": "Les 4 objectifs du Cadre mondial de Kunming-Montréal pour la biodiversité (KMGBF) pour 2050.",
+  "gbfTargets": "Cibles du Cadre mondial pour la biodiversité",
+  "gbfTargetsDescription": "Les 23 cibles du Cadre mondial de Kunming-Montréal pour la biodiversité (KMGBF) pour 2030.",
+  "gbfIndicators": "Indicateurs du Cadre mondial pour la biodiversité",
+  "gbfIndicatorsDescription": "Indicateurs du Cadre mondial de Kunming-Montréal pour la biodiversité (KMGBF)",
+  "view": "Afficher",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:48.109Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "taxonomy": "30d10883c017c4fd6751c8982e20dae1",
+      "welcomeToTaxonomy": "e74f396019a9306c7c8319026783cd83",
+      "gbfTaxonomy": "74db2bda291ee4cd149e1ea05da03fb1",
+      "gbfTaxonomyDescription": "b40592abda09b768b1652bfc6c601c45",
+      "gbfGoals": "79e191f31e4a37cc9708f04f42de1611",
+      "gbfGoalsDescription": "9436ca771f2abf4e973c2fd8ef439724",
+      "gbfTargets": "c86560755dbb2a8aee75723e9fbd3402",
+      "gbfTargetsDescription": "6bdbef26252e45f1f79b851e99b4975f",
+      "gbfIndicators": "65b987ff350723bacc310b734bc6de18",
+      "gbfIndicatorsDescription": "4a69f3241bdac91482d49418ac20c10f",
+      "view": "4351cfebe4b61d8aa5efa1d020710005"
+    }
+  }
+}

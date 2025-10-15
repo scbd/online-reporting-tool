@@ -1,9 +1,10 @@
 {
   "print": "打印",
+  "preparePrinting": "请稍候，我们正在准备打印文档。",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.4Z",
+    "hashedOn": "2025-09-23T18:25:47.768Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "print": "13dba24862cf9128167a59100e154c8d",
       "preparePrinting": "1346d82891e3a7dfa503080c0ce4aacb"

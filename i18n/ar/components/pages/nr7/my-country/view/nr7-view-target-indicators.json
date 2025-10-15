@@ -1,0 +1,19 @@
+{
+  "headline": "رئيسي",
+  "binary": "ثنائي",
+  "component": "مكوّن",
+  "complementary": "تكميلي",
+  "national": "وطني",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.895Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "headline": "c6568e77f61109390e82d035aaacaef0",
+      "binary": "6ce976e8f061b2b5cfe4d0c50c3405dd",
+      "component": "2cb05e4bb7830be982f0922fed86b4cd",
+      "complementary": "cbb59f3e8e03ba7e6065fb66920e8f18",
+      "national": "65ccf0f205fb154d14c470767026d75e"
+    }
+  }
+}
