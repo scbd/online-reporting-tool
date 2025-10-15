@@ -110,7 +110,8 @@ export const resolveSchemaViewRoute = function(schema:String, identifier){
             url = appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW;
         else if(schema == SCHEMAS.NATIONAL_NBSAP)
             url = appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW;
-            
+        else if(schema == SCHEMAS.NATIONAL_REPORT_7)
+            url = appRoutes.NATIONAL_REPORTS_NR7_VIEW;
         return url.replace(':identifier', identifier);
     }
 }
