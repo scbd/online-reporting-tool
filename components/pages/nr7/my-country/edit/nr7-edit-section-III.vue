@@ -250,7 +250,7 @@
     const thesaurusStore        = useThesaurusStore ();
     const accordionItemVisibility= ref({});
     let firstLoad = true;
-    const binaryIndicatorQuestions = getBinaryIndicatorQuestions(locale.value);
+    const binaryIndicatorQuestions = computed(()=>getBinaryIndicatorQuestions(locale.value));
     const sectionIIIComputed = computed({ 
         get(){ 
             const nationalTargets = document.value.sectionIII.filter(e=>e.targetType == 'national')
@@ -551,7 +551,7 @@
 
     function mapWithNationalBinaryData(indicator, type){
         const nationalBinaryData = nationalBinaryIndicatorData.value?.body||{};
-        const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator.identifier);
+        const binaryQuestion = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == indicator.identifier);
         
         if(binaryQuestion){
             const nationalData = nationalBinaryData[binaryQuestion.key]
@@ -598,7 +598,7 @@
                         }
                     }
                     else {
-                        const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator.identifier);
+                        const binaryQuestion = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == indicator.identifier);
                         if(binaryQuestion){
                             const mapData = mapWithNationalBinaryData(indicator);
                             indicator.nationalData = mapData.nationalData;

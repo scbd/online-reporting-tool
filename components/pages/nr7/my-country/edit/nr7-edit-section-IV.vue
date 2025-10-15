@@ -137,7 +137,7 @@
     const mouseOverGoal      = ref(null);
     const validationReport     = ref(null);
     const isEventDefined       = useHasEvents();
-    const binaryIndicatorQuestions = getBinaryIndicatorQuestions(locale.value);
+    const binaryIndicatorQuestions = computed(()=>getBinaryIndicatorQuestions(locale.value));
     
 
     const sectionIVComputed = computed(()=>document.value.sectionIV);
@@ -324,7 +324,7 @@
     }
 
     function normalizeNationalBinaryData(indicator, type, nationalBinaryData){
-        const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator.identifier);
+        const binaryQuestion = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == indicator.identifier);
         
         if(binaryQuestion){
             let nationalData = {}

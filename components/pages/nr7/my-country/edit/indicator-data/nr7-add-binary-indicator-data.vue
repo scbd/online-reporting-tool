@@ -115,7 +115,10 @@
     const showEditIndicatorDataModal = ref(false);
     const customValidationErrors     = ref(null);
     const documentInfo              = ref({});
-    const binaryIndicatorQuestions = reactive(cloneDeep(getBinaryIndicatorQuestions(locale.value)));
+    const binaryIndicatorQuestions = computed(()=>{
+        const questions = getBinaryIndicatorQuestions(locale.value);
+        cloneDeep(questions);
+    });
     
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
@@ -128,8 +131,7 @@
     });
     
     const binaryQuestion = computed(()=>{
-        return binaryIndicatorQuestions
-                .find(e=>e.binaryIndicator == props.indicator?.identifier);
+        return binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == props.indicator?.identifier);
     })
 
     const onPostClose = async (document)=>{

@@ -141,8 +141,8 @@
 
     const isEventDefined        = useHasEvents();
     
-    const binaryIndicatorQuestions = getBinaryIndicatorQuestions(locale.value);
-console.log(binaryIndicatorQuestions);
+    const binaryIndicatorQuestions = computed(()=>getBinaryIndicatorQuestions(locale.value));
+
     const nationalHeadlineIndicators        = computed(()=>globalIndicators.value.headlineIndicators?.map(mapWithNationalRecords));
     const nationalBinaryIndicators          = computed(()=>globalIndicators.value.binaryIndicators?.map(mapBinaryIndicatorWithNationalData));
     const nationalComponentIndicators       = computed(()=>globalIndicators.value?.componentIndicators?.filter(e=>filterNationalIndicators(e, 'componentIndicators'))?.map(mapWithNationalRecords));
@@ -195,7 +195,7 @@ console.log(binaryIndicatorQuestions);
 
     function mapBinaryIndicatorWithNationalData(indicator){
         // console.log(binaryIndicatorQuestions);
-        const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator?.identifier);
+        const binaryQuestion = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == indicator?.identifier);
         const binaryDataDocument = nationalBinaryDatDocument.value?.body||{}
         let nationalData = {}
         
