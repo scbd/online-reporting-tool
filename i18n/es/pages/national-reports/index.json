@@ -1,22 +1,26 @@
 {
-  "headerTitle": "Correspondencias nacionales con los Objetivos y Metas mundiales",
+  "headerTitle": "Correspondencias nacionales con los objetivos y metas mundiales",
   "editMapping": "Editar las correspondencias",
   "addMapping": "Agregar correspondencias",
-  "linkedTargetsTitle": "Meta(s) nacional(es) vinculadas a este Objetivo o esta Meta mundiales",
+  "linkedTargetsTitle": "Meta(s) nacional(es) vinculadas a este objetivo o esta meta mundiales",
   "elementsOfInfo": "Elemento de información sobre las metas mundiales",
   "headlineIndicators": "Indicadores principales",
   "referencePeriod": "Período de referencia",
   "hasReferencePeriod": "Tiene un período de referencia",
   "noReferencePeriod": "No tiene un período de referencia",
-  "otherIndicators": "Otros indicadores vinculados en la(s) meta(s) nacional(es) a este Objetivo o esta Meta mundiales",
-  "filter": "Filtro",
+  "otherIndicators": "Otros indicadores vinculados en la(s) meta(s) nacional(es) a este objetivo o esta meta mundiales",
+  "filter": "Filtrar por estado",
+  "filterByGlobalTargets": "Filtrar por metas mundiales",
+  "filterByGlobalGoals": "Filtrar por objetivos mundiales",
   "selectOne": "Seleccione uno",
   "overview": "Ir al Panorama",
   "addEditMapping": "Hacer clic para Agregar o Editar el botón de correspondencias a fin de editar esta sección",
+  "allNationalReports": "Todos los informes nacionales",
+  "myCountryNr7": "El Séptimo informe nacional de mi país",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.393Z",
+    "hashedOn": "2025-09-23T18:25:48.048Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "headerTitle": "cf4a1e5f33756d455211d6c326ff0950",
       "editMapping": "9e3622422a8079c477a1b38a39247380",
@@ -33,7 +37,9 @@
       "filterByGlobalGoals": "22137392498eb907a4e32e976721e194",
       "selectOne": "d3edcd6e9775351c33eee922e57a074e",
       "overview": "4d0f98578ddd1db2b9bea9e5cf5603d1",
-      "addEditMapping": "8c1cc3b429f3851894aea041312ee1fe"
+      "addEditMapping": "8c1cc3b429f3851894aea041312ee1fe",
+      "allNationalReports": "f7d8a59e70708a0aac0fdc8cb58803c3",
+      "myCountryNr7": "ba38edb6dac3bb75995f40b1cb4c4a6b"
     }
   }
 }

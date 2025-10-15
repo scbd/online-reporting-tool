@@ -1,7 +1,13 @@
 {
+  "addContent": "Agregar contenido",
+  "editContent": "Editar contenido",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.407Z",
+    "hashedOn": "2025-09-23T18:25:47.76Z",
     "algorithm": "md5",
-    "branch": "2024.26.0"
+    "branch": "2025.33.2",
+    "hashes": {
+      "addContent": "a4108fba6d6b3fc7a5e9e0573030c7d8",
+      "editContent": "7449257dc39e2cdf9075bd20d82020a3"
+    }
   }
 }

@@ -1,6 +1,6 @@
 {
-  "title": "Correspondencias nacionales con los Objetivos y Metas mundiales",
-  "governmentAndLanguages": "Gobierno e Idioma(s)",
+  "title": "Correspondencias nacionales con los Objetivos y metas mundiales",
+  "governmentAndLanguages": "Gobierno e idioma(s)",
   "government": "Gobierno",
   "clickToChange": "Haga clic aquí para cambiar el idioma del registro",
   "submissionLanguage": "Sírvase seleccionar el/los idioma(s) en los que desea presentar este registro",
@@ -9,14 +9,14 @@
   "elementsAddressed": "Elementos de las metas mundiales que se abordan en las metas nacionales. (Sírvase incluir también qué aspectos de las metas mundiales no se abarcan en las metas nacionales.)",
   "aspectsOfTargets": "Sírvase incluir también qué aspectos de las metas mundiales no se abarcan las metas nacionales.",
   "referencePeriod": "Período de referencia",
-  "referencePeriodForIndicators": "¿Existe un período de referencia relacionado con el indicador principal?",
+  "referencePeriodForIndicators": "¿Existe un período de referencia relacionado con el indicador de cabecera?",
   "explain": "Sírvase explicar",
   "yes": "Sí",
   "no": "No",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.455Z",
+    "hashedOn": "2025-09-23T18:25:47.861Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "title": "12d178276504426e998daa443906b26c",
       "governmentAndLanguages": "00196a85b00e7e2a17724bb3bc95b82a",
