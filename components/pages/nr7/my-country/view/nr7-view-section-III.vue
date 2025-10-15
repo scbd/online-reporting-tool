@@ -86,7 +86,7 @@
     })
 
     const nationalIndicators      = computed(()=>{
-        return Object.values(nationalTargetsComputed.value).map(e=>e.nationalIndicators||[]).flat();
+        return Object.values(nationalTargetsComputed.value).map(e=>e.body).map(e=>e?.otherNationalIndicators||[]).flat().map(e=>e);
     });
     const nationalTargetsComputed = computed(()=>{
         return props.nationalTargets || {}
