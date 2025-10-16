@@ -53,6 +53,9 @@
         else if(document.schema_s == SCHEMAS.NATIONAL_REPORT_7)
             url = appRoutes.NATIONAL_REPORTS_NR7_VIEW;
             
+        else
+            url = document.url_ss[0];
+           
         const path = url.replace(':identifier', document.identifier_s);
 
         return path;
