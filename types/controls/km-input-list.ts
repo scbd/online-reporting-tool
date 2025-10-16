@@ -1,3 +1,3 @@
 export interface KmInputListBindingType {
-    value    : String
+    value    : string
 }
