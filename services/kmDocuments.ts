@@ -22,7 +22,7 @@ class kmDocuments {
     }
 
     async loadDocuments(query:string, rowsPerPage:number, 
-      sort:String, pageNumber:number, body:boolean, collection:string='my'):Promise<KmDocumentQueryResult>{
+      sort:string, pageNumber:number, body:boolean, collection:string='my'):Promise<KmDocumentQueryResult>{
                     
         const queryParams = {
             $filter : query,
