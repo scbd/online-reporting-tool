@@ -7,7 +7,7 @@
             <CCol md="1">
                 <button :disabled="binding.length==1" type="button" class="btn btn-danger" 
                 @click="removeItem(item, index)" :title="t('remove')" >
-                    <font-awesome-icon icon="fa-solid fa-trash"/> {{  }}
+                    <font-awesome-icon icon="fa-solid fa-trash"/>
                 </button>     
             </CCol>
         </CRow>
