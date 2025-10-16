@@ -1,0 +1,11 @@
+{
+    "title" :  "Commitment title",
+    "government": "Government",
+    "status": "Status",
+    "updatedOn":"Updated",
+    "action" : "Actions",
+    "awaitingAction" : "Awaiting action",
+    "published": "Published",
+    "returned": "Returned",
+    "autoPublished": "Auto published"
+}
