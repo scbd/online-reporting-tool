@@ -36,6 +36,25 @@ export const appRoutes = {
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION : '/national-reports/nr7/my-country/edit/section-other-information',
     NATIONAL_REPORTS_NR7_VIEW               : '/national-reports/nr7/:identifier',
     
+    STAKEHOLDER                    : '/stakeholders',
+    STAKEHOLDER_CREDENTIALS            : '/stakeholders/credentials',
+    STAKEHOLDER_MY_CREDENTIALS         : '/stakeholders/credentials/my-credentials',
+    STAKEHOLDER_MY_CREDENTIALS_NEW     : '/stakeholders/credentials/my-credentials/new',
+    STAKEHOLDER_MY_CREDENTIALS_EDIT    : '/stakeholders/credentials/my-credentials/:identifier/edit',
+    STAKEHOLDER_MY_CREDENTIALS_VIEW    : '/stakeholders/credentials/my-credentials/:identifier/view',
+    STAKEHOLDER_CREDENTIALS_VIEW        : '/stakeholders/credentials/:identifier/view',
+
+    STAKEHOLDER_COMMITMENTS        : '/stakeholders/commitments',
+    STAKEHOLDER_MY_COMMITMENTS     : '/stakeholders/commitments/my-commitments',
+    STAKEHOLDER_MY_COMMITMENTS_NEW : '/stakeholders/commitments/my-commitments/new',
+    STAKEHOLDER_MY_COMMITMENTS_EDIT: '/stakeholders/commitments/my-commitments/:identifier/edit',
+    STAKEHOLDER_MY_COMMITMENTS_VIEW : '/stakeholders/commitments/my-commitments/:identifier/view',
+    STAKEHOLDER_COMMITMENT_VIEW    : '/stakeholders/commitments/:identifier/view',
+    
+    STAKEHOLDER_MY_COUNTRY_REVIEWS     :  '/stakeholders/commitments/my-country-reviews',
+    STAKEHOLDER_MY_COUNTRY_REVIEWS_VIEW : '/stakeholders/commitments/my-country-reviews/:identifier',
+    
+
     TAXONOMY                                  : '/taxonomy',
     TAXONOMY_GBF                              : '/taxonomy/gbf',
     TAXONOMY_GBF_GOALS                        : '/taxonomy/gbf/goals',
