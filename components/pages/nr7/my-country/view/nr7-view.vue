@@ -77,7 +77,7 @@
   const props = defineProps({
       documentInfo: { type:Object as PropType<EDocumentInfo>, default : undefined},
       identifier  : { type:String, required:true},
-      publicData  : { type:Boolean, default : 'false'},
+      publicData  : { type:Boolean, default : false},
   })
 
   const { documentInfo, identifier } = toRefs(props);
