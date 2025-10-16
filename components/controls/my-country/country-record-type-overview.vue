@@ -66,6 +66,8 @@
     const { t, locale }            = useI18n();
     const { $appRoutes:appRoutes } = useNuxtApp();
     const { user }                 = useAuth();
+    const schemaDetails            = useGetRealmSchema(props.schema);
+
     const draftNationalRecords     = ref<EDocumentInfo[]>([]);
     const publishedNationalRecords = ref([]);
     const isLoadingRecords         = ref(false);
@@ -106,7 +108,7 @@
             isLoadingRecords.value = true;
             let query = `(type eq '${props.schema}')`
 
-            if(user.value?.government)
+            if(schemaDetails.type == 'national' && user.value?.government)
                 query += ` and owner eq 'country:${user.value.government}'` ;
 
             const result = await Promise.all([KmDocumentDraftsService.loadDraftDocuments(query,rowsPerPage, 'updatedOn desc', 0, true),
