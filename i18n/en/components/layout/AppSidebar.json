@@ -21,6 +21,11 @@
     "sectionIV": "Section IV",
     "sectionV": "Section V",
     "otherInformation": "Other information",
-    "otherInformation": "Other information",
-    "indicatorData" : "Indicator data"
+    "indicatorData" : "Indicator data",
+
+    "stakeholders": "Stakeholders",
+    "allCommitments": "All commitments",
+    "menuMyCommitments": "My commitments",
+    "menuMyIntents": "Credentials",
+    "menuMyCountryReviews" : "Country reviews"
 }
