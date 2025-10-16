@@ -1,0 +1,31 @@
+{
+  "taxonomy": "分类学",
+  "welcomeToTaxonomy": "《昆明-蒙特利尔全球生物多样性框架》（KMGBF）分类法",
+  "gbfTaxonomy": "《昆蒙框架》分类法",
+  "gbfTaxonomyDescription": "《昆明-蒙特利尔全球生物多样性框架》（KMGBF）是2022年12月通过的一项全球框架，旨在到2030年制止和扭转生物多样性丧失。它为未来十年及以后设定了长期目标和行动目标，旨在到2050年实现人与自然和谐共生的世界。该框架包括4个2050年长期目标和23个2030年行动目标，重点是采取紧急行动应对生物多样性丧失。 ",
+  "gbfGoals": "《昆蒙框架》长期目标",
+  "gbfGoalsDescription": "《昆明-蒙特利尔全球生物多样性框架》（KMGBF）的4个2050年长期目标。",
+  "gbfTargets": "《昆蒙框架》行动目标",
+  "gbfTargetsDescription": "《昆明-蒙特利尔全球生物多样性框架》（KMGBF）的23个2030年行动目标",
+  "gbfIndicators": "《昆蒙框架》指标",
+  "gbfIndicatorsDescription": "《昆明-蒙特利尔全球生物多样性框架》（KMGBF）指标",
+  "view": "查看",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:48.109Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "taxonomy": "30d10883c017c4fd6751c8982e20dae1",
+      "welcomeToTaxonomy": "e74f396019a9306c7c8319026783cd83",
+      "gbfTaxonomy": "74db2bda291ee4cd149e1ea05da03fb1",
+      "gbfTaxonomyDescription": "b40592abda09b768b1652bfc6c601c45",
+      "gbfGoals": "79e191f31e4a37cc9708f04f42de1611",
+      "gbfGoalsDescription": "9436ca771f2abf4e973c2fd8ef439724",
+      "gbfTargets": "c86560755dbb2a8aee75723e9fbd3402",
+      "gbfTargetsDescription": "6bdbef26252e45f1f79b851e99b4975f",
+      "gbfIndicators": "65b987ff350723bacc310b734bc6de18",
+      "gbfIndicatorsDescription": "4a69f3241bdac91482d49418ac20c10f",
+      "view": "4351cfebe4b61d8aa5efa1d020710005"
+    }
+  }
+}

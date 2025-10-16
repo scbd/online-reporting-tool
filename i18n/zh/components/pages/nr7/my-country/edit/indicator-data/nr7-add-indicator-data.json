@@ -1,11 +1,43 @@
 {
+  "editIndicatorData": "编辑数据",
+  "addIndicatorData": "添加数据",
+  "general": "一般信息",
+  "data": "数据",
+  "dataSelectionNote": "请注意，数据源选择已禁用，因为它仍在开发中。",
+  "sourceOfData": "数据来源",
+  "government": "政府",
+  "comments": "评论",
+  "pleaseSelectLanguage": "请选择您希望提交之记录的语言",
+  "nationalDataSet": "国家数据集",
+  "fileFormatMessage": "系统严格要求数据采用示例模板的格式。请下载示例模板并相应地填写数据。",
+  "globalDataSet": "全球数据集",
+  "noGlobalDataIndicator": "在联合国环境规划署世界养护监测中心的目标跟踪器上找不到此指标的全球数据",
+  "columnsMismatch": "您的 Excel 文件不符合模板（列不匹配），预期列为“{count}”，请使用系统提供的模板",
+  "columnsInvalid": "第“{colNo}”列的列名“{colName}”无效，预期名称为“{colExpected}”，请遵循模板中提供的顺序",
+  "sourceOfDataInfoNoData": "请描述情况",
+  "sourceOfDataInfoNotRelevant": "请描述此指标不相关的原因",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.428Z",
+    "hashedOn": "2025-09-23T18:25:47.877Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "editIndicatorData": "55b8d5841eba3b51fbf02399345b1462",
-      "addIndicatorData": "f807e4bb8b926adf9cf418417f49c245"
+      "addIndicatorData": "f807e4bb8b926adf9cf418417f49c245",
+      "general": "0db377921f4ce762c62526131097968f",
+      "data": "f6068daa29dbb05a7ead1e3b5a48bbee",
+      "dataSelectionNote": "2bf3ea69e293accf6ed33cc058dcddff",
+      "sourceOfData": "79410a9a5a577ea03e4dccc6d23e7c24",
+      "government": "18450de39aceed82b26abe218d377740",
+      "comments": "8413c683b4b27cc3f4dbd4c90329d8ba",
+      "pleaseSelectLanguage": "602b7ef0a2530a7c497820e902dcc982",
+      "nationalDataSet": "6110bdd0bc1e451bacbc93770092b55f",
+      "fileFormatMessage": "29f1be92adad35b33184888a6a342cab",
+      "globalDataSet": "04402bcca79a92b6bd53c7e283f3203a",
+      "noGlobalDataIndicator": "1ac36351ef0bfc225e57342c0f520ccf",
+      "columnsMismatch": "bb4f964ea22636f99c2e96a5b78818a9",
+      "columnsInvalid": "b17ace7c8bafb1ce9b4c21815400656f",
+      "sourceOfDataInfoNoData": "5b5e95c7a1df07cc2ed35a5399ee187c",
+      "sourceOfDataInfoNotRelevant": "d19ae21ab302d47fc43d946a83cb338f"
     }
   }
 }

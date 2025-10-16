@@ -1,9 +1,10 @@
 {
   "showAll": "Montrer tout",
+  "showLess": "Montrer moins",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.421Z",
+    "hashedOn": "2025-09-23T18:25:47.856Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "showAll": "eb92025cb8c66f1850c13a9b602a1856",
       "showLess": "131b815eb0d535d6e9697e4378f4b5ac"

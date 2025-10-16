@@ -1,5 +1,15 @@
 {
   "processing": "正在处理",
   "pleaseWait": "请稍候，我们正在处理您的请求",
-  "loading": "正在加载"
+  "loading": "正在加载",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.77Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "processing": "643562a9ae7099c8aabfdc93478db117",
+      "pleaseWait": "0a50aa78eb1d519be7034330b596cbdc",
+      "loading": "16bfbf9c462762cf1cba4134ec53c504"
+    }
+  }
 }

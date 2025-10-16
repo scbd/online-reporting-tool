@@ -1,5 +1,15 @@
 {
   "validating": "En cours de validation",
   "passedValidation": "Validation obligatoire complétée",
-  "hasErrors": "Informations obligatoires manquantes"
+  "hasErrors": "Informations obligatoires manquantes",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:48.071Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "validating": "c423b2af9f3f373c6576a8512645da9b",
+      "passedValidation": "d1de28ab0cf7724d604b5e931f79c661",
+      "hasErrors": "da63b68425a5108f6324af9dc4b1035e"
+    }
+  }
 }

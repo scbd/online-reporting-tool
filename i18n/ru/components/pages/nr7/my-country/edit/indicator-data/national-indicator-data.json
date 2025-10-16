@@ -1,0 +1,19 @@
+{
+  "noLinkedData": "Нет связанных данных",
+  "noLinkedDataDescription": "В следующих данных имеются неверные коды индикаторов. Код индикатора в данных, представленных в формате Excel, должен соответствовать коду этого индикатора! Эти данные не будут учтены.",
+  "indicatorCode": "Код индикатора:",
+  "failedValidation": "Следующие данные не прошли проверку! Эти данные не будут учтены.",
+  "validData": "Действительные данные",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.875Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "noLinkedData": "4e5088bfbe1761c317a2cde64ee1ef3a",
+      "noLinkedDataDescription": "9f02fbe35c01da92912494b7d754ffba",
+      "indicatorCode": "cb5b7e788ded6e2132a1860c073ed9cd",
+      "failedValidation": "fca365569ed6dfc42b31f9d628599e82",
+      "validData": "c8fcbe25a529a38e6cb368c4f9b5a679"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "addFiles": "添加文件",
+  "fileUpload": "文件上传",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.787Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "addFiles": "5f4514405d9574e7b2b4c6c16573c5ca",
+      "fileUpload": "99e8ebaa5ad2fafe4e141574f6b4a73f"
+    }
+  }
+}
