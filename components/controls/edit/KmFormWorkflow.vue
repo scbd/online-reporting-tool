@@ -245,7 +245,7 @@
     const showSuccessDialog         = ref(false);
     const confirmationPromise       = ref(null);
     const otherCollaborators = ref([]);
-    const hasOpenWorkflow    = ref(null);
+    const hasOpenWorkflow    = ref(undefined);
 
     let originalDocument = null
     let workflowFunctions:KmFormWorkflowFunctions;
