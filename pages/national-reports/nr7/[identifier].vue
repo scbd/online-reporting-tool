@@ -17,7 +17,6 @@
 
   const route      = useRoute();
   const {locale}   = useI18n();
-  const schema     = useGetRealmSchema(SCHEMAS.NATIONAL_REPORT_7)
   const identifier = ref(route.params.identifier);
   const record     = ref(null);
   const workflowId = ref(route.query?.workflowId);
