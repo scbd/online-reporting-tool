@@ -59,6 +59,7 @@ function findMatchingRoute($appRoutes, to, from){
         registerNationalReport7View : {
             regex  :  /register\/NR7\/([A-Za-z0-9_\-@]+)\/view/i,
             params : [':identifier'],
+            //since the NFP will come to this url from email for approval, send him to edit page.
             url    : $appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT
         },
         registerNationalReport7Edit : {
@@ -67,22 +68,22 @@ function findMatchingRoute($appRoutes, to, from){
             url    : $appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT
         },
         registerStakeholderIntentView : {
-            regex  :  /register\/SCI|stakeholderCommitmentIntent\/([A-Za-z0-9_\-@]+)\/view/i,
+            regex  :  /register\/(SCI|stakeholderCommitmentIntent)\/([A-Za-z0-9_\-@]+)\/view/i,
             params : [':identifier'],
             url    : $appRoutes.STAKEHOLDER_MY_CREDENTIALS_VIEW + '?draft=true'
         },
         registerStakeholderIntentEdit : {
-            regex  :  /register\/SCI|stakeholderCommitmentIntent\/([A-Za-z0-9_\-@]+)\/edit/i,
+            regex  :  /register\/(SCI|stakeholderCommitmentIntent)\/([A-Za-z0-9_\-@]+)\/edit/i,
             params : [':identifier'],
             url    : $appRoutes.STAKEHOLDER_MY_CREDENTIALS_EDIT
         },
         registerStakeholderCommitmentView : {
-            regex  :  /register\/SCM|stakeholderCommitment\/([A-Za-z0-9_\-@]+)\/view/i,
+            regex  :  /register\/(SCM|stakeholderCommitment)\/([A-Za-z0-9_\-@]+)\/view/i,
             params : [':identifier'],
             url    : $appRoutes.STAKEHOLDER_MY_COMMITMENTS_VIEW + '?draft=true'
         },
         registerStakeholderCommitmentEdit : {
-            regex  :  /register\/SCM|stakeholderCommitment\/([A-Za-z0-9_\-@]+)\/edit/i,
+            regex  :  /register\/(SCM|stakeholderCommitment)\/([A-Za-z0-9_\-@]+)\/edit/i,
             params : [':identifier'],
             url    : $appRoutes.STAKEHOLDER_MY_COMMITMENTS_EDIT
         },

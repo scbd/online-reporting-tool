@@ -552,7 +552,7 @@
     }
 
     function extractContactDetails(commitment: EStakeholderCommitment):EStakeHolderContact {
-                console.log(commitment)
+                
         const contactDetails = {
             firstName             : commitment.firstName,
             lastName              : commitment.lastName,
@@ -574,8 +574,7 @@
             jurisdictionRegions   : commitment.jurisdictionRegions,
         };
 
-        const clean = useKmStorage().cleanDocument(contactDetails);
-        console.log(clean)
+        const clean = useKmStorage().cleanDocument(contactDetails);        
         return clean
     }
 

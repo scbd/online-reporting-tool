@@ -373,27 +373,4 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
       emit('onStatusChange', identifier, reviewed)
   }
 
-  // async function getCoverageCountries (draft:EStakeholderCommitment): Promise<string[]> {
-  //   if (draft === undefined) { return [] }
-
-  //   let countries: string[] = []
-  //   if (draft.coverageCountries?.length > 0) {
-  //     countries = draft.coverageCountries.map(c => c.identifier)
-  //   }
-  //   if (draft.coverageRegions?.length > 0) {
-  //     const regionCountries = await getRegionCountries(draft.coverageRegions)
-  //     if (regionCountries?.length > 0) { 
-  //       countries = [...countries, ...regionCountries] 
-  //     }
-  //   }
-
-  //   return countries
-  // }
-
-  // async function getRegionCountries (regions:ETerm[]): Promise<string[]> {
-  //   const regionCountries = await Promise.all(regions?.map((term:ETerm)=>thesaurusStore.loadTerm(term.identifier)))
-
-  //   return _(regionCountries).map((e:any)=>e.ss).flatten().filter((e:string) => e.length > 3).uniq().value();
-  // }
-
 </script>

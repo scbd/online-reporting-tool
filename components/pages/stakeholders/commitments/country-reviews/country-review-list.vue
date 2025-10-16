@@ -60,7 +60,7 @@ import { formatDate } from '~/utils/filters';
     
     const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
     const { t, locale } = useI18n();
-    const user:EAuthUser = useAuth().user;
+    const { user } = useAuth();
     
     const emit = defineEmits(['onStatusChange'])
     const props = defineProps({
