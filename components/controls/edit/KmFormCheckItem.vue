@@ -8,6 +8,7 @@
             :required="$attrs.required"
             :disabled="$attrs.disabled"
             :class="$attrs.class"
+            :name="$attrs.name"
             class="form-check-input"
         />
         <label :for="$attrs.id" class="form-check-label">
