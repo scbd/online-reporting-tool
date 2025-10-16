@@ -1,8 +1,8 @@
 export interface EAuthUser {
     email          : string
     government     : string
-    isAuthenticated: Boolean
-    isEmailVerified: Boolean
+isAuthenticated: boolean
+isEmailVerified: boolean
     name           : string
     roles          : Array<string>
     userGroups     : Array<string>
