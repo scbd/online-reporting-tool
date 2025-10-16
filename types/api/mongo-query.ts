@@ -1,8 +1,8 @@
 export interface MongoQuery {
 
-    count : boolean
-    length: Number
-    skip  : Number
-    sort  : String
+    count? : boolean
+    length?: number
+    skip?  : number
+    sort?  : Record<string, number>
     
 }

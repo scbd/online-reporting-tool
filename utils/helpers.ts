@@ -98,7 +98,7 @@ export const isWorkFlowCreatedByMe = function(workflow){
     return workflow && workflow.createdBy == user.value.userID;
 }
 
-export const resolveSchemaViewRoute = function(schema:String, identifier){
+export const resolveSchemaViewRoute = function(schema:String, identifier): string{
 
     const schemaDetails = useGetRealmSchema(schema);
 
@@ -112,6 +112,11 @@ export const resolveSchemaViewRoute = function(schema:String, identifier){
             url = appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW;
         else if(schema == SCHEMAS.NATIONAL_REPORT_7)
             url = appRoutes.NATIONAL_REPORTS_NR7_VIEW;
+        else if(schema == SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL)
+            url = appRoutes.STAKEHOLDER_MY_CREDENTIALS_VIEW;
+        else if(schema == SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT)
+            url = appRoutes.STAKEHOLDER_MY_COMMITMENTS_VIEW;
+            
         return url.replace(':identifier', identifier);
     }
 }
