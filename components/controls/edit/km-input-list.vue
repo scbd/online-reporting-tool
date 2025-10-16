@@ -43,7 +43,7 @@
             type: String,
             required: false,
             default(){
-                return 'string'
+                return 'text'
             }
         },
     });
