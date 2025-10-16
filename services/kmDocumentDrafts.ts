@@ -23,13 +23,13 @@ class kmDocumentDrafts {
     }
 
     async loadDraftDocuments(query:string, rowsPerPage:number, 
-      sort:String, pageNumebr:number, body:boolean){
+      sort:string, pageNumber:number, body:boolean){
                     
         const queryParams = {
             $filter : query,
             collection : "mydraft",
             $top    : rowsPerPage,
-            $skip   : (rowsPerPage*pageNumebr),
+            $skip   : (rowsPerPage*pageNumber),
             $orderby: sort||'updatedOn desc',
             body:body
         };
@@ -71,7 +71,7 @@ class kmDocumentDrafts {
         const  data = await $api.kmStorage.drafts.saveDraftVersion(identifier, document);
         
         return data;
-    }
+    } 
 }
 
 export const KmDocumentDraftsService = new kmDocumentDrafts();

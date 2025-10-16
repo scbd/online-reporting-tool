@@ -11,7 +11,7 @@
                 </div>
             </div>
             <form-wizard  @on-tab-change="onChangeCurrentTab" ref="formWizard">
-                <CRow v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
+                <CRow v-if="showActionButtons">
                     <CCol class="col-12">
                         <div class="action-buttons float-end mb-1">
                             <CButton @click="onSaveDraft()" color="primary" class="me-md-2" :disabled="isBusy">
@@ -78,7 +78,7 @@
                     <slot name="publish"></slot>
                 </tab-content>
                 
-                <CRow class="mt-3" v-if="(activeTab == workflowTabs.submission.index || activeTab == workflowTabs.review.index || activeTab == workflowTabs.publish.index)">
+                <CRow class="mt-3" v-if="showActionButtons">
                     <CCol class="col-12">
                         <slot name="validation-errors" :onJumpTo="onJumpTo">
                             <km-validation-errors  v-if="(activeTab == workflowTabs.submission.index && validationReport.errors?.length) || 
@@ -245,6 +245,7 @@
     const showSuccessDialog         = ref(false);
     const confirmationPromise       = ref(null);
     const otherCollaborators = ref([]);
+    const hasOpenWorkflow    = ref(undefined);
 
     let originalDocument = null
     let workflowFunctions:KmFormWorkflowFunctions;
@@ -284,7 +285,12 @@
             ...props.adminTags.value
         ]
     });
-
+    const showActionButtons = computed(()=>{
+        return hasOpenWorkflow.value == undefined &&
+                (activeTab.value == workflowTabs.submission.index || 
+                activeTab.value == workflowTabs.review.index || 
+                activeTab.value == workflowTabs.publish.index)
+    })
     const onChangeCurrentTab = async (index)=>{
         if(index == activeTab.value)
             return;
@@ -671,6 +677,11 @@
             if(workflowFunctions.onGetDocumentInfo){
                 const documentInfo = await workflowFunctions.onGetDocumentInfo(originalDocument);
                 originalDocument = cloneDeep(documentInfo.body);
+                
+                if(documentInfo.workingDocumentLock!== undefined){
+                    hasOpenWorkflow.value = documentInfo.workingDocumentLock;
+                    formWizard.value?.selectTab(workflowTabs.review.index)
+                }
             }
             else 
                 originalDocument = cloneDeep(props.document.value);

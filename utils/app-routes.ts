@@ -34,7 +34,7 @@ export const appRoutes = {
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_IV    : '/national-reports/nr7/my-country/edit/section-IV',
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_V     : '/national-reports/nr7/my-country/edit/section-V',
     NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_OTHER_INFORMATION : '/national-reports/nr7/my-country/edit/section-other-information',
-    
+    NATIONAL_REPORTS_NR7_VIEW               : '/national-reports/nr7/:identifier',
     
     TAXONOMY                                  : '/taxonomy',
     TAXONOMY_GBF                              : '/taxonomy/gbf',

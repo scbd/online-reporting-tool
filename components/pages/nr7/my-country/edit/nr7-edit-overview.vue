@@ -18,12 +18,12 @@
   
           <CCol md="12">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body">                
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <CButton :disabled="disableActions" @click="onPreview()" color="secondary">
                         <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
                         <font-awesome-icon icon="fa-eye"></font-awesome-icon>
-                        {{t('preview')}}
+                        {{showPreview ? t('hidePreview') : t('preview')}}
                     </CButton>
                     <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
                         <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
@@ -47,6 +47,7 @@
                     <CIcon icon="cil-file-pdf"/> PDF
                   </CButton> -->
                 </div>
+                <small class="form-text text-muted float-end">Click on preview to generate PDF or print NR7</small>
               </div>
             </div>
           </CCol>
@@ -333,9 +334,18 @@
                 </CCard>
             </CCol>
         </CRow>
-        <CRow v-if="!isLoading && cleanDocumentInfo && showPreview">
-            <CCol class="mt-1" :md="12">                                
-                <nr-7-view :document-info="cleanDocumentInfo" ></nr-7-view>                
+        
+        <CRow v-if="!isLoading && cleanDocumentInfo && showPreview" id="nr7-preview-section">
+            <CCol class="mt-1" :md="12">     
+                <view-actions print-selector=".nr7-section-view" :title="lstring(record?.workingDocumentTitle||record?.title)"></view-actions>
+                <CRow v-if="openWorkflow">
+                    <CCol class="mt-1" :md="12">     
+                        <km-suspense>
+                            <workflow-actions :workflow="openWorkflow" @on-workflow-action="onWorkflowAction"></workflow-actions>
+                        </km-suspense>
+                    </CCol>
+                </CRow>
+                <nr-7-view :document-info="cleanDocumentInfo" class="print-section"></nr-7-view>                
             </CCol>
         </CRow>
         <CRow>
@@ -345,8 +355,8 @@
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <CButton :disabled="disableActions" @click="onPreview()" color="secondary">
                                 <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
-                                <font-awesome-icon icon="fa-eye"></font-awesome-icon>
-                                {{t('preview')}}
+                                <font-awesome-icon icon="fa-eye"></font-awesome-icon>                                
+                                {{showPreview ? t('hidePreview') : t('preview')}}
                             </CButton>
                             <CButton :disabled="disableActions" @click="onPublish()" color="secondary">
                                 <km-spinner v-if="isPublishing" size="sm" variant="grow" aria-hidden="true" message=" "></km-spinner>
@@ -370,9 +380,6 @@
                                 <CIcon icon="cil-file-pdf"/> PDF
                             </CButton> -->
                         </div>
-                    <km-suspense>
-                        <workflow-actions v-if="openWorkflow" :workflow="openWorkflow" @on-workflow-action="onWorkflowAction"></workflow-actions>
-                    </km-suspense>
                     </CCardBody>
                 </CCard>
             </CCol>
@@ -454,6 +461,7 @@
     import { useRealmConfStore } from '@/stores/realmConf';
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { KmDocumentsService } from '~/services/kmDocuments';
+    import { EditFormUtility } from '@/services/edit-form-utility';
 
 
     const { $appRoutes:appRoutes, $api } = useNuxtApp();
@@ -482,7 +490,7 @@
     const showSpinnerDialog         = ref(false);
     const confirmationPromise       = ref(null);
     const openWorkflow              = ref(null);
-    const stateTargetWorkflow       = useStorage('scbd-ort-target-workflow', { batchId : undefined });
+    const stateTargetWorkflow       = useStorage('scbd-ort-nr7-workflow', { batchId : undefined });
     const mandatoryIndicators        = ref([]);
     const binaryIndicators           = ref([]);
     const showPreview              = ref(false);
@@ -498,7 +506,8 @@
         return {...nationalReport7Store.nationalReportInfo, body: cleanDocument.value};
     });
 
-    const disableActions = computed(()=>isValidating.value || isBusy.value || isLoadingRecords.value || isPublishing.value)
+    const disableActions = computed(()=>isValidating.value || isBusy.value || isLoadingRecords.value || isPublishing.value ||
+        cleanDocumentInfo.value?.workingDocumentLock);
     const validationErrorDrafts = computed(()=>draftIndicatorData.value)//.filter(e=>e.errors?.length)
     const missingIndicatorData  = computed(()=>{
         const indicatorData = [...(publishedIndicatorData.value||[]), ...(draftIndicatorData.value||[])];
@@ -530,7 +539,14 @@
                     ]);  
             mandatoryIndicators.value = headlineIndicators;   
             binaryIndicators.value    = binaryIndicators;
-            calculateEditProgress()       
+            calculateEditProgress()      
+            
+            if(cleanDocumentInfo.value?.workingDocumentLock){
+                await loadOpenWorkflow(cleanDocumentInfo.value);
+                if(openWorkflow.value){
+                    onPreview();
+                }
+            } 
         }
         catch(e){
             useLogger().error(e,  'Error loading NR7 Overview')
@@ -640,6 +656,8 @@
 
     async function onPreview(){
         showPreview.value = !showPreview.value;
+        if(showPreview.value)
+            nextTick(()=>scrollToElement(`#nr7-preview-section`));
     }
 
     async function onPublish(){
@@ -655,6 +673,11 @@
                 return;
             }
             
+            if(!draftIndicatorData.value?.length && !cleanDocumentInfo.value.workingDocumentBody){
+                alert('No NR7 document to publish');
+                return;
+            }
+
             //show user final confirmation
             const confirmationResponse = await showConfirmation();
             confirmationPromise.value = null;
@@ -666,6 +689,13 @@
 
             showSpinnerDialog.value = true;
             isPublishing.value = true;
+            
+            if(draftIndicatorData.value?.length && !cleanDocumentInfo.value.workingDocumentBody){
+                //NR7 document was not modified, only indicator data; 
+                //crete a draft for the nr7 document to publish
+                await EditFormUtility.saveDraft(cleanDocument.value);
+            }
+            
             const result = await KmDocumentDraftsService.bulkPublish(realmConf.realm, [SCHEMAS.NATIONAL_REPORT_7])
             //save batch id from api to local storage
             // result.batchId
