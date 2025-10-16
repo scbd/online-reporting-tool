@@ -51,7 +51,7 @@
                     <span> {{t('cancelRequest')}}</span>
                 </button>
             </div>
-            <div v-if="isWorkFlowCreatedByMe(workflow) || activity.assignedTo_info?.length > 1">
+            <div v-if="canShowAdminInfo && (isWorkFlowCreatedByMe(workflow) || activity.assignedTo_info?.length > 1)">
                 <br />
                 <strong>{{t('workFlowAssign')}}</strong>
                 <span class="badge bg-secondary" v-if="security.role.isAdministrator()">
@@ -170,7 +170,8 @@
     const $toast        = useToast({position:'top-right'});
     const activeDialog  = ref({name:'', data:[], processing:false, rejectReason:undefined});
     const { isRevealed, reveal, confirm, cancel, onConfirm,  onCancel, } = useConfirmDialog();
-
+    const schemaDetails = useGetRealmSchema(props.workflow?.data?.metadata?.schema);
+    
     const daysToApproval = computed(()=>{
         const workflow = props.workflow;
         var expiryDate = moment.utc(workflow.createdOn)
@@ -183,7 +184,10 @@
             sort((a,b)=>Date.parse(a.createdOn)-Date.parse(b.createdOn)).
             reverse()
     });
-
+    const canShowAdminInfo = computed(()=>{
+        return security.role.isAdministrator() ||
+                schemaDetails.value?.type == 'national'
+    })
 
     async function updateActivity(actionData:object) {
         try{
