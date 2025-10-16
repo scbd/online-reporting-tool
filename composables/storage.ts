@@ -13,7 +13,7 @@ export const useOnFileUpload = ({document, file, locale}) => {
     if(!document.value.additionalDocuments)
         document.value.additionalDocuments = [];
 
-    const additionalDocuments = document.value.additionalDocuments;
+    const additionalDocuments = document.value.linkedAttachments || document.value.additionalDocuments;
     const tag = `hash:${file.hash}`;
 
     if(additionalDocuments.find(e=>e.tag == tag))
