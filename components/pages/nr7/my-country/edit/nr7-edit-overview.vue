@@ -657,9 +657,7 @@
     async function onPreview(){
         showPreview.value = !showPreview.value;
         if(showPreview.value)
-            setTimeout(()=>{
-                scrollToElement(`#nr7-preview-section`);
-            }, 200)
+            nextTick(()=>scrollToElement(`#nr7-preview-section`));
     }
 
     async function onPublish(){

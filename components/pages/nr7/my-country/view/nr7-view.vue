@@ -118,11 +118,11 @@
             
       indicatorsData.value = await initIndicatorDataLoad;
 
-      setTimeout(() => {        
+     nextTick(()=>{    
         var scrollSpy = new bootstrap.ScrollSpy(window.document.body, {
           target: '#nr7-view-tabs'
         })
-      }, 1000);
+      });
   }
 
   async function loadDocument(identifier:string){
