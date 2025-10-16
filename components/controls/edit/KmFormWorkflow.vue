@@ -172,14 +172,18 @@
                     <font-awesome-icon icon="fa-solid fa-check" size="2x"/>
                     <div class="p-2">         
                         {{t('successfulMessage')}}
-                        <strong>
-                            <div v-if="security.role.isPublishingAuthority(documentSchema)">               
-                                {{t('successMessagePA')}}
-                            </div>
-                            <div v-else-if="security.role.isNationalAuthorizedUser(documentSchema)">               
-                                {{t('successMessageNau')}}
-                            </div>
-                        </strong>
+                        <p>
+                            <strong>
+                                <slot name="submissionSuccessMessage">
+                                    <div v-if="security.role.isPublishingAuthority(documentSchema)">               
+                                        {{t('successMessagePA')}}
+                                    </div>
+                                    <div v-else-if="security.role.isNationalAuthorizedUser(documentSchema)">               
+                                        {{t('successMessageNau')}}
+                                    </div>
+                                </slot>
+                            </strong>
+                        </p>
                     </div>
                 </CAlert>
                 <CAlert color="info" class="d-flex mt-2" v-if="$slots.additionalSuccessMessage">
