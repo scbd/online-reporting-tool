@@ -22,8 +22,8 @@
                     <CButton @click="loadRecords()" color="secondary" id="partIRefreshTour">
                         <font-awesome-icon icon="fa-arrows-rotate"/>
                         {{t('refresh')}}
-                    </CButton>                    
-
+                    </CButton>        
+                    
                     <CButton color="secondary" size="sm" id="partISubmitTour"
                         @click="navigateToPage(newRoute, {})">
                         <font-awesome-icon icon="fa-plus"/> {{t('submitNew')}}
