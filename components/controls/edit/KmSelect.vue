@@ -92,7 +92,7 @@ import { asArray } from '@/utils/helpers';
       set(events) {
         let ids = asArray(events).map((event) => props.customSelectedItem(event[props.valueKey], event));
         
-        emit('update:model-value', props.multiple ? ids : ids[0]);
+        emit('update:modelValue', props.multiple ? ids : ids[0]);
       }
     })
 
