@@ -131,7 +131,7 @@
     const cleanDocument = computed(() => {
         const clean = useKmStorage().cleanDocument({ ...document.value });
 
-        if(clean.isParty === true)
+        if(clean.isParty === false)
             clean.government = undefined;
         clean.additionalDocuments = undefined;
         
