@@ -1,5 +1,4 @@
-<template>
-    <!-- {{ workflow }} -->
+<template>    
     <div class="alert alert-danger" v-if="props.workflow"
      style="border-color:#DDD; background-color: #f5f5f5;" role="alert">
         <h3 class="color-black;" style="margin-top:0;border-bottom:1px solid #999;">
