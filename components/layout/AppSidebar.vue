@@ -74,6 +74,29 @@
         </CNavGroup>          
         
       </CNavGroup>
+      <CNavGroup :visible="isChildRouteActive(appRoutes.STAKEHOLDER)">  
+        <template #togglerContent>
+          {{t('stakeholders')}}
+        </template>      
+
+        <KmNavLink :to="localePath(appRoutes.STAKEHOLDER_COMMITMENTS)" icon="cil-list" :title="t('allCommitments')"></KmNavLink>
+        <KmNavLink  :to="appRoutes.STAKEHOLDER_MY_COMMITMENTS" :title="t('menuMyCommitments')">
+          <template #icon>
+            <font-awesome-icon class="nav-icon" icon="fa-solid fa-handshake" />
+          </template>
+        </KmNavLink>
+        <KmNavLink  v-if="menuAccess[appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS]"
+          :to="appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS" :title="t('menuMyCountryReviews')">
+          <template #icon>
+            <font-awesome-icon class="nav-icon" icon="fa-solid fa-handshake" />
+          </template>
+        </KmNavLink>
+        <KmNavLink  :to="appRoutes.STAKEHOLDER_MY_CREDENTIALS" :title="t('menuMyIntents')">
+          <template #icon>
+            <font-awesome-icon class="nav-icon" icon="fa-solid fa-flag" />
+          </template>
+        </KmNavLink>
+      </CNavGroup>
     </CSidebarNav> 
 
     <CSidebarFooter class="border-top d-none d-lg-flex">
@@ -115,6 +138,7 @@ export default {
     const appState        = useAppStateStore();
     const { t } = useI18n()
     const route = useRoute();
+    const { checkUserAccess } = useSecurity()
     
     await loadRealmConf();
 
@@ -126,6 +150,7 @@ export default {
       [appRoutes.NATIONAL_REPORTS_NR6]      : true,
       [appRoutes.NATIONAL_REPORTS_NR7]      : true,
       [appRoutes.NATIONAL_REPORTS_NR7_EDIT] : true,//false,
+      [appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS]: true,
       
     }
     // for (const route in menuAccess) {
@@ -134,6 +159,8 @@ export default {
     //       menuAccess[route] = await $security.canAccessRoute(route)
     //   }
     // }
+
+    menuAccess[appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS] = await checkUserAccess({ roles : [ROLES.NATIONAL_FOCALPOINT]})
 
     const isChildRouteActive = (path)=>{
       return route.fullPath.indexOf(path)>=0

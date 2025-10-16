@@ -1,13 +1,13 @@
 <template>
-    <div :id="id" class="km-input-lstring-ml mb-2">
-        <CRow v-for="(item, index) in binding" :key="item">
+    <div class="km-input-lstring-ml mb-2">
+        <CRow v-for="(item, index) in binding" :key="item" class="mb-1">
             <CCol md="11">
-                <km-input-lstring v-model="item.value" :locales="props.locales" @update:modelValue="emitChange"></km-input-lstring>  
+                <input v-model="item.value" @input="emitChange" class="form-control" :type="type" />
             </CCol>
             <CCol md="1">
                 <button :disabled="binding.length==1" type="button" class="btn btn-danger" 
                 @click="removeItem(item, index)" :title="t('remove')" >
-                    <font-awesome-icon icon="fa-solid fa-trash"/> {{  }}
+                    <font-awesome-icon icon="fa-solid fa-trash"/>
                 </button>     
             </CCol>
         </CRow>
@@ -16,51 +16,60 @@
         </button>
     </div>
 </template>
-<i18n src="@/i18n/dist/components/controls/edit/KmInputLstringML.json"></i18n>
+
 <script setup lang="ts">
-//@ts-nocheck
+
     import { removeEmpty } from '@/utils';
     import { isEmpty } from 'lodash';
-    import KmInputLstring from './KmInputLstring.vue';
-    import { CCol } from '@coreui/vue';
-    import { useI18n } from 'vue-i18n';
-    
-    const { t } = useI18n();
+    import type { KmInputListBindingType } from '@/types/controls/km-input-list';
+
     const props = defineProps({
         locales: {
             type: Array,
             required: true,
         },
         modelValue: {
-            type: Array<Object>,
+            type: Array<string>,
             required: false,
             default(){
-                return [{}]
+                return ['']
             }
         },
         disabled: {
             type: Boolean,
             required: false,
         },
+        type: {
+            type: String,
+            required: false,
+            default(){
+                return 'text'
+            }
+        },
     });
 
-    const emit = defineEmits(['update:modelValue',])
-    const binding = ref([{value:{}}]);
-    const id = computed(()=>useAttrs().id || useGenerateUUID());
-    const hasEmpty = computed(()=>binding.value.some(e=>isEmpty(e.value)))
+    const emit = defineEmits(['update:modelValue']);
+    const { t } = useI18n();
+
+    const binding = ref<Array<KmInputListBindingType>>([{value:''}]);
+    
+    const hasEmpty = computed(()=>binding.value.some((e:KmInputListBindingType)=>isEmpty(e.value)));
+
     function addItem(){
-        binding.value.push({value:{}});
+        binding.value.push({value:''});
     }
 
-    function removeItem(item, index){
+    function removeItem(item:KmInputListBindingType, index:number){
         binding.value?.splice(index, 1)
     }
 
-    function emitChange(value){
+    function emitChange(event: Event) {
+        const value = (event.target as HTMLInputElement).value;
+        
         const clean = removeEmpty(binding.value);
-        emit('update:modelValue', clean?.map(e=>e.value));
+        emit('update:modelValue', clean?.map((e:KmInputListBindingType)=>e.value));
         if(binding.value?.length){
-            if(!binding.value.some(e=>isEmpty(e.value))){
+            if(!binding.value.some((e:KmInputListBindingType)=>isEmpty(e.value))){
                 addItem()
             }
         }
@@ -68,7 +77,7 @@
 
     onMounted(() => {
         if(props.modelValue) {
-            binding.value = props.modelValue.map(e=>{
+            binding.value = props.modelValue.map((e:string)=>{
                 return { value : e }
             })
         }
