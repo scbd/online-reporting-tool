@@ -1,0 +1,23 @@
+{
+  "year": "السنة",
+  "value": "القيمة",
+  "indicatorCode": "رمز المؤشر",
+  "doesDisaggregation": "هل يُمثّل هذا الصف من البيانات تصنيفًا فرعيًا؟",
+  "disaggregation": "تصنيف فرعي",
+  "unit": "الوحدة",
+  "footnote": "الحاشية",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.891Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "year": "537c66b24ef5c83b7382cdc3f34885f2",
+      "value": "689202409e48743b914713f96d93947c",
+      "indicatorCode": "3f2d40d8ce1f78c1362fbd282e27ab78",
+      "doesDisaggregation": "698c6042a0721371dae1a26dc646f439",
+      "disaggregation": "553d5337f6dc81e0a2fac9a405d332c4",
+      "unit": "19c562a36aeb455d09534f93b4f5236f",
+      "footnote": "8b213ded385c637758f8c3705eb6386a"
+    }
+  }
+}

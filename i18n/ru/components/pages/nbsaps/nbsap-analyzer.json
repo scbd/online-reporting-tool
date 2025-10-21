@@ -1,0 +1,37 @@
+{
+  "generalCount": "Общее количество",
+  "partiesWithNBSAP": "Стороны, разработавшие по меньшей мере 1 НСПДСБ",
+  "totalNBSAP": "Общее число НСПДСБ",
+  "map": "Карта",
+  "progressByCBDRegions": "Ход осуществления в разбивке по регионам КБР",
+  "numberOfParties": "Число Сторон в разбивке по региональным группам",
+  "partyCount": "Число Сторон",
+  "total": "Итого",
+  "progressByParties": " Ход осуществления в разбивке по Сторонам",
+  "party": "Сторона",
+  "status": "Статус",
+  "dateOfCompletion": "Дата завершения или принятия",
+  "startDate": "Дата начала",
+  "endDate": "Дата окончания",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.869Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "generalCount": "8138c54d122a829bf3d01eb696b4a90b",
+      "partiesWithNBSAP": "54a496184614c0b58c3010a11c1d4c60",
+      "totalNBSAP": "c4d0d51c51dcbccde955ca514bfb9bed",
+      "map": "46f3ea056caa3126b91f3f70beea068c",
+      "progressByCBDRegions": "6b4923214d0bfd8e1c2d5f29e944fcd6",
+      "numberOfParties": "3d4eeb999e60cf8975784f8a70767456",
+      "partyCount": "103cdb7e887135f36310a1a6e52318b7",
+      "total": "96b0141273eabab320119c467cdcaf17",
+      "progressByParties": "6ae5525a03bd4db4aa9f2589e098d5ce",
+      "party": "094a173d3b32f44f5b5c996e8710ae28",
+      "status": "ec53a8c4f07baed5d8825072c89799be",
+      "dateOfCompletion": "bbad02fe5176ac22b9da226272d434a3",
+      "startDate": "db3794c7d704611ce61c9d8cc09cd806",
+      "endDate": "3c1429dca1ae285353b112dfacae5fe5"
+    }
+  }
+}

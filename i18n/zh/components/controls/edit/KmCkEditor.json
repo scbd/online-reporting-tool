@@ -2,5 +2,18 @@
   "uploadingFile": "上传中，请稍候",
   "attachmentMessage": "通过拖放或从剪贴板粘贴来附加文件",
   "wordCount": "字数",
-  "uploadError": "上传文件时出现错误，请重试"
+  "uploadError": "上传文件时出现错误，请重试",
+  "missingIdentifier": "此字段缺少标识符，请提供标识符以使用此控件",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.779Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "uploadingFile": "a447a5d68eaf9ee1d2492e531dffb3b3",
+      "attachmentMessage": "d6ef5fff7f223be27300c35fe03ec55f",
+      "wordCount": "9c715f0e523e7e1d00d538db7b78615b",
+      "uploadError": "c7d884889a598ca476bf0ef213c42454",
+      "missingIdentifier": "4c5a8eff05e329d8286272a81e66f03a"
+    }
+  }
 }

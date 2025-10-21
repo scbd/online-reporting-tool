@@ -1,0 +1,31 @@
+{
+  "taxonomy": "Taxonomía",
+  "welcomeToTaxonomy": "Taxonomía del Marco Mundial de Biodiversidad de Kunmig-Montreal",
+  "gbfTaxonomy": "Taxonomía del Marco Mundial de Biodiversidad",
+  "gbfTaxonomyDescription": "El Marco Mundial de Biodiversidad de Kunmig-Montreal es un marco mundial aprobado en diciembre de 2022 con objeto de detener y revertir la pérdida de la biodiversidad de aquí a 2030. En él se establecen objetivos y metas para el próximo decenio y con posterioridad, a fin de lograr un mundo que viva en armonía con la naturaleza en 2050. El Marco incluye cuatro objetivos para 2050 y 23 metas para 2030 y se centra en las medidas que hay que adoptar de manera urgente para hacer frente a la pérdida de la diversidad biológica. ",
+  "gbfGoals": "Objetivos del Marco Mundial de Biodiversidad",
+  "gbfGoalsDescription": "Los cuatro objetivos del Marco Mundial de Biodiversidad de Kunmig-Montreal para 2050.",
+  "gbfTargets": "Metas del Marco Mundial de Biodiversidad",
+  "gbfTargetsDescription": "Las 23 metas del Marco Mundial de Biodiversidad de Kunmig-Montreal para 2030",
+  "gbfIndicators": "Indicadores del Marco Mundial de Biodiversidad",
+  "gbfIndicatorsDescription": "Los indicadores del Marco Mundial de Biodiversidad de Kunmig-Montreal",
+  "view": "Ver",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:48.109Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "taxonomy": "30d10883c017c4fd6751c8982e20dae1",
+      "welcomeToTaxonomy": "e74f396019a9306c7c8319026783cd83",
+      "gbfTaxonomy": "74db2bda291ee4cd149e1ea05da03fb1",
+      "gbfTaxonomyDescription": "b40592abda09b768b1652bfc6c601c45",
+      "gbfGoals": "79e191f31e4a37cc9708f04f42de1611",
+      "gbfGoalsDescription": "9436ca771f2abf4e973c2fd8ef439724",
+      "gbfTargets": "c86560755dbb2a8aee75723e9fbd3402",
+      "gbfTargetsDescription": "6bdbef26252e45f1f79b851e99b4975f",
+      "gbfIndicators": "65b987ff350723bacc310b734bc6de18",
+      "gbfIndicatorsDescription": "4a69f3241bdac91482d49418ac20c10f",
+      "view": "4351cfebe4b61d8aa5efa1d020710005"
+    }
+  }
+}

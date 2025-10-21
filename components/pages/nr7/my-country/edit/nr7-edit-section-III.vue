@@ -8,14 +8,14 @@
         <div  v-if="nationalReport7Store.isBusy || isBusy">
             <km-spinner center></km-spinner>
         </div>
-        <div v-if="(!nationalReport7Store.isBusy && !isBusy) && !Object.keys(nationalTargetsComputed||[])?.length" class="alert alert-danger">
+        <div v-if="(!nationalReport7Store.isBusy && !isBusy) && gbfMissingNationalTargets?.length == 23" class="alert alert-danger">
             <strong>{{ t('missingNationalTargets') }}</strong>
             <p>{{ t('missingNationalTargetsDescription') }} 
                 <KmNavLink class="btn btn-secondary btn-sm"  :title="t('Go to national targets')" :to="localePath(appRoutes.NATIONAL_TARGETS_MY_COUNTRY)" >
                 </KmNavLink>
             </p>
         </div>
-        <form v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport && Object.keys(nationalTargetsComputed||[])?.length" name="editForm">          
+        <form v-if="!isBusy && !nationalReport7Store.isBusy && nationalReport7Store.nationalReport && gbfMissingNationalTargets?.length < 23" name="editForm">          
             <km-form-workflow :focused-tab="props.workflowActiveTab" :document="cleanDocument"  
                 :container="container" :validate-server-draft="true"  :admin-tags="['section-III']">
                 <template #submission>

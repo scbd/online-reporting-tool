@@ -1,14 +1,18 @@
 {
   "sectionV": "第五部分",
+  "sectionVDescription": "关于《生物多样性公约》和《昆明-蒙特利尔全球生物多样性框架》国家执行情况的结论",
+  "introduction": "在本节中，鼓励缔约方概述《生物多样性公约》和《框架》的国家执行情况，包括其主要成就和遇到的主要挑战，特别是与能力、技术、工艺、体制和资金差距及制约有关的挑战，以及为执行工作提供的支助。缔约方可提及影响《公约》和《框架》执行工作的共有挑战，或阻碍进展的具体障碍。这些挑战和障碍可包括：缺乏适足的财政、人力和技术资源；部际或机构间合作与协调方面的困难；无法及时和可靠地获得知识、信息和数据；缺乏支持项目制定和管理所需的科学专门知识；以及缺乏执行工作所需的相关技术。如果上文各节已涵盖此类信息，缔约方应尽量避免重复。 ",
+  "assessmentSummary": "概述《公约》和《框架》包括其所有章节的执行情况，以及取得的主要成就和遇到（并在适用情况下得到解决）的主要挑战，特别是与能力、技术、工艺、体制和资金差距及制约有关的挑战，以及为执行工作提供的支助。",
+  "sectionMandatory": "第五部分中的所有字段都是必填项",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.433Z",
+    "hashedOn": "2025-09-23T18:25:47.887Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "sectionV": "f593a75cdb704880c3e5e1c223688055",
-      "sectionVDescription": "276abb02ae7d41bd0ac8e0caaf013349",
-      "introduction": "e93747938013150d25e69d6e24c2d668",
-      "assessmentSummaryInfo": "d3431ee415863f8dd405e7fdc77a8e2e",
+      "sectionVDescription": "4db814359260f49653796de16be14543",
+      "introduction": "a3b6ebf63c9bec750f4cbe5a8d4df005",
+      "assessmentSummary": "3004508b534f3e2c5753a2bae560e9a8",
       "sectionMandatory": "52a20a21589fde46d3f92c896f175b5b"
     }
   }

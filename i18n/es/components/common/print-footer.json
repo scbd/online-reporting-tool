@@ -1,7 +1,25 @@
 {
+  "furtherInformation": "Información adicional",
+  "questionsAboutOrt": "Las preguntas sobre la Herramienta en línea para la presentación de informes deben dirigirse a la Secretaría de la Convención sobre Diversidad Biológica.",
+  "scbd": "Secretaría del Convenio sobre la Diversidad Biológica",
+  "saintJacques": "413 rue Saint-Jacques, suite 800",
+  "montreal": "Montreal, Quebec, H2Y 1N9",
+  "canada": "Canadá",
+  "fax": "Fax: +1 514 288-6588",
+  "email": "Correo electrónico:",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.399Z",
+    "hashedOn": "2025-09-23T18:25:47.767Z",
     "algorithm": "md5",
-    "branch": "2024.26.0"
+    "branch": "2025.33.2",
+    "hashes": {
+      "furtherInformation": "1184b751d4c26d4d8b3ffcdeec3e7ca4",
+      "questionsAboutOrt": "3af9ee6bc17ab7c5013cbf3670cb63d6",
+      "scbd": "48291dc3f13ffa55705724377c774942",
+      "saintJacques": "3dbff116a73d952d0bce9d2d7898927d",
+      "montreal": "dd350274511b72eab6be8b16dbe30977",
+      "canada": "445d337b5cd5de476f99333df6b0c2a7",
+      "fax": "6d888134ef5a2f836696932a0ec5cbb7",
+      "email": "6a1e265f92087bb6dd18194833fe946b"
+    }
   }
 }

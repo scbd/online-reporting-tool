@@ -1,0 +1,17 @@
+{
+  "addLink": "添加链接",
+  "addFiles": "添加文件",
+  "fileUpload": "文件上传",
+  "editlink": "编辑链接",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.788Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "addLink": "580b21aac58f1b73cece26e272cdfbee",
+      "addFiles": "5f4514405d9574e7b2b4c6c16573c5ca",
+      "fileUpload": "99e8ebaa5ad2fafe4e141574f6b4a73f",
+      "editlink": "76d1048c452cefa5c6fe82d7edc0a7e0"
+    }
+  }
+}

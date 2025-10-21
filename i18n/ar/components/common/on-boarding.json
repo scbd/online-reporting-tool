@@ -1,7 +1,11 @@
 {
+  "takeTour": "القيام بجولة",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.415Z",
+    "hashedOn": "2025-09-23T18:25:47.765Z",
     "algorithm": "md5",
-    "branch": "2024.26.0"
+    "branch": "2025.33.2",
+    "hashes": {
+      "takeTour": "ebc93e917d94e9d73100eed072d35153"
+    }
   }
 }

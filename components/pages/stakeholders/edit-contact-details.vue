@@ -201,7 +201,7 @@
 
         if([THESAURUS_TERMS.JURISDICTION_LOCAL,
             THESAURUS_TERMS.JURISDICTION_SUB_NATIONAL,
-            THESAURUS_TERMS.JURISDICTION_SUB_NATIONAL
+            THESAURUS_TERMS.JURISDICTION_NATIONAL
            ].includes(document.value?.jurisdiction.identifier)
         )
             return 1;

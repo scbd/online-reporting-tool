@@ -24,6 +24,7 @@
     "publish"     : "Publish",
     "overview" : "Overview",
     "preview" : "Preview",
+    "hidePreview" : "Hide preview",
     "sectionI": "Section I",
     "briefOverviewOfProcess": "Brief overview of the process of preparation of the report",
     "sectionII": "Section II",

@@ -4,11 +4,10 @@
        {{t('nr7Title')}}
     </CCardHeader>
     <CCardBody>
-     
       <div v-if="viewDocumentInfo">
         <div class="row">
           <div class="col-2">
-            <div id="list-example" class="list-group sticky-top" data-spy="affix" >
+            <div id="nr7-view-tabs" class="list-group sticky-top" data-spy="affix" >
               <a class="list-group-item list-group-item-action" href="#section1">Section I</a>
               <a class="list-group-item list-group-item-action" href="#section2">Section II</a>
               <a class="list-group-item list-group-item-action" href="#section3">Section III</a>
@@ -23,7 +22,7 @@
                 <km-locales v-model="selectedLocale" :locales="viewDocument.header.languages"></km-locales>
             </div>
 
-            <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" tabindex="0">
+            <div data-bs-spy="scroll" data-bs-target="#nr7-view-tabs" data-bs-offset="0" tabindex="0" class="nr7-section-view">
                 <div id="section1" class="mb-3">
                   <nr7-view-section-I :identifier="viewDocumentInfo.identifier" :document="viewDocument" :document-locale="selectedLocale"></nr7-view-section-I>
                 </div>
@@ -77,7 +76,8 @@
 
   const props = defineProps({
       documentInfo: { type:Object as PropType<EDocumentInfo>, default : undefined},
-      identifier  : { type:String, required:true}
+      identifier  : { type:String, required:true},
+      publicData  : { type:Boolean, default : false},
   })
 
   const { documentInfo, identifier } = toRefs(props);
@@ -95,7 +95,7 @@
   })
 
   const viewDocument:ComputedRef<ENationalReport7> = computed(()=>{
-    const document = viewDocumentInfo.value;
+   const document = viewDocumentInfo.value;
     if(document){
       return document?.body as ENationalReport7;
     }
@@ -103,41 +103,26 @@
   })
 
   async function init(){     
-      if(props.identifier && !props.documentInfo){
-        await loadDocument(props.identifier)       
+      if(identifier.value && !documentInfo?.value){
+        await loadDocument(identifier.value)       
       }
 
       //this can be long call, so don't await here
       const initIndicatorDataLoad = loadNationalIndicatorData();
 
       const [lNationalTargets, globalTargets] = await Promise.all([ 
-              KmDocumentsService.loadSchemaDocuments(SCHEMAS.NATIONAL_TARGET_7, viewDocument.value?.government?.identifier, {body:false}),
+              KmDocumentsService.loadSchemaDocuments(SCHEMAS.NATIONAL_TARGET_7, viewDocument.value?.government?.identifier, {body:false, collection: 'all', }),
               GbfGoalsAndTargets.loadGbfTargets()]);
 
       nationalTargets.value = arrayToObject([...(lNationalTargets||[]), ...globalTargets]) || {}; 
             
       indicatorsData.value = await initIndicatorDataLoad;
 
-      // const indicatorTypes = ['headlineIndicators', 'binaryIndicators', 'componentIndicators', 'complementaryIndicators', 'nationalIndicators'];
-      // Object.values(nationalTargets.value).forEach((target: any) => {
-      //   console.log(target)
-      //     if(target?.indicator?.identifier){
-      //       console.log('target.indicator', target.indicator);
-      //         const indicator = indicators.find((i:EDocumentInfo)=>i.identifier == target.indicator.identifier);
-      //         if(indicator){
-      //           console.log('indicator', indicator);
-      //             target.indicator = indicator;
-      //         }
-      //     }
-      // });
-      // nationalData.value = arrayToObject(indicators)||{};
-      // console.log('nationalData', nationalData.value);
-      setTimeout(() => {
-        
+     nextTick(()=>{    
         var scrollSpy = new bootstrap.ScrollSpy(window.document.body, {
-          target: '#list-example'
+          target: '#nr7-view-tabs'
         })
-      }, 1000);
+      });
   }
 
   async function loadDocument(identifier:string){
@@ -146,15 +131,15 @@
           if(route.query?.draft == 'true' || route.query?.draft === null){
               const draftRecord = await KmDocumentDraftsService.loadDraftDocument(route.params.identifier as string);
               if(draftRecord?.body){
-                lDocumentInfo.value = draftRecord.body as EDocumentInfo;
-                emit('onDocumentLoad', draftRecord.body as  EDocumentInfo);
+                lDocumentInfo.value = draftRecord as EDocumentInfo;
+                emit('onDocumentLoad', draftRecord as  EDocumentInfo);
               }
           }
           else{
               const record = await KmDocumentsService.loadDocument(route.params.identifier as string);
               if(record?.body){
-                lDocumentInfo.value = record.body as EDocumentInfo;
-                emit('onDocumentLoad', record.body as EDocumentInfo);
+                lDocumentInfo.value = record as EDocumentInfo;
+                emit('onDocumentLoad', record as EDocumentInfo);
               }
           }
       }
@@ -173,6 +158,10 @@
   async function loadNationalIndicatorData():Promise<EDocumentInfo[]>{
       
       const schemas = [SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA, SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA];
+      
+      if(props.publicData === true)
+        return await KmDocumentsService.loadSchemaDocuments(schemas, viewDocument.value?.government?.identifier, {collection:'all'});
+      
       const result = await Promise.all([
         KmDocumentDraftsService.loadSchemaDrafts(schemas, viewDocument.value?.government?.identifier),
         KmDocumentsService.loadSchemaDocuments(schemas, viewDocument.value?.government?.identifier)

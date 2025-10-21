@@ -3,11 +3,11 @@
         @click="onPdfDocument" >
         
         <font-awesome-icon icon="file-pdf"></font-awesome-icon> {{ t('pdf') }}
-        <km-modal-spinner :visible="isPdfing" class="text-dark"
-            title="Pdfing" :message="t('preparePdfing')"></km-modal-spinner>
+        <km-modal-spinner :visible="isGeneratingPdf" class="text-dark"
+            :title="t('preparingPdfTitle')" :message="t('preparingPdfMessage')"></km-modal-spinner>
 
         <div id="advancePdf" class=" d-none h-0">
-            <div class="cbd-user-pdf" v-if="isPdfing">
+            <div class="cbd-user-pdf" v-if="isGeneratingPdf">
                 <print-header></print-header>
                 <div id="cbd-user-pdf-section" >
                     <div v-html="userPdfHtml"></div>
@@ -35,7 +35,7 @@
     const {t}             = useI18n();
     const { $recaptcha }  = useNuxtApp();
 
-    const isPdfing      = ref(false);
+    const isGeneratingPdf      = ref(false);
     const userPdfHtml   = ref(null);
 
     const downloadFileName = computed(()=>{
@@ -59,7 +59,7 @@
     async function onPdfDocument(){
         emit('onPdfDocument');
         
-        isPdfing.value = true;
+        isGeneratingPdf.value = true;
         await sleep(200);
         userPdfHtml.value = document.querySelector(props.element).innerHTML;
         await sleep(200);
@@ -116,7 +116,7 @@
         }
         finally{
             userPdfHtml.value = null;
-            isPdfing.value = false
+            isGeneratingPdf.value = false
             emit('onAfterPdf')
         }
     }

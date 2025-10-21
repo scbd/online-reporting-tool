@@ -1,7 +1,13 @@
 {
+  "knowledgeBase": "База знаний",
+  "welcome": "Добро пожаловать в базу знаний ОИО!",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.414Z",
+    "hashedOn": "2025-09-23T18:25:48.046Z",
     "algorithm": "md5",
-    "branch": "2024.26.0"
+    "branch": "2025.33.2",
+    "hashes": {
+      "knowledgeBase": "19111351b69b6b15668130b38b7f6038",
+      "welcome": "fd0e31a681f63a00fffcf679b5c3f1f2"
+    }
   }
 }

@@ -1,11 +1,13 @@
 {
   "comments": "Commentaires",
+  "binaryIndicatorQuestion": "Aucune réponse n'a été fournie à cette question à indicateur binaire.",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.428Z",
+    "hashedOn": "2025-09-23T18:25:47.88Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
-      "comments": "8413c683b4b27cc3f4dbd4c90329d8ba"
+      "comments": "8413c683b4b27cc3f4dbd4c90329d8ba",
+      "binaryIndicatorQuestion": "fde3430334c2aa0a90c64c77adebe9f6"
     }
   }
 }

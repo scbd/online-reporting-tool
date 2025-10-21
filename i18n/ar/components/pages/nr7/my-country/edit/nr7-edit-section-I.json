@@ -1,20 +1,33 @@
 {
+  "general": "عام",
   "sectionI": "القسم الأول",
+  "nationalAuthorities": "السلطات الوطنية المسؤولة عن إعداد التقرير وتقديمه",
+  "contactPerson": "مسؤول الاتصال",
+  "contactDetails": "بيانات الاتصال",
   "sectionIDescription": "لمحة موجزة عن عملية إعداد التقرير",
-  "preparationProcess": "يرجى تقديم وصف موجز لعملية إعداد هذا التقرير (قد تشمل الردود ما يلي)",
-  "coordination": "استخدام آليات التنسيق والمنهجية المتبعة لجمع البيانات والتحقق منها (عند الاقتضاء)، فضلا عن أبرز التحديات التي حدثت أثناء إعداد التقرير؛",
-  "consultation": "إجراء مشاورات على مختلف المستويات لإعداد هذا التقرير، بمشاركة مختلف الجهات المعنية وتعاونهم ومساهماتهم، مع مراعاة اختلاف الظروف من بلد لآخر.",
+  "preparationProcess": "يُرجى وصف العملية التي اتُّبعت في إعداد هذا التقرير بإيجاز. قد تتضمن الإجابات ما يلي:",
+  "coordination": "استخدام آليات التنسيق ومنهجية جمع البيانات والتحقق منها (عند الاقتضاء)، فضلا عن أبرز التحديات التي حدثت أثناء إعداد التقرير؛",
+  "consultation": "المشاورات التي أُجريت على مستويات مختلفة لإعداد هذا التقرير، بمشاركة وإشراك مختلف الجهات المعنية ومع مراعاة الظروف الوطنية، ومن ذلك اتباع نهج يشمل الحكومة كلها والمجتمع بأسره.\n",
+  "sectionMandatory": "جميع الخانات في القسم الأول إلزامية",
+  "government": "الحكومة",
+  "selectLanguages": "يُرجى تحديد اللغات التي تريد إرسال هذا السجل بها:",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.43Z",
+    "hashedOn": "2025-09-23T18:25:47.882Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
+      "general": "0db377921f4ce762c62526131097968f",
       "sectionI": "6914d052dd6321ed110176026903becd",
+      "nationalAuthorities": "aa969d05d938a61a07328eb90f99b65c",
+      "contactPerson": "257548fcc33881767d79aa21a473a78a",
+      "contactDetails": "5dd532f0a63d89c5af0243b74732f63c",
       "sectionIDescription": "64b4e786cecb7f5008b67378bc132957",
-      "preparationProcess": "9e1bf6126378c7c403a3de8a30f69c46",
-      "coordination": "6d128b26a0a49dedceed5a9f56715def",
-      "consultation": "a2993576e55818e97fcab14983f2f319",
-      "sectionMandatory": "3d3e416af01ddbdd3a8609c2ea6680ab"
+      "preparationProcess": "576195b9f63104000a71ebf949261f81",
+      "coordination": "914cbd5cb436e869b373be860b57eb8e",
+      "consultation": "1d92f46853e6ac9d613870d1cd1f92f8",
+      "sectionMandatory": "3d3e416af01ddbdd3a8609c2ea6680ab",
+      "government": "18450de39aceed82b26abe218d377740",
+      "selectLanguages": "602b7ef0a2530a7c497820e902dcc982"
     }
   }
 }

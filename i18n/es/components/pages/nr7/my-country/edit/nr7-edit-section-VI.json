@@ -1,13 +1,11 @@
 {
-  "sectionII": "Sección II",
-  "sectionIIDescription": "Situación relativa a las estrategias y los planes de acción nacionales en materia de diversidad biológica (EPANDB) revisados y actualizados a la luz del Marco Mundial de Biodiversidad de Kunming-Montreal ",
+  "otherInformation": "Otra información",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.434Z",
+    "hashedOn": "2025-09-23T18:25:47.888Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
-      "sectionII": "a487ef3cd0fee355fefe3fedbb85bb01",
-      "sectionIIDescription": "7bc04f6a1770ae34e5dff0f399339034"
+      "otherInformation": "1d2e7006048aec610a44d2592586470b"
     }
   }
 }

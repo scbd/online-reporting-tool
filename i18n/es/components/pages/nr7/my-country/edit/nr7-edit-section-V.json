@@ -1,14 +1,18 @@
 {
   "sectionV": "Sección V",
+  "sectionVDescription": "Conclusiones sobre la aplicación a nivel nacional del Convenio y del Marco Mundial de Biodiversidad de Kunming-Montreal",
+  "introduction": "En la presente sección se insta a las Partes a proporcionar un resumen de la aplicación a nivel nacional del Convenio sobre la Diversidad Biológica y el Marco, incluidos los logros principales y los desafíos mayores encontrados, en particular, los relacionados con los déficits en materia de capacidad, técnicos, tecnológicos, institucionales y financieros, y las restricciones y el apoyo proporcionado para la aplicación. Las Partes pueden hacer alusión a los desafíos transversales que afectan la aplicación del Convenio o el Marco o a obstáculos específicos que hayan obstaculizado los progresos. Entre los desafíos y los obstáculos pueden incluirse la falta de recursos financieros, humanos y técnicos adecuados; las dificultades relativas a la cooperación interministerial o entre organismos; la falta de acceso oportuno y confiable a los conocimientos, la información y los datos; la falta del conocimiento científico especializado necesario para brindar apoyo al desarrollo y la gestión de proyectos, y la falta de acceso a la tecnología pertinente para la aplicación. Las Partes deberían evitar la duplicación si la información figura en las secciones anteriores. ",
+  "assessmentSummary": "Proporcionar una evaluación resumida de la aplicación del Convenio y el Marco, incluidas todas sus secciones, y los principales logros y mayores desafíos encontrados y, según proceda, su resolución, en particular los relacionados con los déficits y restricciones en materia de capacidad, técnicos, tecnológicos, institucionales y financieros, y el apoyo proporcionado para la aplicación.",
+  "sectionMandatory": "Todos los campos de la Sección V son obligatorios",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.433Z",
+    "hashedOn": "2025-09-23T18:25:47.887Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "sectionV": "f593a75cdb704880c3e5e1c223688055",
-      "sectionVDescription": "276abb02ae7d41bd0ac8e0caaf013349",
-      "introduction": "e93747938013150d25e69d6e24c2d668",
-      "assessmentSummaryInfo": "d3431ee415863f8dd405e7fdc77a8e2e",
+      "sectionVDescription": "4db814359260f49653796de16be14543",
+      "introduction": "a3b6ebf63c9bec750f4cbe5a8d4df005",
+      "assessmentSummary": "3004508b534f3e2c5753a2bae560e9a8",
       "sectionMandatory": "52a20a21589fde46d3f92c896f175b5b"
     }
   }

@@ -1,7 +1,13 @@
 {
+  "allNr7Reports": "Todos los séptimos informes nacionales",
+  "myCountryNr7": "El Séptimo informe nacional de mi país",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.424Z",
+    "hashedOn": "2025-09-23T18:25:48.073Z",
     "algorithm": "md5",
-    "branch": "2024.26.0"
+    "branch": "2025.33.2",
+    "hashes": {
+      "allNr7Reports": "eb4a46963ee3af9d52c5a93d797fbbb6",
+      "myCountryNr7": "ba38edb6dac3bb75995f40b1cb4c4a6b"
+    }
   }
 }

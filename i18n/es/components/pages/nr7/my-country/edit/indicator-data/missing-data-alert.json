@@ -1,1 +1,11 @@
-{}
+{
+  "noCountryIndicator": "No se han presentado datos para este indicador.",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.874Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "noCountryIndicator": "22b6756dba7e62cb778cbaa152242f47"
+    }
+  }
+}

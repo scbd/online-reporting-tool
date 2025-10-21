@@ -4,12 +4,32 @@
   "valid": "您的文档有效。",
   "contains": "您的文档包含",
   "errors": "错误。",
-  "unknown": "未知錯誤",
-  "mandatory": "必填字段",
+  "unknown": "未知错误",
+  "mandatory": "必须填写的字段",
   "mandatoryAnyOf": "其中一个字段为必填字段",
   "invalidValue": "指定的密码无效。",
   "invalidProperty": "无法指定此值",
-  "unspecifiedLocale": "您的文档中使用了一种语言但未指定",
+  "unspecifiedLocale": "必须以至少一种联合国正式语文提供数值",
   "unexpectedTerm": "指定的术语不能使用",
-  "invalidType": "指定的密码无效。"
+  "invalidType": "指定的密码无效。",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.786Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "analyzingDocument": "c659d56f36dd744fd326f51086eb1e6d",
+      "savingDocument": "6ecd89ce3dbad5e62652a0735d1c2317",
+      "valid": "e014d6c206d4b1f638505fc4fa254e54",
+      "contains": "496596ff00cec6d3dcf3a0d78888564b",
+      "errors": "e97e7522af98a45836832043a76320e0",
+      "unknown": "aee9784c03b80d38d3271cde2b252b8d",
+      "mandatory": "7f6c29842152c67b71b49d97ef59b277",
+      "mandatoryAnyOf": "233e8ca45b42458811acb568b588cdc5",
+      "invalidValue": "e0df5f4232f754d8f33ab6303b6f31fb",
+      "invalidProperty": "fbdbc14aab4574ed647075ad1a442478",
+      "unspecifiedLocale": "83476322bae1ac875fce3352fbe79b93",
+      "unexpectedTerm": "0875927afc577c8c6b87989cd7f3ea77",
+      "invalidType": "9bee33b4bc96dd8a26b4b04b97f8aa9a"
+    }
+  }
 }

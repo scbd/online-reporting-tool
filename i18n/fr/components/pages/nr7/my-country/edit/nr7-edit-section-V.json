@@ -1,14 +1,18 @@
 {
   "sectionV": "Chapitre V",
+  "sectionVDescription": "Conclusions sur la mise en œuvre nationale de la Convention sur la diversité biologique et du Cadre mondial pour la biodiversité de Kunming-Montréal",
+  "introduction": "Dans la présente section, les Parties sont encouragées à fournir un résumé de la mise en œuvre nationale de la Convention sur la diversité biologique et du Cadre, notamment leurs principales réalisations et les principaux défis rencontrés, en particulier ceux liés aux lacunes et contraintes en matière de capacités, de techniques, de technologies, d'institutions et de financement, ainsi que le soutien apporté à la mise en œuvre. Les Parties peuvent mentionner les défis transversaux qui affectent la mise en œuvre de la Convention et du Cadre ou les obstacles spécifiques qui ont entravé les progrès. Ces défis et obstacles peuvent inclure le manque de ressources financières, humaines et techniques adéquates ; les difficultés liées à la coopération et à la coordination interministérielles ou interinstitutionnelles ; le manque d'accès rapide et fiable aux connaissances, aux informations et aux données ; le manque d'expertise scientifique nécessaire pour soutenir l'élaboration et la gestion des projets ; et le manque d'accès aux technologies pertinentes pour la mise en œuvre. Les Parties doivent éviter les répétitions si ces informations sont déjà couvertes dans les sections ci-dessus. ",
+  "assessmentSummary": "Fournissez une évaluation sommaire de la mise en œuvre de la Convention et du Cadre, y compris toutes ses sections, ainsi que les principales réalisations et les principaux défis rencontrés et, le cas échéant, résolus, en particulier ceux liés aux lacunes et contraintes en matière de capacités, techniques, technologiques, institutionnelles et financières, et au soutien apporté à la mise en œuvre.",
+  "sectionMandatory": "Tous les champs de la section V sont obligatoires.",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.433Z",
+    "hashedOn": "2025-09-23T18:25:47.887Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "sectionV": "f593a75cdb704880c3e5e1c223688055",
-      "sectionVDescription": "276abb02ae7d41bd0ac8e0caaf013349",
-      "introduction": "e93747938013150d25e69d6e24c2d668",
-      "assessmentSummaryInfo": "d3431ee415863f8dd405e7fdc77a8e2e",
+      "sectionVDescription": "4db814359260f49653796de16be14543",
+      "introduction": "a3b6ebf63c9bec750f4cbe5a8d4df005",
+      "assessmentSummary": "3004508b534f3e2c5753a2bae560e9a8",
       "sectionMandatory": "52a20a21589fde46d3f92c896f175b5b"
     }
   }

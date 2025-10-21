@@ -1,7 +1,13 @@
 {
+  "noArticle": "无可用文章",
+  "view": "查看",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.41Z",
+    "hashedOn": "2025-09-23T18:25:47.853Z",
     "algorithm": "md5",
-    "branch": "2024.26.0"
+    "branch": "2025.33.2",
+    "hashes": {
+      "noArticle": "384d0ab78ba12d476135a3b1f62176d1",
+      "view": "4351cfebe4b61d8aa5efa1d020710005"
+    }
   }
 }

@@ -1,0 +1,21 @@
+{
+  "noRecords": "没有要显示的记录！",
+  "yes": "应用",
+  "no": "取消",
+  "exportFilterRequired": "导出当前仅限于单个记录类型。请从列表中选择一个记录类型。",
+  "exportFilterHeader": "筛选记录",
+  "exportButton": "导出",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.798Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "noRecords": "666a9d169ef9dfe0370d4c4434a92105",
+      "yes": "9639e32cab248434a17ab32237cb3b71",
+      "no": "ea4788705e6873b424c65e91c2846b19",
+      "exportFilterRequired": "17ac998bb3cfa52eff648b21d78d05aa",
+      "exportFilterHeader": "eeb6b36d23dfb7e744e97d8fa0923b8d",
+      "exportButton": "0095a9fa74d1713e43e370a7d7846224"
+    }
+  }
+}

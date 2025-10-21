@@ -1,11 +1,43 @@
 {
+  "editIndicatorData": "Редактировать данные",
+  "addIndicatorData": "Добавить данные",
+  "general": "Общие сведения",
+  "data": "Данные",
+  "dataSelectionNote": "Просьба принять к сведению, что функция выбора источника данных отключена, поскольку она до сих пор находится в процессе разработки.",
+  "sourceOfData": "Источник данных",
+  "government": "Правительство",
+  "comments": "Замечания",
+  "pleaseSelectLanguage": "Выберите язык(и) для представления этой записи",
+  "nationalDataSet": "Национальный набор данных",
+  "fileFormatMessage": "Для этой системы в обязательном порядке требуется представлять данные в формате, приведенном в образце шаблона. Просьба скачать образец шаблона и представить данные в соответствующем формате.",
+  "globalDataSet": "Глобальный набор данных",
+  "noGlobalDataIndicator": "На платформе Target Tracker ЮНЕП-ВЦМООС отсутствуют какие-либо глобальные данные по этому индикатору",
+  "columnsMismatch": "Ваш файл в формате Exel не соответствует шаблону (несоответствие столбцов). Ожидается, что число столбцов должно быть равным \"{count}\". Просьба использовать систему, представленную в шаблоне.",
+  "columnsInvalid": "Недопустимое имя столбца \"{colName}» в столбце с номером \"{colNo}», не соответствующее ожидаемому имени \"{colExpected}\". Просьба придерживаться порядка, приведенного в шаблоне",
+  "sourceOfDataInfoNoData": "Просьба описать ситуацию",
+  "sourceOfDataInfoNotRelevant": "Просьба описать, почему данный индикатор не является уместным",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.428Z",
+    "hashedOn": "2025-09-23T18:25:47.877Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "editIndicatorData": "55b8d5841eba3b51fbf02399345b1462",
-      "addIndicatorData": "f807e4bb8b926adf9cf418417f49c245"
+      "addIndicatorData": "f807e4bb8b926adf9cf418417f49c245",
+      "general": "0db377921f4ce762c62526131097968f",
+      "data": "f6068daa29dbb05a7ead1e3b5a48bbee",
+      "dataSelectionNote": "2bf3ea69e293accf6ed33cc058dcddff",
+      "sourceOfData": "79410a9a5a577ea03e4dccc6d23e7c24",
+      "government": "18450de39aceed82b26abe218d377740",
+      "comments": "8413c683b4b27cc3f4dbd4c90329d8ba",
+      "pleaseSelectLanguage": "602b7ef0a2530a7c497820e902dcc982",
+      "nationalDataSet": "6110bdd0bc1e451bacbc93770092b55f",
+      "fileFormatMessage": "29f1be92adad35b33184888a6a342cab",
+      "globalDataSet": "04402bcca79a92b6bd53c7e283f3203a",
+      "noGlobalDataIndicator": "1ac36351ef0bfc225e57342c0f520ccf",
+      "columnsMismatch": "bb4f964ea22636f99c2e96a5b78818a9",
+      "columnsInvalid": "b17ace7c8bafb1ce9b4c21815400656f",
+      "sourceOfDataInfoNoData": "5b5e95c7a1df07cc2ed35a5399ee187c",
+      "sourceOfDataInfoNotRelevant": "d19ae21ab302d47fc43d946a83cb338f"
     }
   }
 }

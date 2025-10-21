@@ -3,7 +3,7 @@
     <div class="alert alert-danger" v-if="countryReview"
      style="border-color:#DDD; background-color: #f5f5f5;" role="alert">
       {{ t('countryReviewTitle') }}
-      <p>
+      <p v-if="countryReview?.meta?.updatedByInfo" class="mb-0">
         <strong v-if="countryReview.reviewed">{{t('reviewedBy')}} </strong>
         <strong v-if="!countryReview.reviewed">{{t('returnedBy')}} </strong>
         {{ countryReview?.meta?.updatedByInfo?.firstName }} {{ countryReview?.meta?.updatedByInfo?.lastName }}

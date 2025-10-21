@@ -7,13 +7,13 @@
   "furtherQuestion": "إذا كان لديك أي أسئلة أو مخاوف أخرى.",
   "wouldLike": "إذا كنت تريد معرفة",
   "moreInfo": "المزيد من المعلومات حول هذه الرسالة،",
-  "youCan": "تستطيع",
+  "youCan": "يُرجى ",
   "clickHere": "الضغط هنا",
   "message": "الرسالة:",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.451Z",
+    "hashedOn": "2025-09-23T18:25:47.792Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "error": "902b0d55fddef6f8d651fe1035b7d4bd",
       "sorryForError": "163dc8e3e5100378855e34392c4a4e41",

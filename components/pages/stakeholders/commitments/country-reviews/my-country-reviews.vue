@@ -29,36 +29,7 @@
                         <strong class="h4 float-end">{{ autoPublishedCount }}</strong>
                     </CCallout>
                 </CCol> 
-            </CRow>  
-            <!-- <button class="btn btn-danger btn-sm float-end" v-if="hasFilters" @click="clearFilters">{{ t('clearFilters') }}</button> -->
-            <div id="filters" class="row">
-                <!-- <div class="col-md-4"  v-if="recordTitles?.length">
-                    <km-form-group :caption="t('filterByTitle')">
-                        <km-select
-                            v-model="selectedTitles"
-                            class="validationClass"
-                            label="title"
-                            track-by="identifier"
-                            value-key="identifier"
-                            :options="recordTitles"
-                            :multiple="true"
-                            :close-on-select="false"
-                            :custom-label="customLabel"
-                            :custom-selected-item="customSelectedItem">
-                        </km-select>
-                    </km-form-group>
-                </div>
-                <div class="col-md-4" v-if="hasGbfObjectives">
-                    <km-form-group :caption="t('filterByGlobalTargets')">
-                        <gbf-targets v-model="selectedGlobalTargets" :multiple="true"></gbf-targets>
-                    </km-form-group>
-                </div>
-                <div class="col-md-4" v-if="hasGbfObjectives">
-                    <km-form-group :caption="t('filterByGlobalGoals')">
-                        <gbf-goals v-model="selectedGlobalGoals" :multiple="true"></gbf-goals>
-                    </km-form-group>
-                </div> -->
-            </div>
+            </CRow>              
             
             <country-review-list v-if="myCountryReviews?.length"
                         :countryReviews="myCountryReviews"

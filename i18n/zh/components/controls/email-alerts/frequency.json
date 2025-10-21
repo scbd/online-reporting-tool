@@ -1,0 +1,15 @@
+{
+  "frequencyHeader": "电子邮件提醒频率",
+  "frequencyDescription": "设置您希望从在线报告工具收到的电子邮件提醒的频率",
+  "frequencyDropdown": "选择频次",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.791Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "frequencyHeader": "7c5c04f0972c81d80ed25bfdcb3462d4",
+      "frequencyDescription": "46b399e43d6e962bffe4d583e5c27800",
+      "frequencyDropdown": "8c7cfecdf2a928eee3514e8d2e9a62d6"
+    }
+  }
+}

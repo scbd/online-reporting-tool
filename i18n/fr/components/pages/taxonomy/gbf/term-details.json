@@ -1,0 +1,21 @@
+{
+  "code": "Code",
+  "title": "Titre",
+  "shortTitle": "Titre court",
+  "description": "Description",
+  "longDescription": "Longue description",
+  "linkedWith": "Lié à",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.909Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "code": "ca0dbad92a874b2f69b549293387925e",
+      "title": "b78a3223503896721cca1303f776159b",
+      "shortTitle": "1b99eb4b3604f40f195e164c59c8a0de",
+      "description": "b5a7adde1af5c87d7fd797b6245c2a39",
+      "longDescription": "a8e93934f3e4e3377bae62eb5d46f3ed",
+      "linkedWith": "eec321de70647b52b5fcb40d4ceed90c"
+    }
+  }
+}

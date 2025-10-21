@@ -7,6 +7,7 @@
   "nationalReports": "التقارير الوطنية",
   "menuNationalTargets": "الأهداف الوطنية",
   "menuAllTargets": "جميع الأهداف الوطنية",
+  "menuAnalyzeTargets": "تحليل الأهداف الوطنية",
   "menuMyCountryTargets": "أهداف بلدي",
   "menuMyCountryTargetsPart1": "الجزء الأول",
   "menuMyCountryTargetsPart2": "الجزء الثاني",
@@ -19,7 +20,36 @@
   "sectionIII": "القسم الثالث",
   "sectionIV": "القسم الرابع",
   "sectionV": "القسم الخامس",
-  "sectionVI": "القسم السادس",
-  "annex": "الملحق",
-  "indicatorData": "بيانات المؤشر"
+  "otherInformation": "معلومات أخرى",
+  "indicatorData": "بيانات المؤشر",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.851Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "overview": "3b878279a04dc47d60932cb294d96259",
+      "menuDashboard": "2938c7f7e560ed972f8a4f68e80ff834",
+      "menuNbsaps": "d255a8ee252c1d3cb2774c81c261fa3f",
+      "menuNbsapsAll": "6ddc3890966a2aaf72b2d2b61650cd70",
+      "menuNbsapsMyCountry": "d175f88a66309457365e79b73ab2c661",
+      "nationalReports": "8742daef031468210c7ae9d66e95ca37",
+      "menuNationalTargets": "0a4aed0e778cd5ae82ec7544b518bedb",
+      "menuAllTargets": "c7cc87b8affc220ffc995027c08e4b14",
+      "menuAnalyzeTargets": "ade805464b8dc667c0209ea4590e7a89",
+      "menuMyCountryTargets": "f80d36e8d72250ce5eeb1f611389724b",
+      "menuMyCountryTargetsPart1": "65e50d9183cfdb664c51854495f4a3b5",
+      "menuMyCountryTargetsPart2": "fdabad7e7ea8afe488d3fd27bb854668",
+      "6thNationalReport": "7b1780388ef030ad9978841c6fe69038",
+      "7thNationalReport": "8dd2a506b05c6edee0ce3998469aa6c4",
+      "reports": "43291a4388882d60a1e47a2a57efcb58",
+      "myCountry": "743fc692c96c36525ad471e835a4ac56",
+      "sectionI": "6914d052dd6321ed110176026903becd",
+      "sectionII": "a487ef3cd0fee355fefe3fedbb85bb01",
+      "sectionIII": "6d8d71a1d4966fa7d55b3f417aabcf93",
+      "sectionIV": "bc1239ab99573e1d5e1a59d2ecefdabf",
+      "sectionV": "f593a75cdb704880c3e5e1c223688055",
+      "otherInformation": "1d2e7006048aec610a44d2592586470b",
+      "indicatorData": "646620971549f3ce83f150ffe69a3a4c"
+    }
+  }
 }

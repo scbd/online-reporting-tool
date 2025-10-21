@@ -1,5 +1,17 @@
 {
   "notFound": "السجل غير موجود!",
-  "notAuthorized": "غير مصرح لك بالوصول لهذه الصفحة.",
-  "errorLoading": "حدث خطأ أثناء تحميل محتويات الوثيقة "
+  "notAuthorized": "غير مُصرّح لك بالوصول لهذه الصفحة.",
+  "errorLoading": "حدث خطأ أثناء تحميل محتويات الوثيقة ",
+  "loadDraftAdminOnly": "تحميل المسودات (للمشرفين فقط)",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.758Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "notFound": "beb8f4802b634ba5cb256ca5cefcfc71",
+      "notAuthorized": "643b1eec3c255c47c6dc1b975b43d6d7",
+      "errorLoading": "8e6aad94b14064dc6511a37e1069e94a",
+      "loadDraftAdminOnly": "75d563f78857b2461d0f90180d439b12"
+    }
+  }
 }

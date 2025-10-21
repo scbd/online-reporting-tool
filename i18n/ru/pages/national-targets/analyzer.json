@@ -1,0 +1,41 @@
+{
+  "nationalTargetsAnalyzer": "Анализатор национальных задач",
+  "getShareLink": "Получить ссылку для отправки",
+  "close": "Закрыть",
+  "shareMessage": "Отметьте отдельные разделы, чтобы поделиться содержащейся в них информацией, или щелкните кнопку «Получить ссылку для отправки», чтобы поделиться всем содержимым",
+  "shareAnalyzerHeader": "Поделиться ссылкой на анализатор национальных докладов",
+  "share": "Поделиться",
+  "general-count": "Общее количество",
+  "target-progress-regions": "Прогресс в установлении задач (в разбивке по регионам)",
+  "target-progress-parties": "Прогресс в установлении задач (в разбивке по Сторонам)",
+  "monitoring-progress": "Прогресс в области мониторинга",
+  "relevance-progress": "Прогресс в обеспечении амбициозности/актуальности",
+  "section-c-progress": "Прогресс в выполнении раздела С",
+  "non-state-progress": "Негосударственный субъект",
+  "party-count": "Число Сторон",
+  "ortTip": "Онлайновый инструмент представления отчетности СКБР",
+  "embedCode": "Показать код для вставки",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:48.082Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "nationalTargetsAnalyzer": "2fbaac6522651046735cc7d598ff7b93",
+      "getShareLink": "a089d55614f46c671f022986d6be4549",
+      "close": "d3d2e617335f08df83599665eef8a418",
+      "shareMessage": "10878507d1d4df474956f0829933eff0",
+      "shareAnalyzerHeader": "ba7c61f6213edae17aaf708f2dc1b32e",
+      "share": "5a95a425f74314a96f13a2f136992178",
+      "general-count": "8138c54d122a829bf3d01eb696b4a90b",
+      "target-progress-regions": "70565681305c4609a04201fbee4a73c6",
+      "target-progress-parties": "a9e8e3d9b93f78198a808f493671c4bc",
+      "monitoring-progress": "467f6a0eedf21d72edc5b2f1977a9654",
+      "relevance-progress": "8604dc219027e8b72da058c488b84066",
+      "section-c-progress": "e3362b1fabd81fbd735ec3d48081fa55",
+      "non-state-progress": "5089b68b4b3817a6df97c800a7f5654f",
+      "party-count": "103cdb7e887135f36310a1a6e52318b7",
+      "ortTip": "44218a1b275e8ab27fad74cfc2069564",
+      "embedCode": "77840c3c9ff20e9c8a9079e87efdfa0a"
+    }
+  }
+}

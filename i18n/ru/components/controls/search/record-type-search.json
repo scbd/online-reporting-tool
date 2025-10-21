@@ -1,0 +1,21 @@
+{
+  "noRecords": "Нет записей для отображения!",
+  "yes": "Применить",
+  "no": "Отменить",
+  "exportFilterRequired": "В настоящее время допускается экспортировать записи только одного типа. Выберите тип записи из списка.",
+  "exportFilterHeader": "Фильтровать записи",
+  "exportButton": "Экспортировать",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.798Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "noRecords": "666a9d169ef9dfe0370d4c4434a92105",
+      "yes": "9639e32cab248434a17ab32237cb3b71",
+      "no": "ea4788705e6873b424c65e91c2846b19",
+      "exportFilterRequired": "17ac998bb3cfa52eff648b21d78d05aa",
+      "exportFilterHeader": "eeb6b36d23dfb7e744e97d8fa0923b8d",
+      "exportButton": "0095a9fa74d1713e43e370a7d7846224"
+    }
+  }
+}

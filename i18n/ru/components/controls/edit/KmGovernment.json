@@ -1,3 +1,11 @@
 {
-  "government": "Правительство"
+  "government": "Правительство",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.782Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "government": "18450de39aceed82b26abe218d377740"
+    }
+  }
 }

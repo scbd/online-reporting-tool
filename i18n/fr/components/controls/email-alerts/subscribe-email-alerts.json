@@ -1,0 +1,35 @@
+{
+  "modalTitle": "Ajouter un abonnement de modification",
+  "close": "Fermer",
+  "save": "Sauvegarder",
+  "addAlert": "Ajouter une alerte",
+  "edit": "Modifier",
+  "delete": "Supprimer",
+  "title": "Titre",
+  "confirmDeleteTitle": "Confirmer la suppression",
+  "confirmDeleteTitleMessage": "Êtes-vous sûr de vouloir supprimer cette alerte courriel ?",
+  "confirmDeleteProcessing": "Suppression de l'alerte courriel",
+  "yes": "Oui",
+  "no": "Non",
+  "emailAlert": "Alertes courriel",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.792Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "modalTitle": "208356bda0d3c3c89afe0e4ab152078d",
+      "close": "d3d2e617335f08df83599665eef8a418",
+      "save": "c9cc8cce247e49bae79f15173ce97354",
+      "addAlert": "01a7717921279df170d3b3d298e38553",
+      "edit": "7dce122004969d56ae2e0245cb754d35",
+      "delete": "f2a6c498fb90ee345d997f888fce3b18",
+      "title": "b78a3223503896721cca1303f776159b",
+      "confirmDeleteTitle": "1e9ca04c43dd5d901f2eec3a0075dc02",
+      "confirmDeleteTitleMessage": "74e4be7f21bc2b257c9f730f102d5d80",
+      "confirmDeleteProcessing": "ccc7ebd97ba3bb5b26e06713397fdac7",
+      "yes": "93cba07454f06a4a960172bbd6e2a435",
+      "no": "bafd7322c6e97d25b6299b5d6fe8920b",
+      "emailAlert": "25e7aa57cabd5d721f6c582177978d8d"
+    }
+  }
+}

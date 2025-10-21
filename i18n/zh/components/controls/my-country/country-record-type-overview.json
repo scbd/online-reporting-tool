@@ -1,0 +1,13 @@
+{
+  "refresh": "刷新",
+  "submitNew": "提交新的",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.795Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "refresh": "63a6a88c066880c5ac42394a22803ca6",
+      "submitNew": "2f46eaf02e0720a8f30289755a2ba0c7"
+    }
+  }
+}

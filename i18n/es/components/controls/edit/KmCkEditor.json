@@ -2,5 +2,18 @@
   "uploadingFile": "Carga en proceso, por favor, espere",
   "attachmentMessage": "Adjuntar archivos arrastrando y soltando o pegando desde el portapapeles",
   "wordCount": "Recuento de palabras",
-  "uploadError": "Ocurrió un error al cargar el/los archivo(s). Por favor, intente nuevamente"
+  "uploadError": "Ocurrió un error al cargar el/los archivo(s). Por favor, intente nuevamente",
+  "missingIdentifier": "No se encuentra el identificador para este campo; sírvase proporcionar un identificador para usar este control",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.779Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "uploadingFile": "a447a5d68eaf9ee1d2492e531dffb3b3",
+      "attachmentMessage": "d6ef5fff7f223be27300c35fe03ec55f",
+      "wordCount": "9c715f0e523e7e1d00d538db7b78615b",
+      "uploadError": "c7d884889a598ca476bf0ef213c42454",
+      "missingIdentifier": "4c5a8eff05e329d8286272a81e66f03a"
+    }
+  }
 }

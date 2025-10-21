@@ -1,0 +1,23 @@
+{
+  "globalBiodiversityFrameworkGoal": "Objetivo del Marco Mundial de Biodiversidad",
+  "globalBiodiversityFrameworkTarget": "Meta del Marco Mundial de Biodiversidad",
+  "headlineIndicators": "Indicadores de cabecera",
+  "binaryIndicators": "Indicadores binarios",
+  "componentIndicators": "Indicadores de los componentes",
+  "complementaryIndicators": "Indicadores complementarios",
+  "globalBiodiversityFrameworkTerm": "Término del Marco Mundial de Biodiversidad",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.898Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "globalBiodiversityFrameworkGoal": "e3a64a6638bf0cb1119cefd75c5af9d8",
+      "globalBiodiversityFrameworkTarget": "ef3d4a67dbdb35cdfbfbb045bffa213a",
+      "headlineIndicators": "10bbb9ed7c1c1439be043f02d029a24f",
+      "binaryIndicators": "2c9c40f8fb279b2c7db3aff820085bd9",
+      "componentIndicators": "363d0a122c20aa4e3c0a09ee84bf5d4d",
+      "complementaryIndicators": "9892a23f8f145985d97250b16dae20fe",
+      "globalBiodiversityFrameworkTerm": "90361e9ab89d6c8c71347ed22c27e32f"
+    }
+  }
+}

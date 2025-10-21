@@ -4,9 +4,9 @@
   "errorMessage": "La página que busca no está disponible temporariamente. Intente nuevamente",
   "backHome": "Volver al inicio",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.466Z",
+    "hashedOn": "2025-09-23T18:25:48.041Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "errorCode": "cee631121c2ec9232f3a2f028ad5c89b",
       "errorHeading": "02cf591aaf7d244fdf1b4e287ecfa863",

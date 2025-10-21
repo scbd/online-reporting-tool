@@ -2,5 +2,18 @@
   "uploadingFile": "Téléchargement en cours, veuillez patienter",
   "attachmentMessage": "Joignes les fichiers en les glissant et en déposant depuis le presse-papiers",
   "wordCount": "Compteur de mots",
-  "uploadError": "Une erreur est survenue dans le téléchargement du fichier, veuillez réessayer"
+  "uploadError": "Une erreur est survenue dans le téléchargement du fichier, veuillez réessayer",
+  "missingIdentifier": "Identifiant manquant pour ce champ. Veuillez fournir un identifiant pour utiliser ce contrôle.",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.779Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "uploadingFile": "a447a5d68eaf9ee1d2492e531dffb3b3",
+      "attachmentMessage": "d6ef5fff7f223be27300c35fe03ec55f",
+      "wordCount": "9c715f0e523e7e1d00d538db7b78615b",
+      "uploadError": "c7d884889a598ca476bf0ef213c42454",
+      "missingIdentifier": "4c5a8eff05e329d8286272a81e66f03a"
+    }
+  }
 }

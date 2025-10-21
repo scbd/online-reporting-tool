@@ -1,0 +1,29 @@
+{
+  "uploadingFile": "正在上传文件",
+  "error": "发生错误",
+  "fileName": "文件名",
+  "uploading": "正在上传",
+  "language": "语言",
+  "tags": "标记",
+  "cancel": "取消",
+  "save": "保存",
+  "sCBDWebsite": "示例：生物多样性公约秘书处网站",
+  "example": "例如：",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.787Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "uploadingFile": "e44d73f411369c517518a329a209ac04",
+      "error": "8144eaaa3a1db5748161ec93fa3b5f1c",
+      "fileName": "34082694d21dbdcfc31e6e32d9fb2b9f",
+      "uploading": "3f1c5b0049a9751e6f5f9e702b74a0dd",
+      "language": "4994a8ffeba4ac3140beb89e8d41f174",
+      "tags": "189f63f277cd73395561651753563065",
+      "cancel": "ea4788705e6873b424c65e91c2846b19",
+      "save": "c9cc8cce247e49bae79f15173ce97354",
+      "sCBDWebsite": "e10cd3c85f5b77f870bd67586678199e",
+      "example": "ca15073256d06d36bc03993f0f30893c"
+    }
+  }
+}

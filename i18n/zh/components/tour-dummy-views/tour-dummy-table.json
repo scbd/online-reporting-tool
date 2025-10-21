@@ -1,7 +1,37 @@
 {
+  "one": "(1)",
+  "title": "标题",
+  "GBFgoalsAndTargets": "全球生物多样性基金的目标和具体目标",
+  "status": "状态",
+  "updatedOn": "更新日期：",
+  "dummyRecordToShowcaseTourFunction": "用于展示导览功能的虚拟记录",
+  "target18": "TARGET-18",
+  "target19": "TARGET-19",
+  "published": "已发布",
+  "publishedDate": "2024年5月12日 18:32",
+  "blaiseFonseca": "Blaise Fonseca",
+  "view": "查看",
+  "edit": "编辑",
+  "delete": "删除",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.398Z",
+    "hashedOn": "2025-09-23T18:25:47.936Z",
     "algorithm": "md5",
-    "branch": "2024.26.0"
+    "branch": "2025.33.2",
+    "hashes": {
+      "one": "7acce3193127d4b71a6c2b140c22dc95",
+      "title": "b78a3223503896721cca1303f776159b",
+      "GBFgoalsAndTargets": "c9e0e3c5305181aefa173c26c524536e",
+      "status": "ec53a8c4f07baed5d8825072c89799be",
+      "updatedOn": "b7aabb29ffd777e217ebdaae32a03a2b",
+      "dummyRecordToShowcaseTourFunction": "3533ff5e255993ce7c39af4d5305aaf4",
+      "target18": "6442ea5c86ce63fa53ef5aaa2fa5da69",
+      "target19": "438149262d7f3f7ba5317b823a442d41",
+      "published": "9b9d8a976b42e0bd66381797644943d5",
+      "publishedDate": "859060f2500adf02ce66e1d95bd64134",
+      "blaiseFonseca": "69104b014d80078595b874fb7e22e8c1",
+      "view": "4351cfebe4b61d8aa5efa1d020710005",
+      "edit": "7dce122004969d56ae2e0245cb754d35",
+      "delete": "f2a6c498fb90ee345d997f888fce3b18"
+    }
   }
 }

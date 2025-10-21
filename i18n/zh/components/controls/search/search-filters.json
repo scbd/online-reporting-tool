@@ -1,0 +1,25 @@
+{
+  "clearFilter": "清除筛选器",
+  "showFilter": "显示筛选器",
+  "hideFilter": "隐藏筛选器",
+  "filterByGlobalTargets": "全球具体目标",
+  "filterByGlobalGoals": "全球目标",
+  "filterByCountries": "国家/地区",
+  "filterByRegions": "区域",
+  "filterByRecordType": "记录类型",
+  "#meta": {
+    "hashedOn": "2025-09-23T18:25:47.799Z",
+    "algorithm": "md5",
+    "branch": "2025.33.2",
+    "hashes": {
+      "clearFilter": "f53b6f6ba5a4c2c190041fe59d8926a0",
+      "showFilter": "63cf7dd7851ff194804cf1678e7bd897",
+      "hideFilter": "0e3e64f3c533d8dc8b58e3bf57e6d97e",
+      "filterByGlobalTargets": "134dd423af52e5273e74ca90b6533905",
+      "filterByGlobalGoals": "12a11b5b6a4e19ee28f91c84e404cec4",
+      "filterByCountries": "790d59ef178acbc75d233bf4211763c6",
+      "filterByRegions": "5948f3347ebc02ebc690227c059661e1",
+      "filterByRecordType": "af7f7ca9a0f0bd801f9f8a91425b4152"
+    }
+  }
+}

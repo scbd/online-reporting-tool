@@ -11,13 +11,14 @@
   "countryAffiliation": "Pays d'affiliation",
   "none": "aucun",
   "roles": "Rôle(s)",
-  "nauHelp": "L'utilisateur national autorisé (NAU) peut créer des projets de notices nationales et les soumettre à l'autorité de publication pour approbation.",
+  "nauHelp": "L'utilisateur national autorisé (UNA) peut créer des projets de notices nationales des projets de notices nationales et les soumettre à l'autorité de publication pour approbation.",
   "updateProfile": "Mettre à jour le profil",
   "updatePassword": "Actualiser le mot de passe",
+  "subscribeToEmailAlerts": "S'abonner aux alertes par e-mail",
   "#meta": {
-    "hashedOn": "2024-07-04T14:56:10.449Z",
+    "hashedOn": "2025-09-23T18:25:47.768Z",
     "algorithm": "md5",
-    "branch": "2024.26.0",
+    "branch": "2025.33.2",
     "hashes": {
       "title": "cbc4b930801d47bcc491c1192b9c257b",
       "welcome": "83218ac34c1834c26781fe4bde918ee4",
@@ -33,7 +34,8 @@
       "roles": "87c31a8841364124e0638e3284621e10",
       "nauHelp": "2549beb31ad4949ea65bfab6b152340d",
       "updateProfile": "54d2e870aca5e99bf69f0ee1d494c3b3",
-      "updatePassword": "7e347ed93c2a1d51aa8bf44ca3f517f0"
+      "updatePassword": "7e347ed93c2a1d51aa8bf44ca3f517f0",
+      "subscribeToEmailAlerts": "234f3efd3ca3d05172922656d1a31afa"
     }
   }
 }
