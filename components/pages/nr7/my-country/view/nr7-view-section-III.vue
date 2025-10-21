@@ -46,13 +46,12 @@
                         <km-lstring-value type="html" :value="assessment.sdgRelationSummary"
                             :locale="selectedLocale"></km-lstring-value>
                     </km-form-group>
-
                     <km-form-group v-if="assessment.indicatorData">
                         <legend>
                             {{ t('indicatorData') }}
                         </legend>
                         <hr>
-                        <nr7-view-target-indicators :target-indicators="assessment.indicatorData"
+                        <nr7-view-target-indicators :target-indicators="assessment.indicatorData" :hide-missing-data-alert="true"
                             :indicators-data="indicatorsData" :national-indicators="nationalIndicators"></nr7-view-target-indicators>                                    
                     </km-form-group>
                 </div>
@@ -82,7 +81,21 @@
     const lSelectedLocale = ref(locale.value)
     const selectedLocale  = computed(()=>documentLocale?.value||lSelectedLocale.value);
     const sectionIIIComputed = computed(()=>{
-        return props.document?.sectionIII || [];
+        const sectionIII = props.document?.sectionIII || [];
+        // sectionIII.indicatorData = sectionIII.indicatorData?.filter((e:any)=>{
+        //     for(const indicatorType in e){
+
+        //         if(e[indicatorType]?.length==0)
+        //             continue;
+
+        //         e[indicatorType] = e[indicatorType]?.map((ind:any)=>{
+        //             if(ind.data && ind.data.identifier){
+        //                 return true;
+        //             }
+        //         });
+        //     }
+        // });
+        return sectionIII;
     })
 
     const nationalIndicators      = computed(()=>{

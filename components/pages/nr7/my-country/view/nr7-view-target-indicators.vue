@@ -1,43 +1,43 @@
 <template>
     <div v-for="(indicator, key) in targetIndicators" :key="indicator">  
+        <div v-for="indicatorData in indicator" :key="indicatorData">
+            <div class="card mb-3" v-if="!hideMissingDataAlert || (hideMissingDataAlert && computedIndicatorsData[indicatorData?.data?.identifier])">
+                <div class="card-header">
+                    <slot name="header" :key="key" :indicator-identifier="indicatorData?.indicator?.identifier" 
+                        :national-indicator="computedNationalIndicators[indicatorData.indicator?.identifier]">
+                        <km-term v-if="key!='national'" :value="indicatorData.indicator?.identifier" :locale="locale"></km-term>
+                        <span v-if="key=='national'">{{ lstring(computedNationalIndicators[indicatorData.indicator?.identifier]?.value, locale) }}</span>
+                    </slot>                
+                    <small class="fw-bold badge bg-info float-end ms-1">{{indicatorData.indicator.identifier }}</small>
+                    <strong class="badge bg-info float-end">{{ t(key) }}</strong>
+                </div>
 
-        <div class="card mb-3" v-for="indicatorData in indicator" :key="indicatorData">
-
-            <div class="card-header">
-                <slot name="header" :key="key" :indicator-identifier="indicatorData?.indicator?.identifier" 
-                    :national-indicator="computedNationalIndicators[indicatorData.indicator?.identifier]">
-                    <km-term v-if="key!='national'" :value="indicatorData.indicator?.identifier" :locale="locale"></km-term>
-                    <span v-if="key=='national'">{{ lstring(computedNationalIndicators[indicatorData.indicator?.identifier]?.value, locale) }}</span>
-                </slot>                
-                <small class="fw-bold badge bg-info float-end ms-1">{{indicatorData.indicator.identifier }}</small>
-                <strong class="badge bg-info float-end">{{ t(key) }}</strong>
-            </div>
-
-            <div class="card-body">
-                <slot name="actionButtons" :key="key" :indicator-data="computedIndicatorsData?.[indicatorData.data?.identifier]"
-                    :indicator="indicatorData?.indicator" :national-indicator="computedNationalIndicators[indicatorData.indicator?.identifier]">
-                </slot>
-                <div v-if="key!= 'binary' && indicatorData.data">
-                    <div v-if="computedIndicatorsData[indicatorData.data.identifier]">
-                        <nr7-view-indicator-data :indicator-type="key=='national'?'otherNationalIndicators': key"
-                            :indicator="indicator"
-                            :indicator-data="computedIndicatorsData[indicatorData.data.identifier]?.body"></nr7-view-indicator-data>
+                <div class="card-body" >
+                    <slot name="actionButtons" :key="key" :indicator-data="computedIndicatorsData?.[indicatorData.data?.identifier]"
+                        :indicator="indicatorData?.indicator" :national-indicator="computedNationalIndicators[indicatorData.indicator?.identifier]">
+                    </slot>
+                    <div v-if="key!= 'binary' && indicatorData.data">
+                        <div v-if="computedIndicatorsData[indicatorData.data.identifier]">
+                            <nr7-view-indicator-data :indicator-type="key=='national'?'otherNationalIndicators': key"
+                                :indicator="indicator"
+                                :indicator-data="computedIndicatorsData[indicatorData.data.identifier]?.body"></nr7-view-indicator-data>
+                        </div>
+                        <missing-data-alert v-else></missing-data-alert>
+                    </div>
+                    <div v-else-if="key == 'binary' && indicatorData.data">
+                        
+                        <div v-if="computedIndicatorsData[indicatorData.data.identifier]">
+                            <nr7-view-binary-indicator-data
+                                :indicator="indicatorData.indicator"
+                                :indicator-data="getSectionResponse(indicatorData)"
+                                :questions="computedBinaryIndicatorQuestions[indicatorData.indicator.identifier]?.questions"
+                                :hide-missing-response="false">
+                            </nr7-view-binary-indicator-data>
+                        </div>
+                        <missing-data-alert v-else></missing-data-alert>
                     </div>
                     <missing-data-alert v-else></missing-data-alert>
                 </div>
-                <div v-else-if="key == 'binary' && indicatorData.data">
-                    
-                    <div v-if="computedIndicatorsData[indicatorData.data.identifier]">
-                        <nr7-view-binary-indicator-data
-                            :indicator="indicatorData.indicator"
-                            :indicator-data="getSectionResponse(indicatorData)"
-                            :questions="computedBinaryIndicatorQuestions[indicatorData.indicator.identifier]?.questions"
-                            :hide-missing-response="false">
-                        </nr7-view-binary-indicator-data>
-                    </div>
-                    <missing-data-alert v-else></missing-data-alert>
-                </div>
-                <missing-data-alert v-else></missing-data-alert>
             </div>
         </div>
     </div>
@@ -51,7 +51,8 @@
     const props = defineProps({
         targetIndicators: { type: Object, required: true },
         indicatorsData  : { type: Array<Object>, required: false },
-        nationalIndicators: { type: Array<Object>, required: false }
+        nationalIndicators: { type: Array<Object>, required: false },
+        hideMissingDataAlert: { type: Boolean, default: false }
     });
 
     const thesaurusStore    = useThesaurusStore();
