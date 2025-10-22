@@ -1,10 +1,16 @@
-FROM node:20
+FROM node:24-alpine
 
 WORKDIR /usr/src/app
 
+RUN apk update  -q && \
+    apk upgrade -q && \
+    apk add     -q --no-cache bash curl && \
+    rm -rf /var/cache/apk/*
+
 COPY package.json yarn.lock ./
 
-RUN yarn run clean-reinstall
+RUN yarn run clean-reinstall && \
+    yarn cache clean
 
 COPY . ./
 
