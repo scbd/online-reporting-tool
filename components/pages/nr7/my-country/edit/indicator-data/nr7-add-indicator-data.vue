@@ -207,7 +207,6 @@
 
     const indicatorData = computed(()=>{
         const { data, globalDataSources, globalDescription, globalIndicatorProviders,indicator } = document.value
-        console.log('document.value', data);
         return { data, globalDataSources, globalDescription, globalIndicatorProviders, indicator };        
     });
     
@@ -336,7 +335,6 @@
                     globalData.forEach(chart=>{
 
                         const globalChartData = chart.datasets.filter(e=>e.derived == "Global" && e.indicatorDataScale == "Global");
-                      console.log('globalChartData', globalChartData);
                         globalChartData.forEach(valueData=>{
                             if(!valueData.data?.length)
                                 return;
