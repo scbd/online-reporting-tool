@@ -11,7 +11,7 @@ export default defineNuxtConfig({
             GTAG_ID           : '',
             TAG               : '',
             COMMIT            : '',
-            targetTrackerApiUrl: process.env.NUXT_PUBLIC_TARGET_TRACKER_API_URL || 'https://tt-backend.staging.linode.unep-wcmc.org',
+            targetTrackerApiUrl: process.env.NUXT_PUBLIC_TARGET_TRACKER_API_URL || 'https://api.target-tracker.org',
             auth : {
                 // accountsHostUrl : process.env.NUXT_PUBLIC_ACCOUNTS_HOST_URL,
                 redirect: {
