@@ -67,7 +67,7 @@
         
         const indicatorDataToDisplay: ComputedRef<Record<string, IndicatorData[]>> = computed(()=>{
             console.log('indicatorData', indicatorData.value);
-            if(indicatorData.value?.[0])
+             if(Object.keys(indicatorData.value).length > 0)
                 return indicatorData.value;
 
             const data:Record<string, IndicatorData[]>     = {};
