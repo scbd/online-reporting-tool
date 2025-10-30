@@ -16,9 +16,9 @@
             <div class="card-header bg-secondary">{{ t('general') }}</div>
             <div class="card-body">
               <km-form-group :caption="t('isParty')">
-                <km-lstring-value :value="t(viewDocument.isParty ? 'nonStateActor' : 'party')" :locale="selectedLocale" />
+                <km-lstring-value :value="t(viewDocument.isParty ? 'party' : 'nonStateActor')" :locale="selectedLocale" />
               </km-form-group>
-              <km-form-group v-if="viewDocument.isParty === false && viewDocument.government" :caption="t('government')">
+              <km-form-group v-if="viewDocument.isParty === true && viewDocument.government" :caption="t('government')">
                 <km-value-term :value="viewDocument.government" :locale="selectedLocale" />
               </km-form-group>
             </div>
