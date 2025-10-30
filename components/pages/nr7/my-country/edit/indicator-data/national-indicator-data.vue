@@ -66,7 +66,6 @@
         const indicatorBadData           = ref<Record<string, IndicatorData[]>>({});
         
         const indicatorDataToDisplay: ComputedRef<Record<string, IndicatorData[]>> = computed(()=>{
-            console.log('indicatorData', indicatorData.value);
              if(Object.keys(indicatorData.value).length > 0)
                 return indicatorData.value;
 
