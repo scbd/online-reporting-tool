@@ -5,7 +5,8 @@
                     {{ t(fileError.error, fileError.params) }}
                 </strong>
             </div>
-            <input type="file" id="dataSetFile" ref="dataSetFile" @change="uploadFile" v-if="indicators?.length"/>                                                
+            <input type="file" id="dataSetFile" ref="dataSetFile" @change="uploadFile" 
+                @click="clearFileInput" v-if="indicators?.length"/>                                                
         </km-form-group> 
         
         <div class="card mt-3 mb-3" v-if="indicatorBadData['unused']">
@@ -17,8 +18,7 @@
                 <indicator-data-table :indicator-data="indicatorBadData['unused']" :indicator-type="indicatorType" :indicator-code="''"></indicator-data-table>
             </div>
         </div>
-
-        <div class="card" v-for="(data, key) in indicatorData" :key="key">
+        <div class="card" v-for="(data, key) in indicatorDataToDisplay" :key="key">
             <div class="card-header">{{ t('indicatorCode') }} {{ key }}</div>
             <div class="card-body">
                 <div class="mt-3 mb-3" v-if="indicatorBadData[key]?.length">
@@ -51,6 +51,7 @@
         const props = defineProps({
             indicators          : {type:Array<ETerm>, required:true},
             indicatorType       : {type:String, required:true },
+            existingIndicatorData: {type: Array<IndicatorData> , default: () => ([])}
         });
         const emit = defineEmits(['onDataLoad'])
 
@@ -64,6 +65,26 @@
         const indicatorData              = ref<Record<string, IndicatorData[]>>({});
         const indicatorBadData           = ref<Record<string, IndicatorData[]>>({});
         
+        const indicatorDataToDisplay: ComputedRef<Record<string, IndicatorData[]>> = computed(()=>{
+             if(Object.keys(indicatorData.value).length > 0)
+                return indicatorData.value;
+
+            const data:Record<string, IndicatorData[]>     = {};
+            for(const indicator of props.indicators){
+                const indicatorMapping = nationalReport7Service.getIndicatorDataMapping(indicator, props.indicatorType, locale.value);
+                data[indicatorMapping.code] = filter(props.existingIndicatorData, (d)=>d.indicatorCode == indicatorMapping.code);
+            }
+
+            return data;
+            
+        });
+        
+        function clearFileInput() {
+            // Clear the input's value to ensure the 'change' event fires on re-selection
+            if (dataSetFile.value) {
+                (dataSetFile.value as any).value = '';
+            }
+        }
         const uploadFile = async (event:Event) => {
             try{
                 fileError.value = null;
@@ -92,7 +113,6 @@
                             error : 'columnsMismatch',
                             params : {count:columns.length}
                         }
-                        dataSetFile.value = null;
                         // alert('Your excel file is not following the template (column mismatch) expected columns are 8, please use the system provided template');
                         return;
                     }
@@ -103,7 +123,6 @@
                                 error : 'columnsInvalid',
                                 params : { colName:rows[0][i], colNo:i+1, colExpected : columns[i]}
                             }
-                            dataSetFile.value = null;
                             // alert('Column name {rows[0][i]} is invalid at column no {i+1} expected name is {columns[i]}, please follow the sequence provided in the template');
                             return;
                         }
