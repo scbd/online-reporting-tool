@@ -594,13 +594,13 @@
                 progress.sectionI += 25;
             }
         })
-        
+        console.log('progress.sectionI', progress.sectionI);
         if(document.sectionII?.hasRevisedNbsap!=undefined){
             progress.sectionII = 25;
         }
 
         if(['no', 'inProgress'].includes(document.sectionII?.hasRevisedNbsap) 
-            && document.sectionII?.anticipatedNbsapDate!= undefined){
+            && document.sectionII?.anticipatedNbsapDate== undefined){
                 progress.sectionII -= 15;
         }
 
@@ -616,11 +616,11 @@
             progress.sectionII += 25;
         }
         if(['yes'].includes(document.sectionII?.hasNbsapAdopted) 
-            && document.sectionII?.policyInstrument != undefined){
+            && document.sectionII?.policyInstrument == undefined){
                 progress.sectionII -= 15;
         }
         if(['no', 'other'].includes(document.sectionII?.hasNbsapAdopted) 
-            && document.sectionII?.anticipatedNbsapAdoptionDate != undefined){
+            && document.sectionII?.anticipatedNbsapAdoptionDate == undefined){
                 progress.sectionII -= 15;
         }
         if(document.sectionII?.implementationProgress != undefined){
@@ -634,6 +634,16 @@
 
         if(document.sectionIV?.length){
             progress.sectionIV += 5;
+            document.sectionIV.map(section=>{
+                if(section.summaryOfProgress){
+                    progress.sectionIV += 5;
+                }
+                for(const indicator in section.indicatorData||[]){
+                    if(section.indicatorData[indicator]?.data?.length){
+                        progress.sectionIV += 5;
+                    }
+                }
+            })
         }
 
         if(document.sectionV?.assessmentSummary)
