@@ -4,7 +4,7 @@
     </km-form-group>
     
     <km-form-group v-if="indicatorData.sourceOfDataInfo" :caption="t(indicatorData.sourceOfData =='noData' ? 'sourceOfDataInfoNoData' : 'sourceOfDataInfoNotRelevant')">
-        <km-lstring-value :value="indicatorData.sourceOfDataInfo" :locale="indicatorData.languages"></km-lstring-value>
+        <km-lstring-value :value="indicatorData.sourceOfDataInfo" :locale="selectedLocale"></km-lstring-value>
     </km-form-group>
     <km-form-group v-if="!indicatorData.data && ['notRelevant', 'noData'].includes(indicatorData?.sourceOfDataInfo)">
         <missing-data-alert></missing-data-alert>    
@@ -32,7 +32,7 @@
     </km-form-group>    
     <km-form-group v-if="indicatorData.comments" class="mt-1" :caption="t('comments')">
         <km-lstring-value type="html" :value="indicatorData.comments"
-            :locale="indicatorData.languages"></km-lstring-value>
+            :locale="selectedLocale"></km-lstring-value>
     </km-form-group>
 </template>
 

@@ -46,7 +46,7 @@
 <script setup lang="ts">
     import { computed, toRefs, defineProps } from 'vue';
     import type { EDocumentInfo } from "~/types/schemas/base/EDocumentInfo";
-    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
+    import {getBinaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
 
     const props = defineProps({
         targetIndicators: { type: Object, required: true },
@@ -58,12 +58,13 @@
     const thesaurusStore    = useThesaurusStore();
     const {locale, t}       = useI18n();
     const { targetIndicators, indicatorsData } = toRefs(props);
+    const binaryIndicatorQuestions = computed(()=>getBinaryIndicatorQuestions(locale.value));
 
     const computedIndicatorsData = computed(() => {
         return arrayToObject<EDocumentInfo>(indicatorsData?.value||[] as Array<any>)||{};
     });
     const computedBinaryIndicatorQuestions = computed(() => {
-        const questions = binaryIndicatorQuestions.map(e=>({...e, identifier:e.binaryIndicator}));
+        const questions = binaryIndicatorQuestions.value?.map(e=>({...e, identifier:e.binaryIndicator}));
         return arrayToObject<any>(questions as Array<any>)||{};
     });
 
