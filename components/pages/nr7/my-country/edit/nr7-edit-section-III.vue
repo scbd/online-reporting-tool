@@ -217,7 +217,7 @@
     import ViewData         from '../view/nr7-view-indicator-data.vue';
     import _,{uniqBy, compact, cloneDeep } from 'lodash';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
-    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
+    import {getBinaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
     import { Collapse } from '@coreui/coreui';
 
     let document = ref({});
@@ -250,7 +250,7 @@
     const thesaurusStore        = useThesaurusStore ();
     const accordionItemVisibility= ref({});
     let firstLoad = true;
-
+    const binaryIndicatorQuestions = computed(()=>getBinaryIndicatorQuestions(locale.value));
     const sectionIIIComputed = computed({ 
         get(){ 
             const nationalTargets = document.value.sectionIII.filter(e=>e.targetType == 'national')
@@ -551,7 +551,7 @@
 
     function mapWithNationalBinaryData(indicator, type){
         const nationalBinaryData = nationalBinaryIndicatorData.value?.body||{};
-        const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator.identifier);
+        const binaryQuestion = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == indicator.identifier);
         
         if(binaryQuestion){
             const nationalData = nationalBinaryData[binaryQuestion.key]
@@ -598,7 +598,7 @@
                         }
                     }
                     else {
-                        const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator.identifier);
+                        const binaryQuestion = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == indicator.identifier);
                         if(binaryQuestion){
                             const mapData = mapWithNationalBinaryData(indicator);
                             indicator.nationalData = mapData.nationalData;
