@@ -38,14 +38,10 @@
                     <CButton @click="onRefresh()" color="secondary" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
                         <font-awesome-icon icon="fa-arrows-rotate" :spin="isLoading"/>
                         {{t('refresh')}}
+                    </CButton>  
+                    <CButton color="secondary" @click="onPdf" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
+                        <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> PDF
                     </CButton>
-                  <!-- <CButton color="warning m-1">
-                    <CIcon icon="cil-share"/> Share
-                  </CButton>
-  
-                  <CButton color="danger m-1">
-                    <CIcon icon="cil-file-pdf"/> PDF
-                  </CButton> -->
                 </div>
                 <small class="form-text text-muted float-end">Click on preview to generate PDF or print NR7</small>
               </div>
@@ -337,7 +333,7 @@
         
         <CRow v-if="!isLoading && cleanDocumentInfo && showPreview" id="nr7-preview-section">
             <CCol class="mt-1" :md="12">     
-                <view-actions print-selector=".nr7-section-view" :title="lstring(record?.workingDocumentTitle||record?.title)"></view-actions>
+                <view-actions print-selector=".nr7-section-view" :title="lstring(cleanDocumentInfo?.workingDocumentTitle||cleanDocumentInfo?.title, locale)"></view-actions>
                 <CRow v-if="openWorkflow">
                     <CCol class="mt-1" :md="12">     
                         <km-suspense>
@@ -372,13 +368,9 @@
                                 <font-awesome-icon icon="fa-arrows-rotate" :spin="isLoading"/>
                                 {{t('refresh')}}
                             </CButton>
-                            <!-- <CButton color="warning m-1">
-                                <CIcon icon="cil-share"/> Share
+                            <CButton color="secondary" @click="onPdf" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
+                                <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> PDF
                             </CButton>
-            
-                            <CButton color="danger m-1">
-                                <CIcon icon="cil-file-pdf"/> PDF
-                            </CButton> -->
                         </div>
                     </CCardBody>
                 </CCard>
@@ -743,6 +735,15 @@
         }
 
         isValidating.value = false;  
+    }
+
+    async function onPdf(){
+        showPreview.value = true;
+        showSpinnerDialog.value = true;
+        await sleep(2000);
+        showSpinnerDialog.value = false;
+        $('#nr7-preview-section').find('.pdf-section-btn').click();
+        
     }
 
     async function validateDocument(document:any,  {collection, schema, identifier, validationSection}:KmStorageParam){
