@@ -12,7 +12,8 @@
     <km-form-group :caption="t('data')"  v-if="indicatorData.data">
         <download-data :headers="excelHeaders" :data="excelData" class="float-end"
             :fileName="`indicator-data-${lstring(indicator?.title||'', locale)}`"></download-data>
-        <indicator-data-table :indicator-data="indicatorData.data" :indicator-code="indicatorData.data[0].indicatorCode"></indicator-data-table>
+        <indicator-data-table :indicator-data="indicatorData.data" :show-indicator-code="false"
+            :indicator-code="indicatorData.data[0].indicatorCode"></indicator-data-table>
         
     </km-form-group>
 

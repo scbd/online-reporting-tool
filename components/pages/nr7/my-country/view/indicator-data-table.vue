@@ -3,9 +3,9 @@
         <table class="table responsive table-bordered">
             <tbody>
             <tr>
-                <th>{{t('indicatorCode')}}</th>
+                <th v-if="showIndicatorCode">{{t('indicatorCode')}}</th>
                 <th class="col-1">
-                    {{t('doesDisaggregation')}}
+                    {{ showIndicatorCode ? t('doesDisaggregation') : t('shortDoesDisaggregation')}}
                 </th>
                 <th>{{t('disaggregation')}}</th>
                 <th>{{t('year')}}</th>
@@ -15,7 +15,9 @@
             </tr>
             <tr v-for="unit in indicatorData" :key="unit">
                 
-                <td :class="{'bg-danger' : !unit.indicatorCode || unit.indicatorCode != indicatorCode}">{{unit.indicatorCode}}</td>
+                <td  v-if="showIndicatorCode" :class="{'bg-danger' : !unit.indicatorCode || unit.indicatorCode != indicatorCode}">
+                    {{unit.indicatorCode}}
+                </td>
                 <td>{{unit.hasDisaggregation ? t('yes') : t('no')}}</td>
                 <td>{{unit.disaggregation}}</td>
                 <td :class="{'bg-danger' : !isNumber(unit.year) || unit.year == 0}">{{unit.year}}</td>
@@ -37,7 +39,8 @@ import { IndicatorsMappingData } from '~/app-data/indicators';
 
     const props = defineProps({
         indicatorData: { type: Object, required: true },
-        indicatorCode: { type: String, required: true }
+        indicatorCode: { type: String, required: true },
+        showIndicatorCode: { type: Boolean, default:true }
     });
 
     const thesaurusStore    = useThesaurusStore();
