@@ -17,14 +17,14 @@
   <a v-if="!user || !user.isAuthenticated" :href="`${accountsUrl}?returnUrl=${returnUrl}`">{{t('signIn')}}</a>
 
 
-  <CModal  class="show d-block" size="sm" alignment="center" backdrop="static" @close="() => {showSessionExpiredDialog=false}" :visible="showSessionExpiredDialog" >
+  <CModal  class="show d-block" size="md" alignment="center" backdrop="static" :visible="showSessionExpiredDialog" >
       <CModalHeader :close-button="false">
           <CModalTitle>
               {{t('sessionExpiredTitle')}}
           </CModalTitle>
       </CModalHeader>
       <CModalBody>
-          <CAlert color="success" class="d-flex">
+          <CAlert color="success">
             {{t('sessionExpiredDescription')}} 
           </CAlert>
       </CModalBody>
@@ -32,11 +32,27 @@
           <CButton @click="onSessionExpiredDialogClose()" color="secondary">{{t('signIn')}}</CButton>
       </CModalFooter>
   </CModal>
+  <CModal  class="show d-block" size="lg" alignment="center" backdrop="static" :visible="showEmailVerificationDialog" >
+      <CModalHeader :close-button="false">
+          <CModalTitle>
+              {{t('emailVerificationPendingTitle')}}
+          </CModalTitle>
+      </CModalHeader>
+      <CModalBody>
+          <CAlert color="danger">
+            {{ t('emailVerificationPendingDescription') }} <strong>{{ user.email }}</strong>
+          </CAlert>
+      </CModalBody>
+      <CModalFooter>
+          <KmLink class="btn btn-primary btn-sm" :to="`${accountsUrl}/activate/resend`" color="secondary" :title="t('resend')"></KmLink>
+      </CModalFooter>
+  </CModal>
 </template>
 <i18n src="@/i18n/dist/components/layout/AppHeaderDropdownAccnt.json"></i18n>
 <script lang="ts" setup>
 //@ts-nocheck
 
+import { CModalFooter } from '@coreui/vue';
 import { useRoute } from 'vue-router';
     
     const { t }         = useI18n();
@@ -47,6 +63,7 @@ import { useRoute } from 'vue-router';
     const accountsUrl   = useRuntimeConfig().public.ACCOUNTS_HOST_URL;
     
     const showSessionExpiredDialog = ref(false);
+    const showEmailVerificationDialog = ref(false);
 
     const logout = async ()=>{
       await authLogout()
@@ -68,12 +85,23 @@ import { useRoute } from 'vue-router';
       logout();
     }
 
+    function onEmailVerificationPending(){     
+      showEmailVerificationDialog.value = true;
+    }
+
     onMounted(()=>{
         $eventBus.on('evt:session-expired', onSessionExpired);
+        
+        if(user?.value?.isAuthenticated && user?.value?.isEmailVerified === false)
+          $eventBus.on('evt:auth-pending-email-verification', onEmailVerificationPending);
+        
     })
 
     onBeforeUnmount(()=>{
         $eventBus.off('evt:session-expired', onSessionExpired);
+
+        if(user?.value?.isAuthenticated && user?.value?.isEmailVerified === false)
+          $eventBus.off('evt:auth-pending-email-verification', onEmailVerificationPending);
     })
 
 </script>
