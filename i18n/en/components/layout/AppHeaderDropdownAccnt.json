@@ -4,5 +4,9 @@
     "emailAlerts": "Email Alerts",
     "profile": "Profile",
     "sessionExpiredTitle":"Session expired",
-    "sessionExpiredDescription":"Your session has expired. Please sign in again."
+    "sessionExpiredDescription":"Your session has expired. Please sign in again.",
+
+    "emailVerificationPendingTitle":"Email verification pending",
+    "emailVerificationPendingDescription":"Email verification pending. Please verify you email before submitting any data. Please click on the verification link sent on your email",
+    "resend": "Resend activation link"
 }
