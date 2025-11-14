@@ -121,6 +121,10 @@
         }
     }
 
+    defineExpose({
+        pdfDocument : onPdfDocument
+    });
+    
 </script>
 <i18n src="@/i18n/dist/components/common/pdf-section.json"></i18n>
 <style scoped>
