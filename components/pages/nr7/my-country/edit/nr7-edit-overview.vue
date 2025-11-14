@@ -333,7 +333,8 @@
         
         <CRow v-if="!isLoading && cleanDocumentInfo && showPreview" id="nr7-preview-section">
             <CCol class="mt-1" :md="12">     
-                <view-actions print-selector=".nr7-section-view" :title="lstring(cleanDocumentInfo?.workingDocumentTitle||cleanDocumentInfo?.title, locale)"></view-actions>
+                <view-actions print-selector=".nr7-section-view" :title="lstring(cleanDocumentInfo?.workingDocumentTitle||cleanDocumentInfo?.title, locale)"
+                ref="viewActionsRef"></view-actions>
                 <CRow v-if="openWorkflow">
                     <CCol class="mt-1" :md="12">     
                         <km-suspense>
@@ -472,6 +473,7 @@
     const draftIndicatorData          = ref([]);
     const publishedIndicatorData      = ref([]);
     const draftNr7Document      = ref({});
+    const viewActionsRef           = ref();
 
     const isValidating       = ref(false);
     const isLoadingRecords   = ref(false);
@@ -740,10 +742,10 @@
     async function onPdf(){
         showPreview.value = true;
         showSpinnerDialog.value = true;
+        //sleep for 2 seconds to allow the preview to render
         await sleep(2000);
         showSpinnerDialog.value = false;
-        $('#nr7-preview-section').find('.pdf-section-btn').click();
-        
+        await viewActionsRef.value?.pdfSection?.pdfDocument();        
     }
 
     async function validateDocument(document:any,  {collection, schema, identifier, validationSection}:KmStorageParam){
