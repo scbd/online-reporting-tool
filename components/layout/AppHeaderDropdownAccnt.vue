@@ -89,9 +89,6 @@ import { useRoute } from 'vue-router';
       showEmailVerificationDialog.value = true;
     }
 
-    function onEmailVerificationPendingDialogClose(){
-      showEmailVerificationDialog.value = false;
-    }
     onMounted(()=>{
         $eventBus.on('evt:session-expired', onSessionExpired);
         
