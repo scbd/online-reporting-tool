@@ -4,7 +4,7 @@
     </km-form-group>
     
     <km-form-group v-if="indicatorData.sourceOfDataInfo" :caption="t(indicatorData.sourceOfData =='noData' ? 'sourceOfDataInfoNoData' : 'sourceOfDataInfoNotRelevant')">
-        <km-lstring-value :value="indicatorData.sourceOfDataInfo" :locale="indicatorData.languages"></km-lstring-value>
+        <km-lstring-value :value="indicatorData.sourceOfDataInfo" :locale="selectedLocale"></km-lstring-value>
     </km-form-group>
     <km-form-group v-if="!indicatorData.data && ['notRelevant', 'noData'].includes(indicatorData?.sourceOfDataInfo)">
         <missing-data-alert></missing-data-alert>    
@@ -12,7 +12,8 @@
     <km-form-group :caption="t('data')"  v-if="indicatorData.data">
         <download-data :headers="excelHeaders" :data="excelData" class="float-end"
             :fileName="`indicator-data-${lstring(indicator?.title||'', locale)}`"></download-data>
-        <indicator-data-table :indicator-data="indicatorData.data" :indicator-code="indicatorData.data[0].indicatorCode"></indicator-data-table>
+        <indicator-data-table :indicator-data="indicatorData.data" :show-indicator-code="false"
+            :indicator-code="indicatorData.data[0].indicatorCode"></indicator-data-table>
         
     </km-form-group>
 
@@ -31,7 +32,7 @@
     </km-form-group>    
     <km-form-group v-if="indicatorData.comments" class="mt-1" :caption="t('comments')">
         <km-lstring-value type="html" :value="indicatorData.comments"
-            :locale="indicatorData.languages"></km-lstring-value>
+            :locale="selectedLocale"></km-lstring-value>
     </km-form-group>
 </template>
 

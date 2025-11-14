@@ -1,10 +1,10 @@
 <template>
-    <toggle-accordion class="btn-xs m-1 float-end" v-if="computedIndicators" ref="accordionToggle" 
+    <toggle-accordion class="btn-xs m-1 float-end" v-if="indicators" ref="accordionToggle" 
         :selector="'#' + componentId + '-indicator-accordion .accordion-header button.accordion-button'" >
     </toggle-accordion>    
-    <CAccordion always-open class="indicator-accordion" :id="componentId + '-indicator-accordion'" v-if="computedIndicators?.length">                    
+    <CAccordion always-open class="indicator-accordion" :id="componentId + '-indicator-accordion'" v-if="indicators?.length">                    
         <CAccordionItem :item-key="index+1" :visible="true" class="indicator-accordion-item p-0"
-            v-for="(indicator, index) in computedIndicators" :key="indicator.identifier"  always-open>
+            v-for="(indicator, index) in indicators" :key="indicator.identifier"  always-open>
             <CAccordionHeader :id="'gbfTarget'+indicator.identifier">
                 {{lstring(indicator.title||indicator)}}  
                 <small v-if="indicator.type!='national'" class="fw-bold ms-1">({{ indicator?.identifier }})</small>
@@ -58,11 +58,8 @@
 
     const componentId        = useGenerateUUID();
     const accordionToggle    = shallowRef(null);
-    // const canTeleport        = ref(false);
-    const indicators         = ref(props.indicators)
-    
-    const computedIndicators = computed(()=>indicators.value);
-    
+    const { indicators }     = toRefs(props)
+        
     //TODO : do not update the props directly,
     // clone and modify the object.
     function onAddIndicatorDataClose(document){
