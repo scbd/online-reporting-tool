@@ -1,5 +1,5 @@
 <template>
-    <button :disabled="!element" type="button" class="btn btn-primary" 
+    <button :disabled="!element" type="button" class="btn btn-primary pdf-section-btn" 
         @click="onPdfDocument" >
         
         <font-awesome-icon icon="file-pdf"></font-awesome-icon> {{ t('pdf') }}
@@ -121,6 +121,10 @@
         }
     }
 
+    defineExpose({
+        pdfDocument : onPdfDocument
+    });
+    
 </script>
 <i18n src="@/i18n/dist/components/common/pdf-section.json"></i18n>
 <style scoped>
