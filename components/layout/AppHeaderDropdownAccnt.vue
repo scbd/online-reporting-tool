@@ -104,7 +104,7 @@ import { useRoute } from 'vue-router';
         $eventBus.off('evt:session-expired', onSessionExpired);
 
         if(user?.value?.isAuthenticated && user?.value?.isEmailVerified === false)
-          $eventBus.on('evt:auth-pending-email-verification', onEmailVerificationPending);
+          $eventBus.off('evt:auth-pending-email-verification', onEmailVerificationPending);
     })
 
 </script>
