@@ -7,6 +7,6 @@
     "sessionExpiredDescription":"Your session has expired. Please sign in again.",
 
     "emailVerificationPendingTitle":"Email verification pending",
-    "emailVerificationPendingDescription":"Email verification pending. Please verify your email before submitting any data. Please click on the verification link sent on your email",
+    "emailVerificationPendingDescription":"Please verify your email before submitting any data. Click on the verification link sent to your email.",
     "resend": "Resend activation link"
 }
