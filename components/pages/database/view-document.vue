@@ -11,6 +11,21 @@
                     :document="viewDocument"></view-target-part-2>
                 <view-nbsap v-if="viewDocument && viewDocument.header.schema == SCHEMAS.NATIONAL_NBSAP" 
                     :document="viewDocument"></view-nbsap>
+
+                <nr7-view v-if="lDocumentInfo && lDocumentInfo.type == SCHEMAS.NATIONAL_REPORT_7" 
+                    :document-info="lDocumentInfo"></nr7-view>
+                <nr7-view-binary-indicator-data v-if="viewDocument && viewDocument.header.schema == SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA" 
+                    :indicator-data="viewDocument"></nr7-view-binary-indicator-data>
+
+                <nr7-view-indicator-data 
+                    v-if="viewDocument.header.schema == SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA" 
+                    :indicator-data="viewDocument"></nr7-view-indicator-data>
+
+
+                <view-commitment v-if="viewDocument && viewDocument.header.schema == SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT" 
+                    :document="viewDocument"></view-commitment>
+                <view-credential v-if="viewDocument && viewDocument.header.schema == SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL" 
+                    :document="viewDocument"></view-credential>
             </km-suspense>
 
             <div v-if="!viewDocument && !isLoading &&  documentLoadError">
@@ -53,6 +68,7 @@
     const { document, identifier } = toRefs(props)
 
     const lDocument = ref(undefined);
+    const lDocumentInfo = ref(undefined);
     const isLoading = ref(false);
     const documentLoadError = ref(false);
     const selectedLocale = ref(locale.value);
@@ -74,10 +90,12 @@
             if(route.query?.draft == 'true' || route.query.hasOwnProperty('draft')){
                 const draftRecord = await KmDocumentDraftsService.loadDraftDocument(identifier || route.params.identifier);
                 lDocument.value = draftRecord.body;
+                lDocumentInfo.value = draftRecord;
             }
             else{
                 const record = await KmDocumentsService.loadDocument(identifier || route.params.identifier);
                 lDocument.value = record.body;
+                lDocumentInfo.value = record;
             }
         }
         catch(e){
