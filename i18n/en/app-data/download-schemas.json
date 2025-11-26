@@ -5,6 +5,7 @@
     "government"                      : "Government",
     "title"                           : "National target title",
     "description"                     : "Description",
+    "summary"                         : "Summary",
     "mainPolicyOfMeasureOrActionInfo" : "Main policy measures",
     "contributionToGoals"             : "Global Goals",
     "targetsAlignment"                : "Global targets",
