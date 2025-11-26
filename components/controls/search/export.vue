@@ -73,16 +73,20 @@
                     </div>
                 </div>
             </CModalBody>
-            <CModalFooter>
-                <button type="button" class="btn btn-secondary float-start" :aria-label="t('customFields')" :disabled="loading"
-                    @click="showCustomFieldsDialog()">{{ t('customFields') }}</button>
-                <button type="button" class="btn btn-secondary float-end" aria-label="Close" :disabled="loading"
-                    @click="closeDialog()">{{ t('cancel') }}</button>
-                <button type="button" class="btn btn-primary float-start" aria-label="Download"
-                    @click="exportRecords({ listType: 'all', format: downloadFormat})" :disabled="loading" id="downloadDataFile">
+            <CModalFooter  class="d-flex justify-content-between">
+                <div class="float-start">
+                    <button type="button" class="btn btn-secondary float-start" :aria-label="t('customFields')" :disabled="loading"
+                        @click="showCustomFieldsDialog()">{{ t('customFields') }}</button>
+                </div> 
+                <div class="float-end">                
+                    <button type="button" class="btn btn-secondary " aria-label="Close" :disabled="loading"
+                        @click="closeDialog()">{{ t('cancel') }}</button>
+                    <button type="button" class="btn btn-primary ms-1" aria-label="Download"
+                        @click="exportRecords({ listType: 'all', format: downloadFormat})" :disabled="loading" id="downloadDataFile">
 
-                    {{ t('download') }}
-                </button>
+                        {{ t('download') }}
+                    </button>
+                </div>
             </CModalFooter>
         </CModal>
 
