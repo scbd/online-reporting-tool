@@ -31,8 +31,9 @@
                         <label class="form-label control-label" for="sectionIII">
                             <span >{{ t('sectionMandatory') }}</span>                                            
                         </label>
-                    </km-form-group>    
-
+                    </km-form-group> 
+                    <section-III-sort :national-targets="nationalTargetSortList" v-if="nationalTargetSortList?.length"
+                        @on-sort="onSortingChange"></section-III-sort>
                     <toggle-accordion class="float-end mr-1 mb-1 btn-xs"  ref="accordionToggle"
                     selector="#mapping-accordion .accordion-header button.accordion-button" v-if="nationalTargets"></toggle-accordion>
                     <br>
@@ -253,9 +254,7 @@
     const binaryIndicatorQuestions = computed(()=>getBinaryIndicatorQuestions(locale.value));
     const sectionIIIComputed = computed({ 
         get(){ 
-            const nationalTargets = document.value.sectionIII.filter(e=>e.targetType == 'national')
-            const globalTargets   = document.value.sectionIII.filter(e=>e.targetType == 'global');
-            return [...nationalTargets, ...globalTargets]
+            return document.value.sectionIII;
         }
     });
 
@@ -264,7 +263,11 @@
     });
     const nationalTargetsComputed = computed(()=>nationalTargets.value);
     const progressAssessmentLists = computed(()=>(thesaurusStore.getDomainTerms(THESAURUS.ASSESSMENT_PROGRESS)||[]));
-    
+    const nationalTargetSortList = computed(()=>{
+        return sectionIIIComputed.value.map(e=>{
+            return { identifier : e.target.identifier, title: lstring(nationalTargets.value[e.target.identifier]?.title, locale) };
+        })
+    });
     const customLabel = ({title})=>{        
         return lstring(title, locale.value);
     }
@@ -345,6 +348,15 @@
 
     const onGetDocumentInfo = async ()=>{
         return nationalReport7Store.nationalReport;
+    }
+
+    const onSortingChange = (sortedList)=>{
+        console.log(document.value.sectionIII)
+        const newSectionIII = sortedList.map(e=>{
+            return sectionIIIComputed.value.find(s=>s.target?.identifier == e.identifier)
+        });
+        document.value.sectionIII = []
+        document.value.sectionIII = newSectionIII;
     }
 
     async function loadNationalTargets(){

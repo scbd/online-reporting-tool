@@ -58,8 +58,10 @@
     "vue-multiselect": "^3.0.0-beta.2",
     "vue-toast-notification": "^3.1.1",
     "vue3-loading-overlay": "^0.0.0",
+    "vuedraggable": "^4.1.0",
     "webui-popover": "^1.2.18",
     "write-excel-file": "^2.3.2"
   },
-  "resolutions": {}
+  "resolutions": {},
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
