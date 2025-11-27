@@ -6,7 +6,7 @@
                 {{ t('exportButton') }}
             </slot>
         </button>
-        <CModal class="show d-block global-target-modal" :size="container? 'lg' : 'xl'" scrollable="true" alignment="center" 
+        <CModal class="show d-block global-target-modal" :size="container? 'lg' : 'xl'" :scrollable="true" alignment="center" 
             :visible="showExportModal"  @close="closeDialog">
             <CModalHeader>
                 <CModalTitle>{{t('dialogTitle')}}</CModalTitle>
