@@ -62,7 +62,8 @@
                     }
                 }
             });
-            ag.push({"$project" : {"title":1, "summary":1, "_id":1, "coverImage":1}});
+            ag.push({ "$sort" : { "meta.createdOn": -1 } });
+            ag.push({"$project" : {"title":1, "summary":1, "_id":1, "coverImage":1, "meta.createdOn":1}});
             
 
             articles.value = await $api.articles.queryArticles({ "ag" : JSON.stringify(ag)});
