@@ -13,7 +13,6 @@ function t(key: string, locale:string) {
 function getQuestions(locale:string = 'en') {
 
     const val = t("goalB_question1", locale)
-    console.log(locale, val);
 
     const translatedQuestions = [
         {
