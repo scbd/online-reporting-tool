@@ -72,6 +72,11 @@ import { nationalReport7Service } from '~/services/national-report-7-service';
             },
             {
                 type: String,
+                value: 'Disaggregation type',
+                fontWeight: 'bold'
+            },
+            {
+                type: String,
                 value: 'Disaggregation',
                 fontWeight: 'bold'
             },
@@ -109,6 +114,10 @@ import { nationalReport7Service } from '~/services/national-report-7-service';
                 {
                     type: String,
                     value: indicatorTerm.value.title[locale.value]
+                },
+                {
+                    type: String,
+                    value: ''
                 },
                 {
                     type: String,

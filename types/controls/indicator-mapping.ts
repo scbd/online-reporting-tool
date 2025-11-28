@@ -6,6 +6,7 @@ export interface IndicatorMapping {
 export interface IndicatorData {
   indicatorCode : string
   hasDisaggregation : boolean
+  disaggregationType:string
   disaggregation : string
   year : Number
   unit : string

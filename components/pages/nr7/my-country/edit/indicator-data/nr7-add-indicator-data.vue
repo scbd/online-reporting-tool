@@ -344,7 +344,7 @@
                                         return {
                                             indicatorCode : indicator?.cbdIndicator?.identifier?.replace(/gbf\-indicator\-/i, ''),
                                             hasDisaggregation : valueData.dataGroupName == "Aggregated" ? false : true,
-                                            disaggregation    : valueData.dataGroupName == "Aggregated" ? 'none' : valueData.dataGroupName,
+                                            disaggregation    : valueData.dataGroupName == "Aggregated" ? undefined : valueData.dataGroupName,
                                             year : Number(e.replace(/Baseline|\(|\)/g, '')),
                                             value: parseFloat(val),
                                             unit: dataResponse?.data?.globallyDerivedData?.valueSuffix
