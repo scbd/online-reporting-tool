@@ -75,6 +75,12 @@
                                                         <strong class="d-block h-3">
                                                             {{ t('fileFormatMessage') }}
                                                         </strong>
+                                                        <div>
+                                                            <a href="https://ort.cbd.int/knowledge-base/articles/6929f47e82d37a5b7f08cb5e" target='_blank'>
+                                                                {{ t('sampleFormatArticle') }}
+                                                            </a>
+                                                        </div>
+                                                        
                                                     </div>
                                                     <div class="alert alert-danger" v-if="fileError">
                                                         <strong>
