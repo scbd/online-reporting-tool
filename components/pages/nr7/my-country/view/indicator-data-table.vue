@@ -7,7 +7,8 @@
                 <th class="col-1">
                     {{ showIndicatorCode ? t('doesDisaggregation') : t('shortDoesDisaggregation')}}
                 </th>
-                <th>{{t('disaggregation')}}</th>
+                <th v-if="showDisaggregationType">{{t('disaggregationType')}}</th>
+                <th v-if="showDisaggregation">{{t('disaggregation')}}</th>
                 <th>{{t('year')}}</th>
                 <th>{{t('unit')}}</th>
                 <th>{{t('value')}}</th>
@@ -19,7 +20,8 @@
                     {{unit.indicatorCode}}
                 </td>
                 <td>{{unit.hasDisaggregation ? t('yes') : t('no')}}</td>
-                <td>{{unit.disaggregation}}</td>
+                <th v-if="showDisaggregationType">{{unit.disaggregationType}}</th>
+                <td v-if="showDisaggregation">{{unit.disaggregation}}</td>
                 <td :class="{'bg-danger' : !isNumber(unit.year) || unit.year == 0}">{{unit.year}}</td>
                 <td :class="{'bg-danger' : !unit.unit}">{{unit.unit}}</td>
                 <td :class="{'bg-danger' : !isNumber(unit.value) || isNaN(unit.value)}">{{unit.value}}</td>
@@ -48,7 +50,16 @@ import { IndicatorsMappingData } from '~/app-data/indicators';
     const { indicatorData } = toRefs(props);
 
     const indicator:ComputedRef<ETerm> = computed(() => thesaurusStore.getTerm(props.indicatorData?.indicator?.identifier));
-    
+    const showDisaggregation = computed(() => {
+        return indicatorData.value?.some((unit:any) => {
+            return unit.disaggregation;
+        })
+    }); 
+    const showDisaggregationType = computed(() => {
+        return indicatorData.value?.some((unit:any) => {
+            return unit.disaggregationType;
+        })
+    }); 
     
     onMounted(async () => {
         if (indicatorData.value.indicator) {
