@@ -122,11 +122,12 @@
                 </km-form-group>
 
                 <div class="row">
-                    <div class="col-md-6" v-if="showJurisdictionCountries ||showJurisdictionRegions">
-                        <km-form-group name="jurisdictionCountries" :caption="t('jurisdictionCountries')" :required="showJurisdictionCountries">
+                    <div v-if="showJurisdictionCountries ||showJurisdictionRegions"
+                        :class="{'col-md-5': showJurisdictionRegions, 'col-md-6': !showJurisdictionRegions}">
+                        <km-form-group name="jurisdictionCountries" :caption="t('jurisdictionCountries')" required>
                             <km-select v-model="document.jurisdictionCountries" :placeholder="t('jurisdictionCountries')"
                              :options="countries" multiple class="validationClass" :custom-selected-item="customSelectedItem"
-                              @update:modelValue="onUpdate" :max="maxJurisdictionCountries"/>
+                              @update:modelValue="onUpdate" :max="maxJurisdictionCountries" :close-on-select="false"/>
                         </km-form-group>
                     </div>
                     <div class="col-md-6" v-if="showJurisdictionOthers">
@@ -134,12 +135,17 @@
                             <km-input-lstring v-model="document.jurisdiction.customValue" :locales="locales"  @update:modelValue="onUpdate"/>
                         </km-form-group>
                     </div>
-
-                    <div class="col-md-6" v-if="showJurisdictionRegions">
+                    <div class="col-md-2 align-middle d-flex align-items-center justify-content-center" v-if="showJurisdictionRegions">
+                        <div class="d-flex justify-content-center align-items-center"
+                            style="height: 30px;">
+                            <strong class="rounded-circle border border-dark p-2">{{ t('andOr') }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-5" v-if="showJurisdictionRegions">
                         <km-form-group name="jurisdictionRegions" :caption="t('jurisdictionRegions')" required>
                             <km-select v-model="document.jurisdictionRegions" :placeholder="t('jurisdictionRegions')" 
                             :options="regions" multiple class="validationClass"  :custom-selected-item="customSelectedItem"
-                             @update:modelValue="onUpdate"/>
+                             @update:modelValue="onUpdate" :close-on-select="false"/>
                         </km-form-group>
                     </div>
                 </div>
@@ -208,10 +214,6 @@
 
         return 300;
     }); 
-    const cleanDocument = computed(() => {
-        const clean = useKmStorage().cleanDocument({ ...document.value });
-        return clean
-    })
 
     async function init() {
         isBusy.value = true;
@@ -232,7 +234,14 @@
     }
 
     function onUpdate(){
-        emit('update:modelValue', cleanDocument.value)
+        const clean = useKmStorage().cleanDocument({ ...document.value });
+        
+        if(!showJurisdictionOthers.value && clean.jurisdiction?.customValue)
+            clean.jurisdiction.customValue = undefined;
+        if(!showJurisdictionRegions.value)
+            clean.jurisdictionRegions = undefined;
+        
+        emit('update:modelValue', clean)
     }
 
     await init();

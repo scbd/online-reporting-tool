@@ -300,7 +300,7 @@
  
       </CCardBody>
     </CCard>
-    <CModal class="show d-block global-target-modal" :size="container? 'lg' : 'xl'" scrollable="true" alignment="center" 
+    <CModal class="show d-block global-target-modal" :size="container? 'lg' : 'xl'" :scrollable="true" alignment="center" 
         :visible="showGlobalTargetsModal"  @close="() => { showGlobalTargetsModal = false }">
         <CModalHeader>
             <CModalTitle>{{t('globalGoalsAndTargets')}}</CModalTitle>

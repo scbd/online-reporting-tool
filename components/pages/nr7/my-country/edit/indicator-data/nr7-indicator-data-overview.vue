@@ -111,7 +111,8 @@
     import { KmDocumentDraftsService } from '@/services/kmDocumentDrafts';
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util';    
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
-    import {binaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
+    import {getBinaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
+    import {cloneDeep} from 'lodash';
 
     let document = ref({});
     let sectionIII;
@@ -139,6 +140,8 @@
     const selectedComponent         = ref([]);
 
     const isEventDefined        = useHasEvents();
+    
+    const binaryIndicatorQuestions = computed(()=>getBinaryIndicatorQuestions(locale.value));
 
     const nationalHeadlineIndicators        = computed(()=>globalIndicators.value.headlineIndicators?.map(mapWithNationalRecords));
     const nationalBinaryIndicators          = computed(()=>globalIndicators.value.binaryIndicators?.map(mapBinaryIndicatorWithNationalData));
@@ -191,7 +194,7 @@
     }
 
     function mapBinaryIndicatorWithNationalData(indicator){
-        const binaryQuestion = binaryIndicatorQuestions.find(e=>e.binaryIndicator == indicator?.identifier);
+        const binaryQuestion = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == indicator?.identifier);
         const binaryDataDocument = nationalBinaryDatDocument.value?.body||{}
         let nationalData = {}
         

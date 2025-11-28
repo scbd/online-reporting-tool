@@ -66,6 +66,7 @@
                                         <tr>
                                             <th>{{ t('numberOfParties') }}</th>
                                             <th>{{ t('partyCount') }}</th>
+                                            <th>{{ t('nbsapCount') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -74,11 +75,17 @@
                                                 {{lstring(region.title)}}
                                             </td>
                                             <td>
+                                                {{ cbdRegionalGroupsCountriesCount[region.identifier] }}
+                                            </td>
+                                            <td>
                                                 {{ facets.government_REL_ss[region.identifier] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>{{ t('total') }}</td>
+                                            <td>
+                                                <strong>{{ Object.values(cbdRegionalGroupsCountriesCount).reduce((prev, item)=>prev+item, 0) }}</strong>
+                                            </td>
                                             <td>
                                                 <strong>{{ cbdRegionalGroups?.reduce((prev, item)=>prev+(facets.government_REL_ss[item.identifier]||0), 0) }}</strong>
                                             </td>                                            
@@ -152,6 +159,7 @@ import { compact } from 'lodash';
 import { useCountriesStore }    from '@/stores/countries';
 import { THESAURUS_TERMS } from '~/utils/constants';
 import {useRoute, useRouter} from 'vue-router';
+import { intersection } from 'lodash';
 
 
     const { t, locale } = useI18n();
@@ -178,6 +186,16 @@ import {useRoute, useRouter} from 'vue-router';
     const canShowByParties               = computed(()=>canShowSection('parties'));
     const cbdRegionalGroups              = computed(()=>[...thesaurusStore.getDomainTerms(THESAURUS.CBD_REGIONAL_GROUPS)])
     const reportStatus                   = computed(() => thesaurusStore.getDomainTerms(THESAURUS.REPORT_STATUS));
+    const cbdRegionalGroupsCountriesCount = computed(()=>{
+        if(!facets.value?.government_s)return;
+
+        const countries = Object.keys(facets.value.government_s);
+        const counts = {};
+        cbdRegionalGroups.value.map(region=>{
+            counts[region.identifier] = intersection(countries, region.narrowerTerms)?.length || 0;
+        });
+        return counts
+    });
     const canShowSection = (section:string) : boolean =>{
         return !query.embed || (!!query.embed && (!query.share || query.share.includes(section)));
     }

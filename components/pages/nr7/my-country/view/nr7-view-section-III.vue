@@ -82,19 +82,6 @@
     const selectedLocale  = computed(()=>documentLocale?.value||lSelectedLocale.value);
     const sectionIIIComputed = computed(()=>{
         const sectionIII = props.document?.sectionIII || [];
-        // sectionIII.indicatorData = sectionIII.indicatorData?.filter((e:any)=>{
-        //     for(const indicatorType in e){
-
-        //         if(e[indicatorType]?.length==0)
-        //             continue;
-
-        //         e[indicatorType] = e[indicatorType]?.map((ind:any)=>{
-        //             if(ind.data && ind.data.identifier){
-        //                 return true;
-        //             }
-        //         });
-        //     }
-        // });
         return sectionIII;
     })
 

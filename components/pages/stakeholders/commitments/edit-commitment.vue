@@ -166,7 +166,7 @@
                                         {{ t('alignmentSectionHelp') }}
                                     </div>
                                     <div class="border p-3 mb-3">
-                                        <div class="col-md-12" v-if="hasCoverageCountries==1">
+                                        <div class="col-md-12" v-if="hasCoverageCountries==1 && !document.coverageRegions?.length">
                                             <km-form-group name="primaryNationalTarget"
                                                 :caption="t('primaryNationalTarget')" required>
                                                 <km-select v-model="document.primaryNationalTarget"
@@ -176,10 +176,16 @@
                                             </km-form-group>
                                         </div>
                                         <div class="d-flex justify-content-center align-items-center"
-                                            style="height: 30px;" v-if="hasCoverageCountries==1">
+                                            style="height: 30px;" v-if="hasCoverageCountries==1 && !document.coverageRegions?.length">
                                             <strong class="rounded-circle border border-dark p-2">{{ t('andOr') }}</strong>
                                         </div>
                                         <div class="col-md-12">
+                                            <!-- only to display for validation error when nothing is selected -->
+                                            <span class="d-none">
+                                                <label name="primaryNationalTarget" for="primaryNationalTarget">
+                                                    {{t('primaryNationalTarget')}}
+                                                </label>
+                                            </span>
                                             <km-form-group name="primaryGlobalAlignment"
                                                 :caption="t('primaryGlobalAlignment')" required>
                                                 <km-select v-model="document.primaryGlobalAlignment"
@@ -359,7 +365,6 @@
         </CCardBody>
     </CCard>
 </template>
-<!-- <i18n src="@/i18n/dist/components/pages/stakeholders/commitments/edit-commitment.json"></i18n> -->
 <i18n src="@/i18n/dist/components/pages/stakeholders/commitments/edit-commitment.json"></i18n>
 <script setup lang="ts">
     import { useThesaurusStore } from '@/stores/thesaurus';
@@ -438,6 +443,9 @@
             clean.timelineStartDate = undefined;
             clean.timelineEndDate = undefined;
         }
+        else 
+            clean.nextStepsInformation = undefined;  
+
         if (hasTimelineDates.value === true) {
             clean.isOpenEnded = undefined;
             clean.nextStepsInformation = undefined;
@@ -446,6 +454,21 @@
         if (clean.isParty === true)
             clean.government = undefined;
         clean.additionalDocuments = undefined;
+
+        if(hasCoverageCountries.value > 1 || clean.coverageRegions?.length){
+            clean.otherNationalTargets = undefined;
+            clean.primaryNationalTarget = undefined;
+        }
+        
+        if(!clean.isLinkedToNbsap)
+            clean.linkedToNbsapCountries = undefined;
+        if(!clean.isReportingOnTarget15)
+            clean.target15Information = undefined;
+
+        if(!clean.isProgressTracked){
+            clean.progressInformation = undefined;
+            clean.progressTrackingUrl = undefined;
+        }
 
         return clean
     })

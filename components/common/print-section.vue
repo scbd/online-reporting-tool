@@ -65,6 +65,10 @@
     function onBeforePrint(){
         emit('onBeforePrint')
     }
+
+    defineExpose({
+        printDocument : onPrintDocument
+    });
 </script>
 
 <style scoped>

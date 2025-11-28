@@ -90,7 +90,7 @@ sw.*
 *.swp
 
 .nuxt
-.env
+.env*
 
 #IDE
 .vscode/

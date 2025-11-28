@@ -27,7 +27,11 @@ export async function useAPIFetch<T>(path: string | (() => string), options:UseF
     if(error?.value){
         if(error.value?.statusCode === 401){
             const { $eventBus } = useNuxtApp();
-            $eventBus.emit('evt:session-expired');
+            if (error.value?.data?.Message?.indexOf('Email verification pending') >= 0) {
+                $eventBus.emit('evt:auth-pending-email-verification');
+            }
+            else
+                $eventBus.emit('evt:session-expired');
         }
         throw new ApiError({
             status : error.value?.statusCode,

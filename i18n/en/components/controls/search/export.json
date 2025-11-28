@@ -9,6 +9,9 @@
     "recordsFound":"Records found",
     "sampleMessage":"This is only sample of the information to be exported. All records retrieved by this search will be included in the export.",
     "cancel":"Cancel",
-    "download":"Download"   
+    "download":"Download",
+    "apply":"Apply",
+    "customFieldsTitle": "Custom fields selection",  
+    "customFields": "Custom fields" 
     
 }

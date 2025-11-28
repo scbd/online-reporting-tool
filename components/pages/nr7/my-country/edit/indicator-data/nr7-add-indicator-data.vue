@@ -83,7 +83,7 @@
                                                     </div>
                                                     <!-- <input type="file" id="dataSetFile" ref="dataSetFile" @change="uploadFile"/>  -->
                                                     <national-indicator-data :indicators="[indicator]" @on-data-load="onDataLoad"
-                                                        :indicator-type="indicatorType"></national-indicator-data>
+                                                        :indicator-type="indicatorType" :existing-indicator-data="indicatorData.data"></national-indicator-data>
                                                                                            
                                                 </km-form-group> 
                                                                                  
@@ -107,6 +107,20 @@
                                                 <div class="mt-3 mb-3" v-if="indicatorData?.data?.length">
                                                     <indicator-data-table :indicator-data="indicatorData.data" :indicator-type="indicatorType"  :indicator-code="indicatorData.data[0].indicatorCode"></indicator-data-table>
                                                 </div>
+
+                                                <km-form-group v-if="indicatorData.globalDataSources" :caption="t('globalSourceOfData')">
+                                                    <km-value v-for="source in indicatorData.globalDataSources" :key="source" class="mt-1">
+                                                        <a :href="source.url" target="_blank">{{ source.name }}</a>
+                                                    </km-value>
+                                                </km-form-group>
+                                                <km-form-group v-if="indicatorData.globalIndicatorProviders" :caption="t('globalIndicatorProviders')">
+                                                    <km-value v-for="source in indicatorData.globalIndicatorProviders" :key="source" class="mt-1">
+                                                        <a :href="source.url" target="_blank">{{ source.name }}</a>
+                                                    </km-value>
+                                                </km-form-group>
+                                                <km-form-group v-if="indicatorData.globalDescription" :caption="t('description')">
+                                                    <km-value>{{ indicatorData.globalDescription }}</km-value>
+                                                </km-form-group> 
                                             </km-form-group>
 
                                             <km-form-group v-show="document.sourceOfData" name="comments" :caption="t('comments')">
@@ -130,6 +144,8 @@
 </template>
 
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-add-indicator-data.json"></i18n>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-view-indicator-data.json"></i18n>
+
 <script setup lang="ts">
 //@ts-nocheck
     import { useToast } from 'vue-toast-notification';
