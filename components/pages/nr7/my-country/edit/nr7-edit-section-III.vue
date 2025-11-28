@@ -21,7 +21,7 @@
                 <template #submission>
                     <div class="alert alert-info">
                         <strong v-if="Object.keys(nationalTargets).length">
-                            {{ t('reportingNationalCount', [Object.keys(nationalTargets).length]) }}
+                            {{ t('reportingNationalCount', [Object.keys(nationalTargets).length - gbfMissingNationalTargets.length]) }}
                         </strong>
                         <strong v-if="gbfMissingNationalTargets.length" class="d-block">
                             {{ t('reportingGlobalCount',   [gbfMissingNationalTargets.length]) }}
