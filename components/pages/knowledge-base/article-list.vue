@@ -1,7 +1,11 @@
 <template>
     <div>
         <km-spinner v-if="loading" center></km-spinner>
-        <!-- <cbd-add-new-view-article class="float-end btn btn-primary" :admin-tags="adminTags"></cbd-add-new-view-article> -->
+        <div class="row" v-if="security.role.isAdministrator()">
+            <div class="col-12">
+                <cbd-add-new-view-article class="float-end btn btn-primary" :admin-tags="adminTags"></cbd-add-new-view-article>
+            </div>
+        </div>
         <div class="alert alert-info mt-5" v-if="!loading && !articles?.length">{{ t('noArticle') }}</div>
         <div v-if="articles.length" class="mt-3">
             <!-- <CRow> -->
@@ -62,7 +66,8 @@
                     }
                 }
             });
-            ag.push({"$project" : {"title":1, "summary":1, "_id":1, "coverImage":1}});
+            ag.push({ "$sort" : { "meta.createdOn": -1 } });
+            ag.push({"$project" : {"title":1, "summary":1, "_id":1, "coverImage":1, "meta.createdOn":1}});
             
 
             articles.value = await $api.articles.queryArticles({ "ag" : JSON.stringify(ag)});
