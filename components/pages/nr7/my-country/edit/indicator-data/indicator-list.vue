@@ -54,22 +54,21 @@
         showMissingAlert   : {type:String, default:false },
         indicatorType      : {type:String, required:true }, 
     }) 
+
     const emit = defineEmits(['onRecordDelete'])
 
     const componentId        = useGenerateUUID();
     const accordionToggle    = shallowRef(null);
     const { indicators }     = toRefs(props)
         
-    //TODO : do not update the props directly,
-    // clone and modify the object.
     function onAddIndicatorDataClose(document){
         
         if(!document)
             return;
 
         let indicator = indicators.value.find(e=>e.identifier == document.body?.indicator?.identifier);
-        indicator.nationalData = document.body;
-        indicator.documentInfo = document;
+        indicator.nationalData = Object.assign(indicator.nationalData, document.body);
+        indicator.documentInfo = Object.assign(indicator.documentInfo, document);
     }
 
     function onAddBinaryIndicatorDataClose(document, indicator){
