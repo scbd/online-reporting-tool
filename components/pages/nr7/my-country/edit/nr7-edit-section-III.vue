@@ -526,7 +526,7 @@
             
             nationalReport7Store.nationalReport.sectionIII = sectionIII;
 
-            if(query.edit=true)
+            if(query.edit==true)
                 onStepChange(1)
             
         }
