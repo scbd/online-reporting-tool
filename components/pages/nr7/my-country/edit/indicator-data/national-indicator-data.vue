@@ -99,11 +99,12 @@
                         'Indicator code' : 0, 
                         'Indicator' : 1, 
                         'Does this data row represent a disaggregation':2,
-                        'Disaggregation' : 3, 
-                        'Year' : 4, 
-                        'Unit' : 5, 
-                        'Value' : 6, 
-                        'Footnote':7
+                        'Disaggregation type': 3,
+                        'Disaggregation' : 4, 
+                        'Year' : 5, 
+                        'Unit' : 6, 
+                        'Value' : 7, 
+                        'Footnote':8
                     };
 
                     const columns = Object.keys(columnKeys);
@@ -182,12 +183,13 @@
             return {
                 indicatorCode    : row[0] as string,
                             // : row[1] is indicator name
-                hasDisaggregation: row[2]?.toLowerCase() == 'no' ? false :  true as boolean,
-                disaggregation   : row[3] as string,
-                year             : Number(row[4]),
-                unit             : row[5]?.toString(),
-                value            : parseFloat(row[6] as string),
-                footnote         : row[7] as string
+                hasDisaggregation: row[2]?.toLowerCase() == 'yes' ? true : false as boolean,
+                disaggregationType: row[3] as string,
+                disaggregation   : row[4] as string,
+                year             : Number(row[5]),
+                unit             : row[6]?.toString(),
+                value            : parseFloat(row[7] as string),
+                footnote         : row[8] as string
             }
         }
     </script>

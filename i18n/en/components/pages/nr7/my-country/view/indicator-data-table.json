@@ -4,6 +4,7 @@
     "indicatorCode": "Indicator code",
     "doesDisaggregation": "Does this data row represent a disaggregation",
     "shortDoesDisaggregation": "Has disaggregation",
+    "disaggregationType": "Disaggregation type",
     "disaggregation": "Disaggregation",
     "unit": "Unit",
     "footnote": "Footnote",

@@ -10,6 +10,7 @@
     "pleaseSelectLanguage": "Please select in which language(s) you wish to submit this record",
     "nationalDataSet": "National data set",    
     "fileFormatMessage": "The system strictly requires the data in the format of the sample template. Please download the sample template and fill in the data accordingly.",
+    "sampleFormatArticle":"Please click here for more information on how to fill in the data template.",
     "globalDataSet": "Global data set",
     "noGlobalDataIndicator": "No global data found for this indicator on the UNEP-WCMC Target Tracker",
     "columnsMismatch":"Your excel file is not following the template (column mismatch) expected columns are \"{count}\", please use the system provided template",
