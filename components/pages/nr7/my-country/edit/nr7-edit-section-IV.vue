@@ -215,7 +215,7 @@
         return document;
     }
     const onGetDocumentInfo = async ()=>{
-        return nationalReport7Store.nationalReport;
+        return nationalReport7Store.nationalReportInfo;
     }
 
     async function loadNationalIndicatorData(indicatorType){

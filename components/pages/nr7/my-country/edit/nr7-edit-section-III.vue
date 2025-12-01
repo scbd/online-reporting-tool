@@ -347,11 +347,10 @@
     }
 
     const onGetDocumentInfo = async ()=>{
-        return nationalReport7Store.nationalReport;
+        return nationalReport7Store.nationalReportInfo;
     }
 
     const onSortingChange = (sortedList)=>{
-        console.log(document.value.sectionIII)
         const newSectionIII = sortedList.map(e=>{
             return sectionIIIComputed.value.find(s=>s.target?.identifier == e.identifier)
         });
