@@ -102,6 +102,12 @@ function findMatchingRoute($appRoutes, to, from){
             regex  :  /\/management\/requests(\/([A-Za-z0-9]+))?/i,
             url    : $appRoutes.WORKFLOWS_REQUESTS
         },
+
+        obsoleteStakeholderEndorsements : {
+            regex  :  /\/stakeholders\/commitments\/my-endorsements\/([A-Za-z0-9\-]+)/i,
+            params : [':identifier'],
+            url    : $appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS_VIEW
+        }
     }
     
     for (const route in customUrlRegex) {
@@ -124,6 +130,7 @@ function findMatchingRoute($appRoutes, to, from){
             }
             if(matchedRoute.params){
                 for (const param in matchedRoute.params) {
+                    console.log(param)
                     if (matchedRoute.params.includes(matchedRoute.params[param])) {
                         const element = matchedRoute.params[param];
                         if(matches[Number(param)+1])
