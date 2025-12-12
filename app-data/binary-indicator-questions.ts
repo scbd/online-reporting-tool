@@ -2079,7 +2079,17 @@ function getQuestions(locale:string = 'en') {
                             "title": t("fully", locale),
                         },
                     ],
-                    "mandatory": true
+                    "mandatory": true,
+                    "validations": [
+                        {
+                            "question": "20_5_1",
+                            "type": "@hasValues",
+                            "values": [
+                                "underDevelopment", "partially", "fully"
+                            ],
+                            "trigger": "enable"
+                        }
+                    ],
                 },
                 {
                     "key": "20_5_1",
