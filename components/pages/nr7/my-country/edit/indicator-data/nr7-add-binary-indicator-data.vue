@@ -8,7 +8,7 @@
         </CButton>
     </div>
     <CModal  class="show d-block nr7-add-binary-indicator-data-modal" size="xl"
-        backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
+        alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 <km-term :value="indicator?.identifier" :locale="locale"></km-term>
@@ -116,7 +116,8 @@
     const binaryIndicatorQuestions = computed(()=>{
         const questions = getBinaryIndicatorQuestions(locale.value);
         return cloneDeep(questions);
-    });
+    });    
+    const binaryQuestion = ref([]);
     
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
@@ -127,11 +128,7 @@
 
         return clean
     });
-    
-    const binaryQuestion = computed(()=>{
-        return binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == props.indicator?.identifier);
-    })
-
+      
     const onPostClose = async (document)=>{
         
         documentInfo.value.body = document
@@ -257,7 +254,7 @@
         const {questions, key, binaryIndicator, target } = binaryQuestion.value
         const flatQuestions = flattenQuestions(questions);
         const validationsMap= buildValidationMap(flatQuestions);
-        console.log(flatAnswers)
+        
         flatQuestions.forEach(q=>{
             q.enabled = true;
         })
@@ -305,7 +302,9 @@
         hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
     });
 
-
+    onMounted(()=>{
+        binaryQuestion.value = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == props.indicator?.identifier);
+    })
 </script>
 <style>
     /* .km-nav-wizard .nav-header, .km-nav-wizard .nav-footer{
