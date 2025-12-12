@@ -116,7 +116,8 @@
     const binaryIndicatorQuestions = computed(()=>{
         const questions = getBinaryIndicatorQuestions(locale.value);
         return cloneDeep(questions);
-    });
+    });    
+    const binaryQuestion = ref([]);
     
     const cleanDocument = computed(()=>{
         const clean = useKmStorage().cleanDocument({...document.value});
@@ -127,11 +128,7 @@
 
         return clean
     });
-    
-    const binaryQuestion = computed(()=>{
-        return binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == props.indicator?.identifier);
-    })
-
+      
     const onPostClose = async (document)=>{
         
         documentInfo.value.body = document
@@ -304,7 +301,9 @@
         hasError : (name)=>validationReport.value?.errors?.find(e=>e.property == name)
     });
 
-
+    onMounted(()=>{
+        binaryQuestion.value = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == props.indicator?.identifier);
+    })
 </script>
 <style>
     /* .km-nav-wizard .nav-header, .km-nav-wizard .nav-footer{
