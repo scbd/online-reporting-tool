@@ -7,7 +7,7 @@
             {{ t('addBinaryIndicatorData') }}
         </CButton>
     </div>
-    <CModal  class="show d-block nr7-add-binary-indicator-data-modal" size="xl" 
+    <CModal  class="show d-block nr7-add-binary-indicator-data-modal" size="xl"
         alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
@@ -49,8 +49,8 @@
                                     </CAccordion>   
                                     <div class="">     
                                         <CCard>
-                                            <CCardBody>                
-                                                <km-questions :questions="binaryQuestion?.questions" 
+                                            <CCardBody>             
+                                                <km-questions :questions="binaryQuestion?.questions" @update:modelValue="onAnswer"
                                                     v-model="document[binaryQuestion.key].responses"></km-questions>
                                             </CCardBody>  
                                         </CCard>
@@ -200,9 +200,6 @@
             if(props.identifier){
                 documentInfo.value = await EditFormUtility.load(props.identifier, SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA)
                 document.value = documentInfo.value.body;
-                // const keys = binaryQuestions.questions.flat(3).map(e=>e.key)
-                // binaryData.value.answers = answersDummy.filter(e=>keys.includes(e.question))
-                // binaryQuestion
             }
             else{
                 document.value = EditFormUtility.buildEmptyDocument(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA);
@@ -216,6 +213,8 @@
             indicatorResponse.indicator = { identifier : props.indicator?.identifier}
             indicatorResponse.responses = indicatorResponse.responses || {},
             indicatorResponse.additionalInformation = indicatorResponse.additionalInformation || {}
+            
+            updateQuestionEnablement(indicatorResponse.responses);
         }
         catch(e){
             useLogger().error(e)
@@ -235,6 +234,62 @@
         })
         .flat().filter(e=>e)        
     }
+
+    const  onAnswer = function(ans){
+        updateQuestionEnablement(ans);
+    }
+    
+    function buildValidationMap(questions){
+        const validationsMap = {}
+        questions.forEach(q=>{
+            if(q.validations?.length){
+                q.validations.forEach(v=>{
+                    validationsMap[v.question] = validationsMap[v.question] || [];
+                    validationsMap[v.question].push({...v, baseQuestionKey: q.key});
+                });
+            }
+        });
+        return validationsMap;
+    }
+
+    function updateQuestionEnablement(flatAnswers:Record<string, string>):void{
+        const {questions, key, binaryIndicator, target } = binaryQuestion.value
+        const flatQuestions = flattenQuestions(questions);
+        const validationsMap= buildValidationMap(flatQuestions);
+        
+        flatQuestions.forEach(q=>{
+            q.enabled = true;
+        })
+        flatQuestions
+        .forEach(q=>{
+            if(validationsMap[q.key]?.length){
+                q.enabled = validationsMap[q.key].some(v=>{
+                                                    return canEnableQuestion(v.baseQuestionKey, v, flatAnswers);
+                                                });
+            }
+        }); 
+    }
+
+    function canEnableQuestion(questionKey:string, validation:any, flatAnswers:any):void {
+        const questionAnswer = flatAnswers?.[questionKey];
+        let validationPositive = false;
+        
+        if (questionAnswer) {
+            if (validation.type === '@hasValues') {
+                if (validation.values) {
+                    if(Array.isArray(questionAnswer)){
+                        validationPositive = questionAnswer.some(a=>validation.values.includes(a));
+                    }
+                    else{
+                        validationPositive = validation.values.includes(questionAnswer);
+                    }
+                }
+            }
+        }
+
+        return validationPositive;
+    }
+
 
     provide('kmWorkflowFunctions', {
         onPreReviewDocument,
