@@ -8,7 +8,7 @@
         </CButton>
     </div>
     <CModal  class="show d-block nr7-add-binary-indicator-data-modal" size="xl" 
-        alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
+        backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 <km-term :value="indicator?.identifier" :locale="locale"></km-term>

@@ -125,7 +125,7 @@
                                                     </km-value>
                                                 </km-form-group>
                                                 <km-form-group v-if="indicatorData.globalDescription" :caption="t('description')">
-                                                    <km-value>{{ indicatorData.globalDescription }}</km-value>
+                                                    <km-value v-html="indicatorData.globalDescription"></km-value>
                                                 </km-form-group> 
                                             </km-form-group>
 
@@ -338,9 +338,20 @@
                 const globalData = dataResponse?.data?.charts?.filter(e=>e.tabType == 'GloballyDerived')
                 if(globalData?.length) {
                     let data = []
+                    let unit = dataResponse?.data?.globallyDerivedData?.valueSuffix
+                    if(dataResponse?.data?.globallyDerivedData?.valuePrefix)
+                        if(unit)
+                            unit = `${dataResponse?.data?.globallyDerivedData?.valuePrefix}/${unit}`;
+                        else
+                            unit = dataResponse?.data?.globallyDerivedData?.valuePrefix; 
+
+                    //hardcode index for A.3 Red List Index, as target tracker is sending null unit.
+                    if(!unit && document.value.indicator.identifier === "GBF-INDICATOR-A.3")
+                        unit = 'index';
+
                     globalData.forEach(chart=>{
 
-                        const globalChartData = chart.datasets.filter(e=>e.derived == "Global" && e.indicatorDataScale == "Global");
+                        const globalChartData = chart.datasets.filter(e=>e.derived == "Global" && e.indicatorDataScale == "National");
                         globalChartData.forEach(valueData=>{
                             if(!valueData.data?.length)
                                 return;
@@ -352,17 +363,17 @@
                                             hasDisaggregation : valueData.dataGroupName == "Aggregated" ? false : true,
                                             disaggregation    : valueData.dataGroupName == "Aggregated" ? undefined : valueData.dataGroupName,
                                             year : Number(e.replace(/Baseline|\(|\)/g, '')),
-                                            value: parseFloat(val),
-                                            unit: dataResponse?.data?.globallyDerivedData?.valueSuffix
+                                            value: parseFloat(val??0),
+                                            unit: unit
                                         }
-                                    });
+                                    })
+                                    .filter(e=>e.value > 0);
                                 data = [...data, ...formattedData];
                         });
                     });
 
                     document.value.data = data;
-                    
-                    
+                                        
                     const globallyDerivedData = dataResponse?.data?.globallyDerivedData;
                     if(globallyDerivedData){
 
@@ -372,7 +383,9 @@
                         if(globallyDerivedData.indicatorProviders?.length)
                             document.value.globalIndicatorProviders =  globallyDerivedData.indicatorProviders.map(e=>({name:e.title, url:e.link}))
 
-                        document.value.globalDescription = globallyDerivedData.description
+                        const ttLink= `https://target-tracker.org/en/country/${country.code3}/goalTarget/${globallyDerivedData.targetInfo.id}/indicator/${indicator.indicatorId}`
+                        const ttLinkDescription = `<strong>This data was prepopulated from <a href="${ttLink}" target="_blank">Target Tracker</a>.</strong><hr/>`;
+                        document.value.globalDescription = `${ttLinkDescription}<br/> ${globallyDerivedData.description||''}`
                     }
                 }
             }
