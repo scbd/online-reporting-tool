@@ -1,9 +1,10 @@
 <template>
     <!-- {{indicator}} -->
-    <div class="mb-3" v-for="(question, key) in questions" :key="question?.key">
-        <!-- {{key}} {{questions}} -->
+     <!-- {{questions}} -->
+    <div class="mb-3" v-for="(question, key) in processedQuestions" :key="question?.key">
+        <!-- {{key}} {{question.visible}} -->
         <span v-if="!question?.key">{{ question }}</span>
-        <div v-if="!question?.questions?.length && showQuestion(indicatorData, question)">
+        <div v-if="!question?.questions?.length && question.visible">
             <CCard>
                 <CCardHeader>
                     <km-form-group class="mb-0">            
@@ -35,7 +36,7 @@
             </CCard>
 
         </div>
-        <div v-if="question?.questions?.length && showQuestions(indicatorData, question.questions)">
+        <div v-if="question?.questions?.length  && question.visible">
             <CCard>
                 <CCardHeader>
                     {{question?.number}} {{question?.title}}
@@ -48,7 +49,7 @@
             </CCard>          
         </div>
     </div>
-
+    
     <km-form-group v-if="indicatorData?.comments && !isRecursive" :caption="t('comments')">        
         <km-lstring-value type="html" :value="indicatorData.comments"  :locale="locale"></km-lstring-value>
     </km-form-group>
@@ -70,6 +71,30 @@ const {locale, t} = useI18n();
 const selectedLocale = computed(()=>props.documentLocale||locale.value);
 
 const { indicatorData } = toRefs(props);
+
+const processedQuestions = computed(()=>{
+    if(!props.isRecursive){
+        const flatQuestions = flattenQuestions(props.questions);
+        const validationsMap= buildValidationMap(flatQuestions);
+
+        const responses = indicatorData.value?.responses || {};
+        flatQuestions
+        .forEach(q=>{
+            q.visible = true
+
+            if(props.hideMissingResponse)
+                q.visible = responses?.[q.key];
+
+            if(q.visible && validationsMap[q.key]?.length){
+                q.visible = validationsMap[q.key]
+                                .some(v=>{
+                                    return canEnableQuestion(v.baseQuestionKey, v, responses);
+                                });
+            }
+        });   
+    }  
+    return props.questions;
+});
 
 function showQuestion(indicatorData, question){
 
@@ -95,4 +120,47 @@ function showQuestions(indicatorData, questions){
     })
 }
 
+    function flattenQuestions(questions){
+        return questions.map(e=>{
+            const lQuestions = [e];
+            if(e?.questions?.length)
+                lQuestions.push(...flattenQuestions(e.questions));
+
+            return lQuestions;
+        })
+        .flat().filter(e=>e)        
+    }
+
+    function buildValidationMap(questions){
+        const validationsMap = {}
+        questions.forEach(q=>{
+            if(q.validations?.length){
+                q.validations.forEach(v=>{
+                    validationsMap[v.question] = validationsMap[v.question] || [];
+                    validationsMap[v.question].push({...v, baseQuestionKey: q.key});
+                });
+            }
+        });
+        return validationsMap;
+    }
+
+    function canEnableQuestion(questionKey:string, validation:any, flatAnswers:any):void {
+        const questionAnswer = flatAnswers?.[questionKey];
+        let validationPositive = false;
+        
+        if (questionAnswer) {
+            if (validation.type === '@hasValues') {
+                if (validation.values) {
+                    if(Array.isArray(questionAnswer)){
+                        validationPositive = questionAnswer.some(a=>validation.values.includes(a));
+                    }
+                    else{
+                        validationPositive = validation.values.includes(questionAnswer);
+                    }
+                }
+            }
+        }
+
+        return validationPositive;
+    }
 </script>
