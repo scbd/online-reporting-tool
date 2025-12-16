@@ -352,6 +352,35 @@ function getQuestions(locale:string = 'en') {
             "title": "",
             "questions": [
                 {
+                    "key": "1",
+                    "section": "GBF-TARGET-01",
+                    "number": "1",
+                    "type": "option",
+                    "title": t("target1_question_1_add", locale),
+                    "multiple": false,
+                    "options": [
+                        {
+                            "value": "yes",
+                            "title": t("yes", locale),
+                        },
+                        {
+                            "value": "no",
+                            "title": t("no", locale),
+                        }
+                    ],
+                    "mandatory": true,
+                    "validations": [
+                        {
+                            "question": "1_1_c",
+                            "type": "@hasValues",
+                            "values": [
+                                "yes"
+                            ],
+                            "trigger": "enable"
+                        }
+                    ]
+                },
+                {
                     "key": "1_1",
                     "section": "GBF-TARGET-01",
                     "number": "1.1",
@@ -2079,7 +2108,17 @@ function getQuestions(locale:string = 'en') {
                             "title": t("fully", locale),
                         },
                     ],
-                    "mandatory": true
+                    "mandatory": true,
+                    "validations": [
+                        {
+                            "question": "20_5_1",
+                            "type": "@hasValues",
+                            "values": [
+                                "underDevelopment", "partially", "fully"
+                            ],
+                            "trigger": "enable"
+                        }
+                    ],
                 },
                 {
                     "key": "20_5_1",

@@ -2,21 +2,15 @@
     <div  v-if="answersInitialized && questions?.length" >
         <div class="mb-3" v-for="question in questions" :key="question?.key">           
             <div v-if="!question?.questions?.length">
-                <km-question :question="question" v-model="answers[question?.key]" @update:modelValue="onAnswer"></km-question>
+                <km-question :enabled="question.enabled" :question="question" v-model="answers[question?.key]" @update:modelValue="onAnswer"></km-question>
             </div>
-            <div v-if="question?.questions?.length">
-                <!-- <CCard>
-                    <CCardHeader> -->
-                        <km-form-group>
-                            <template #caption>
-                                {{question?.number}} {{question?.title}}
-                            </template>
-                        </km-form-group>
-                    <!-- </CCardHeader>
-                    <CCardBody> -->
-                        <km-questions class="ms-3" :subQuestion="true" :questions="question?.questions" v-model="answers[question?.key]" @update:modelValue="onAnswer"></km-questions>  
-                    <!-- </CCardBody>
-                </CCard>           -->
+            <div v-if="question?.questions?.length">                
+                <km-form-group>
+                    <template #caption>
+                        {{question?.number}} {{question?.title}}
+                    </template>
+                </km-form-group>
+                <km-questions class="ms-3" :subQuestion="true" :questions="question?.questions" v-model="answers[question?.key]" @update:modelValue="onAnswer"></km-questions>  
             </div>
         </div>
     </div>
@@ -32,6 +26,7 @@
     const props = defineProps({
         questions : {type:Object as PropType<Question[]>}
     });
+    const { questions } = toRefs(props);
 
     const answersInitialized = ref(false);
     const answers = ref({});
@@ -56,12 +51,9 @@
     }
 
     onMounted(()=>{       
-        answers.value = answerArrayToHierarchy(props.questions, model.value||{});
+        answers.value = answerArrayToHierarchy(questions.value, model.value||{});
         answersInitialized.value = true;
     })
-
-
-
 </script>
 
 <style>
