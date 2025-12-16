@@ -64,7 +64,7 @@
                                 </div>                                 
                             </template>
                             <template #review>
-                                <nr7-view-binary-indicator-data :indicator-data="document[binaryQuestion.key]" :questions="binaryQuestion?.questions">
+                                <nr7-view-binary-indicator-data :indicator-data=" useKmStorage().cleanDocument({...document[binaryQuestion.key]})" :questions="binaryQuestion?.questions">
                                 </nr7-view-binary-indicator-data>
                             </template>
                         </km-form-workflow>
@@ -141,13 +141,14 @@
     }
 
     const onPreSaveDraft = async (document)=>{
+        validationReport.value = {};
         return document;
     };
 
     const onPostSaveDraft = async (document)=>{       
         //vue prepends 'on' to all events internally
         if(isEventDefined('onPostSaveDraft'))
-            emit('onPostSaveDraft', document);
+            emit('onPostSaveDraft', document, props.indicator);
         
         documentInfo.value = document
     };
@@ -161,26 +162,9 @@
 
         const {questions, key, binaryIndicator, target } = binaryQuestion.value
         const flatQuestions = flattenQuestions(questions);
-
-        if(!validationReport.value?.errors){
-
-
-            // answers for the current binary target, show validation errors only for the current target.
-            const answers = cleanDocument.value[key] ||{responses:{}}; 
-            const errors = [];
-            flatQuestions.forEach(e=>{
-                if(!(answers.responses||{})[e.key])
-                    errors.push({
-                        "code": "Error.Mandatory",
-                        "property": e.key
-                    })
-            });
-            validationReport.value.errors = errors;
-        }
-        else{
-            const currentTargetQuestions = flatQuestions.map(e=>e.key);
-            validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
-        }
+        const currentTargetQuestions = flatQuestions.map(e=>e.key);
+        validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
+        
     }
     const onGetDocumentInfo = async ()=>{
         return documentInfo.value;
