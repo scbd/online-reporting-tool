@@ -157,7 +157,7 @@
     const onPreReviewDocument = (document)=>{
         return document;
     }
-    const onPostReviewDocument = (document, newValidationReport)=>{
+    const onPostReviewDocument = async (document, newValidationReport)=>{
 
         validationReport.value = cloneDeep(newValidationReport || {});
 
@@ -166,6 +166,7 @@
         const currentTargetQuestions = flatQuestions.map(e=>e.key);
         validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
         
+        return validationReport.value;
     }
     const onGetDocumentInfo = async ()=>{
         return documentInfo.value;
