@@ -64,7 +64,7 @@
                                 </div>                                 
                             </template>
                             <template #review>
-                                <nr7-view-binary-indicator-data :indicator-data=" useKmStorage().cleanDocument({...document[binaryQuestion.key]})" :questions="binaryQuestion?.questions">
+                                <nr7-view-binary-indicator-data :indicator-data="kmStorageUtils.cleanDocument({...document[binaryQuestion.key]})" :questions="binaryQuestion?.questions">
                                 </nr7-view-binary-indicator-data>
                             </template>
                         </km-form-workflow>
@@ -118,9 +118,10 @@
         return cloneDeep(questions);
     });    
     const binaryQuestion = ref([]);
+    const kmStorageUtils = useKmStorage();
     
     const cleanDocument = computed(()=>{
-        const clean = useKmStorage().cleanDocument({...document.value});
+        const clean = kmStorageUtils.cleanDocument({...document.value});
 
         //since the binary indicator for Goal C and Target 13 is same, overwrite to avoid answering double
         if(props.indicator?.identifier == "KMGBF-INDICATOR-BIN-C-13")            
