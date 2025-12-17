@@ -7,8 +7,8 @@
             {{ t('addBinaryIndicatorData') }}
         </CButton>
     </div>
-    <CModal  class="show d-block nr7-add-binary-indicator-data-modal" size="xl"
-        alignment="center" backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
+    <CModal  class="show d-block nr7-add-binary-indicator-data-modal" size="xl" 
+        backdrop="static" @close="() => {showEditIndicatorDataModal=false}" :visible="showEditIndicatorDataModal" >
         <CModalHeader :close-button="false">
             <CModalTitle>
                 <km-term :value="indicator?.identifier" :locale="locale"></km-term>
@@ -64,7 +64,7 @@
                                 </div>                                 
                             </template>
                             <template #review>
-                                <nr7-view-binary-indicator-data :indicator-data="document[binaryQuestion.key]" :questions="binaryQuestion?.questions">
+                                <nr7-view-binary-indicator-data :indicator-data="kmStorageUtils.cleanDocument({...document[binaryQuestion.key]})" :questions="binaryQuestion?.questions">
                                 </nr7-view-binary-indicator-data>
                             </template>
                         </km-form-workflow>
@@ -118,9 +118,10 @@
         return cloneDeep(questions);
     });    
     const binaryQuestion = ref([]);
+    const kmStorageUtils = useKmStorage();
     
     const cleanDocument = computed(()=>{
-        const clean = useKmStorage().cleanDocument({...document.value});
+        const clean = kmStorageUtils.cleanDocument({...document.value});
 
         //since the binary indicator for Goal C and Target 13 is same, overwrite to avoid answering double
         if(props.indicator?.identifier == "KMGBF-INDICATOR-BIN-C-13")            
@@ -141,13 +142,14 @@
     }
 
     const onPreSaveDraft = async (document)=>{
+        validationReport.value = {};
         return document;
     };
 
     const onPostSaveDraft = async (document)=>{       
         //vue prepends 'on' to all events internally
         if(isEventDefined('onPostSaveDraft'))
-            emit('onPostSaveDraft', document);
+            emit('onPostSaveDraft', document, props.indicator);
         
         documentInfo.value = document
     };
@@ -155,32 +157,16 @@
     const onPreReviewDocument = (document)=>{
         return document;
     }
-    const onPostReviewDocument = (document, newValidationReport)=>{
+    const onPostReviewDocument = async (document, newValidationReport)=>{
 
         validationReport.value = cloneDeep(newValidationReport || {});
 
         const {questions, key, binaryIndicator, target } = binaryQuestion.value
         const flatQuestions = flattenQuestions(questions);
-
-        if(!validationReport.value?.errors){
-
-
-            // answers for the current binary target, show validation errors only for the current target.
-            const answers = cleanDocument.value[key] ||{responses:{}}; 
-            const errors = [];
-            flatQuestions.forEach(e=>{
-                if(!(answers.responses||{})[e.key])
-                    errors.push({
-                        "code": "Error.Mandatory",
-                        "property": e.key
-                    })
-            });
-            validationReport.value.errors = errors;
-        }
-        else{
-            const currentTargetQuestions = flatQuestions.map(e=>e.key);
-            validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
-        }
+        const currentTargetQuestions = flatQuestions.map(e=>e.key);
+        validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
+        
+        return validationReport.value;
     }
     const onGetDocumentInfo = async ()=>{
         return documentInfo.value;

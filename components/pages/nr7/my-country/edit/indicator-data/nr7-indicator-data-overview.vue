@@ -67,7 +67,7 @@
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 2">
                         <indicator-list indicator-type="binaryIndicators" v-if="nationalBinaryIndicators" :indicators="nationalBinaryIndicators" 
-                        show-missing-alert="true" @on-record-delete="onRecordDelete"></indicator-list>
+                        show-missing-alert="true" @on-record-delete="onRecordDelete" @on-indicator-data-update="onIndicatorUpdate"></indicator-list>
                     </CTabPane>
                     <CTabPane role="tabpanel" aria-labelledby="profile-tab" :visible="tabPaneActiveKey === 3">
                         <div class="alert alert-info mt-2"  v-if="globalComponentIndicators">
@@ -336,6 +336,12 @@
 
     }
     
+    function onIndicatorUpdate({document, type, indicator}): void{
+        if(type != 'binary')
+            return;
+        
+        nationalBinaryDatDocument.value = document;
+    }
 
     init();
 </script>

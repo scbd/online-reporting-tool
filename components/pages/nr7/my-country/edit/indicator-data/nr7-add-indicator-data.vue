@@ -228,6 +228,9 @@
         clean.dataSources = undefined;
         clean.description = undefined;
         clean.indicatorProviders = undefined;
+        if(showSourceOfDataInfo.value){
+            clean.sourceOfDataInfo = undefined;
+        }
         return clean
     });
 
