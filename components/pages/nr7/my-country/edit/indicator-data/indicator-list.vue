@@ -55,7 +55,7 @@
         indicatorType      : {type:String, required:true }, 
     }) 
 
-    const emit = defineEmits(['onRecordDelete'])
+    const emit = defineEmits(['onRecordDelete', 'onIndicatorDataUpdate'])
 
     const componentId        = useGenerateUUID();
     const accordionToggle    = shallowRef(null);
@@ -71,17 +71,8 @@
         indicator.documentInfo = Object.assign(indicator.documentInfo, document);
     }
 
-    function onAddBinaryIndicatorDataClose(document, indicator){
-        //when binary data is updated, updates reference of all the indicators in the list
-        indicators.value.forEach(indicator=>{
-            if(document.body[indicator.question.key]){
-                indicator.nationalData = {
-                    government : indicator.nationalData.government,
-                    header : indicator.nationalData.header,
-                    ...(document.body[indicator.question.key]||{})
-                }
-            }
-        })
+    function onAddBinaryIndicatorDataClose(document, updatedIndicator){
+        emit('onIndicatorDataUpdate', {document, type:'binary', indicator:updatedIndicator})
     }
 
     function onRecordDelete({identifier, type}, indicator): void{

@@ -68,6 +68,8 @@ watch(() => props.enabled, (newVal) => {
         //clear model if question is disabled
         model.value = undefined;
     } 
+}, {
+  immediate: true // <-- This makes it run immediately on component creation
 });
 const { t, locale } = useI18n()
 </script>
