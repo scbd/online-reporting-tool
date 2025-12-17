@@ -362,6 +362,11 @@ export const IndicatorsMappingData : IndicatorMapping[] = [
         "title": "1.CY.1 Proportion of transboundary basin area with an operational arrangement for water cooperation"
     },
     {
+        "identifier": "GBF-INDICATOR-2.1",
+        "code": "2.1",
+        "title": "2.1 Area under restoration"
+    },
+    {
         "identifier": "GBF-INDICATOR-2.2",
         "code": "2.1",
         "title": "2.1 Area under restoration"

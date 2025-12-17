@@ -129,6 +129,8 @@
                                                 </km-form-group> 
                                             </km-form-group>
 
+                                            <indicator-detailed-template :indicator="indicator" v-if="showDetailedTemplate"></indicator-detailed-template>
+                                            
                                             <km-form-group v-show="document.sourceOfData" name="comments" :caption="t('comments')">
                                                 <km-input-rich-lstring v-model="document.comments" :locales="document.header.languages" :identifier="cleanDocument?.header?.identifier"></km-input-rich-lstring>
                                             </km-form-group>         
@@ -201,6 +203,10 @@
     
     const showSourceOfDataInfo = computed(()=>{
         return ['noData', 'notRelevant'].includes(document.value.sourceOfData)
+    });
+
+    const showDetailedTemplate = computed(()=>{
+        return ['availableDataset', 'national'].includes(document.value.sourceOfData)
     });
 
     const targetTrackerUrl = computed(()=>{
