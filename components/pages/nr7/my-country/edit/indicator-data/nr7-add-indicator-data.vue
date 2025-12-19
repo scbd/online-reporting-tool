@@ -12,7 +12,7 @@
         <CModalHeader :close-button="false">
             <CModalTitle>
                 <km-term v-if="indicatorType!='otherNationalIndicators'" :value="indicator?.identifier" :locale="locale"></km-term>
-                <span v-if="indicatorType=='otherNationalIndicators'">{{ lstring(indicator?.title||indicator) }}</span>
+                <span v-if="indicatorType=='otherNationalIndicators'">{{ lstring(indicator?.title||indicator, locale) }}</span>
             </CModalTitle>
         </CModalHeader>
         <CModalBody>
