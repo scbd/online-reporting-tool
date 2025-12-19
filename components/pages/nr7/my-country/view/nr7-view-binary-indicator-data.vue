@@ -59,22 +59,25 @@
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-view-binary-indicator-data.json"></i18n>
 <script setup lang="ts">
 //@ts-nocheck
+    import {cloneDeep } from 'lodash';
 const props = defineProps({
     indicator: { type: Object, required: true },
     indicatorData: { type: Object, required: true },
     questions : { type: Array, required: true },
     isRecursive : {type:Boolean, default:false},
     hideMissingResponse : {type:Boolean, default:false},
-    documentLocale: { type:String }
+    documentLocale: { type:String },
+    displayIndicator: {type:Boolean, default:false}
 });
 const {locale, t} = useI18n();
 const selectedLocale = computed(()=>props.documentLocale||locale.value);
 
-const { indicatorData } = toRefs(props);
+const { indicatorData, questions } = toRefs(props);
 
 const processedQuestions = computed(()=>{
+        const lQuestions = cloneDeep(questions.value);
     if(!props.isRecursive){
-        const flatQuestions = flattenQuestions(props.questions);
+        const flatQuestions = flattenQuestions(lQuestions);
         const validationsMap= buildValidationMap(flatQuestions);
 
         const responses = indicatorData.value?.responses || {};
@@ -93,32 +96,8 @@ const processedQuestions = computed(()=>{
             }
         });   
     }  
-    return props.questions;
+    return lQuestions;
 });
-
-function showQuestion(indicatorData, question){
-
-    if(props.hideMissingResponse)
-        return indicatorData?.responses && indicatorData?.responses[question?.key];
-
-    return true;
-
-}
-
-function showQuestions(indicatorData, questions){
-    if(!props.hideMissingResponse)  
-        return true;
-    
-    return questions.some(question=>{
-
-        if(!question.questions){
-            if(props.hideMissingResponse)
-                return indicatorData?.responses && indicatorData?.responses[question?.key];
-        }
-
-        return showQuestions(indicatorData, question.questions);
-    })
-}
 
     function flattenQuestions(questions){
         return questions.map(e=>{
