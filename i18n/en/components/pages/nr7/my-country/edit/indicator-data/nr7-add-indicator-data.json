@@ -16,5 +16,6 @@
     "columnsMismatch":"Your excel file is not following the template (column mismatch) expected columns are \"{count}\", please use the system provided template",
     "columnsInvalid":"Column name \"{colName}\" is invalid at column no \"{colNo}\" expected name is \"{colExpected}\", please follow the sequence provided in the template",
     "sourceOfDataInfoNoData":"Please describe the situation",
-    "sourceOfDataInfoNotRelevant":"Please describe why this indicator is not relevant"
-}
+    "sourceOfDataInfoNotRelevant":"Please describe why this indicator is not relevant",
+     "indicator": "Indicator"
+}  

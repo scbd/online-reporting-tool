@@ -1,6 +1,10 @@
 <template>
     <!-- {{indicator}} -->
      <!-- {{questions}} -->
+    <km-form-group v-if="indicatorData?.indicator && displayIndicator" :caption="t('indicator')">
+        <km-value-term :value="indicatorData?.indicator?.identifier" :locale="selectedLocale"></km-value-term>
+    </km-form-group>
+
     <div class="mb-3" v-for="(question, key) in processedQuestions" :key="question?.key">
         <!-- {{key}} {{question.visible}} -->
         <span v-if="!question?.key">{{ question }}</span>

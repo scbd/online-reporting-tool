@@ -64,7 +64,8 @@
                                 </div>                                 
                             </template>
                             <template #review>
-                                <nr7-view-binary-indicator-data :indicator-data="kmStorageUtils.cleanDocument({...document[binaryQuestion.key]})" :questions="binaryQuestion?.questions">
+                                <nr7-view-binary-indicator-data :indicator-data="kmStorageUtils.cleanDocument({...document[binaryQuestion.key]})" 
+                                :questions="binaryQuestion?.questions" :display-indicator="true" :is-recursive="false">
                                 </nr7-view-binary-indicator-data>
                             </template>
                         </km-form-workflow>

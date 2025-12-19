@@ -139,7 +139,9 @@
                                 </div>                                 
                             </template>
                             <template #review>
-                                <nr7-view-indicator-data v-if="cleanDocument.indicator" :indicator-data="cleanDocument" :indicator-type="indicatorType">
+                                <nr7-view-indicator-data v-if="cleanDocument.indicator" :indicator-data="cleanDocument" 
+                                :indicator-type="indicatorType" :display-indicator="true"
+                                :other-national-indicator="indicatorType=='otherNationalIndicators' ? lstring(indicator?.title||indicator, locale) : undefined">
                                 </nr7-view-indicator-data>
                             </template>
                         </km-form-workflow>
