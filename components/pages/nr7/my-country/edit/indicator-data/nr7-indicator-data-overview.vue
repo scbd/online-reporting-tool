@@ -195,7 +195,7 @@
 
     function mapBinaryIndicatorWithNationalData(indicator){
         const binaryQuestion = binaryIndicatorQuestions.value?.find(e=>e.binaryIndicator == indicator?.identifier);
-        const binaryDataDocument = nationalBinaryDatDocument.value?.body||{}
+        const binaryDataDocument = cloneDeep(nationalBinaryDatDocument.value?.body||{});
         let nationalData = {}
         
         if(binaryQuestion){
@@ -270,7 +270,7 @@
         }
         nationalIndicatorData.value = indicatorResponse[4];
         //Get the first response as binary data can only have one record per govermnet
-        nationalBinaryDatDocument.value = indicatorResponse[5] ? indicatorResponse[5][0] : [];
+        nationalBinaryDatDocument.value = indicatorResponse[5] ? indicatorResponse[5][0] : {};
 
         nationalTargets.value    = indicatorResponse[6];
         

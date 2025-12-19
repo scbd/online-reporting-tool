@@ -165,6 +165,8 @@
         const {questions, key, binaryIndicator, target } = binaryQuestion.value
         const flatQuestions = flattenQuestions(questions);
         const currentTargetQuestions = flatQuestions.map(e=>e.key);
+        currentTargetQuestions.push(key);
+
         validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
         
         return validationReport.value;
