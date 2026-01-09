@@ -230,7 +230,7 @@
         clean.dataSources = undefined;
         clean.description = undefined;
         clean.indicatorProviders = undefined;
-        if(showSourceOfDataInfo.value){
+        if(!showSourceOfDataInfo.value){
             clean.sourceOfDataInfo = undefined;
         }
         return clean
