@@ -44,7 +44,7 @@
 </template>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/view/nr7-view-target-indicators.json"></i18n>
 <script setup lang="ts">
-    import { computed, toRefs, defineProps } from 'vue';
+    import { computed, toRefs } from 'vue';
     import type { EDocumentInfo } from "~/types/schemas/base/EDocumentInfo";
     import {getBinaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
 

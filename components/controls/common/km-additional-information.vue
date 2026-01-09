@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 //@ts-nocheck
-    import { defineProps } from 'vue';
+    
 
     const model = defineModel({required:true, type:Object})
 

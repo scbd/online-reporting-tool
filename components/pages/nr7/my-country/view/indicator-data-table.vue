@@ -34,7 +34,7 @@
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/view/indicator-data-table.json"></i18n>
 
 <script setup lang="ts">
-import { computed, toRefs, defineProps } from 'vue';
+import { computed, toRefs } from 'vue';
 import type { ETerm } from '~/types/schemas/base/ETerm';
 import { isNumber, isNaN } from 'lodash';
 import { IndicatorsMappingData } from '~/app-data/indicators';

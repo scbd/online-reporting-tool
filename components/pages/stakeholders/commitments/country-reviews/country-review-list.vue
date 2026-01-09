@@ -52,7 +52,7 @@
 <i18n src="@/i18n/dist/components/pages/stakeholders/commitments/country-reviews/country-review-list.json"></i18n>
 <script setup lang="ts">
 
-import { defineEmits, defineProps} from 'vue';
+
 import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 import type { EAuthUser } from '~/types/schemas/base/EAuthUser';
 import type { ECommitmentCountryReview } from '~/types/schemas/ECommitmentCountryReview';
