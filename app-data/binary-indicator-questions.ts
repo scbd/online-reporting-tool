@@ -374,7 +374,7 @@ function getQuestions(locale:string = 'en') {
                             "question": "1_1_c",
                             "type": "@hasValues",
                             "values": [
-                                "yes"
+                                "no"
                             ],
                             "trigger": "enable"
                         }
