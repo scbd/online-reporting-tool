@@ -43,7 +43,7 @@
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-add-indicator-data.json"></i18n>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-view-indicator-data.json"></i18n>
 <script setup lang="ts">
-import { computed, toRefs, defineProps } from 'vue';
+import { computed, toRefs } from 'vue';
 import type {IndicatorData } from '~/types/controls/indicator-mapping';
 import type { ETerm } from '~/types/schemas/base/ETerm';
 

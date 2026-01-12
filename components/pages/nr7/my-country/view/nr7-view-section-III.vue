@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
     import type { EDocumentInfo } from "~/types/schemas/base/EDocumentInfo";
-    import { defineProps } from 'vue';
+    
     import { capitalCase } from 'change-case';
 
     const props = defineProps({

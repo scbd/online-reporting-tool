@@ -13,7 +13,7 @@
 <i18n src="@/i18n/dist/components/pages/stakeholders/commitments/country-reviews/country-review-action.json"></i18n>
 
 <script setup lang="ts">
-import { defineEmits, defineProps} from 'vue';
+
 import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 
     const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
