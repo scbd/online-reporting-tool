@@ -630,6 +630,16 @@
 
         if(document.sectionIII?.length){
             progress.sectionIII += 5;
+            const pendingProgress = 95 / document.sectionIII.length;
+            document.sectionIII.map(section=>{
+
+                if(section?.indicatorData){
+                    const headDataCount = section.indicatorData?.headline?.map(e=>e.data!= undefined)
+                    // section?.indicatorData.binary||[]
+                    progress.sectionIII += pendingProgress;
+                    return;
+                }
+            })
         }
 
         if(document.sectionIV?.length){
