@@ -33,7 +33,11 @@ ul.header-nav li.nav-item:hover{
 //  .km-value-ml-html.ck-content ul:first{
 //     padding-left: 10px;
 // }
-.km-form-group .mandatory{
+.km-value-ml-html.ck-content img {
+    max-width: 100%; // some images are going beyond the container
+}
+
+.km-form-group .mandatory {
     border-left: 5px solid red;
     padding-left: 10px;
 }
