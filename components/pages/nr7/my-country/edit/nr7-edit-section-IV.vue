@@ -272,6 +272,10 @@
                 });
                 nationalReport7Store.nationalReport.sectionIV = sectionIV;
             }
+            else{
+                nationalReport7Store.nationalReport.sectionIV = nationalReport7Store.nationalReport
+                                .sectionIV.sort((a,b)=>a.gbfGoal.identifier.localeCompare(b.gbfGoal.identifier));
+            }
             response[0].forEach(goal=>{
                 globalGoals.value[goal.identifier].indicatorData = {
                     headline : goal.headlineIndicators,
