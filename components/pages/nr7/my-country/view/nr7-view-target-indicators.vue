@@ -13,20 +13,20 @@
                 </div>
 
                 <div class="card-body" >
-                    <slot name="actionButtons" :key="key" :indicator-data="computedIndicatorsData?.[indicatorData.data?.identifier]"
-                        :indicator="indicatorData?.indicator" :national-indicator="computedNationalIndicators[indicatorData.indicator?.identifier]">
+                    <slot name="actionButtons" :key="key" :indicator-data="computedIndicatorsData?.[indicatorData?.data?.identifier]"
+                        :indicator="indicatorData?.indicator" :national-indicator="computedNationalIndicators[indicatorData?.indicator?.identifier]">
                     </slot>
-                    <div v-if="key!= 'binary' && indicatorData.data">
-                        <div v-if="computedIndicatorsData[indicatorData.data.identifier]">
+                    <div v-if="key!= 'binary' && indicatorData.data">                        
+                        <div v-if="computedIndicatorsData?.[indicatorData.data?.identifier]">
                             <nr7-view-indicator-data :indicator-type="key=='national'?'otherNationalIndicators': key"
                                 :indicator="indicator"
-                                :indicator-data="computedIndicatorsData[indicatorData.data.identifier]?.body"></nr7-view-indicator-data>
+                                :indicator-data="computedIndicatorsData?.[indicatorData.data?.identifier]?.body"></nr7-view-indicator-data>
                         </div>
                         <missing-data-alert v-else></missing-data-alert>
                     </div>
                     <div v-else-if="key == 'binary' && indicatorData.data">
                         
-                        <div v-if="computedIndicatorsData[indicatorData.data.identifier]">
+                        <div v-if="computedIndicatorsData?.[indicatorData.data?.identifier]">
                             <nr7-view-binary-indicator-data
                                 :indicator="indicatorData.indicator"
                                 :indicator-data="getSectionResponse(indicatorData)"
@@ -35,7 +35,7 @@
                             </nr7-view-binary-indicator-data>
                         </div>
                         <missing-data-alert v-else></missing-data-alert>
-                    </div>
+                    </div> 
                     <missing-data-alert v-else></missing-data-alert>
                 </div>
             </div>

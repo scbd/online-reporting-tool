@@ -248,7 +248,7 @@
             globalGoals.value     = arrayToObject(response[0]);
             indicators.value      = flattenIndicators(response[0]);
             nationalIndicatorData.value = normalizeIndicatorData(indicators.value , response[3][0], response[2].map(e=>e.body));
-            indicatorsData.value = [...response[2], response[3][0]];
+            indicatorsData.value = compact([...response[2], response[3][0]]);
 
             const nationalTargets = response[4].nationalTargets.map(e=>e.body);
             const flatComplementaryIndicators = nationalReport7Service.uniqueIndicators(nationalTargets.map(e=>e.complementaryIndicators));
@@ -271,6 +271,10 @@
                     sectionIV.push(goal);
                 });
                 nationalReport7Store.nationalReport.sectionIV = sectionIV;
+            }
+            else{
+                nationalReport7Store.nationalReport.sectionIV = nationalReport7Store.nationalReport
+                                .sectionIV.sort((a,b)=>a.gbfGoal.identifier.localeCompare(b.gbfGoal.identifier));
             }
             response[0].forEach(goal=>{
                 globalGoals.value[goal.identifier].indicatorData = {
