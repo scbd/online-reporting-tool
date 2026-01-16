@@ -288,6 +288,9 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
   })
 
   const showEnhancedReviews = computed(()=>{
+    if(!user.value?.government){
+      return false;
+    }
     if(user.value?.government){
       if(security.role.isNationalFocalPoint())
         return countryReviews.value.find((e: ECommitmentCountryReview)=>e.government == user.value.government)
