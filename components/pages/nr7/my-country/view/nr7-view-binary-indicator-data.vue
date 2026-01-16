@@ -8,7 +8,7 @@
     <div class="mb-3" v-for="(question, key) in processedQuestions" :key="question?.key">
         <!-- {{key}} {{question.visible}} -->
         <span v-if="!question?.key">{{ question }}</span>
-        <div v-if="!question?.questions?.length && question.visible">
+        <div v-if="!question?.questions?.length && question.visible && question.mandatory">
             <CCard>
                 <CCardHeader>
                     <km-form-group class="mb-0">            
