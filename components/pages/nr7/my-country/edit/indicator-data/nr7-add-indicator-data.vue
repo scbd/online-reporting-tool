@@ -12,7 +12,7 @@
         <CModalHeader :close-button="false">
             <CModalTitle>
                 <km-term v-if="indicatorType!='otherNationalIndicators'" :value="indicator?.identifier" :locale="locale"></km-term>
-                <span v-if="indicatorType=='otherNationalIndicators'">{{ lstring(indicator?.title||indicator) }}</span>
+                <span v-if="indicatorType=='otherNationalIndicators'">{{ lstring(indicator?.title||indicator, locale) }}</span>
             </CModalTitle>
         </CModalHeader>
         <CModalBody>
@@ -139,7 +139,9 @@
                                 </div>                                 
                             </template>
                             <template #review>
-                                <nr7-view-indicator-data v-if="cleanDocument.indicator" :indicator-data="cleanDocument" :indicator-type="indicatorType">
+                                <nr7-view-indicator-data v-if="cleanDocument.indicator" :indicator-data="cleanDocument" 
+                                :indicator-type="indicatorType" :display-indicator="true"
+                                :other-national-indicator="indicatorType=='otherNationalIndicators' ? lstring(indicator?.title||indicator, locale) : undefined">
                                 </nr7-view-indicator-data>
                             </template>
                         </km-form-workflow>
@@ -228,7 +230,7 @@
         clean.dataSources = undefined;
         clean.description = undefined;
         clean.indicatorProviders = undefined;
-        if(showSourceOfDataInfo.value){
+        if(!showSourceOfDataInfo.value){
             clean.sourceOfDataInfo = undefined;
         }
         return clean

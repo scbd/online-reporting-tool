@@ -61,7 +61,6 @@
   import { useRoute } from 'vue-router' 
   import { KmDocumentDraftsService}from "@/services/kmDocumentDrafts";
   import { KmDocumentsService } from "@/services/kmDocuments";
-  import { defineProps, defineEmits } from 'vue';
   import type { Schemas,  EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
   import { GbfGoalsAndTargets } from '~/services/gbfGoalsAndTargets';
   import type { ENationalReport7 } from '~/types/schemas/ENationalReport7';

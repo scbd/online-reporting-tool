@@ -64,7 +64,8 @@
                                 </div>                                 
                             </template>
                             <template #review>
-                                <nr7-view-binary-indicator-data :indicator-data="kmStorageUtils.cleanDocument({...document[binaryQuestion.key]})" :questions="binaryQuestion?.questions">
+                                <nr7-view-binary-indicator-data :indicator-data="kmStorageUtils.cleanDocument({...document[binaryQuestion.key]})" 
+                                :questions="binaryQuestion?.questions" :display-indicator="true" :is-recursive="false">
                                 </nr7-view-binary-indicator-data>
                             </template>
                         </km-form-workflow>
@@ -164,6 +165,8 @@
         const {questions, key, binaryIndicator, target } = binaryQuestion.value
         const flatQuestions = flattenQuestions(questions);
         const currentTargetQuestions = flatQuestions.map(e=>e.key);
+        currentTargetQuestions.push(key);
+
         validationReport.value.errors = validationReport.value?.errors?.filter(e=>currentTargetQuestions.includes(e.property));
         
         return validationReport.value;

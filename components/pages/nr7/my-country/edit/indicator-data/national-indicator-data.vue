@@ -39,7 +39,6 @@
 
     <script setup lang="ts">
 
-    import { defineProps,defineEmits } from "vue";
     import readXlsxFile from 'read-excel-file';
     import { filter, isNumber } from 'lodash';
     import { nationalReport7Service } from '~/services/national-report-7-service';

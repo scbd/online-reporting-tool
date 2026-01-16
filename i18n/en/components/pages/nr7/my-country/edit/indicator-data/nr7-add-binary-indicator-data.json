@@ -3,6 +3,6 @@
     "addBinaryIndicatorData"  : "Add response",
     "general": "General",
     "government": "Government",
-    "selectLanguages": "Please select in which language(s) you wish to submit this record"
-
-}
+    "selectLanguages": "Please select in which language(s) you wish to submit this record",
+    "indicator": "Indicator"
+}  

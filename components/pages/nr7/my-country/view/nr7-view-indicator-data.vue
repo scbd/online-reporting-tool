@@ -1,4 +1,8 @@
 <template>
+    <km-form-group v-if="showIndicator" :caption="t('indicator')">
+        <km-term v-if="indicatorType!='otherNationalIndicators'" :value="indicatorData?.indicator?.identifier" :locale="selectedLocale"></km-term>
+        <km-value v-if="indicatorType=='otherNationalIndicators'">{{ lstring(otherNationalIndicator, selectedLocale) }}</km-value>
+    </km-form-group>
     <km-form-group v-if="indicatorData.sourceOfData" :caption="t('sourceOfData')">
         <km-value>{{ t(indicatorData.sourceOfData) }}</km-value>
     </km-form-group>
@@ -39,14 +43,16 @@
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-add-indicator-data.json"></i18n>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/indicator-data/nr7-view-indicator-data.json"></i18n>
 <script setup lang="ts">
-import { computed, toRefs, defineProps } from 'vue';
+import { computed, toRefs } from 'vue';
 import type {IndicatorData } from '~/types/controls/indicator-mapping';
 import type { ETerm } from '~/types/schemas/base/ETerm';
 
     const props = defineProps({
         indicatorData: { type: Object, required: true },
         documentLocale: { type:String },
-        indicatorType: { type: String }
+        indicatorType: { type: String },
+        displayIndicator: {type:Boolean, default:false},
+        otherNationalIndicator: {type:String, default:undefined}
     });
 
     const thesaurusStore    = useThesaurusStore();
@@ -55,7 +61,9 @@ import type { ETerm } from '~/types/schemas/base/ETerm';
     const selectedLocale = computed(()=>props.documentLocale||locale.value);
 
     const indicator:ComputedRef<ETerm> = computed(() => thesaurusStore.getTerm(props.indicatorData?.indicator?.identifier)||{});
-    
+    const showIndicator = computed(()=>{
+        return props.displayIndicator && indicatorData.value?.indicator
+    })
     const excelHeaders = computed(() => [
         { type: String, value: t('indicatorCode'), fontWeight: 'bold' },
         { type: String, value: t('indicator'), fontWeight: 'bold' },

@@ -25,7 +25,7 @@
                         {{ t('indicatorData') }}
                     </legend>
                     <hr>
-                    <nr7-view-target-indicators :target-indicators="assessment.indicatorData"
+                    <nr7-view-target-indicators :target-indicators="assessment.indicatorData" :hide-missing-data-alert="true"
                         :indicators-data="indicatorsData"></nr7-view-target-indicators>
                 
                 </div>

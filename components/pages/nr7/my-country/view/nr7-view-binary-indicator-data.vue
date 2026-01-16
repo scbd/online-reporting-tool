@@ -1,6 +1,10 @@
 <template>
     <!-- {{indicator}} -->
      <!-- {{questions}} -->
+    <km-form-group v-if="indicatorData?.indicator && displayIndicator" :caption="t('indicator')">
+        <km-value-term :value="indicatorData?.indicator?.identifier" :locale="selectedLocale"></km-value-term>
+    </km-form-group>
+
     <div class="mb-3" v-for="(question, key) in processedQuestions" :key="question?.key">
         <!-- {{key}} {{question.visible}} -->
         <span v-if="!question?.key">{{ question }}</span>
@@ -66,7 +70,8 @@ const props = defineProps({
     questions : { type: Array, required: true },
     isRecursive : {type:Boolean, default:false},
     hideMissingResponse : {type:Boolean, default:false},
-    documentLocale: { type:String }
+    documentLocale: { type:String },
+    displayIndicator: {type:Boolean, default:false}
 });
 const {locale, t} = useI18n();
 const selectedLocale = computed(()=>props.documentLocale||locale.value);
@@ -74,7 +79,6 @@ const selectedLocale = computed(()=>props.documentLocale||locale.value);
 const { indicatorData, questions } = toRefs(props);
 
 const processedQuestions = computed(()=>{
-    console.log('processing questions', questions.value);
         const lQuestions = cloneDeep(questions.value);
     if(!props.isRecursive){
         const flatQuestions = flattenQuestions(lQuestions);
