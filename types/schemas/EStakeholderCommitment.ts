@@ -25,6 +25,7 @@ export interface EStakeholderCommitment extends EContactBase {
 	alignmentInformation: ELstring;
 	indicators: ETerm[];
 	implementingConsiderations: ETerm[];
+	coverageScope: 'national' | 'multiCountries' | 'global';
 	coverageCountries: ETerm[];
 	coverageRegions: ETerm[];
 	coverageOther: ELstring[];
