@@ -106,26 +106,37 @@
                                 <div class="card-header bg-secondary">{{ t('coverageSection') }}</div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-12">
+                                            <km-form-group name="coverageScope" :caption="t('coverageScope')" required>                                        
+                                                <km-form-check-item :inline="true" type="radio" name="coverageScope" for="coverageScope" id="coverageScope" value="national" v-model="document.coverageScope" :label="t('national')"/>
+                                                <km-form-check-item :inline="true" type="radio" name="coverageScope" for="coverageScope" id="coverageScope" value="multiCountries"   v-model="document.coverageScope" :label="t('multiCountries')"/>                                                             
+                                                <km-form-check-item :inline="true" type="radio" name="coverageScope" for="coverageScope" id="coverageScope" value="global" v-model="document.coverageScope" :label="t('global')"/>                                                                                                        
+                                                <div><small id="emailHelp" class="form-text text-muted">{{t('coverageScopeHelp')}}</small></div>
+                                         </km-form-group>
+                                        </div>  
+                                    </div>
+                                    <div class="row" v-if="document.coverageScope">
+                                        <div class="col-md-12">
                                             <km-form-group name="coverageCountries" :caption="t('coverageCountries')"
-                                                required>
+                                                required v-if="document.coverageScope === 'national' || document.coverageScope === 'multiCountries'">
                                                 <km-select v-model="document.coverageCountries" :options="countries"
-                                                    multiple :placeholder="t('coverageCountries')"
+                                                    :placeholder="t('coverageCountries')"
                                                     @update:modelValue="onCoverageCountriesChange"
                                                     :custom-label="customLabel" :custom-selected-item="customSelectedItem"
-                                                    :close-on-select="false">
+                                                    :max="document.coverageScope === 'national' ? 1 : 300"
+                                                    :close-on-select="document.coverageScope === 'national'" :multiple="true">
                                                 </km-select>
                                             </km-form-group>
                                         </div>
-                                        <div class="col-md-2">
+                                        <!-- <div class="col-md-2">
                                             <div class="d-flex justify-content-center align-items-center"
                                                 style="height: 30px;" v-if="disableLinkedToNbsapCountries">
                                                 <strong class="rounded-circle border border-dark p-2">{{ t('andOr') }}</strong>
                                             </div>
-                                        </div>
-                                        <div class="col-md-5">
+                                        </div> -->
+                                        <div class="col-md-12">
                                             <km-form-group name="coverageRegions" :caption="t('coverageRegions')"
-                                                required>
+                                                required v-if="document.coverageScope === 'global'">
                                                 <km-select v-model="document.coverageRegions"
                                                     :options="regions" multiple :placeholder="t('coverageRegions')"
                                                     :close-on-select="false" 
@@ -454,6 +465,13 @@
         if (clean.isParty === true)
             clean.government = undefined;
         clean.additionalDocuments = undefined;
+
+        if(clean.coverageScope === 'national')
+            clean.coverageRegions = undefined;
+        else if(clean.coverageScope === 'multiCountries')
+            clean.coverageRegions = undefined;
+        else if(clean.coverageScope === 'global')
+            clean.coverageCountries = undefined;    
 
         if(hasCoverageCountries.value > 1 || clean.coverageRegions?.length){
             clean.otherNationalTargets = undefined;
