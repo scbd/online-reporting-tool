@@ -8,7 +8,6 @@
     "including": "Including:",
     "descriptionHelp_a": "(a) An overview of scope, and the actions proposed;",
     "descriptionHelp_b": "(b) Which direct and indirect drivers or enabling conditions of biodiversity loss the commitment will seek to address (optional).",
-    
     "timeline": "Timeline of commitment",
     "startDate": "Start date",
     "endDate": "End date (if applicable)",
@@ -17,51 +16,47 @@
     "isOpenEnded": "Alternatively, indicate whether the commitment is open-ended",
     "openEnded": "Open-ended commitment",
     "nextStepsInformation": "Share information on plans for next steps",
-
     "performanceInformation": "Key performance indicators or other relevant indicators of measurable success (such as percentages, figures or other quantitative pieces of information, noting links with the indicators from the monitoring framework for the Kunming-Montreal Global Biodiversity Framework, national biodiversity strategies and action plans, and national targets, when applicable)",
-    "endorsementsInformation":"CountryReviews (for example, in the case of a collective commitment by a coalition of organizations, if the commitment has been reviewed by the chief executive officers or governing bodies of the constituent organizations, including traditional authorities)",
-    
+    "endorsementsInformation": "CountryReviews (for example, in the case of a collective commitment by a coalition of organizations, if the commitment has been reviewed by the chief executive officers or governing bodies of the constituent organizations, including traditional authorities)",
     "coverageSection": "Geographical coverage of the commitment ",
+    "coverageScopeHelp": "1. National (select one country) 2. Multi countries (select one or more countries) 3. Global (select one or more regions)",
+    "coverageScope": "Is this commitment related to one country, multiple countries, or a global commitment?",
+    "national": "National",
+    "multiCountries": "Multi countries",
+    "global": "Global",
     "coverageCountries": "Country(s)",
     "coverageRegions": "Region(s)",
     "coverageOther": "Biome(s) or ecosystem(s)",
-
     "isLinkedToNbsap": "Is the commitment explicitly mentioned in any national biodiversity strategy and action plan?",
     "linkedToNbsapCountries": "Indicate in which country or countries",
     "nbsapCountriesHelp": "If geographical coverage is limited to one country, the country should be the same as the one where the commitment is mentioned in the national biodiversity strategy and action plan.",
-
     "alignmentSection": "Goals and targets of the Framework",
     "alignmentSectionHelp": "Goals and targets of the Framework, as well as national biodiversity strategies and action plans, and national targets, that the commitment is meant to contribute to, and any relevant headline indicators",
     "primaryGlobalAlignment": "Primary global target (selection of the single most relevant target or goal)",
     "primaryNationalTarget": "Primary national target",
     "otherNationalTargets": "Other national target(s)",
     "otherGlobalAlignments": "Other relevant targets and goals",
-    "implementingConsiderations":"Elements of the Framework (e.g. its section C)",
+    "implementingConsiderations": "Elements of the Framework (e.g. its section C)",
     "indicators": "Indicators",
     "indicatorsHelp": "Select any relevant headline, binary, component, complementary indicators associated with the selected goals and targets",
     "alignmentInformation": "Provide additional information on alignment with the goals and targets of the Framework",
-
     "fundingSection": "Funding",
     "fundingSource": "Funding to be used towards meeting the commitment",
     "isFundingSufficient": "Is the funding sufficient for achieving the commitment?",
-
     "partnersFrameworksSection": "Partners and frameworks",
     "internationalFrameworks": "Sustainable Development Goals and multilateral environmental agreements and instruments to which the commitment contributes",
     "partners": "Partners (name and location of other organizations involved in the commitment)",
-
     "progressSection": "Progress tracking",
     "isReportingOnTarget15": "Will you report or provide information on Target 15 of the Framework?",
-    "target15Information" : "Please provide details on what and how you will report or provide",
-    "isProgressTracked" : "Is progress towards the commitment tracked?",
+    "target15Information": "Please provide details on what and how you will report or provide",
+    "isProgressTracked": "Is progress towards the commitment tracked?",
     "progressInformation": "What is the format (e.g. online or in a printed publication), frequency and public availability of progress tracking against the commitment",
     "progressTrackingUrl": "Provide a web address, if available",
     "implementationStrategiesSection": "Implementation strategies",
     "implementationStrategies": "Potential ways to address challenges and opportunities in achieving effective implementation of the commitment and its contribution to the Framework, including its section C and its targets and goals, and other decisions (e.g. the Gender Plan of Action (2023–2030))",
-    
     "additionalInformationSection": "Additional information",
     "additionalInformation": "Provide any other relevant information that may not have been addressed elsewhere in the record",
     "additionalDocuments": "Other relevant website address or attached documents",
     "yes": "Yes",
     "no": "No"
-
 }
