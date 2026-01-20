@@ -141,6 +141,7 @@
                                                     :options="regions" multiple :placeholder="t('coverageRegions')"
                                                     :close-on-select="false" 
                                                     :custom-label="customLabel" :custom-selected-item="customSelectedItem"/>
+                                                    <region-country-list v-if="document.coverageRegions?.length" :regions="document.coverageRegions"></region-country-list>                                                    
                                             </km-form-group>
                                         </div>
 
