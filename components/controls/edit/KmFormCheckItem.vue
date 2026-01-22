@@ -19,6 +19,10 @@
 
 <script  setup> 
    
+    defineOptions({
+        inheritAttrs: false
+    })
+    
     const model = defineModel({
         type: [Array, Boolean ], // Arrays for handling checkboxes, and boolean for radio types
         required: true
