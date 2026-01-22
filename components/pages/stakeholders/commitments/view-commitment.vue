@@ -225,7 +225,7 @@
               <km-form-group :caption="t('additionalInformation')">
                 <km-lstring-value type="html" :value="viewDocument.additionalInformation" :locale="selectedLocale" />
               </km-form-group>
-              <km-form-group :caption="t('additionalDocuments')">
+              <km-form-group :caption="t('additionalDocuments')" v-if="viewDocument.additionalDocuments?.length">
                 <km-view-links :can-edit="false" :links="viewDocument.additionalDocuments" />
               </km-form-group>
             </div>
@@ -288,6 +288,9 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
   })
 
   const showEnhancedReviews = computed(()=>{
+    if(!user.value?.government){
+      return false;
+    }
     if(user.value?.government){
       if(security.role.isNationalFocalPoint())
         return countryReviews.value.find((e: ECommitmentCountryReview)=>e.government == user.value.government)
