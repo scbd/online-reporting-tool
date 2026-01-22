@@ -67,7 +67,9 @@
           <div class="card">
             <div class="card-header bg-secondary">{{ t('coverageSection') }}</div>
             <div class="card-body">
-
+              <km-form-group :caption="t('coverageScope')" v-if="viewDocument.coverageScope">
+                <km-value :value="t(viewDocument.coverageScope)" />
+              </km-form-group>
               <km-form-group :caption="t('coverageCountries')" v-if="viewDocument.coverageCountries && showCoverage">
                 <km-value-terms :value="viewDocument.coverageCountries" :locale="selectedLocale" />
               </km-form-group>
