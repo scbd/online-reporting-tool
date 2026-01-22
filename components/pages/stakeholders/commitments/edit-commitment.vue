@@ -107,10 +107,10 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <km-form-group name="coverageScope" :caption="t('coverageScope')" required>                                        
-                                                <km-form-check-item :inline="true" type="radio" name="coverageScope" for="coverageScope" id="coverageScope" value="national" v-model="document.coverageScope" :label="t('national')"/>
-                                                <km-form-check-item :inline="true" type="radio" name="coverageScope" for="coverageScope" id="coverageScope" value="multiCountries"   v-model="document.coverageScope" :label="t('multiCountries')"/>                                                             
-                                                <km-form-check-item :inline="true" type="radio" name="coverageScope" for="coverageScope" id="coverageScope" value="global" v-model="document.coverageScope" :label="t('global')"/>                                                                                                        
+                                            <km-form-group name="coverageScope" :caption="t('coverageScope')" required>                                                            
+                                                <km-form-check-item :inline="true" type="radio" name="coverageScope" for="coverageScope" id="coverageScopeNational" value="national" v-model="document.coverageScope" :label="t('national')"/>
+                                                <km-form-check-item :inline="true" type="radio" name="coverageScope" for="coverageScope" id="coverageScopeMultiCountries" value="multiCountries"   v-model="document.coverageScope" :label="t('multiCountries')"/>                                                             
+                                                <km-form-check-item :inline="true" type="radio" name="coverageScope" for="coverageScope" id="coverageScopeGlobal" value="global" v-model="document.coverageScope" :label="t('global')"/>                                                                                                        
                                                 <div><small id="emailHelp" class="form-text text-muted">{{t('coverageScopeHelp')}}</small></div>
                                          </km-form-group>
                                         </div>  
