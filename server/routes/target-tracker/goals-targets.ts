@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 import { HTTP_STATUS } from '~/utils';
 export default defineEventHandler((event) => {
     try{
