@@ -61,5 +61,6 @@
     "validationProgressInfo": "For accurate confirmation of any missing information, please use the validation button above, which provides the final and authoritative status of your submission.",
     "pdf": "PDF",
     "showSectionIIIProgress": "Show section III progress",
-    "hideSectionIIIProgress": "Hide section III progress"
+    "hideSectionIIIProgress": "Hide section III progress",
+    "noErrors": "Validation successful"
 }
