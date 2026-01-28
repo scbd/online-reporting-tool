@@ -40,13 +40,22 @@
                         {{t('refresh')}}
                     </CButton>  
                     <CButton color="secondary" @click="onPdf" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
-                        <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> PDF
+                        <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> {{t('pdf')}}
                     </CButton>
                 </div>
-                <small class="form-text text-muted float-end">Click on preview to generate PDF or print NR7</small>
+                <small class="form-text text-muted float-end">{{ t('pdfInfo') }}</small>
               </div>
             </div>
           </CCol>
+        </CRow>
+        <CRow>
+            <CCol :md="12" class="mt-2">
+                <div class="alert alert-info">
+                    <font-awesome-icon icon="fa-solid fa-info-circle" class="text-info me-2"/>
+                    <strong>{{t('info')}}:</strong> {{t('progressInfo')}}
+                    <strong>{{t('validationProgressInfo')}}</strong>
+                </div>
+            </CCol>
         </CRow>
         <CRow>
             <CCol md="4" class="mt-2">
@@ -153,6 +162,7 @@
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III+ '?edit=true'" :title="t('editSectionIII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
+                            <button @click="showSectionIIIProgress = !showSectionIIIProgress" class="btn btn-secondary btn-sm">{{showSectionIIIProgress ? t('hideSectionIIIProgress') : t('showSectionIIIProgress')}}</button>
                         </div>
                     </small>
                 </div>
@@ -370,14 +380,20 @@
                                 {{t('refresh')}}
                             </CButton>
                             <CButton color="secondary" @click="onPdf" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
-                                <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> PDF
+                                <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> {{t('pdf')}}
                             </CButton>
                         </div>
                     </CCardBody>
                 </CCard>
             </CCol>
         </CRow>
-        
+        <div v-if="!isLoading && cleanDocument?.sectionIII" >
+            <div v-show="showSectionIIIProgress">
+                <section-III-progress :section-III="cleanDocument.sectionIII" 
+                    @on-progress-updated="onProgressUpdated" />
+            </div>
+        </div>
+
         <km-modal-spinner :visible="showSpinnerDialog" :message="t('spinnerMessage')"></km-modal-spinner>
 
         <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {showConfirmDialog=false}" :visible="showConfirmDialog" >
@@ -488,6 +504,7 @@
     const mandatoryIndicators        = ref([]);
     const binaryIndicators           = ref([]);
     const showPreview              = ref(false);
+    const showSectionIIIProgress   = ref(false);
 
     const cleanDocument = computed(()=>{
         let clean = {...nationalReport7Store.nationalReport};
@@ -563,18 +580,17 @@
                 'implementationProgress'
             ],
             sectionIII:[
-                'target',
-                'mainActionsInfo',
-                'levelOfProgress',
-                'progressSummaryInfo',
-                'data',
-                'actionEffectivenessInfo',
-                'sdgRelationInfo'
+               'target',
+               'mainActionsSummary',
+               'levelOfProgress',
+               'progressSummary',
+               'keyChallengesSummary',
+               'actionEffectivenessSummary'
             ],
             sectionIV :[
-                'gbfGoal',
-                'summaryOfProgress',
-                'indicatorData'
+               'gbfGoal',
+               'summaryOfProgress',
+               'indicatorData'
             ],
             sectionV: ['assessmentSummary']
         }
@@ -594,7 +610,7 @@
                 progress.sectionI += 25;
             }
         })
-        console.log('progress.sectionI', progress.sectionI);
+        
         if(document.sectionII?.hasRevisedNbsap!=undefined){
             progress.sectionII = 25;
         }
@@ -630,29 +646,41 @@
 
         if(document.sectionIII?.length){
             progress.sectionIII += 5;
-            const pendingProgress = 95 / document.sectionIII.length;
-            document.sectionIII.map(section=>{
-
-                if(section?.indicatorData){
-                    const headDataCount = section.indicatorData?.headline?.map(e=>e.data!= undefined)
-                    // section?.indicatorData.binary||[]
-                    progress.sectionIII += pendingProgress;
-                    return;
-                }
-            })
         }
 
         if(document.sectionIV?.length){
-            progress.sectionIV += 5;
+            progress.sectionIV += 10;
             document.sectionIV.map(section=>{
+                if(section.gbfGoal){
+                    progress.sectionIV += 5;
+                }
                 if(section.summaryOfProgress){
                     progress.sectionIV += 5;
                 }
-                for(const indicator in section.indicatorData||[]){
-                    if(section.indicatorData[indicator]?.data?.length){
-                        progress.sectionIV += 5;
+                const gloaWithIndicators = {
+                    'GBF-GOAL-A': {
+                        headline: 4,
+                        binary: 0
+                    },
+                    'GBF-GOAL-B': {
+                        headline: 1,
+                        binary: 1
+                    },
+                    'GBF-GOAL-C': {
+                        headline: 2,
+                        binary: 1
+                    },
+                    'GBF-GOAL-D': {
+                        headline: 3,
+                        binary: 0
                     }
                 }
+                const indicatorCount = gloaWithIndicators[section.gbfGoal?.identifier];
+                const headlineIndicators = section.indicatorData?.headline?.filter(item => item.data?.identifier).length || 0;
+                const binaryIndicators = section.indicatorData?.binary?.filter(item => item.data?.identifier).length || 0;
+                const totalIndicators = headlineIndicators + binaryIndicators;  
+                const percentage = (indicatorCount.headline + indicatorCount.binary) / totalIndicators;
+                progress.sectionIV += 12 * percentage;
             })
         }
 
@@ -666,6 +694,9 @@
         
         
         nrProgress.value = progress
+    }
+    function onProgressUpdated(progress){
+        nrProgress.value.sectionIII= progress.overallProgress.overallPercentage;
     }
 
     async function onPreview(){
@@ -836,7 +867,6 @@
     }
 
     async function onWorkflowAction(actionData){
-        // console.log(actionData);
         showSpinnerDialog.value = true;
         const workflow =  await $api.kmWorkflows.getWorkflow(actionData.workflowId);
         if(workflow){
