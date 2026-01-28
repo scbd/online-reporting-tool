@@ -59,5 +59,7 @@
     "infoMessage": "The progress shown in this section is for informational purposes only. It may differ slightly from the actual data you have provided. Minor differences can be ignored—this feature is simply intended to give you an overall sense of how far the country has progressed in entering information in NR7. For accurate confirmation of any missing information, please use the validation button above, which provides the final and authoritative status of your submission.",
     "progressInfo": "The progress shown in this section is for informational purposes only. It may differ slightly from the actual data you have provided. Minor differences can be ignored—this feature is simply intended to give you an overall sense of how far the country has progressed in entering information in NR7.",
     "validationProgressInfo": "For accurate confirmation of any missing information, please use the validation button above, which provides the final and authoritative status of your submission.",
-    "pdf": "PDF"
+    "pdf": "PDF",
+    "showSectionIIIProgress": "Show section III progress",
+    "hideSectionIIIProgress": "Hide section III progress"
 }
