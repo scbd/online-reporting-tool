@@ -59,7 +59,8 @@
         </CRow>
         <CRow>
             <CCol md="4" class="mt-2">
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIErrors?.length,
+                    'border-success bg-success text-white' : !sectionIErrors?.length && !isValidating && hasValidated}">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionI') }}</div>
                     <hr>
@@ -95,7 +96,8 @@
                 </div>
             </CCol>
             <CCol md="4" class="mt-2">
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIErrors?.length,
+                    'border-success bg-success text-white' : !sectionIIErrors?.length && !isValidating && hasValidated}">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionII') }}</div>
                     <hr>
@@ -132,7 +134,8 @@
                 </div>
             </CCol>
             <CCol md="4" class="mt-2">               
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIIErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIIErrors?.length,
+                    'border-success bg-success text-white' : !sectionIIIErrors?.length && !isValidating && hasValidated}">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionIII') }}</div>
                     <hr>
@@ -169,7 +172,8 @@
                 </div>
             </CCol>
             <CCol md="4" class="mt-2">
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIVErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIVErrors?.length,
+                    'border-success bg-success text-white' : !sectionIVErrors?.length && !isValidating && hasValidated}">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionIV') }}</div>
                     <hr>
@@ -203,7 +207,9 @@
                 </div>
             </CCol>
             <CCol md="4" class="mt-2">
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionVErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionVErrors?.length,
+                    'border-success bg-success text-white' : !sectionVErrors?.length && !isValidating && hasValidated
+                }">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionV') }}</div>
                     <hr>
@@ -276,11 +282,13 @@
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th colspan="2">{{ t('hasErrors') }}</th>
+                                    <th colspan="2">{{ t(validationErrorDraftsCount>0?  'hasErrors':'noErrors') }}
+                                        
+                                    </th>
                                 </tr>
-                                <tr>
+                                <tr v-if="validationErrorDraftsCount>0">
                                     <td colspan="2">
-                                        <div class="alert alert-danger">
+                                        <div class="alert alert-danger" >
                                             <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
                                             {{t('missingIndicatorFieldsMessage')}}                                            
                                         </div>
@@ -492,6 +500,7 @@
     const viewActionsRef           = ref();
 
     const isValidating       = ref(false);
+    const hasValidated       = ref(false);  
     const isLoadingRecords   = ref(false);
     const isPublishing       = ref(false);
     const showValidationErrorDialog = ref(false);
@@ -520,6 +529,7 @@
     const disableActions = computed(()=>isValidating.value || isBusy.value || isLoadingRecords.value || isPublishing.value ||
         cleanDocumentInfo.value?.workingDocumentLock);
     const validationErrorDrafts = computed(()=>draftIndicatorData.value)//.filter(e=>e.errors?.length)
+    const validationErrorDraftsCount = computed(()=>validationErrorDrafts.value?.filter(e=>e.errors?.length)?.length) 
     const missingIndicatorData  = computed(()=>{
         const indicatorData = [...(publishedIndicatorData.value||[]), ...(draftIndicatorData.value||[])];
         const identifier    = indicatorData.map(e=>e.body?.indicator?.identifier).filter(e=>e);
@@ -762,7 +772,7 @@
     async function onValidate(){
         try{
             isValidating.value = true; 
-
+            hasValidated.value = true;
             if(!draftIndicatorData.value?.length){
                 const drafts = await Promise.all([
                     KmDocumentDraftsService.loadSchemaDrafts(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA, user.value?.government),
