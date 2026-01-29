@@ -40,17 +40,27 @@
                         {{t('refresh')}}
                     </CButton>  
                     <CButton color="secondary" @click="onPdf" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
-                        <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> PDF
+                        <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> {{t('pdf')}}
                     </CButton>
                 </div>
-                <small class="form-text text-muted float-end">Click on preview to generate PDF or print NR7</small>
+                <small class="form-text text-muted float-end">{{ t('pdfInfo') }}</small>
               </div>
             </div>
           </CCol>
         </CRow>
         <CRow>
+            <CCol :md="12" class="mt-2">
+                <div class="alert alert-info">
+                    <font-awesome-icon icon="fa-solid fa-info-circle" class="text-info me-2"/>
+                    <strong>{{t('info')}}:</strong> {{t('progressInfo')}}
+                    <strong>{{t('validationProgressInfo')}}</strong>
+                </div>
+            </CCol>
+        </CRow>
+        <CRow>
             <CCol md="4" class="mt-2">
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIErrors?.length,
+                    'border-success bg-success text-white' : !sectionIErrors?.length && !isValidating && hasValidated}">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionI') }}</div>
                     <hr>
@@ -86,7 +96,8 @@
                 </div>
             </CCol>
             <CCol md="4" class="mt-2">
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIErrors?.length,
+                    'border-success bg-success text-white' : !sectionIIErrors?.length && !isValidating && hasValidated}">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionII') }}</div>
                     <hr>
@@ -123,7 +134,8 @@
                 </div>
             </CCol>
             <CCol md="4" class="mt-2">               
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIIErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIIIErrors?.length,
+                    'border-success bg-success text-white' : !sectionIIIErrors?.length && !isValidating && hasValidated}">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionIII') }}</div>
                     <hr>
@@ -153,13 +165,15 @@
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
                             <km-link :disabled="disableActions" :to="appRoutes.NATIONAL_REPORTS_NR7_MY_COUNTRY_EDIT_SECTION_III+ '?edit=true'" :title="t('editSectionIII')" 
                                 role="button" class="btn btn-secondary btn-sm"></km-link>
+                            <button @click="showSectionIIIProgress = !showSectionIIIProgress" class="btn btn-secondary btn-sm">{{showSectionIIIProgress ? t('hideSectionIIIProgress') : t('showSectionIIIProgress')}}</button>
                         </div>
                     </small>
                 </div>
                 </div>
             </CCol>
             <CCol md="4" class="mt-2">
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIVErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionIVErrors?.length,
+                    'border-success bg-success text-white' : !sectionIVErrors?.length && !isValidating && hasValidated}">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionIV') }}</div>
                     <hr>
@@ -193,7 +207,9 @@
                 </div>
             </CCol>
             <CCol md="4" class="mt-2">
-                <div class="card" :class="{'border-danger bg-danger text-white' : sectionVErrors?.length}">
+                <div class="card" :class="{'border-danger bg-danger text-white' : sectionVErrors?.length,
+                    'border-success bg-success text-white' : !sectionVErrors?.length && !isValidating && hasValidated
+                }">
                 <div class="card-body">
                     <div class="h4 m-0">{{ t('sectionV') }}</div>
                     <hr>
@@ -266,11 +282,13 @@
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th colspan="2">{{ t('hasErrors') }}</th>
+                                    <th colspan="2">{{ t(validationErrorDraftsCount>0?  'hasErrors':'noErrors') }}
+                                        
+                                    </th>
                                 </tr>
-                                <tr>
+                                <tr v-if="validationErrorDraftsCount>0">
                                     <td colspan="2">
-                                        <div class="alert alert-danger">
+                                        <div class="alert alert-danger" >
                                             <font-awesome-icon icon="fa-solid fa-triangle-exclamation" size="2x"/>
                                             {{t('missingIndicatorFieldsMessage')}}                                            
                                         </div>
@@ -370,14 +388,20 @@
                                 {{t('refresh')}}
                             </CButton>
                             <CButton color="secondary" @click="onPdf" style="z-index: 1000;" :disabled="isLoading||isPublishing||isValidating">
-                                <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> PDF
+                                <font-awesome-icon icon="fa-file-pdf" :spin="isLoading"/> {{t('pdf')}}
                             </CButton>
                         </div>
                     </CCardBody>
                 </CCard>
             </CCol>
         </CRow>
-        
+        <div v-if="!isLoading && cleanDocument?.sectionIII" >
+            <div v-show="showSectionIIIProgress">
+                <section-III-progress :section-III="cleanDocument.sectionIII" 
+                    @on-progress-updated="onProgressUpdated" />
+            </div>
+        </div>
+
         <km-modal-spinner :visible="showSpinnerDialog" :message="t('spinnerMessage')"></km-modal-spinner>
 
         <CModal  class="show d-block" alignment="center" backdrop="static" @close="() => {showConfirmDialog=false}" :visible="showConfirmDialog" >
@@ -476,6 +500,7 @@
     const viewActionsRef           = ref();
 
     const isValidating       = ref(false);
+    const hasValidated       = ref(false);  
     const isLoadingRecords   = ref(false);
     const isPublishing       = ref(false);
     const showValidationErrorDialog = ref(false);
@@ -488,6 +513,7 @@
     const mandatoryIndicators        = ref([]);
     const binaryIndicators           = ref([]);
     const showPreview              = ref(false);
+    const showSectionIIIProgress   = ref(false);
 
     const cleanDocument = computed(()=>{
         let clean = {...nationalReport7Store.nationalReport};
@@ -503,6 +529,7 @@
     const disableActions = computed(()=>isValidating.value || isBusy.value || isLoadingRecords.value || isPublishing.value ||
         cleanDocumentInfo.value?.workingDocumentLock);
     const validationErrorDrafts = computed(()=>draftIndicatorData.value)//.filter(e=>e.errors?.length)
+    const validationErrorDraftsCount = computed(()=>validationErrorDrafts.value?.filter(e=>e.errors?.length)?.length) 
     const missingIndicatorData  = computed(()=>{
         const indicatorData = [...(publishedIndicatorData.value||[]), ...(draftIndicatorData.value||[])];
         const identifier    = indicatorData.map(e=>e.body?.indicator?.identifier).filter(e=>e);
@@ -563,18 +590,17 @@
                 'implementationProgress'
             ],
             sectionIII:[
-                'target',
-                'mainActionsInfo',
-                'levelOfProgress',
-                'progressSummaryInfo',
-                'data',
-                'actionEffectivenessInfo',
-                'sdgRelationInfo'
+               'target',
+               'mainActionsSummary',
+               'levelOfProgress',
+               'progressSummary',
+               'keyChallengesSummary',
+               'actionEffectivenessSummary'
             ],
             sectionIV :[
-                'gbfGoal',
-                'summaryOfProgress',
-                'indicatorData'
+               'gbfGoal',
+               'summaryOfProgress',
+               'indicatorData'
             ],
             sectionV: ['assessmentSummary']
         }
@@ -600,7 +626,7 @@
         }
 
         if(['no', 'inProgress'].includes(document.sectionII?.hasRevisedNbsap) 
-            && document.sectionII?.anticipatedNbsapDate!= undefined){
+            && document.sectionII?.anticipatedNbsapDate== undefined){
                 progress.sectionII -= 15;
         }
 
@@ -616,11 +642,11 @@
             progress.sectionII += 25;
         }
         if(['yes'].includes(document.sectionII?.hasNbsapAdopted) 
-            && document.sectionII?.policyInstrument != undefined){
+            && document.sectionII?.policyInstrument == undefined){
                 progress.sectionII -= 15;
         }
         if(['no', 'other'].includes(document.sectionII?.hasNbsapAdopted) 
-            && document.sectionII?.anticipatedNbsapAdoptionDate != undefined){
+            && document.sectionII?.anticipatedNbsapAdoptionDate == undefined){
                 progress.sectionII -= 15;
         }
         if(document.sectionII?.implementationProgress != undefined){
@@ -633,7 +659,39 @@
         }
 
         if(document.sectionIV?.length){
-            progress.sectionIV += 5;
+            progress.sectionIV += 10;
+            document.sectionIV.map(section=>{
+                if(section.gbfGoal){
+                    progress.sectionIV += 5;
+                }
+                if(section.summaryOfProgress){
+                    progress.sectionIV += 5;
+                }
+                const gloaWithIndicators = {
+                    'GBF-GOAL-A': {
+                        headline: 4,
+                        binary: 0
+                    },
+                    'GBF-GOAL-B': {
+                        headline: 1,
+                        binary: 1
+                    },
+                    'GBF-GOAL-C': {
+                        headline: 2,
+                        binary: 1
+                    },
+                    'GBF-GOAL-D': {
+                        headline: 3,
+                        binary: 0
+                    }
+                }
+                const indicatorCount = gloaWithIndicators[section.gbfGoal?.identifier];
+                const headlineIndicators = section.indicatorData?.headline?.filter(item => item.data?.identifier).length || 0;
+                const binaryIndicators = section.indicatorData?.binary?.filter(item => item.data?.identifier).length || 0;
+                const totalIndicators = headlineIndicators + binaryIndicators;  
+                const percentage = (indicatorCount.headline + indicatorCount.binary) / totalIndicators;
+                progress.sectionIV += 12 * percentage;
+            })
         }
 
         if(document.sectionV?.assessmentSummary)
@@ -646,6 +704,9 @@
         
         
         nrProgress.value = progress
+    }
+    function onProgressUpdated(progress){
+        nrProgress.value.sectionIII= progress.overallProgress.overallPercentage;
     }
 
     async function onPreview(){
@@ -711,7 +772,7 @@
     async function onValidate(){
         try{
             isValidating.value = true; 
-
+            hasValidated.value = true;
             if(!draftIndicatorData.value?.length){
                 const drafts = await Promise.all([
                     KmDocumentDraftsService.loadSchemaDrafts(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA, user.value?.government),
@@ -816,7 +877,6 @@
     }
 
     async function onWorkflowAction(actionData){
-        // console.log(actionData);
         showSpinnerDialog.value = true;
         const workflow =  await $api.kmWorkflows.getWorkflow(actionData.workflowId);
         if(workflow){
