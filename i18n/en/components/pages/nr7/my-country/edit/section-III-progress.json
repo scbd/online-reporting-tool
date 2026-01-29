@@ -14,5 +14,6 @@
     "missing": "Missing",
     "info": "Info",
     "infoMessage": "The progress shown in this section is for informational purposes only. It may differ slightly from the actual data you have provided. Minor differences can be ignored—this feature is simply intended to give you an overall sense of how far the country has progressed in entering information in NR7.",
+    "missingBinaryIndicator": "The system may show binary indicators as missing. This is expected behaviour. If a target does not have any linked binary indicators, the incomplete progress bar for binary indicators can be safely ignored.",
     "validationProgressInfo": "For accurate confirmation of any missing information, please use the validation button above, which provides the final and authoritative status of your submission."
 }
