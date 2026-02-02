@@ -1,8 +1,10 @@
 <template>
    <div class="row">
         <div class="col-12 mb-1">
-            <pdf-section  class="me-md-2 btn-secondary float-end" :element="printSelector" :title="title" ref="pdfSectionRef" ></pdf-section>
-            <print-section  class="me-md-2 btn-secondary float-end" :element="printSelector" :title="title" ref="printSectionRef"></print-section>
+            <pdf-section  class="me-md-2 btn-secondary float-end" :element="printSelector" :title="title" ref="pdfSectionRef" 
+                @on-pdf-document="onPdfDocument" @on-after-pdf="onAfterPdf"></pdf-section>
+            <print-section  class="me-md-2 btn-secondary float-end" :element="printSelector" :title="title" ref="printSectionRef" 
+                @on-print-document="onPrintDocument" @on-before-print="onBeforePrint" @on-after-print="onAfterPrint"></print-section>
         </div>
     </div>
 </template>
@@ -31,7 +33,25 @@
             }
         }
     })
+    const emit = defineEmits(['onPrintDocument', 'onAfterPrint',    
+                                'onBeforePrint', 'onPdfDocument', 'onAfterPdf']);
 
+    const onPrintDocument = () => {
+        emit('onPrintDocument');
+    }
+    const onBeforePrint = () => {
+        emit('onBeforePrint');
+    }
+    const onAfterPrint = () => {
+        emit('onAfterPrint');
+    }
+
+    const onPdfDocument = () => {
+        emit('onPdfDocument');
+    }    
+    const onAfterPdf = () => {
+        emit('onAfterPdf');
+    }   
 </script>
 
 <style scoped>
