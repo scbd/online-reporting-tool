@@ -7,6 +7,12 @@ import type { EReference } from "./base/EReference";
 export interface ENationalReport7 {
     header                         : EHeader;
     government                     : ETerm;
+    sectionI                       : any
+    sectionII                      : any
+    sectionIII                     : SectionIII[]
+    sectionIV                      : SectionIV[]
+    sectionV                       : any
+    sectionOtherInfo               : any
     additionalInformation          : ELstring;
     additionalDocuments            : ELink[];
     notes                          : string;
@@ -27,6 +33,9 @@ export interface SectionIII {
     indicatorData: {
         headline: Array<LinkedIndicatorData>;
         binary: Array<LinkedIndicatorData>;
+        component: Array<LinkedIndicatorData>;
+        complementary: Array<LinkedIndicatorData>;
+        national: Array<LinkedIndicatorData>;
     };
 }  
 
@@ -36,5 +45,8 @@ export interface SectionIV {
     indicatorData: {
         headline: Array<LinkedIndicatorData>;
         binary: Array<LinkedIndicatorData>;
+        component: Array<LinkedIndicatorData>;
+        complementary: Array<LinkedIndicatorData>;
+        national: Array<LinkedIndicatorData>;
     };
 }
