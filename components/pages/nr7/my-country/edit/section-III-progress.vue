@@ -59,6 +59,7 @@
         <div class="alert alert-info">
             <font-awesome-icon icon="fa-solid fa-info-circle" class="text-info me-2"/>
             <strong>{{ t('info') }}:</strong> {{ t('infoMessage') }}
+            <strong>{{ t('missingBinaryIndicator') }}</strong>
         </div>
         <div class="row g-4">
             <div v-for="(result, idx) in progressData.results" :key="idx" class="col-12">
@@ -143,6 +144,7 @@
                         <div class="alert alert-info">
                             <font-awesome-icon icon="fa-solid fa-info-circle" class="text-info me-2"/>
                             <strong>{{ t('info') }}:</strong> {{ t('infoMessage') }}
+                            <strong>{{ t('missingBinaryIndicator') }}</strong>
                         </div>
                         <div v-if="!result.isFullyComplete" class="alert alert-warning mt-3 mb-0" role="alert">
                             <font-awesome-icon icon="fa-solid fa-exclamation-triangle" class="text-warning me-2"/>
@@ -153,7 +155,9 @@
             </div>
         </div>
 </template>
+<i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/nr7-edit-section-III.json"></i18n>
 <i18n src="@/i18n/dist/components/pages/nr7/my-country/edit/section-III-progress.json"></i18n>
+
 
 <script setup lang="ts">
 import { escape, parseSolrQuery, queryIndex } from '~/services/solr';
@@ -228,8 +232,7 @@ import { startCase } from 'lodash';
                 if (field === 'target' || field === 'levelOfProgress') {
                     isComplete = !!(value?.identifier);
                 } else {
-                    const elStringValue = value as ELstring;
-                    isComplete = !!(elStringValue?.en && elStringValue.en.trim() !== '');
+                    isComplete = hasUNLanguageText(value as ELstring);
                 }
                 return { field, isComplete };
             });
@@ -297,11 +300,15 @@ import { startCase } from 'lodash';
 
     const getMissingFields = (result: ProgressResult) => {
         const missing = [
-            ...result.mainFieldsStatus.filter(f => !f.isComplete).map(f => f.field),
+            ...result.mainFieldsStatus.filter(f => !f.isComplete).map(f => startCase(f.field)),
             ...(!result.indicatorStatus.headlineComplete ? ['Headline indicators'] : []),
             ...(!result.indicatorStatus.binaryComplete ? ['Binary indicators'] : [])
         ];
         return missing.join(', ');
+    };
+
+    const hasUNLanguageText = (elStringValue: ELstring) => {
+        return ['en', 'fr', 'es', 'ar', 'ru', 'zh'].some((lang)=>elStringValue?.[lang]?.trim() !== '');
     };
 
     

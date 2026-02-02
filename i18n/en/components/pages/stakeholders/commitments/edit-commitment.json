@@ -58,5 +58,6 @@
     "additionalInformation": "Provide any other relevant information that may not have been addressed elsewhere in the record",
     "additionalDocuments": "Other relevant website address or attached documents",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "submitCommitmentSuccessMessage": "Your commitment has been submitted successfully. Relevant national focal points will be notified and they will be given a four-week period to review the commitment. If after this time no objection has been received the commitment will be published on the online reporting tool. Alternatively, relevant national focal points can also choose to support the publication of your commitment prior to the end of the four-week review window. If an objection to your commitment is received you will be notified."
 }

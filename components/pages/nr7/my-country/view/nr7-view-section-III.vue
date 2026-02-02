@@ -51,11 +51,11 @@
                             {{ t('indicatorData') }}
                         </legend>
                         <hr>
-                        <nr7-view-target-indicators :target-indicators="assessment.indicatorData" :hide-missing-data-alert="true"
+                        <nr7-view-target-indicators :is-printing="isPrinting" :target-indicators="assessment.indicatorData" :hide-missing-data-alert="true"
                             :indicators-data="indicatorsData" :national-indicators="nationalIndicators"></nr7-view-target-indicators>                                    
                     </km-form-group>
                 </div>
-            </div>      
+            </div>   
         </CCardBody>
     </CCard>
 </template>
@@ -73,7 +73,8 @@
         nationalTargets : {type:Object, default:[] },
         indicatorsData  : {type:Array<EDocumentInfo>, default:[] },
         locales         : { type:Array<string>, default:[]  },
-        documentLocale  : { type:String }
+        documentLocale  : { type:String },
+        isPrinting      : { type: Boolean, default:false}
     });
     
     const {t, locale} = useI18n();
@@ -85,9 +86,13 @@
         return sectionIII;
     })
 
-    const nationalIndicators      = computed(()=>{
+    const nationalIndicators      = computed(()=>{        
         return Object.values(nationalTargetsComputed.value)
-            .map(e => e?.body?.otherNationalIndicators|| []).flat().map(e => e);
+            .map(e => {
+                const document = (e?.body||e);
+                //edit and view pass diff objects based on the data loaded
+                return document?.otherNationalIndicators||document?.nationalIndicators || [];
+            }).flat().map(e => e);
     });
     const nationalTargetsComputed = computed(()=>{
         return props.nationalTargets || {}

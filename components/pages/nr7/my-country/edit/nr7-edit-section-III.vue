@@ -183,11 +183,21 @@
                     </CAccordion>         
                     
                 </template>
-                <template #review>                
+                <template #review="{isPrinting}" >             
                     <nr7-view-section-III :identifier="nationalReport7Store.nationalReport?.header?.identifier" 
                         :document="cleanDocument" :locales="cleanDocument.header.languages"
-                        :national-targets="nationalTargetsComputed"
+                        :national-targets="nationalTargetsComputed" :is-printing="isPrinting"
                         :indicators-data="indicatorsData"></nr7-view-section-III>
+
+                    <km-form-group v-if="isPrinting">
+                        <legend>
+                            {{ t('annex') }} {{ t('indicatorData') }}
+                        </legend>
+                        <hr>
+
+                        <nr7-view-target-indicators :target-indicators="targetIndicatorsForPrint" :hide-missing-data-alert="true"
+                            :indicators-data="indicatorsData" :national-indicators="nationalIndicators"></nr7-view-target-indicators>                            
+                    </km-form-group>
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
@@ -220,6 +230,7 @@
     import { getAlignedGoalsOrTargets } from '@/components/pages/national-targets/my-country/part-2/util'; 
     import {getBinaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
     import { Collapse } from '@coreui/coreui';
+    import type { SectionIII } from '~/types/schemas/ENationalReport7';
 
     let document = ref({});
     const props = defineProps({
@@ -268,6 +279,33 @@
             return { identifier : e.target.identifier, title: lstring(nationalTargets.value[e.target.identifier]?.title, locale) };
         })
     });
+
+    const targetIndicatorsForPrint = computed(()=>{
+        const indicators = {
+            headline: [],
+            binary: [],
+            component: [],
+            complementary: [],
+            national: []
+        } as {
+          headline: Array<LinkedIndicatorData>;
+          binary: Array<LinkedIndicatorData>;
+          component: Array<LinkedIndicatorData>;
+          complementary: Array<LinkedIndicatorData>;
+      };
+      sectionIIIComputed.value.forEach((e:SectionIII) =>{
+          Object.keys(e.indicatorData).forEach(prop=>{
+              const key = prop as keyof typeof indicators;
+              if(indicators[key]){
+                indicators[key] = [...(indicators[key]||[]), ...(e.indicatorData[key]||[])]
+              }
+          })
+      })
+
+        return indicators
+    });
+    
+
     const customLabel = ({title})=>{        
         return lstring(title, locale.value);
     }
