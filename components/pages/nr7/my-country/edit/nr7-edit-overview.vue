@@ -351,8 +351,14 @@
         
         <CRow v-if="!isLoading && cleanDocumentInfo && showPreview" id="nr7-preview-section">
             <CCol class="mt-1" :md="12">     
-                <view-actions print-selector=".nr7-section-view" :title="lstring(cleanDocumentInfo?.workingDocumentTitle||cleanDocumentInfo?.title, locale)"
-                ref="viewActionsRef"></view-actions>
+                <view-actions print-selector=".nr7-section-view" 
+                    :title="lstring(cleanDocumentInfo?.workingDocumentTitle||cleanDocumentInfo?.title, locale)"
+                    ref="viewActionsRef"
+                    @on-print-document="onPrintDocument"
+                    @on-before-print="onBeforePrint"
+                    @on-after-print="onAfterPrint"
+                    @on-pdf-document="onPdfDocument"
+                    @on-after-pdf="onAfterPdf"></view-actions>
                 <CRow v-if="openWorkflow">
                     <CCol class="mt-1" :md="12">     
                         <km-suspense>
@@ -360,7 +366,7 @@
                         </km-suspense>
                     </CCol>
                 </CRow>
-                <nr-7-view :document-info="cleanDocumentInfo" class="print-section"></nr-7-view>                
+                <nr-7-view :document-info="cleanDocumentInfo" class="print-section" :is-printing="isPrinting"></nr-7-view>                
             </CCol>
         </CRow>
         <CRow>
@@ -497,7 +503,8 @@
     const draftIndicatorData          = ref([]);
     const publishedIndicatorData      = ref([]);
     const draftNr7Document      = ref({});
-    const viewActionsRef           = ref();
+    const viewActionsRef        = ref();
+    const isPrinting            = ref(false);
 
     const isValidating       = ref(false);
     const hasValidated       = ref(false);  
@@ -801,12 +808,14 @@
     }
 
     async function onPdf(){
+        isPrinting.value = true;
         showPreview.value = true;
         showSpinnerDialog.value = true;
         //sleep for 2 seconds to allow the preview to render
         await sleep(2000);
         showSpinnerDialog.value = false;
         await viewActionsRef.value?.pdfSection?.pdfDocument();        
+        isPrinting.value = false;
     }
 
     async function validateDocument(document:any,  {collection, schema, identifier, validationSection}:KmStorageParam){
@@ -895,6 +904,23 @@
             // loadOpenWorkflow(newDocument)
         }
     }
+
+    const onPrintDocument = () => {
+        isPrinting.value = true;
+    }
+    const onBeforePrint = () => {
+        isPrinting.value = true;
+    }
+    const onAfterPrint = () => {
+        isPrinting.value = false;
+    }
+
+    const onPdfDocument = () => {
+        isPrinting.value = true;
+    }    
+    const onAfterPdf = () => {
+        isPrinting.value = false;
+    }  
 
     onMounted(()=>{
         init();
