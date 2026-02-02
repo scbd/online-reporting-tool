@@ -66,7 +66,7 @@
                 <tab-content :title="workflowTabs.review.title" :is-active="activeTab == workflowTabs.review.index || isPrinting">
                     <div>
                         <div class="print-section">
-                            <slot name="review"></slot>
+                            <slot name="review" :is-printing="isPrinting"></slot>
                         </div> 
                     </div>
                 </tab-content>
