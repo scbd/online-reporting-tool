@@ -30,11 +30,11 @@
                   <nr7-view-section-II :identifier="viewDocumentInfo.identifier" :document="viewDocument" :document-locale="selectedLocale"></nr7-view-section-II>
                 </div>
                 <div id="section3" class="mb-3">
-                  <nr7-view-section-III :identifier="viewDocumentInfo.identifier" :document="viewDocument"
+                  <nr7-view-section-III :identifier="viewDocumentInfo.identifier" :document="viewDocument" :is-printing="isPrinting"
                     :national-targets="nationalTargets" :indicators-data="indicatorsData" :document-locale="selectedLocale"></nr7-view-section-III>
                 </div>
                 <div id="section4" class="mb-3">
-                  <nr7-view-section-IV :identifier="viewDocument?.header?.identifier||''" 
+                  <nr7-view-section-IV :identifier="viewDocument?.header?.identifier||''" :is-printing="isPrinting"
                           :document="viewDocument" :indicators-data="indicatorsData" :document-locale="selectedLocale"></nr7-view-section-IV>
                 </div>
                 <div id="section5" class="mb-3">             
@@ -42,7 +42,17 @@
                 </div>
                 <div id="sectionOtherInfo" class="mb-3">          
                   <nr-7-view-section-other-information :identifier="viewDocumentInfo.identifier" :document="viewDocument" :document-locale="selectedLocale"></nr-7-view-section-other-information>
-                </div>      
+                </div>     
+                
+                <div id="sectionIndicatorData" class="mb-3" v-if="isPrinting">
+                  <legend>
+                      {{ t('annex') }} {{ t('indicatorData') }}
+                  </legend>
+                  <hr>
+
+                  <nr7-view-target-indicators :target-indicators="targetIndicatorsForPrint" :hide-missing-data-alert="true"
+                      :indicators-data="indicatorsData" :national-indicators="nationalIndicatorsForPrint"></nr7-view-target-indicators>                            
+                </div> 
             </div>
           </div>
         </div>        
@@ -63,7 +73,7 @@
   import { KmDocumentsService } from "@/services/kmDocuments";
   import type { Schemas,  EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
   import { GbfGoalsAndTargets } from '~/services/gbfGoalsAndTargets';
-  import type { ENationalReport7 } from '~/types/schemas/ENationalReport7';
+  import type { ENationalReport7, LinkedIndicatorData, SectionIII } from '~/types/schemas/ENationalReport7';
   import * as bootstrap from 'bootstrap';
   import type { ETerm } from '~/types/schemas/base/ETerm';
 
@@ -77,9 +87,10 @@
       documentInfo: { type:Object as PropType<EDocumentInfo>, default : undefined},
       identifier  : { type:String, required:true},
       publicData  : { type:Boolean, default : false},
+      isPrinting  : { type: Boolean, default:false}
   })
 
-  const { documentInfo, identifier } = toRefs(props);
+  const { documentInfo, identifier, isPrinting } = toRefs(props);
   const lDocumentInfo = ref<EDocumentInfo|undefined>(undefined);
   const isLoading = ref(false);
   const documentLoadError = ref(null);
@@ -101,6 +112,40 @@
     return {} as ENationalReport7;
   })
 
+  const targetIndicatorsForPrint = computed(()=>{
+      const indicators = {
+          headline: [],
+          binary: [],
+          component: [],
+          complementary: [],
+          national: []
+      } as {
+          headline: Array<LinkedIndicatorData>;
+          binary: Array<LinkedIndicatorData>;
+          component: Array<LinkedIndicatorData>;
+          complementary: Array<LinkedIndicatorData>;
+          national: Array<LinkedIndicatorData>;
+      };
+      viewDocument.value?.sectionIII.forEach((e:SectionIII) =>{
+          Object.keys(e.indicatorData).forEach(prop=>{
+              const key = prop as keyof typeof indicators;
+              if(indicators[key]){
+                indicators[key] = [...(indicators[key]||[]), ...(e.indicatorData[key]||[])]
+              }
+          })
+      })
+
+      return indicators
+  });
+
+  const nationalIndicatorsForPrint      = computed(()=>{
+      const nationalIndicators = Object.values(nationalTargets.value)
+                                        .map((e:any)=>e?.body?.otherNationalIndicators||[])
+                                        .flat()
+                                        .map(e=>{ return {...e, title:e.title||e.value}});
+      return nationalIndicators;
+  });
+
   async function init(){     
       if(identifier.value && !documentInfo?.value){
         await loadDocument(identifier.value)       
@@ -113,7 +158,7 @@
               KmDocumentsService.loadSchemaDocuments(SCHEMAS.NATIONAL_TARGET_7, viewDocument.value?.government?.identifier, {body:false, collection: 'all', }),
               GbfGoalsAndTargets.loadGbfTargets()]);
 
-      nationalTargets.value = arrayToObject([...(lNationalTargets||[]), ...globalTargets]) || {}; 
+      nationalTargets.value = arrayToObject([...(lNationalTargets||[]), ...(globalTargets.map((e:any)=>({body:e, identifier:e.identifier, title:e.title})))]) || {}; 
             
       indicatorsData.value = await initIndicatorDataLoad;
 

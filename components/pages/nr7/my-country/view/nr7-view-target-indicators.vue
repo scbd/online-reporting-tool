@@ -1,5 +1,8 @@
 <template>
-    <div v-for="(indicator, key) in targetIndicators" :key="indicator">  
+    <div v-if="isPrinting" class="alert alert-info">
+        {{ t('allIndicatorDataInfo') }}
+    </div>
+    <div v-for="(indicator, key) in targetIndicators" :key="indicator">          
         <div v-for="indicatorData in indicator" :key="indicatorData">
             <div class="card mb-3" v-if="!hideMissingDataAlert || (hideMissingDataAlert && computedIndicatorsData[indicatorData?.data?.identifier])">
                 <div class="card-header">
@@ -11,8 +14,7 @@
                     <small class="fw-bold badge bg-info float-end ms-1">{{indicatorData.indicator.identifier }}</small>
                     <strong class="badge bg-info float-end">{{ t(key) }}</strong>
                 </div>
-
-                <div class="card-body" >
+                <div class="card-body" v-if="!isPrinting">
                     <slot name="actionButtons" :key="key" :indicator-data="computedIndicatorsData?.[indicatorData?.data?.identifier]"
                         :indicator="indicatorData?.indicator" :national-indicator="computedNationalIndicators[indicatorData?.indicator?.identifier]">
                     </slot>
@@ -52,7 +54,8 @@
         targetIndicators: { type: Object, required: true },
         indicatorsData  : { type: Array<Object>, required: false },
         nationalIndicators: { type: Array<Object>, required: false },
-        hideMissingDataAlert: { type: Boolean, default: false }
+        hideMissingDataAlert: { type: Boolean, default: false },
+        isPrinting      : { type: Boolean, default:false}
     });
 
     const thesaurusStore    = useThesaurusStore();
