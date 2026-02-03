@@ -386,7 +386,7 @@
                     document.value.data = data;
                                         
                     const globallyDerivedData = dataResponse?.data?.globallyDerivedData;
-                    if(globallyDerivedData){
+                    if(data.length && globallyDerivedData){
 
                         if(globallyDerivedData.dataSources?.length)
                             document.value.globalDataSources =  globallyDerivedData.dataSources.map(e=>({name:e.title, url:e.link}));
