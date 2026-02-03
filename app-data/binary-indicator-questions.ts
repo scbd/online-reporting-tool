@@ -2023,7 +2023,25 @@ function getQuestions(locale:string = 'en') {
                             "title": t("none", locale),
                         }
                     ],
-                    "mandatory": true
+                    "mandatory": true,
+                    "validations": [
+                        {
+                            "question": "20_2_1",
+                            "type": "@hasValues",
+                            "values": [
+                                "other"
+                            ],
+                            "trigger": "enable"
+                        }
+                    ]
+                },
+                {
+                    "key": "20_2_1",
+                    "section": "GBF-TARGET-020",
+                    "number": "20.2.1",
+                    "type": "string",
+                    "title": t("pleaseSpecify", locale),
+                    "mandatory": false
                 },
                 {
                     "key": "20_3",
@@ -2089,7 +2107,25 @@ function getQuestions(locale:string = 'en') {
                             "title": t("none", locale),
                         }
                     ],
-                    "mandatory": true
+                    "mandatory": true,
+                    "validations": [
+                        {
+                            "question": "20_4_1",
+                            "type": "@hasValues",
+                            "values": [
+                                "other"
+                            ],
+                            "trigger": "enable"
+                        }
+                    ]
+                },
+                {
+                    "key": "20_4_1",
+                    "section": "GBF-TARGET-020",
+                    "number": "20.4.1",
+                    "type": "string",
+                    "title": t("pleaseSpecify", locale),
+                    "mandatory": false
                 },
                 {
                     "key": "20_5",
@@ -2133,7 +2169,7 @@ function getQuestions(locale:string = 'en') {
                     "section": "GBF-TARGET-020",
                     "number": "20.5.1",
                     "type": "string",
-                    "title": "Specify for each type of partnership (optional)",
+                    "title": t("specifyForPartnership", locale),
                     "mandatory": false
                 }
             ]
