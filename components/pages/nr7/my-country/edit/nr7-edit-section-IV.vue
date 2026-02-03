@@ -81,10 +81,20 @@
                     </CAccordion>         
                     
                 </template>
-                <template #review>                
+                <template #review="{isPrinting}">                
                     <nr7-view-section-IV :identifier="cleanDocument?.header?.identifier"  :locales="cleanDocument.header.languages"
-                        :document="cleanDocument" :global-goals="globalGoals" 
-                        :indicators-data="indicatorsData"></nr7-view-section-IV>
+                        :document="cleanDocument" :global-goals="globalGoals" :is-printing="isPrinting"
+                        :indicators-data="indicatorsData" is-printing="isPrinting"></nr7-view-section-IV>
+
+                    <km-form-group v-if="isPrinting">
+                        <legend>
+                            {{ t('annex') }} {{ t('indicatorData') }}
+                        </legend>
+                        <hr>
+
+                        <nr7-view-target-indicators :target-indicators="targetIndicatorsForPrint" :hide-missing-data-alert="true"
+                            :indicators-data="indicatorsData" :national-indicators="nationalIndicators"></nr7-view-target-indicators>                            
+                    </km-form-group>
                 </template>
             </km-form-workflow>
             <km-modal-spinner :visible="showSpinnerModal" v-if="showSpinnerModal"></km-modal-spinner>
@@ -147,6 +157,30 @@
         return Object.values(nationalTargets.value||[]).map(e=>e.nationalIndicators||[]).flat();
     });
     
+    const targetIndicatorsForPrint = computed(()=>{
+        const indicators = {
+            headline: [],
+            binary: [],
+            component: [],
+            complementary: []
+        } as {
+          headline: Array<LinkedIndicatorData>;
+          binary: Array<LinkedIndicatorData>;
+          component: Array<LinkedIndicatorData>;
+          complementary: Array<LinkedIndicatorData>;
+      };
+      sectionIVComputed.value.forEach((e:SectionIV) =>{
+          Object.keys(e.indicatorData).forEach(prop=>{
+              const key = prop as keyof typeof indicators;
+              if(indicators[key]){
+                indicators[key] = [...(indicators[key]||[]), ...(e.indicatorData[key]||[])]
+              }
+          })
+      });
+
+        return indicators
+    });
+
     const cleanDocument = computed(()=>{
         let clean = {...nationalReport7Store.nationalReport};
         clean.sectionIV = sectionIVComputed.value;

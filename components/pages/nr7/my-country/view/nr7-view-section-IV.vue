@@ -25,7 +25,7 @@
                         {{ t('indicatorData') }}
                     </legend>
                     <hr>
-                    <nr7-view-target-indicators :target-indicators="assessment.indicatorData" :hide-missing-data-alert="true"
+                    <nr7-view-target-indicators  :is-printing="isPrinting"  :target-indicators="assessment.indicatorData" :hide-missing-data-alert="true"
                         :indicators-data="indicatorsData"></nr7-view-target-indicators>
                 
                 </div>
@@ -46,7 +46,8 @@
         identifier  : { type:String, required:true},
         indicatorsData  : {type:Array<EDocumentInfo>, default:[], required:true },
         locales     : { type:Array<string>, default:[]  },
-        documentLocale: { type:String }
+        documentLocale: { type:String },
+        isPrinting      : { type: Boolean, default:false}
     });
 
     const {t, locale}    = useI18n();

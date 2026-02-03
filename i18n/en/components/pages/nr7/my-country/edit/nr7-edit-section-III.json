@@ -1,3 +1,4 @@
+
 {
     "missingNationalTargets": "Missing National Targets",
     "missingNationalTargetsDescription": "Your country has not published any national targets, please submit national targets to pre populate section III of the 7th national report.",
@@ -17,6 +18,6 @@
     "sectionMandatory" : "All fields in Section III are mandatory",
     "indicatorData": "Indicator Data",
     "reportingNationalCount" : "You are currently reporting on {0} national targets, which are aligned with the KMGBF.",
-    "reportingGlobalCount" : "You are currently reporting on {0} global targets because your country has not yet published any national targets that are aligned with the KMGBF."
-
+    "reportingGlobalCount" : "You are currently reporting on {0} global targets because your country has not yet published any national targets that are aligned with the KMGBF.",
+    "annex": "Annex :"
 }
