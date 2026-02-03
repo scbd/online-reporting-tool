@@ -40,5 +40,6 @@
     "needHelpContent"         : "Use the Chat feature for additional support.",
     
     "workflowRequestsTitle":"Workflow requests",
-    "workflowAlert":"The following records require your action or you have requested action."
+    "workflowAlert":"The following records require your action or you have requested action.",
+    "commitments":"Stakeholder Commitments"
 }

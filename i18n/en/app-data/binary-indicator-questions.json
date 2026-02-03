@@ -132,6 +132,7 @@
     "target23_question_1"                      : "Does your country have mechanisms for facilitating the full, equitable, meaningful and informed participation and leadership of all women and girls at all levels of action, engagement, policy and decision-making related to biodiversity?",
     "target23_question_2"                      : "Has your country adopted legal, administrative or policy measures that explicitly recognize and protect the rights and access of all women and girls to land and natural resources?",
     "target23_question_3"                      : "Does your country explicitly apply a gender-responsive approach and recognize the contributions and roles of women and girls in its implementation of the Framework through its national reports or its national biodiversity strategy and action plan?",
-    "target23_question_4"                      : "Does your country conduct sex-disaggregated data collection and analyses to assess the differential impacts of biodiversity policies and programmes?"
-    
+    "target23_question_4"                      : "Does your country conduct sex-disaggregated data collection and analyses to assess the differential impacts of biodiversity policies and programmes?",
+    "pleaseSpecify"                              : "Please specify",
+    "specifyForPartnership"                      : "Specify for each type of partnership (optional)"
 }
