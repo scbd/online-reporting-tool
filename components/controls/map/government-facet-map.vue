@@ -29,12 +29,18 @@
         }
         
         const facetResponse = await facets(parseSolrQuery(searchQuery))
-        countryColors.value = Object.entries(facetResponse.facets.government_s).map(([key, val])=>{
+        //temporary fix for when no facet is returned (nr7)
+        if(!facetResponse.facets?.government_s){
+            countryColors.value = [{code3 : 'XXX', color : CBD_GREEN }];
+        }
+        else{   
+            countryColors.value = Object.entries(facetResponse.facets?.government_s||{}).map(([key, val])=>{
                                     return {
                                     code3 : countriesStore.countries.find(c=>c.code == key?.toUpperCase())?.code3,
                                     color : CBD_GREEN
                                 }
                             })
+        }
     })
 
 </script>

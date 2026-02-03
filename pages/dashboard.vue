@@ -33,29 +33,71 @@
             </p>
           </div>
         </CCol>       
-        <CCol lg="12" xl="6" v-if="!true">
+        <CCol lg="12" xl="6">
             <km-link :to="appRoutes.NATIONAL_REPORTS_NR7" class="unset-anchor">
                 <div class="card">
                     <div class="card-header content-center text-white p-2 bg-success">
                     <span height="52" class="my-4">{{t('7Nr')}}</span>
                     </div>
                     <div class="card-body row text-center">
-                    <div class="col">
-                        <div class="text-value-lg">{{nr7Count}}</div>
-                        <div class="text-uppercase text-muted small">
-                            {{t('7Nr')}}
+                        <div class="col">
+                            <div class="text-value-lg">{{nr7Count}}</div>
+                            <div class="text-uppercase text-muted small">
+                                {{t('7Nr')}}
+                            </div>
+                        </div>
+                        <div
+                            class="c-vr text-value-lg"
+                            style="width: unset; background-color: unset"
+                        >
+                        {{t('by')}}
+                        </div>
+                        <div class="col">
+                            <div class="text-value-lg">{{nr7CountryCount}}</div>
+                            <div class="text-uppercase text-muted small">{{t('countries')}}</div>
                         </div>
                     </div>
-                    <div
-                        class="c-vr text-value-lg"
-                        style="width: unset; background-color: unset"
-                    >
-                    {{t('by')}}
+                    <div class="card-body row text-center">
+                        <hr/>
+                        <km-link :to="appRoutes.NATIONAL_REPORTS_NR7" class="unset-anchor">
+                            <government-facet-map :query="nationalReport7FacetQuery">
+                                <template #title>{{t('nationalReports')}}</template>
+                            </government-facet-map>
+                        </km-link>
                     </div>
-                    <div class="col">
-                        <div class="text-value-lg">{{nr7CountryCount}}</div>
-                        <div class="text-uppercase text-muted small">{{t('countries')}}</div>
+                </div>
+            </km-link>
+        </CCol>    
+        <CCol lg="12" xl="6">
+            <km-link :to="appRoutes.STAKEHOLDER_COMMITMENTS" class="unset-anchor">
+                <div class="card">
+                    <div class="card-header content-center text-white p-2 bg-success">
+                    <span height="52" class="my-4">{{t('commitments')}}</span>
                     </div>
+                    <div class="card-body row text-center">
+                        <div class="col">
+                            <div class="text-value-lg">{{stakeholderCommitmentCount}}</div>
+                            <div class="text-uppercase text-muted small">
+                                {{t('commitments')}}
+                            </div>
+                        </div>
+                        <div
+                            class="c-vr text-value-lg"
+                            style="width: unset; background-color: unset"
+                        >
+                        {{t('by')}}
+                        </div>
+                        <div class="col">
+                            <div class="text-value-lg">{{stakeholderCommitmentCountries.length}}</div>
+                            <div class="text-uppercase text-muted small">{{t('countries')}}</div>
+                        </div>
+                    </div>
+                    <div class="card-body row text-center">
+                        <hr/>
+                        <km-link :to="appRoutes.STAKEHOLDER_COMMITMENTS" class="unset-anchor">
+                            <un-map v-if="stakeholderCommitmentCountryColors?.length" :countryColors="stakeholderCommitmentCountryColors" 
+                                :zoom="0.4" :screenshot-only="true"></un-map>
+                        </km-link>
                     </div>
                 </div>
             </km-link>
@@ -189,6 +231,7 @@ import UserProfileInfo  from "@/components/common/user-profile-info.vue"
 import { useRealmConfStore } from '@/stores/realmConf';
 import { facets,andOr,parseSolrQuery } from '@/services/solr';
 import { KmLink } from "~/components/controls";
+import KmStakeholderCommitmentApi from "~/api/km-stakeholder-commitment";
 
         const {user} = useAuth();
         const { t }  = useI18n();
@@ -196,28 +239,42 @@ import { KmLink } from "~/components/controls";
             auth:false
         })
         const realmConfStore  = useRealmConfStore();
+        const countriesStore  = useCountriesStore ();
         const realmConf = realmConfStore.realmConf;
 
+        const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
         const { $appRoutes:appRoutes } = useNuxtApp();
         const tourStarted               = ref(false);
         const hasWorkflowRequest        = ref(false);
         const isLoading                 = ref(true);
-        let countryFacets               = ref();
-        let searchFacets                = ref();
-        let nbsapFacets                 = ref();
+        const countryFacets               = ref();
+        const searchFacets                = ref();
+        const nbsapFacets                 = ref();
+        const commitmentFacets            = ref();
         const nbsapFacetQuery           = andOr([`schema_s:${SCHEMAS.NATIONAL_NBSAP}`, `isGbfAligned_b:true`, `realm_ss:${realmConf.realm}`])
         const nationalTargetsFacetQuery = andOr([`schema_s:${SCHEMAS.NATIONAL_TARGET_7}`, `realm_ss:${realmConf.realm}`])
+        const nationalReport7FacetQuery = andOr([`schema_s:${SCHEMAS.NATIONAL_REPORT_7}`, `realm_ss:${realmConf.realm}`])
         
 
         const nr7Count       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7)), 0))
         const nr7TargetCount = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7)), 0))
         const nr6Count       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6)), 0))
-        const nbsapCount        = computed(()=>nbsapFacets.value?.facets?.schema_s?.nbsap)
+        const nbsapCount     = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)), 0))
+        const stakeholderCommitmentCount = computed(()=>commitmentFacets.value?.filter(e=>e.reviewed == true).length)
               
         const nr7CountryCount       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7) > 0 ? 1 : 0), 0))
         const nr7TargetCountryCount = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7) > 0 ? 1 : 0), 0))
         const nr6CountryCount       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6) > 0 ? 1 : 0), 0))
-        const nbsapCountryCount     = computed(()=>Object.keys(nbsapFacets.value?.facets?.government_s||{})?.length)
+        const nbsapCountryCount     = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP) > 0 ? 1 : 0), 0))
+        const stakeholderCommitmentCountries = computed(()=>[...new Set(commitmentFacets.value?.filter(e=>e.reviewed == true).map(e=>e.government))])
+        const stakeholderCommitmentCountryColors = computed(()=>
+            stakeholderCommitmentCountries.value?.map(e=>{
+                return {
+                    code3 : countriesStore.countries.find(c=>c.code == e.toUpperCase())?.code3,
+                    color : CBD_GREEN
+                }
+            })
+        )
       
         const publishedRecords = computed(()=>{ 
             return searchFacets.value?.docs?.map(e=> {
@@ -245,10 +302,20 @@ import { KmLink } from "~/components/controls";
 
         async function loadFacets(){
             try{
+                
+                const schemaQueries = [
+                    `(schema_s:(${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}))`,
+                    `(schema_s:(${SCHEMAS.NATIONAL_REPORT_7}))`,
+                    `(schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true)`,
+                    `(schema_s:(${SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT}))`
+                ]
+                const queries = [
+                    `realm_ss:${realmConf.realm}`,
+                    andOr(schemaQueries, 'OR')
+                ]
                 const searchQuery = {
                     rowsPerPage:10,
-                    q : `realm_ss:${realmConf.realm} AND 
-                        (schema_s:(${SCHEMAS.NATIONAL_TARGET_7} ${SCHEMAS.NATIONAL_TARGET_7_MAPPING}))`,
+                    query: andOr(queries, 'AND'),
                     facet: true,
                     facetMinCount: 1,
                     facetFields: ['schema_s', 'government_s'],
@@ -256,17 +323,15 @@ import { KmLink } from "~/components/controls";
                     sort: "updatedDate_dt desc",
                     fields: "id, identifier_s,government_EN_t, title_EN_t, schema_EN_t,submittedDate_dt,schema_s, url_ss"
                 }
-                //TODO remove second query
-                const nbsapFacetQuery = {
-                    rowsPerPage:0,
-                    query : `_state_s: public AND realm_ss:${realmConf.realm} AND (schema_s : ${SCHEMAS.NATIONAL_NBSAP} AND isGbfAligned_b:true)`,
-                    facet: true,
-                    facetMinCount: 1,
-                    facetFields: ['schema_s', 'government_s']
-                }
-                const [facetResult, nbsapFacetResult] = await Promise.all([await facets(parseSolrQuery(searchQuery)), await facets(parseSolrQuery(nbsapFacetQuery))])
+                
+                const countryReviewsPromise = await kmStakeholderCommitmentApi.getCountryReviews({ }, { length : 500});
+
+                const [facetResult, countryReviews] = await Promise.all([
+                    facets(parseSolrQuery(searchQuery)),
+                    countryReviewsPromise
+                ])
                 searchFacets.value  = facetResult;
-                nbsapFacets.value   = nbsapFacetResult;
+                commitmentFacets.value = countryReviews;
                 if(searchFacets.value?.facetPivot)
                     countryFacets.value = searchFacets.value?.facetPivot['government_s,schema_s'];
 
@@ -295,7 +360,10 @@ import { KmLink } from "~/components/controls";
             hasWorkflowRequest.value = requests?.length ? true : false
         }
 
-        onMounted(loadFacets)
+        onMounted(async()=>{
+            await countriesStore.loadCountries()
+            await loadFacets()
+        })
 </script>
 
 <style scoped>

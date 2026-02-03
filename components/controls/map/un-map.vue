@@ -227,7 +227,7 @@
                     const colorCountries = props.countryColors?.filter(e=>e.color == color).map(e=>e.code3)
                     if(colorCountries?.length){
                         const coloredCountries = {
-                            id: 'coloredCountries',
+                            id: 'coloredCountries'+color,
                             type: 'fill',
                             source: 'v',
                             'source-layer': 'bnda',
@@ -242,7 +242,7 @@
                             }
                         }
                         const border = {
-                            id: 'bnda_border',
+                            id: 'bnda_border'+color,
                             type: 'line',
                             source: 'v',
                             'source-layer': 'bnda',
@@ -261,6 +261,54 @@
                         map.addLayer(border);
                     }
                 });
+
+                // Pattern Overlay
+                const patternCountries = props.countryColors.filter(e => e.pattern).map(e => e.code3);
+         
+                if (patternCountries.length) {
+                     // Create stripe pattern
+                    const createStripePattern = () => {
+                         const width = 8;
+                         const height = 8;
+                         const canvas = document.createElement('canvas');
+                         canvas.width = width;
+                         canvas.height = height;
+                         const ctx = canvas.getContext('2d');
+                         
+                         // Transparent background
+                         ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+                         ctx.fillRect(0, 0, width, height);
+                         
+                         // Stripe
+                         ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+                         ctx.lineWidth = 2;
+                         ctx.beginPath();
+                         ctx.moveTo(0, height);
+                         ctx.lineTo(width, 0);
+                         ctx.stroke();
+
+                         return ctx.getImageData(0, 0, width, height);
+                    }
+                    
+                    if (!map.hasImage('stripe-pattern')) {
+                        map.addImage('stripe-pattern', createStripePattern());
+                    }
+
+                    map.addLayer({
+                        id: 'countries-pattern-overlay',
+                        type: 'fill',
+                        source: 'v',
+                        'source-layer': 'bnda',
+                        maxzoom: 4,
+                        minzoom: 0,
+                        filter: ['in', 'ISO3CD', ...patternCountries],
+                        paint: {
+                            'fill-pattern': 'stripe-pattern',
+                            'fill-opacity': 1
+                        }
+                    });
+                           console.log(patternCountries)
+                }
             }
             if(props.zoom)
                 map.setZoom(props.zoom);
