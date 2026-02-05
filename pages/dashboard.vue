@@ -89,7 +89,7 @@
                         </div>
                         <div class="col">
                             <div class="text-value-lg">{{stakeholderCommitmentCountries.length}}</div>
-                            <div class="text-uppercase text-muted small">{{t('countries')}}</div>
+                            <div class="text-uppercase text-muted small">{{t('stakeholders')}}</div>
                         </div>
                     </div>
                     <div class="card-body row text-center">
