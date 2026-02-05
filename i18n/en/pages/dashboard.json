@@ -41,5 +41,6 @@
     
     "workflowRequestsTitle":"Workflow requests",
     "workflowAlert":"The following records require your action or you have requested action.",
-    "commitments":"Stakeholder Commitments"
+    "commitments":"Commitments",
+    "stakeholders": "Stakeholders"
 }

@@ -36,6 +36,7 @@ import type { ECommitmentCountryReview } from '~/types/schemas/ECommitmentCountr
   const { user } = useAuth();
   const { t }  = useI18n();
   const route       = useRoute();
+  const realmConf   = useRealm();
   const isLoading   = ref(false);
   const documentInfo= ref<EDocumentInfo|undefined>(undefined);
   const countryReview = ref<ECommitmentCountryReview|undefined>(undefined);
@@ -64,7 +65,7 @@ import type { ECommitmentCountryReview } from '~/types/schemas/ECommitmentCountr
 
   async function loadCountryReviews(){
     if(user.value.government)
-    countryReview.value   = (await kmStakeholderCommitmentApi.getCountryReviews({identifier:route.params?.identifier?.toString(), government:user.value.government}))?.[0];
+    countryReview.value   = (await kmStakeholderCommitmentApi.getCountryReviews({identifier:route.params?.identifier?.toString(), government:user.value.government, realm:(realmConf as any).realm}))?.[0];
   }
 
   async function onStatusChange(){
