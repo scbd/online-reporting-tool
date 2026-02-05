@@ -268,6 +268,7 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
   const localePath  = useLocalePath();
   const thesaurusStore = useThesaurusStore();
   const security      = useSecurity();
+  const realmConf   = useRealm();
 
   const props = defineProps({
     document: { type: Object, default: undefined },
@@ -371,7 +372,7 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
   }
   async function loadCountryReviews(){
     countryReviews.value = await kmStakeholderCommitmentApi.getCountryReviews(
-      { identifier: props.identifier }, { length : 500});
+      { identifier: props.identifier, realm: (realmConf as any).realm }, { length : 500});
   }
   async function onStatusChange(identifier:string, reviewed:boolean){
     loadCountryReviews();

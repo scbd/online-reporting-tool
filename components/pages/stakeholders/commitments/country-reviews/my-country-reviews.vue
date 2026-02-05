@@ -51,6 +51,7 @@ import { formatDate } from '~/utils/filters';
     const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
     const { t, locale } = useI18n();
     const { user } = useAuth();
+    const realmConf = useRealm();
     const myCountryReviews = ref<ECommitmentCountryReview[]>([]);
 
     const publishedCount = computed(()=>myCountryReviews.value.filter((e:ECommitmentCountryReview)=>e.reviewed===true).length)
@@ -60,7 +61,7 @@ import { formatDate } from '~/utils/filters';
 
     async function loadMyCountryReviews(){
          
-        myCountryReviews.value = await kmStakeholderCommitmentApi.getCountryReviews({ government : user.value.government }, { length : 500});
+        myCountryReviews.value = await kmStakeholderCommitmentApi.getCountryReviews({ government : user.value.government, realm: (realmConf as any).realm }, { length : 500});
 
     }
     async function onStatusChange(identifier:string, published:boolean){
