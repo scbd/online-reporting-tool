@@ -1,0 +1,11 @@
+{
+    "autoReviewCommitments": "Automatically approve and publish all future commitments that have been linked to my country",
+    "confirm": "Confirm",
+    "confirmYesMessage": "Are you sure you want to automatically approve and publish all future commitments that have been linked to my country?",
+    "confirmNoMessage": "Are you sure you want to stop automatically approving and publishing all future commitments?",
+    "processing": "Processing...",
+    "error": "Error saving auto review commitments",
+    "success": "Auto review commitments updated",
+    "yes": "Yes",
+    "no": "No"
+}

@@ -14,3 +14,11 @@ export interface EUserInfo {
     firstName      : string
     lastName       : string
 }
+
+export interface EUserSettings {
+    autoReviewCommitments? : boolean
+    alertFrequency?        : string
+    userId?                : string
+    _id?                   : string
+    realm?                 : string    
+}
