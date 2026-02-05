@@ -4,6 +4,13 @@
           {{t('countryReviews')}}
         </CCardHeader>
         <CCardBody>
+            <CRow v-if="security.role.isNationalFocalPoint()">
+                <CCol col="12" class="">
+                    <div class="alert alert-info">
+                        <auto-approve-commitments/>
+                    </div>
+                </CCol>
+            </CRow>
             <CRow>
                 <CCol col="12" md="6" lg="3">
                     <CCallout color="success" :title="t('published')">
@@ -51,6 +58,7 @@ import { formatDate } from '~/utils/filters';
     const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
     const { t, locale } = useI18n();
     const { user } = useAuth();
+    const security      = useSecurity();
     const myCountryReviews = ref<ECommitmentCountryReview[]>([]);
 
     const publishedCount = computed(()=>myCountryReviews.value.filter((e:ECommitmentCountryReview)=>e.reviewed===true).length)
@@ -81,6 +89,7 @@ import { formatDate } from '~/utils/filters';
     onMounted(()=>{
         loadMyCountryReviews();
     });
+
 </script>
 
 <style scoped></style>
