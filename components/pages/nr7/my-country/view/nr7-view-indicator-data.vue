@@ -32,7 +32,7 @@
         </km-value>
     </km-form-group>
     <km-form-group v-if="indicatorData.globalDescription" :caption="t('description')">
-        <km-value>{{ indicatorData.globalDescription }}</km-value>
+        <km-value v-html="indicatorData.globalDescription"></km-value>
     </km-form-group>    
     <km-form-group v-if="indicatorData.comments" class="mt-1" :caption="t('comments')">
         <km-lstring-value type="html" :value="indicatorData.comments"

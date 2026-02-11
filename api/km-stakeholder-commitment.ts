@@ -12,12 +12,15 @@ export default class KmStakeholderCommitmentApi extends ApiBase
     }
     
     
-    async getCountryReviews({identifier, government} = {} as {identifier?: string, government?: string}, 
+    async getCountryReviews({identifier, government, realm, reviewed} = {} as {
+        identifier?: string, government?: string, realm:string, reviewed?:boolean}, 
         { count, length, skip, sort } = 
             { count: false, length : 25, skip: 0, sort: { 'meta.updatedOn': -1 }} as MongoQuery) : Promise<ECommitmentCountryReview[]> {
         const query = {
             identifier,
             government,
+            realm,
+            reviewed,
             l: length,
             s: sort,
             sk: skip,

@@ -89,7 +89,7 @@
                         </div>
                         <div class="col">
                             <div class="text-value-lg">{{stakeholderCommitmentCountries.length}}</div>
-                            <div class="text-uppercase text-muted small">{{t('countries')}}</div>
+                            <div class="text-uppercase text-muted small">{{t('stakeholders')}}</div>
                         </div>
                     </div>
                     <div class="card-body row text-center">
@@ -324,7 +324,7 @@ import KmStakeholderCommitmentApi from "~/api/km-stakeholder-commitment";
                     fields: "id, identifier_s,government_EN_t, title_EN_t, schema_EN_t,submittedDate_dt,schema_s, url_ss"
                 }
                 
-                const countryReviewsPromise = await kmStakeholderCommitmentApi.getCountryReviews({ }, { length : 500});
+                const countryReviewsPromise = await kmStakeholderCommitmentApi.getCountryReviews({ realm: realmConf.realm, reviewed: true }, { length : 500});
 
                 const [facetResult, countryReviews] = await Promise.all([
                     facets(parseSolrQuery(searchQuery)),
