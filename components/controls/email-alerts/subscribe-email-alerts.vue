@@ -105,7 +105,12 @@
     const showModal         = ref(false);
     const dirtySubscription = ref(null);
     const showDeleteConfirmation = ref(false);
-    const recordTypes       = [SCHEMAS.NATIONAL_TARGET_7, SCHEMAS.NATIONAL_TARGET_7_MAPPING];
+    const recordTypes       = [
+        SCHEMAS.NATIONAL_TARGET_7, 
+        SCHEMAS.NATIONAL_TARGET_7_MAPPING,
+        SCHEMAS.NATIONAL_REPORT_7,
+        SCHEMAS.NATIONAL_NBSAP
+    ];
     const filterMapping     = {
         recordTypes  : 'schema',
         globalTargets: 'target-keyword',
