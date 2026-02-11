@@ -330,9 +330,9 @@
             section.indicatorData = {
                 headline     : nationalReport7Service.indicatorDataDTO(indicatorData, 'headlineIndicators'),
                 binary       : nationalReport7Service.indicatorDataDTO(indicatorData, 'binaryIndicators'),
-                component    : nationalReport7Service.indicatorDataDTO(indicatorData, 'componentIndicators'),
-                complementary: nationalReport7Service.indicatorDataDTO(indicatorData, 'complementaryIndicators'),
-                national     : nationalReport7Service.indicatorDataDTO(indicatorData, 'nationalIndicators'),
+                component    : section.targetType == 'global' ? undefined : nationalReport7Service.indicatorDataDTO(indicatorData, 'componentIndicators'),
+                complementary: section.targetType == 'global' ? undefined : nationalReport7Service.indicatorDataDTO(indicatorData, 'complementaryIndicators'),
+                national     : section.targetType == 'global' ? undefined : nationalReport7Service.indicatorDataDTO(indicatorData, 'nationalIndicators'),
             }
         });
     }
