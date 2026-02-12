@@ -9,5 +9,8 @@
     "unit": "Unit",
     "footnote": "Footnote",
     "yes":"Yes",
-    "no":"No"
+    "no":"No",
+    "missingYear": "Missing year for row {index}",
+    "missingUnit": "Missing unit for row {index}",
+    "missingValue": "Missing value for row {index}"
 }
