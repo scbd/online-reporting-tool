@@ -296,8 +296,9 @@
                                 </tr>
                                 <tr v-for="document in validationErrorDrafts" :key="document" :class="{'table-danger': document.errors?.length}">
                                     <td>
-                                        {{ lstring(document.workingDocumentTitle||document.title) }}
-                                        <strong>({{ document?.body?.indicator?.identifier }})</strong>
+                                        {{ lstring(document.nationalIndicatorTitle||document.workingDocumentTitle||document.title) }}
+                                        <strong>(
+                                            {{ document?.body?.indicator?.identifier }})</strong>
                                     </td>
                                     <td >
                                         <div class="d-flex m-1">
@@ -485,6 +486,7 @@
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import { KmDocumentsService } from '~/services/kmDocuments';
     import { EditFormUtility } from '@/services/edit-form-utility';
+    import { queryIndex, parseSolrQuery, escape } from '@/services/solr';
 
 
     const { $appRoutes:appRoutes, $api } = useNuxtApp();
@@ -521,6 +523,7 @@
     const binaryIndicators           = ref([]);
     const showPreview              = ref(false);
     const showSectionIIIProgress   = ref(false);
+    const nationalIndicators       = ref([]);
 
     const cleanDocument = computed(()=>{
         let clean = {...nationalReport7Store.nationalReport};
@@ -535,7 +538,7 @@
 
     const disableActions = computed(()=>isValidating.value || isBusy.value || isLoadingRecords.value || isPublishing.value ||
         cleanDocumentInfo.value?.workingDocumentLock);
-    const validationErrorDrafts = computed(()=>draftIndicatorData.value)//.filter(e=>e.errors?.length)
+    const validationErrorDrafts = computed(()=>draftIndicatorData.value?.sort((a,b)=>(b.errors?.length||0) - (a.errors?.length||0)))//.filter(e=>e.errors?.length)
     const validationErrorDraftsCount = computed(()=>validationErrorDrafts.value?.filter(e=>e.errors?.length)?.length) 
     const missingIndicatorData  = computed(()=>{
         const indicatorData = [...(publishedIndicatorData.value||[]), ...(draftIndicatorData.value||[])];
@@ -794,10 +797,12 @@
                 ]);
                 publishedIndicatorData.value = documents.flat()
             }
-
+            if(draftIndicatorData.value?.length && !nationalIndicators.value?.length){
+                nationalIndicators.value = await loadNationalIndicators(cleanDocument.value?.government?.identifier);
+            }
+            
             draftNr7Document.value = { body : cloneDeep(cleanDocument.value) };
             await validateDocuments([draftNr7Document.value, ...draftIndicatorData.value]);
- 
             
         }
         catch(e){
@@ -849,7 +854,26 @@
 
         return await Promise.all(promises);
     }
-    
+    async function loadNationalIndicators(government:string){
+        const searchQuery = {
+            fields          : 'nationalIndicators_s',
+            query           : `hasOtherNationalIndicators_b:true AND government_s:(${escape(government)})`
+        }
+        
+        const result = await queryIndex(parseSolrQuery(searchQuery))
+
+        const indicators = (result?.docs || []).map(doc=>JSON.parse(doc.nationalIndicators_s)).flat();
+
+        const indicatorsObject = arrayToObject(indicators);
+
+        draftIndicatorData.value?.forEach(indicatorData => {
+            if(indicatorsObject[indicatorData?.body?.indicator?.identifier]){
+                indicatorData.nationalIndicatorTitle = indicatorsObject[indicatorData?.body?.indicator?.identifier].value;
+            }
+        }); 
+
+        return indicatorsObject;
+    }
     async function showConfirmation(){
         const dialogPromise = new Promise(async function (resolvePromise,reject){
             showConfirmDialog.value = true;
