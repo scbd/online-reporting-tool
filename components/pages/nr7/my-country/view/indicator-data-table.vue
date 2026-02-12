@@ -14,7 +14,7 @@
                 <th>{{t('value')}}</th>
                 <th>{{t('footnote')}}</th>
             </tr>
-            <tr v-for="unit in indicatorData" :key="unit">
+            <tr v-for="(unit, index) in indicatorData" :key="unit">
                 
                 <td  v-if="showIndicatorCode" :class="{'bg-danger' : !unit.indicatorCode || unit.indicatorCode != indicatorCode}">
                     {{unit.indicatorCode}}
@@ -22,9 +22,24 @@
                 <td>{{unit.hasDisaggregation ? t('yes') : t('no')}}</td>
                 <th v-if="showDisaggregationType">{{unit.disaggregationType}}</th>
                 <td v-if="showDisaggregation">{{unit.disaggregation}}</td>
-                <td :class="{'bg-danger' : !isNumber(unit.year) || unit.year == 0}">{{unit.year}}</td>
-                <td :class="{'bg-danger' : !unit.unit}">{{unit.unit}}</td>
-                <td :class="{'bg-danger' : !isNumber(unit.value) || isNaN(unit.value)}">{{unit.value}}</td>
+                <td :class="{'bg-danger' : !isNumber(unit.year) || unit.year == 0}">
+                    <label :for="`dataYear${index+1}`">
+                        <span class="d-none">{{t('missingYear', {index:index+1})}}</span>
+                    </label>
+                    {{unit.year}}
+                </td>
+                <td :class="{'bg-danger' : !unit.unit}">
+                    <label :for="`dataUnit${index+1}`">
+                        <span class="d-none">{{t('missingUnit', {index:index+1})}}</span>
+                    </label>
+                    {{unit.unit}}
+                </td>
+                <td :class="{'bg-danger' : !isNumber(unit.value) || isNaN(unit.value)}">
+                    <label :for="`dataValue${index+1}`">
+                        <span class="d-none">{{t('missingValue', {index:index+1})}}</span>
+                    </label>
+                    {{unit.value}}
+                </td>
                 <td>{{unit.footnote}}</td>
             </tr>
         </tbody>

@@ -3,5 +3,8 @@
     "noLinkedDataDescription": "The following data has wrong indicator code, Indicator code in excel data should match the code of the indicator! This data will be ignored.",
     "indicatorCode": "Indicator code :",
     "failedValidation": "The following data failed validation! This data will be ignored.",
-    "validData": "Valid data"
+    "validData": "Valid data",
+    "columnsMismatch":"Your excel file is not following the template (column mismatch) expected columns are \"{count}\", please use the system provided template",
+    "columnsInvalid":"Column name \"{colName}\" is invalid, on column \"{colNo}\" expected name is \"{colExpected}\", please follow the sequence provided in the template",
+    "indicator": "Indicator"
 }
