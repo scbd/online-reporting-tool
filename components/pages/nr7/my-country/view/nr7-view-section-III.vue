@@ -30,7 +30,7 @@
                     </km-form-group>
 
                     <km-form-group name="keyChallengesSummary" v-if="assessment.keyChallengesSummary"
-                        :caption="t('provideExamplesOrCases')">
+                        :caption="t('keyChallengesSummary')">
                         <km-lstring-value type="html" :value="assessment.keyChallengesSummary"
                             :locale="selectedLocale"></km-lstring-value>
                     </km-form-group>
