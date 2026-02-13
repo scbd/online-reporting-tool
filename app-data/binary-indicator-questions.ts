@@ -1060,6 +1060,10 @@ function getQuestions(locale:string = 'en') {
                         {
                             "value": "fully",
                             "title": t("fully", locale),
+                        },
+                        {
+                            "value": "notApplicable",
+                            "title": t("notApplicable", locale),
                         }
                     ],
                     "mandatory": true
