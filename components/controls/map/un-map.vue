@@ -1,16 +1,26 @@
 <template>
-    <div id="map" :class="{ 'no-height d-none':imageUrl}"></div>
-    <img :src="imageUrl" v-if="imageUrl" class="img-fluid map">
+    <div style="position: relative;">
+        <div id="map" :class="{ 'no-height d-none':imageUrl}"></div>
+        <img :src="imageUrl" v-if="imageUrl" class="img-fluid map">
+        <div v-if="showEuFlag" class="eu-flag-container" :style="flagStyle"
+             data-bs-toggle="tooltip" data-bs-placement="top" 
+             :title="lstring(europeanUnion?.name, locale)" ref="euFlagRef">
+             <img src="/eu-map.png" class="eu-flag">
+             <span class="eu-text">{{ lstring(europeanUnion?.name, locale) }}</span>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
 //@ts-nocheck
     import { useCountriesStore }    from '@/stores/countries';
+    import { Tooltip } from 'bootstrap';
+    import { lstring } from '~/utils';
 
     const props = defineProps({
         countryColors : { type:Array<CountryColor>, required:true},
         zoom   : { type:Number, default : 0.8 },
-        screenshotOnly: { type:Boolean, default : false },
+        screenshotOnly: { type:Boolean, default : false }
     });
 
     const mapActions = inject(UNMapActionsKey);
@@ -21,8 +31,30 @@
     const route          = useRoute()
 
     const imageUrl = ref();
-        
+    const showEuFlag = ref(false);
+    const euFlagRef  = ref(null);
     let map;
+    let bsTooltip;
+
+    const flagStyle = computed(() => {
+        return {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100px',
+            height: '70px',
+            padding: '5px',
+            flexDirection: 'column' // #Alignment for text
+        };
+    });
+    const europeanUnion = computed(()=>{
+        if(!countriesStore?.countries?.length)
+            return {};
+
+        return countriesStore.countries.find(e=>e.code == 'EU');
+    })
+
+    
 
     useHead({
         script:[
@@ -259,6 +291,16 @@
                         }
                         map.addLayer(coloredCountries);                       
                         map.addLayer(border);
+
+                        const EU_ISO3 = 'EUR';
+                        showEuFlag.value = props.countryColors.some(c => EU_ISO3 == c.code3);
+                        if(showEuFlag.value){
+                            nextTick(()=>{
+                                if(euFlagRef.value){
+                                    bsTooltip = new Tooltip(euFlagRef.value);
+                                }
+                            })  
+                        }
                     }
                 });
 
@@ -307,7 +349,6 @@
                             'fill-opacity': 1
                         }
                     });
-                           console.log(patternCountries)
                 }
             }
             if(props.zoom)
@@ -336,12 +377,14 @@
             map.setBearing(map.getBearing());
         })
     }
-    onMounted(()=>{
-        countriesStore.loadCountries()
-        initMap()
+    onMounted(async()=>{
+        await countriesStore.loadCountries()
+        await initMap()
     })
 
     onUnmounted(() => {
+        if(bsTooltip)
+            bsTooltip.dispose();
         if(window.mapboxgl && map )
             map.remove();
     })
@@ -357,5 +400,24 @@
     }
     .no-height{
         height: 0px!important;
+    }
+    .eu-flag-container {
+        position: absolute;
+        bottom: 35px;
+        left: 10px;
+        z-index: 5;
+    }
+    .eu-flag {
+        height: auto;
+        width: 100%;
+        object-fit: contain;
+        flex: 1; /* Take available space */
+    }
+    .eu-text {
+        font-size: 10px;
+        font-weight: bold;
+        color: #333;
+        line-height: 1;
+        margin-top: 2px;
     }
 </style>
