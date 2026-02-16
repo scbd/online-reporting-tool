@@ -1500,7 +1500,7 @@ function getQuestions(locale:string = 'en') {
                             "title": t("other", locale),
                         }
                     ],
-                    "mandatory": true
+                    "mandatory": false
                 },
                 {
                     "key": "14_4",
