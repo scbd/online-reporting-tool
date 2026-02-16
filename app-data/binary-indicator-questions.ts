@@ -855,7 +855,25 @@ function getQuestions(locale:string = 'en') {
                             "title": t("other", locale),
                         },
                     ],
-                    "mandatory": true
+                    "mandatory": true,
+                    "validations": [
+                        {
+                            "question": "8_7_1",
+                            "type": "@hasValues",
+                            "values": [
+                                "other"
+                            ],
+                            "trigger": "enable"
+                        }
+                    ]
+                },
+                {
+                    "key": "8_7_1",
+                    "section": "binaryResponseTarget8",
+                    "number": "8.7(other)",
+                    "type": "string",
+                    "title": t("pleaseSpecify", locale),
+                    "mandatory": false
                 },
                 {
                     "key": "8_8",
@@ -1060,6 +1078,10 @@ function getQuestions(locale:string = 'en') {
                         {
                             "value": "fully",
                             "title": t("fully", locale),
+                        },
+                        {
+                            "value": "notApplicable",
+                            "title": t("notApplicable", locale),
                         }
                     ],
                     "mandatory": true
@@ -1496,7 +1518,25 @@ function getQuestions(locale:string = 'en') {
                             "title": t("other", locale),
                         }
                     ],
-                    "mandatory": true
+                    "mandatory": false,
+                    "validations": [
+                        {
+                            "question": "14_3_a_1",
+                            "type": "@hasValues",
+                            "values": [
+                                "other"
+                            ],
+                            "trigger": "enable"
+                        }
+                    ]   
+                },
+                {
+                    "key": "14_3_a_1",
+                    "section": "binaryResponseTarget14",
+                    "number": "14.3(a)(other)",
+                    "type": "string",
+                    "title": t("pleaseSpecify", locale),
+                    "mandatory": false
                 },
                 {
                     "key": "14_4",
@@ -2213,9 +2253,31 @@ function getQuestions(locale:string = 'en') {
                                 {
                                     "value": "other",
                                     "title": t("other", locale),
+                                },
+                                {
+                                    "value": "none",
+                                    "title": t("none", locale),
                                 }
                             ],
-                            "mandatory": true
+                            "mandatory": true,
+                            "validations": [
+                                {
+                                    "question": "22_1_a_1",
+                                    "type": "@hasValues",
+                                    "values": [
+                                        "other"
+                                    ],
+                                    "trigger": "enable"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "22_1_a_1",
+                            "section": "binaryResponseTarget22",
+                            "number": "22.1(a)(other)",
+                            "type": "string",
+                            "title": t("pleaseSpecify", locale),
+                            "mandatory": false
                         },
                         {
                             "key": "22_1_b",
@@ -2294,9 +2356,31 @@ function getQuestions(locale:string = 'en') {
                                 {
                                     "value": "other",
                                     "title": t("other", locale),
+                                },
+                                {
+                                    "value": "none",
+                                    "title": t("none", locale),
                                 }
                             ],
-                            "mandatory": true
+                            "mandatory": true,
+                            "validations": [
+                                {
+                                    "question": "22_1_d_1",
+                                    "type": "@hasValues",
+                                    "values": [
+                                        "other"
+                                        ],
+                                    "trigger": "enable"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "22_1_d_1",
+                            "section": "binaryResponseTarget22",
+                            "number": "22.1(d)(other)",
+                            "type": "string",
+                            "title": t("pleaseSpecify", locale),
+                            "mandatory": false
                         },
                         {
                             "key": "22_1_e",
@@ -2325,9 +2409,31 @@ function getQuestions(locale:string = 'en') {
                                 {
                                     "value": "other",
                                     "title": t("other", locale),
+                                },
+                                {
+                                    "value": "none",
+                                    "title": t("none", locale),
                                 }
                             ],
-                            "mandatory": true
+                            "mandatory": true,
+                            "validations": [
+                                {
+                                    "question": "22_1_e_1",
+                                    "type": "@hasValues",
+                                    "values": [
+                                        "other"
+                                    ],
+                                    "trigger": "enable"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "22_1_e_1",
+                            "section": "binaryResponseTarget22",
+                            "number": "22.1(e)(other)",
+                            "type": "string",
+                            "title": t("pleaseSpecify", locale),
+                            "mandatory": false  
                         },
                     ]
                 },
@@ -2391,9 +2497,31 @@ function getQuestions(locale:string = 'en') {
                                 {
                                     "value": "other",
                                     "title": t("other", locale),
+                                },
+                                {
+                                    "value": "none",
+                                    "title": t("none", locale),
                                 }
                             ],
-                            "mandatory": true
+                            "mandatory": true,
+                            "validations": [
+                                {
+                                    "question": "22_3_a_1",
+                                    "type": "@hasValues",
+                                    "values": [
+                                        "other"
+                                    ],
+                                    "trigger": "enable"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "22_3_a_1",
+                            "section": "binaryResponseTarget22",
+                            "number": "22.3(a)(other)",
+                            "type": "string",
+                            "title": t("pleaseSpecify", locale),
+                            "mandatory": false  
                         },
                         {
                             "key": "22_3_b",
