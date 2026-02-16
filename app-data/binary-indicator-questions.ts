@@ -2217,6 +2217,10 @@ function getQuestions(locale:string = 'en') {
                                 {
                                     "value": "other",
                                     "title": t("other", locale),
+                                },
+                                {
+                                    "value": "none",
+                                    "title": t("none", locale),
                                 }
                             ],
                             "mandatory": true
@@ -2298,6 +2302,10 @@ function getQuestions(locale:string = 'en') {
                                 {
                                     "value": "other",
                                     "title": t("other", locale),
+                                },
+                                {
+                                    "value": "none",
+                                    "title": t("none", locale),
                                 }
                             ],
                             "mandatory": true
@@ -2329,6 +2337,10 @@ function getQuestions(locale:string = 'en') {
                                 {
                                     "value": "other",
                                     "title": t("other", locale),
+                                },
+                                {
+                                    "value": "none",
+                                    "title": t("none", locale),
                                 }
                             ],
                             "mandatory": true
@@ -2395,6 +2407,10 @@ function getQuestions(locale:string = 'en') {
                                 {
                                     "value": "other",
                                     "title": t("other", locale),
+                                },
+                                {
+                                    "value": "none",
+                                    "title": t("none", locale),
                                 }
                             ],
                             "mandatory": true
