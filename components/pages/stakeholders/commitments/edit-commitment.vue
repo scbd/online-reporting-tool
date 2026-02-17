@@ -201,7 +201,7 @@
                                             <km-form-group name="primaryGlobalAlignment"
                                                 :caption="t('primaryGlobalAlignment')" required>
                                                 <km-select v-model="document.primaryGlobalAlignment"
-                                                    :options="globalGoalAndTargets"  :disabled="!hasCoverageCountries"
+                                                    :options="globalGoalAndTargets"  :disabled="!hasCoverageCountries && !document.coverageRegions?.length"
                                                     :placeholder="t('primaryGlobalAlignment')"  @update:modelValue="onGoalsAndTargetSelected"
                                                     :custom-label="customLabel" :custom-selected-item="customSelectedItem"/>
                                             </km-form-group>
