@@ -49,5 +49,6 @@
     "additionalExplanation":"Additional explanation",
     "additionalInformation":"Additional information",
     "relevantInformation":"Any other relevant information",
-    "globalGoalsAndTargets":"Global Goals/Targets"
+    "globalGoalsAndTargets":"Global Goals/Targets",
+    "noHeadlineIndicators":"There are no headline indicators associated with the selected GBF targets"
 }

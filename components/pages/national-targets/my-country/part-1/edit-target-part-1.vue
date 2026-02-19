@@ -151,7 +151,7 @@
                                 </div>
                             </div>
                         </km-form-group>
-                        <km-form-group v-if="headlineIndicators?.length">
+                        <km-form-group>
                             <div class="card">
                                 <div class="card-header bg-secondary">
                                     {{t('indicatorsUsedToMonitor')}}
@@ -167,6 +167,11 @@
                                             <tbody>
                                                 <tr v-for="indicator in headlineIndicators" :key="indicator.identifier">
                                                     <td>{{ lstring(indicator.title) }}</td>
+                                                </tr>
+                                                <tr v-if="!headlineIndicators?.length">
+                                                    <td>
+                                                        <div class="alert alert-info">{{ t('noHeadlineIndicators') }}</div>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -363,10 +368,10 @@
     const stateTargetWorkflow       = useStorage('scbd-ort-target-workflow', { batchId : undefined });
     const showGlobalTargetsModal    = ref(false);
     const document                  = ref();
-    const headlineIndicators        = ref(null);
-    const componentIndicators       = ref(null);
-    const complementaryIndicators   = ref(null);
-    const binaryIndicators          = ref(null);
+    const headlineIndicators        = ref([]);
+    const componentIndicators       = ref([]);
+    const complementaryIndicators   = ref([]);
+    const binaryIndicators          = ref([]);
     const selectedGlobalTargets     = ref([]);      
     const isBusy                    = ref(false);
     const validationReport          = ref({});
