@@ -233,6 +233,14 @@
         if(!showSourceOfDataInfo.value){
             clean.sourceOfDataInfo = undefined;
         }
+
+        if(clean.data?.length > 0){
+            clean.data.forEach(d=>{
+                if(typeof d.indicatorCode !== 'string')
+                    d.indicatorCode = d.indicatorCode.toString();
+            });
+        }
+
         return clean
     });
 
