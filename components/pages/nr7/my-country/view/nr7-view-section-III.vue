@@ -51,7 +51,7 @@
                             {{ t('indicatorData') }}
                         </legend>
                         <hr>
-                        <nr7-view-target-indicators :is-printing="isPrinting" :target-indicators="assessment.indicatorData" :hide-missing-data-alert="true"
+                        <nr7-view-target-indicators :is-printing="isPrinting" :target-indicators="assessment.indicatorData" :hide-missing-data-alert="false"
                             :indicators-data="indicatorsData" :national-indicators="nationalIndicators"></nr7-view-target-indicators>                                    
                     </km-form-group>
                 </div>

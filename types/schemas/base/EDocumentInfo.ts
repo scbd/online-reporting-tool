@@ -10,6 +10,8 @@ import type { EStakeholderCredential } from "../EStakeholderCredential";
 
 export type Schemas = ENationalTarget7 | ENationalTarget7Mapping | ENationalReport7 | 
                       EStakeholderCommitment | EStakeholderCredential | object;
+
+// TODO: <T extends Schemas>
 export interface EDocumentInfo {
     identifier              : string;
     documentID              : number | null;

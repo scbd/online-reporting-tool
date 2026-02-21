@@ -261,6 +261,7 @@
     const isEventDefined        = useHasEvents();
     const thesaurusStore        = useThesaurusStore ();
     const accordionItemVisibility= ref({});
+    const otherNationalIndicators = ref(null);
     let firstLoad = true;
     const binaryIndicatorQuestions = computed(()=>getBinaryIndicatorQuestions(locale.value));
     const sectionIIIComputed = computed({ 
@@ -465,7 +466,8 @@
                                 loadNationalTargets(),
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
                                 loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA),
-                                thesaurusStore.loadDomainTerms(THESAURUS.ASSESSMENT_PROGRESS)
+                                thesaurusStore.loadDomainTerms(THESAURUS.ASSESSMENT_PROGRESS),
+                                nationalReport7Service.loadNationalIndicators(user.value?.government)
                             ]);            
             nationalTargets.value = arrayToObject(response[2]) || {}; 
             
@@ -477,6 +479,7 @@
             }
 
             document.value = nationalReport7Store.nationalReport;
+            otherNationalIndicators.value = response[6]||[];    
 
             if(!document.value.sectionIII){
                 nationalReport7Store.nationalReport.sectionIII = [];
@@ -561,6 +564,8 @@
                 }
             })
             
+            fixDuplicateNationalIndicators(sectionIII);
+
             nationalReport7Store.nationalReport.sectionIII = sectionIII;
 
             if(query.edit==true)
@@ -582,6 +587,43 @@
           ...(compact(uniqBy(target.nationalIndicators||[], 'identifier').map(e => mapWithNationalData(e, 'nationalIndicators')))),
         ];
       }
+    }
+
+    function fixDuplicateNationalIndicators(sectionIII:SectionIII[]) : void{
+
+        const sectionIIIWithNationalIndicators = sectionIII.map(e=>e.indicatorData?.national?.map(n=>( {...n, targetIdentifier:e.target.identifier}))).flat().filter(e=>e)
+        sectionIIIWithNationalIndicators.forEach((e, index)=>{
+            if(e?.data === undefined ){
+                //find the indicator in the otherNationalIndicators by id
+                const  otherNationalIndicator = otherNationalIndicators.value?.find(other=>other?.indicator?.identifier == e?.identifier)
+                if(otherNationalIndicator){
+
+                    // use en text (text is normalized in solr so en will always exists)
+                    // find otherNationalIndicator with same duplicate text
+                    const duplicateIndicators = otherNationalIndicators.value?.filter(other=>
+                            other.identifier!= otherNationalIndicator.identifier && 
+                            nationalReport7Service.compareNationalIndicatorByTitle(other, otherNationalIndicator))
+                            .map(other=>other.identifier)
+                    
+                    if(duplicateIndicators?.length){
+                        //from duplicate list find which one has data
+                        const indicatorWithData = sectionIIIWithNationalIndicators.find(dataIndicator=>
+                            dataIndicator?.data !== undefined && 
+                            duplicateIndicators.includes(dataIndicator?.indicator?.identifier))
+                        if(indicatorWithData){
+                            e.duplicate = true;
+                            let duplicateIndicatorDataRecord = indicatorsData.value.find(id=>id.identifier == indicatorWithData?.data?.identifier)
+                            if(duplicateIndicatorDataRecord){
+                                duplicateIndicatorDataRecord = cloneDeep(duplicateIndicatorDataRecord);
+                                duplicateIndicatorDataRecord.body.indicator.identifier = e.indicator?.identifier
+                                onAddIndicatorDataClose(duplicateIndicatorDataRecord, true)
+                            }
+                        }
+
+                    }
+                }
+            }
+        })
     }
 
     function mapWithNationalData(indicator, type){
@@ -623,14 +665,15 @@
                      .find(e=>e.globalTargetAlignment?.map(e=>e.identifier)?.includes(targetIdentifier))
     }   
 
-    async function onAddIndicatorDataClose(document){
+    async function onAddIndicatorDataClose(document, duplicate = false){
         
         if(!document?.body)
             return;
         
-        await sleep(300);
+        if(!duplicate)
+            await sleep(300);
         const isBinaryIndicator = document.body.header.schema == SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA;
-        
+        const isNationalIndicator = document.body.header.schema == SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA;
         if(!isBinaryIndicator){
             nationalIndicatorData.value[document.body?.indicator?.identifier] = document.body;
         }
@@ -659,12 +702,17 @@
         }
 
         const indicatorDataIndex = indicatorsData.value.findIndex(e=>e.identifier == document.identifier);
-        if(indicatorDataIndex>=0){
+        if(!duplicate && indicatorDataIndex>=0){
             indicatorsData.value.splice(indicatorDataIndex, 1, document);
         }
         else{
             indicatorsData.value.push(document);
             buildIndicatorDataObject(sectionIIIComputed.value);
+        }
+
+        //if duplicate is false it means that a new indicator was added, so we need to fix duplicate national indicators
+        if(isNationalIndicator && !duplicate){
+            fixDuplicateNationalIndicators(sectionIIIComputed.value);
         }
     }
 
