@@ -242,7 +242,13 @@ class NationalReport7Service {
         
         const result = await queryIndex(parseSolrQuery(searchQuery))
 
-        const indicators:Array<NationalIndicator> = (result?.docs || []).map(doc=>JSON.parse(doc.nationalIndicators_s)).flat();
+        const indicators:Array<NationalIndicator> = (result?.docs || [])
+        .filter(doc=>doc.nationalIndicators_s)
+        .map(doc=>{
+            return JSON.parse(doc.nationalIndicators_s)
+        })
+        .flat();
+
 
         // const indicatorsObject = arrayToObject(indicators);
         return indicators;
