@@ -9,6 +9,14 @@ import { EditFormUtility } from "~/services/edit-form-utility";
 import { GbfGoalsAndTargets } from "~/services/gbfGoalsAndTargets";
 import { getAlignedGoalsOrTargets } from '~/components/pages/national-targets/my-country/part-2/util';
 import { IndicatorsMappingData } from '~/app-data/indicators';
+import { queryIndex, parseSolrQuery, escape } from '@/services/solr';
+
+export interface NationalIndicator {
+    identifier: string,
+    value: ELstring,
+    parentIndicator?: string,
+    isDuplicate?: boolean
+}
 
 class NationalReport7Service {
 
@@ -181,7 +189,6 @@ class NationalReport7Service {
     indicatorDataDTO(data:Object, type:string){
         const typeData = data[type]?.map(e=>({indicator : { identifier : e.identifier}}));
         typeData?.forEach(e=>{
-
             const indicatorData = data.indicators?.find(i=>i.identifier == e.indicator.identifier);
 
             if(indicatorData?.nationalData){
@@ -216,6 +223,52 @@ class NationalReport7Service {
             }
         }
         return IndicatorsMappingData.find(e=>e.identifier == indicator.identifier);
+    }
+
+
+    async loadNationalIndicators(government:string):Promise<Array<NationalIndicator>>{
+        if(!government) return [];
+        
+        const searchQuery = {
+            fields          : 'nationalIndicators_s',
+            query           : `hasOtherNationalIndicators_b:true AND government_s:(${escape(government)})`
+        }
+        
+        const result = await queryIndex(parseSolrQuery(searchQuery))
+
+        const indicators:Array<NationalIndicator> = (result?.docs || []).map(doc=>JSON.parse(doc.nationalIndicators_s)).flat();
+
+        // const indicatorsObject = arrayToObject(indicators);
+        return indicators;
+    }
+
+    compareNationalIndicatorByTitle(indicator1:NationalIndicator, indicator2:NationalIndicator){
+        const indicator1Title = indicator1?.value;
+        const indicator2Title = indicator2?.value;
+        if(!indicator1Title || !indicator2Title) {
+            console.log('Indicator value is missing', indicator1, indicator2);
+            return false;
+        }
+        return indicator1Title?.en?.toLowerCase()?.trim() == indicator2Title?.en?.toLowerCase()?.trim();
+    }
+    
+    findUniqueNationalIndicators(nationalIndicators:Array<NationalIndicator>, nationalIndicatorData:Array<NationalIndicatorData>):Array<NationalIndicator>{
+        const uniqueNationalIndicators = nationalIndicators.filter(e=>{
+            const data = nationalIndicatorData.find(nid=>nid?.body?.indicator?.identifier == e.identifier);
+            if(data) return true;
+
+            const duplicateIndicators = nationalIndicators.filter(ir=>this.compareNationalIndicatorByTitle(ir, e) && !ir.isDuplicate)
+            if(duplicateIndicators.length > 0){
+                duplicateIndicators.forEach((di, index)=>{
+                    if(index>0){
+                         di.isDuplicate = true;
+                         di.parentIndicator = duplicateIndicators[0].identifier;
+                    }
+                });
+            }
+            return duplicateIndicators.find(di=>!di.isDuplicate && di.identifier == e.identifier);
+        });
+        return uniqueNationalIndicators.filter(e=>!e.isDuplicate);
     }
 
 }
