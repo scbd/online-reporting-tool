@@ -187,8 +187,14 @@ class NationalReport7Service {
     }
 
     indicatorDataDTO(data:Object, type:string){
-        const typeData = data[type]?.map(e=>({indicator : { identifier : e.identifier}}));
-        typeData?.forEach(e=>{
+        const deletedIndicators = [
+            'GBF-INDICATOR-151',
+            'GBF-INDICATOR-269'
+        ];
+        const typeData = data?.[type]?.
+                            filter(e=>!deletedIndicators?.includes(e.identifier))?.
+                            map(e=>({indicator : { identifier : e.identifier}}));
+        typeData?.forEach(e=>{            
             const indicatorData = data.indicators?.find(i=>i.identifier == e.indicator.identifier);
 
             if(indicatorData?.nationalData){
