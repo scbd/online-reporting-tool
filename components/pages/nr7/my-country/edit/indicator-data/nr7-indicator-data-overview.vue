@@ -113,9 +113,9 @@
     import { GbfGoalsAndTargets } from "@/services/gbfGoalsAndTargets";
     import {getBinaryIndicatorQuestions } from '~/app-data/binary-indicator-questions'
     import {cloneDeep} from 'lodash';
+    import {nationalReport7Service} from '~/services/national-report-7-service'
 
     let document = ref({});
-    let sectionIII;
     const props = defineProps({
         workflowActiveTab  : {type:Number, default:0 }
     }) 
@@ -138,6 +138,7 @@
     const tabPaneActiveKey          = ref(1)
     const selectedComplementary     = ref([]);
     const selectedComponent         = ref([]);
+    const uniqueNationalIndicators   = ref([]);
 
     const isEventDefined        = useHasEvents();
     
@@ -153,9 +154,14 @@
                                                                 e.type  = 'national'
                                                                 return e;
                                                             })
+                                                            ?.filter(removeDuplicateIndicators)
                                                             ?.map(mapWithNationalRecords));
     const globalComplementaryIndicators = computed(()=>globalIndicators.value?.complementaryIndicators?.filter(filterNationalCompIndicators));
     const globalComponentIndicators     = computed(()=>globalIndicators.value?.componentIndicators?.filter(filterNationalComIndicators));
+
+    function removeDuplicateIndicators(indicator){
+        return uniqueNationalIndicators.value.find(e=>e.identifier == indicator.identifier);
+    }
 
     function filterNationalIndicators(indicator, nationalIndicator){
         const nationalIndicators = nationalTargets.value?.flatMap(e=>e[nationalIndicator])
@@ -259,7 +265,8 @@
                                     GbfGoalsAndTargets.loadGbfComplementaryIndicator(),
                                     loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_INDICATOR_DATA),
                                     loadNationalIndicatorData(SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA),
-                                    loadNationalTargets()
+                                    loadNationalTargets(),
+                                    nationalReport7Service.loadNationalIndicators(user.value?.government)
                                 ]);
 
         globalIndicators.value = {
@@ -273,10 +280,11 @@
         nationalBinaryDatDocument.value = indicatorResponse[5] ? indicatorResponse[5][0] : {};
 
         nationalTargets.value    = indicatorResponse[6];
-        
+
         // selectedComplementary.value  = globalComplementaryIndicators.value.filter(e=>!e.isNational).map(e=>(e.title, e.identifier))   
-        // selectedComponent    .value  = globalComplementaryIndicators.value.filter(e=>!e.isNational).map(e=>(e.title, e.identifier))
-        
+        //find duplicate national indicators by title
+        uniqueNationalIndicators.value = nationalReport7Service.findUniqueNationalIndicators(indicatorResponse[7], nationalIndicatorData.value);
+
         isBusy.value = false;
     }
 
