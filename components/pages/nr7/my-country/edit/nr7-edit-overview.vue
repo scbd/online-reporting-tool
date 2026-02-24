@@ -295,7 +295,7 @@
                                     </td>
                                 </tr>
                                 <tr v-for="document in validationErrorDrafts" :key="document" :class="{'table-danger': document.errors?.length}">
-                                    <td>
+                                    <td>                                        
                                         {{ lstring(document.nationalIndicatorTitle||document.workingDocumentTitle||document.title) }}
                                         <strong>(
                                             {{ document?.body?.indicator?.identifier }})</strong>
@@ -594,6 +594,7 @@
     const sectionIIIErrors  = computed(()=>draftNr7Document.value.errors?.filter(e=>e.parameters == 'sectionIII'));
     const sectionIVErrors   = computed(()=>draftNr7Document.value.errors?.filter(e=>e.parameters == 'sectionIV'));
     const sectionVErrors    = computed(()=>draftNr7Document.value.errors?.filter(e=>e.parameters == 'sectionV'));
+    const nonSectionErrors  = computed(()=>draftNr7Document.value.errors?.filter(e=>!e.parameters?.startsWith('section')));
 
     async function init(){
         isBusy.value = true;
@@ -835,7 +836,7 @@
                 publishedIndicatorData.value = documents.flat()
             }
             if(draftIndicatorData.value?.length && !nationalIndicators.value?.length){
-                nationalIndicators.value = await loadNationalIndicators(cleanDocument.value?.government?.identifier);
+                nationalIndicators.value = await loadNationalIndicators(cleanDocument.value?.government?.identifier).catch(()=>[]);
             }
             
             draftNr7Document.value = { body : cloneDeep(cleanDocument.value) };
@@ -901,15 +902,20 @@
 
         const indicators = (result?.docs || []).map(doc=>JSON.parse(doc.nationalIndicators_s)).flat();
 
-        const indicatorsObject = arrayToObject(indicators);
+        if(indicators?.length){
+            const indicatorsObject = arrayToObject(indicators);
 
-        draftIndicatorData.value?.forEach(indicatorData => {
-            if(indicatorsObject[indicatorData?.body?.indicator?.identifier]){
-                indicatorData.nationalIndicatorTitle = indicatorsObject[indicatorData?.body?.indicator?.identifier].value;
-            }
-        }); 
+            draftIndicatorData.value?.forEach(indicatorData => {
+                if(indicatorsObject[indicatorData?.body?.indicator?.identifier]){
+                    indicatorData.nationalIndicatorTitle = indicatorsObject[indicatorData?.body?.indicator?.identifier].value;
+                }
+            }); 
 
-        return indicatorsObject;
+            return indicatorsObject;
+        }
+
+        return {};
+
     }
     async function showConfirmation(){
         const dialogPromise = new Promise(async function (resolvePromise,reject){
