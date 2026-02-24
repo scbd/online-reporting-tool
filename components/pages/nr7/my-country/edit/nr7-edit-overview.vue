@@ -295,10 +295,30 @@
                                     </td>
                                 </tr>
                                 <tr v-for="document in validationErrorDrafts" :key="document" :class="{'table-danger': document.errors?.length}">
-                                    <td>
+                                    <td>                                        
                                         {{ lstring(document.nationalIndicatorTitle||document.workingDocumentTitle||document.title) }}
                                         <strong>(
                                             {{ document?.body?.indicator?.identifier }})</strong>
+                                        <div v-if="document.errors && (!document.identifier || document.showErrors)">
+                                            <Transition name="fade" mode="out-in">
+                                                <table class="table table-bordered table-danger mt-2">
+                                                    <tr>
+                                                        <th>Code</th>
+                                                        <th>Field</th>
+                                                        <th>Message</th>
+                                                    </tr>
+                                                    <tr v-for="error in document.errors" :key="error">
+                                                        <td>{{ error.code }}</td>
+                                                        <td>
+                                                            {{ error.property }}
+                                                        </td>
+                                                        <td>
+                                                            {{ error.parameters }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </Transition>
+                                        </div>
                                     </td>
                                     <td >
                                         <div class="d-flex m-1">
@@ -308,10 +328,13 @@
                                             <CBadge class="ms-1" color="warning" v-if="!document.isValidating && document.errors">
                                                 {{t('hasErrors')}} ({{ document.errors.length }})
                                             </CBadge>
+                                            <CButton color="primary" class="ms-1" size="sm" v-if="document.identifier"  @click="document.showErrors = !document.showErrors">
+                                                <font-awesome-icon :icon="['fas', 'eye']" /> {{t('showErrors')}}
+                                            </CButton>
                                             <CBadge class="ms-1" color="info" v-if="document.validated && !document.isValidating && !document.errors">
                                                 {{t('passedValidation')}}
                                             </CBadge>
-                                            <km-document-status class="ms-1" :document="document" @on-status-change="onRecordStatusChange"></km-document-status>
+                                            <km-document-status v-if="document.identifier" class="ms-1" :document="document" @on-status-change="onRecordStatusChange"></km-document-status>
                                         </div>
                                     </td>
                                 </tr>  
@@ -538,7 +561,21 @@
 
     const disableActions = computed(()=>isValidating.value || isBusy.value || isLoadingRecords.value || isPublishing.value ||
         cleanDocumentInfo.value?.workingDocumentLock);
-    const validationErrorDrafts = computed(()=>draftIndicatorData.value?.sort((a,b)=>(b.errors?.length||0) - (a.errors?.length||0)))//.filter(e=>e.errors?.length)
+    const validationErrorDrafts = computed(()=>{
+        const drafts = draftIndicatorData.value?.sort((a,b)=>(b.errors?.length||0) - (a.errors?.length||0))
+        
+        if(nonSectionErrors.value?.length){
+            return [
+                {
+                    showErrors:false,
+                    errors: nonSectionErrors.value,
+                    title: 'Other NR7 errors',
+                },
+                ...drafts
+            ]
+        }
+        return drafts
+    })//.filter(e=>e.errors?.length)
     const validationErrorDraftsCount = computed(()=>validationErrorDrafts.value?.filter(e=>e.errors?.length)?.length) 
     const missingIndicatorData  = computed(()=>{
         const indicatorData = [...(publishedIndicatorData.value||[]), ...(draftIndicatorData.value||[])];
@@ -557,6 +594,7 @@
     const sectionIIIErrors  = computed(()=>draftNr7Document.value.errors?.filter(e=>e.parameters == 'sectionIII'));
     const sectionIVErrors   = computed(()=>draftNr7Document.value.errors?.filter(e=>e.parameters == 'sectionIV'));
     const sectionVErrors    = computed(()=>draftNr7Document.value.errors?.filter(e=>e.parameters == 'sectionV'));
+    const nonSectionErrors  = computed(()=>draftNr7Document.value.errors?.filter(e=>!e.parameters?.startsWith('section')));
 
     async function init(){
         isBusy.value = true;
@@ -798,7 +836,7 @@
                 publishedIndicatorData.value = documents.flat()
             }
             if(draftIndicatorData.value?.length && !nationalIndicators.value?.length){
-                nationalIndicators.value = await loadNationalIndicators(cleanDocument.value?.government?.identifier);
+                nationalIndicators.value = await loadNationalIndicators(cleanDocument.value?.government?.identifier).catch(()=>[]);
             }
             
             draftNr7Document.value = { body : cloneDeep(cleanDocument.value) };
@@ -864,15 +902,20 @@
 
         const indicators = (result?.docs || []).map(doc=>JSON.parse(doc.nationalIndicators_s)).flat();
 
-        const indicatorsObject = arrayToObject(indicators);
+        if(indicators?.length){
+            const indicatorsObject = arrayToObject(indicators);
 
-        draftIndicatorData.value?.forEach(indicatorData => {
-            if(indicatorsObject[indicatorData?.body?.indicator?.identifier]){
-                indicatorData.nationalIndicatorTitle = indicatorsObject[indicatorData?.body?.indicator?.identifier].value;
-            }
-        }); 
+            draftIndicatorData.value?.forEach(indicatorData => {
+                if(indicatorsObject[indicatorData?.body?.indicator?.identifier]){
+                    indicatorData.nationalIndicatorTitle = indicatorsObject[indicatorData?.body?.indicator?.identifier].value;
+                }
+            }); 
 
-        return indicatorsObject;
+            return indicatorsObject;
+        }
+
+        return {};
+
     }
     async function showConfirmation(){
         const dialogPromise = new Promise(async function (resolvePromise,reject){
