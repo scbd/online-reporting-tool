@@ -561,7 +561,21 @@
 
     const disableActions = computed(()=>isValidating.value || isBusy.value || isLoadingRecords.value || isPublishing.value ||
         cleanDocumentInfo.value?.workingDocumentLock);
-    const validationErrorDrafts = computed(()=>draftIndicatorData.value?.sort((a,b)=>(b.errors?.length||0) - (a.errors?.length||0)))//.filter(e=>e.errors?.length)
+    const validationErrorDrafts = computed(()=>{
+        const drafts = draftIndicatorData.value?.sort((a,b)=>(b.errors?.length||0) - (a.errors?.length||0))
+        
+        if(nonSectionErrors.value?.length){
+            return [
+                {
+                    showErrors:false,
+                    errors: nonSectionErrors.value,
+                    title: 'Other NR7 errors',
+                },
+                ...drafts
+            ]
+        }
+        return drafts
+    })//.filter(e=>e.errors?.length)
     const validationErrorDraftsCount = computed(()=>validationErrorDrafts.value?.filter(e=>e.errors?.length)?.length) 
     const missingIndicatorData  = computed(()=>{
         const indicatorData = [...(publishedIndicatorData.value||[]), ...(draftIndicatorData.value||[])];
