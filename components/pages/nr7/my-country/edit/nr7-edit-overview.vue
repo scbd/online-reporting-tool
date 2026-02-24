@@ -299,6 +299,26 @@
                                         {{ lstring(document.nationalIndicatorTitle||document.workingDocumentTitle||document.title) }}
                                         <strong>(
                                             {{ document?.body?.indicator?.identifier }})</strong>
+                                        <div v-if="document.errors && (!document.identifier || document.showErrors)">
+                                            <Transition name="fade" mode="out-in">
+                                                <table class="table table-bordered table-danger mt-2">
+                                                    <tr>
+                                                        <th>Code</th>
+                                                        <th>Field</th>
+                                                        <th>Message</th>
+                                                    </tr>
+                                                    <tr v-for="error in document.errors" :key="error">
+                                                        <td>{{ error.code }}</td>
+                                                        <td>
+                                                            {{ error.property }}
+                                                        </td>
+                                                        <td>
+                                                            {{ error.parameters }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </Transition>
+                                        </div>
                                     </td>
                                     <td >
                                         <div class="d-flex m-1">
@@ -308,10 +328,13 @@
                                             <CBadge class="ms-1" color="warning" v-if="!document.isValidating && document.errors">
                                                 {{t('hasErrors')}} ({{ document.errors.length }})
                                             </CBadge>
+                                            <CButton color="primary" class="ms-1" size="sm" v-if="document.identifier"  @click="document.showErrors = !document.showErrors">
+                                                <font-awesome-icon :icon="['fas', 'eye']" /> {{t('showErrors')}}
+                                            </CButton>
                                             <CBadge class="ms-1" color="info" v-if="document.validated && !document.isValidating && !document.errors">
                                                 {{t('passedValidation')}}
                                             </CBadge>
-                                            <km-document-status class="ms-1" :document="document" @on-status-change="onRecordStatusChange"></km-document-status>
+                                            <km-document-status v-if="document.identifier" class="ms-1" :document="document" @on-status-change="onRecordStatusChange"></km-document-status>
                                         </div>
                                     </td>
                                 </tr>  
