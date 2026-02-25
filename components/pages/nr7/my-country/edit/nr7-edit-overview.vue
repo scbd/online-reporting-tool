@@ -299,13 +299,24 @@
                                         {{ lstring(document.nationalIndicatorTitle||document.workingDocumentTitle||document.title) }}
                                         <strong>(
                                             {{ document?.body?.indicator?.identifier }})</strong>
-                                        <div v-if="document.errors && (!document.identifier || document.showErrors)">
+                                        <div v-if="document.errors && (document.hasDuplicateRecord || !document.identifier || document.showErrors)">
                                             <Transition name="fade" mode="out-in">
+                                                <div>
+                                                <div class="alert alert-info" v-if="document.hasDuplicateRecord">
+                                                    {{t('duplicateRecordMessage')}}
+                                                    <!-- {{ document }} -->
+                                                    <strong>{{ t('lastUpdated') }}: {{ formatDate(document.workingDocumentUpdatedOn|| document.updatedOn) }}</strong>
+                                                    <div class="float-end ms-1">
+                                                        <km-delete-record  v-if="document" :document="document"
+                                                            @on-delete="onRecordDelete($event, document)">
+                                                        </km-delete-record>
+                                                    </div>
+                                                </div>
                                                 <table class="table table-bordered table-danger mt-2">
                                                     <tr>
-                                                        <th>Code</th>
-                                                        <th>Field</th>
-                                                        <th>Message</th>
+                                                        <th>{{t('code')}}</th>
+                                                        <th>{{t('field')}}</th>
+                                                        <th>{{t('message')}}</th>
                                                     </tr>
                                                     <tr v-for="error in document.errors" :key="error">
                                                         <td>{{ error.code }}</td>
@@ -317,6 +328,7 @@
                                                         </td>
                                                     </tr>
                                                 </table>
+                                                </div>
                                             </Transition>
                                         </div>
                                     </td>
@@ -328,7 +340,7 @@
                                             <CBadge class="ms-1" color="warning" v-if="!document.isValidating && document.errors">
                                                 {{t('hasErrors')}} ({{ document.errors.length }})
                                             </CBadge>
-                                            <CButton color="primary" class="ms-1" size="sm" v-if="document.identifier"  @click="document.showErrors = !document.showErrors">
+                                            <CButton color="primary" class="ms-1" size="sm" v-if="document.identifier && document.errors?.length"  @click="document.showErrors = !document.showErrors">
                                                 <font-awesome-icon :icon="['fas', 'eye']" /> {{t('showErrors')}}
                                             </CButton>
                                             <CBadge class="ms-1" color="info" v-if="document.validated && !document.isValidating && !document.errors">
@@ -510,6 +522,7 @@
     import { KmDocumentsService } from '~/services/kmDocuments';
     import { EditFormUtility } from '@/services/edit-form-utility';
     import { queryIndex, parseSolrQuery, escape } from '@/services/solr';
+    import type { ApiError } from '~/composables/useApiFetch';
 
 
     const { $appRoutes:appRoutes, $api } = useNuxtApp();
@@ -877,14 +890,22 @@
                 document.isValidating = true
                 document.validated    = false;
                 document.errors = undefined;
+                document.hasDuplicateRecord = false;
                 const validationErrors = await validateDocument(document.body, {schema:document.body?.header?.schema})
                 if(validationErrors)
                     document.errors = [...validationErrors];
                 
             }
-            catch(e){
+            catch(e:ApiError){
                 useLogger().error(e);
-                document.error = e;
+                //duplicate record exists error, map to a user friendly message
+                if(e?.error?.field == 'government'){
+                    document.errors = [{code:e.error.code , field:e.error.field, parameters:e.error.message}];
+                    document.hasDuplicateRecord = true;
+                }
+                else{
+                    document.errors = [{code:"unknown", field:"unknown", parameters:(e.error ||e).message||e}];
+                }
             }
             document.validated = true;
             document.isValidating = false
@@ -971,7 +992,10 @@
             // loadOpenWorkflow(newDocument)
         }
     }
-
+    const onRecordDelete = async ({identifier, type}, document) => {
+        draftIndicatorData.value = draftIndicatorData.value.filter(e=>e.identifier != identifier);
+        await validateDocuments(draftIndicatorData.value.filter(e=>e.hasDuplicateRecord));
+    }
     const onPrintDocument = () => {
         isPrinting.value = true;
     }
