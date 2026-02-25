@@ -10,6 +10,7 @@ import { GbfGoalsAndTargets } from "~/services/gbfGoalsAndTargets";
 import { getAlignedGoalsOrTargets } from '~/components/pages/national-targets/my-country/part-2/util';
 import { IndicatorsMappingData } from '~/app-data/indicators';
 import { queryIndex, parseSolrQuery, escape } from '@/services/solr';
+import { uniqueBy } from '~/utils/arrays';
 
 export interface NationalIndicator {
     identifier: string,
