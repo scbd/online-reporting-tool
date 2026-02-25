@@ -18,3 +18,16 @@ export const arrayToObject = function<T>(response:Array<any>):Record<string, T> 
 }
 
 export const sortTermByName = (a:any,b:any)=>a.name.localeCompare(b.name);
+
+export const uniqueBy = (array:any[], predicate:(item:any)=>string)=>{
+    const uniqueArray = array?.reduce((acc, curr) => {
+        if(!curr) return acc;
+        const existing = acc.find((item:any) => predicate(item) === predicate(curr));
+        if (!existing) {
+            acc.push(curr);
+        }
+        return acc;
+    }, []);
+    return uniqueArray;
+
+}

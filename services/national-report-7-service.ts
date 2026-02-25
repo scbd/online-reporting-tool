@@ -204,7 +204,7 @@ class NationalReport7Service {
             }
         });
 
-        return typeData;
+        return uniqueBy(typeData, e=>e.indicator.identifier);
     }
 
     uniqueIndicators(indicators:Array<ETerm>){
