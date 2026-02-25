@@ -62,5 +62,11 @@
     "pdf": "PDF",
     "showSectionIIIProgress": "Show section III progress",
     "hideSectionIIIProgress": "Hide section III progress",
-    "noErrors": "Validation successful"
+    "noErrors": "Validation successful",
+    "showErrors": "Show errors",
+    "code": "Code",
+    "field": "Field",
+    "message": "Message",
+    "lastUpdated": "Last updated",
+    "duplicateRecordMessage": "This record is a duplicate of another record in the system. Please review and delete one of the records before proceeding."
 }
