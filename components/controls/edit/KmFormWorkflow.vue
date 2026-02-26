@@ -360,8 +360,13 @@
             $toast.success(t('draftSaveMessage'), {position:'top-right'});  
         }
         catch(e){
-            if(e?.cause?.serverStatusCode != 409)
-                $toast.error('Error saving draft record', {position:'top-right'}); 
+            // Http 409 Version Mismatch/Resource Conflict
+            if(e?.cause?.serverStatusCode != 409){
+                if(e?.error?.message)
+                    $toast.error(e.error.message, {position:'top-right'}); 
+                else
+                    $toast.error('Error saving draft record', {position:'top-right'}); 
+            }
             useLogger().error(e)
         }
         finally{
@@ -399,8 +404,13 @@
             $toast.success(t('successfulMessage'), {position:'top-right'});  
         }
         catch(e){
-            if(e?.cause?.serverStatusCode != 409)//ignore 
-                $toast.error('Error publishing record', {position:'top-right'}); 
+            // Http 409 Version Mismatch/Resource Conflict
+            if(e?.cause?.serverStatusCode != 409){
+                if(e?.error?.message)
+                    $toast.error(e.error.message, {position:'top-right'}); 
+                else
+                    $toast.error('Error publishing record', {position:'top-right'}); 
+            }
             useLogger().error(e)
         }
         finally{
@@ -442,10 +452,15 @@
         }
         catch(e){
             useLogger().error(e);
-            $toast.error('Error occurred while validating your record, please save your data and try again.')
+            if(e?.error?.message)
+                $toast.error(e.error.message, {position:'top-right'}); 
+            else
+                $toast.error('Error occurred while validating your record, please save your data and try again.')
             return {
                 errors : [{
-                    property : e.message
+                    code: e?.error?.code || 'validationError',
+                    property : e?.error?.message || e.message || e,
+                    parameters: validationSection
                 }]
             }
         }
@@ -460,7 +475,7 @@
 
         const hasChangedAndOverwrite = await validateIfServerHasChanged()
         if(!hasChangedAndOverwrite)
-            throw new Error('Document has changed on server, cannot save draft', { cause : {serverStatusCode:409}}); //409 Resource Conflict 
+            throw new Error('Document has changed on server, cannot save draft', { cause : {serverStatusCode:409}}); //409 Version Mismatch/Resource Conflict
 
         // save document
         const documentSaveResponse = await EditFormUtility.saveDraft(document);
