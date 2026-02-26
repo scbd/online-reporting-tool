@@ -916,7 +916,8 @@
     async function loadNationalIndicators(government:string){
         const searchQuery = {
             fields          : 'nationalIndicators_s',
-            query           : `hasOtherNationalIndicators_b:true AND government_s:(${escape(government)})`
+            query           : `hasOtherNationalIndicators_b:true AND government_s:(${escape(government)})`,
+            rowsPerPage     : 1000
         }
         
         const result = await queryIndex(parseSolrQuery(searchQuery))
