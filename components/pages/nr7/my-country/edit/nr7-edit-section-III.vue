@@ -361,7 +361,7 @@
         if(validationReport.value?.errors){
             validationReport.value.errors = validationReport.value?.errors?.filter(e=>e.parameters=='sectionIII');
             
-            const ids = new Set(validationReport.value.errors.map(e=>e.property.replace(/^.*_/, '')))
+            const ids = new Set(validationReport.value.errors.map(e=>e.property.split('_')[1]))
             ids.forEach(async (identifier)=>{
                 if(!accordionItemVisibility.value[identifier]){
                     accordionItemVisibility.value[identifier] = true;
