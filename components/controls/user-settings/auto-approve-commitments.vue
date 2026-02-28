@@ -53,10 +53,10 @@ import type { EUserSettings } from '~/types/schemas/base/EAuthUser';
             try{
                 updating.value = true;
                 userSettings.value.autoReviewCommitments = confirmApprove;
-                // if(userSettings.value._id)
-                //     await $api.userSetting.update(userSettingKey, userSettings.value);
-                // else
-                //     await $api.userSetting.add(userSettings.value);
+                if(userSettings.value._id)
+                    await $api.userSetting.update(userSettingKey, userSettings.value);
+                else
+                    await $api.userSetting.add(userSettings.value);
             }catch(e:any){
                 useLogger().error(e, t('error'));
                 autoReviewCommitments.value = !autoReviewCommitments.value;
