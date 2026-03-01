@@ -299,7 +299,7 @@
                                         {{ lstring(document.nationalIndicatorTitle||document.workingDocumentTitle||document.title) }}
                                         <strong>(
                                             {{ document?.body?.indicator?.identifier }})</strong>
-                                        <div v-if="document.errors && (document.hasDuplicateRecord || !document.identifier || document.showErrors)">
+                                        <div v-if="document.errors">
                                             <Transition name="fade" mode="out-in">
                                                 <div>
                                                 <div class="alert alert-info" v-if="document.hasDuplicateRecord">
@@ -340,9 +340,6 @@
                                             <CBadge class="ms-1" color="warning" v-if="!document.isValidating && document.errors">
                                                 {{t('hasErrors')}} ({{ document.errors.length }})
                                             </CBadge>
-                                            <CButton color="primary" class="ms-1" size="sm" v-if="document.identifier && document.errors?.length"  @click="document.showErrors = !document.showErrors">
-                                                <font-awesome-icon :icon="['fas', 'eye']" /> {{t('showErrors')}}
-                                            </CButton>
                                             <CBadge class="ms-1" color="info" v-if="document.validated && !document.isValidating && !document.errors">
                                                 {{t('passedValidation')}}
                                             </CBadge>
@@ -580,7 +577,6 @@
         if(nonSectionErrors.value?.length){
             return [
                 {
-                    showErrors:false,
                     errors: nonSectionErrors.value,
                     title: 'Other NR7 errors',
                 },
@@ -916,12 +912,13 @@
     async function loadNationalIndicators(government:string){
         const searchQuery = {
             fields          : 'nationalIndicators_s',
-            query           : `hasOtherNationalIndicators_b:true AND government_s:(${escape(government)})`
+            query           : `hasOtherNationalIndicators_b:true AND government_s:(${escape(government)})`,
+            rowsPerPage     : 1000
         }
         
         const result = await queryIndex(parseSolrQuery(searchQuery))
 
-        const indicators = (result?.docs || []).map(doc=>JSON.parse(doc.nationalIndicators_s)).flat();
+        const indicators = (result?.docs || []).filter(doc=>doc.nationalIndicators_s).map(doc=>JSON.parse(doc.nationalIndicators_s)).flat();
 
         if(indicators?.length){
             const indicatorsObject = arrayToObject(indicators);

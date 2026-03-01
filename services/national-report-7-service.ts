@@ -10,6 +10,7 @@ import { GbfGoalsAndTargets } from "~/services/gbfGoalsAndTargets";
 import { getAlignedGoalsOrTargets } from '~/components/pages/national-targets/my-country/part-2/util';
 import { IndicatorsMappingData } from '~/app-data/indicators';
 import { queryIndex, parseSolrQuery, escape } from '@/services/solr';
+import { uniqueBy } from '~/utils/arrays';
 
 export interface NationalIndicator {
     identifier: string,
@@ -204,7 +205,7 @@ class NationalReport7Service {
             }
         });
 
-        return typeData;
+        return uniqueBy(typeData, e=>e.indicator.identifier);
     }
 
     uniqueIndicators(indicators:Array<ETerm>){
@@ -237,7 +238,8 @@ class NationalReport7Service {
         
         const searchQuery = {
             fields          : 'nationalIndicators_s',
-            query           : `hasOtherNationalIndicators_b:true AND government_s:(${escape(government)})`
+            query           : `hasOtherNationalIndicators_b:true AND government_s:(${escape(government)})`,
+            rowsPerPage     : 1000
         }
         
         const result = await queryIndex(parseSolrQuery(searchQuery))

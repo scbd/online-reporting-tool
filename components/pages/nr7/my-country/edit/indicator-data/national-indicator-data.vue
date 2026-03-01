@@ -107,15 +107,15 @@
                     };
 
                     const columns = Object.keys(columnKeys);
-                                
-                    if(rows[0].length != columns.length){
-                        fileError.value = {
-                            error : 'columnsMismatch',
-                            params : {count:columns.length}
-                        }
-                        // alert('Your excel file is not following the template (column mismatch) expected columns are 8, please use the system provided template');
-                        return;
-                    }
+                   
+                    // if(rows[0].length != columns.length){
+                    //     fileError.value = {
+                    //         error : 'columnsMismatch',
+                    //         params : {count:columns.length}
+                    //     }
+                    //     // alert('Your excel file is not following the template (column mismatch) expected columns are 8, please use the system provided template');
+                    //     return;
+                    // }
 
                     for (let i = 0; i < columns.length; i++) {
                         if(rows[0][i].toString().toLowerCase() != columns[i].toLowerCase()){
