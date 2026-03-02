@@ -1,5 +1,6 @@
 <template>
     <CFormSwitch size="lg" :label="t('autoReviewCommitments')" id="autoReviewCommitments" 
+    <CFormSwitch size="xl" :label="t('autoReviewCommitments')" id="autoReviewCommitments" style="width: 3%;cursor:pointer" class="me-2"
         v-model="autoReviewCommitments"  v-if="security.role.isNationalFocalPoint()"
         @change="onAutoReviewCommitmentsChange"   />
 
@@ -52,7 +53,7 @@ import type { EUserSettings } from '~/types/schemas/base/EAuthUser';
             }
             try{
                 updating.value = true;
-                userSettings.value.autoReviewCommitments = confirmApprove;
+                userSettings.value.autoReviewCommitments = autoReviewCommitments.value;
                 if(userSettings.value._id)
                     await $api.userSetting.update(userSettingKey, userSettings.value);
                 else
@@ -74,8 +75,10 @@ import type { EUserSettings } from '~/types/schemas/base/EAuthUser';
 
     async function getUserSettings(){
         const settings = await $api.userSetting.get(userSettingKey);
-        if(settings)
+        if(settings){
             userSettings.value = settings;
+            autoReviewCommitments.value = settings.autoReviewCommitments;
+        }
     }
 
     onMounted(() => {
