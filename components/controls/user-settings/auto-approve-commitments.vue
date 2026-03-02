@@ -1,5 +1,4 @@
 <template>
-    <CFormSwitch size="lg" :label="t('autoReviewCommitments')" id="autoReviewCommitments" 
     <CFormSwitch size="xl" :label="t('autoReviewCommitments')" id="autoReviewCommitments" style="width: 3%;cursor:pointer" class="me-2"
         v-model="autoReviewCommitments"  v-if="security.role.isNationalFocalPoint()"
         @change="onAutoReviewCommitmentsChange"   />
