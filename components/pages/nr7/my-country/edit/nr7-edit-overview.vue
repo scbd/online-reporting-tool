@@ -344,6 +344,9 @@
                                                 {{t('passedValidation')}}
                                             </CBadge>
                                             <km-document-status v-if="document.identifier" class="ms-1" :document="document" @on-status-change="onRecordStatusChange"></km-document-status>
+                                            <km-delete-record  v-if="document" :document="document"
+                                                            @on-delete="onRecordDelete($event, document)">
+                                                        </km-delete-record>
                                         </div>
                                     </td>
                                 </tr>  
