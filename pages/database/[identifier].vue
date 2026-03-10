@@ -1,6 +1,6 @@
 <template>
     <km-suspense>
-        <view-document :identifier="identifier" v-if="identifier"></view-document>
+        <view-document :identifier="identifier" v-if="identifier" :public-data="true"></view-document>
     </km-suspense>
 
 </template>
