@@ -1,5 +1,5 @@
 <template>
-    <div style="position: relative;">
+    <div style="position: relative;" class="un-map-container" :class="{'screenshot':screenshotOnly, 'map':!screenshotOnly}">
         <div id="map" :class="{ 'no-height d-none':imageUrl}"></div>
         <img :src="imageUrl" v-if="imageUrl" class="img-fluid map">
         <div v-if="showEuFlag" class="eu-flag-container border border-1 border-dark" :style="flagStyle"
