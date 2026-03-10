@@ -1,11 +1,11 @@
 <template>
-    <div style="position: relative;">
+    <div style="position: relative;" class="un-map-container" :class="{'screenshot':screenshotOnly, 'map':!screenshotOnly}">
         <div id="map" :class="{ 'no-height d-none':imageUrl}"></div>
         <img :src="imageUrl" v-if="imageUrl" class="img-fluid map">
-        <div v-if="showEuFlag" class="eu-flag-container" :style="flagStyle"
+        <div v-if="showEuFlag" class="eu-flag-container border border-1 border-dark" :style="flagStyle"
              data-bs-toggle="tooltip" data-bs-placement="top" 
              :title="lstring(europeanUnion?.name, locale)" ref="euFlagRef">
-             <img src="/eu-map.png" class="eu-flag">
+             <img src="/eu-map-green.jpg" class="eu-flag">
              <span class="eu-text">{{ lstring(europeanUnion?.name, locale) }}</span>
         </div>
     </div>
@@ -42,7 +42,7 @@
             alignItems: 'center',
             justifyContent: 'center',
             width: '100px',
-            height: '70px',
+            height: '110px',
             padding: '5px',
             flexDirection: 'column' // #Alignment for text
         };
@@ -403,7 +403,7 @@
     }
     .eu-flag-container {
         position: absolute;
-        bottom: 35px;
+        bottom: 5px;
         left: 10px;
         z-index: 5;
     }
