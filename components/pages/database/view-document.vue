@@ -4,17 +4,17 @@
             <slot name="header"></slot>
         </CCardHeader> -->
         <CCardBody>
-            <km-suspense>
-                <view-target-part-1 v-if="viewDocument && viewDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7" 
+            <km-suspense v-if="viewDocument">
+                <view-target-part-1 v-if="viewDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7" 
                     :document="viewDocument"></view-target-part-1>
-                <view-target-part-2 v-if="viewDocument && viewDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7_MAPPING" 
+                <view-target-part-2 v-if="viewDocument.header.schema == SCHEMAS.NATIONAL_TARGET_7_MAPPING" 
                     :document="viewDocument"></view-target-part-2>
-                <view-nbsap v-if="viewDocument && viewDocument.header.schema == SCHEMAS.NATIONAL_NBSAP" 
+                <view-nbsap v-if="viewDocument.header.schema == SCHEMAS.NATIONAL_NBSAP" 
                     :document="viewDocument"></view-nbsap>
 
-                <nr7-view v-if="lDocumentInfo && lDocumentInfo.type == SCHEMAS.NATIONAL_REPORT_7" 
-                    :document-info="lDocumentInfo"></nr7-view>
-                <nr7-view-binary-indicator-data v-if="viewDocument && viewDocument.header.schema == SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA" 
+                <nr7-view v-if="viewDocument.header.schema == SCHEMAS.NATIONAL_REPORT_7" 
+                    :document-info="lDocumentInfo" :identifier="lDocumentInfo?.identifier" :public-data="publicData"></nr7-view>
+                <nr7-view-binary-indicator-data v-if="viewDocument.header.schema == SCHEMAS.NATIONAL_REPORT_7_BINARY_INDICATOR_DATA" 
                     :indicator-data="viewDocument"></nr7-view-binary-indicator-data>
 
                 <nr7-view-indicator-data 
@@ -22,9 +22,9 @@
                     :indicator-data="viewDocument"></nr7-view-indicator-data>
 
 
-                <view-commitment v-if="viewDocument && viewDocument.header.schema == SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT" 
+                <view-commitment v-if="viewDocument.header.schema == SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT" 
                     :document="viewDocument"></view-commitment>
-                <view-credential v-if="viewDocument && viewDocument.header.schema == SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL" 
+                <view-credential v-if="viewDocument.header.schema == SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL" 
                     :document="viewDocument"></view-credential>
             </km-suspense>
 
@@ -62,10 +62,11 @@
 
     const props = defineProps({
         document    : { type:Object, default : undefined},
-        identifier  : { type:String, required:true}
+        identifier  : { type:String, required:true},
+        publicData  : { type:Boolean, default : false}
     })
 
-    const { document, identifier } = toRefs(props)
+    const { document, identifier, publicData } = toRefs(props)
 
     const lDocument = ref(undefined);
     const lDocumentInfo = ref(undefined);
