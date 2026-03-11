@@ -73,8 +73,14 @@ import type { EUserSettings } from '~/types/schemas/base/EAuthUser';
     }
 
     async function getUserSettings(){
-        const settings = await $api.userSetting.get(userSettingKey);
-        if(settings){
+        const settings = await $api.userSetting.get(userSettingKey).catch(()=>null);
+        if(!settings){
+            userSettings.value = {
+                userId : userSettingKey,
+                autoReviewCommitments : false
+            }
+        }
+        else{
             userSettings.value = settings;
             autoReviewCommitments.value = settings.autoReviewCommitments;
         }
