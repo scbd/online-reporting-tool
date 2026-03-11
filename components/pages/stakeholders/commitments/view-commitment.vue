@@ -315,8 +315,9 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
   });
 
   onMounted(async() => {
-    if (props.identifier && !props.document) {
-      await loadDocument(props.identifier)
+    const identifier = props.identifier || route.params.identifier?.toString();
+    if (identifier && !props.document) {
+      await loadDocument(identifier)
     }
     if(viewDocument.value?.primaryNationalTarget || viewDocument.value?.otherNationalTargets?.length){
         loadNationalTargets([viewDocument.value?.primaryNationalTarget, ...(viewDocument.value?.otherNationalTargets||[])].filter(e=>e).map(e=>e.identifier));
@@ -371,8 +372,13 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
       nationalTargets.value = targets;
   }
   async function loadCountryReviews(){
+    const identifier = props.identifier || route.params.identifier?.toString() ||
+                      viewDocument.value?.header?.identifier;
+    
+    if(!identifier) return;
+
     countryReviews.value = await kmStakeholderCommitmentApi.getCountryReviews(
-      { identifier: props.identifier, realm: (realmConf as any).realm }, { length : 500});
+      { identifier, realm: (realmConf as any).realm }, { length : 500});
   }
   async function onStatusChange(identifier:string, reviewed:boolean){
     loadCountryReviews();
