@@ -3,5 +3,8 @@
     "published": "Reviewed",
     "returned": "Returned",
     "autoPublished": "Auto reviewed",
-    "countryReviews": "Country reviews"
+    "countryReviews": "Country reviews",
+    "all": "All",
+    "noCountryReviews": "No country reviews found",
+    "noCountryReviewsFoundForFilter": "No country reviews found for this filter"
 }
