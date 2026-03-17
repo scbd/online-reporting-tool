@@ -152,6 +152,58 @@ async function fetchDocumentBody(identifier: string): Promise<{ body?: EStakehol
     return resp.json() as Promise<{ body?: EStakeholderCommitmentBody }>;
 }
 
+// ── Thesaurus resolution ─────────────────────────────────────────────────────
+
+const thesaurusCache = new Map<string, string>();
+
+async function fetchThesaurusTitle(identifier: string): Promise<string> {
+    if (thesaurusCache.has(identifier)) return thesaurusCache.get(identifier)!;
+    const url  = `${API_URL}/api/v2013/thesaurus/terms/${encodeURIComponent(identifier)}`;
+    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    let title  = identifier;
+    if (resp.ok) {
+        const term = await resp.json() as { title?: Record<string, string>; name?: string };
+        title = term.title?.['en'] ?? (term.title ? term.title[Object.keys(term.title)[0]] : undefined) ?? term.name ?? identifier;
+    }
+    thesaurusCache.set(identifier, title);
+    return title;
+}
+
+async function resolveTermTitle(term: ETerm | undefined): Promise<string> {
+    if (!term?.identifier) return '';
+    return fetchThesaurusTitle(term.identifier);
+}
+
+async function resolveTermListTitles(terms: ETerm[] | undefined): Promise<string> {
+    if (!terms?.length) return '';
+    const titles = await Promise.all(terms.map(t => fetchThesaurusTitle(t.identifier)));
+    return titles.filter(Boolean).join('; ');
+}
+
+// ── Document title resolution (for Indicators) ───────────────────────────────
+
+const documentTitleCache = new Map<string, string>();
+
+async function fetchDocumentTitle(identifier: string): Promise<string> {
+    if (documentTitleCache.has(identifier)) return documentTitleCache.get(identifier)!;
+    const url  = `${API_URL}/api/v2013/documents/${encodeURIComponent(identifier)}`;
+    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    let title  = identifier;
+    if (resp.ok) {
+        const doc = await resp.json() as { body?: { title?: Record<string, string> } };
+        const t   = doc.body?.title;
+        title = t?.['en'] ?? (t ? t[Object.keys(t)[0]] : undefined) ?? identifier;
+    }
+    documentTitleCache.set(identifier, title);
+    return title;
+}
+
+async function resolveIndicatorTitles(terms: ETerm[] | undefined): Promise<string> {
+    if (!terms?.length) return '';
+    const titles = await Promise.all(terms.map(t => fetchDocumentTitle(t.identifier)));
+    return titles.filter(Boolean).join('; ');
+}
+
 async function loadAllPublishedCommitments(): Promise<CommitmentDocument[]> {
     const rowsPerPage = 100;
     let start         = 0;
@@ -199,15 +251,6 @@ function en(value: ELstring | undefined): string {
     return value['en'] ?? value[Object.keys(value)[0]] ?? '';
 }
 
-function termTitle(term: ETerm | undefined): string {
-    if (!term) return '';
-    return term.title?.['en'] ?? term.title?.[Object.keys(term.title)[0]] ?? term.identifier ?? '';
-}
-
-function termListTitles(terms: ETerm[] | undefined): string {
-    if (!terms?.length) return '';
-    return terms.map(termTitle).filter(Boolean).join('; ');
-}
 
 function formatDate(dateStr: string | null | undefined): string {
     if (!dateStr) return '';
@@ -219,38 +262,52 @@ function bool(value: boolean | undefined): string {
     return value ? 'Yes' : 'No';
 }
 
-function toRow(doc: CommitmentDocument): CommitmentRow {
+async function toRow(doc: CommitmentDocument): Promise<CommitmentRow> {
     const b = doc.body ?? {} as EStakeholderCommitmentBody;
 
-    const coverageItems = b.coverageScope === 'global'
-        ? termListTitles(b.coverageRegions)
-        : termListTitles(b.coverageCountries);
+    const website = b.websites?.length ? (b.websites[0].url ?? '') : '';
 
-    const website = b.websites?.length
-        ? (b.websites[0].url ?? '')
-        : '';
+    const [
+        organizationType,
+        contactCountry,
+        jurisdiction,
+        coverageItems,
+        primaryGbfTarget,
+        otherGbfTargets,
+        indicators,
+    ] = await Promise.all([
+        resolveTermTitle(b.organizationType),
+        resolveTermTitle(b.country),
+        resolveTermTitle(b.jurisdiction),
+        b.coverageScope === 'global'
+            ? resolveTermListTitles(b.coverageRegions)
+            : resolveTermListTitles(b.coverageCountries),
+        resolveTermTitle(b.primaryGlobalAlignment),
+        resolveTermListTitles(b.otherGlobalAlignments),
+        resolveIndicatorTitles(b.indicators),
+    ]);
 
     return {
         identifier         : doc.identifier,
         link               : `${ORT_URL}/register/stakeholderCommitment/${encodeURIComponent(doc.identifier)}/view`,
         organization       : en(b.organization),
         organizationAcronym: en(b.organizationAcronym),
-        organizationType   : termTitle(b.organizationType),
-        contactCountry     : termTitle(b.country),
+        organizationType,
+        contactCountry,
         contactName        : [b.firstName, b.lastName].filter(Boolean).join(' '),
         emails             : (b.emails ?? []).join('; '),
         website,
         title              : en(b.title),
         description        : en(b.description),
-        jurisdiction       : termTitle(b.jurisdiction),
+        jurisdiction,
         coverageScope      : b.coverageScope ?? '',
         coverageCountries  : coverageItems,
         timelineStartDate  : formatDate(b.timelineStartDate),
         timelineEndDate    : formatDate(b.timelineEndDate),
         isOpenEnded        : bool(b.isOpenEnded),
-        primaryGbfTarget   : termTitle(b.primaryGlobalAlignment),
-        otherGbfTargets    : termListTitles(b.otherGlobalAlignments),
-        indicators         : termListTitles(b.indicators),
+        primaryGbfTarget,
+        otherGbfTargets,
+        indicators,
         isFundingSufficient: bool(b.isFundingSufficient),
         isProgressTracked  : bool(b.isProgressTracked),
         progressUrl        : en(b.progressTrackingUrl),
@@ -306,11 +363,10 @@ export async function run(): Promise<void> {
     for (const commitment of commitments) {
         process.stdout.write(`  Fetching ${commitment.identifier}... `);
         const doc = await fetchDocumentBody(commitment.identifier);
-        const body = (doc?.body ?? null) as EStakeholderCommitmentBody | null;
-        rows.push(toRow({ ...commitment, body }));
+        const body = (doc?.body ?? doc) as EStakeholderCommitmentBody | null;
+        rows.push(await toRow({ ...commitment, body }));
         console.log('done');
     }
-
     rows.sort((a, b) => a.organization.localeCompare(b.organization));
 
     const xlsxOutPath = path.join(import.meta.dirname, 'exports', 'published-commitments.xlsx');
