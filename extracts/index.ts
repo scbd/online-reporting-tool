@@ -1,6 +1,6 @@
 import { createInterface } from 'readline';
-import * as nr7TargetProgress   from './nr7-section-III-target-progress.ts';
-import * as publishedCommitments from './published-commitments.ts';
+import * as nr7TargetProgress   from './nr7-section-III-target-progress';
+import * as publishedCommitments from './published-commitments';
 
 interface Extract {
     name       : string;
