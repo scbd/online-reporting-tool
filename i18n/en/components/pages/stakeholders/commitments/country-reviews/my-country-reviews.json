@@ -1,8 +1,8 @@
 {
     "awaitingAction" : "Awaiting action",
-    "published": "Reviewed",
+    "published": "Linked",
     "returned": "Returned",
-    "autoPublished": "Auto reviewed",
+    "autoPublished": "Auto linked",
     "countryReviews": "Country reviews",
     "all": "All",
     "noCountryReviews": "No country reviews found",
