@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div>Hi
         <record-type-search :recordTypes="recordTypes"
         :show-record-type="false" :show-targets="false" :show-goals="false">
             <template #metadata="{document}">
