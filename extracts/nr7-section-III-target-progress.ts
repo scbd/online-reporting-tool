@@ -215,6 +215,27 @@ async function loadNationalTargetsForGbfTarget(gbfTarget: string): Promise<Natio
     return all;
 }
 
+function stripHtml(html: string | undefined | null): string {
+    if (!html) return html ?? '';
+    // Replace <br> and <p> with newlines, then strip tags, then decode basic entities
+    let text = html.replace(/<br\s*\/?>/gi, '\n')
+                   .replace(/<\/p>/gi, '\n')
+                   .replace(/<[^>]*>?/gm, '');
+    
+    // Decode common entities
+    text = text.replace(/&nbsp;/gi, ' ')
+               .replace(/&amp;/gi, '&')
+               .replace(/&lt;/gi, '<')
+               .replace(/&gt;/gi, '>')
+               .replace(/&quot;/gi, '"')
+               .replace(/&#39;/gi, "'");
+    
+    // Remove invalid XML control characters which cause Excel corruption
+    text = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
+
+    return text.trim();
+}
+
 function extractTargetProgress(nr7Results: Nr7Report[], nationalTargets: NationalTarget[], progressTerms: Map<string, string>): TargetProgressRow[] {
     const targetMap = new Map(nationalTargets.map(t => [t.identifier, t]));
     const rows: TargetProgressRow[] = [];
@@ -239,14 +260,14 @@ function extractTargetProgress(nr7Results: Nr7Report[], nationalTargets: Nationa
                 ? `${ORT_URL}/taxonomy/gbf/targets/${encodeURIComponent(targetId)}`
                 : `${ORT_URL}/national-targets/my-country/part-1/${encodeURIComponent(targetId)}/view`;
             rows.push({
-                country              : report.government,
-                countryName          : report.countryName,
+                country              : stripHtml(report.government) as string,
+                countryName          : stripHtml(report.countryName),
                 nr7Identifier        : report.identifier,
                 targetIdentifier     : targetId,
                 targetType,
-                targetTitle,
+                targetTitle          : stripHtml(targetTitle),
                 levelOfProgress      : progressId,
-                levelOfProgressTitle : progressId ? (progressTerms.get(progressId) ?? null) : null,
+                levelOfProgressTitle : stripHtml(progressId ? progressTerms.get(progressId) : null),
                 targetLink,
                 ortLink              : `${ORT_URL}/national-reports/nr7/${encodeURIComponent(report.identifier)}`,
             });

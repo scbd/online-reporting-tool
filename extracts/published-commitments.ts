@@ -246,6 +246,28 @@ async function loadAllPublishedCommitments(): Promise<CommitmentDocument[]> {
     return all;
 }
 
+function stripHtml(html: string): string {
+    if (!html) return html;
+    // Replace <br> and <p> with newlines, then strip tags, then decode basic entities
+    let text = html.replace(/<br\s*\/?>/gi, '\n')
+                   .replace(/<\/p>/gi, '\n')
+                   .replace(/<[^>]*>?/gm, '');
+    
+    // Decode common entities
+    text = text.replace(/&nbsp;/gi, ' ')
+               .replace(/&amp;/gi, '&')
+               .replace(/&lt;/gi, '<')
+               .replace(/&gt;/gi, '>')
+               .replace(/&quot;/gi, '"')
+               .replace(/&#39;/gi, "'");
+    
+    // Remove invalid XML control characters which cause Excel corruption
+    text = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
+
+    // Clean up multiple newlines or spaces if needed
+    return text.trim();
+}
+
 function en(value: ELstring | undefined): string {
     if (!value) return '';
     return value['en'] ?? value[Object.keys(value)[0]] ?? '';
@@ -290,24 +312,24 @@ async function toRow(doc: CommitmentDocument): Promise<CommitmentRow> {
     return {
         identifier         : doc.identifier,
         link               : `${ORT_URL}/register/stakeholderCommitment/${encodeURIComponent(doc.identifier)}/view`,
-        organization       : en(b.organization),
-        organizationAcronym: en(b.organizationAcronym),
-        organizationType,
-        contactCountry,
-        contactName        : [b.firstName, b.lastName].filter(Boolean).join(' '),
+        organization       : stripHtml(en(b.organization)),
+        organizationAcronym: stripHtml(en(b.organizationAcronym)),
+        organizationType   : stripHtml(organizationType),
+        contactCountry     : stripHtml(contactCountry),
+        contactName        : stripHtml([b.firstName, b.lastName].filter(Boolean).join(' ')),
         emails             : (b.emails ?? []).join('; '),
         website,
-        title              : en(b.title),
-        description        : en(b.description),
-        jurisdiction,
-        coverageScope      : b.coverageScope ?? '',
-        coverageCountries  : coverageItems,
+        title              : stripHtml(en(b.title)),
+        description        : stripHtml(en(b.description)),
+        jurisdiction       : stripHtml(jurisdiction),
+        coverageScope      : stripHtml(b.coverageScope ?? ''),
+        coverageCountries  : stripHtml(coverageItems),
         timelineStartDate  : formatDate(b.timelineStartDate),
         timelineEndDate    : formatDate(b.timelineEndDate),
         isOpenEnded        : bool(b.isOpenEnded),
-        primaryGbfTarget,
-        otherGbfTargets,
-        indicators,
+        primaryGbfTarget   : stripHtml(primaryGbfTarget),
+        otherGbfTargets    : stripHtml(otherGbfTargets),
+        indicators         : stripHtml(indicators),
         isFundingSufficient: bool(b.isFundingSufficient),
         isProgressTracked  : bool(b.isProgressTracked),
         progressUrl        : en(b.progressTrackingUrl),
@@ -330,7 +352,7 @@ async function exportToExcel(rows: CommitmentRow[], filePath: string): Promise<v
         { column: 'Contact Country',                        value: (r) => r.contactCountry,                   width: 22 },
         { column: 'Contact Name',                           value: (r) => r.contactName,                      width: 26 },
         { column: 'Email(s)',                               value: (r) => r.emails,                           width: 36 },
-        { column: 'Website',                type: 'Formula', value: (r) => r.website ? hyperlink(r.website, r.website) : '', width: 36 },
+        { column: 'Website',                type: 'Formula', value: (r) => r.website ? hyperlink(r.website, r.website) : null, width: 36 },
         { column: 'Title',                                  value: (r) => r.title,                            width: 60 },
         { column: 'Description',                            value: (r) => r.description,                      width: 80 },
         { column: 'Jurisdiction',                           value: (r) => r.jurisdiction,                     width: 22 },
@@ -344,7 +366,7 @@ async function exportToExcel(rows: CommitmentRow[], filePath: string): Promise<v
         { column: 'Indicators',                             value: (r) => r.indicators,                       width: 40 },
         { column: 'Funding Sufficient',                     value: (r) => r.isFundingSufficient,              width: 18 },
         { column: 'Progress Tracked',                       value: (r) => r.isProgressTracked,                width: 18 },
-        { column: 'Progress Tracking URL', type: 'Formula', value: (r) => r.progressUrl ? hyperlink(r.progressUrl, r.progressUrl) : '', width: 40 },
+        { column: 'Progress Tracking URL', type: 'Formula', value: (r) => r.progressUrl ? hyperlink(r.progressUrl, r.progressUrl) : null, width: 40 },
         { column: 'Linked to NBSAP',                        value: (r) => r.isLinkedToNbsap,                  width: 16 },
         { column: 'Reporting on Target 15',                 value: (r) => r.isReportingTarget15,              width: 22 },
         { column: 'Published On',                           value: (r) => r.publishedOn,                      width: 14 },

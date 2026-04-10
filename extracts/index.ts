@@ -1,6 +1,6 @@
 import { createInterface } from 'readline';
-import * as nr7TargetProgress   from './nr7-section-III-target-progress';
-import * as publishedCommitments from './published-commitments';
+import * as nr7TargetProgress   from './nr7-section-III-target-progress.js';
+import * as publishedCommitments from './published-commitments.js';
 
 interface Extract {
     name       : string;
@@ -33,7 +33,7 @@ function prompt(question: string): Promise<string> {
 
 function printMenu(): void {
     console.log('\n╔══════════════════════════════════════════════════════╗');
-    console.log('║             ORT Data Extract Runner                 ║');
+    console.log('║             ORT Data Extract Runner                  ║');
     console.log('╚══════════════════════════════════════════════════════╝\n');
     console.log('Available extracts:\n');
     extracts.forEach((e, i) => {
