@@ -21,10 +21,11 @@
                     </div>
                 </CCardText>
                 <CCardText>
-                    <small class="me-2 fs-6">{{document.schema_EN_s}}</small>|
-                    <small class="me-2 fs-6">{{document.government_EN_s}}</small>|
-                    <small class="me-2 fs-6">{{formatDate(document.recDate)}}</small>
-                    
+                    <slot name="metadata" :document="document">
+                        <small class="me-2 fs-6">{{document.schema_EN_s}}</small>|
+                        <small class="me-2 fs-6" v-if="document.government_EN_s">{{document.government_EN_s}}|</small>
+                        <small class="me-2 fs-6">{{formatDate(document.recDate)}}</small>
+                    </slot>
                 </CCardText>
             </CCardBody>
         </CCard>

@@ -27,8 +27,13 @@
                 </div>
 
                 <km-spinner v-if="loading" center></km-spinner>
-                <search-result v-if="documents?.length" :documents="documents"></search-result>
-
+                <search-result v-if="documents?.length" :documents="documents">
+                    <template #metadata="{document}">
+                        <slot name="metadata" :document="document"></slot>
+                    </template>
+                </search-result>
+                <pagination v-if="recordCount > 0" :recordCount="recordCount"  :recordsPerPage="recordsPerPage"
+                    :currentPage="currentPage" @on-page-change="onPageChange" @on-records-per-page-changed="onRecordsPerPageChanged"  ></pagination>
             <!-- </overlay-loading> -->
         </div>
         <CAlert color="info" class="d-flex align-items-center mt-5" 
