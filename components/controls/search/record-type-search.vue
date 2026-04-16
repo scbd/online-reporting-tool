@@ -16,6 +16,8 @@
                 </template>
             </search-filters>
             <div style="height:0;width:0;overflow: hidden;">
+                <!-- v-if and ref do not work together in vue3 use v-show -->
+                <nr7-export ref="nr7ExportDialogRef" :search-query="searchQuery" :schema="exportSelectedSchema?.identifier"></nr7-export>
                 <export ref="exportDialogRef" :search-query="searchQuery" :schema="exportSelectedSchema?.identifier"></export>
             </div>
             <!-- <overlay-loading :active="loading" :can-cancel="false" background-color="rgb(9 9 9)"
@@ -99,6 +101,13 @@
     const filters     = ref({});
     const searchQuery = ref({});
     const exportDialogRef = ref();
+    const nr7ExportDialogRef = ref();
+
+    const activeExportRef = computed(() => {
+        return exportSelectedSchema.value?.identifier == SCHEMAS.NATIONAL_REPORT_7
+            ? nr7ExportDialogRef.value
+            : exportDialogRef.value;
+    });
     const searchFilterRef = ref();
     const isExportDialogRevealed = ref(false);
     const exportSelectedSchema = ref({identifier:props.recordTypes[0]});
@@ -160,10 +169,9 @@
     function onOpenExportDialog(){
 
         if(props.recordTypes?.length == 1 || filters.value?.recordTypes?.length == 1){
-            
             exportSelectedSchema.value = {identifier : filters.value?.recordTypes?.length ? filters.value?.recordTypes[0] : props.recordTypes[0] }
             
-            exportDialogRef.value.openExportModal();
+            activeExportRef.value.openExportModal();
             return;
         }
         isExportDialogRevealed.value = true;
@@ -173,7 +181,7 @@
         //TODO : add dropdown for selection
         searchFilterRef.value.setFilter('recordTypes', [exportSelectedSchema.value?.identifier]);
         await sleep(200)
-        exportDialogRef.value.openExportModal();
+        activeExportRef.value.value.openExportModal();
         isExportDialogRevealed.value = false;
         // exportSelectedSchema.value = null;
     }
