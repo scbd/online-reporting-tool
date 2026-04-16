@@ -1,6 +1,10 @@
 <template>
     <div v-for="document in documents" :key="document.id">
-        <search-result-item :document="document" link-target="linkTarget"></search-result-item>
+        <search-result-item :document="document" link-target="linkTarget">
+            <template #metadata="{document}">
+                <slot name="metadata" :document="document"></slot>
+            </template>
+        </search-result-item>
     </div>
 </template>
 
