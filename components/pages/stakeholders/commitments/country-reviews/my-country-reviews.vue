@@ -76,7 +76,6 @@ import { formatDate } from '~/utils/filters';
     const { user } = useAuth();
     const security      = useSecurity();
     const realmConf = useRealm();
-    const security      = useSecurity();
     const myCountryReviews = ref<ECommitmentCountryReview[]>([]);
     const reviewFilter = ref<string>('all');
 
