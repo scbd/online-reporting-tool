@@ -3,6 +3,7 @@
     "gbfGoals":"GBF goal(s) and target(s)",
     "status":"Status",
     "updatedOn":"Updated on",
+    "createdOn":"Created on",
     "view":"View",
     "edit":"Edit",    
     "passedValidation"  : "Validation successful",    

@@ -1,6 +1,6 @@
 <template>
     <record-type-search :record-types="[SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT]" 
-    :show-record-type="false" :show-targets="false" :show-goals="false">        
+    :show-record-type="false" :show-targets="false" :show-goals="false" country-region-field="countryReviews">        
     </record-type-search>    
 </template>
 <i18n src="@/i18n/dist/components/pages/stakeholders/commitments/list-commitment.json"></i18n>

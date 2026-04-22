@@ -1,11 +1,12 @@
 <template>
-    <country-record-type-overview
+    <record-type-overview
         :title="t('title')"
         :schema="SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT"
         :view-route="appRoutes.STAKEHOLDER_MY_COMMITMENTS_VIEW"
         :edit-route="appRoutes.STAKEHOLDER_MY_COMMITMENTS_EDIT"
-        :new-route="appRoutes.STAKEHOLDER_MY_COMMITMENTS_NEW">
-    </country-record-type-overview>
+        :new-route="appRoutes.STAKEHOLDER_MY_COMMITMENTS_NEW"
+        :filter-by-title="false">
+    </record-type-overview>
             
 </template>
 <i18n src="@/i18n/dist/components/pages/stakeholders/commitments/my-commitments.json"></i18n>

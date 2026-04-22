@@ -13,7 +13,9 @@
             <div class="alert alert-info">
                 {{ t('workflowAlert') }}
             </div>
-            <workflow-requests @on-load="onWorkflowRequestsLoad"></workflow-requests>
+            <div class="overflow-scroll" style="max-height: 400px;">
+                <workflow-requests @on-load="onWorkflowRequestsLoad"></workflow-requests>
+            </div>
         </CCardBody>
     </CCard>
     <CRow >
@@ -260,7 +262,7 @@ import KmStakeholderCommitmentApi from "~/api/km-stakeholder-commitment";
         const nr7TargetCount = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7)), 0))
         const nr6Count       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_6)), 0))
         const nbsapCount     = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_NBSAP)), 0))
-        const stakeholderCommitmentCount = computed(()=>commitmentFacets.value?.filter(e=>e.reviewed == true).length)
+        const stakeholderCommitmentCount = computed(()=>searchFacets.value?.facets?.schema_s[SCHEMAS.REFERENCE_STAKEHOLDER_COMMITMENT] || 0)
               
         const nr7CountryCount       = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_REPORT_7) > 0 ? 1 : 0), 0))
         const nr7TargetCountryCount = computed(()=>countryFacets.value?.reduce((prevVal, currVal)=> prevVal + (schemaCount(currVal, SCHEMAS.NATIONAL_TARGET_7) > 0 ? 1 : 0), 0))

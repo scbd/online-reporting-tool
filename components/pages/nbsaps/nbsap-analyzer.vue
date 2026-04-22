@@ -1,5 +1,5 @@
 <template>
-    <div id="analyzer">
+    <div id="analyzer" class="nbsaps">
         <div class="search">
             <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes" 
                 :show-record-type="false" :show-targets="false" :show-goals="false" v-show="!query.embed">

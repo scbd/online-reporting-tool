@@ -1,5 +1,5 @@
 <template>
-    <div id="analyzer">
+    <div id="analyzer" class="national-targets">
         <div class="search">
             <search-filters @on-filter-change="onFilterChange" :schema-types="recordTypes" v-show="!query.embed"></search-filters>
 

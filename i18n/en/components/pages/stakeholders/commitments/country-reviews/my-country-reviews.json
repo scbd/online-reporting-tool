@@ -1,7 +1,10 @@
 {
     "awaitingAction" : "Awaiting action",
-    "published": "Reviewed",
+    "published": "Linked",
     "returned": "Returned",
-    "autoPublished": "Auto reviewed",
-    "countryReviews": "Country reviews"
+    "autoPublished": "Auto linked",
+    "countryReviews": "Country reviews",
+    "all": "All",
+    "noCountryReviews": "No country reviews found",
+    "noCountryReviewsFoundForFilter": "No country reviews found for this filter"
 }

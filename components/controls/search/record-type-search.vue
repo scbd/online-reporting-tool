@@ -16,6 +16,8 @@
                 </template>
             </search-filters>
             <div style="height:0;width:0;overflow: hidden;">
+                <!-- v-if and ref do not work together in vue3 use v-show -->
+                <nr7-export ref="nr7ExportDialogRef" :search-query="searchQuery" :schema="exportSelectedSchema?.identifier"></nr7-export>
                 <export ref="exportDialogRef" :search-query="searchQuery" :schema="exportSelectedSchema?.identifier"></export>
             </div>
             <!-- <overlay-loading :active="loading" :can-cancel="false" background-color="rgb(9 9 9)"
@@ -27,8 +29,13 @@
                 </div>
 
                 <km-spinner v-if="loading" center></km-spinner>
-                <search-result v-if="documents?.length" :documents="documents"></search-result>
-
+                <search-result v-if="documents?.length" :documents="documents">
+                    <template #metadata="{document}">
+                        <slot name="metadata" :document="document"></slot>
+                    </template>
+                </search-result>
+                <pagination v-if="recordCount > 0" :recordCount="recordCount"  :recordsPerPage="recordsPerPage"
+                    :currentPage="currentPage" @on-page-change="onPageChange" @on-records-per-page-changed="onRecordsPerPageChanged"  ></pagination>
             <!-- </overlay-loading> -->
         </div>
         <CAlert color="info" class="d-flex align-items-center mt-5" 
@@ -78,7 +85,8 @@
         showTargets      : { type:Boolean, default : true},
         showGoals        : { type:Boolean, default : true},
         showCountries    : { type:Boolean, default : true},
-        showRegions      : { type:Boolean, default : true}
+        showRegions      : { type:Boolean, default : true},
+        countryRegionField: {type:String, default : 'government'}
     })
 
     const { t, locale } = useI18n();
@@ -94,6 +102,13 @@
     const filters     = ref({});
     const searchQuery = ref({});
     const exportDialogRef = ref();
+    const nr7ExportDialogRef = ref();
+
+    const activeExportRef = computed(() => {
+        return exportSelectedSchema.value?.identifier == SCHEMAS.NATIONAL_REPORT_7
+            ? nr7ExportDialogRef.value
+            : exportDialogRef.value;
+    });
     const searchFilterRef = ref();
     const isExportDialogRevealed = ref(false);
     const exportSelectedSchema = ref({identifier:props.recordTypes[0]});
@@ -155,10 +170,9 @@
     function onOpenExportDialog(){
 
         if(props.recordTypes?.length == 1 || filters.value?.recordTypes?.length == 1){
-            
             exportSelectedSchema.value = {identifier : filters.value?.recordTypes?.length ? filters.value?.recordTypes[0] : props.recordTypes[0] }
             
-            exportDialogRef.value.openExportModal();
+            activeExportRef.value.openExportModal();
             return;
         }
         isExportDialogRevealed.value = true;
@@ -168,7 +182,7 @@
         //TODO : add dropdown for selection
         searchFilterRef.value.setFilter('recordTypes', [exportSelectedSchema.value?.identifier]);
         await sleep(200)
-        exportDialogRef.value.openExportModal();
+        activeExportRef.value.value.openExportModal();
         isExportDialogRevealed.value = false;
         // exportSelectedSchema.value = null;
     }
@@ -192,8 +206,8 @@
         queries.push(buildArrayQuery('globalTargetAlignment_ss', filters.value.globalTargets));          
         queries.push(buildArrayQuery('globalGoalAlignment_ss', filters.value.globalGoals)); 
 
-        queries.push(buildArrayQuery('government_s', filters.value.countries));              
-        queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
+        queries.push(buildArrayQuery(`${props.countryRegionField}_s`, filters.value.countries));              
+        queries.push(buildArrayQuery(`${props.countryRegionField}_REL_ss`, filters.value.regions));         
         
         customQueries.value.forEach((customQuery)=>{
             if(customQuery?.field && customQuery?.value?.length){

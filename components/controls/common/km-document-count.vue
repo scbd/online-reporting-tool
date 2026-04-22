@@ -1,21 +1,24 @@
 <template>
     <CRow>
         <CCol col="12" md="6" lg="4">
-            <CCallout color="success" :title="t('published')">
+            <CCallout color="success" :title="t('published')" @click="selectedTab='published';$emit('on-published-click')" :class="{'bg-success active':selectedTab=='published'}" style="cursor: pointer;">
                 <small class="text-muted me-2">{{t('published')}}</small>
-                <strong class="h4 float-end">{{publishedCount}}</strong>
+                <strong class="h4 float-end">{{publishedCount}}
+                <font-awesome-icon icon="fa-filter" class="ps-2 float-end" /></strong>
             </CCallout>
             </CCol>
             <CCol col="12"  md="6" lg="4">
-                <CCallout color="dark" :title="t('draft')">
+                <CCallout color="secondary" :title="t('draft')" @click="selectedTab='draft';$emit('on-draft-click')" :class="{'bg-secondary active':selectedTab=='draft'}" style="cursor: pointer;">
                     <small class="text-muted me-2">{{t('draft')}}</small>
-                    <strong class="h4 float-end">{{draftCount}}</strong>
+                    <strong class="h4 float-end">{{draftCount}}
+                    <font-awesome-icon icon="fa-filter" class="ps-2 float-end" /></strong>
                 </CCallout>
             </CCol>
             <CCol col="12"  md="6" lg="4">
-                <CCallout color="danger" :title="t('requested')">
+                <CCallout color="danger" :title="t('requested')" @click="selectedTab='requested';$emit('on-requested-click')" :class="{'bg-danger active':selectedTab=='requested'}" style="cursor: pointer;">
                     <small class="text-muted me-2">{{t('requested')}}</small>
-                    <strong class="h4 float-end">{{ requestCount }}</strong>
+                    <strong class="h4 float-end">{{ requestCount }}
+                    <font-awesome-icon icon="fa-filter" class="ps-2 float-end" /></strong>
                 </CCallout>
             </CCol> 
     </CRow>
@@ -31,6 +34,7 @@
     })
 
     const {t} = useI18n();
+    const selectedTab = ref('published');
 
 </script>
 

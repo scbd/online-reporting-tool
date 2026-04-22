@@ -23,11 +23,11 @@ class kmDocumentDrafts {
     }
 
     async loadDraftDocuments(query:string, rowsPerPage:number, 
-      sort:string, pageNumber:number, body:boolean){
+      sort:string, pageNumber:number, body:boolean, collection:string = "mydraft"){
                     
         const queryParams = {
             $filter : query,
-            collection : "mydraft",
+            collection : collection,
             $top    : rowsPerPage,
             $skip   : (rowsPerPage*pageNumber),
             $orderby: sort||'updatedOn desc',
