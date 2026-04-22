@@ -1,7 +1,7 @@
 <template>
     <button class="btn btn-danger btn-sm float-end" v-if="hasFilters" @click="clearFilters">{{ t('clearFilters') }}</button>
     <div id="filters" class="row">
-        <div class="col-md-4"  v-if="recordTitles?.length">
+        <div class="col-md-4"  v-if="filterByTitle && recordTitles?.length">
             <km-form-group :caption="t('filterByTitle')">
                 <km-select
                     v-model="selectedTitles"
@@ -35,6 +35,7 @@
                     <th scope="col">{{t('title')}}</th>
                     <th scope="col" v-if="hasGbfObjectives">{{t('gbfGoals')}}</th>
                     <th scope="col">{{t('status')}}</th>
+                    <th scope="col">{{t('createdOn')}}</th>
                     <th scope="col">{{t('updatedOn')}}</th>
                     <th scope="col"></th>
                 </tr>
@@ -61,8 +62,18 @@
                         <km-document-status :document="document" @on-status-change="onRecordStatusChange"></km-document-status>
                     </td>
                     <td>
-                        {{formatDate(document.updatedOn)}}<br/>
-                        {{ document.updatedBy.firstName }} {{ document.updatedBy.lastName }}
+                        {{formatDate(document.submittedOn)}}<br/>
+                        {{ document.submittedBy.firstName }} {{ document.submittedBy.lastName }}
+                    </td>
+                    <td>
+                        <span v-if="document.workingDocumentUpdatedOn">
+                            {{formatDate(document.workingDocumentUpdatedOn)}}<br/>
+                            {{ document.workingDocumentUpdatedBy.firstName }} {{ document.workingDocumentUpdatedBy.lastName }}
+                        </span>
+                        <span v-else>
+                            {{formatDate(document.updatedOn)}}<br/>
+                            {{ document.updatedBy.firstName }} {{ document.updatedBy.lastName }}
+                        </span>
                     </td>
                     <td>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -90,7 +101,9 @@
     const props = defineProps({
         nationalRecords: { type: Array<EDocumentInfo>, required: true },
         viewRoute      : { type:String, require:true },
-        hasGbfObjectives : { type:Boolean, require:false, default:true }
+        hasGbfObjectives : { type:Boolean, require:false, default:true },
+        filterByTitle : { type:Boolean, require:false, default:true },
+        
     });
 
     const emit = defineEmits(['onEditRecord', 'onDeleteRecord', 'onRecordStatusChange'])
