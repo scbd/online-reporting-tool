@@ -1,17 +1,23 @@
 <template>
-    <country-record-type-overview
+    <record-type-overview
         :title="t('title')"
         :schema="SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL"
         :view-route="appRoutes.STAKEHOLDER_MY_CREDENTIALS_VIEW"
         :edit-route="appRoutes.STAKEHOLDER_MY_CREDENTIALS_EDIT"
-        :new-route="appRoutes.STAKEHOLDER_MY_CREDENTIALS_NEW">
-    </country-record-type-overview>
+        :new-route="appRoutes.STAKEHOLDER_MY_CREDENTIALS_NEW"
+        :filter-by-title="false">
+        <template #actionButtons>
+           <export :search-query="searchQuery" :schema="SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL"></export>
+        </template>
+    </record-type-overview>
             
 </template>
 <i18n src="@/i18n/dist/components/pages/stakeholders/credentials/my-credentials.json"></i18n>
 
 <script setup lang="ts">
 //@ts-nocheck
+
+    import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
     const { t, locale }            = useI18n();
 
     const onBoardingSteps = [
@@ -31,6 +37,20 @@
         
     ];
 
-   
+   const searchQuery = ref({});
+   const exportDialogRef = ref();
+   const exportSelectedSchema = ref({identifier:SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL});
+    const { user }     = useAuth();
+        const security = useSecurity();
 
+    searchQuery.value = {
+        rowsPerPage: 1000,
+        query: "schema_s:" + SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL,
+        sort : "updatedDate_dt desc",
+        start: 0        
+    }
+    if(user.value?.isAuthenticated && !security.role.isAdministrator()){
+        searchQuery.value.query += ` AND _contributor_is:${user.value.userID}`;
+    }
+    const result = await queryIndex(parseSolrQuery(searchQuery.value, locale));
 </script>

@@ -1,5 +1,5 @@
 <template>
-        <button type="button" class="ms-1 btn btn-success btn-sm text-decoration-none" @click="openExportModal">
+        <button type="button" class="ms-1 btn btn-success btn-sm text-decoration-none" @click="openExportModal()">
             <font-awesome-icon icon="fa fa-download"></font-awesome-icon>
             <slot name="exportTitle" >
                 {{ t('exportButton') }}
@@ -193,7 +193,6 @@
     const formatString = (text) => {
         if (!text)
             return;
-
         if (text?.startsWith('http')) {
             if (text.length > 35)
                 return `<a target="_blank" href="${text}">${text.substr(0, 35)}...</a>`

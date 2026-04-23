@@ -85,7 +85,8 @@
         showTargets      : { type:Boolean, default : true},
         showGoals        : { type:Boolean, default : true},
         showCountries    : { type:Boolean, default : true},
-        showRegions      : { type:Boolean, default : true}
+        showRegions      : { type:Boolean, default : true},
+        countryRegionField: {type:String, default : 'government'}
     })
 
     const { t, locale } = useI18n();
@@ -205,8 +206,8 @@
         queries.push(buildArrayQuery('globalTargetAlignment_ss', filters.value.globalTargets));          
         queries.push(buildArrayQuery('globalGoalAlignment_ss', filters.value.globalGoals)); 
 
-        queries.push(buildArrayQuery('government_s', filters.value.countries));              
-        queries.push(buildArrayQuery('government_REL_ss', filters.value.regions));         
+        queries.push(buildArrayQuery(`${props.countryRegionField}_s`, filters.value.countries));              
+        queries.push(buildArrayQuery(`${props.countryRegionField}_REL_ss`, filters.value.regions));         
         
         customQueries.value.forEach((customQuery)=>{
             if(customQuery?.field && customQuery?.value?.length){
