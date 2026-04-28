@@ -2,7 +2,8 @@
    <div class="row">
         <div class="col-12 mb-1">
             <pdf-section  class="me-md-2 btn-secondary float-end" :element="printSelector" :title="title" ref="pdfSectionRef" 
-                @on-pdf-document="onPdfDocument" @on-after-pdf="onAfterPdf"></pdf-section>
+                @on-pdf-document="onPdfDocument" @on-after-pdf="onAfterPdf" 
+                :save-to-storage="saveToStorage" :file-name="fileName"></pdf-section>
             <print-section  class="me-md-2 btn-secondary float-end" :element="printSelector" :title="title" ref="printSectionRef" 
                 @on-print-document="onPrintDocument" @on-before-print="onBeforePrint" @on-after-print="onAfterPrint"></print-section>
         </div>
@@ -19,6 +20,7 @@
         printSelector : {type: String, required:true},
         title   : {type: String, required:true},
         fileName: {type: String, required:true},
+        saveToStorage: {type: Boolean, default:false},
     });
 
     defineExpose({

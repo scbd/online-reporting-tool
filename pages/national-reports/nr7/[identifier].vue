@@ -2,7 +2,8 @@
     <km-suspense>
       <view-actions print-selector=".nr7-section-view" :title="lstring(record?.workingDocumentTitle||record?.title, locale)"
           ref="viewActionsRef" @on-print-document="onPrintDocument" @on-before-print="onBeforePrint"
-          @on-after-print="onAfterPrint" @on-pdf-document="onPdfDocument" @on-after-pdf="onAfterPdf"></view-actions>
+          @on-after-print="onAfterPrint" @on-pdf-document="onPdfDocument" @on-after-pdf="onAfterPdf"
+          :save-to-storage="true" :file-name="downloadFileName"></view-actions>
 
       <workflow-request v-if="workflowId" :workflow-id="workflowId"></workflow-request>
 
@@ -28,6 +29,10 @@
     breadcrumbs : {
       skip : ['identifier']
     }
+  });
+
+  const downloadFileName = computed(()=>{
+    return `nr7-${record.value?.body?.government?.identifier}-${record.value?.documentID}-${record.value?.revision}.pdf`;
   });
 
   const onDocumentLoad = (document)=>{
