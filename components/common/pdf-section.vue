@@ -27,6 +27,7 @@
         element : {type: String, required:true},
         title   : {type: String, required:true},
         fileName: {type: String, required:true},
+        saveToStorage: {type: Boolean, default:false},
     });
 
     const emit = defineEmits(['onPdfDocument', 'onAfterPdf', 'onBeforeGetContent',
@@ -34,6 +35,7 @@
 
     const {t}             = useI18n();
     const { $recaptcha }  = useNuxtApp();
+    const realmConf       = useRealm();
 
     const isGeneratingPdf      = ref(false);
     const userPdfHtml   = ref(null);
@@ -60,6 +62,22 @@
         emit('onPdfDocument');
         
         isGeneratingPdf.value = true;
+
+         
+        if(props.saveToStorage){
+            const s3Url = `https://s3.amazonaws.com/pdf-cache-prod/${realmConf.realm?.toLowerCase()}/${downloadFileName.value}`;
+
+            const exists = await $fetch.raw(s3Url, {
+                method: 'HEAD'
+            }).catch((e)=>{})
+            
+            if(exists?.status == 200){
+                window.open(exists.url, '_blank')
+                isGeneratingPdf.value = false;
+                return;
+            }
+        }
+
         await sleep(200);
         userPdfHtml.value = document.querySelector(props.element).innerHTML;
         await sleep(200);
@@ -87,7 +105,8 @@
                     body : { html }, 
                     params : {
                         'attachment-name' : downloadFileName.value,
-                        baseurl:baseUrl
+                        baseurl:baseUrl,
+                        saveToStorage:props.saveToStorage
                     },
                     responseType: "blob", 
                     headers:{
