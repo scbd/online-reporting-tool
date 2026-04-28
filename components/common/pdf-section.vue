@@ -70,7 +70,7 @@
             importCSS:true,
             importStyle : true,
             // pageTitle : $('title').text(),
-            // loadCSS : '/app/css/pdf-friendly.css',
+            loadCSS : '/app/css/print-friendly.css',
         });	
         // console.log(html);
         try{
