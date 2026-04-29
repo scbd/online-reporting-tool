@@ -41,7 +41,7 @@
     const userPdfHtml   = ref(null);
 
     const downloadFileName = computed(()=>{
-        const fileName = 'scbd-ort-' + (props.fileName || props.title?.trim()?.replace(/[\W_]+/gi, '-').substr(0, 50));
+        const fileName = `scbd-${realmConf.realm?.toLowerCase()}-${props.fileName || props.title?.trim()?.replace(/[\W_]+/gi, '-').substr(0, 50)}`;
 
         if(fileName.endsWith('.pdf'))
             return fileName
@@ -63,16 +63,16 @@
         
         isGeneratingPdf.value = true;
 
-         
+        const realmFileKey = `${realmConf.realm?.toLowerCase()}/${downloadFileName.value}`
         if(props.saveToStorage){
-            const s3Url = `https://s3.amazonaws.com/pdf-cache-prod/${realmConf.realm?.toLowerCase()}/${downloadFileName.value}`;
+            const s3Url = `https://s3.amazonaws.com/pdf-cache-prod/${realmFileKey}`;
 
             const exists = await $fetch.raw(s3Url, {
                 method: 'HEAD'
             }).catch((e)=>{})
             
             if(exists?.status == 200){
-                window.open(exists.url, '_blank')
+                await downloadS3File({url:exists.url})
                 isGeneratingPdf.value = false;
                 return;
             }
@@ -104,7 +104,7 @@
                     method:'POST', 
                     body : { html }, 
                     params : {
-                        'attachment-name' : downloadFileName.value,
+                        'attachment-name' : realmFileKey,
                         baseurl:baseUrl,
                         saveToStorage:props.saveToStorage
                     },
@@ -113,22 +113,7 @@
                         'x-captcha-v2-badge-token' : captchaToken
                     }
                 })
-
-                // Create a Blob from the response data
-                const buffer = await res.arrayBuffer();
-                const pdfBlob = new Blob([buffer], { type: "application/pdf" });
-
-                // Create a temporary URL for the Blob
-                const url = window.URL.createObjectURL(pdfBlob);
-
-                // Create a temporary <a> element to trigger the download
-                const tempLink = document.createElement("a");
-                tempLink.href = url;
-                tempLink.setAttribute("download", downloadFileName.value);
-
-                tempLink.click();
-
-                window.URL.revokeObjectURL(url);
+            await downloadS3File(res);
         }
         catch(e){
             useLogger().error(e, `${t('pdfError')}`)
@@ -140,6 +125,29 @@
         }
     }
 
+    async function downloadS3File(res){
+        let buffer;
+        if(res.url){
+            // Create a Blob from the response data
+            buffer = await fetch(res.url).then(r => r.arrayBuffer());            
+        }
+        else{
+            buffer = await res.arrayBuffer();
+        }
+        const pdfBlob = new Blob([buffer], { type: "application/pdf" });
+        // Create a temporary URL for the Blob
+        const downloadUrl = window.URL.createObjectURL(pdfBlob);
+
+        // Create a temporary <a> element to trigger the download
+        const tempLink = document.createElement("a");
+        tempLink.href = downloadUrl;
+        tempLink.setAttribute("download", downloadFileName.value);
+
+        tempLink.click();
+
+        window.URL.revokeObjectURL(downloadUrl);
+        
+    }
     defineExpose({
         pdfDocument : onPdfDocument
     });
