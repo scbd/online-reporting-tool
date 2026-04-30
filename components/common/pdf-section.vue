@@ -27,6 +27,7 @@
         element : {type: String, required:true},
         title   : {type: String, required:true},
         fileName: {type: String, required:true},
+        saveToStorage: {type: Boolean, default:false},
     });
 
     const emit = defineEmits(['onPdfDocument', 'onAfterPdf', 'onBeforeGetContent',
@@ -34,12 +35,13 @@
 
     const {t}             = useI18n();
     const { $recaptcha }  = useNuxtApp();
+    const realmConf       = useRealm();
 
     const isGeneratingPdf      = ref(false);
     const userPdfHtml   = ref(null);
 
     const downloadFileName = computed(()=>{
-        const fileName = 'scbd-ort-' + (props.fileName || props.title?.trim()?.replace(/[\W_]+/gi, '-').substr(0, 50));
+        const fileName = `scbd-${realmConf.realm?.toLowerCase()}-${props.fileName || props.title?.trim()?.replace(/[\W_]+/gi, '-').substr(0, 50)}`;
 
         if(fileName.endsWith('.pdf'))
             return fileName
@@ -60,6 +62,22 @@
         emit('onPdfDocument');
         
         isGeneratingPdf.value = true;
+
+        const realmFileKey = `${realmConf.realm?.toLowerCase()}/${downloadFileName.value}`
+        if(props.saveToStorage){
+            const s3Url = `https://s3.amazonaws.com/pdf-cache-prod/${realmFileKey}`;
+
+            const exists = await $fetch.raw(s3Url, {
+                method: 'HEAD'
+            }).catch((e)=>{})
+            
+            if(exists?.status == 200){
+                await downloadS3File({url:exists.url})
+                isGeneratingPdf.value = false;
+                return;
+            }
+        }
+
         await sleep(200);
         userPdfHtml.value = document.querySelector(props.element).innerHTML;
         await sleep(200);
@@ -70,7 +88,7 @@
             importCSS:true,
             importStyle : true,
             // pageTitle : $('title').text(),
-            // loadCSS : '/app/css/pdf-friendly.css',
+            loadCSS : '/app/css/print-friendly.css',
         });	
         // console.log(html);
         try{
@@ -86,30 +104,16 @@
                     method:'POST', 
                     body : { html }, 
                     params : {
-                        'attachment-name' : downloadFileName.value,
-                        baseurl:baseUrl
+                        'attachment-name' : realmFileKey,
+                        baseurl:baseUrl,
+                        saveToStorage:props.saveToStorage
                     },
                     responseType: "blob", 
                     headers:{
                         'x-captcha-v2-badge-token' : captchaToken
                     }
                 })
-
-                // Create a Blob from the response data
-                const buffer = await res.arrayBuffer();
-                const pdfBlob = new Blob([buffer], { type: "application/pdf" });
-
-                // Create a temporary URL for the Blob
-                const url = window.URL.createObjectURL(pdfBlob);
-
-                // Create a temporary <a> element to trigger the download
-                const tempLink = document.createElement("a");
-                tempLink.href = url;
-                tempLink.setAttribute("download", downloadFileName.value);
-
-                tempLink.click();
-
-                window.URL.revokeObjectURL(url);
+            await downloadS3File(res);
         }
         catch(e){
             useLogger().error(e, `${t('pdfError')}`)
@@ -121,6 +125,29 @@
         }
     }
 
+    async function downloadS3File(res){
+        let buffer;
+        if(res.url){
+            // Create a Blob from the response data
+            buffer = await fetch(res.url).then(r => r.arrayBuffer());            
+        }
+        else{
+            buffer = await res.arrayBuffer();
+        }
+        const pdfBlob = new Blob([buffer], { type: "application/pdf" });
+        // Create a temporary URL for the Blob
+        const downloadUrl = window.URL.createObjectURL(pdfBlob);
+
+        // Create a temporary <a> element to trigger the download
+        const tempLink = document.createElement("a");
+        tempLink.href = downloadUrl;
+        tempLink.setAttribute("download", downloadFileName.value);
+
+        tempLink.click();
+
+        window.URL.revokeObjectURL(downloadUrl);
+        
+    }
     defineExpose({
         pdfDocument : onPdfDocument
     });

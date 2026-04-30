@@ -1,4 +1,17 @@
-﻿@media print {
+﻿/* Specify font for Prince */
+body {
+    font-family: 
+        "Noto Sans CJK SC",      /* Chinese (Simplified) */
+        "Noto Sans CJK TC",      /* Chinese (Traditional) */
+        "Noto Sans Arabic",      /* Arabic */
+        "Noto Sans",             /* English, French, Spanish */
+        "KacstOne",              /* Arabic fallback */
+        "WenQuanYi Zen Hei",     /* Chinese fallback */
+        sans-serif;
+}
+
+@media print {
+    
     a[href]:after {
         content: '' !important;
     }
