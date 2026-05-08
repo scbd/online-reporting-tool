@@ -77,34 +77,37 @@
     });
 
     const baseUrl = computed(()=>{
-
         const domain = window.location.hostname.replace(/[^\.]+\./, '');
-        
+
         if(domain=='localhost')
             return 'https://ort.cbddev.xyz';
 
         return window.location.origin;
     })
-    async function onPdfDocument(){
+
+    async function onPdfDocument(force = false){
         emit('onPdfDocument');
-        
         isGeneratingPdf.value = true;
 
         const realmFileKey = `${realmConf.realm?.toLowerCase()}/${downloadFileName.value}`
-        if(props.saveToStorage){
-            const s3Url = `https://s3.amazonaws.com/pdf-cache-prod/${realmFileKey}`;
 
-            const exists = await $fetch.raw(s3Url, {
-                method: 'HEAD'
-            }).catch((e)=>{})
-            
+        if(props.saveToStorage && !force){
+            const s3Url = `https://s3.amazonaws.com/pdf-cache-prod/${realmFileKey}`;
+            const exists = await $fetch.raw(s3Url, { method: 'HEAD' }).catch(()=>{});
+
             if(exists?.status == 200){
-                await downloadS3File({url:exists.url})
                 isGeneratingPdf.value = false;
+                cachedS3Url.value = exists.url;
+                showCachedDialog.value = true;
+                startCountdown();
                 return;
             }
         }
 
+        await generatePdf(realmFileKey);
+    }
+
+    async function generatePdf(realmFileKey){
         await sleep(200);
         userPdfHtml.value = document.querySelector(props.element).innerHTML;
         await sleep(200);
@@ -147,38 +150,76 @@
         }
         finally{
             userPdfHtml.value = null;
-            isGeneratingPdf.value = false
-            emit('onAfterPdf')
+            isGeneratingPdf.value = false;
+            emit('onAfterPdf');
         }
+    }
+
+    function startCountdown(){
+        countdown.value = 10;
+        countdownTimer = setInterval(async () => {
+            countdown.value--;
+            if(countdown.value <= 0){
+                stopCountdown();
+                await onDownloadNow();
+            }
+        }, 1000);
+    }
+
+    function stopCountdown(){
+        if(countdownTimer){
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+        }
+    }
+
+    async function onDownloadNow(){
+        stopCountdown();
+        showCachedDialog.value = false;
+        isGeneratingPdf.value = true;
+        await downloadS3File({ url: cachedS3Url.value });
+        isGeneratingPdf.value = false;
+        emit('onAfterPdf');
+    }
+
+    async function onGenerateFresh(){
+        stopCountdown();
+        showCachedDialog.value = false;
+        isGeneratingPdf.value = true;
+        const realmFileKey = `${realmConf.realm?.toLowerCase()}/${downloadFileName.value}`;
+        await generatePdf(realmFileKey);
+    }
+
+    function onCancelDialog(){
+        stopCountdown();
+        showCachedDialog.value = false;
     }
 
     async function downloadS3File(res){
         let buffer;
         if(res.url){
-            // Create a Blob from the response data
-            buffer = await fetch(res.url).then(r => r.arrayBuffer());            
+            buffer = await fetch(res.url).then(r => r.arrayBuffer());
         }
         else{
             buffer = await res.arrayBuffer();
         }
         const pdfBlob = new Blob([buffer], { type: "application/pdf" });
-        // Create a temporary URL for the Blob
         const downloadUrl = window.URL.createObjectURL(pdfBlob);
 
-        // Create a temporary <a> element to trigger the download
         const tempLink = document.createElement("a");
         tempLink.href = downloadUrl;
         tempLink.setAttribute("download", downloadFileName.value);
-
         tempLink.click();
 
         window.URL.revokeObjectURL(downloadUrl);
-        
     }
+
+    onUnmounted(() => stopCountdown());
+
     defineExpose({
         pdfDocument : onPdfDocument
     });
-    
+
 </script>
 <i18n src="@/i18n/dist/components/common/pdf-section.json"></i18n>
 <style scoped>
@@ -194,5 +235,3 @@
         background-color: #fff;
     }
 </style>
-
-
