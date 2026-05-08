@@ -244,7 +244,9 @@
             query: andOr(compact(queries), 'AND'),
             sort : "updatedDate_dt desc",
             start: (currentPage.value -1 ) * recordsPerPage.value,
-            additionalFields :['globalTargetAlignment_ss','globalGoalOrTarget_s','globalGoalAlignment_ss']
+            additionalFields :['globalTargetAlignment_ss','globalGoalOrTarget_s',
+                                'globalGoalAlignment_ss', 'organization_t', 'countryReviews_EN_txt',
+                            'primaryGlobalAlignment_s']
         }
         const result = await queryIndex(parseSolrQuery(searchQuery.value, locale));
 
