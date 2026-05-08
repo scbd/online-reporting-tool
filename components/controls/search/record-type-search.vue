@@ -77,7 +77,7 @@
     import { useRealmConfStore } from '@/stores/realmConf';
     import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
     import { compact } from 'lodash';
-    import {useRoute, useRouter} from 'vue-router';
+    import { useRoute, useRouter } from 'vue-router';
 
     const props = defineProps({
         recordTypes : {type:Array<String>, required:true},
