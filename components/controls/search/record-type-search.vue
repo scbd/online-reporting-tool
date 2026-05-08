@@ -86,12 +86,13 @@
         showGoals        : { type:Boolean, default : true},
         showCountries    : { type:Boolean, default : true},
         showRegions      : { type:Boolean, default : true},
-        countryRegionField: {type:String, default : 'government'}
+        countrySearchField: {type:String, default : 'government_s'},
+        regionSearchField: {type:String, default : 'government_REL_ss'},
     })
 
     const { t, locale } = useI18n();
     const realmConfStore  = useRealmConfStore();
-    const { query, fullPath }       = useRoute();
+    const route     = useRoute();
     const router    = useRouter();
     const realmConf = realmConfStore.realmConf; 
     const documents = ref([]);
@@ -230,8 +231,8 @@
         queries.push(buildArrayQuery('globalTargetAlignment_ss', filters.value.globalTargets));          
         queries.push(buildArrayQuery('globalGoalAlignment_ss', filters.value.globalGoals)); 
 
-        queries.push(buildArrayQuery(`${props.countryRegionField}_s`, filters.value.countries));              
-        queries.push(buildArrayQuery(`${props.countryRegionField}_REL_ss`, filters.value.regions));         
+        queries.push(buildArrayQuery(`${props.countrySearchField}`, filters.value.countries));              
+        queries.push(buildArrayQuery(`${props.regionSearchField}`, filters.value.regions));         
         
         customQueries.value.forEach((customQuery)=>{
             if(customQuery?.field && customQuery?.value?.length){
