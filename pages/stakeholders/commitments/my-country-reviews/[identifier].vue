@@ -15,7 +15,9 @@
       </country-review-action>
 
     </div>
-    
+    <view-actions v-if="documentInfo" print-selector=".print-section"  :file-name="documentInfo?.identifier"
+      :title="lstring(documentInfo?.workingDocumentTitle||documentInfo?.title, locale)"></view-actions>
+
     <view-commitment v-if="document" :document="document" 
     :identifier="documentInfo?.identifier||''"
     @on-status-change="onStatusChange()"></view-commitment>
@@ -25,8 +27,7 @@
 </template>
 <i18n src="@/i18n/dist/pages/stakeholders/commitments/my-country-reviews/[identifier].json"></i18n>
 <script setup lang="ts">
-
-import { SCHEMAS, ROLES } from '@/utils';
+import { SCHEMAS, ROLES, lstring } from '@/utils';
 import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 import type { EAuthUser } from '~/types/schemas/base/EAuthUser';
 import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
@@ -34,7 +35,7 @@ import type { ECommitmentCountryReview } from '~/types/schemas/ECommitmentCountr
   const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
 
   const { user } = useAuth();
-  const { t }  = useI18n();
+  const { t, locale }  = useI18n();
   const route       = useRoute();
   const realmConf   = useRealm();
   const isLoading   = ref(false);

@@ -1,6 +1,7 @@
 <template>
-    <km-suspense>{{ record?.workingDocumentTitle }}
-      <view-actions print-selector=".print-section" :title="lstring(record?.workingDocumentTitle||record?.title)"></view-actions>
+    <km-suspense>
+      <view-actions v-if="documentInfo" print-selector=".print-section"  :fileName="documentInfo?.identifier"
+        :title="lstring(documentInfo?.workingDocumentTitle||documentInfo?.title, locale)"></view-actions>
 
       <workflow-request v-if="workflowId" :workflow-id="workflowId"></workflow-request>
 
