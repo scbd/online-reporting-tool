@@ -139,7 +139,7 @@ const clearFilters = () => {
     onFilterChange()
 }
 
-function onFilterChange(){
+async function onFilterChange(){
     const filters = {
         componentIndicators    : componentIndicators.value?.map(e=>e.identifier),
         complementaryIndicators: complementaryIndicators.value?.map(e=>e.identifier),
@@ -152,7 +152,7 @@ function onFilterChange(){
     }
 
     if(props.updateUrl){
-        router.push({
+        await router.push({
             path : route.fullPath,
             query : { 
                 ...route.query,

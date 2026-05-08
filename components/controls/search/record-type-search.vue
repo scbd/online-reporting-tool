@@ -130,21 +130,46 @@
         })
     })
 
-    function onPageChange(page:Number){
+    async function updateQueryString(){
+        if (!import.meta.client) return;
+        await router.push({
+            query: {
+                ...route.query,
+                page   : currentPage.value,
+                perPage: recordsPerPage.value,
+            },
+        }).catch(() => {});
+    }
+
+    async function onPageChange(page:Number){
         currentPage.value = page;
+        await updateQueryString();
         loadRecords();
     }
 
-    function onRecordsPerPageChanged(rows:number){
+    async function onRecordsPerPageChanged(rows:number){
         recordsPerPage.value = rows;
+        currentPage.value = 1;
+        await updateQueryString();
         loadRecords();
     }
 
-    function onFilterChange(newFilters:Object){
-        currentPage.value = 1;
+    async function onFilterChange(newFilters:Object){
+        console.log(newFilters)
+        const isFirst = !filters.value || Object.keys(filters.value).length === 0;
         filters.value = newFilters;
+        if(!isFirst){
+            currentPage.value = 1;
+            await updateQueryString();
+        }
         loadRecords();
     }
+
+    onMounted(() => {
+        currentPage.value    = route.query.page    ? Number(route.query.page)    : 1;
+        recordsPerPage.value = route.query.perPage ? Number(route.query.perPage) : UTILS.ROWS_PER_PAGE_25;
+        loadRecords();
+    });
 
     function onCustomFilterChange(newFilters:Array<Object>){
         currentPage.value = 1;
@@ -158,9 +183,8 @@
         });
 
         router.push({
-            path : fullPath,
-            query : { 
-                ...(query||{}),
+            query : {
+                ...route.query,
                 ...(customFilters||{})
             }
         });
@@ -234,7 +258,7 @@
             return `${field} : (${items.map(escape).join(' ')})`;
         }
     }
-
+    
 
 </script>
 
