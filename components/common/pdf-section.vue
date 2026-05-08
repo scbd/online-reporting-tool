@@ -1,22 +1,43 @@
 <template>
-    <button :disabled="!element" type="button" class="btn btn-primary pdf-section-btn" 
-        @click="onPdfDocument" >
-        
+    <button v-bind="$attrs" :disabled="!element || isGeneratingPdf" type="button" class="btn btn-primary pdf-section-btn"
+        @click="onPdfDocument()">
         <font-awesome-icon icon="file-pdf"></font-awesome-icon> {{ t('pdf') }}
-        <km-modal-spinner :visible="isGeneratingPdf" class="text-dark"
-            :title="t('preparingPdfTitle')" :message="t('preparingPdfMessage')"></km-modal-spinner>
+    </button>
 
-        <div id="advancePdf" class=" d-none h-0">
-            <div class="cbd-user-pdf" v-if="isGeneratingPdf">
-                <print-header></print-header>
-                <div id="cbd-user-pdf-section" >
-                    <div v-html="userPdfHtml"></div>
+    <km-modal-spinner :visible="isGeneratingPdf" class="text-dark"
+        :title="t('preparingPdfTitle')" :message="t('preparingPdfMessage')"></km-modal-spinner>
+
+    <CModal v-if="props.saveToStorage" class="show d-block" alignment="center" backdrop="static"
+        :visible="showCachedDialog" @close="onCancelDialog">
+        <CModalHeader :close-button="false">
+            <CModalTitle>{{ t('cachedPdfTitle') }}</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            <p>{{ t('cachedPdfMessage') }}</p>
+            <div class="d-flex align-items-center gap-2 mt-3">
+                <div class="progress flex-grow-1" style="height: 8px;">
+                    <div class="progress-bar" role="progressbar"
+                        :style="{ width: `${(countdown / 20) * 100}%` }">
+                    </div>
                 </div>
-                <print-footer></print-footer>
+                <span class="text-muted fw-bold" style="min-width:2rem;">{{ countdown }}s</span>
             </div>
-        </div>
-    </button>  
+        </CModalBody>
+        <CModalFooter>
+            <CButton color="primary" @click="onDownloadNow">{{ t('downloadNow') }}</CButton>
+            <CButton color="secondary" @click="onGenerateFresh">{{ t('generateFresh') }}</CButton>
+        </CModalFooter>
+    </CModal>
 
+    <div id="advancePdf" class="d-none h-0">
+        <div class="cbd-user-pdf" v-if="isGeneratingPdf">
+            <print-header></print-header>
+            <div id="cbd-user-pdf-section">
+                <div v-html="userPdfHtml"></div>
+            </div>
+            <print-footer></print-footer>
+        </div>
+    </div>
 </template>
 <i18n src="@/i18n/dist/components/common/pdf-section.json"></i18n>
 <script setup lang="ts">
@@ -33,12 +54,18 @@
     const emit = defineEmits(['onPdfDocument', 'onAfterPdf', 'onBeforeGetContent',
                                 'onBeforePdf']);
 
+    defineOptions({ inheritAttrs: false });
+
     const {t}             = useI18n();
     const { $recaptcha }  = useNuxtApp();
     const realmConf       = useRealm();
 
-    const isGeneratingPdf      = ref(false);
-    const userPdfHtml   = ref(null);
+    const isGeneratingPdf  = ref(false);
+    const userPdfHtml      = ref(null);
+    const showCachedDialog = ref(false);
+    const countdown        = ref(20);
+    const cachedS3Url      = ref(null);
+    let   countdownTimer   = null;
 
     const downloadFileName = computed(()=>{
         const fileName = `scbd-${realmConf.realm?.toLowerCase()}-${props.fileName || props.title?.trim()?.replace(/[\W_]+/gi, '-').substr(0, 50)}`;
