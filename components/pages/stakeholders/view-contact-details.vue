@@ -33,13 +33,13 @@
                     <km-lstring-value :value="document.organization" :locale="locale" />
                 </km-form-group>
                 <div class="row">
-                    <div class="col-md-6">
-                        <km-form-group :caption="t('organizationAcronym')" v-if="document.organizationAcronym">
+                    <div class="col-md-6" v-if="document.organizationAcronym">
+                        <km-form-group :caption="t('organizationAcronym')" >
                             <km-lstring-value :value="document.organizationAcronym" :locale="locale" />
                         </km-form-group>
                     </div>
-                    <div class="col-md-6">
-                        <km-form-group :caption="t('organizationType')" v-if="document.organizationType">
+                    <div class="col-md-6" v-if="document.organizationType">
+                        <km-form-group :caption="t('organizationType')">
                             <km-value-term :value="document.organizationType" :locale="locale" />
                         </km-form-group>
                     </div>
@@ -72,13 +72,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <km-form-group :caption="t('phones')" v-if="document.phones">
+                    <div class="col-md-6" v-if="document.phones">
+                        <km-form-group :caption="t('phones')">
                             <km-value-list :value="document.phones" :locale="locale" />
                         </km-form-group>
                     </div>
-                    <div class="col-md-6">
-                        <km-form-group :caption="t('emails')" v-if="document.emails">
+                    <div class="col-md-6" v-if="document.emails">
+                        <km-form-group :caption="t('emails')">
                             <km-value-list :value="document.emails" :locale="locale" />
                         </km-form-group>
                     </div>
