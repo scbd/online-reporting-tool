@@ -117,28 +117,25 @@
             pdfContainer:true,
             importCSS:true,
             importStyle : true,
-            // pageTitle : $('title').text(),
             loadCSS : '/app/css/print-friendly.css',
-        });	
-        // console.log(html);
+        });
         try{
             const captchaToken = await $recaptcha.getRecaptchaToken();
 
-            //incase of production use api-direct endpoint for pdf
             let baseUrl = '';
             if(isProduction())
                 baseUrl = useRuntimeConfig().public.API_DIRECT_URL||'';
 
-            const res = await useAPIFetch(`${baseUrl}/api/v2017/generate-pdf/`, 
-                { 
-                    method:'POST', 
-                    body : { html }, 
+            const res = await useAPIFetch(`${baseUrl}/api/v2017/generate-pdf/`,
+                {
+                    method:'POST',
+                    body : { html },
                     params : {
                         'attachment-name' : realmFileKey,
                         baseurl:baseUrl,
                         saveToStorage:props.saveToStorage
                     },
-                    responseType: "blob", 
+                    responseType: "blob",
                     headers:{
                         'x-captcha-v2-badge-token' : captchaToken
                     }
