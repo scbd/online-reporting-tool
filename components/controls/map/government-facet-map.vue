@@ -1,6 +1,8 @@
 <template>
-    <un-map v-if="countryColors?.length" :countryColors="countryColors" 
-        :zoom="0.4" :screenshot-only="true"></un-map>
+    <ClientOnly>
+        <un-map v-if="countryColors?.length" :countryColors="countryColors"
+            :zoom="0.4" :screenshot-only="true"></un-map>
+    </ClientOnly>
 </template>
 
 <script setup lang="ts">
@@ -36,7 +38,7 @@
         else{   
             countryColors.value = Object.entries(facetResponse.facets?.government_s||{}).map(([key, val])=>{
                                     return {
-                                    code3 : countriesStore.countries.find(c=>c.code == key?.toUpperCase())?.code3,
+                                    code3 : (countriesStore.countries ?? []).find(c=>c.code == key?.toUpperCase())?.code3,
                                     color : CBD_GREEN
                                 }
                             })

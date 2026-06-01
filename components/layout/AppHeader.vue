@@ -77,7 +77,7 @@
         </CNavItem>
         <CNavItem>
           <span class="nav-link">
-            <AppHeaderDropdownAccnt />
+            <ClientOnly><AppHeaderDropdownAccnt /></ClientOnly>
           </span>
         </CNavItem>
         <CNavItem>

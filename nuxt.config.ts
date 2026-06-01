@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   typescript:{
-      typeCheck:true,
+      typeCheck: process.env.NODE_ENV === 'production',
       strict:true
   },
 
@@ -36,10 +36,6 @@ export default defineNuxtConfig({
       '@pinia-plugin-persistedstate/nuxt',
       'nuxt-gtag'
   ],
-  plugins: [
-    { src: '~/plugins/jquery', mode: 'client' },
-  ],
-
   css:[
       // 'bootstrap/dist/css/bootstrap.css'
       '@fortawesome/fontawesome-svg-core/styles.css'
@@ -47,7 +43,7 @@ export default defineNuxtConfig({
   build: {
     transpile: [
       '@fortawesome/fontawesome-svg-core',
-      '@fortawesome/vue-fontawesome'
+      '@fortawesome/vue-fontawesome',
     ]
   },
 
@@ -86,7 +82,20 @@ export default defineNuxtConfig({
   },
 
   vite: {
-  
+
+      build: {
+          rollupOptions: {
+              onwarn(warning, warn) {
+                  if (warning.code === 'SOURCEMAP_ERROR') return;
+                  warn(warning);
+              }
+          }
+      },
+
+      optimizeDeps: {
+          exclude: ['vue-toast-notification']
+      },
+
       resolve: {
           alias: {
               'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'

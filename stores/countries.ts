@@ -16,7 +16,7 @@ export const useCountriesStore = defineStore('countries', {
 
           const { $api } = useNuxtApp();
           const data = await $api.countries.queryCountries();
-          this.countries = data;
+          this.countries = data || [];
         };
     },
   },

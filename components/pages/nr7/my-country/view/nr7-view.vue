@@ -74,7 +74,6 @@
   import type { Schemas,  EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
   import { GbfGoalsAndTargets } from '~/services/gbfGoalsAndTargets';
   import type { ENationalReport7, LinkedIndicatorData, SectionIII } from '~/types/schemas/ENationalReport7';
-  import * as bootstrap from 'bootstrap';
   import type { ETerm } from '~/types/schemas/base/ETerm';
 
   const emit                    = defineEmits(['onDocumentLoad']);
@@ -162,7 +161,8 @@
             
       indicatorsData.value = await initIndicatorDataLoad;
 
-     nextTick(()=>{    
+     nextTick(async ()=>{
+        const bootstrap = await import('bootstrap');
         var scrollSpy = new bootstrap.ScrollSpy(window.document.body, {
           target: '#nr7-view-tabs'
         })
@@ -212,7 +212,7 @@
       ]);  
 
       return [...result[0],
-              ...result[1].filter(e=>!result[0]?.find((draft:EDocumentInfo)=>draft.identifier == e.identifier))]
+              ...result[1].filter((e:EDocumentInfo)=>!result[0]?.find((draft:EDocumentInfo)=>draft.identifier == e.identifier))]
 
   }
 

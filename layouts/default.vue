@@ -5,7 +5,7 @@
             <AppHeader  v-if="!query?.embed" />
             <div class="body flex-grow-1 px-3" id="page-content-wrapper">
                 <CContainer fluid>
-                <router-view />
+                <slot />
                 <slot name="error"></slot>
                 </CContainer>
             </div>

@@ -14,7 +14,6 @@
 <script setup lang="ts">
 //@ts-nocheck
     import { useCountriesStore }    from '@/stores/countries';
-    import { Tooltip } from 'bootstrap';
     import { lstring } from '~/utils';
 
     const props = defineProps({
@@ -295,8 +294,9 @@
                         const EU_ISO3 = 'EUR';
                         showEuFlag.value = props.countryColors.some(c => EU_ISO3 == c.code3);
                         if(showEuFlag.value){
-                            nextTick(()=>{
+                            nextTick(async ()=>{
                                 if(euFlagRef.value){
+                                    const { Tooltip } = await import('bootstrap');
                                     bsTooltip = new Tooltip(euFlagRef.value);
                                 }
                             })  

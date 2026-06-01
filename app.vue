@@ -23,7 +23,7 @@ export default defineComponent({
         if(/^\//.test(socketIoUrl))
             socketIoUrl = config.public.API_URL + socketIoUrl;
 
-        const socket = SocketIOService.connect(socketIoUrl, auth?.token)
+        const socket = import.meta.client ? SocketIOService.connect(socketIoUrl, auth?.token) : null
 
 
         return {}
