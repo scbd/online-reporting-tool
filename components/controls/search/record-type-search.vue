@@ -77,7 +77,7 @@
     import { useRealmConfStore } from '@/stores/realmConf';
     import { andOr, queryIndex, escape, parseSolrQuery } from '@/services/solr'
     import { compact } from 'lodash';
-    import {useRoute, useRouter} from 'vue-router';
+    import { useRoute, useRouter } from 'vue-router';
 
     const props = defineProps({
         recordTypes : {type:Array<String>, required:true},
@@ -86,12 +86,13 @@
         showGoals        : { type:Boolean, default : true},
         showCountries    : { type:Boolean, default : true},
         showRegions      : { type:Boolean, default : true},
-        countryRegionField: {type:String, default : 'government'}
+        countrySearchField: {type:String, default : 'government_s'},
+        regionSearchField: {type:String, default : 'government_REL_ss'},
     })
 
     const { t, locale } = useI18n();
     const realmConfStore  = useRealmConfStore();
-    const { query, fullPath }       = useRoute();
+    const route     = useRoute();
     const router    = useRouter();
     const realmConf = realmConfStore.realmConf; 
     const documents = ref([]);
@@ -130,21 +131,45 @@
         })
     })
 
-    function onPageChange(page:Number){
+    async function updateQueryString(){
+        if (!import.meta.client) return;
+        await router.push({
+            query: {
+                ...route.query,
+                page   : currentPage.value,
+                perPage: recordsPerPage.value,
+            },
+        }).catch(() => {});
+    }
+
+    async function onPageChange(page:Number){
         currentPage.value = page;
+        await updateQueryString();
         loadRecords();
     }
 
-    function onRecordsPerPageChanged(rows:number){
+    async function onRecordsPerPageChanged(rows:number){
         recordsPerPage.value = rows;
+        currentPage.value = 1;
+        await updateQueryString();
         loadRecords();
     }
 
-    function onFilterChange(newFilters:Object){
-        currentPage.value = 1;
+    async function onFilterChange(newFilters:Object){
+        const isFirst = !filters.value || Object.keys(filters.value).length === 0;
         filters.value = newFilters;
+        if(!isFirst){
+            currentPage.value = 1;
+            await updateQueryString();
+        }
         loadRecords();
     }
+
+    onMounted(() => {
+        currentPage.value    = route.query.page    ? Number(route.query.page)    : 1;
+        recordsPerPage.value = route.query.perPage ? Number(route.query.perPage) : UTILS.ROWS_PER_PAGE_25;
+        loadRecords();
+    });
 
     function onCustomFilterChange(newFilters:Array<Object>){
         currentPage.value = 1;
@@ -158,9 +183,8 @@
         });
 
         router.push({
-            path : fullPath,
-            query : { 
-                ...(query||{}),
+            query : {
+                ...route.query,
                 ...(customFilters||{})
             }
         });
@@ -206,8 +230,8 @@
         queries.push(buildArrayQuery('globalTargetAlignment_ss', filters.value.globalTargets));          
         queries.push(buildArrayQuery('globalGoalAlignment_ss', filters.value.globalGoals)); 
 
-        queries.push(buildArrayQuery(`${props.countryRegionField}_s`, filters.value.countries));              
-        queries.push(buildArrayQuery(`${props.countryRegionField}_REL_ss`, filters.value.regions));         
+        queries.push(buildArrayQuery(`${props.countrySearchField}`, filters.value.countries));              
+        queries.push(buildArrayQuery(`${props.regionSearchField}`, filters.value.regions));         
         
         customQueries.value.forEach((customQuery)=>{
             if(customQuery?.field && customQuery?.value?.length){
@@ -219,7 +243,9 @@
             query: andOr(compact(queries), 'AND'),
             sort : "updatedDate_dt desc",
             start: (currentPage.value -1 ) * recordsPerPage.value,
-            additionalFields :['globalTargetAlignment_ss','globalGoalOrTarget_s','globalGoalAlignment_ss']
+            additionalFields :['globalTargetAlignment_ss','globalGoalOrTarget_s',
+                                'globalGoalAlignment_ss', 'organization_t', 'countryReviews_EN_txt',
+                            'primaryGlobalAlignment_s']
         }
         const result = await queryIndex(parseSolrQuery(searchQuery.value, locale));
 
@@ -234,7 +260,7 @@
             return `${field} : (${items.map(escape).join(' ')})`;
         }
     }
-
+    
 
 </script>
 

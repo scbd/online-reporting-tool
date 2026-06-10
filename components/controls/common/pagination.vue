@@ -2,33 +2,32 @@
   <nav v-if="props.recordCount" aria-label="{{ t('pagination') }}" class="pagination d-flex justify-content-center text-center">
     <ul class="pagination pagination-lg1">
 
-      <li v-if="props.firstLastButton" @click="setPage(1)" :class="{ 'disabled': internalCurrentPage === 1 }" class="page-item">
-        <a class="page-link" href="#">{{ props.firstButtonText || t('first') }}</a>
-      </li>
-      
-      <li @click="previousPage" :class="{ 'disabled': internalCurrentPage === 1 }" class="page-item">
-        <a class="page-link" href="#">{{ props.prevText || t('prev') }}</a>
-      </li>
-      
-      <li v-if="visiblePageNumbers[0] > 1" class="page-item" @click="setPage(visiblePageNumbers[0]-1)">
-        <a class="page-link" href="#">...</a>
+      <li v-if="props.firstLastButton" :class="{ 'disabled': internalCurrentPage === 1 }" class="page-item">
+        <a class="page-link" href="#" @click.prevent="setPage(1)">{{ props.firstButtonText || t('first') }}</a>
       </li>
 
-      <li v-for="pageNumber in visiblePageNumbers" :key="pageNumber" @click="setPage(pageNumber)" :class="{ 'active': internalCurrentPage === pageNumber }" class="page-item">
-        <a class="page-link" href="#">{{ pageNumber }}</a>
+      <li :class="{ 'disabled': internalCurrentPage === 1 }" class="page-item">
+        <a class="page-link" href="#" @click.prevent="previousPage">{{ props.prevText || t('prev') }}</a>
       </li>
 
-      <li v-if="visiblePageNumbers[visiblePagelength - 1] < pageCount" class="page-item"
-        @click="setPage(visiblePagelength+1)">
-        <a class="page-link" href="#">...</a>
+      <li v-if="visiblePageNumbers[0] > 1" class="page-item">
+        <a class="page-link" href="#" @click.prevent="setPage(visiblePageNumbers[0]-1)">...</a>
       </li>
 
-      <li @click="nextPage" :class="{ 'disabled': internalCurrentPage === pageCount }" class="page-item">
-        <a class="page-link" href="#">{{ props.nextText || t('next') }}</a>
+      <li v-for="pageNumber in visiblePageNumbers" :key="pageNumber" :class="{ 'active': internalCurrentPage === pageNumber }" class="page-item">
+        <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber }}</a>
       </li>
 
-      <li @click="setPage(pageCount)" :class="{ 'disabled': internalCurrentPage === pageCount }" class="page-item">
-        <a class="page-link" href="#">{{ props.lastButtonText || t('last') }}</a>
+      <li v-if="visiblePageNumbers[visiblePageNumbers.length - 1] < pageCount" class="page-item">
+        <a class="page-link" href="#" @click.prevent="setPage(visiblePageNumbers[visiblePageNumbers.length - 1] + 1)">...</a>
+      </li>
+
+      <li :class="{ 'disabled': internalCurrentPage === pageCount }" class="page-item">
+        <a class="page-link" href="#" @click.prevent="nextPage">{{ props.nextText || t('next') }}</a>
+      </li>
+
+      <li :class="{ 'disabled': internalCurrentPage === pageCount }" class="page-item">
+        <a class="page-link" href="#" @click.prevent="setPage(pageCount)">{{ props.lastButtonText || t('last') }}</a>
       </li>
 
       <li class="page-item d-none d-md-inline-block disabled">
@@ -87,6 +86,7 @@ const internalCurrentPage = computed({
     return props.currentPage;
   },
   set(page) {
+    if(page == props.currentPage) return;
     emit('onPageChange', page);
   }
 });
@@ -96,6 +96,7 @@ const rowsPerPage = computed({
     return props.recordsPerPage
   },
   set(rows){
+    if(rows == props.recordsPerPage) return;
     emit('onRecordsPerPageChanged', Number(rows));
   }
 })

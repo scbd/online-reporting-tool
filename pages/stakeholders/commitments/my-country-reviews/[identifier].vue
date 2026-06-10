@@ -3,10 +3,10 @@
     <div class="alert alert-danger" v-if="countryReview"
      style="border-color:#DDD; background-color: #f5f5f5;" role="alert">
       {{ t('countryReviewTitle') }}
-      <p v-if="countryReview?.meta?.updatedByInfo" class="mb-0">
+      <p v-if="countryReview?.meta?._updatedBy" class="mb-0">
         <strong v-if="countryReview.reviewed">{{t('reviewedBy')}} </strong>
         <strong v-if="!countryReview.reviewed">{{t('returnedBy')}} </strong>
-        {{ countryReview?.meta?.updatedByInfo?.firstName }} {{ countryReview?.meta?.updatedByInfo?.lastName }}
+        {{ countryReview?.meta?._updatedBy?.firstName }} {{ countryReview?.meta?._updatedBy?.lastName }}
         {{ formatDate(countryReview?.meta?.updatedOn) }}
       </p>
       <country-review-action :identifier="countryReview.identifier" 
@@ -15,7 +15,9 @@
       </country-review-action>
 
     </div>
-    
+    <view-actions v-if="documentInfo" print-selector=".print-section"  :file-name="documentInfo?.identifier"
+      :title="lstring(documentInfo?.workingDocumentTitle||documentInfo?.title, locale)"></view-actions>
+
     <view-commitment v-if="document" :document="document" 
     :identifier="documentInfo?.identifier||''"
     @on-status-change="onStatusChange()"></view-commitment>
@@ -25,8 +27,7 @@
 </template>
 <i18n src="@/i18n/dist/pages/stakeholders/commitments/my-country-reviews/[identifier].json"></i18n>
 <script setup lang="ts">
-
-import { SCHEMAS, ROLES } from '@/utils';
+import { SCHEMAS, ROLES, lstring } from '@/utils';
 import KmStakeholderCommitmentApi from '~/api/km-stakeholder-commitment';
 import type { EAuthUser } from '~/types/schemas/base/EAuthUser';
 import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
@@ -34,7 +35,7 @@ import type { ECommitmentCountryReview } from '~/types/schemas/ECommitmentCountr
   const kmStakeholderCommitmentApi = new KmStakeholderCommitmentApi({});
 
   const { user } = useAuth();
-  const { t }  = useI18n();
+  const { t, locale }  = useI18n();
   const route       = useRoute();
   const realmConf   = useRealm();
   const isLoading   = ref(false);
@@ -65,7 +66,7 @@ import type { ECommitmentCountryReview } from '~/types/schemas/ECommitmentCountr
 
   async function loadCountryReviews(){
     if(user.value.government)
-    countryReview.value   = (await kmStakeholderCommitmentApi.getCountryReviews({identifier:route.params?.identifier?.toString(), government:user.value.government, realm:(realmConf as any).realm}))?.[0];
+    countryReview.value   = (await kmStakeholderCommitmentApi.getCountryReviews({identifier:route.params?.identifier?.toString(), government:user.value.government, realm:(realmConf as any).realm}))?.items?.[0];
   }
 
   async function onStatusChange(){

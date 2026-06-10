@@ -1,11 +1,13 @@
 <template>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <CButton :disabled="isBusy" color="secondary" size="sm"  @click="review()" v-if="reviewed == null || reviewed===false">
-            <font-awesome-icon icon="fa-thumbs-up" /> {{t('review')}}
+            <CSpinner component="span" size="sm" aria-hidden="true" v-if="isBusy" />
+            <font-awesome-icon v-if="!isBusy" icon="fa-thumbs-up" /> {{t('review')}}
         </CButton>
         <CButton :disabled="isBusy" color="secondary" size="sm" v-if="reviewed == null || reviewed===true"
             @click="returnCommitment()">
-            <font-awesome-icon icon="fa-thumbs-down" /> {{t('return')}}
+            <CSpinner component="span" size="sm" aria-hidden="true" v-if="isBusy" />
+            <font-awesome-icon v-if="!isBusy" icon="fa-thumbs-down" /> {{t('return')}}
         </CButton>        
     </div>
 </template>

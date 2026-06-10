@@ -1,22 +1,43 @@
 <template>
-    <button :disabled="!element" type="button" class="btn btn-primary pdf-section-btn" 
-        @click="onPdfDocument" >
-        
+    <button v-bind="$attrs" :disabled="!element || isGeneratingPdf" type="button" class="btn btn-primary pdf-section-btn"
+        @click="onPdfDocument()">
         <font-awesome-icon icon="file-pdf"></font-awesome-icon> {{ t('pdf') }}
-        <km-modal-spinner :visible="isGeneratingPdf" class="text-dark"
-            :title="t('preparingPdfTitle')" :message="t('preparingPdfMessage')"></km-modal-spinner>
+    </button>
 
-        <div id="advancePdf" class=" d-none h-0">
-            <div class="cbd-user-pdf" v-if="isGeneratingPdf">
-                <print-header></print-header>
-                <div id="cbd-user-pdf-section" >
-                    <div v-html="userPdfHtml"></div>
+    <km-modal-spinner :visible="isGeneratingPdf" class="text-dark"
+        :title="t('preparingPdfTitle')" :message="t('preparingPdfMessage')"></km-modal-spinner>
+
+    <CModal v-if="props.saveToStorage" class="show d-block" alignment="center" backdrop="static"
+        :visible="showCachedDialog" @close="onCancelDialog">
+        <CModalHeader :close-button="false">
+            <CModalTitle>{{ t('cachedPdfTitle') }}</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            <p>{{ t('cachedPdfMessage') }}</p>
+            <div class="d-flex align-items-center gap-2 mt-3">
+                <div class="progress flex-grow-1" style="height: 8px;">
+                    <div class="progress-bar" role="progressbar"
+                        :style="{ width: `${(countdown / 20) * 100}%` }">
+                    </div>
                 </div>
-                <print-footer></print-footer>
+                <span class="text-muted fw-bold" style="min-width:2rem;">{{ countdown }}s</span>
             </div>
-        </div>
-    </button>  
+        </CModalBody>
+        <CModalFooter>
+            <CButton color="primary" @click="onDownloadNow">{{ t('downloadNow') }}</CButton>
+            <CButton color="secondary" @click="onGenerateFresh">{{ t('generateFresh') }}</CButton>
+        </CModalFooter>
+    </CModal>
 
+    <div id="advancePdf" class="d-none h-0">
+        <div class="cbd-user-pdf" v-if="isGeneratingPdf">
+            <print-header></print-header>
+            <div id="cbd-user-pdf-section">
+                <div v-html="userPdfHtml"></div>
+            </div>
+            <print-footer></print-footer>
+        </div>
+    </div>
 </template>
 <i18n src="@/i18n/dist/components/common/pdf-section.json"></i18n>
 <script setup lang="ts">
@@ -27,19 +48,27 @@
         element : {type: String, required:true},
         title   : {type: String, required:true},
         fileName: {type: String, required:true},
+        saveToStorage: {type: Boolean, default:false},
     });
 
     const emit = defineEmits(['onPdfDocument', 'onAfterPdf', 'onBeforeGetContent',
                                 'onBeforePdf']);
 
+    defineOptions({ inheritAttrs: false });
+
     const {t}             = useI18n();
     const { $recaptcha }  = useNuxtApp();
+    const realmConf       = useRealm();
 
-    const isGeneratingPdf      = ref(false);
-    const userPdfHtml   = ref(null);
+    const isGeneratingPdf  = ref(false);
+    const userPdfHtml      = ref(null);
+    const showCachedDialog = ref(false);
+    const countdown        = ref(20);
+    const cachedS3Url      = ref(null);
+    let   countdownTimer   = null;
 
     const downloadFileName = computed(()=>{
-        const fileName = 'scbd-ort-' + (props.fileName || props.title?.trim()?.replace(/[\W_]+/gi, '-').substr(0, 50));
+        const fileName = `scbd-${realmConf.realm?.toLowerCase()}-${props.fileName || props.title?.trim()?.replace(/[\W_]+/gi, '-').substr(0, 50)}`;
 
         if(fileName.endsWith('.pdf'))
             return fileName
@@ -48,18 +77,37 @@
     });
 
     const baseUrl = computed(()=>{
-
         const domain = window.location.hostname.replace(/[^\.]+\./, '');
-        
+
         if(domain=='localhost')
             return 'https://ort.cbddev.xyz';
 
         return window.location.origin;
     })
-    async function onPdfDocument(){
+
+    async function onPdfDocument(force = false){
         emit('onPdfDocument');
-        
         isGeneratingPdf.value = true;
+
+        const realmFileKey = `${realmConf.realm?.toLowerCase()}/${downloadFileName.value}`
+
+        if(props.saveToStorage && !force){
+            const s3Url = `https://s3.amazonaws.com/pdf-cache-prod/${realmFileKey}`;
+            const exists = await $fetch.raw(s3Url, { method: 'HEAD' }).catch(()=>{});
+
+            if(exists?.status == 200){
+                isGeneratingPdf.value = false;
+                cachedS3Url.value = exists.url;
+                showCachedDialog.value = true;
+                startCountdown();
+                return;
+            }
+        }
+
+        await generatePdf(realmFileKey);
+    }
+
+    async function generatePdf(realmFileKey){
         await sleep(200);
         userPdfHtml.value = document.querySelector(props.element).innerHTML;
         await sleep(200);
@@ -69,62 +117,106 @@
             pdfContainer:true,
             importCSS:true,
             importStyle : true,
-            // pageTitle : $('title').text(),
-            // loadCSS : '/app/css/pdf-friendly.css',
-        });	
-        // console.log(html);
+            loadCSS : '/app/css/print-friendly.css',
+        });
         try{
             const captchaToken = await $recaptcha.getRecaptchaToken();
 
-            //incase of production use api-direct endpoint for pdf
             let baseUrl = '';
             if(isProduction())
                 baseUrl = useRuntimeConfig().public.API_DIRECT_URL||'';
 
-            const res = await useAPIFetch(`${baseUrl}/api/v2017/generate-pdf/`, 
-                { 
-                    method:'POST', 
-                    body : { html }, 
+            const res = await useAPIFetch(`${baseUrl}/api/v2017/generate-pdf/`,
+                {
+                    method:'POST',
+                    body : { html },
                     params : {
-                        'attachment-name' : downloadFileName.value,
-                        baseurl:baseUrl
+                        'attachment-name' : realmFileKey,
+                        baseurl:baseUrl,
+                        saveToStorage:props.saveToStorage
                     },
-                    responseType: "blob", 
+                    responseType: "blob",
                     headers:{
                         'x-captcha-v2-badge-token' : captchaToken
                     }
                 })
-
-                // Create a Blob from the response data
-                const buffer = await res.arrayBuffer();
-                const pdfBlob = new Blob([buffer], { type: "application/pdf" });
-
-                // Create a temporary URL for the Blob
-                const url = window.URL.createObjectURL(pdfBlob);
-
-                // Create a temporary <a> element to trigger the download
-                const tempLink = document.createElement("a");
-                tempLink.href = url;
-                tempLink.setAttribute("download", downloadFileName.value);
-
-                tempLink.click();
-
-                window.URL.revokeObjectURL(url);
+            await downloadS3File(res);
         }
         catch(e){
             useLogger().error(e, `${t('pdfError')}`)
         }
         finally{
             userPdfHtml.value = null;
-            isGeneratingPdf.value = false
-            emit('onAfterPdf')
+            isGeneratingPdf.value = false;
+            emit('onAfterPdf');
         }
     }
+
+    function startCountdown(){
+        countdown.value = 10;
+        countdownTimer = setInterval(async () => {
+            countdown.value--;
+            if(countdown.value <= 0){
+                stopCountdown();
+                await onDownloadNow();
+            }
+        }, 1000);
+    }
+
+    function stopCountdown(){
+        if(countdownTimer){
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+        }
+    }
+
+    async function onDownloadNow(){
+        stopCountdown();
+        showCachedDialog.value = false;
+        isGeneratingPdf.value = true;
+        await downloadS3File({ url: cachedS3Url.value });
+        isGeneratingPdf.value = false;
+        emit('onAfterPdf');
+    }
+
+    async function onGenerateFresh(){
+        stopCountdown();
+        showCachedDialog.value = false;
+        isGeneratingPdf.value = true;
+        const realmFileKey = `${realmConf.realm?.toLowerCase()}/${downloadFileName.value}`;
+        await generatePdf(realmFileKey);
+    }
+
+    function onCancelDialog(){
+        stopCountdown();
+        showCachedDialog.value = false;
+    }
+
+    async function downloadS3File(res){
+        let buffer;
+        if(res.url){
+            buffer = await fetch(res.url).then(r => r.arrayBuffer());
+        }
+        else{
+            buffer = await res.arrayBuffer();
+        }
+        const pdfBlob = new Blob([buffer], { type: "application/pdf" });
+        const downloadUrl = window.URL.createObjectURL(pdfBlob);
+
+        const tempLink = document.createElement("a");
+        tempLink.href = downloadUrl;
+        tempLink.setAttribute("download", downloadFileName.value);
+        tempLink.click();
+
+        window.URL.revokeObjectURL(downloadUrl);
+    }
+
+    onUnmounted(() => stopCountdown());
 
     defineExpose({
         pdfDocument : onPdfDocument
     });
-    
+
 </script>
 <i18n src="@/i18n/dist/components/common/pdf-section.json"></i18n>
 <style scoped>
@@ -140,5 +232,3 @@
         background-color: #fff;
     }
 </style>
-
-
