@@ -3,10 +3,10 @@
     <div class="alert alert-danger" v-if="countryReview"
      style="border-color:#DDD; background-color: #f5f5f5;" role="alert">
       {{ t('countryReviewTitle') }}
-      <p v-if="countryReview?.meta?.updatedByInfo" class="mb-0">
+      <p v-if="countryReview?.meta?._updatedBy" class="mb-0">
         <strong v-if="countryReview.reviewed">{{t('reviewedBy')}} </strong>
         <strong v-if="!countryReview.reviewed">{{t('returnedBy')}} </strong>
-        {{ countryReview?.meta?.updatedByInfo?.firstName }} {{ countryReview?.meta?.updatedByInfo?.lastName }}
+        {{ countryReview?.meta?._updatedBy?.firstName }} {{ countryReview?.meta?._updatedBy?.lastName }}
         {{ formatDate(countryReview?.meta?.updatedOn) }}
       </p>
       <country-review-action :identifier="countryReview.identifier" 
@@ -66,7 +66,7 @@ import type { ECommitmentCountryReview } from '~/types/schemas/ECommitmentCountr
 
   async function loadCountryReviews(){
     if(user.value.government)
-    countryReview.value   = (await kmStakeholderCommitmentApi.getCountryReviews({identifier:route.params?.identifier?.toString(), government:user.value.government, realm:(realmConf as any).realm}))?.[0];
+    countryReview.value   = (await kmStakeholderCommitmentApi.getCountryReviews({identifier:route.params?.identifier?.toString(), government:user.value.government, realm:(realmConf as any).realm}))?.items?.[0];
   }
 
   async function onStatusChange(){
