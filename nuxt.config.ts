@@ -91,7 +91,15 @@ export default defineNuxtConfig({
           //     resolve(dirname(fileURLToPath(import.meta.url)), './i18n/dist/*.json')
           //   ]
           // }),
-      ]
+      ],
+    css: {
+        preprocessorOptions: {
+            scss: {
+            silenceDeprecations: ['import'],
+            quietDeps: true, // hides warnings from node_modules deps like CoreUI
+            }
+        }
+    }
   },
   gtag: {       
     //   id: process.env.NUXT_PUBLIC_GTAG_ID || 'G-XXXXXX',
