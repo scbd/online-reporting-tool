@@ -156,7 +156,6 @@
     }
 
     async function onFilterChange(newFilters:Object){
-        console.log(newFilters)
         const isFirst = !filters.value || Object.keys(filters.value).length === 0;
         filters.value = newFilters;
         if(!isFirst){

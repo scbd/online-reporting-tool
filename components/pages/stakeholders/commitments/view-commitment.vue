@@ -291,9 +291,9 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
   })
 
   const showEnhancedReviews = computed(()=>{
-    if(!user.value?.government){
-      return false;
-    }
+    // if(!user.value?.government){
+    //   return false;
+    // }
     if(user.value?.government){
       if(security.role.isNationalFocalPoint())
         return countryReviews.value.find((e: ECommitmentCountryReview)=>e.government == user.value.government)
@@ -377,8 +377,8 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
     
     if(!identifier) return;
 
-    countryReviews.value = await kmStakeholderCommitmentApi.getCountryReviews(
-      { identifier, realm: (realmConf as any).realm }, { length : 500});
+    countryReviews.value = (await kmStakeholderCommitmentApi.getCountryReviews(
+      { identifier, realm: (realmConf as any).realm }, { length : 500})).items;
   }
   async function onStatusChange(identifier:string, reviewed:boolean){
     loadCountryReviews();
