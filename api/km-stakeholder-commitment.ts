@@ -1,8 +1,9 @@
 
 import { type ApiOptions } from "~/types/api/api-options";
+import { type ApiListResponse } from "~/types/api/api-response";
 import ApiBase from './api-base';
 import type { MongoQuery } from "~/types/api/mongo-query";
-import type { ECommitmentCountryReview } from "~/types/schemas/ECommitmentCountryReview";
+import type { ECommitmentCountryReview, CommitmentReviewsStatsResponse, CommitmentReviewsQuery, CommitmentReviewsStatsQuery } from "~/types/schemas/ECommitmentCountryReview";
 import type { EDocumentInfo } from "~/types/schemas/base/EDocumentInfo";
 
 export default class KmStakeholderCommitmentApi extends ApiBase
@@ -12,22 +13,41 @@ export default class KmStakeholderCommitmentApi extends ApiBase
     }
     
     
-    async getCountryReviews({identifier, government, realm, reviewed} = {} as {
-        identifier?: string, government?: string, realm:string, reviewed?:boolean}, 
-        { count, length, skip, sort } = 
-            { count: 0, length : 25, skip: 0, sort: { 'meta.updatedOn': -1 }} as MongoQuery) : Promise<ECommitmentCountryReview[]> {
+    async   getCountryReviews({identifier, government, realm, reviewed, reviewStatus} = {} as CommitmentReviewsQuery, 
+        { count, length, skip, sort } = { count: 0, length : 25, skip: 0, sort: { 'meta.updatedOn': -1 }} as MongoQuery) 
+            : Promise<ApiListResponse<ECommitmentCountryReview>> {
         const query = {
             identifier,
             government,
             realm,
-            reviewed,
+            reviewed,reviewStatus,
             l: length,
             s: sort,
             sk: skip,
-            c: count
+            c: count            
         }
-        const data =  await useAPIFetch<ECommitmentCountryReview[]>(`/api/v2023/documents/schemas/stakeholder-commitment/country-reviews`, {  method:'GET', query })                
+        const data =  await useAPIFetch<ApiListResponse<ECommitmentCountryReview>>(`/api/v2023/documents/schemas/stakeholder-commitment/country-reviews`, {
+              method:'GET', query
+            })                
         return data;
+    }
+
+    async getCountryReviewStats({identifier, government, realm, reviewed, reviewStatus, countryStats, organizationStats} = {} as CommitmentReviewsStatsQuery) 
+            : Promise<CommitmentReviewsStatsResponse> {
+
+        const query = {
+            identifier,
+            government,
+            realm,
+            reviewed,reviewStatus,
+            countryStats,
+            organizationStats,
+        }
+        const data =  await useAPIFetch<CommitmentReviewsStatsResponse>(`/api/v2023/documents/schemas/stakeholder-commitment/country-reviews/stats`, {
+              method:'GET', query
+            })                
+        return data;
+            
     }
 
     async getCountryCommitment(identifier:string):Promise<EDocumentInfo>  {
