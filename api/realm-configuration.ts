@@ -11,7 +11,7 @@ export default class RealmConfigurationAPI extends ApiBase
   async getRealmConfigurationByHost(host:string)  {
 
     if(!host){
-      host = window.location.host || useRuntimeConfig().public.REALM_CONF_HOST
+      host = (import.meta.client ? window.location.host : useRequestURL().host) || useRuntimeConfig().public.REALM_CONF_HOST
     }
 
     const data  =  await useAPIFetch(`/api/v2018/realm-configurations/${encodeURIComponent(host)||''}`)

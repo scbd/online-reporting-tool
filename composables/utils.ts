@@ -44,8 +44,8 @@ function error(appError:FetchError|Error, userMessage:string|null=null){
             const errorLog = {
                 stack : JSON.stringify(appError, Object.getOwnPropertyNames(appError)), 
                 message: JSON.stringify(userMessage || appError?.message || 'unknown'),
-                url      : window.location.href,
-                userAgent: window.navigator.userAgent,
+                url      : import.meta.client ? window.location.href : '(server)',
+                userAgent: import.meta.client ? window.navigator.userAgent : 'server',
                 ver      : TAG||COMMIT,
                 timestamp: new Date(),
                 realm : realmConf.realm,

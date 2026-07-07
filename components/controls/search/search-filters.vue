@@ -100,7 +100,7 @@ const countries       = computed(() => (thesaurusStore.getDomainTerms(THESAURUS.
 const regions         = computed(() => ((thesaurusStore.getDomainTerms(THESAURUS.REGIONS) || []).sort((a, b) => a.name.localeCompare(b.name))));
 const schemaTypeLists = computed(()=>{
     return props.schemaTypes?.map((schema)=>{
-        if(realmConf.schemas[schema]){
+        if(realmConf.schemas?.[schema]){
             return {
                 identifier : schema,
                 title : realmConf.schemas[schema].title

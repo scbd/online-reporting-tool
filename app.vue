@@ -15,13 +15,18 @@ export default defineComponent({
     setup(props, context) { 
         const ctx = useNuxtApp();
         const config = useRuntimeConfig();
-        const auth = useAuth()
-        let   socketIoUrl = config.public.socketIo.url
-        
-        if(/^\//.test(socketIoUrl))
-            socketIoUrl = config.public.API_URL + socketIoUrl;
 
-        const socket = SocketIOService.connect(socketIoUrl, auth?.token)
+        // websocket is a browser concern; connecting during SSR would open
+        // one server-to-API socket per rendered request
+        if(import.meta.client){
+            const auth = useAuth()
+            let   socketIoUrl = config.public.socketIo.url
+
+            if(/^\//.test(socketIoUrl))
+                socketIoUrl = config.public.API_URL + socketIoUrl;
+
+            SocketIOService.connect(socketIoUrl, auth?.token)
+        }
 
 
         return {}

@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
 //@ts-nocheck
-import 'webui-popover';
 import 'webui-popover/dist/jquery.webui-popover.css'
 import $ from 'jquery'
 
@@ -25,8 +24,10 @@ import $ from 'jquery'
 
     const popoverContent = computed(()=>$attrs.content);
 
-    onMounted(()=>{
-        
+    onMounted(async ()=>{
+        // jQuery plugin touches `window` at import time; load client-side only
+        await import('webui-popover');
+
         const settings = {
             trigger: 'hover',
             title: $attrs.title || 'Online Reporting Tool - Help',

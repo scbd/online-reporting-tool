@@ -3,7 +3,24 @@ import  { useRuntimeConfig, useAppConfig } from '#app';
 import { setUserToken } from '../utils';
 import { SocketIOService } from '@/services/socket-io';
 
-export const useAuth = () => useNuxtApp().$auth as EAuthUser & { token: string, strategy: string, updateSession: () => Promise<void> };
+export const useAuth = () => {
+    const auth = useNuxtApp().$auth;
+
+    // the iframe auth plugin is client-only; during SSR expose an
+    // anonymous session so `useAuth().user`-style access stays safe
+    if(!auth && import.meta.server){
+        return {
+            loggedIn: computed(() => false),
+            expiration: undefined,
+            user: ref(undefined),
+            token: undefined,
+            reset: () => {},
+            hasScope: () => false
+        };
+    }
+
+    return auth as EAuthUser & { token: string, strategy: string, updateSession: () => Promise<void> };
+};
 
 export const useAuthConf = () => {
     const conf = useRuntimeConfig();

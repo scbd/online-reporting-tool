@@ -70,8 +70,9 @@ import { useRoute } from 'vue-router';
       window.location.reload()
     }
 
+    const requestUrl = import.meta.server ? useRequestURL() : undefined;
     const returnUrl = computed(()=>{
-        const url = new URL(window.location.href);
+        const url = new URL(import.meta.client ? window.location.href : requestUrl.href);
         url.path = route.path;
         return url.href;
     })

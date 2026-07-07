@@ -21,6 +21,11 @@ export async function useAPIFetch<T>(path: string | (() => string), options:UseF
     const key   = hash({...options, path, requestedOn:new Date().getTime().toString()})
     options.key = key;//generate unique key to avoid caching
     options.cache = 'no-cache';
+
+    // on the server a relative /api/... URL would resolve to the Nuxt
+    // server itself; point it at the real API instead
+    if(import.meta.server && !options.baseURL && /^\/api\//.test(typeof path === 'function' ? path() : String(path)))
+        options.baseURL = useRuntimeConfig().public.API_URL;
     
     const { data, error, execute, refresh, status } = await useFetch(path, options)
 

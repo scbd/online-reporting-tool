@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -rlE \"jquery|jQuery|\\\\\\\\\\\\$\\\\\\(\" --include=\"*.vue\" --include=\"*.ts\" components pages plugins composables)",
+      "Bash(grep -rln '\\\\$fetch\\\\|useAPI\\\\|api-base' pages)",
+      "Bash(git -C /Users/blaisefonseca/Projects/online-reporting-tool status --short)",
+      "Bash(git stash *)",
+      "Bash(git checkout *)",
+      "Bash(git mv *)",
+      "Bash(npx nuxt *)",
+      "Bash(git -C /Users/blaisefonseca/Projects/online-reporting-tool diff --stat)",
+      "Bash(grep -rlE \"^import [A-Za-z_$]+ from 'vue';|^import [A-Za-z_$]+, ?\\\\{[^}]*\\\\} from 'vue';\" .output/server/chunks/build)",
+      "Bash(curl -s http://localhost:3311/)",
+      "Bash(grep -rlE \"import [A-Za-z_$]+ from ['\\\\\"]vue['\\\\\"]\" .output/server/node_modules --include=\"*.mjs\" --include=\"*.js\")",
+      "Bash(grep -rlE \"import \\([A-Za-z_$]+\\), ?\\\\{\" .output/server/node_modules/vue-multiselect .output/server/node_modules/vue3-loading-overlay)",
+      "Bash(grep -rhoE \"import [A-Za-z_$][A-Za-z0-9_$]*\\( *, *\\\\{[^}]*\\\\}\\)? +from *'vue'\" .output/server/chunks -r)",
+      "Bash(grep -rlE \"import [A-Za-z_$][A-Za-z0-9_$]* +from *'vue'\" .output/server/chunks)",
+      "Bash(grep -oE 'require\\\\$\\\\$0, require\\\\$\\\\$1\\\\\\)[^\\\\n]{0,60}' .output/server/chunks/build/nr7-edit-section-III-B2FnD_xn.mjs)",
+      "Bash(curl -s -o /dev/null -w \"/: %{http_code}\\\\n\" http://localhost:3311/)",
+      "Bash(curl -s -o /dev/null -w \"/ retry: %{http_code}\\\\n\" http://localhost:3311/)",
+      "Bash(curl -s http://localhost:3311/en)",
+      "Bash(curl -s http://localhost:3312/en)",
+      "Bash(curl -s http://localhost:3312/en -o /dev/null -w \"en:%{http_code}\\\\n\")",
+      "Bash(python3 -c \"import sys,json,html,re; d=json.load\\(sys.stdin\\); s=html.unescape\\(re.sub\\('<[^>]+>','',d['stack']\\)\\); print\\(s[:1500]\\)\")"
+    ]
+  }
+}

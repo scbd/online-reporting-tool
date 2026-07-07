@@ -37,15 +37,13 @@
 //@ts-nocheck
 import $ from 'jquery';
 import {without} from 'lodash';
-import KmCkEditor from './KmCkEditor.vue'
 import { useThesaurusStore }    from '@/stores/thesaurus';
 import { useUserPreferencesStore }    from '@/stores/userPreferences';
 
+// KmCkEditor is client-only (.client.vue) and resolved via Nuxt's global
+// component auto-registration so CKEditor stays out of the server bundle
 export default {
   name: "KmRichLstring",
-  components: {
-    KmCkEditor
-  },
   props: {
     locales: {
       type: Array,

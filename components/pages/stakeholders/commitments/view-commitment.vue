@@ -314,9 +314,34 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
     return countryReviews.value.filter((e:ECommitmentCountryReview)=>e.reviewed===true)
   });
 
+  const isDraftView = route.query?.draft == 'true' || route.query?.draft === null;
+
+  // public (non-draft) records are fetched during SSR so the rendered HTML
+  // contains the record content; drafts require auth and stay client-side
+  if (identifier.value && !props.document && !isDraftView) {
+    const { data: ssrRecord, error: ssrError } = await useAsyncData(
+      `commitment-${identifier.value}`,
+      () => KmDocumentsService.loadDocument(identifier.value)
+    );
+    if (ssrRecord.value) {
+      lDocument.value = ssrRecord.value.body as EStakeholderCommitment;
+      documentInfo.value = ssrRecord.value;
+      showCoverage.value = false;
+      emit('onDocumentLoad', ssrRecord.value);
+    }
+    else if (ssrError.value) {
+      const e:any = ssrError.value;
+      if ([404, 401, 403].includes(e.status)) {
+        documentLoadError.value = e.status;
+        useLogger().error(e, `${t(e.status == 404 ? 'notFound' : 'notAuthorized')} ` + identifier.value);
+      } else
+        useLogger().error(e, `${t('errorLoading')} ` + identifier.value);
+    }
+  }
+
   onMounted(async() => {
     const identifier = props.identifier || route.params.identifier?.toString();
-    if (identifier && !props.document) {
+    if (identifier && !props.document && isDraftView) {
       await loadDocument(identifier)
     }
     if(viewDocument.value?.primaryNationalTarget || viewDocument.value?.otherNationalTargets?.length){
@@ -337,7 +362,7 @@ import type { EDocumentInfo } from '~/types/schemas/base/EDocumentInfo';
         emit('onDocumentLoad', draftRecord);
       } else {
         const record = await KmDocumentsService.loadDocument(route.params.identifier as string);
-        lDocument.value = record.body;
+        lDocument.value = record.body as EStakeholderCommitment;
         documentInfo.value = record;
         showCoverage.value = false;
         emit('onDocumentLoad', record);

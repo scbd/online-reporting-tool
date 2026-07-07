@@ -140,6 +140,10 @@ export default {
     const route = useRoute();
     const { checkUserAccess } = useSecurity()
     
+    // start before any await: composables inside run synchronously and the
+    // Nuxt instance is unavailable after an await in options-API setup on SSR
+    const myCountryReviewsAccess = checkUserAccess({ roles : [ROLES.NATIONAL_FOCALPOINT]});
+
     await loadRealmConf();
 
     const menuAccess = {
@@ -160,7 +164,7 @@ export default {
     //   }
     // }
 
-    menuAccess[appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS] = await checkUserAccess({ roles : [ROLES.NATIONAL_FOCALPOINT]})
+    menuAccess[appRoutes.STAKEHOLDER_MY_COUNTRY_REVIEWS] = await myCountryReviewsAccess
 
     const isChildRouteActive = (path)=>{
       return route.fullPath.indexOf(path)>=0
