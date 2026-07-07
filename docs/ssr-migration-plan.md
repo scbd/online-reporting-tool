@@ -94,6 +94,61 @@ start (build-once, configure-per-env).
 - Replacing jQuery-driven components — tracked separately; they are kept
   working via the client-only plugin and `<ClientOnly>` wrappers.
 
+## Status — 2026-07-07 (branch `ssr-v2`)
+
+Measured against the phases above; architectural context in
+`docs/architecture-review-2026-07-07.html`.
+
+### Phase 1 — done ✅
+
+`ssr: true` + `routeRules` split is live (14 public trees in, 8
+authenticated subtrees out, ×6 locale prefixes), client-only plugins
+renamed, `window` guards in place.
+
+### Phase 3 — mostly done ✅
+
+Dockerfile already runs `node .output/server/index.mjs` with
+`NUXT_HOST`/`NUXT_PORT`. Remaining:
+
+- [ ] container health check
+- [ ] confirm swarm service port mapping in `deploy-dev.sh`
+
+### Phase 2 — not started (the remaining bulk)
+
+- [ ] **`useAsyncData` conversion: 0 of the public pages done.** Every SSR
+      route still fetches in `onMounted`, so the server renders dataless
+      shells and the SEO goal is unmet. Priority per this plan:
+      knowledge-base → taxonomy → national-report views → lists →
+      stakeholders → `/database/:id`.
+- [ ] **`<ClientOnly>` wrapping: 0 usages** in pages/components (only
+      CKEditor is safe, via its `.client.vue` suffix). Masonry, print
+      sections, toasts, jQuery widgets on public pages are unwrapped.
+- [ ] **SEO meta: ~30%.** 10 pages have `useHead`/`useSeoMeta`, but
+      concentrated in taxonomy and search (search is not even an SSR
+      route). Missing: knowledge-base, national-report views,
+      stakeholders, `/database/:id`, landing page.
+- [ ] Per-route verification (curl returns meaningful HTML, no hydration
+      warnings) — blocked on the above.
+
+### Blockers found since the plan was written
+
+These bite exactly when Phase 2 starts; details and file:line in the
+architecture review's fix-now section:
+
+- `plugins/fetchConf.ts` overwrites `globalThis.$fetch` per request —
+  cross-request contamination once the server starts fetching.
+- `server/plugins/cache.ts` forces `no-cache` on every response — replace
+  with per-route `swr`/cache rules once pages render real content.
+- `useAuth()` SSR stub returns `loggedIn: false`; ~11 query-building
+  sites read `user.government` → hydration mismatches on public pages.
+- Persisted store caches (sessionStorage/localStorage) rehydrate with
+  different data than the server rendered.
+- `routeRules` fragility: new authenticated subtrees under public
+  prefixes silently SSR unless added to `clientOnlyOverrides`.
+
+**Shortest path to a first crawlable page:** fix `fetchConf`, convert the
+knowledge-base article page to `useAsyncData` + `useSeoMeta`, curl it.
+
 ## Risks / gotchas
 
 - **Hydration mismatches** on pages whose markup depends on locale

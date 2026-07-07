@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Architecture review — online-reporting-tool</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+<style>
+  .seam { stroke-dasharray: 4 4; }
+  .leak { stroke: #dc2626; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-5xl mx-auto px-6 py-12 space-y-14">
+
+<header class="space-y-3">
+  <h1 class="font-serif text-3xl font-semibold">Architecture review — online-reporting-tool</h1>
+  <p class="text-sm text-slate-500">Branch <span class="font-mono">ssr-v2</span> · 2026-07-07 · Nuxt 3, mid SSR migration · no test infrastructure, no CONTEXT.md, no ADRs</p>
+  <div class="flex flex-wrap gap-4 text-xs text-slate-600 pt-1">
+    <span class="flex items-center gap-1.5"><span class="inline-block w-6 h-4 border border-slate-400 bg-white rounded-sm"></span> module</span>
+    <span class="flex items-center gap-1.5"><svg width="28" height="8"><line x1="0" y1="4" x2="28" y2="4" stroke="#475569" stroke-dasharray="4 4"/></svg> seam</span>
+    <span class="flex items-center gap-1.5"><svg width="28" height="8"><line x1="0" y1="4" x2="28" y2="4" stroke="#dc2626" stroke-width="2"/></svg> leakage</span>
+    <span class="flex items-center gap-1.5"><span class="inline-block w-6 h-4 rounded-sm" style="background:linear-gradient(135deg,#0f172a,#1e293b)"></span> deep module</span>
+  </div>
+</header>
+
+<section id="candidates" class="space-y-12">
+
+<!-- ============ CANDIDATE 1 ============ -->
+<article id="c1" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">1 · One Record store: deepen document/draft loading</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">Strong</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">ports &amp; adapters</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    api/km-storage.ts · services/kmDocuments.ts · services/kmDocumentDrafts.ts · services/edit-form-utility.ts (load, lines 23–64) · stores/nationalReport7.ts · ~20 component call sites
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before</p>
+      <pre class="mermaid">
+flowchart TD
+  C1[components ×10] --> S1[KmDocumentsService]
+  C2[components ×8] -.->|reach past| API["$api.kmStorage"]
+  ST[nationalReport7 store] -.->|reach past| API
+  EF[edit-form-utility.load] -.->|3rd draft-or-doc logic| API
+  S1 --> API
+  S2[KmDocumentDraftsService] --> API
+  C1 --> S2
+  classDef leak stroke:#dc2626,stroke-width:2px;
+  class C2,ST,EF leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After</p>
+      <div class="relative h-[280px] flex items-center justify-center">
+        <div class="flex flex-col items-center gap-3 w-full">
+          <div class="flex gap-2">
+            <div class="border border-slate-300 rounded px-3 py-1.5 text-xs uppercase tracking-wider bg-white">components</div>
+            <div class="border border-slate-300 rounded px-3 py-1.5 text-xs uppercase tracking-wider bg-white">stores</div>
+          </div>
+          <svg width="20" height="24"><line x1="10" y1="0" x2="10" y2="18" stroke="#475569" stroke-width="1.5"/><path d="M6 16 L10 24 L14 16 Z" fill="#475569"/></svg>
+          <div class="w-full border-t border-dashed border-slate-400 relative"><span class="absolute -top-2.5 right-0 text-[10px] uppercase tracking-wider text-slate-400 bg-white px-1">seam</span></div>
+          <div class="rounded-lg p-4 w-72 text-white" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+            <p class="text-xs uppercase tracking-wider font-semibold">Record repository</p>
+            <p class="text-[11px] text-slate-300 mt-1">get(identifier) → draft-or-published · list(schema, owner) · lock · attach</p>
+            <div class="mt-3 flex gap-2 opacity-40">
+              <div class="border border-slate-500 rounded px-2 py-1 text-[10px]">query build</div>
+              <div class="border border-slate-500 rounded px-2 py-1 text-[10px]">draft fallback</div>
+              <div class="border border-slate-500 rounded px-2 py-1 text-[10px]">HTTP adapter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — "load a record" is spread across four modules with no owner; callers cross three different interfaces inconsistently, and draft-or-published resolution is implemented three times.</p>
+  <p><strong>Solution</strong> — one Record repository module: small interface (get, list, save, lock, attach), everything else becomes implementation behind the seam; the HTTP adapter and an in-memory adapter both satisfy it.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>Locality: draft-or-published logic lives once</li>
+    <li>Leverage: one interface, 20+ call sites</li>
+    <li>Interface is the test surface; in-memory adapter makes the seam real</li>
+    <li>Delete two shallow pass-through modules</li>
+  </ul>
+</article>
+
+<!-- ============ CANDIDATE 2 ============ -->
+<article id="c2" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">2 · Record-query builder: the first pure, testable module</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">Strong</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">in-process</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    stores/nationalReport7.ts:28 · services/kmDocuments.ts:9–14 · services/kmDocumentDrafts.ts:11–17 · services/national-report-7-service.ts:118 · 7 components
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — the same string, hand-built 11 times</p>
+      <div class="h-[280px] flex flex-col justify-center gap-1.5 overflow-hidden">
+        <div class="font-mono text-[10px] text-red-700 bg-red-50 border border-red-200 rounded px-2 py-1 truncate">(type eq '${schema}') and owner eq 'country:${gov}'</div>
+        <div class="font-mono text-[10px] text-red-700 bg-red-50 border border-red-200 rounded px-2 py-1 truncate ml-4">type eq '${schema}' and owner eq 'country:${government}'</div>
+        <div class="font-mono text-[10px] text-red-700 bg-red-50 border border-red-200 rounded px-2 py-1 truncate ml-8">(type eq '${s}') and (owner eq '${owner}')</div>
+        <div class="font-mono text-[10px] text-red-700 bg-red-50 border border-red-200 rounded px-2 py-1 truncate ml-2">…×8 more, each slightly different</div>
+        <p class="text-xs text-slate-500 mt-2">Stringly-typed in stores, modules under services/, and components — untestable without HTTP.</p>
+      </div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — mass diagram: deep</p>
+      <div class="h-[280px] flex items-end justify-center gap-10 pb-6">
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-24 bg-slate-300 rounded-t" style="height:150px"></div>
+          <div class="w-24 bg-slate-600 rounded-b" style="height:130px"></div>
+          <p class="text-[10px] uppercase tracking-wider text-slate-500 mt-1">before<br/>interface ≈ implementation</p>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-24 bg-slate-300 rounded-t" style="height:28px"></div>
+          <div class="w-24 rounded-b" style="height:200px;background:linear-gradient(135deg,#0f172a,#1e293b)"></div>
+          <p class="text-[10px] uppercase tracking-wider text-slate-500 mt-1">after<br/>recordsQuery(schema, owner)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — the "records of schema X owned by country Y" concept has no module; the OData/Solr filter DSL is hand-concatenated in 11 files with divergent variants.</p>
+  <p><strong>Solution</strong> — a pure query-builder module: typed inputs in, filter string out; the 11 call sites call it, nothing else knows the DSL.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>The app's first unit-testable interface — no Nuxt context needed</li>
+    <li>Locality: DSL knowledge concentrates in one implementation</li>
+    <li>Leverage: one interface, 11 call sites</li>
+    <li>Natural first step of candidate 1</li>
+  </ul>
+</article>
+
+<!-- ============ CANDIDATE 3 ============ -->
+<article id="c3" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">3 · One SSR-environment seam</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">Strong</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">local-substitutable</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    45 files touching document.* · 18 touching window.* · api/realm-configuration.ts:14 · composables/utils.ts:47–48 · auth/scbdIframe/composables/auth.ts:11–20
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — cross-section: per-file guards</p>
+      <div class="h-[280px] flex flex-col justify-center gap-1">
+        <div class="h-9 border-l-4 border-red-400 bg-red-50 px-3 flex items-center font-mono text-[11px]">import.meta.client ? window.location.host : useRequestURL().host</div>
+        <div class="h-9 border-l-4 border-red-400 bg-red-50 px-3 flex items-center font-mono text-[11px]">if (import.meta.client) navigator.language …</div>
+        <div class="h-9 border-l-4 border-red-400 bg-red-50 px-3 flex items-center font-mono text-[11px]">if (process.client) localStorage.getItem(…)</div>
+        <div class="h-9 border-l-4 border-red-400 bg-red-50 px-3 flex items-center font-mono text-[11px]">useAuth() → SSR stub, loggedIn always false</div>
+        <div class="h-9 border-l-4 border-red-300 bg-red-50/60 px-3 flex items-center font-mono text-[11px] text-slate-400">… ×60 more sites</div>
+      </div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — one deep band</p>
+      <div class="h-[280px] flex flex-col justify-center gap-2">
+        <div class="h-9 border-l-4 border-slate-300 bg-white px-3 flex items-center text-xs uppercase tracking-wider text-slate-500">callers: pages · stores · composables</div>
+        <div class="border-t border-dashed border-slate-400 relative my-1"><span class="absolute -top-2.5 right-0 text-[10px] uppercase tracking-wider text-slate-400 bg-white px-1">seam</span></div>
+        <div class="h-24 rounded-lg px-4 flex flex-col justify-center text-white" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+          <p class="text-xs uppercase tracking-wider font-semibold">Request environment module</p>
+          <p class="text-[11px] text-slate-300 mt-1">host · locale · storage · session — same interface on server and client; two adapters (browser, request) make the seam real</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — the SSR migration is fixing client-only assumptions file by file: the same <span class="font-mono text-sm">import.meta.client</span> ternary recurs across ~60 sites, and each is a fresh hydration-mismatch risk.</p>
+  <p><strong>Solution</strong> — one request-environment module (host, locale, storage, auth presence) with a browser adapter and a server-request adapter; callers stop knowing which side they run on.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>Two adapters: the seam is real, not hypothetical</li>
+    <li>Locality: SSR fixes happen once, not per file</li>
+    <li>Hydration mismatches concentrate where they can be tested</li>
+    <li>Unblocks the rest of the SSR migration plan</li>
+  </ul>
+</article>
+
+<!-- ============ CANDIDATE 4 ============ -->
+<article id="c4" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">4 · One URL-resolution seam</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold">Worth exploring</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">in-process</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    plugins/fetchConf.ts:16–17 · composables/useApiFetch.ts:27–28 · composables/common.ts:20–40 · api/km-storage.ts:280–283 · components building /api/v20xx URLs directly (overview.vue:488, nr7-export.vue:381, pdf-section.vue:129, cbd-article.vue:125)
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before</p>
+      <pre class="mermaid">
+flowchart LR
+  V[components] -.->|hard-coded /api/v20xx| U[useAPIFetch]
+  U --> R1["regex ^/api/"]
+  F[fetchConf plugin] --> R2["regex ^/api/v20\d{2}"]
+  CM[common.ts resolvers] --> R3["startsWith /"]
+  KS[km-storage.ts] --> R4["API_URL + url"]
+  classDef leak stroke:#dc2626,stroke-width:2px;
+  class V,R1,R2,R3,R4 leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After</p>
+      <pre class="mermaid">
+flowchart LR
+  V[components] --> A[api modules]
+  A --> RES[resolveUrl]
+  F[fetch config] --> RES
+  RES:::deep
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a;
+      </pre>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — base-URL resolution is re-implemented four times with different regexes, and views hard-code versioned API paths, so an API version bump edits components.</p>
+  <p><strong>Solution</strong> — one URL-resolver module owns "relative path → absolute API URL" for both server and client; the four regexes and the in-component URL strings collapse into it and the api modules.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>Locality: divergent-regex hazard removed</li>
+    <li>API versioning leaves the view layer</li>
+    <li>SSR baseURL fixed once, not twice</li>
+  </ul>
+</article>
+
+<!-- ============ CANDIDATE 5 ============ -->
+<article id="c5" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">5 · Deepen role resolution; collapse the double wrap</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold">Worth exploring</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">in-process</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    stores/realmConf.ts (8 role getters, some self-labelled OBSOLETE at line 72) · composables/security.ts (12-method role.* surface re-wrapping them)
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — call-graph, two shallow modules stacked</p>
+      <div class="h-[280px] flex flex-col justify-center gap-2">
+        <div class="border border-slate-300 rounded p-3">
+          <p class="text-xs uppercase tracking-wider text-slate-500">useSecurity().role.*</p>
+          <p class="font-mono text-[10px] text-slate-400 mt-1">12 methods, each ≈ one line forwarding to ↓</p>
+        </div>
+        <svg width="20" height="20" class="mx-auto"><line x1="10" y1="0" x2="10" y2="14" stroke="#dc2626" stroke-width="2"/><path d="M6 12 L10 20 L14 12 Z" fill="#dc2626"/></svg>
+        <div class="border border-slate-300 rounded p-3">
+          <p class="text-xs uppercase tracking-wider text-slate-500">realmConf store getters</p>
+          <p class="font-mono text-[10px] text-slate-400 mt-1">getRole · nationalRoles · schemaRoles · fallbackRoles · patchRoleName · console.warn("OBSOLETE")</p>
+        </div>
+        <svg width="20" height="20" class="mx-auto"><line x1="10" y1="0" x2="10" y2="14" stroke="#475569" stroke-width="1.5"/><path d="M6 12 L10 20 L14 12 Z" fill="#475569"/></svg>
+        <div class="border border-slate-300 rounded p-2 text-center text-xs text-slate-500">realm configuration data</div>
+      </div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — one deep module, pure core</p>
+      <div class="h-[280px] flex flex-col justify-center items-center gap-3">
+        <div class="border border-slate-300 rounded px-3 py-1.5 text-xs uppercase tracking-wider bg-white">callers: pages · guards · views</div>
+        <div class="w-full border-t border-dashed border-slate-400 relative"><span class="absolute -top-2.5 right-0 text-[10px] uppercase tracking-wider text-slate-400 bg-white px-1">seam</span></div>
+        <div class="rounded-lg p-4 w-72 text-white" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+          <p class="text-xs uppercase tracking-wider font-semibold">Role resolution module</p>
+          <p class="text-[11px] text-slate-300 mt-1">rolesFor(schema, realm, user) — pure function over realm config + user</p>
+          <div class="mt-3 flex gap-2 opacity-40">
+            <div class="border border-slate-500 rounded px-2 py-1 text-[10px]">fallback chain</div>
+            <div class="border border-slate-500 rounded px-2 py-1 text-[10px]">name patching</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — role-fallback logic is split between a store that mixes data loading with resolution (and warns about its own obsolete getters) and a composable that shallowly re-wraps every getter; the interface doubles while the behaviour stays put.</p>
+  <p><strong>Solution</strong> — extract role resolution as a pure module (realm config + user in, effective roles out); the store keeps data loading, the composable keeps only context plumbing.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>Pure implementation: unit-testable without Nuxt context</li>
+    <li>Deletion test: 12 forwarding methods vanish</li>
+    <li>Locality: fallback-chain bugs concentrate in one place</li>
+    <li>Security logic gets a test surface it currently lacks</li>
+  </ul>
+</article>
+
+<!-- ============ CANDIDATE 6 ============ -->
+<article id="c6" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">6 · Sweep the pass-throughs: api-base, dead registry, duplicate fetch</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">Strong</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">in-process</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    api/api-base.ts · api/index.ts (imported by nobody; diverges from plugins/register-apis.ts) · composables/useApiFetch.ts:52–64 (useAPIFetchWithCache) · auth/scbdIframe/ScbdIframeAuthScheme.ts:195–358 (commented duplicate of utils.ts)
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — deletion-test verdicts</p>
+      <div class="h-[280px] flex flex-col justify-center gap-2 text-sm">
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-2"><span class="font-mono text-xs">ApiBase</span><span class="text-xs text-red-600">pass-through: stores $config nobody reads</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-2"><span class="font-mono text-xs">api/index.ts</span><span class="text-xs text-red-600">dead + diverges from $api registry</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-2"><span class="font-mono text-xs">useAPIFetchWithCache</span><span class="text-xs text-red-600">near-duplicate interface, one concept</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-2"><span class="font-mono text-xs">AuthScheme lines 195–358</span><span class="text-xs text-red-600">commented duplicate of utils.ts</span></div>
+        <p class="text-xs text-slate-500 mt-1">Cross-cutting: <span class="font-mono">//@ts-nocheck</span> headers neutralise the strict-TS config the project pays for.</p>
+      </div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After</p>
+      <div class="h-[280px] flex flex-col items-center justify-center gap-3">
+        <div class="rounded-lg p-4 w-72 text-white text-center" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+          <p class="text-xs uppercase tracking-wider font-semibold">$api registry — the one interface</p>
+          <p class="text-[11px] text-slate-300 mt-1">9 api modules, no empty base, one fetch composable</p>
+        </div>
+        <p class="text-xs text-slate-500 text-center">≈ 30 lines of ceremony deleted, two misleading duplicates gone.<br/>Complexity vanishes — nothing reappears at callers.</p>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — three shallow modules and one 160-line commented duplicate fail the deletion test outright; they widen the interface readers must learn while hiding nothing.</p>
+  <p><strong>Solution</strong> — delete ApiBase and its options plumbing, delete api/index.ts, fold useAPIFetchWithCache into useAPIFetch as a flag, delete the commented auth duplicate.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>Deletion test: complexity vanishes, zero behaviour lost</li>
+    <li>AI-navigability: one registry, one fetch interface</li>
+    <li>Cheap, safe, mostly mechanical — do it first</li>
+  </ul>
+</article>
+
+<!-- ============ CANDIDATE 7 ============ -->
+<article id="c7" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">7 · Restore the composable contract</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">Strong</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">in-process</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    composables/useApiFetch.ts:18–49 · composables/security.ts:26–35 (quickObjs) · composables/utils.ts:6, 32–55 (useGenerateUUID, useLogger) · composables/storage.ts:11 (useOnFileUpload) · composables/common.ts:42–47 (useRealm) · composables/i18n.ts
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — the contract, broken four ways</p>
+      <div class="h-[300px] flex flex-col justify-center gap-2 text-sm">
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-2 gap-3"><span class="font-mono text-xs shrink-0">useAPIFetch</span><span class="text-xs text-red-600 text-right">wraps useFetch imperatively; random key defeats its cache (the TODO admits the fight)</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-2 gap-3"><span class="font-mono text-xs shrink-0">quickObjs / useLogger</span><span class="text-xs text-red-600 text-right">useAuth()/useRuntimeConfig() called lazily, outside setup — Nuxt context gone under SSR</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-2 gap-3"><span class="font-mono text-xs shrink-0">useGenerateUUID · useOnFileUpload · useKmStorage · useNavigateAppTo</span><span class="text-xs text-red-600 text-right">plain functions wearing the use* prefix</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-2 gap-3"><span class="font-mono text-xs shrink-0">useSecurity · useRealm</span><span class="text-xs text-red-600 text-right">return nothing reactive; destructuring loses reactivity silently</span></div>
+        <p class="text-xs text-slate-500 mt-1">Only <span class="font-mono">useConfirmDialog</span> and <span class="font-mono">useHasEvents</span> honour the contract.</p>
+      </div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — each thing in its home</p>
+      <div class="h-[300px] flex flex-col justify-center gap-2">
+        <div class="border border-slate-300 rounded p-3 bg-white">
+          <p class="text-xs uppercase tracking-wider text-slate-500">composables/ — setup-context only</p>
+          <p class="font-mono text-[10px] text-slate-400 mt-1">useConfirmDialog · useHasEvents · reactive security state</p>
+        </div>
+        <div class="border border-slate-300 rounded p-3 bg-white">
+          <p class="text-xs uppercase tracking-wider text-slate-500">utils/ — pure functions, no prefix</p>
+          <p class="font-mono text-[10px] text-slate-400 mt-1">generateUUID · onFileUpload · cleanDocument</p>
+        </div>
+        <div class="rounded-lg p-3 text-white" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+          <p class="text-xs uppercase tracking-wider font-semibold">apiFetch — $fetch adapter</p>
+          <p class="text-[11px] text-slate-300 mt-1">imperative requests on $fetch, not useFetch; no key-hash workaround; useFetch stays for setup-time data</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — the composables directory is a grab-bag: the fetch module wraps <span class="font-mono text-sm">useFetch</span> (a setup-time primitive) for imperative calls and fights its cache; other modules invoke Nuxt composables lazily where SSR has no context; plain utilities wear the <span class="font-mono text-sm">use*</span> prefix while real config-readers don't.</p>
+  <p><strong>Solution</strong> — rebuild the fetch module on <span class="font-mono text-sm">$fetch</span>, hoist Nuxt-context reads to setup time, demote fake <span class="font-mono text-sm">use*</span> functions to utils/, and make the remaining composables return reactive state.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>Removes an SSR-migration failure class ("nuxt instance unavailable")</li>
+    <li>Deletes the cache-defeating key-hash workaround</li>
+    <li>The use* prefix becomes a reliable signal again</li>
+    <li>Caller-side half of candidates 4 and 5 — same work</li>
+  </ul>
+</article>
+
+<!-- ============ CANDIDATE 8 ============ -->
+<article id="c8" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">8 · One NR7 section module behind the six editors</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">Strong</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">in-process</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    components/pages/nr7/my-country/edit/nr7-edit-overview.vue (1019 lines) · nr7-edit-section-I…V + other-information (6 editors) · controls/edit/KmFormWorkflow.vue (763 lines) · stores/nationalReport7.ts
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — six copies of the same hooks</p>
+      <div class="h-[300px] flex flex-col justify-center gap-2">
+        <div class="grid grid-cols-3 gap-1.5">
+          <div class="border border-red-300 bg-red-50 rounded p-1.5 text-center"><p class="text-[10px] uppercase tracking-wider text-slate-600">section I</p><p class="font-mono text-[9px] text-red-600">save · load · review</p></div>
+          <div class="border border-red-300 bg-red-50 rounded p-1.5 text-center"><p class="text-[10px] uppercase tracking-wider text-slate-600">section II</p><p class="font-mono text-[9px] text-red-600">save · load · review</p></div>
+          <div class="border border-red-300 bg-red-50 rounded p-1.5 text-center"><p class="text-[10px] uppercase tracking-wider text-slate-600">section III</p><p class="font-mono text-[9px] text-red-600">save · load · review</p></div>
+          <div class="border border-red-300 bg-red-50 rounded p-1.5 text-center"><p class="text-[10px] uppercase tracking-wider text-slate-600">section IV</p><p class="font-mono text-[9px] text-red-600">save · load · review</p></div>
+          <div class="border border-red-300 bg-red-50 rounded p-1.5 text-center"><p class="text-[10px] uppercase tracking-wider text-slate-600">section V</p><p class="font-mono text-[9px] text-red-600">save · load · review</p></div>
+          <div class="border border-red-300 bg-red-50 rounded p-1.5 text-center"><p class="text-[10px] uppercase tracking-wider text-slate-600">other info</p><p class="font-mono text-[9px] text-red-600">save · load · review</p></div>
+        </div>
+        <p class="text-[11px] text-slate-500 text-center">onPreSaveDraft / onPostSaveDraft byte-identical ×6 · loadNationalIndicatorData duplicated III↔IV · each mutates store state directly (sectionX = [])</p>
+        <div class="border border-red-400 bg-red-50 rounded p-2 text-center"><p class="text-[10px] uppercase tracking-wider text-slate-600">nr7-edit-overview — 1019 lines</p><p class="font-mono text-[9px] text-red-600">fetch + validate + publish + delete + markup</p></div>
+      </div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — editors keep markup, module keeps behaviour</p>
+      <div class="h-[300px] flex flex-col items-center justify-center gap-2">
+        <div class="grid grid-cols-3 gap-1.5 w-full">
+          <div class="border border-slate-300 bg-white rounded p-1.5 text-center text-[10px] uppercase tracking-wider text-slate-500">I</div>
+          <div class="border border-slate-300 bg-white rounded p-1.5 text-center text-[10px] uppercase tracking-wider text-slate-500">II</div>
+          <div class="border border-slate-300 bg-white rounded p-1.5 text-center text-[10px] uppercase tracking-wider text-slate-500">III</div>
+          <div class="border border-slate-300 bg-white rounded p-1.5 text-center text-[10px] uppercase tracking-wider text-slate-500">IV</div>
+          <div class="border border-slate-300 bg-white rounded p-1.5 text-center text-[10px] uppercase tracking-wider text-slate-500">V</div>
+          <div class="border border-slate-300 bg-white rounded p-1.5 text-center text-[10px] uppercase tracking-wider text-slate-500">other</div>
+        </div>
+        <p class="text-[10px] uppercase tracking-wider text-slate-400">markup + section-specific fields only</p>
+        <div class="w-full border-t border-dashed border-slate-400 relative my-1"><span class="absolute -top-2.5 right-0 text-[10px] uppercase tracking-wider text-slate-400 bg-white px-1">seam</span></div>
+        <div class="rounded-lg p-4 w-full max-w-sm text-white" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+          <p class="text-xs uppercase tracking-wider font-semibold">NR7 section module — useNr7Section(section)</p>
+          <p class="text-[11px] text-slate-300 mt-1">load · saveDraft hooks · review · indicator data — store mutation happens only inside, via actions</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — the six NR7 section editors each carry a copy of the load/save/review hooks and reset store state directly, so report-state invariants have no owner and every behaviour fix is a six-file edit; the overview editor absorbs the rest and reaches 1019 lines.</p>
+  <p><strong>Solution</strong> — one NR7 section module (interface: load, save-draft hooks, review, indicator data, keyed by section) that owns all store mutation via actions; editors keep only markup and section-specific fields, and hand the module's hooks to the publish-workflow module.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>Locality: one implementation replaces six copies</li>
+    <li>Deletion test: hooks reappear in 6 editors — earns its keep</li>
+    <li>Store invariants get a single owner (actions, not pokes)</li>
+    <li>Sits naturally on candidate 1's Record repository</li>
+  </ul>
+</article>
+
+<!-- ============ CANDIDATE 9 ============ -->
+<article id="c9" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">9 · Dissolve the cache-shaped stores</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">Strong</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">in-process</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    stores/countries.ts · stores/thesaurus.ts · stores/targetTracker.ts · stores/realmConf.ts (data half) · stores/appState.ts · stores/nationalReport7.ts · stores/userPreferences.ts — 7 stores, 487 lines
+  </div>
+  <div class="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+    <strong>Fix regardless of architecture work:</strong> <span class="font-mono text-xs">targetTracker.ts:5</span> exports <span class="font-mono text-xs">useThesaurusStore</span> — the same symbol as <span class="font-mono text-xs">thesaurus.ts:6</span>; under Nuxt auto-import one silently shadows the other for all 32 importers. Also <span class="font-mono text-xs">thesaurus.ts:34</span> calls <span class="font-mono text-xs">.push</span> on a plain object — <span class="font-mono text-xs">loadDomain</span> throws if ever called.
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — deletion-test verdicts, store by store</p>
+      <div class="h-[300px] flex flex-col justify-center gap-1.5 text-sm">
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-1.5 gap-3"><span class="font-mono text-xs">countries</span><span class="text-xs text-red-600">read-only server cache — useAsyncData re-implemented</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-1.5 gap-3"><span class="font-mono text-xs">thesaurus ×2</span><span class="text-xs text-red-600">same term cache twice; colliding export name</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-1.5 gap-3"><span class="font-mono text-xs">realmConf (data)</span><span class="text-xs text-red-600">fetch-once config, never mutated</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-1.5 gap-3"><span class="font-mono text-xs">appState</span><span class="text-xs text-red-600">one boolean; persisted then reset on restore</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-1.5 gap-3"><span class="font-mono text-xs">nationalReport7</span><span class="text-xs text-emerald-700">shared mutable draft — keeps its role, not its shape</span></div>
+        <div class="flex items-center justify-between border border-slate-200 rounded px-3 py-1.5 gap-3"><span class="font-mono text-xs">userPreferences</span><span class="text-xs text-emerald-700">real persisted client state — stays</span></div>
+        <p class="text-xs text-slate-500 mt-1">sessionStorage/localStorage persistence on server-data caches = hydration-mismatch source on SSR routes.</p>
+      </div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After</p>
+      <div class="h-[300px] flex flex-col justify-center gap-2">
+        <div class="border border-slate-300 rounded p-3 bg-white">
+          <p class="text-xs uppercase tracking-wider text-slate-500">useAsyncData keys — reference data</p>
+          <p class="font-mono text-[10px] text-slate-400 mt-1">countries · thesaurus terms · realm config — deduped, SSR-payload-transferred, no storage layer</p>
+        </div>
+        <div class="rounded-lg p-3 text-white" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+          <p class="text-xs uppercase tracking-wider font-semibold">NR7 draft state — inside candidate 8's section module</p>
+          <p class="text-[11px] text-slate-300 mt-1">the one shared mutable document; mutation via actions only</p>
+        </div>
+        <div class="border border-slate-300 rounded p-3 bg-white">
+          <p class="text-xs uppercase tracking-wider text-slate-500">userPreferences store — stays</p>
+          <p class="font-mono text-[10px] text-slate-400 mt-1">persisted client preferences; drop the afterRestore resets that moot the persistence</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — five of seven stores are hand-rolled caches of read-only server data, duplicating what useAsyncData provides, with a colliding export name, a broken action, and browser-storage persistence that fights SSR hydration.</p>
+  <p><strong>Solution</strong> — reference data moves to keyed useAsyncData (or the Record repository); the NR7 draft becomes the state half of candidate 8's section module; userPreferences remains the one true store.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>Deletion test: cache stores vanish — useAsyncData already owns the concept</li>
+    <li>Removes a hydration-mismatch class on SSR routes</li>
+    <li>Kills the useThesaurusStore shadowing hazard</li>
+    <li>Store count 7 → 2; the survivors are genuinely store-shaped</li>
+  </ul>
+</article>
+
+<!-- ============ CANDIDATE 10 ============ -->
+<article id="c10" class="rounded-xl border border-slate-200 bg-white p-8 space-y-6 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-2xl font-semibold">10 · SSR routes render dataless shells</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">Strong</span>
+      <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs">local-substitutable</span>
+    </div>
+  </div>
+  <div class="font-mono text-sm text-slate-600 leading-relaxed">
+    all pages/ marked ssr:true in nuxt.config.ts routeRules · server/plugins/cache.ts (blanket no-cache) · auth/scbdIframe/plugins/0.auth.client.ts (client-only route guard) · pages/dashboard.vue (Solr facet queries in onMounted)
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — what a crawler actually gets</p>
+      <div class="h-[300px] flex flex-col justify-center gap-2">
+        <div class="border border-slate-300 rounded p-3 bg-white">
+          <p class="text-xs uppercase tracking-wider text-slate-500">server render (ssr:true route)</p>
+          <div class="mt-2 space-y-1.5">
+            <div class="h-2.5 bg-slate-200 rounded w-1/2"></div>
+            <div class="h-2.5 bg-slate-100 rounded w-5/6"></div>
+            <div class="h-2.5 bg-slate-100 rounded w-4/6"></div>
+          </div>
+          <p class="font-mono text-[10px] text-red-600 mt-2">0 pages use useAsyncData/useFetch — every fetch runs in onMounted, client-side</p>
+        </div>
+        <div class="flex gap-2">
+          <div class="flex-1 border border-red-300 bg-red-50 rounded p-2"><p class="font-mono text-[10px] text-red-700">cache.ts: no-cache on every response — shells aren't even cached</p></div>
+          <div class="flex-1 border border-red-300 bg-red-50 rounded p-2"><p class="font-mono text-[10px] text-red-700">auth guard is .client only — SSR pages unprotected server-side</p></div>
+        </div>
+        <p class="text-[11px] text-slate-500">The SEO goal of the migration is not met: crawlers see empty markup.</p>
+      </div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — data crosses the seam server-side</p>
+      <div class="h-[300px] flex flex-col justify-center gap-2">
+        <div class="border border-slate-300 rounded p-3 bg-white">
+          <p class="text-xs uppercase tracking-wider text-slate-500">public pages</p>
+          <p class="font-mono text-[10px] text-slate-400 mt-1">useAsyncData(key, () =&gt; recordRepository…) — rendered full, hydrated once</p>
+        </div>
+        <div class="rounded-lg p-3 text-white" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+          <p class="text-xs uppercase tracking-wider font-semibold">One SSR data path</p>
+          <p class="text-[11px] text-slate-300 mt-1">Record repository (candidate 1) + useAsyncData keys (candidate 9) serve both adapters: server render and client navigation</p>
+        </div>
+        <div class="border border-slate-300 rounded p-3 bg-white">
+          <p class="text-xs uppercase tracking-wider text-slate-500">caching &amp; guarding follow</p>
+          <p class="font-mono text-[10px] text-slate-400 mt-1">swr/cache routeRules replace blanket no-cache · route guard runs universally</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p><strong>Problem</strong> — no page fetches data through an SSR-aware interface, so ssr:true routes server-render empty shells, the blanket no-cache header stops those shells being cached, and the client-only auth guard leaves SSR routes unguarded on the server — the migration's SEO goal is structurally unreachable.</p>
+  <p><strong>Solution</strong> — public pages fetch through useAsyncData backed by the Record repository so data crosses the seam during server render; replace the blanket no-cache with per-route cache rules; make the route guard universal.</p>
+  <ul class="text-sm space-y-1 list-disc pl-5">
+    <li>Delivers the SSR migration's actual goal: crawlable content</li>
+    <li>Server half of candidate 3; consumes candidates 1 and 9</li>
+    <li>One data path, two adapters: server render, client navigation</li>
+    <li>Hydration mismatches become detectable, not endemic</li>
+  </ul>
+</article>
+
+</section>
+
+<!-- ============ FIX NOW ============ -->
+<section id="fix-now" class="rounded-xl border-2 border-red-500 bg-red-50/50 p-8 space-y-4">
+  <p class="text-xs uppercase tracking-wider text-red-700 font-semibold">Fix now — bugs independent of any refactor</p>
+  <ul class="text-sm space-y-2">
+    <li class="flex gap-3"><span class="font-mono text-xs shrink-0 pt-0.5 text-red-700">stores/targetTracker.ts:5</span><span>exports <span class="font-mono text-xs">useThesaurusStore</span>, colliding with <span class="font-mono text-xs">stores/thesaurus.ts:6</span> — auto-import shadowing decides which of the two stores all 32 importers get.</span></li>
+    <li class="flex gap-3"><span class="font-mono text-xs shrink-0 pt-0.5 text-red-700">stores/thesaurus.ts:34</span><span><span class="font-mono text-xs">this.domains.push(domain)</span> on a plain object — <span class="font-mono text-xs">loadDomain</span> throws if ever called.</span></li>
+    <li class="flex gap-3"><span class="font-mono text-xs shrink-0 pt-0.5 text-red-700">config/runtime.config.ts</span><span><span class="font-mono text-xs">API_DIRECT_URL</span> reads <span class="font-mono text-xs">NUXT_PUBLIC_API_URL</span> instead of <span class="font-mono text-xs">NUXT_PUBLIC_API_DIRECT_URL</span>; <span class="font-mono text-xs">SITE_ALERT</span>/<span class="font-mono text-xs">GTAG_ID</span> hardcoded empty, ignoring their env vars.</span></li>
+    <li class="flex gap-3"><span class="font-mono text-xs shrink-0 pt-0.5 text-red-700">server/routes/oembed.ts</span><span>unanchored domain regex (<span class="font-mono text-xs">evilort.cbd.int</span> passes), unhandled <span class="font-mono text-xs">new URL()</span> throws 500, params interpolated into returned HTML unescaped — reflected-XSS surface.</span></li>
+    <li class="flex gap-3"><span class="font-mono text-xs shrink-0 pt-0.5 text-red-700">server/plugins/same-origin-header.ts:8</span><span><span class="font-mono text-xs">X-Frame-Options: 'ALLOW'</span> is not a valid value — browsers ignore the header entirely.</span></li>
+    <li class="flex gap-3"><span class="font-mono text-xs shrink-0 pt-0.5 text-red-700">plugins/fetchConf.ts:7</span><span>overwrites <span class="font-mono text-xs">globalThis.$fetch</span> per request — shared server global, cross-request contamination hazard under SSR.</span></li>
+    <li class="flex gap-3"><span class="font-mono text-xs shrink-0 pt-0.5 text-red-700">components/controls/search/search-filters.vue:183</span><span><span class="font-mono text-xs">inject()</span> inside <span class="font-mono text-xs">onMounted</span> — outside the setup contract; move to setup.</span></li>
+    <li class="flex gap-3"><span class="font-mono text-xs shrink-0 pt-0.5 text-red-700">pages/national-reports/index.vue:30</span><span>page meta sets <span class="font-mono text-xs">schema: NATIONAL_TARGET_7</span> on national-report pages (also nr7/index.vue:31) — dead today only because <span class="font-mono text-xs">auth:false</span>.</span></li>
+    <li class="flex gap-3"><span class="font-mono text-xs shrink-0 pt-0.5 text-red-700">plugins/custom-routes.ts:133</span><span>stray <span class="font-mono text-xs">console.log</span> fires on every matched navigation; duplicate regex entry makes <span class="font-mono text-xs">registerNationalTargetsMappingView</span> dead.</span></li>
+  </ul>
+</section>
+
+<!-- ============ TOP RECOMMENDATION ============ -->
+<section id="top-recommendation" class="rounded-xl border-2 border-emerald-600 bg-emerald-50/50 p-8 space-y-3">
+  <p class="text-xs uppercase tracking-wider text-emerald-700 font-semibold">Top recommendation</p>
+  <h2 class="font-serif text-2xl font-semibold"><a href="#c1" class="underline decoration-emerald-500">One Record store</a>, entered via <a href="#c2" class="underline decoration-emerald-500">the query builder</a></h2>
+  <p class="text-sm text-slate-700 max-w-3xl">Start with candidate 2 — the pure record-query builder is small, gives the codebase its first testable interface, and is the natural first brick of candidate 1. Then deepen the Record repository: it passes the deletion test hardest (20+ call sites re-absorb draft-or-published logic if it goes), and it's the module the SSR migration keeps tripping over. Candidate 6's sweep can happen alongside as a mechanical warm-up, and candidate 7's $fetch rebuild is the caller-side half of the same effort. Candidate 8 (the NR7 section module) is the highest-value follow-on once the Record repository exists — it sits directly on top of it, and candidate 9 dissolves the cache-shaped stores those editors currently lean on. Candidate 10 is the payoff: once the repository and useAsyncData keys exist, public pages fetch server-side and the SSR migration actually delivers crawlable content. Independent of all of it: work the <a href="#fix-now" class="underline decoration-red-400">fix-now list</a> first.</p>
+</section>
+
+</main>
+</body>
+</html>
