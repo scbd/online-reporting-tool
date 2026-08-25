@@ -2,6 +2,7 @@
 import  { useRuntimeConfig, useAppConfig } from '#app';
 import { setUserToken } from '../utils';
 import { SocketIOService } from '@/services/socket-io';
+import { withQuery } from 'ufo'
 
 export const useAuth = () => useNuxtApp().$auth as EAuthUser & { token: string, strategy: string, updateSession: () => Promise<void> };
 
@@ -18,11 +19,13 @@ export const useAuthConf = () => {
     }
 }
 
-export const authRedirectToLogin = async (from:string) => {
+export const authRedirectToLogin = async (from:string, {query} = {}) => {
    
     const authConf = useAuthConf();
-    const redirectTo = `${useResolveAccountsHostUrl(authConf.redirect.login)}?returnUrl=${encodeURIComponent(window.location.origin)}${encodeURIComponent(from)}`
-
+    const formatReturnUrl  = encodeURIComponent(withQuery(from, query||{}));
+    const returnUrl  = `${encodeURIComponent(window.location.origin)}${formatReturnUrl}`;
+    const redirectTo = `${useResolveAccountsHostUrl(authConf.redirect.login)}?returnUrl=${returnUrl}`;
+    
     await navigateTo(redirectTo, { external: true });
 
     return redirectTo;

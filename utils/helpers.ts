@@ -109,7 +109,7 @@ export const resolveSchemaViewRoute = function(schema:String, identifier): strin
         else if(schema == SCHEMAS.NATIONAL_TARGET_7_MAPPING)
             url = appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW;
         else if(schema == SCHEMAS.NATIONAL_NBSAP)
-            url = appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW;
+            url = appRoutes.NATIONAL_REPORTS_NBSAP_VIEW;
         else if(schema == SCHEMAS.NATIONAL_REPORT_7)
             url = appRoutes.NATIONAL_REPORTS_NR7_VIEW;
         else if(schema == SCHEMAS.REFERENCE_STAKEHOLDER_CREDENTIAL)
