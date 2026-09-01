@@ -386,7 +386,7 @@
             }
 
             validationReport.value = { isSaving:true, isPublishing:true };
-            const { document, documentSaveResponse } = await saveDraft(); 
+            let { document, documentSaveResponse } = await saveDraft();
             validationReport.value.isSaving          = false;
 
             // onPrePublish
