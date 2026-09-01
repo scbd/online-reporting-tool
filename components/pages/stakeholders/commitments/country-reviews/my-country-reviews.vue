@@ -239,6 +239,7 @@ import type { ApiListResponse } from '~/types/api/api-response';
     const { user } = useAuth();
     const realmConf = useRealm();
     const security      = useSecurity();
+    const realmConf     = useRealm();
     const myCountryReviews = ref<ApiListResponse<ECommitmentCountryReview>>({items:[], totalCount:0, limit:0, offset:0, returnedCount:0});
     const myCountryReviewsStats = ref<CommitmentReviewsStatsResponse>();
     const reviewFilter = ref<string>('all');
