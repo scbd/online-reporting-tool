@@ -1,10 +1,17 @@
 <template>
     <record-type-search :record-types="[SCHEMAS.NATIONAL_NBSAP]" :show-record-type="false" :show-targets="false" :show-goals="false">
         <template #action-buttons>
-            <km-link :to="analyzerUrl" 
+            <km-link :to="analyzerUrl"
                 class="btn btn-secondary btn-sm ms-1">
                 <font-awesome-icon icon="fa-chart-pie"></font-awesome-icon> {{ t('analyzer') }}
             </km-link>
+        </template>
+        <template #metadata="{document}">
+            <slot name="metadata" :document="document">
+                <small class="me-2 fs-6">{{document.schema_EN_s}}</small>|
+                <small class="me-2 fs-6" v-if="document.government_EN_s">{{document.government_EN_s}} |</small>
+                <document-dates :published-on="document.recCreationDate" :updated-on="document.recDate"></document-dates>
+            </slot>
         </template>
         <template #custom-filters="{ onCustomFilterChange }">
             <div class="col-md-4">

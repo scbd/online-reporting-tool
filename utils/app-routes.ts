@@ -16,6 +16,7 @@ export const appRoutes = {
     NATIONAL_TARGETS_MY_COUNTRY_PART_II_VIEW: '/national-targets/my-country/part-2/:identifier/view',
     
     NATIONAL_REPORTS_NBSAP                      : '/nbsaps',
+    NATIONAL_REPORTS_NBSAP_VIEW                 : '/nbsaps/:identifier',
     NATIONAL_REPORTS_NBSAP_ANALYZER             : '/nbsaps/analyzer',
     NATIONAL_REPORTS_NBSAP_MY_COUNTRY_LIST      : '/nbsaps/my-country',
     NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW      : '/nbsaps/my-country/:identifier/view',

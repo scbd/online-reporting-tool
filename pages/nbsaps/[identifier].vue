@@ -1,9 +1,6 @@
 <template>
     <km-suspense>
       <view-actions print-selector=".print-section" :title="lstring(record?.workingDocumentTitle||record?.title)"></view-actions>
-
-      <workflow-request v-if="workflowId" :workflow-id="workflowId"></workflow-request>
-
       <div class="print-section">
         <view-nbsap v-if="identifier" :identifier="identifier" @on-document-load="onDocumentLoad"></view-nbsap>
       </div>
@@ -23,20 +20,13 @@
   const workflowId = ref(route.query?.workflowId);
   
   definePageMeta({
-    auth:true,
-    schema:SCHEMAS.NATIONAL_NBSAP,
-    roles:[...ROLES.ALL_NATIONAL_USERS],
     breadcrumbs : {
       skip : ['identifier']
     }
   });
 
-  // route.meta.breadcrumbs.replaceCrumbs = [ {'nbsaps' : lstring(schema?.title, locale)} ];
-
   const onDocumentLoad = (documentInfo)=>{
     record.value = documentInfo.body;
-    if(documentInfo?.workingDocumentLock)
-      workflowId.value = documentInfo?.workingDocumentLock?.lockID?.replace('workflow-', '');;
   }
 </script>
 

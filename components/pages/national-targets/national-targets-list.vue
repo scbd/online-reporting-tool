@@ -6,10 +6,17 @@
                 <font-awesome-icon icon="fa-chart-pie"></font-awesome-icon> {{ t('analyzer') }}
             </km-link>
 
-            <km-link :to="$appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW" 
+            <km-link :to="$appRoutes.NATIONAL_TARGETS_MY_COUNTRY_PART_I_NEW"
                 class="btn btn-secondary btn-sm float-end">
                 <font-awesome-icon icon="fa-plus"></font-awesome-icon> {{ t('submitNew') }}
             </km-link>
+        </template>
+        <template #metadata="{document}">
+            <slot name="metadata" :document="document">
+                <small class="me-2 fs-6">{{document.schema_EN_s}}</small>|
+                <small class="me-2 fs-6" v-if="document.government_EN_s">{{document.government_EN_s}} |</small>
+                <document-dates :published-on="document.recCreationDate" :updated-on="document.recDate"></document-dates>
+            </slot>
         </template>
    </record-type-search>
 </template>

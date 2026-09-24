@@ -122,7 +122,7 @@
                                     <tbody>                 
                                             <tr v-for="nbsap in nbsaps" :key="nbsaps">
                                                 <td>
-                                                    <km-link :to="`${$appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW.replace(':identifier', nbsap.identifier_s)}`">
+                                                    <km-link :to="`${$appRoutes.NATIONAL_REPORTS_NBSAP_VIEW.replace(':identifier', nbsap.identifier_s)}`">
                                                         {{nbsap.government}}
                                                     </km-link>
                                                 </td>
