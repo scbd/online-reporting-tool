@@ -49,7 +49,7 @@ function findMatchingRoute($appRoutes, to, from){
         registerNbsapView : {
             regex  :  /register\/nbsap\/([A-Za-z0-9_\-@]+)\/view/i,
             params : [':identifier'],
-            url    : $appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW
+            url    : $appRoutes.NATIONAL_REPORTS_NBSAP_MY_COUNTRY_VIEW+ '?draft=true'
         },
         registerNbsapEdit : {
             regex  :  /register\/nbsap\/([A-Za-z0-9_\-@]+)\/edit/i,

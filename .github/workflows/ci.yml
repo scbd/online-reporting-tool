@@ -3,13 +3,16 @@
 # Registry (org-level):
 #   DOCKERHUB_USERNAME  - Docker Hub username
 #   DOCKERHUB_TOKEN     - Docker Hub access token
+#
+# Deployment webhooks (repo-level, optional — omit if no deploy target):
+#   WEBHOOK_URL_DEV     - Portainer service webhook URL for dev redeploy
 
 name: CI
 
 on:
   push:
     branches: ['**']
-    tags: ['v*', '[0-9]*']
+    tags: ['[0-9]*']
 
 permissions:
   contents: read
@@ -29,10 +32,10 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       # Logic:
-      #   version tag (v?N(.N)*) on the scbd org  → tags=<version> + latest,  push=true
-      #   master / dev / stg                      → tags=<branch>,           push=true
+      #   version tag (N(.N)*) on the scbd org    → tags=<version> + latest,  push=true
+      #   dev                                      → tags=dev,                push=true
       #   release/*                                → tags=release-<suffix>,  push=true
-      #   anything else (incl. tags off-org/bad)   → tags=build-<sha>,       push=false
+      #   anything else (incl. master/stg, tags off-org/bad) → tags=build-<sha>, push=false
       - name: Resolve image tags
         id: meta
         run: |
@@ -40,9 +43,8 @@ jobs:
           IMAGE="${{ env.IMAGE_NAME }}"
           REF="${GITHUB_REF}"
 
-          if [[ "${REF}" =~ ^refs/tags/v?[0-9]+(\.[0-9]+)*$ ]] && [[ "${{ github.repository_owner }}" == "scbd" ]]; then
+          if [[ "${REF}" =~ ^refs/tags/[0-9]+(\.[0-9]+)*$ ]] && [[ "${{ github.repository_owner }}" == "scbd" ]]; then
             VERSION="${REF#refs/tags/}"
-            VERSION="${VERSION#v}"
             echo "tags<<EOF"           >> $GITHUB_OUTPUT
             echo "${IMAGE}:${VERSION}" >> $GITHUB_OUTPUT
             echo "${IMAGE}:latest"     >> $GITHUB_OUTPUT
@@ -50,12 +52,11 @@ jobs:
             echo "push=true"           >> $GITHUB_OUTPUT
             echo "branch="             >> $GITHUB_OUTPUT
             echo "build_tag=${VERSION}" >> $GITHUB_OUTPUT
-          elif [[ "${REF}" =~ ^refs/heads/(master|dev|stg)$ ]]; then
-            BRANCH="${BASH_REMATCH[1]}"
-            echo "tags=${IMAGE}:${BRANCH}" >> $GITHUB_OUTPUT
-            echo "push=true"               >> $GITHUB_OUTPUT
-            echo "branch=${BRANCH}"        >> $GITHUB_OUTPUT
-            echo "build_tag="              >> $GITHUB_OUTPUT
+          elif [[ "${REF}" == "refs/heads/dev" ]]; then
+            echo "tags=${IMAGE}:dev" >> $GITHUB_OUTPUT
+            echo "push=true"         >> $GITHUB_OUTPUT
+            echo "branch=dev"        >> $GITHUB_OUTPUT
+            echo "build_tag="        >> $GITHUB_OUTPUT
           elif [[ "${REF}" =~ ^refs/heads/release/(.+)$ ]]; then
             SUFFIX="${BASH_REMATCH[1]}"
             echo "tags=${IMAGE}:release-${SUFFIX}" >> $GITHUB_OUTPUT
@@ -102,3 +103,12 @@ jobs:
             docker tag ci-build:local "$tag"
             docker push "$tag"
           done <<< "${{ steps.meta.outputs.tags }}"
+
+      # Portainer webhook — non-critical, a failed redeploy never blocks CI.
+
+      - name: Deploy to Portainer (dev)
+        if: steps.meta.outputs.branch == 'dev'
+        continue-on-error: true
+        uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{ secrets.WEBHOOK_URL_DEV }}
